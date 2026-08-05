@@ -1,10 +1,13 @@
-// ignore_for_file: prefer_const_constructors
-
-import 'dart:math' as math;
+﻿import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
+import 'package:sagen/services/experience_service.dart';
+import 'package:sagen/core/theme/app_colors.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
+import 'package:sagen/l10n/app_localizations.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 class DiagnosisConfirmationScreen extends StatefulWidget {
   final VoidCallback? onContinue;
@@ -29,11 +32,12 @@ class _DiagnosisConfirmationScreenState
 
   void _onTapDown(TapDownDetails _) {
     setState(() => _isPressed = true);
-    HapticFeedback.mediumImpact();
+    ExperienceService.instance.mediumHaptic();
   }
 
   void _onTapUp(TapUpDetails _) {
     setState(() => _isPressed = false);
+    HapticFeedback.lightImpact();
     widget.onContinue?.call();
   }
 
@@ -54,20 +58,25 @@ class _DiagnosisConfirmationScreenState
               padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
               child: Row(
                 children: [
-                  IconButton(
-                    icon: Icon(
-                      Icons.arrow_back,
-                      color: dark ? Colors.white.withValues(alpha: 0.6) : Colors.black54,
+                  Semantics(
+                    button: true,
+                    label: AppLocalizations.of(context)!.backButton,
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.arrow_back,
+                        color: context.textSecondary,
+                      ),
+                      onPressed: widget.onBack ?? () => context.pop(),
+                      tooltip: AppLocalizations.of(context)!.backButton,
                     ),
-                    onPressed: widget.onBack ?? () => Navigator.pop(context),
                   ),
                   const SizedBox(width: AppSpacing.sm),
                   Expanded(
                     child: Container(
                       height: 12,
                       decoration: BoxDecoration(
-                        color: dark ? Colors.grey[850] : Colors.grey.shade200,
-                        borderRadius: BorderRadius.circular(6),
+                        color: context.surfaceCard,
+                        borderRadius: BorderRadius.circular(AppRadius.xs),
                       ),
                       child: FractionallySizedBox(
                         alignment: Alignment.centerLeft,
@@ -75,7 +84,7 @@ class _DiagnosisConfirmationScreenState
                         child: Container(
                           decoration: BoxDecoration(
                             color: PremiumColors.primaryAccent,
-                            borderRadius: BorderRadius.circular(6),
+                            borderRadius: BorderRadius.circular(AppRadius.xs),
                           ),
                         ),
                       ),
@@ -96,10 +105,15 @@ class _DiagnosisConfirmationScreenState
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Image.asset(
-                      'assets/mascot/emotions/sage_happy_wings.png',
-                      width: 80,
-                      height: 80,
+                    ExcludeSemantics(
+                      child: Image.asset(
+                        'assets/mascot/emotions/sage_happy_wings.png',
+                        width: 80,
+                        height: 80,
+                        cacheWidth: 160,
+                        cacheHeight: 160,
+                        errorBuilder: (_, _, _) => const Icon(Icons.pets, size: 48),
+                      ),
                     ),
                     const SizedBox(width: 8),
                     Expanded(
@@ -110,19 +124,18 @@ class _DiagnosisConfirmationScreenState
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 20, vertical: 16),
                             decoration: BoxDecoration(
-                              color: dark ? const Color(0xFF2A3448) : Colors.white,
-                              borderRadius: BorderRadius.circular(16),
+                              color: dark ? PremiumColors.onboardingBubbleDark : Colors.white,
+                              borderRadius: BorderRadius.circular(AppRadius.xl),
                               border: Border.all(
                                 color: dark
                                     ? Colors.white.withValues(alpha: 0.10)
-                                    : Colors.grey.withValues(alpha: 0.30),
+                                    : context.borderSubtle,
                               ),
                             ),
                             child: Text(
-                              "¡Excelente! Ajustaremos tu plan de entrenamiento para blindar tus conocimientos desde el primer día.",
-                              style: TextStyle(
-                                color: dark ? Colors.white : Colors.black87,
-                                fontSize: 15,
+                              AppLocalizations.of(context)!.onbDiagnosisMsg,
+                              style: AppTextStyle.body.copyWith(
+                                color: context.textPrimary,
                                 height: 1.4,
                               ),
                             ),
@@ -137,11 +150,11 @@ class _DiagnosisConfirmationScreenState
                                   width: 12,
                                   height: 12,
                                   decoration: BoxDecoration(
-                                    color: dark ? const Color(0xFF2A3448) : Colors.white,
+                                    color: dark ? PremiumColors.onboardingBubbleDark : Colors.white,
                                     border: Border.all(
                                       color: dark
                                           ? Colors.white.withValues(alpha: 0.10)
-                                          : Colors.grey.withValues(alpha: 0.30),
+                                          : context.borderSubtle,
                                     ),
                                   ),
                                 ),
@@ -162,38 +175,41 @@ class _DiagnosisConfirmationScreenState
             Padding(
               padding: const EdgeInsets.fromLTRB(
                   AppSpacing.xxl, 0, AppSpacing.xxl, AppSpacing.xxl),
-              child: GestureDetector(
-                onTapDown: _onTapDown,
-                onTapUp: _onTapUp,
-                onTapCancel: _onTapCancel,
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 80),
-                  transform: _isPressed
-                      ? Matrix4.translationValues(0, 4, 0)
-                      : Matrix4.identity(),
-                  height: 54,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: PremiumColors.primaryAccent,
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: _isPressed
-                        ? []
-                        : [
-                            BoxShadow(
-                              color: PremiumColors.primaryDark,
-                              offset: const Offset(0, 4),
-                              blurRadius: 0,
-                            ),
-                          ],
-                  ),
-                  child: Center(
-                    child: Text(
-                      'CONTINUAR',
-                      style: TextStyle(
-                        color: dark ? Colors.white : Colors.black87,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 1.5,
+              child: Semantics(
+                button: true,
+                label: AppLocalizations.of(context)!.continueText,
+                child: GestureDetector(
+                  onTapDown: _onTapDown,
+                  onTapUp: _onTapUp,
+                  onTapCancel: _onTapCancel,
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 80),
+                    transform: _isPressed
+                        ? Matrix4.translationValues(0, 4, 0)
+                        : Matrix4.identity(),
+                    height: 54,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: PremiumColors.primaryAccent,
+                      borderRadius: BorderRadius.circular(AppRadius.xl),
+                      boxShadow: _isPressed
+                          ? []
+                          : [
+                              const BoxShadow(
+                                color: PremiumColors.primaryDark,
+                                offset: Offset(0, 4),
+                                blurRadius: 0,
+                              ),
+                            ],
+                    ),
+                    child: Center(
+                      child: Text(
+                        AppLocalizations.of(context)!.continueText,
+                        style: AppTextStyle.titleSmall.copyWith(
+                          color: context.textPrimary,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 1.5,
+                        ),
                       ),
                     ),
                   ),
@@ -201,7 +217,7 @@ class _DiagnosisConfirmationScreenState
               ),
             ),
           ],
-        ),
+        ).animate().fadeIn().slideY(begin: 0.05),
       ),
     );
   }

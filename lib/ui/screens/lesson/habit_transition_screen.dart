@@ -2,13 +2,14 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter/services.dart';
+import 'package:sagen/services/experience_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sagen/l10n/app_localizations.dart';
 import '../../../core/theme/theme_constants.dart';
 import '../../../services/sage_emotion_service.dart';
 import '../../../services/streak_visibility_service.dart';
 import '../../widgets/common/sage_emotion_widget.dart';
-import '../../widgets/streak/flame_animation_widget.dart';
+import '../../widgets/rive_flame_widget.dart';
 
 class HabitTransitionScreen extends StatefulWidget {
   const HabitTransitionScreen({super.key});
@@ -25,20 +26,26 @@ class _HabitTransitionScreenState extends State<HabitTransitionScreen>
   late final Animation<double> _bubbleFade;
   late final Animation<double> _bubbleScale;
 
-  late final String _message;
+  String _message = '';
 
-  static const _messages = [
-    '¡Gran trabajo! Ahora, vamos a blindar tu disciplina diaria.',
-    'Primer paso completado. Construyamos el hábito que te llevará a la meta.',
-    'Excelente rendimiento. El secreto ahora es la constancia.',
-    '¡Bien hecho! Ahora configuremos tu ritmo de progreso diario.',
-    'Un inicio perfecto. Aseguremos tu éxito creando un hábito inquebrantable.',
+  List<String> _buildMessages(AppLocalizations l) => [
+    l.habitTransition1,
+    l.habitTransition2,
+    l.habitTransition3,
+    l.habitTransition4,
+    l.habitTransition5,
   ];
 
   @override
   void initState() {
     super.initState();
-    _message = _messages[Random().nextInt(_messages.length)];
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final l = AppLocalizations.of(context)!;
+      setState(() {
+        _message = _buildMessages(l)[Random().nextInt(_buildMessages(l).length)];
+      });
+    });
 
     _ctrl = AnimationController(
       vsync: this,
@@ -76,7 +83,7 @@ class _HabitTransitionScreenState extends State<HabitTransitionScreen>
   }
 
   void _handleContinue() {
-    HapticFeedback.lightImpact();
+    ExperienceService.instance.lightHaptic();
     _pushNext();
   }
 
@@ -140,7 +147,7 @@ class _HabitTransitionScreenState extends State<HabitTransitionScreen>
                         const Positioned.fill(
                           child: Padding(
                             padding: EdgeInsets.only(bottom: 20),
-                            child: FlameAnimationWidget(phase: null),
+                            child: RiveFlameWidget(phase: null),
                           ),
                         ),
                         Center(
@@ -195,7 +202,7 @@ class _SpeechBubble extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 22),
             decoration: BoxDecoration(
               color: color,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(AppRadius.xxl),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withValues(alpha: 0.08),
@@ -207,8 +214,7 @@ class _SpeechBubble extends StatelessWidget {
             child: Text(
               message,
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 17,
+              style: AppTextStyle.bodyLg.copyWith(
                 fontWeight: FontWeight.w500,
                 height: 1.5,
                 color: textColor,
@@ -258,40 +264,43 @@ class _ContinueButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      height: 56,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.transparent,
-          shadowColor: Colors.transparent,
-          padding: EdgeInsets.zero,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+    return Semantics(
+      button: true,
+      label: AppLocalizations.of(context)!.continueText,
+      child: SizedBox(
+        width: double.infinity,
+        height: 56,
+        child: ElevatedButton(
+          onPressed: onPressed,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.transparent,
+            shadowColor: Colors.transparent,
+            padding: EdgeInsets.zero,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(AppRadius.xl),
+            ),
           ),
-        ),
-        child: Ink(
-          decoration: BoxDecoration(
-            gradient: AppGradients.sage(),
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              BoxShadow(
-                color: PremiumColors.xpColor.withValues(alpha: 0.3),
-                blurRadius: 16,
-                offset: const Offset(0, 6),
-              ),
-            ],
-          ),
-          child: Container(
-            alignment: Alignment.center,
-            child: const Text(
-              'CONTINUAR',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 1.5,
+          child: Ink(
+            decoration: BoxDecoration(
+              gradient: AppGradients.sage(),
+              borderRadius: BorderRadius.circular(AppRadius.xl),
+              boxShadow: [
+                BoxShadow(
+                  color: PremiumColors.xpColor.withValues(alpha: 0.3),
+                  blurRadius: 16,
+                  offset: const Offset(0, 6),
+                ),
+              ],
+            ),
+            child: Container(
+              alignment: Alignment.center,
+              child: Text(
+                AppLocalizations.of(context)!.continueText,
+                  style: AppTextStyle.titleSmall.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1.5,
+                  ),
               ),
             ),
           ),

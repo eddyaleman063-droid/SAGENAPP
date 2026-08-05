@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../utils/map_utils.dart';
 import '../services/storage_service.dart';
 import '../models/protection_level.dart';
 import 'prefs_provider.dart';
@@ -72,7 +73,7 @@ class ProtectionNotifier extends Notifier<ProtectionState> {
 
   @override
   ProtectionState build() {
-    _storage = StorageService(ref.watch(prefsProvider));
+    _storage = StorageService(ref.read(prefsProvider));
     _load();
     return state;
   }
@@ -91,7 +92,7 @@ class ProtectionNotifier extends Notifier<ProtectionState> {
     Map<String, int> habits = {};
     final habitsStr = _storage.getString(_keyHabits);
     if (habitsStr.isNotEmpty) {
-      habits = _parseStringMap(habitsStr);
+      habits = parseStringMap(habitsStr);
     }
 
     state = ProtectionState(
@@ -103,22 +104,6 @@ class ProtectionNotifier extends Notifier<ProtectionState> {
       learnedTopics: learnedTopics,
       habits: habits,
     );
-  }
-
-  Map<String, int> _parseStringMap(String raw) {
-    final map = <String, int>{};
-    if (raw.isEmpty) return map;
-    for (final entry in raw.split(',')) {
-      final parts = entry.split(':');
-      if (parts.length == 2) {
-        map[parts[0]] = int.tryParse(parts[1]) ?? 0;
-      }
-    }
-    return map;
-  }
-
-  String _encodeStringMap(Map<String, int> map) {
-    return map.entries.map((e) => '${e.key}:${e.value}').join(',');
   }
 
   void registerCheckIn() {
@@ -134,7 +119,7 @@ class ProtectionNotifier extends Notifier<ProtectionState> {
       score: newScore,
       habits: newHabits,
       lastInsight: newLevel > oldLevel
-          ? 'Subiste a nivel $newLevel — ${protectionNameForLevel(newLevel)}'
+          ? 'Reached level $newLevel — ${protectionNameForLevel(newLevel)}'
           : state.lastInsight,
     );
     _save();
@@ -152,7 +137,7 @@ class ProtectionNotifier extends Notifier<ProtectionState> {
     if (newScore < 0) newScore = 0;
     final newLevel1 = protectionLevelForScore(newScore);
     if (newLevel1 > oldLevel1) {
-      lastInsight = 'Subiste a nivel $newLevel1 — ${protectionNameForLevel(newLevel1)}';
+      lastInsight = 'Reached level $newLevel1 — ${protectionNameForLevel(newLevel1)}';
     }
 
     if (topic != null && topic.isNotEmpty && !newTopics.contains(topic)) {
@@ -162,7 +147,7 @@ class ProtectionNotifier extends Notifier<ProtectionState> {
       if (newScore < 0) newScore = 0;
       final newLevel2 = protectionLevelForScore(newScore);
       if (newLevel2 > oldLevel2) {
-        lastInsight = 'Subiste a nivel $newLevel2 — ${protectionNameForLevel(newLevel2)}';
+        lastInsight = 'Reached level $newLevel2 — ${protectionNameForLevel(newLevel2)}';
       }
     }
 
@@ -189,7 +174,7 @@ class ProtectionNotifier extends Notifier<ProtectionState> {
       score: newScore,
       habits: newHabits,
       lastInsight: newLevel > oldLevel
-          ? 'Subiste a nivel $newLevel — ${protectionNameForLevel(newLevel)}'
+          ? 'Reached level $newLevel — ${protectionNameForLevel(newLevel)}'
           : state.lastInsight,
     );
     _save();
@@ -208,7 +193,7 @@ class ProtectionNotifier extends Notifier<ProtectionState> {
       score: newScore,
       habits: newHabits,
       lastInsight: newLevel > oldLevel
-          ? 'Subiste a nivel $newLevel — ${protectionNameForLevel(newLevel)}'
+          ? 'Reached level $newLevel — ${protectionNameForLevel(newLevel)}'
           : state.lastInsight,
     );
     _save();
@@ -218,26 +203,26 @@ class ProtectionNotifier extends Notifier<ProtectionState> {
     final s = state;
     final insights = <String>[];
     if (s.totalQueries > 20) {
-      insights.add('Ya llevas ${s.totalQueries} consultas. Tu aprendizaje es constante.');
+      insights.add('You have ${s.totalQueries} queries. Your learning is consistent.');
     }
     if (s.totalAnalyses > 10) {
-      insights.add('Analizaste ${s.totalAnalyses} enlaces. Tu experiencia en detección crece.');
+      insights.add('You analyzed ${s.totalAnalyses} links. Your detection skills are growing.');
     }
     if (s.totalMissionsCompleted > 5) {
-      insights.add('Completaste ${s.totalMissionsCompleted} misiones. Sigue así.');
+      insights.add('Completed ${s.totalMissionsCompleted} missions. Keep it up!');
     }
     final lvl = protectionLevelForScore(s.score);
     if (lvl >= 10) {
-      insights.add('Nivel $lvl — ${protectionNameForLevel(lvl)}. Tu constancia da resultados.');
+      insights.add('Level $lvl — ${protectionNameForLevel(lvl)}. Your consistency pays off.');
     }
     if (s.totalCheckIns > 30) {
-      insights.add('Más de ${s.totalCheckIns} días activo. La constancia es tu mejor aliada.');
+      insights.add('Over ${s.totalCheckIns} active days. Consistency is your best ally.');
     }
     if (insights.isEmpty) {
       insights.addAll([
-        'Cada día que usas SAGEN, tu protección crece.',
-        'Sigue aprendiendo. La seguridad digital se construye día a día.',
-        'Tu nivel de protección aumentará con cada acción.',
+        'Every day you use SAGEN, your protection grows.',
+        'Keep learning. Digital security is built day by day.',
+        'Your protection level will increase with every action.',
       ]);
     }
     final insight = insights[DateTime.now().millisecondsSinceEpoch % insights.length];
@@ -258,6 +243,6 @@ class ProtectionNotifier extends Notifier<ProtectionState> {
     _storage.setInt(_keyMissions, s.totalMissionsCompleted);
     _storage.setInt(_keyCheckIns, s.totalCheckIns);
     _storage.setString(_keyTopics, s.learnedTopics.join(','));
-    _storage.setString(_keyHabits, _encodeStringMap(s.habits));
+    _storage.setString(_keyHabits, encodeStringMap(s.habits));
   }
 }

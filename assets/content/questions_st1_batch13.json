@@ -1,0 +1,452 @@
+[
+    {
+        "id": "ac_st1_qB13_001",
+        "question": "Que es una cuenta digital segun lo que aprendiste",
+        "type": "multipleChoice",
+        "options": [
+            "Solo el correo electrónico",
+            "Cualquier acceso a servicios en internet con usuario y contraseña",
+            "Solo las cuentas bancarias",
+            "Solo redes sociales"
+        ],
+        "correctIndex": 1,
+        "explanation": "Una cuenta digital es cualquier acceso a servicios en internet que requiere usuario y contraseña.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses1_l1"
+    },
+    {
+        "id": "ac_st1_qB13_002",
+        "question": "Por que una cuenta con correo y contraseña es mas segura que solo con correo",
+        "type": "detectRisk",
+        "options": [
+            "Porque es mas facil de recordar",
+            "Porque sin contraseña cualquiera podria entrar",
+            "Porque el correo no es importante",
+            "Porque asi se ve mas profesiónal"
+        ],
+        "correctIndex": 1,
+        "explanation": "Sin contraseña, cualquier persona podria acceder a tu cuenta y ver tu información privada.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses1_l1"
+    },
+    {
+        "id": "ac_st1_qB13_003",
+        "question": "Que elementos hacen segura a una cuenta digital",
+        "type": "completePhrase",
+        "options": [
+            "Solo el nombre de usuario",
+            "Contraseña fuerte y verificación en dos pasos",
+            "Nada, las cuentas son seguras por defecto",
+            "Solo el correo electrónico"
+        ],
+        "correctIndex": 1,
+        "explanation": "Una cuenta segura necesita contraseña fuerte y verificación en dos pasos como minimo.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses1_l2"
+    },
+    {
+        "id": "ac_st1_qB13_004",
+        "question": "Caso: Tu vecina te pide que le ayudes a crear una cuenta de correo. Que le recomiendas primero",
+        "type": "miniCase",
+        "options": [
+            "Que use su nombre completo como contraseña",
+            "Que elija una contraseña larga con letras y números",
+            "Que no ponga contraseña para que sea mas facil",
+            "Que use solo su número de telefono"
+        ],
+        "correctIndex": 1,
+        "explanation": "Lo primero es elegir una contraseña fuerte que combine letras, números y carácteres especiales.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses1_l2"
+    },
+    {
+        "id": "ac_st1_qB13_005",
+        "question": "Cual es la diferencia principal entre una cuenta local y una en linea",
+        "type": "multipleChoice",
+        "options": [
+            "La local es gratis y la online cuesta dinero",
+            "La local se usa sin internet y la online necesita conexión",
+            "No hay ninguna diferencia",
+            "La local es mas segura siempre"
+        ],
+        "correctIndex": 1,
+        "explanation": "Una cuenta local funciona sin internet, mientras que la en linea necesita conexión para acceder.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses1_l3"
+    },
+    {
+        "id": "ac_st1_qB13_006",
+        "question": "Que es mas riesgoso: tener una cuenta en linea sin 2FA o una cuenta local sin contraseña",
+        "type": "detectRisk",
+        "options": [
+            "La cuenta local sin contraseña",
+            "La cuenta en linea sin 2FA porque puede ser accedida desde cualquier lugar",
+            "Ambas son igual de seguras",
+            "Ninguna tiene riesgo"
+        ],
+        "correctIndex": 1,
+        "explanation": "Una cuenta en linea sin 2FA es mas riesgosa porque puede ser accedida desde cualquier parte del mundo.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses1_l3"
+    },
+    {
+        "id": "ac_st1_qB13_007",
+        "question": "Que harías si te preguntan cual es tu cuenta de correo electrónico mas importante",
+        "type": "whatWouldYouDo",
+        "options": [
+            "Decir que es la de tu banco porque tiene tu dinero",
+            "Decir que no tienes cuentas importantes",
+            "Decir que todas son igual de importantes y debes protegerlas",
+            "No responder porque es información privada"
+        ],
+        "correctIndex": 3,
+        "explanation": "Tu información de cuentas es privada y no debes compartirla con nadie.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses1_l4"
+    },
+    {
+        "id": "ac_st1_qB13_008",
+        "question": "Cuales son ejemplos de cuentas digitales cotidianas que usas en Peru",
+        "type": "multipleChoice",
+        "options": [
+            "Solo WhatsApp",
+            "Correo, redes sociales, banca en linea, Yape o Plin",
+            "Solo el celular",
+            "Solo el banco fisico"
+        ],
+        "correctIndex": 1,
+        "explanation": "En el dia a dia usas correo, redes sociales, banca en linea y apps de pago como Yape o Plin.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses1_l4"
+    },
+    {
+        "id": "ac_st1_qB13_009",
+        "question": "QueElemento básico no puede faltar en ninguna cuenta segura",
+        "type": "completePhrase",
+        "options": [
+            "Una foto de perfil",
+            "Una contraseña única y fuerte",
+            "Un nombre de usuario largo",
+            "Un número de telefono"
+        ],
+        "correctIndex": 1,
+        "explanation": "Lo básico y mas importante es tener una contraseña única y fuerte para cada cuenta.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses1_l5"
+    },
+    {
+        "id": "ac_st1_qB13_010",
+        "question": "Caso: Tu sobrino te dice que puso su fecha de nacimiento como contraseña. Que le dices",
+        "type": "miniCase",
+        "options": [
+            "Que esta bien porque es facil de recordar",
+            "Que es muy inseguro porque cualquiera podria adivinarlo",
+            "Que la cambie pero solo ponga otra fecha",
+            "Que no se preocupe porque nadie va a entrar"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las fechas de nacimiento son faciles de adivinar. Usa algo mas complejo y único.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses1_l5"
+    },
+    {
+        "id": "ac_st1_qB13_011",
+        "question": "Que es la verificación en dos pasos y por que es importante",
+        "type": "multipleChoice",
+        "options": [
+            "Es un metodo para recordar contraseñas",
+            "Es una forma de proteger tu cuenta con algo mas que solo la contraseña",
+            "Es para cambiar el color del perfil",
+            "Es para bloquear el celular"
+        ],
+        "correctIndex": 1,
+        "explanation": "La verificación en dos pasos agrega una capa extra de seguridad ademas de tu contraseña.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses1_l6"
+    },
+    {
+        "id": "ac_st1_qB13_012",
+        "question": "Que harías si alguien te pide tu codigo de verificación por SMS",
+        "type": "whatWouldYouDo",
+        "options": [
+            "Enviarselo porque es un amigo",
+            "No darlo nunca, es información privada como tu contraseña",
+            "Pedirle que espere un momento",
+            "Cambiar tu número de telefono"
+        ],
+        "correctIndex": 1,
+        "explanation": "Nunca compartas tu codigo de verificación, incluso si es con alguien de confianza.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses1_l6"
+    },
+    {
+        "id": "ac_st1_qB13_013",
+        "question": "Que información NO debes poner en tu perfil de redes sociales",
+        "type": "detectRisk",
+        "options": [
+            "Tu nombre",
+            "Tu número de DNI",
+            "El nombre de tu mascota",
+            "Tu ciudad"
+        ],
+        "correctIndex": 1,
+        "explanation": "Tu número de DNI es información sensible que puede ser usada para robo de identidad.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses2_l1"
+    },
+    {
+        "id": "ac_st1_qB13_014",
+        "question": "Que es mas seguro para tu correo electrónico: una contraseña corta o una frase larga",
+        "type": "multipleChoice",
+        "options": [
+            "Una contraseña corta con simbolos",
+            "Una frase larga que solo tu conozcas",
+            "Ambas son igual de seguras",
+            "No importa la longitud"
+        ],
+        "correctIndex": 1,
+        "explanation": "Una frase larga es mas dificil de adivinar que una contraseña corta, aunque tenga simbolos.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses2_l1"
+    },
+    {
+        "id": "ac_st1_qB13_015",
+        "question": "Que tipo de información guardan las redes sociales sobre ti",
+        "type": "multipleChoice",
+        "options": [
+            "Solo tu nombre",
+            "Tus fotos, publicaciones, ubicacion y actividad en internet",
+            "Solo tus mensajes privados",
+            "Nada, todo es privado"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las redes sociales guardan mucha información: fotos, ubicacion, likes, busquedas y mas.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses2_l2"
+    },
+    {
+        "id": "ac_st1_qB13_016",
+        "question": "Cual es el riesgo de usar la misma contraseña en Yape y en tu correo",
+        "type": "detectRisk",
+        "options": [
+            "No hay riesgo, es mas práctico",
+            "Si hackean una cuenta, pueden acceder a todas tus cuentas",
+            "Solo es un problema si pierdes el celular",
+            "El riesgo es que se te olvide"
+        ],
+        "correctIndex": 1,
+        "explanation": "Si usas la misma contraseña y hackean una cuenta, todas tus cuentas quedan comprometidas.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses2_l3"
+    },
+    {
+        "id": "ac_st1_qB13_017",
+        "question": "Que harías si recibes un correo de tu banco pidiendo que hagas clic en un enlace",
+        "type": "whatWouldYouDo",
+        "options": [
+            "Hacer clic porque es tu banco",
+            "Ignorar el correo y llamar al banco directamente",
+            "Reenviar el correo a todos tus contactos",
+            "Responder con tus datos para verificar"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los bancos nunca piden datos por correo. Llama directamente al banco para verificar.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses2_l4"
+    },
+    {
+        "id": "ac_st1_qB13_018",
+        "question": "Como puedes saber que una compra en linea es segura",
+        "type": "multipleChoice",
+        "options": [
+            "Si el precio es muy barato",
+            "Si el sitio tiene candado verde y dirección https",
+            "Si te envian muchos correos",
+            "Si piden tu contraseña de correo"
+        ],
+        "correctIndex": 1,
+        "explanation": "Un sitio seguro tiene candado verde y dirección que empieza con https://",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses2_l4"
+    },
+    {
+        "id": "ac_st1_qB13_019",
+        "question": "Que debes hacer cada vez que usas una computadora publica",
+        "type": "completePhrase",
+        "options": [
+            "Dejar tu sesión abierta para la proxima vez",
+            "Cerrar sesión cuando termines y borrar el historial",
+            "No hacer nada especial",
+            "Dejar tu contraseña escrita en un papel"
+        ],
+        "correctIndex": 1,
+        "explanation": "Siempre cierra sesión y borra el historial cuando uses una computadora que no es tuya.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses2_l6"
+    },
+    {
+        "id": "ac_st1_qB13_020",
+        "question": "Que es una contraseña debil y por que es peligrosa",
+        "type": "multipleChoice",
+        "options": [
+            "Una contraseña que es muy larga",
+            "Una contraseña predecible como 123456 o tu nombre",
+            "Una contraseña con muchos números",
+            "Una contraseña que cambias seguido"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las contraseñas debiles como 123456 o nombres son facilmente adivinables por hackers.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses3_l1"
+    },
+    {
+        "id": "ac_st1_qB13_021",
+        "question": "Por que reusar la misma contraseña en varias cuentas es peligroso",
+        "type": "detectRisk",
+        "options": [
+            "No es peligroso, es práctico",
+            "Si una cuenta es hackeada, todas quedan en riesgo",
+            "Solo es problema si pierdes el telefono",
+            "El problema es que se te olvide"
+        ],
+        "correctIndex": 1,
+        "explanation": "Si un hacker obtiene tu contraseña en una cuenta, podrá acceder a todas las que usen la misma.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses3_l2"
+    },
+    {
+        "id": "ac_st1_qB13_022",
+        "question": "Que pasa si tu cuenta no tiene verificación en dos pasos",
+        "type": "whatWouldYouDo",
+        "options": [
+            "Nada, es igual de segura",
+            "Alguien podria entrar solo con tu contraseña",
+            "Se bloquea automáticamente",
+            "El banco te protege"
+        ],
+        "correctIndex": 1,
+        "explanation": "Sin 2FA, solo necesitan tu contraseña para acceder. Con 2FA necesitan algo mas.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses3_l3"
+    },
+    {
+        "id": "ac_st1_qB13_023",
+        "question": "Que información personal nunca debes publicar en internet",
+        "type": "detectRisk",
+        "options": [
+            "Tu color favorito",
+            "Tu número de DNI y dirección",
+            "El nombre de tu mascota",
+            "Tu pais de origen"
+        ],
+        "correctIndex": 1,
+        "explanation": "El DNI y la dirección son datos sensibles que pueden ser usados para robar tu identidad.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses3_l4"
+    },
+    {
+        "id": "ac_st1_qB13_024",
+        "question": "Caso: Recibes un mensaje de WhatsApp de un número desconocido que dice ser tu banco. Que haces",
+        "type": "miniCase",
+        "options": [
+            "Le respondes porque podria ser urgente",
+            "Ignoras el mensaje y llamas al banco directamente",
+            "Le envias tu número de DNI para verificar",
+            "Le das tus datos porque es tu banco"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los bancos no te contactan por WhatsApp. Siempre verifica llamando directamente.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses3_l5"
+    },
+    {
+        "id": "ac_st1_qB13_025",
+        "question": "Que es la navegación privada y para que sirve",
+        "type": "multipleChoice",
+        "options": [
+            "Es para navegar mas rápido",
+            "Es para que el navegador no guarde tu historial de busquedas",
+            "Es para que nadie pueda conectarse a internet",
+            "Es para descargar archivos gratis"
+        ],
+        "correctIndex": 1,
+        "explanation": "La navegación privada evita que el navegador guarde tu historial, cookies y datos de busqueda.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses3_l6"
+    },
+    {
+        "id": "ac_st1_qB13_026",
+        "question": "Que tipo de información NO debes compartir ni con familiares por internet",
+        "type": "multipleChoice",
+        "options": [
+            "El nombre de tu mascota",
+            "Fotos de tu DNI o tarjeta de banco",
+            "Tu ciudad favorita",
+            "El nombre de tu escuela"
+        ],
+        "correctIndex": 1,
+        "explanation": "Nunca compartas fotos de documentos importantes, ni siquiera con familiares por mensajes.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses4_l1"
+    },
+    {
+        "id": "ac_st1_qB13_027",
+        "question": "Como configurar la privacidad en tu perfil de Facebook para que solo amigos te vean",
+        "type": "whatWouldYouDo",
+        "options": [
+            "No hacer nada, ya esta protegido",
+            "Ir a configuración de privacidad y cambiar a solo amigos",
+            "Pedir a Facebook que lo haga",
+            "Eliminar tu cuenta"
+        ],
+        "correctIndex": 1,
+        "explanation": "Debes ir manualmente a la configuración de privacidad y ajustar quien puede ver tu perfil.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses4_l2"
+    },
+    {
+        "id": "ac_st1_qB13_028",
+        "question": "Que es un ajuste de privacidad esencial que toda persona debe tener",
+        "type": "completePhrase",
+        "options": [
+            "Compartir todo con todos",
+            "Limitar quien puede ver tus publicaciones y datos personales",
+            "No tener ninguna configuración",
+            "Dejar todo en publico"
+        ],
+        "correctIndex": 1,
+        "explanation": "Limitar quien ve tu información es básico para proteger tu privacidad en internet.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses4_l3"
+    },
+    {
+        "id": "ac_st1_qB13_029",
+        "question": "Que es mas seguro: publicar una foto con tu dirección visible o sin ella",
+        "type": "detectRisk",
+        "options": [
+            "Ambas son igual de seguras",
+            "Sin la dirección, porque cualquiera podria saber donde vives",
+            "Con la dirección para que sepan donde enviarte cosas",
+            "Depende de quien la vea"
+        ],
+        "correctIndex": 1,
+        "explanation": "Nunca publiques fotos con tu dirección visible, cualquiera podria llegar a tu casa.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses4_l4"
+    },
+    {
+        "id": "ac_st1_qB13_030",
+        "question": "Caso: Tu amigo publico una foto tuya en redes sin tu permiso con datos personales visibles. Que haces",
+        "type": "miniCase",
+        "options": [
+            "No hacer nada porque es tu amigo",
+            "Pedirle que la elimine y revisar tu configuración de privacidad",
+            "Publicar una foto de el como venganza",
+            "Eliminar tu cuenta de redes sociales"
+        ],
+        "correctIndex": 1,
+        "explanation": "Pide que la elimine y ajusta tu privacidad para que otros no puedan publicar sin tu consentimiento.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses4_l5"
+    }
+]

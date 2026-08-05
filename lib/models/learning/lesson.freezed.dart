@@ -31,12 +31,14 @@ mixin _$Lesson {
   set challenges(List<Challenge> value) => throw _privateConstructorUsedError;
   int get xpReward => throw _privateConstructorUsedError;
   set xpReward(int value) => throw _privateConstructorUsedError;
-  int get gemReward => throw _privateConstructorUsedError;
-  set gemReward(int value) => throw _privateConstructorUsedError;
   int get estimatedMinutes => throw _privateConstructorUsedError;
   set estimatedMinutes(int value) => throw _privateConstructorUsedError;
   bool get completed => throw _privateConstructorUsedError;
   set completed(bool value) => throw _privateConstructorUsedError;
+  int get correctAnswers => throw _privateConstructorUsedError;
+  set correctAnswers(int value) => throw _privateConstructorUsedError;
+  int get totalQuestions => throw _privateConstructorUsedError;
+  set totalQuestions(int value) => throw _privateConstructorUsedError;
 
   /// Serializes this Lesson to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -58,9 +60,10 @@ abstract class $LessonCopyWith<$Res> {
     String subtitle,
     List<Challenge> challenges,
     int xpReward,
-    int gemReward,
     int estimatedMinutes,
     bool completed,
+    int correctAnswers,
+    int totalQuestions,
   });
 }
 
@@ -84,9 +87,10 @@ class _$LessonCopyWithImpl<$Res, $Val extends Lesson>
     Object? subtitle = null,
     Object? challenges = null,
     Object? xpReward = null,
-    Object? gemReward = null,
     Object? estimatedMinutes = null,
     Object? completed = null,
+    Object? correctAnswers = null,
+    Object? totalQuestions = null,
   }) {
     return _then(
       _value.copyWith(
@@ -110,10 +114,6 @@ class _$LessonCopyWithImpl<$Res, $Val extends Lesson>
                 ? _value.xpReward
                 : xpReward // ignore: cast_nullable_to_non_nullable
                       as int,
-            gemReward: null == gemReward
-                ? _value.gemReward
-                : gemReward // ignore: cast_nullable_to_non_nullable
-                      as int,
             estimatedMinutes: null == estimatedMinutes
                 ? _value.estimatedMinutes
                 : estimatedMinutes // ignore: cast_nullable_to_non_nullable
@@ -122,6 +122,14 @@ class _$LessonCopyWithImpl<$Res, $Val extends Lesson>
                 ? _value.completed
                 : completed // ignore: cast_nullable_to_non_nullable
                       as bool,
+            correctAnswers: null == correctAnswers
+                ? _value.correctAnswers
+                : correctAnswers // ignore: cast_nullable_to_non_nullable
+                      as int,
+            totalQuestions: null == totalQuestions
+                ? _value.totalQuestions
+                : totalQuestions // ignore: cast_nullable_to_non_nullable
+                      as int,
           )
           as $Val,
     );
@@ -142,9 +150,10 @@ abstract class _$$LessonImplCopyWith<$Res> implements $LessonCopyWith<$Res> {
     String subtitle,
     List<Challenge> challenges,
     int xpReward,
-    int gemReward,
     int estimatedMinutes,
     bool completed,
+    int correctAnswers,
+    int totalQuestions,
   });
 }
 
@@ -167,9 +176,10 @@ class __$$LessonImplCopyWithImpl<$Res>
     Object? subtitle = null,
     Object? challenges = null,
     Object? xpReward = null,
-    Object? gemReward = null,
     Object? estimatedMinutes = null,
     Object? completed = null,
+    Object? correctAnswers = null,
+    Object? totalQuestions = null,
   }) {
     return _then(
       _$LessonImpl(
@@ -193,10 +203,6 @@ class __$$LessonImplCopyWithImpl<$Res>
             ? _value.xpReward
             : xpReward // ignore: cast_nullable_to_non_nullable
                   as int,
-        gemReward: null == gemReward
-            ? _value.gemReward
-            : gemReward // ignore: cast_nullable_to_non_nullable
-                  as int,
         estimatedMinutes: null == estimatedMinutes
             ? _value.estimatedMinutes
             : estimatedMinutes // ignore: cast_nullable_to_non_nullable
@@ -205,6 +211,14 @@ class __$$LessonImplCopyWithImpl<$Res>
             ? _value.completed
             : completed // ignore: cast_nullable_to_non_nullable
                   as bool,
+        correctAnswers: null == correctAnswers
+            ? _value.correctAnswers
+            : correctAnswers // ignore: cast_nullable_to_non_nullable
+                  as int,
+        totalQuestions: null == totalQuestions
+            ? _value.totalQuestions
+            : totalQuestions // ignore: cast_nullable_to_non_nullable
+                  as int,
       ),
     );
   }
@@ -219,9 +233,10 @@ class _$LessonImpl extends _Lesson {
     required this.subtitle,
     required this.challenges,
     this.xpReward = 15,
-    this.gemReward = 5,
     this.estimatedMinutes = 3,
     this.completed = false,
+    this.correctAnswers = 0,
+    this.totalQuestions = 0,
   }) : super._();
 
   factory _$LessonImpl.fromJson(Map<String, dynamic> json) =>
@@ -240,17 +255,20 @@ class _$LessonImpl extends _Lesson {
   int xpReward;
   @override
   @JsonKey()
-  int gemReward;
-  @override
-  @JsonKey()
   int estimatedMinutes;
   @override
   @JsonKey()
   bool completed;
+  @override
+  @JsonKey()
+  int correctAnswers;
+  @override
+  @JsonKey()
+  int totalQuestions;
 
   @override
   String toString() {
-    return 'Lesson(id: $id, title: $title, subtitle: $subtitle, challenges: $challenges, xpReward: $xpReward, gemReward: $gemReward, estimatedMinutes: $estimatedMinutes, completed: $completed)';
+    return 'Lesson(id: $id, title: $title, subtitle: $subtitle, challenges: $challenges, xpReward: $xpReward, estimatedMinutes: $estimatedMinutes, completed: $completed, correctAnswers: $correctAnswers, totalQuestions: $totalQuestions)';
   }
 
   /// Create a copy of Lesson
@@ -274,9 +292,10 @@ abstract class _Lesson extends Lesson {
     required String subtitle,
     required List<Challenge> challenges,
     int xpReward,
-    int gemReward,
     int estimatedMinutes,
     bool completed,
+    int correctAnswers,
+    int totalQuestions,
   }) = _$LessonImpl;
   _Lesson._() : super._();
 
@@ -298,14 +317,17 @@ abstract class _Lesson extends Lesson {
   int get xpReward;
   set xpReward(int value);
   @override
-  int get gemReward;
-  set gemReward(int value);
-  @override
   int get estimatedMinutes;
   set estimatedMinutes(int value);
   @override
   bool get completed;
   set completed(bool value);
+  @override
+  int get correctAnswers;
+  set correctAnswers(int value);
+  @override
+  int get totalQuestions;
+  set totalQuestions(int value);
 
   /// Create a copy of Lesson
   /// with the given fields replaced by the non-null parameter values.

@@ -3,28 +3,6 @@ import 'package:sagen/models/chest_type.dart';
 
 void main() {
   group('ChestType', () {
-    group('gemColor', () {
-      test('bronze returns amber', () {
-        final result = ChestType.bronze.gemColor;
-        expect(result.toARGB32(), 0xFFFF8F00);
-      });
-
-      test('silver returns light teal', () {
-        final result = ChestType.silver.gemColor;
-        expect(result.toARGB32(), 0xFF80DEEA);
-      });
-
-      test('gold returns gold', () {
-        final result = ChestType.gold.gemColor;
-        expect(result.toARGB32(), 0xFFFFD700);
-      });
-
-      test('legendary returns light purple', () {
-        final result = ChestType.legendary.gemColor;
-        expect(result.toARGB32(), 0xFFCE93D8);
-      });
-    });
-
     group('color', () {
       test('bronze returns brown', () {
         final result = ChestType.bronze.color;

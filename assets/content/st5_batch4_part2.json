@@ -1,0 +1,1022 @@
+[
+  {
+    "id": "ac_st5_ses21_l1_q151",
+    "type": "multipleChoice",
+    "question": "¿Qué son los metadatos en una fotografía digital?",
+    "options": [
+      "El nombre del archivo",
+      "Información oculta que incluye fecha, hora, ubicación y tipo de cámara",
+      "El tamaño en megabytes",
+      "El formato de imagen"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Los metadatos son datos invisibles que se guardan junto con la imagen y pueden revelar información personal.",
+    "explanationWrong": "Muchas personas no saben que sus fotos contienen esta información."
+  },
+  {
+    "id": "ac_st5_ses21_l1_q152",
+    "type": "multipleChoice",
+    "question": "¿Qué información pueden contener los metadatos de una foto?",
+    "options": [
+      "Solo la fecha",
+      "Fecha, hora, ubicación GPS, modelo de cámara y más",
+      "Solo el nombre del archivo",
+      "Ninguna información importante"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Los metadatos pueden revelar exactamente dónde y cuándo tomaste una foto.",
+    "explanationWrong": "Esta información puede ser explotada por delincuentes."
+  },
+  {
+    "id": "ac_st5_ses21_l1_q153",
+    "type": "trueFalse",
+    "question": "Los metadatos de una foto pueden revelar la ubicación exacta donde se tomó.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Si tu cámara tiene activada la geolocalización, los metadatos incluirán coordenadas GPS.",
+    "explanationWrong": "Esto puede ser peligroso si compartes fotos con desconocidos."
+  },
+  {
+    "id": "ac_st5_ses21_l1_q154",
+    "type": "multipleChoice",
+    "question": "¿Por qué es preocupante compartir fotos con metadatos en redes sociales?",
+    "options": [
+      "No es preocupante",
+      "Los metadatos pueden revelar tu ubicación y rutinas a personas con malas intenciones",
+      "Hacen las fotos peor",
+      "No se pueden compartir"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Los delincuentes pueden usar los metadatos para planificar robos.",
+    "explanationWrong": "Proteger tus metadatos es parte de proteger tu privacidad."
+  },
+  {
+    "id": "ac_st5_ses21_l1_q155",
+    "type": "multipleChoice",
+    "question": "¿Qué tipo de dispositivos graban metadatos en las fotos?",
+    "options": [
+      "Solo cámaras profesiónales",
+      "Casi todos los dispositivos modernos: celulares, tablets, cámaras",
+      "Solo computadoras",
+      "Ningún dispositivo"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "La mayoría de dispositivos modernos graban metadatos automáticamente.",
+    "explanationWrong": "Es un comportamiento predeterminado que debes conocer."
+  },
+  {
+    "id": "ac_st5_ses21_l1_q156",
+    "type": "multipleChoice",
+    "question": "¿Cómo puedes ver los metadatos de una foto en tu celular?",
+    "options": [
+      "No se pueden ver",
+      "Usando la información de detalles en la galería",
+      "Con un programa de edición",
+      "No es posible"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "La mayoría de galerías permiten ver metadatos en la opción de Detalles.",
+    "explanationWrong": "Conocer los metadatos te ayuda a entender qué compartes."
+  },
+  {
+    "id": "ac_st5_ses21_l1_q157",
+    "type": "trueFalse",
+    "question": "Las redes sociales eliminan automáticamente los metadatos de las fotos que subes.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Algunas eliminan metadatos, otras no. No debes asumir que todas lo hacen.",
+    "explanationWrong": "Verifica la política de privacidad de la plataforma."
+  },
+  {
+    "id": "ac_st5_ses21_l1_q158",
+    "type": "multipleChoice",
+    "question": "¿Qué metadatos revela una foto tomada en tu casa?",
+    "options": [
+      "Nada",
+      "Tu ubicación exacta, hora, fecha y modelo del celular",
+      "Solo la fecha",
+      "Solo la marca"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Si la geolocalización está activada, los metadatos pueden revelar tu dirección.",
+    "explanationWrong": "Esto es peligroso si compartes fotos de tu hogar con desconocidos."
+  },
+  {
+    "id": "ac_st5_ses21_l1_q159",
+    "type": "multipleChoice",
+    "question": "¿Por qué los estafadores quieren metadatos de tus fotos?",
+    "options": [
+      "Para mejorar la calidad",
+      "Para obtener información personal como ubicación y rutinas para planificar fraudes",
+      "Para crear collages",
+      "No tienen interés"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Los metadatos son una mina de información para delincuentes.",
+    "explanationWrong": "La información inofensiva puede ser peligrosa en las manos equivocadas."
+  },
+  {
+    "id": "ac_st5_ses21_l1_q160",
+    "type": "multipleChoice",
+    "question": "¿Qué es el EXIF en fotos?",
+    "options": [
+      "Un virus",
+      "Estándar de metadatos que almacena información en imágenes digitales",
+      "Un formato de archivo",
+      "Una app de edición"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "EXIF es el estándar que usan las cámaras y celulares para almacenar metadatos.",
+    "explanationWrong": "Es el término técnico para la información guardada con tus fotos."
+  },
+  {
+    "id": "ac_st5_ses21_l1_q161",
+    "type": "multipleChoice",
+    "question": "¿Qué información NO suelen contener los metadatos?",
+    "options": [
+      "Fecha y hora",
+      "Tu número de teléfono personal",
+      "Ubicación GPS",
+      "Modelo de la cámara"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Los metadatos no contienen tu número de teléfono, pero sí mucha otra información.",
+    "explanationWrong": "Aunque no todo está en los metadatos, la información es reveladora."
+  },
+  {
+    "id": "ac_st5_ses21_l1_q162",
+    "type": "trueFalse",
+    "question": "Si envías una foto por WhatsApp, el destinatario puede ver los metadatos originales.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "WhatsApp procesa las imágenes y puede eliminar algunos metadatos, pero no todos.",
+    "explanationWrong": "No dependas de que WhatsApp elimine toda la información."
+  },
+  {
+    "id": "ac_st5_ses21_l1_q163",
+    "type": "multipleChoice",
+    "question": "¿Qué debes hacer antes de compartir una foto en redes sociales?",
+    "options": [
+      "Nada, es seguro",
+      "Eliminar los metadatos para proteger tu ubicación e información personal",
+      "Añadir más metadatos",
+      "Compartir con todos"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Eliminar los metadatos protege tu información personal.",
+    "explanationWrong": "Es una práctica simple pero efectiva de privacidad."
+  },
+  {
+    "id": "ac_st5_ses21_l1_q164",
+    "type": "multipleChoice",
+    "question": "¿Qué herramientas puedes usar para eliminar metadatos?",
+    "options": [
+      "No hay herramientas",
+      "Aplicaciónes de edición, configuraciónes del celular o herramientas online",
+      "Solo en computadoras",
+      "Necesitas ser programador"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Existen múltiples herramientas fáciles que eliminan metadatos.",
+    "explanationWrong": "No necesitas conocimientos técnicos avanzados."
+  },
+  {
+    "id": "ac_st5_ses21_l1_q165",
+    "type": "miniCase",
+    "question": "Doña Rosa publicó una foto de su cumpleaños en Facebook. Un extraño empezó a enviarle mensajes sabiendo su dirección y horario. ¿Qué información obtuvo de los metadatos?",
+    "options": [
+      "Solo la fecha",
+      "La ubicación exacta y hora de la fiesta, información de los metadatos",
+      "Nada",
+      "Solo el nombre del restaurante"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Los metadatos revelaron la ubicación y hora exacta de la fiesta.",
+    "explanationWrong": "Esta situación ilustra por qué es importante eliminar metadatos."
+  },
+  {
+    "id": "ac_st5_ses21_l2_q166",
+    "type": "multipleChoice",
+    "question": "¿Qué es la geolocalización en fotografía digital?",
+    "options": [
+      "Capacidad de zoom",
+      "Función que graba la ubicación GPS exacta de la foto",
+      "Enfoque automático",
+      "El flash"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "La geolocalización usa el GPS para registrar las coordenadas de donde se tomó la foto.",
+    "explanationWrong": "Esta información se guarda en los metadatos."
+  },
+  {
+    "id": "ac_st5_ses21_l2_q167",
+    "type": "multipleChoice",
+    "question": "¿Por qué desactivar la geolocalización en tu cámara?",
+    "options": [
+      "Para que las fotos se vean mejor",
+      "Para que tus fotos no revelen tu ubicación exacta",
+      "Para ahorrar batería",
+      "Para que funcione más rápido"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Sin geolocalización, tus fotos no contendrán información sobre dónde las tomaste.",
+    "explanationWrong": "Es una configuración importante de privacidad."
+  },
+  {
+    "id": "ac_st5_ses21_l2_q168",
+    "type": "trueFalse",
+    "question": "Desactivar la geolocalización hará que tus fotos pierdan calidad.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "La geolocalización no afecta la calidad, solo graba la ubicación.",
+    "explanationWrong": "Tu foto se verá igual, sin información de ubicación."
+  },
+  {
+    "id": "ac_st5_ses21_l2_q169",
+    "type": "multipleChoice",
+    "question": "¿Dónde desactivar la geolocalización en iOS?",
+    "options": [
+      "En Instagram",
+      "En Configuración, Privacidad, Servicios de ubicación, Cámara",
+      "En la app de cámara",
+      "No se puede"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "En iOS, controlas la geolocalización desde la configuración de privacidad de ubicación.",
+    "explanationWrong": "Es una configuración del sistema operativo."
+  },
+  {
+    "id": "ac_st5_ses21_l2_q170",
+    "type": "multipleChoice",
+    "question": "¿Dónde desactivar la geolocalización en Android?",
+    "options": [
+      "En WhatsApp",
+      "En la configuración de la app de cámara o Configuración, Privacidad, Ubicación",
+      "En la tienda de apps",
+      "No se puede"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "En Android, varía según el fabricante pero generalmente está en la app de cámara.",
+    "explanationWrong": "Consulta la ayuda de tu marca."
+  },
+  {
+    "id": "ac_st5_ses21_l2_q171",
+    "type": "multipleChoice",
+    "question": "¿Qué sucede si desactivas la geolocalización?",
+    "options": [
+      "Fotos borrosas",
+      "Las fotos no guardarán ubicación en los metadatos",
+      "No podrás tomar fotos",
+      "La cámara dejará de funcionar"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Se omiten las coordenadas GPS de los metadatos.",
+    "explanationWrong": "La función de la cámara no se ve afectada."
+  },
+  {
+    "id": "ac_st5_ses21_l2_q172",
+    "type": "trueFalse",
+    "question": "Si envías una foto con geolocalización desactivada, el destinatario no verá tu ubicación.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Si estaba desactivada al tomar la foto, no contiene coordenadas GPS.",
+    "explanationWrong": "La protección funciona desde que se toma la foto."
+  },
+  {
+    "id": "ac_st5_ses21_l2_q173",
+    "type": "multipleChoice",
+    "question": "¿Pueden algunas apps activar la geolocalización sin que lo notes?",
+    "options": [
+      "No, siempre necesitan permiso",
+      "Sí, algunas apps pueden pedir permiso para acceder a tu ubicación",
+      "Nunca pueden activarla",
+      "Solo en premium"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Algunas apps pueden solicitar acceso a tu ubicación y activarla.",
+    "explanationWrong": "Siempre revisa los permigos que concedes."
+  },
+  {
+    "id": "ac_st5_ses21_l2_q174",
+    "type": "multipleChoice",
+    "question": "¿Qué información revela una foto con geolocalización?",
+    "options": [
+      "Solo la ciudad",
+      "Las coordenadas GPS exactas que pueden indicar tu dirección",
+      "Nada",
+      "Solo el país"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Las coordenadas GPS son extremadamente precisas.",
+    "explanationWrong": "Esta información puede ser explotada por personas con malas intenciones."
+  },
+  {
+    "id": "ac_st5_ses21_l2_q175",
+    "type": "multipleChoice",
+    "question": "¿Por qué desactivar geolocalización si tienes hijos?",
+    "options": [
+      "Para que se vean mejor",
+      "Para que los metadatos no revelen la ubicación de su escuela o casa",
+      "No es importante",
+      "Para ahorrar almacenamiento"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Las fotos de niños con ubicación pueden ser usadas para rastrear sus rutinas.",
+    "explanationWrong": "La seguridad de tus hijos depende de proteger esta información."
+  },
+  {
+    "id": "ac_st5_ses21_l2_q176",
+    "type": "multipleChoice",
+    "question": "¿Qué hacer si ya compartiste fotos con geolocalización?",
+    "options": [
+      "Nada",
+      "Eliminar esas fotos y configurar la cámara para desactivar geolocalización",
+      "Dejarlas",
+      "Pedir a la red social que elimine metadatos"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Eliminar las fotos y configurar la cámara reduce el riesgo futuro.",
+    "explanationWrong": "Puedes prevenir más exposición."
+  },
+  {
+    "id": "ac_st5_ses21_l2_q177",
+    "type": "trueFalse",
+    "question": "La geolocalización solo se activa cuando tomas la foto, no cuando la compartes.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "La información se graba al tomar la foto, no al compartirla.",
+    "explanationWrong": "Si estaba activa al tomarla, la información ya está en los metadatos."
+  },
+  {
+    "id": "ac_st5_ses21_l2_q178",
+    "type": "multipleChoice",
+    "question": "¿Qué app puede usar la geolocalización de tus fotos para mapear tus movimientos?",
+    "options": [
+      "Ninguna",
+      "Redes sociales o apps que analizan fotos con geolocalización",
+      "Solo gubernamentales",
+      "Ninguna con fines malos"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Cualquier app que acceda a tus fotos podría usar la información de ubicación.",
+    "explanationWrong": "Por eso es importante desactivar la geolocalización."
+  },
+  {
+    "id": "ac_st5_ses21_l2_q179",
+    "type": "multipleChoice",
+    "question": "¿Qué otros métodos usan los delincuentes para obtener tu ubicación?",
+    "options": [
+      "Solo GPS",
+      "Reconocer puntos de referencia visibles en la foto",
+      "Ningún método",
+      "Solo código QR"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Incluso sin metadatos, los delincuentes pueden identificar ubicaciones visualmente.",
+    "explanationWrong": "Revisa el contenido visual antes de compartirla."
+  },
+  {
+    "id": "ac_st5_ses21_l2_q180",
+    "type": "miniCase",
+    "question": "Carlos compartió una foto de su casa en Instagram sin desactivar geolocalización. Al día siguiente alguien sabía su dirección. ¿Qué debería haber hecho?",
+    "options": [
+      "Nada",
+      "Desactivar geolocalización o eliminar metadatos antes de compartirla",
+      "No usar Instagram",
+      "Compartir solo con familiares"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Debería haber desactivado la geolocalización o eliminado los metadatos.",
+    "explanationWrong": "Esta situación es común y puede prevenirse con una configuración simple."
+  },
+  {
+    "id": "ac_st5_ses21_l3_q181",
+    "type": "multipleChoice",
+    "question": "¿Qué considerar ANTES de compartir una foto en redes sociales?",
+    "options": [
+      "Nada, es seguro",
+      "Qué información personal revela la foto",
+      "Si tiene buen ángulo",
+      "Cuántos me gusta recibirá"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Evalúa si la foto revela información que comprometa tu seguridad.",
+    "explanationWrong": "La privacidad comienza con una buena evaluación previa."
+  },
+  {
+    "id": "ac_st5_ses21_l3_q182",
+    "type": "multipleChoice",
+    "question": "¿Por qué es peligroso compartir fotos de tu casa?",
+    "options": [
+      "No es peligroso",
+      "Puede revelar tu ubicación, objetos de valor y rutinas a delincuentes",
+      "No tienen información relevante",
+      "Solo si es grande"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Las fotos pueden mostrar tu dirección, objetos de valor y horarios.",
+    "explanationWrong": "Evita compartir fotos que muestren tu domicilio."
+  },
+  {
+    "id": "ac_st5_ses21_l3_q183",
+    "type": "trueFalse",
+    "question": "Es seguro compartir fotos de documentos (DNI, pasaporte) por WhatsApp.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Puede filtrar tu información sensible si el mensaje es interceptado.",
+    "explanationWrong": "Existen formas más seguras de compartir documentos."
+  },
+  {
+    "id": "ac_st5_ses21_l3_q184",
+    "type": "multipleChoice",
+    "question": "¿Qué es el blurring o pixelado de fotos?",
+    "options": [
+      "Efecto artístico",
+      "Técnica para ocultar información sensible antes de compartir",
+      "Error de cámara",
+      "Filtro de Instagram"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Oculta información identificable para proteger la privacidad.",
+    "explanationWrong": "Es una herramienta esencial para compartir fotos seguras."
+  },
+  {
+    "id": "ac_st5_ses21_l3_q185",
+    "type": "multipleChoice",
+    "question": "¿Qué información ocultar en fotos antes de compartirlas?",
+    "options": [
+      "Nada, todo es seguro",
+      "Rostros sin permiso, placas, direcciónes, documentos",
+      "Solo el fondo",
+      "El horario"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Proteger la información de terceros es una responsabilidad.",
+    "explanationWrong": "La privacidad de otros es tan importante como la tuya."
+  },
+  {
+    "id": "ac_st5_ses21_l3_q186",
+    "type": "multipleChoice",
+    "question": "¿Qué app usar para ocultar información sensible?",
+    "options": [
+      "Ninguna",
+      "Apps de edición como Paint, Canva o apps de blur/pixelado",
+      "Solo Photoshop",
+      "No necesitas apps"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Existen múltiples apps gratuitas para pixelar o difuminar.",
+    "explanationWrong": "No necesitas ser experto en edición."
+  },
+  {
+    "id": "ac_st5_ses21_l3_q187",
+    "type": "trueFalse",
+    "question": "Una foto en un grupo privado de WhatsApp es 100% segura y no puede reenviarse.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Los miembros pueden hacer capturas o reenviar la foto.",
+    "explanationWrong": "La privacidad depende de la confianza en todos los miembros."
+  },
+  {
+    "id": "ac_st5_ses21_l3_q188",
+    "type": "multipleChoice",
+    "question": "¿Por qué cuidar las fotos de niños en redes sociales?",
+    "options": [
+      "No hay riesgo",
+      "Las fotos pueden ser usadas para identificarlos o rastrearlos",
+      "Siempre son seguras",
+      "Solo si tienes muchos seguidores"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "La información en fotos de niños puede ser explotada para localizarlos.",
+    "explanationWrong": "Proteger la identidad de los niños es fundamental."
+  },
+  {
+    "id": "ac_st5_ses21_l3_q189",
+    "type": "multipleChoice",
+    "question": "¿Qué hacer si alguien comparte tu foto con información sensible sin permiso?",
+    "options": [
+      "Nada",
+      "Pedir que la elimine y reportar a la plataforma si no coopera",
+      "Agradecer",
+      "Compartirla más"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Tienes derecho a pedir la eliminación de fotos compartidas sin consentimiento.",
+    "explanationWrong": "Las plataformas tienen políticas para eliminar contenido no autorizado."
+  },
+  {
+    "id": "ac_st5_ses21_l3_q190",
+    "type": "multipleChoice",
+    "question": "¿Qué es el consentimiento informado al compartir fotos?",
+    "options": [
+      "Pedir permiso a todos los que aparecen antes de compartirlas",
+      "No es necesario",
+      "Compartir sin decir nada",
+      "Publicar anónimamente"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Todas las personas en la foto deben dar su permiso.",
+    "explanationWrong": "Es una práctica respetuosa y legal."
+  },
+  {
+    "id": "ac_st5_ses21_l3_q191",
+    "type": "multipleChoice",
+    "question": "¿Qué información revelan las fotos de comida en restaurantes?",
+    "options": [
+      "Nada",
+      "El restaurante, la zona, tu rutina y nivel económico",
+      "Solo el tipo de comida",
+      "El precio exacto"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Las fotos pueden revelar patrones de comportamiento e información financiera.",
+    "explanationWrong": "Aunque parece inofensivo, puede ser usado para conocerte."
+  },
+  {
+    "id": "ac_st5_ses21_l3_q192",
+    "type": "multipleChoice",
+    "question": "¿Por qué evitar compartir fotos de boletos?",
+    "options": [
+      "No es necesario",
+      "Pueden contener códigos de barras e información personal explotable",
+      "Son seguras",
+      "Solo si son caros"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Los boletos contienen información que puede ser usada para fraude.",
+    "explanationWrong": "Nunca compartas fotos con códigos de barras o números de referencia."
+  },
+  {
+    "id": "ac_st5_ses21_l3_q193",
+    "type": "trueFalse",
+    "question": "Compartir fotos de tu rutina diaria es seguro porque son lugares públicos.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Revela tus horarios y movimientos que delincuentes pueden usar para planificar robos.",
+    "explanationWrong": "Evita compartir patrones de comportamiento."
+  },
+  {
+    "id": "ac_st5_ses21_l3_q194",
+    "type": "multipleChoice",
+    "question": "¿Qué hacer si accidentalmente compartiste una foto con información sensible?",
+    "options": [
+      "Nada",
+      "Eliminarla inmediatamente y reportar si otros la reenvían",
+      "Volver a compartirla",
+      "Esconder el teléfono"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Actuar rápido limita la distribución y el daño a tu privacidad.",
+    "explanationWrong": "Las plataformas permiten eliminar contenido rápidamente."
+  },
+  {
+    "id": "ac_st5_ses21_l3_q195",
+    "type": "miniCase",
+    "question": "Ana compartió una foto de su oficina con documentos visibles. Un compañero le advirtió que se veían números de cuenta. ¿Qué hacer?",
+    "options": [
+      "Nada",
+      "Eliminar la foto y ser más cuidadosa con lo que muestra",
+      "Pedir que no miren sus fotos",
+      "Dejarla porque ya la vieron"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Ana debe eliminar la foto y aprender a revisar qué es visible antes de compartir.",
+    "explanationWrong": "La prevención es la mejor estrategia."
+  },
+  {
+    "id": "ac_st5_ses21_l4_q196",
+    "type": "multipleChoice",
+    "question": "¿Qué hacer con fotos comprometedoras en tu celular?",
+    "options": [
+      "Nada, están seguras",
+      "Almacenarlas en app con bloqueo o dispositivo seguro, no en la galería principal",
+      "Compartirlas con todos",
+      "Borrar el celular"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Deben almacenarse con protección adicional, no en la galería abierta.",
+    "explanationWrong": "Usar apps con bloqueo es más seguro."
+  },
+  {
+    "id": "ac_st5_ses21_l4_q197",
+    "type": "multipleChoice",
+    "question": "¿Qué es un vault para fotos?",
+    "options": [
+      "App para mejorar calidad",
+      "App que almacena fotos con contraseña o biometría para protegerlas",
+      "Red social de fotos",
+      "App de edición"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Los vaults ofrecen protección con contraseña o biometría.",
+    "explanationWrong": "Son una buena opción para fotos que no quieres que otros vean."
+  },
+  {
+    "id": "ac_st5_ses21_l4_q198",
+    "type": "trueFalse",
+    "question": "Si borras una foto de la galería, se elimina permanentemente.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "La mayoría de celulares tienen una Papelera donde las fotos permanecen antes de eliminarse.",
+    "explanationWrong": "Debes vaciar la papelera para eliminar permanentemente."
+  },
+  {
+    "id": "ac_st5_ses21_l4_q199",
+    "type": "multipleChoice",
+    "question": "¿Por qué vaciar la papelera de fotos?",
+    "options": [
+      "No es importante, ya están borradas",
+      "Porque pueden ser recuperadas por quien tenga acceso a tu celular",
+      "Se llena",
+      "Para hacer espacio"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Las fotos en la papelera pueden ser fácilmente restauradas.",
+    "explanationWrong": "Vaciarla es una medida de seguridad esencial."
+  },
+  {
+    "id": "ac_st5_ses21_l4_q200",
+    "type": "multipleChoice",
+    "question": "¿Qué hacer si alguien amenaza con compartir tus fotos comprometedoras?",
+    "options": [
+      "Ceder a sus demandas",
+      "Reportar a las autoridades y bloquear al agresor",
+      "Compartirlas tú mismo",
+      "Ignorar"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Ceder empeora la situación. Las autoridades pueden ayudarte legalmente.",
+    "explanationWrong": "El chantaje con fotos es un delito que se debe reportar."
+  },
+  {
+    "id": "ac_st5_ses21_l4_q201",
+    "type": "multipleChoice",
+    "question": "¿Es seguro enviar fotos comprometedoras por WhatsApp con E2EE?",
+    "options": [
+      "Sí, es 100% seguro",
+      "No, el destinatario puede hacer capturas o reenviarlas",
+      "WhatsApp no lo permite",
+      "No hay diferencia"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Aunque WhatsApp cifra la transmisión, el destinatario puede capturar o reenviar.",
+    "explanationWrong": "El cifrado protege la transmisión, no lo que haga el destinatario."
+  },
+  {
+    "id": "ac_st5_ses21_l4_q202",
+    "type": "trueFalse",
+    "question": "Con autodestrucción en Telegram, una foto no puede ser guardada por el destinatario.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "El destinatario puede hacer una captura antes de que desaparezca.",
+    "explanationWrong": "La tecnología no puede prevenir completamente que la guarden."
+  },
+  {
+    "id": "ac_st5_ses21_l4_q203",
+    "type": "multipleChoice",
+    "question": "¿Qué es la sextorsión?",
+    "options": [
+      "Un virus",
+      "Chantaje donde alguien amenaza con compartir fotos íntimas a cambio de dinero",
+      "Función de seguridad",
+      "Red social"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Es un delito grave que usa fotos comprometedoras para chantajear.",
+    "explanationWrong": "Afecta a muchas personas, especialmente jóvenes."
+  },
+  {
+    "id": "ac_st5_ses21_l4_q204",
+    "type": "multipleChoice",
+    "question": "¿Qué hacer para prevenir que fotos comprometedoras se compartan sin consentimiento?",
+    "options": [
+      "Nada",
+      "No tomarlas o asegurarlas con protección adicional",
+      "Compartirlas con todos",
+      "Eliminar todas las fotos"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "La mejor prevención es no crear el contenido o protegerlo adecuadamente.",
+    "explanationWrong": "La precaución personal es efectiva."
+  },
+  {
+    "id": "ac_st5_ses21_l4_q205",
+    "type": "multipleChoice",
+    "question": "¿Qué papel juega el bloqueo de pantalla en proteger fotos comprometedoras?",
+    "options": [
+      "Ninguno",
+      "Es la primera barrera contra accesos no autorizados",
+      "No protege contra nada",
+      "Solo contra virus"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Si tu celular está bloqueado, es más difícil acceder a tus fotos.",
+    "explanationWrong": "El bloqueo es una medida fundamental."
+  },
+  {
+    "id": "ac_st5_ses21_l4_q206",
+    "type": "multipleChoice",
+    "question": "¿Por qué no hacer backup de fotos comprometedoras en la nube sin protección?",
+    "options": [
+      "No hay riesgo",
+      "La nube puede ser hackeada o la cuenta accedida por personas no autorizadas",
+      "La nube no acepta ese tipo",
+      "Las fotos siempre son seguras"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Si tu cuenta es comprometida, tus fotos pueden ser expuestas.",
+    "explanationWrong": "Usa autenticación de dos factores en tu cuenta de nube."
+  },
+  {
+    "id": "ac_st5_ses21_l4_q207",
+    "type": "trueFalse",
+    "question": "Si borras fotos de tu celular después de enviarlas por WhatsApp, el destinatario las perderá.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "El destinatario ya tiene la foto en su dispositivo.",
+    "explanationWrong": "Una vez enviada, está fuera de tu control."
+  },
+  {
+    "id": "ac_st5_ses21_l4_q208",
+    "type": "multipleChoice",
+    "question": "¿Qué hacer si un excompañero amenaza con compartir tus fotos comprometedoras?",
+    "options": [
+      "Ceder",
+      "Reportar a autoridades y bloquear al agresor",
+      "Ignorar",
+      "Pedir amigos que lo convenzan"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "El chantaje es un delito. Las autoridades tienen herramientas para ayudarte.",
+    "explanationWrong": "No estás solo; existen organismos de protección."
+  },
+  {
+    "id": "ac_st5_ses21_l4_q209",
+    "type": "multipleChoice",
+    "question": "¿Qué es la autenticación de dos factores (2FA)?",
+    "options": [
+      "Código SMS",
+      "Capa extra de seguridad que requiere un segundo método para acceder a tu cuenta",
+      "Función para borrar fotos",
+      "Contraseña más larga"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "2FA protege tu cuenta aunque alguien obtenga tu contraseña.",
+    "explanationWrong": "Actívala en todas tus cuentas con información sensible."
+  },
+  {
+    "id": "ac_st5_ses21_l4_q210",
+    "type": "miniCase",
+    "question": "Laura descubrió que su exnovio tiene fotos íntimas y amenaza con compartirlas. ¿Qué hacer inmediatamente?",
+    "options": [
+      "Ceder",
+      "Reportar a Dirincri, bloquear al exnovio y buscar asesoría legal",
+      "Ignorar",
+      "Pedir amigos que hablen con él"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Actúa de inmediato: reportar, bloquear y buscar ayuda legal.",
+    "explanationWrong": "No ceder nunca a las demandas de un chantajista."
+  },
+  {
+    "id": "ac_st5_ses21_l5_q211",
+    "type": "multipleChoice",
+    "question": "¿Qué significa eliminar fotos permanentemente?",
+    "options": [
+      "Moverlas a otra carpeta",
+      "Borrarlas de la galería y papelera para que no se puedan recuperar",
+      "Compartirlas para que pierdan importancia",
+      "Esconderlas"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Implica borrar de la galería y vaciar la papelera.",
+    "explanationWrong": "Es la única forma de asegurar que ya no estén en tu dispositivo."
+  },
+  {
+    "id": "ac_st5_ses21_l5_q212",
+    "type": "multipleChoice",
+    "question": "¿Por qué borrar de la galería no es suficiente?",
+    "options": [
+      "No hay razón",
+      "Porque la mayoría de celulares tienen una papelera donde permanecen",
+      "La galería no elimina",
+      "Es suficiente"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "La papelera es una segunda oportunidad para recuperar fotos por error.",
+    "explanationWrong": "Debes vaciarla para eliminación permanente."
+  },
+  {
+    "id": "ac_st5_ses21_l5_q213",
+    "type": "trueFalse",
+    "question": "En iPhone, las fotos eliminadas se guardan 30 días en Eliminados recientemente.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Los iPhone guardan fotos eliminadas por 30 días antes de borrarlas permanentemente.",
+    "explanationWrong": "Si quieres eliminar antes, vacía esa carpeta manualmente."
+  },
+  {
+    "id": "ac_st5_ses21_l5_q214",
+    "type": "multipleChoice",
+    "question": "¿Cómo vaciar la papelera en Android?",
+    "options": [
+      "No se puede",
+      "Buscando Papelera o Eliminados en la galería y selecciónando Vaciar papelera",
+      "Reiniciando el celular",
+      "Desactivando la galería"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "La mayoría de galerías tienen Vaciar papelera.",
+    "explanationWrong": "Consulta la ayuda de tu marca."
+  },
+  {
+    "id": "ac_st5_ses21_l5_q215",
+    "type": "multipleChoice",
+    "question": "¿Qué hacer con fotos comprometedoras que enviaste por WhatsApp y ya no están en tu celular?",
+    "options": [
+      "Nada",
+      "Entender que el destinatario aún puede tenerlas",
+      "Pedir que las elimines",
+      "Reportar a WhatsApp"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Una vez enviadas, pierdes el control sobre ellas.",
+    "explanationWrong": "Subraya la importancia de ser cuidadoso con lo que envías."
+  },
+  {
+    "id": "ac_st5_ses21_l5_q216",
+    "type": "multipleChoice",
+    "question": "¿Es posible recuperar fotos eliminadas permanentemente?",
+    "options": [
+      "Siempre es posible",
+      "Generalmente no, una vez eliminadas de la papelera son muy difíciles de recuperar",
+      "Nunca es posible",
+      "Solo con hacker"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Son extremadamente difíciles de recuperar, especialmente en dispositivos con cifrado.",
+    "explanationWrong": "Por eso es importante estar seguro antes de eliminar."
+  },
+  {
+    "id": "ac_st5_ses21_l5_q217",
+    "type": "trueFalse",
+    "question": "Si haces backup y luego eliminas fotos, seguirán en la copia de seguridad.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Las copias almacenan el estado en un momento dado.",
+    "explanationWrong": "Si quieres eliminar permanentemente, también elimínalas de las copias."
+  },
+  {
+    "id": "ac_st5_ses21_l5_q218",
+    "type": "multipleChoice",
+    "question": "¿Por qué eliminar fotos comprometedoras de backups en la nube?",
+    "options": [
+      "No es importante",
+      "Si tu cuenta es hackeada, las fotos pueden ser accedidas",
+      "La nube elimina automáticamente",
+      "No incluye fotos"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Las fotos en la nube son vulnerables si tu cuenta es comprometida.",
+    "explanationWrong": "Gestiona tus backups eliminando contenido sensible."
+  },
+  {
+    "id": "ac_st5_ses21_l5_q219",
+    "type": "multipleChoice",
+    "question": "¿Qué es un borrado seguro o secure erase?",
+    "options": [
+      "Borrar y reiniciar",
+      "Método que sobreescribe datos para que no se puedan recuperar",
+      "Borrar con agua",
+      "Desactivar cámara"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "El borrado seguro sobreescribe datos eliminados.",
+    "explanationWrong": "Es la forma más segura de eliminar información sensible."
+  },
+  {
+    "id": "ac_st5_ses21_l5_q220",
+    "type": "multipleChoice",
+    "question": "¿Qué hacer antes de vender o regalar tu celular?",
+    "options": [
+      "Nada",
+      "Borrar permanentemente todos los datos y cerrar sesión en todas las cuentas",
+      "Solo borrar fotos",
+      "Desactivar cámara"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Elimina toda tu información permanentemente antes de ceder el dispositivo.",
+    "explanationWrong": "El nuevo propietario podría acceder a tus datos."
+  },
+  {
+    "id": "ac_st5_ses21_l5_q221",
+    "type": "trueFalse",
+    "question": "Si vendes tu celular sin borrar datos, el comprador podría recuperar tu información.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Sin borrado adecuado, herramientas de recuperación pueden restaurar datos.",
+    "explanationWrong": "Siempre borra permanentemente antes de ceder un dispositivo."
+  },
+  {
+    "id": "ac_st5_ses21_l5_q222",
+    "type": "multipleChoice",
+    "question": "¿Qué información eliminar permanentemente antes de vender tu celular?",
+    "options": [
+      "Solo fotos",
+      "Fotos, contactos, mensajes, cuentas y cualquier dato personal",
+      "No hay nada que eliminar",
+      "Solo contraseña"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Elimina toda tu información personal de todas las apps y servicios.",
+    "explanationWrong": "El nuevo propietario no debería acceder a ningún dato tuyo."
+  },
+  {
+    "id": "ac_st5_ses21_l5_q223",
+    "type": "multipleChoice",
+    "question": "¿Qué es la encriptación de datos y cómo ayuda al borrado seguro?",
+    "options": [
+      "Compresión",
+      "Método que cifra datos para que al eliminarlos sean irrecuperables",
+      "Enviar datos más rápido",
+      "Respaldo automático"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "La encriptación hace que los datos eliminados sean irrecuperables porque se destruye la clave.",
+    "explanationWrong": "La mayoría de celulares modernos están encriptados por defecto."
+  },
+  {
+    "id": "ac_st5_ses21_l5_q224",
+    "type": "multipleChoice",
+    "question": "¿Qué hacer con fotos comprometedoras en dispositivos antiguos?",
+    "options": [
+      "Nada",
+      "Eliminarlas permanentemente o destruir físicamente el dispositivo",
+      "Regalarlo",
+      "Venderlo con fotos"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Los dispositivos antiguos pueden contener información sensible.",
+    "explanationWrong": "Si no puedes eliminarlas digitalmente, destruir el dispositivo es una opción."
+  },
+  {
+    "id": "ac_st5_ses21_l5_q225",
+    "type": "miniCase",
+    "question": "Don Miguel quiere vender su celular antiguo con fotos de familia, mensajes y correo configurado. ¿Qué hacer antes de vender?",
+    "options": [
+      "Nada, el comprador se encarga",
+      "Eliminar fotos, cerrar sesión en WhatsApp y correo, borrar contactos y restablecer de fábrica",
+      "Solo borrar fotos",
+      "Desactivar cámara"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Elimina toda tu información personal. Un restablecimiento de fábrica es lo más recomendable.",
+    "explanationWrong": "Verifica que la información sensible haya sido borrada previamente."
+  }
+]

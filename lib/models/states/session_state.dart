@@ -1,3 +1,4 @@
+/// Sealed state for the learning session lifecycle.
 sealed class SessionState {
   const SessionState();
 }
@@ -14,8 +15,7 @@ class SessionActive extends SessionState {
 class SessionCompleted extends SessionState {
   final int score;
   final int totalXp;
-  final int totalGems;
-  const SessionCompleted(this.score, this.totalXp, this.totalGems);
+  const SessionCompleted(this.score, this.totalXp);
 }
 
 class SessionError extends SessionState {

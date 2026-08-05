@@ -1,0 +1,3482 @@
+[
+  {
+    "id": "ac_st1_ses25_l1_q01",
+    "question": "¿Qué es el cifrado?",
+    "type": "multipleChoice",
+    "options": [
+      "Un método para proteger información convirtiéndola en código secreto",
+      "Un programa para borrar archivos del celular",
+      "Una forma de enviar correos electrónicos",
+      "Un tipo de virus que afecta la computadora"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "El cifrado es como poner un candado a sus datos. Convierte la información en código que solo alguien con la clave puede leer.",
+    "explanationWrong": "El cifrado no borra archivos ni envía correos. Es una forma de proteger su información.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses25_l1"
+  },
+  {
+    "id": "ac_st1_ses25_l1_q02",
+    "question": "Cuando envía un mensaje por WhatsApp, ¿está protegido por cifrado?",
+    "type": "multipleChoice",
+    "options": [
+      "Sí, WhatsApp usa cifrado de extremo a extremo",
+      "No, los mensajes se envían sin protección",
+      "Solo si el mensaje es muy corto",
+      "Solo si usa WiFi"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "WhatsApp usa cifrado de extremo a extremo. Solo usted y la persona que recibe pueden leerlo.",
+    "explanationWrong": "WhatsApp sí protege sus mensajes. Nadie entre medio puede leer lo que usted envía.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses25_l1"
+  },
+  {
+    "id": "ac_st1_ses25_l1_q03",
+    "question": "¿Qué pasa cuando su contraseña está cifrada?",
+    "type": "multipleChoice",
+    "options": [
+      "Se guarda como un código ilegible que nadie puede leer directamente",
+      "Se elimina del sistema automáticamente",
+      "Se envía por correo a los técnicos",
+      "Se convierte en un número de teléfono"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Cuando su contraseña está cifrada, se guarda como carácteres ilegibles. Solo el sistema puede descifrarla.",
+    "explanationWrong": "La contraseña cifrada se guarda como código ilegible para que nadie pueda leerla fácilmente.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses25_l1"
+  },
+  {
+    "id": "ac_st1_ses25_l1_q04",
+    "question": "¿Qué es una llave de cifrado?",
+    "type": "multipleChoice",
+    "options": [
+      "Un código que sirve para bloquear y desbloquear información protegida",
+      "Una herramienta física para abrir candados",
+      "Un tipo de contraseña muy larga",
+      "Un programa de Microsoft"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "La llave de cifrado es como la llave de un candado digital. Con ella se accede a la información protegida.",
+    "explanationWrong": "La llave de cifrado es un código digital para acceder a información protegida, no una herramienta física.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses25_l1"
+  },
+  {
+    "id": "ac_st1_ses25_l1_q05",
+    "question": "¿Qué significa que un sitio web tiene HTTPS?",
+    "type": "multipleChoice",
+    "options": [
+      "Que la conexión está cifrada y es más segura",
+      "Que el sitio web es gratuito",
+      "Que tiene más funciones que HTTP",
+      "Que está aprobado por el gobierno"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "HTTPS significa que la conexión entre su navegador y el sitio web está cifrada y es segura.",
+    "explanationWrong": "HTTPS no significa que el sitio sea gratuito. Significa que la conexión está protegida con cifrado.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses25_l1"
+  },
+  {
+    "id": "ac_st1_ses25_l1_q06",
+    "question": "¿Cuál es la diferencia entre cifrar y contraseñar un archivo?",
+    "type": "multipleChoice",
+    "options": [
+      "Cifrar convierte el contenido en código ilegible; contraseñar solo bloquea el acceso",
+      "Son lo mismo",
+      "Cifrar es para imágenes; contraseñar es para textos",
+      "Cifrar es más fácil que contraseñar"
+    ],
+    "correctIndex": 3,
+    "explanationCorrect": "Cifrar transforma el contenido en código ilegible. Contraseñar solo requiere una contraseña para abrir.",
+    "explanationWrong": "Cifrar y contraseñar no son lo mismo. Cifrar cambia el contenido; contraseñar solo bloquea el acceso.",
+    "difficulty": 3,
+    "lessonId": "ac_s1_ses25_l1"
+  },
+  {
+    "id": "ac_st1_ses25_l1_q07",
+    "question": "¿Es necesario entender cómo funciona el cifrado para usarlo?",
+    "type": "multipleChoice",
+    "options": [
+      "No, puede usarlo sin entender los detalles técnicos",
+      "Sí, debe ser experto en computación",
+      "Solo si trabaja en un banco",
+      "Solo si tiene más de 60 años"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "No necesita ser experto. Puede activar el cifrado siguiendo instrucciones simples.",
+    "explanationWrong": "No necesita entender los detalles técnicos. Muchos dispositivos lo activan fácilmente.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses25_l1"
+  },
+  {
+    "id": "ac_st1_ses25_l1_q08",
+    "question": "Es recomendable usar cifrado en sus dispositivos personales.",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Sí, es muy recomendable. Si alguien roba su dispositivo, los datos cifrados no se pueden leer sin su contraseña.",
+    "explanationWrong": "El cifrado protege sus datos personales si su dispositivo es perdido o robado.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses25_l1"
+  },
+  {
+    "id": "ac_st1_ses25_l1_q09",
+    "question": "Una persona le pide que le envíe su contraseña por mensaje de texto. ¿Es seguro?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "No es seguro. Nunca envíe su contraseña por mensaje de texto. Nadie debe pedirle su contraseña por este medio.",
+    "explanationWrong": "Nunca envíe su contraseña por mensaje de texto. Esto es una forma de robar sus datos.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses25_l1"
+  },
+  {
+    "id": "ac_st1_ses25_l1_q10",
+    "question": "Una empresa le envía un correo con su contraseña cifrada. ¿Qué debe hacer?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Las empresas legítimas nunca envían contraseñas por correo electrónico, ni cifradas ni de ninguna forma.",
+    "explanationWrong": "Una empresa legítima nunca le enviará su contraseña por correo. Esto es una práctica sospechosa.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses25_l1"
+  },
+  {
+    "id": "ac_st1_ses25_l1_q11",
+    "question": "El cifrado protege sus datos aunque alguien acceda a su dispositivo sin permiso.",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Sí, el cifrado hace que los datos sean ilegibles sin la clave. Si alguien accede a su dispositivo, no podrá leer la información.",
+    "explanationWrong": "El cifrado convierte la información en código que solo se puede descifrar con la clave correcta.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses25_l1"
+  },
+  {
+    "id": "ac_st1_ses25_l1_q12",
+    "question": "María tiene 68 años. Recibe un correo que dice: Su contraseña fue cifrada por seguridad. Haga clic aquí para crear una nueva. ¿Qué debería hacer?",
+    "type": "miniCase",
+    "options": [
+      "No hacer clic y eliminar el correo inmediatamente",
+      "Hacer clic porque es por seguridad",
+      "Responder pidiendo más información",
+      "Reenviar el correo a todos sus contactos"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "María debe eliminar el correo sin hacer clic. Ninguna empresa le enviará un enlace para crear contraseña. Es una estafa.",
+    "explanationWrong": "María no debe hacer clic ni responder. Los correos con enlaces para crear contraseña son falsos.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses25_l1"
+  },
+  {
+    "id": "ac_st1_ses25_l1_q13",
+    "question": "Don Pedro quiere enviar su DNI por WhatsApp a su hijo para un trámite en SUNAT. ¿Es seguro?",
+    "type": "miniCase",
+    "options": [
+      "Sí, WhatsApp tiene cifrado que protege la imagen",
+      "No, nunca debe enviar el DNI por ningún medio digital",
+      "Solo si el hijo está en la misma ciudad",
+      "Solo si usa WiFi y no datos móviles"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "WhatsApp tiene cifrado de extremo a extremo, así que es relativamente seguro. Sin embargo, verifique que sea realmente su hijo.",
+    "explanationWrong": "WhatsApp protege las imágenes con cifrado. Es prudente verificar la identidad del receptor.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses25_l1"
+  },
+  {
+    "id": "ac_st1_ses25_l1_q14",
+    "question": "La señora Rosa guarda fotos de su familia. Le preocupa que alguien las vea si se pierde el celular. ¿Qué hacer?",
+    "type": "miniCase",
+    "options": [
+      "Activar el cifrado del dispositivo y usar un código de acceso fuerte",
+      "Subir todas las fotos a Facebook",
+      "Borrar las fotos cada vez que sale de casa",
+      "Compartir las fotos con todos sus contactos"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Activar el cifrado y usar un código fuerte protege sus fotos. Si alguien roba el celular, no podrá verlas.",
+    "explanationWrong": "Subir fotos a Facebook no es seguro y borrarlas no protege. Lo mejor es cifrar el dispositivo.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses25_l1"
+  },
+  {
+    "id": "ac_st1_ses25_l1_q15",
+    "question": "Un técnico le pide a Doña Carmen su contraseña de correo para configurar el cifrado. ¿Qué hacer?",
+    "type": "miniCase",
+    "options": [
+      "Negarse y reportar el incidente a su proveedor",
+      "Darle la contraseña porque es técnico certificado",
+      "Pedir que espere mientras llama a un familiar",
+      "Cambiar primero la contraseña y luego dársela"
+    ],
+    "correctIndex": 3,
+    "explanationCorrect": "Doña Carmen debe negarse. Ningún técnico legítimo necesita su contraseña. Debe reportar a Movistar, Claro o su proveedor.",
+    "explanationWrong": "Nunca comparta su contraseña. Las empresas nunca piden contraseñas por teléfono o mensaje.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses25_l1"
+  },
+  {
+    "id": "ac_st1_ses25_l2_q01",
+    "question": "¿Qué es el cifrado de extremo a extremo?",
+    "type": "multipleChoice",
+    "options": [
+      "Un sistema donde solo el que envía y el que recibe pueden leer el mensaje",
+      "Un tipo de contraseña muy larga",
+      "Un programa para borrar mensajes después de enviarlos",
+      "Un método para enviar archivos grandes"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "El cifrado de extremo a extremo significa que solo usted y la persona que recibe pueden leer el mensaje.",
+    "explanationWrong": "El cifrado de extremo a extremo es un sistema donde solo el emisor y receptor pueden leer el contenido.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses25_l2"
+  },
+  {
+    "id": "ac_st1_ses25_l2_q02",
+    "question": "¿Qué aplicación tiene cifrado de extremo a extremo activado por defecto?",
+    "type": "multipleChoice",
+    "options": [
+      "WhatsApp",
+      "El correo electrónico estándar",
+      "Los mensajes de texto del celular",
+      "El chat de Facebook"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "WhatsApp tiene cifrado de extremo a extremo activado por defecto para todos los mensajes y llamadas.",
+    "explanationWrong": "WhatsApp es la aplicación que tiene cifrado de extremo a extremo por defecto.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses25_l2"
+  },
+  {
+    "id": "ac_st1_ses25_l2_q03",
+    "question": "Si alguien intercepta un mensaje con cifrado de extremo a extremo, ¿podrá leerlo?",
+    "type": "multipleChoice",
+    "options": [
+      "No, el mensaje se ve como código ilegible",
+      "Sí, puede leerlo normalmente",
+      "Solo si tiene la contraseña del celular",
+      "Solo si es el proveedor de internet"
+    ],
+    "correctIndex": 3,
+    "explanationCorrect": "No podrá leerlo. El mensaje se ve como código ilegible. Solo se descifra con la clave del destinatario.",
+    "explanationWrong": "El cifrado de extremo a extremo convierte el mensaje en código sin sentido para quien lo intercepte.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses25_l2"
+  },
+  {
+    "id": "ac_st1_ses25_l2_q04",
+    "question": "¿Qué significa que una aplicación tiene cifrado de extremo a extremo?",
+    "type": "multipleChoice",
+    "options": [
+      "Que ni la empresa dueña puede ver lo que usted escribe",
+      "Que funciona más rápido que otras",
+      "Que puede enviar archivos más grandes",
+      "Que es gratuita para siempre"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "El cifrado de extremo a extremo garantiza que solo usted y su contacto pueden leer los mensajes.",
+    "explanationWrong": "El cifrado de extremo a extremo protege la privacidad impidiendo que la empresa lea sus mensajes.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses25_l2"
+  },
+  {
+    "id": "ac_st1_ses25_l2_q05",
+    "question": "¿Cuál es una desventaja del cifrado de extremo a extremo?",
+    "type": "multipleChoice",
+    "options": [
+      "Si pierde acceso a su cuenta, no podrá recuperar los mensajes antiguos",
+      "Los mensajes se envían más lento",
+      "Solo funciona con WiFi",
+      "No se puede usar con fotos"
+    ],
+    "correctIndex": 3,
+    "explanationCorrect": "Si pierde su cuenta o cambia de dispositivo sin respaldo, los mensajes cifrados antiguos se pierden.",
+    "explanationWrong": "El cifrado de extremo a extremo no ralentiza los mensajes. La desventaja es que no se recuperan mensajes.",
+    "difficulty": 3,
+    "lessonId": "ac_s1_ses25_l2"
+  },
+  {
+    "id": "ac_st1_ses25_l2_q06",
+    "question": "¿Qué número aparece en WhatsApp para confirmar que su cifrado es seguro?",
+    "type": "multipleChoice",
+    "options": [
+      "Un código de 60 dígitos que puede comparar con su contacto",
+      "Un número de teléfono",
+      "Un código QR solamente",
+      "Una contraseña de 8 carácteres"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "WhatsApp muestra un código de 60 dígitos. Si coincide con el de su contacto, la conversación está protegida.",
+    "explanationWrong": "WhatsApp usa un código de 60 dígitos para verificar la seguridad con su contacto.",
+    "difficulty": 3,
+    "lessonId": "ac_s1_ses25_l2"
+  },
+  {
+    "id": "ac_st1_ses25_l2_q07",
+    "question": "¿Una VPN puede evitar que su proveedor de internet vea qué sitios visita?",
+    "type": "multipleChoice",
+    "options": [
+      "Sí, la VPN oculta su actividad del proveedor",
+      "No, el proveedor siempre puede ver todo",
+      "Solo si paga un servicio extra",
+      "Solo en horario nocturno"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Sí, cuando usa una VPN, su proveedor solo ve que está conectado a la VPN, no qué sitios visita.",
+    "explanationWrong": "La VPN sí oculta su actividad del proveedor. Movistar o Claro no pueden ver qué sitios visita.",
+    "difficulty": 3,
+    "lessonId": "ac_s1_ses25_l2"
+  },
+  {
+    "id": "ac_st1_ses25_l2_q08",
+    "question": "El cifrado de extremo a extremo protege sus llamadas de voz en WhatsApp.",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Sí, WhatsApp protege tanto mensajes como llamadas de voz con cifrado de extremo a extremo.",
+    "explanationWrong": "WhatsApp cifra tanto mensajes como llamadas. Nadie puede escuchar sus conversaciones.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses25_l2"
+  },
+  {
+    "id": "ac_st1_ses25_l2_q09",
+    "question": "¿Los correos electrónicos comunes tienen cifrado de extremo a extremo?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "No, los correos electrónicos comunes no tienen cifrado de extremo a extremo. El proveedor puede leerlos.",
+    "explanationWrong": "Los correos comunes no tienen cifrado. Empresas como Google pueden acceder al contenido.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses25_l2"
+  },
+  {
+    "id": "ac_st1_ses25_l2_q10",
+    "question": "¿Las VPN gratuitas son tan seguros como las de pago?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "No son igual de seguras. Las VPN gratuitas pueden comprometer su privacidad vendiendo sus datos.",
+    "explanationWrong": "Las VPN gratuitas pueden ser menos seguras. Las de pago ofrecen mejor protección.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses25_l2"
+  },
+  {
+    "id": "ac_st1_ses25_l2_q11",
+    "question": "El cifrado de extremo a extremo es importante para proteger su privacidad en mensajería.",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Sí, el cifrado de extremo a extremo es fundamental para proteger su privacidad en mensajería.",
+    "explanationWrong": "El cifrado de extremo a extremo garantiza que solo usted y su contacto lean los mensajes.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses25_l2"
+  },
+  {
+    "id": "ac_st1_ses25_l2_q12",
+    "question": "Don Lucho quiere enviar una foto de su cédula a su nieto por WhatsApp para un trámite. ¿Es seguro?",
+    "type": "miniCase",
+    "options": [
+      "Sí, WhatsApp tiene cifrado que protege la imagen",
+      "No, nunca debe enviar documentos por ningún medio",
+      "Solo si la foto está borrosa",
+      "Solo si el nieto está en Lima"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "WhatsApp tiene cifrado de extremo a extremo, así que la imagen está protegida. Verifique que sea su nieto.",
+    "explanationWrong": "WhatsApp protege las imágenes con cifrado. Pero verifique la identidad del receptor.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses25_l2"
+  },
+  {
+    "id": "ac_st1_ses25_l2_q13",
+    "question": "La señora Ana usa el correo para comúnicarse con Interbank. Le preocupa la seguridad. ¿Qué hacer?",
+    "type": "miniCase",
+    "options": [
+      "Usar un servicio de correo con cifrado o verificar HTTPS",
+      "Enviar correos en mayúsculas",
+      "Usar varios correos diferentes",
+      "Escribir datos al revés en el correo"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Usar servicios de correo con cifrado o verificar HTTPS protege sus comúnicaciones bancarias.",
+    "explanationWrong": "Las mayúsculas o escribir al revés no protegen. Lo que protege es el cifrado y HTTPS.",
+    "difficulty": 3,
+    "lessonId": "ac_s1_ses25_l2"
+  },
+  {
+    "id": "ac_st1_ses25_l2_q14",
+    "question": "Don Carlos envió un mensaje confidencial a su abogado por WhatsApp. Le preocupa si alguien más pudo leerlo. ¿Qué entender?",
+    "type": "miniCase",
+    "options": [
+      "Su mensaje está protegido y solo él y su abogado pueden leerlo",
+      "Su mensaje fue leído por WhatsApp y el gobierno",
+      "Su mensaje no tiene protección",
+      "Solo está seguro si lo borra inmediatamente"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Gracias al cifrado de extremo a extremo, solo él y su abogado pueden leer el mensaje.",
+    "explanationWrong": "El mensaje está protegido. WhatsApp no puede leerlo gracias al cifrado.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses25_l2"
+  },
+  {
+    "id": "ac_st1_ses25_l2_q15",
+    "question": "Una amiga recomienda una aplicación sin cifrado porque es más fácil. ¿Qué hacer?",
+    "type": "miniCase",
+    "options": [
+      "Elegir la aplicación con cifrado de extremo a extremo",
+      "Seguir el consejo porque la amiga sabe más",
+      "Usar ambas aplicaciones al mismo tiempo",
+      "No usar ninguna aplicación"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "Lo más importante es la seguridad. Elija la aplicación con cifrado aunque sea un poco más difícil.",
+    "explanationWrong": "La seguridad debe ser prioridad. Elija la aplicación con cifrado para proteger sus conversaciones.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses25_l2"
+  },
+  {
+    "id": "ac_st1_ses25_l3_q01",
+    "question": "¿Qué es una VPN?",
+    "type": "multipleChoice",
+    "options": [
+      "Una red privada virtual que protege su conexión a internet",
+      "Un tipo de virus que afecta los celulares",
+      "Un programa para descargar música gratis",
+      "Una red social para ancianos"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Una VPN crea un túnel seguro para su conexión a internet. Protege sus datos cuando usa WiFi público.",
+    "explanationWrong": "Una VPN no es un virus ni un programa de música. Es una herramienta de seguridad.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses25_l3"
+  },
+  {
+    "id": "ac_st1_ses25_l3_q02",
+    "question": "¿Qué hace una VPN cuando se conecta a internet?",
+    "type": "multipleChoice",
+    "options": [
+      "Oculta su ubicación real y cifra todos sus datos",
+      "Aumenta la velocidad de internet",
+      "Descarga automáticamente actualizaciones",
+      "Borra el historial del navegador"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "La VPN oculta su dirección IP y cifra todos los datos que envía y recibe.",
+    "explanationWrong": "La VPN no aumenta la velocidad. Su función es ocultar su ubicación y cifrar sus datos.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses25_l3"
+  },
+  {
+    "id": "ac_st1_ses25_l3_q03",
+    "question": "¿Cuándo es más importante usar una VPN?",
+    "type": "multipleChoice",
+    "options": [
+      "Cuando usa WiFi público como en cafeterías o hoteles",
+      "Solo cuando llueve",
+      "Solo de noche",
+      "Solo cuando usa la computadora de un amigo"
+    ],
+    "correctIndex": 3,
+    "explanationCorrect": "La VPN es especialmente importante cuando usa WiFi público, ya que es más vulnerable a ataques.",
+    "explanationWrong": "La VPN se debe usar en WiFi público. Las redes públicas son donde más riesgo hay.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses25_l3"
+  },
+  {
+    "id": "ac_st1_ses25_l3_q04",
+    "question": "¿Qué significa que su dirección IP está oculta?",
+    "type": "multipleChoice",
+    "options": [
+      "Que los sitios web no pueden ver su ubicación real ni identificarlo",
+      "Que su celular se vuelve invisible",
+      "Que puede navegar sin conexión a internet",
+      "Que no necesita contraseña"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Cuando su IP está oculta, los sitios web no pueden ver dónde está ni identificarlo.",
+    "explanationWrong": "Ocultar la IP protege su ubicación e identidad en internet.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses25_l3"
+  },
+  {
+    "id": "ac_st1_ses25_l3_q05",
+    "question": "¿Cuál es la función principal de una VPN?",
+    "type": "multipleChoice",
+    "options": [
+      "Proteger su privacidad y seguridad cifrando su conexión",
+      "Hacer que internet funcione más rápido",
+      "Permitir ver televisión gratis",
+      "Crear cuentas de correo electrónico"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "La función principal es proteger su privacidad cifrando su conexión, especialmente en redes públicas.",
+    "explanationWrong": "La VPN no acelera internet ni permite ver TV gratis. Protege su información.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses25_l3"
+  },
+  {
+    "id": "ac_st1_ses25_l3_q06",
+    "question": "¿Qué puede pasar si no usa protección al conectarse a WiFi público?",
+    "type": "multipleChoice",
+    "options": [
+      "Los criminales pueden interceptar sus contraseñas y datos bancarios",
+      "Su celular se vuelve más lento",
+      "La batería se agota más rápido",
+      "Nada, el WiFi público es seguro"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "Sin protección en WiFi público, los criminales pueden interceptar sus contraseñas y datos bancarios.",
+    "explanationWrong": "Los criminales pueden robar sus datos cuando se conecta a WiFi público sin protección.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses25_l3"
+  },
+  {
+    "id": "ac_st1_ses25_l3_q07",
+    "question": "¿Necesita ser experto en tecnología para usar una VPN?",
+    "type": "multipleChoice",
+    "options": [
+      "No, puede usarla sin entender los detalles técnicos",
+      "Sí, debe ser experto en computación",
+      "Solo si trabaja en un banco",
+      "Solo si tiene más de 60 años"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "No necesita ser experto. Las VPN modernas son fáciles de usar. Solo descarga la app y presiona un botón.",
+    "explanationWrong": "No necesita ser experto. Las VPN actuales son muy fáciles de usar.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses25_l3"
+  },
+  {
+    "id": "ac_st1_ses25_l3_q08",
+    "question": "¿Es seguro usar el WiFi gratuito del centro comercial para hacer transacciones bancarias?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "No es seguro. Los WiFi públicos pueden ser vigilados por criminales. Use datos de su celular o una VPN.",
+    "explanationWrong": "No es seguro usar WiFi público para banca. Los criminales pueden interceptar su información.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses25_l3"
+  },
+  {
+    "id": "ac_st1_ses25_l3_q09",
+    "question": "¿Las VPN gratuitas son tan seguros como las de pago?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "No son igual de seguras. Las gratuitas pueden vender sus datos o tener menos protección.",
+    "explanationWrong": "Las VPN gratuitas pueden comprometer su privacidad. Las de pago ofrecen mejor protección.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses25_l3"
+  },
+  {
+    "id": "ac_st1_ses25_l3_q10",
+    "question": "¿Es recomendable usar VPN en su propio hogar con WiFi privado?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "En su hogar con WiFi privado, el riesgo es menor. La VPN es más importante en redes públicas.",
+    "explanationWrong": "La VPN es especialmente importante en redes públicas, no es estrictamente necesaria en su casa.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses25_l3"
+  },
+  {
+    "id": "ac_st1_ses25_l3_q11",
+    "question": "Una VPN puede ocultar su actividad del proveedor de internet como Movistar o Claro.",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Sí, la VPN oculta su actividad. Movistar o Claro solo ven que está conectado a la VPN, no qué sitios visita.",
+    "explanationWrong": "La VPN sí oculta su actividad del proveedor de internet.",
+    "difficulty": 3,
+    "lessonId": "ac_s1_ses25_l3"
+  },
+  {
+    "id": "ac_st1_ses25_l3_q12",
+    "question": "Don Roberto está en una cafetería y quiere revisar su cuenta de Yape. Hay WiFi gratuito. ¿Qué hacer?",
+    "type": "miniCase",
+    "options": [
+      "Usar los datos de su celular en lugar del WiFi gratuito",
+      "Conectarse al WiFi porque es más rápido",
+      "Pedir la contraseña al mesonero",
+      "Esperar a llegar a su casa"
+    ],
+    "correctIndex": 3,
+    "explanationCorrect": "Lo más seguro es usar los datos de su celular. El WiFi gratuito puede ser vigilado por criminales.",
+    "explanationWrong": "El WiFi gratuito no es seguro para transacciones bancarias. Use datos móviles.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses25_l3"
+  },
+  {
+    "id": "ac_st1_ses25_l3_q13",
+    "question": "Doña Lucía viaja a Arequipa y se conecta al WiFi del hotel para revisar su correo de Interbank. ¿Qué hacer?",
+    "type": "miniCase",
+    "options": [
+      "Activar una VPN antes de conectarse al WiFi del hotel",
+      "Cambiar su contraseña de correo antes de viajar",
+      "No revisar el correo durante el viaje",
+      "Usar solo el modo avión"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Activar una VPN antes de conectarse al WiFi del hotel es la mejor opción para proteger sus datos.",
+    "explanationWrong": "Cambiar la contraseña o usar modo avión no son soluciónes prácticas. La VPN es ideal.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses25_l3"
+  },
+  {
+    "id": "ac_st1_ses25_l3_q14",
+    "question": "El señor Manuel usa el WiFi del aeropuerto de Lima para hacer una transferencia por la app de BCP. ¿Cuál es el mayor riesgo?",
+    "type": "miniCase",
+    "options": [
+      "Criminales podrían interceptar sus datos bancarios",
+      "El WiFi es muy lento",
+      "Su celular se puede sobrecalentar",
+      "La transferencia tarda más"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "El mayor riesgo es que criminales intercepten sus datos bancarios. Debe usar datos móviles o una VPN.",
+    "explanationWrong": "Lo peligroso es la interceptación de datos bancarios por criminales en la red.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses25_l3"
+  },
+  {
+    "id": "ac_st1_ses25_l3_q15",
+    "question": "Doña Carmen le pregunta a su nieto por qué usar VPN si solo revisa el correo y habla por WhatsApp. ¿Cuál es la mejor explicación?",
+    "type": "miniCase",
+    "options": [
+      "La VPN protege su correo y mensajes cuando usa internet público",
+      "La VPN hace que su celular funcione más rápido",
+      "La VPN es solo para ver películas",
+      "La VPN le permite descargar más música"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "La VPN protege todo lo que hace en internet. Es especialmente importante en redes públicas.",
+    "explanationWrong": "La VPN no acelera el celular ni permite descargar música. Protege su información personal.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses25_l3"
+  },
+  {
+    "id": "ac_st1_ses25_l4_q01",
+    "question": "¿Qué son los datos personales?",
+    "type": "multipleChoice",
+    "options": [
+      "Información que identifica quién es usted, como nombre, DNI y dirección",
+      "Fotos que publica en redes sociales",
+      "Los contactos de su celular",
+      "Las aplicaciones que tiene instaladas"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Los datos personales son toda información que lo identifica: nombre, DNI, dirección, correo, teléfono.",
+    "explanationWrong": "Los datos personales son la información que lo identifica a usted directamente.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses25_l4"
+  },
+  {
+    "id": "ac_st1_ses25_l4_q02",
+    "question": "¿Qué es el robo de identidad?",
+    "type": "multipleChoice",
+    "options": [
+      "Cuando alguien usa sus datos personales sin permiso para cometer fraudes",
+      "Cuando le roban el celular en la calle",
+      "Cuando alguien lee sus mensajes",
+      "Cuando pierde su contraseña"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "El robo de identidad es cuando alguien usa sus datos sin permiso para hacer compras o cometer fraudes.",
+    "explanationWrong": "El robo de identidad no es robar el celular. Es usar sus datos para hacerse pasar por usted.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses25_l4"
+  },
+  {
+    "id": "ac_st1_ses25_l4_q03",
+    "question": "¿Qué información no debería compartir en redes sociales?",
+    "type": "multipleChoice",
+    "options": [
+      "Su dirección, teléfono, DNI y ubicación actual",
+      "Fotos de paisajes o comida",
+      "Opiniones sobre películas",
+      "Felicitaciones de cumpleaños"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "Nunca comparta su dirección, teléfono, DNI o ubicación actual en redes sociales.",
+    "explanationWrong": "Puede compartir paisajes o opiniones, pero nunca datos personales sensibles.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses25_l4"
+  },
+  {
+    "id": "ac_st1_ses25_l4_q04",
+    "question": "¿Qué debe hacer si sospecha que sus datos personales fueron robados?",
+    "type": "multipleChoice",
+    "options": [
+      "Cambiar contraseñas, alertar a su banco y denunciar en la policía",
+      "No hacer nada porque es un error",
+      "Esperar a ver si pasa algo",
+      "Borrar todas sus cuentas"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Actúe rápido: cambie contraseñas, alerte a su banco (BCP, Interbank) y presente una denuncia.",
+    "explanationWrong": "No espere. Debe actuar rápido cambiando contraseñas y haciendo la denuncia.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses25_l4"
+  },
+  {
+    "id": "ac_st1_ses25_l4_q05",
+    "question": "¿Qué información debe dar en un formulario en línea?",
+    "type": "multipleChoice",
+    "options": [
+      "Solo lo estrictamente necesario y verificar que el sitio sea legítimo",
+      "Toda la información que le pidan",
+      "Solo su nombre y correo siempre",
+      "Nunca dar información"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Dé solo lo necesario y verifique que el sitio sea legítimo (HTTPS, dirección correcta).",
+    "explanationWrong": "No dé toda la información. Verifique la legitimidad del sitio.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses25_l4"
+  },
+  {
+    "id": "ac_st1_ses25_l4_q06",
+    "question": "¿Qué es la Ley de Protección de Datos Personales en Perú?",
+    "type": "multipleChoice",
+    "options": [
+      "Una ley que obliga a las empresas a proteger la información personal",
+      "Una ley que prohíbe el uso de internet",
+      "Una ley para cerrar cuentas de redes sociales",
+      "Una ley sobre transporte público"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "La Ley 29733 obliga a las empresas peruanas a proteger la información personal de los ciudadaños.",
+    "explanationWrong": "Esta ley no prohíbe internet. Establece que las empresas deben proteger los datos personales.",
+    "difficulty": 3,
+    "lessonId": "ac_s1_ses25_l4"
+  },
+  {
+    "id": "ac_st1_ses25_l4_q07",
+    "question": "¿Qué tipo de información considera SUNAT como dato personal sensible?",
+    "type": "multipleChoice",
+    "options": [
+      "Su RUC, declaraciones de impuestos e información financiera",
+      "Su color favorito",
+      "El nombre de su mascota",
+      "Su hobby"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "SUNAT maneja datos como su RUC, declaraciones e información financiera. Son datos sensibles.",
+    "explanationWrong": "SUNAT maneja información fiscal y financiera. Su RUC es un dato muy sensible.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses25_l4"
+  },
+  {
+    "id": "ac_st1_ses25_l4_q08",
+    "question": "¿Es seguro dar su DNI por teléfono a un vendedor?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "No es seguro. Los vendedores telefónicos no necesitan su DNI. Podrían usarlo para cometer fraudes.",
+    "explanationWrong": "Nunca dé su DNI por teléfono a vendedores. Podrían usarlo para fraudes.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses25_l4"
+  },
+  {
+    "id": "ac_st1_ses25_l4_q09",
+    "question": "¿Es necesario proteger su número de tarjeta igual que su contraseña?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Sí, su número de tarjeta es información sensible que debe protegerse igual que su contraseña.",
+    "explanationWrong": "El número de tarjeta es sensible. Si alguien lo obtiene, podría hacer compras sin autorización.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses25_l4"
+  },
+  {
+    "id": "ac_st1_ses25_l4_q10",
+    "question": "¿Las empresas peruanas pueden vender sus datos sin su permiso?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "No pueden. La ley prohíbe vender datos personales sin autorización del titular.",
+    "explanationWrong": "Las empresas peruanas no pueden vender sus datos sin permiso. La Ley 29733 lo prohíbe.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses25_l4"
+  },
+  {
+    "id": "ac_st1_ses25_l4_q11",
+    "question": "¿Puede Movistar o Claro usar su número para enviar publicidad sin permiso?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "No pueden. La ley requiere consentimiento previo para enviar publicidad electrónica.",
+    "explanationWrong": "Las empresas de telefonía no pueden enviar publicidad sin permiso.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses25_l4"
+  },
+  {
+    "id": "ac_st1_ses25_l4_q12",
+    "question": "La señora Rosa recibió una llamada de alguien que dice ser de Interbank. Le piden tarjeta y código de seguridad. ¿Qué hacer?",
+    "type": "miniCase",
+    "options": [
+      "Colgar y llamar al número oficial de Interbank",
+      "Dar los datos porque dice ser del banco",
+      "Pedir que llamen más tarde",
+      "Dar solo el número de tarjeta"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Debe colgar y llamar al número oficial de Interbank para verificar si la llamada fue legítima.",
+    "explanationWrong": "Nunca dé sus datos por teléfono. El banco nunca pide contraseñas. Cuelgue y llame al oficial.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses25_l4"
+  },
+  {
+    "id": "ac_st1_ses25_l4_q13",
+    "question": "Don Pedro quiere inscribirse en un portal del gobierno para consultar su pensión. ¿Qué verificar?",
+    "type": "miniCase",
+    "options": [
+      "Que la dirección sea oficial del gobierno y tenga HTTPS",
+      "Que tenga colores bonitos",
+      "Que no le pidan contraseña",
+      "Que tenga publicidad"
+    ],
+    "correctIndex": 3,
+    "explanationCorrect": "Verifique que sea un sitio oficial (.gob.pe) y que tenga HTTPS.",
+    "explanationWrong": "Los colores bonitos no garantizan seguridad. Verifique el dominio oficial y HTTPS.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses25_l4"
+  },
+  {
+    "id": "ac_st1_ses25_l4_q14",
+    "question": "Doña Carmen llenó un formulario para ganar un premio. Ahora recibe llamadas sospechosas. ¿Qué pasó?",
+    "type": "miniCase",
+    "options": [
+      "Sus datos probablemente fueron vendidos sin autorización",
+      "Las llamadas son coincidencia",
+      "Su celular tiene un virus",
+      "Todo es normal después de formularios"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Es muy probable que sus datos hayan sido vendidos. Nunca dé datos en sitios sospechosos.",
+    "explanationWrong": "Los formularios falsos recopilan datos para venderlos o usarlos en fraudes.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses25_l4"
+  },
+  {
+    "id": "ac_st1_ses25_l4_q15",
+    "question": "Un amigo le dice que ponga su RUC en redes sociales para ayudarla con SUNAT. ¿Qué hacer?",
+    "type": "miniCase",
+    "options": [
+      "No publicar su RUC y contactar directamente a SUNAT",
+      "Publicar porque su amigo le está ayudando",
+      "Publicar solo los primeros dígitos",
+      "Pedir a otro amigo que lo publique"
+    ],
+    "correctIndex": 3,
+    "explanationCorrect": "Nunca publique su RUC en redes sociales. Contacte directamente a SUNAT por canales oficiales.",
+    "explanationWrong": "Nunca publique su RUC. Los criminales pueden usarlo para fraudes fiscales.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses25_l4"
+  },
+  {
+    "id": "ac_st1_ses25_l5_q01",
+    "question": "¿Qué es el borrado seguro de archivos?",
+    "type": "multipleChoice",
+    "options": [
+      "Un método para eliminar archivos de forma que no se puedan recuperar nunca",
+      "Borrar archivos de la papelera de reciclaje",
+      "Mover archivos a una carpeta oculta",
+      "Renombrar archivos para que no se lean"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "El borrado seguro sobreescribe los archivos varias veces para que sean irrecuperables.",
+    "explanationWrong": "El borrado seguro no es solo borrar de la papelera. Impide la recuperación de archivos.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses25_l5"
+  },
+  {
+    "id": "ac_st1_ses25_l5_q02",
+    "question": "¿Por qué es importante hacer borrado seguro antes de vender su computadora?",
+    "type": "multipleChoice",
+    "options": [
+      "Para que el nuevo dueño no pueda recuperar sus archivos y contraseñas",
+      "Para que la computadora funcione más rápido",
+      "Para instalar nuevos programas",
+      "Para que el disco duro dure más"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "El borrado seguro evita que el nuevo dueño recupere sus archivos personales y contraseñas.",
+    "explanationWrong": "El borrado seguro no acelera la computadora. Protege sus datos personales.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses25_l5"
+  },
+  {
+    "id": "ac_st1_ses25_l5_q03",
+    "question": "¿Qué tipo de archivos debe borrar de forma segura?",
+    "type": "multipleChoice",
+    "options": [
+      "Archivos con datos bancarios, contraseñas, documentos personales y fotos privadas",
+      "Solo archivos de música",
+      "Solo programas que ya no usa",
+      "Solo archivos de texto"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "Debe borrar de forma segura archivos sensibles: datos bancarios, contraseñas, documentos personales.",
+    "explanationWrong": "El borrado seguro es para archivos sensibles. No es necesario para archivos de música.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses25_l5"
+  },
+  {
+    "id": "ac_st1_ses25_l5_q04",
+    "question": "¿Qué programa gratuito puede usar para borrar archivos de forma segura en Windows?",
+    "type": "multipleChoice",
+    "options": [
+      "Eraser o CCleaner",
+      "Microsoft Word",
+      "Paint",
+      "Calculadora de Windows"
+    ],
+    "correctIndex": 3,
+    "explanationCorrect": "Eraser y CCleaner son programas gratuitos que sobreescriben datos para que no se recuperen.",
+    "explanationWrong": "Word, Paint y la Calculadora no sirven para borrar archivos de forma segura.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses25_l5"
+  },
+  {
+    "id": "ac_st1_ses25_l5_q05",
+    "question": "¿Qué es la sobrescritura de datos?",
+    "type": "multipleChoice",
+    "options": [
+      "Escribir datos nuevos sobre los antiguos varias veces para que no se recuperen",
+      "Guardar dos veces el mismo archivo",
+      "Hacer una copia en la nube",
+      "Comprimir archivos"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "La sobrescritura es escribir datos nuevos sobre los antiguos varias veces para hacer imposible la recuperación.",
+    "explanationWrong": "La sobrescritura sobreescribe datos para eliminar la información original.",
+    "difficulty": 3,
+    "lessonId": "ac_s1_ses25_l5"
+  },
+  {
+    "id": "ac_st1_ses25_l5_q06",
+    "question": "¿Qué debe hacer con su disco duro viejo antes de desecharlo?",
+    "type": "multipleChoice",
+    "options": [
+      "Hacer borrado seguro o destruirlo físicamente",
+      "Tirarlo directamente a la basura",
+      "Regalarlo sin preguntar",
+      "Dejarlo en un lugar público"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "Haga borrado seguro o destrúyalo físicamente para evitar que alguien recupere sus datos.",
+    "explanationWrong": "Nunca tire un disco duro con datos sin borrarlos. Use borrado seguro o destrúyalo.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses25_l5"
+  },
+  {
+    "id": "ac_st1_ses25_l5_q07",
+    "question": "¿Qué es el formateo de disco y protege sus datos?",
+    "type": "multipleChoice",
+    "options": [
+      "El formateo organiza el disco pero no borra los datos de forma segura",
+      "El formateo borra todo permanentemente",
+      "El formateo es lo mismo que el borrado seguro",
+      "El formateo solo funciona con discos nuevos"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "El formateo normal solo prepara el disco, pero los archivos antiguos aún se pueden recuperar.",
+    "explanationWrong": "El formateo normal no es un borrado seguro. Los archivos se pueden recuperar.",
+    "difficulty": 3,
+    "lessonId": "ac_s1_ses25_l5"
+  },
+  {
+    "id": "ac_st1_ses25_l5_q08",
+    "question": "¿Es suficiente borrar un archivo de la papelera de reciclaje?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "No es suficiente. Los archivos borrados aún se pueden recuperar con programas especiales.",
+    "explanationWrong": "Los archivos borrados normalmente se pueden recuperar. Use borrado seguro.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses25_l5"
+  },
+  {
+    "id": "ac_st1_ses25_l5_q09",
+    "question": "¿Puede recuperar archivos que borró hace varios meses sin borrado seguro?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Sí, es posible. Los archivos borrados normalmente pueden recuperarse durante meses o años.",
+    "explanationWrong": "Los archivos borrados normalmente se pueden recuperar después de meses.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses25_l5"
+  },
+  {
+    "id": "ac_st1_ses25_l5_q10",
+    "question": "¿Qué pasa con los archivos cuando restaura su celular de fábrica?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Restaurar de fábrica elimina la mayoría de archivos, pero algunos pueden recuperarse.",
+    "explanationWrong": "La restauración borra muchos archivos, pero no todos de forma segura.",
+    "difficulty": 3,
+    "lessonId": "ac_s1_ses25_l5"
+  },
+  {
+    "id": "ac_st1_ses25_l5_q11",
+    "question": "¿Es necesario borrar de forma segura si solo tiene fotos de paisajes?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Si las fotos no son privadas, el borrado normal puede ser suficiente. El borrado seguro es para archivos sensibles.",
+    "explanationWrong": "No siempre es necesario. El borrado seguro es para archivos sensibles.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses25_l5"
+  },
+  {
+    "id": "ac_st1_ses25_l5_q12",
+    "question": "Don Manuel va a vender su computadora vieja. Tiene fotos, documentos bancarios y contraseñas. ¿Qué hacer?",
+    "type": "miniCase",
+    "options": [
+      "Hacer borrado seguro de todos los archivos sensibles antes de venderla",
+      "Borrar los archivos normalmente de la papelera",
+      "No hacer nada porque es vieja",
+      "Solo borrar las fotos"
+    ],
+    "correctIndex": 3,
+    "explanationCorrect": "Debe hacer borrado seguro de todos sus archivos sensibles antes de vender la computadora.",
+    "explanationWrong": "Borrar normalmente no es suficiente. Haga borrado seguro para proteger sus datos.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses25_l5"
+  },
+  {
+    "id": "ac_st1_ses25_l5_q13",
+    "question": "La señora Rosa quiere donar su celular viejo a una escuela. Tiene mensajes, fotos y datos de Yape. ¿Qué hacer?",
+    "type": "miniCase",
+    "options": [
+      "Hacer restauración de fábrica y verificar que no queden datos personales",
+      "Solo borrar los mensajes de WhatsApp",
+      "No hacer nada porque es viejo",
+      "Pedir a un niño que lo revise"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "Debe hacer restauración de fábrica y verificar que no queden cuentas de Yape u otros datos.",
+    "explanationWrong": "Solo borrar mensajes no es suficiente. Haga restauración y verifique que no queden datos.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses25_l5"
+  },
+  {
+    "id": "ac_st1_ses25_l5_q14",
+    "question": "Don Pedro encontró un disco duro viejo que podría tener datos bancarios de su trabajo. ¿Qué hacer?",
+    "type": "miniCase",
+    "options": [
+      "No conectarlo y llevarlo a un servicio de borrado seguro profesiónal",
+      "Conectarlo para ver qué tiene",
+      "Tirarlo a la basura",
+      "Regalarlo sin avisar"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "No lo conecte. Llévelo a un servicio profesiónal de borrado seguro. Los datos bancarios son sensibles.",
+    "explanationWrong": "No lo conecte ni lo tire sin borrar. Los datos bancarios requieren borrado seguro profesiónal.",
+    "difficulty": 3,
+    "lessonId": "ac_s1_ses25_l5"
+  },
+  {
+    "id": "ac_st1_ses25_l5_q15",
+    "question": "Doña Carmen quiere deshacerse de su impresora vieja con memoria interna. ¿Qué hacer?",
+    "type": "miniCase",
+    "options": [
+      "Buscar instrucciones para borrar la memoria o llevarla a reciclaje electrónico",
+      "Tirarla directamente a la basura",
+      "Desarmarla sin conocimientos",
+      "Regalarla sin preocuparse"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Las impresoras tienen memoria que guarda documentos. Debe borrar esa memoria o llevarla a reciclaje.",
+    "explanationWrong": "No tire la impresora sin borrar la memoria. Puede contener documentos importantes.",
+    "difficulty": 3,
+    "lessonId": "ac_s1_ses25_l5"
+  },
+  {
+    "id": "ac_st1_ses26_l1_q01",
+    "question": "¿Qué es el ciberbullying?",
+    "type": "multipleChoice",
+    "options": [
+      "Acoso o intimidación que ocurre a través de internet o dispositivos electrónicos",
+      "Un tipo de virus que afecta los celulares",
+      "Un juego popular entre jóvenes",
+      "Una forma de aprender a usar computadoras"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "El ciberbullying es el acoso que se realiza por internet, mensajes, redes sociales o cualquier medio electrónico.",
+    "explanationWrong": "El ciberbullying no es un virus ni un juego. Es el acoso por medios electrónicos.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses26_l1"
+  },
+  {
+    "id": "ac_st1_ses26_l1_q02",
+    "question": "¿Cuál de estas es una forma de ciberbullying?",
+    "type": "multipleChoice",
+    "options": [
+      "Enviar mensajes ofensivos repetidamente por WhatsApp",
+      "Enviar una foto de un paisaje bonito",
+      "Decirle buenos días a un amigo",
+      "Usar el celular para llamar a la familia"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "Enviar mensajes ofensivos o amenazantes de forma repetida es una forma de ciberbullying.",
+    "explanationWrong": "Enviar fotos bonitas o saludar no es ciberbullying.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses26_l1"
+  },
+  {
+    "id": "ac_st1_ses26_l1_q03",
+    "question": "¿Qué es el doxing en el contexto del ciberbullying?",
+    "type": "multipleChoice",
+    "options": [
+      "Publicar información personal de alguien sin permiso para intimidarlo",
+      "Enviar mensajes amigables por correo",
+      "Crear una cuenta falsa en redes sociales",
+      "Usar un apodo en internet"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "El doxing es publicar la información personal de alguien sin permiso para intimidar o causar daño.",
+    "explanationWrong": "El doxing es publicar información personal sin permiso para causar daño.",
+    "difficulty": 3,
+    "lessonId": "ac_s1_ses26_l1"
+  },
+  {
+    "id": "ac_st1_ses26_l1_q04",
+    "question": "¿Qué diferencia hay entre el bullying tradicional y el ciberbullying?",
+    "type": "multipleChoice",
+    "options": [
+      "El ciberbullying puede ocurrir 24 horas y llegar a muchas personas rápidamente",
+      "No hay diferencia",
+      "El ciberbullying solo ocurre en la escuela",
+      "El bullying tradicional es más severo"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "El ciberbullying es más difícil de escapar porque puede ocurrir en cualquier momento y llegar a muchas personas.",
+    "explanationWrong": "El ciberbullying puede ocurrir 24 horas y llegar a más personas que el bullying tradicional.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses26_l1"
+  },
+  {
+    "id": "ac_st1_ses26_l1_q05",
+    "question": "¿Qué es el grooming en el contexto del ciberbullying?",
+    "type": "multipleChoice",
+    "options": [
+      "Cuando un adulto contacta a un menor para manipularlo o abusar de él",
+      "Cuando un niño juega mucho en internet",
+      "Cuando alguien usa un nombre falso",
+      "Cuando se envían mensajes de felicitación"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "El grooming es cuando un adulto se acerca a un menor por internet para ganarse su confianza y abusar. Es un delito grave.",
+    "explanationWrong": "El grooming es manipulación de menores por internet. Es un delito muy grave.",
+    "difficulty": 3,
+    "lessonId": "ac_s1_ses26_l1"
+  },
+  {
+    "id": "ac_st1_ses26_l1_q06",
+    "question": "¿El ciberbullying solo ocurre en redes sociales como Facebook?",
+    "type": "multipleChoice",
+    "options": [
+      "No, puede ocurrir por WhatsApp, correos, mensajes de texto y cualquier medio digital",
+      "Sí, solo en redes sociales",
+      "Solo en aplicaciones de juegos",
+      "Solo en llamadas telefónicas"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "El ciberbullying puede ocurrir por cualquier medio digital: WhatsApp, correos, mensajes de texto y más.",
+    "explanationWrong": "No ocurre solo en redes sociales. Puede manifestarse por cualquier medio digital.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses26_l1"
+  },
+  {
+    "id": "ac_st1_ses26_l1_q07",
+    "question": "¿Qué es el cyberstalking?",
+    "type": "multipleChoice",
+    "options": [
+      "Seguir y acosar a alguien persistentemente por medios electrónicos",
+      "Enviar mensajes de cumpleaños por internet",
+      "Usar internet para aprender cosas nuevas",
+      "Seguir cuentas de noticias"
+    ],
+    "correctIndex": 3,
+    "explanationCorrect": "El cyberstalking es seguir y acosar a alguien de forma persistente por medios electrónicos.",
+    "explanationWrong": "El cyberstalking es el acoso persistente por medios electrónicos.",
+    "difficulty": 3,
+    "lessonId": "ac_s1_ses26_l1"
+  },
+  {
+    "id": "ac_st1_ses26_l1_q08",
+    "question": "¿El ciberbullying solo afecta a niños y adolescentes?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Puede afectar a personas de cualquier edad, incluyendo adultos mayores.",
+    "explanationWrong": "El ciberbullying no distingue edades. Puede afectar a cualquier persona que use internet.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses26_l1"
+  },
+  {
+    "id": "ac_st1_ses26_l1_q09",
+    "question": "¿Puede una persona mayor ser víctima de ciberbullying?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Sí, cualquier persona puede ser víctima. Los adultos mayores que usan internet también pueden ser acosados.",
+    "explanationWrong": "Sí, las personas mayores también pueden ser víctimas de ciberbullying.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses26_l1"
+  },
+  {
+    "id": "ac_st1_ses26_l1_q10",
+    "question": "¿Es ciberbullying crear una cuenta falsa para molestar a alguien?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Sí, crear cuentas falsas para molestar, difundir rumores o intimidar es ciberbullying.",
+    "explanationWrong": "Crear cuentas falsas para molestar es ciberbullying y es ilegal.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses26_l1"
+  },
+  {
+    "id": "ac_st1_ses26_l1_q11",
+    "question": "El ciberbullying puede causar tanto daño emocional como el acoso presencial.",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Sí, el ciberbullying puede ser igual de dañino o más que el acoso presencial.",
+    "explanationWrong": "El ciberbullying causa tanto daño emocional como el acoso presencial, a veces más.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses26_l1"
+  },
+  {
+    "id": "ac_st1_ses26_l1_q12",
+    "question": "Don Pedro recibe mensajes anónimos por WhatsApp que le dicen cosas desagradables todos los días. ¿Qué está experimentando?",
+    "type": "miniCase",
+    "options": [
+      "Ciberbullying a través de mensajes anónimos",
+      "Un problema con la señal de su celular",
+      "Un error de la aplicación WhatsApp",
+      "La culpa de no responder mensajes"
+    ],
+    "correctIndex": 3,
+    "explanationCorrect": "Don Pedro está siendo víctima de ciberbullying. Los mensajes anónimos ofensivos y repetidos son acoso digital.",
+    "explanationWrong": "No es un problema de señal. Los mensajes ofensivos anónimos repetidos son ciberbullying.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses26_l1"
+  },
+  {
+    "id": "ac_st1_ses26_l1_q13",
+    "question": "La señora Rosa dice que alguien creó un perfil falso en Facebook con su nombre y publica cosas falsas. ¿Qué tipo de ciberbullying es?",
+    "type": "miniCase",
+    "options": [
+      "Suplantación de identidad para difundir rumores falsos",
+      "Un error técnico de Facebook",
+      "Una broma inofensiva entre amigos",
+      "Alguien que confundió los nombres"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Esto es suplantación de identidad, una forma grave de ciberbullying. Crear perfiles falsos es un delito.",
+    "explanationWrong": "No es un error técnico ni una broma. Crear perfiles falsos es un delito.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses26_l1"
+  },
+  {
+    "id": "ac_st1_ses26_l1_q14",
+    "question": "Un grupo envía mensajes ofensivos a Doña Carmen por correo todos los días. Ella siente miedo. ¿Qué efecto tiene?",
+    "type": "miniCase",
+    "options": [
+      "Le causa miedo y ansiedad que puede afectar su salud emocional",
+      "No tiene ningún efecto porque son solo mensajes",
+      "Le ayuda a ser más fuerte emocionalmente",
+      "Le enseña a usar mejor el correo"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "El ciberbullying puede causar miedo, ansiedad, tristeza y otros problemas de salud emocional.",
+    "explanationWrong": "Los mensajes ofensivos no son inofensivos. Causan problemas emocionales serios.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses26_l1"
+  },
+  {
+    "id": "ac_st1_ses26_l1_q15",
+    "question": "Don Carlos le cuenta a su nieto que alguien le escribe por WhatsApp diciéndole que es un tonto. ¿Qué debería hacer el nieto?",
+    "type": "miniCase",
+    "options": [
+      "Escuchar a su abuelo, ayudarlo a bloquear al acosador y reportar el caso",
+      "Decirle que ignore los mensajes",
+      "Reírse porque es una broma",
+      "Pedirle que borre WhatsApp"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "El nieto debe tomarlo en serio, ayudar a bloquear al acosador y reportar el caso.",
+    "explanationWrong": "No debe ignorar la situación. El ciberbullying es serio y debe ayudar.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses26_l1"
+  },
+  {
+    "id": "ac_st1_ses26_l2_q01",
+    "question": "¿Cuáles son señales de que alguien sufre ciberbullying?",
+    "type": "multipleChoice",
+    "options": [
+      "Cambios de humor, miedo al celular, no querer usar internet",
+      "Querer usar más el celular",
+      "Hablar más con la familia",
+      "Dormir mejor"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Las señales incluyen cambios de humor, miedo al celular, no querer usar internet y tristeza repentina.",
+    "explanationWrong": "Los cambios negativos como miedo o tristeza son las señales importantes.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses26_l2"
+  },
+  {
+    "id": "ac_st1_ses26_l2_q02",
+    "question": "¿Qué debe hacer si recibe un mensaje ofensivo por internet?",
+    "type": "multipleChoice",
+    "options": [
+      "No responder, guardar evidencia y blockear al remitente",
+      "Responder con otro mensaje ofensivo",
+      "Enviar el mensaje a todos sus contactos",
+      "Ignorar esperando que se solucióne"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "No responda, guarde capturas de pantalla como evidencia y blockee al acosador.",
+    "explanationWrong": "No responda ni reenvíe. Guarde evidencia y blockee al acosador.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses26_l2"
+  },
+  {
+    "id": "ac_st1_ses26_l2_q03",
+    "question": "¿Qué es una captura de pantalla y por qué es importante?",
+    "type": "multipleChoice",
+    "options": [
+      "Es una imagen de lo que aparece en su pantalla que sirve como prueba del acoso",
+      "Un tipo de fotografía artística",
+      "Un programa para borrar archivos",
+      "Una forma de enviar mensajes"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "La captura de pantalla es una imagen de lo que se muestra en su pantalla. Es importante como prueba para denunciar.",
+    "explanationWrong": "No es una fotografía artística. Es una herramienta para guardar pruebas del acoso.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses26_l2"
+  },
+  {
+    "id": "ac_st1_ses26_l2_q04",
+    "question": "¿Cómo puede identificar si un mensaje es de ciberbullying?",
+    "type": "multipleChoice",
+    "options": [
+      "Si es ofensivo, amenazante, repetitivo o busca intimidar",
+      "Si tiene errores de ortografía",
+      "Si es largo",
+      "Si viene de un número desconocido"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Un mensaje es ciberbullying si es ofensivo, amenazante, repetitivo o tiene la intención de intimidar.",
+    "explanationWrong": "Los errores de ortografía no determinan el ciberbullying. Lo importante es si busca ofender o intimidar.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses26_l2"
+  },
+  {
+    "id": "ac_st1_ses26_l2_q05",
+    "question": "¿Qué tipo de contenido puede indicar ciberbullying?",
+    "type": "multipleChoice",
+    "options": [
+      "Mensajes con insultos, amenazas, rumores falsos o fotos modificadas",
+      "Mensajes de felicitación o cumpleaños",
+      "Fotos de paisajes o comida",
+      "Información sobre eventos culturales"
+    ],
+    "correctIndex": 3,
+    "explanationCorrect": "Los insultos, amenazas, rumores falsos y fotos modificadas son indicadores claros de ciberbullying.",
+    "explanationWrong": "Las felicitaciones y paisajes no son ciberbullying. El contenido ofensivo es la señal.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses26_l2"
+  },
+  {
+    "id": "ac_st1_ses26_l2_q06",
+    "question": "¿Qué es el phishing en el contexto del ciberbullying?",
+    "type": "multipleChoice",
+    "options": [
+      "Engañar a alguien para que revele información personal haciéndose pasar por alguien de confianza",
+      "Enviar mensajes amigables por internet",
+      "Crear perfiles auténticos en redes sociales",
+      "Usar internet para estudiar"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "El phishing es cuando alguien se hace pasar por una entidad confiable para engañarlo y robarle información.",
+    "explanationWrong": "El phishing es una técnica de engaño para robar información personal.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses26_l2"
+  },
+  {
+    "id": "ac_st1_ses26_l2_q07",
+    "question": "¿Qué puede usar para tomar capturas de pantalla en un celular Android?",
+    "type": "multipleChoice",
+    "options": [
+      "Presionar los botones de volumen y encendido al mismo tiempo",
+      "Usar la aplicación de calculadora",
+      "Abrir la cámara fotográfica",
+      "Deslizar tres veces hacia la izquierda"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "En la mayoría de celulares Android, puede tomar captura presionando volumen y encendido al mismo tiempo.",
+    "explanationWrong": "No se usa la calculadora ni la cámara. En Android se presionan volumen y encendido.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses26_l2"
+  },
+  {
+    "id": "ac_st1_ses26_l2_q08",
+    "question": "¿El ciberbullying siempre viene de desconocidos?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "No, puede venir de conocidos, compañeros, vecinos o incluso familiares.",
+    "explanationWrong": "El ciberbullying puede venir de conocidos, compañeros de trabajo o familiares.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses26_l2"
+  },
+  {
+    "id": "ac_st1_ses26_l2_q09",
+    "question": "¿Debería guardar evidencia si es víctima de ciberbullying?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Sí, siempre debe guardar evidencia. Las capturas de pantalla son pruebas importantes para denunciar.",
+    "explanationWrong": "Sí, debe guardar evidencia. Las capturas son pruebas esenciales para la denuncia.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses26_l2"
+  },
+  {
+    "id": "ac_st1_ses26_l2_q10",
+    "question": "¿Puede identificar a un acosador si usa una cuenta falsa?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Es más difícil pero no imposible. Las autoridades pueden rastrear la IP y otros datos.",
+    "explanationWrong": "Las autoridades pueden rastrear al acosador incluso con cuentas falsas.",
+    "difficulty": 3,
+    "lessonId": "ac_s1_ses26_l2"
+  },
+  {
+    "id": "ac_st1_ses26_l2_q11",
+    "question": "¿Qué información debe incluir al guardar evidencia de ciberbullying?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Fecha, hora, nombre de usuario del acosador y el contenido del mensaje. Esta información será útil para la denuncia.",
+    "explanationWrong": "Guarde fecha, hora, usuario y contenido. No necesita guardar su contraseña.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses26_l2"
+  },
+  {
+    "id": "ac_st1_ses26_l2_q12",
+    "question": "Don Lucho notó que su hijo adolescente dejó de usar el celular y está triste. El hijo dice que todo está bien pero no quiere salir. ¿Qué podría pasar?",
+    "type": "miniCase",
+    "options": [
+      "Podría estar siendo víctima de ciberbullying y necesita ayuda",
+      "Simplemente está de mal humor",
+      "Probablemente tiene sueño",
+      "Es normal en los adolescentes no querer salir"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Los cambios de comportamiento pueden ser señales de ciberbullying. Don Lucho debe investigar con sensibilidad.",
+    "explanationWrong": "No es solo mal humor. El cambio repentino puede indicar ciberbullying.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses26_l2"
+  },
+  {
+    "id": "ac_st1_ses26_l2_q13",
+    "question": "La señora Ana recibe un mensaje de un número desconocido: Sé dónde vives, cuidado. ¿Qué tipo de situación es?",
+    "type": "miniCase",
+    "options": [
+      "Una amenaza seria que debe denunciarse inmediatamente",
+      "Una broma que puede ignorar",
+      "Un error de envío",
+      "Alguien que la confundió"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Esto es una amenaza grave. Guarde evidencia, bloquee el número y denuncie inmediatamente.",
+    "explanationWrong": "No es una broma. Una amenaza como esta debe denunciarse.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses26_l2"
+  },
+  {
+    "id": "ac_st1_ses26_l2_q14",
+    "question": "Don Manuel ve que su vecina Doña Carmen está preocupada porque alguien publica fotos suyas con comentarios desagradables. ¿Qué hacer?",
+    "type": "miniCase",
+    "options": [
+      "Ayudarla a guardar evidencia y acompañarla a denunciar",
+      "Ignorar porque es asunto de ella",
+      "Publicar fotos de la persona que acosa",
+      "Decirle que deje de usar redes sociales"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "Don Manuel debe ayudar a Doña Carmen a guardar evidencia y acompañarla a denunciar.",
+    "explanationWrong": "No debe ignorar ni publicar más fotos. Debe ayudar a guardar evidencia y denunciar.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses26_l2"
+  },
+  {
+    "id": "ac_st1_ses26_l2_q15",
+    "question": "El nieto de Doña Rosa le enseñó WhatsApp. Ahora recibe mensajes de un grupo donde la insultan por su edad. ¿Qué hacer?",
+    "type": "miniCase",
+    "options": [
+      "Salir del grupo, blockear a los que insultan y pedir ayuda a su familia",
+      "Responder insultando también",
+      "Quedarse para ver qué más dicen",
+      "Borrar WhatsApp"
+    ],
+    "correctIndex": 3,
+    "explanationCorrect": "Debe salir del grupo, blockear a los acosadores y pedir ayuda a su familia.",
+    "explanationWrong": "No debe responder ni quedarse en el grupo. Salga, blockee y pida ayuda.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses26_l2"
+  },
+  {
+    "id": "ac_st1_ses26_l3_q01",
+    "question": "¿Qué efectos emocionales puede causar el ciberbullying?",
+    "type": "multipleChoice",
+    "options": [
+      "Ansiedad, tristeza, miedo, soledad y baja autoestima",
+      "Felicidad y diversión",
+      "Mayor confianza en uno mismo",
+      "Ningún efecto emocional"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "El ciberbullying puede causar ansiedad, tristeza profunda, miedo, soledad y baja autoestima.",
+    "explanationWrong": "El ciberbullying no causa felicidad ni confianza. Causa efectos emocionales graves.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses26_l3"
+  },
+  {
+    "id": "ac_st1_ses26_l3_q02",
+    "question": "¿Por qué el ciberbullying puede ser más dañino que el acoso presencial?",
+    "type": "multipleChoice",
+    "options": [
+      "Porque puede ocurrir 24 horas y la víctima nunca se siente segura",
+      "Porque es más divertido para el acosador",
+      "Porque usa palabras más bonitas",
+      "Porque no tiene consecuencias"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "El ciberbullying puede ocurrir a cualquier hora y lugar. La víctima nunca se siente segura.",
+    "explanationWrong": "El ciberbullying es más dañino porque puede ocurrir 24 horas.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses26_l3"
+  },
+  {
+    "id": "ac_st1_ses26_l3_q03",
+    "question": "¿Qué es la ansiedad por revisar el celular?",
+    "type": "multipleChoice",
+    "options": [
+      "Sentir miedo constante de revisar los mensajes por temor a nuevos ataques",
+      "Gustar mucho de usar el celular",
+      "No poder dejar de tomar fotos",
+      "Estar siempre conectado a internet"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "Es cuando la víctima siente miedo constante de revisar su celular porque teme encontrar nuevos mensajes ofensivos.",
+    "explanationWrong": "No es gustar del celular. Es el miedo constante a encontrar nuevos ataques.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses26_l3"
+  },
+  {
+    "id": "ac_st1_ses26_l3_q04",
+    "question": "¿Cómo puede afectar el ciberbullying a las relaciónes familiares?",
+    "type": "multipleChoice",
+    "options": [
+      "Puede causar aislamiento, conflictos y falta de comúnicación",
+      "Mejora la relación familiar",
+      "No tiene ningún efecto",
+      "Hace que la familia pase más tiempo junta"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "El ciberbullying puede causar que la víctima se aísle y haya conflictos familiares.",
+    "explanationWrong": "El ciberbullying no mejora las relaciónes. Causa aislamiento y conflictos.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses26_l3"
+  },
+  {
+    "id": "ac_st1_ses26_l3_q05",
+    "question": "¿Qué puede hacer la familia para ayudar a alguien que sufre ciberbullying?",
+    "type": "multipleChoice",
+    "options": [
+      "Escuchar sin juzgar, dar apoyo emocional y buscar ayuda profesiónal",
+      "Ignorar el problema esperando que se solucióne",
+      "Regañar a la víctima por usar internet",
+      "Quitarle todos los dispositivos"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "La familia debe escuchar sin juzgar, dar apoyo, ayudar a guardar evidencia y buscar ayuda profesiónal.",
+    "explanationWrong": "No debe ignorar ni regañar. Escuche, dé apoyo y busque ayuda profesiónal.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses26_l3"
+  },
+  {
+    "id": "ac_st1_ses26_l3_q06",
+    "question": "¿Qué es el aislamiento social como consecuencia del ciberbullying?",
+    "type": "multipleChoice",
+    "options": [
+      "Cuando la víctima deja de relaciónarse con amigos y familiares por miedo o vergüenza",
+      "Cuando alguien tiene muchos amigos en internet",
+      "Cuando se usa poco el celular",
+      "Cuando se pasa tiempo en familia"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "El aislamiento social ocurre cuando la víctima se aleja de sus seres queridos por miedo o vergüenza.",
+    "explanationWrong": "El aislamiento es cuando la víctima se aleja por el sufrimiento del acoso.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses26_l3"
+  },
+  {
+    "id": "ac_st1_ses26_l3_q07",
+    "question": "¿Qué tipo de ayuda profesiónal puede necesitar una víctima de ciberbullying?",
+    "type": "multipleChoice",
+    "options": [
+      "Apoyo psicológico, asesoría legal y mediación escolar o laboral",
+      "Solo un programador de computadoras",
+      "Un electricista para arreglar el celular",
+      "Un diseñador gráfico"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "Una víctima puede necesitar apoyo psicológico, asesoría legal y mediación si ocurre en la escuela o trabajo.",
+    "explanationWrong": "El ciberbullying requiere apoyo psicológico, legal y mediación.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses26_l3"
+  },
+  {
+    "id": "ac_st1_ses26_l3_q08",
+    "question": "¿El ciberbullying puede afectar la salud física?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Sí, el estrés del ciberbullying puede causar dolores de cabeza, insomnio, problemas estomacales.",
+    "explanationWrong": "Sí, el estrés puede manifestarse en problemas físicos.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses26_l3"
+  },
+  {
+    "id": "ac_st1_ses26_l3_q09",
+    "question": "¿El ciberbullying puede causar depresión?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Sí, el ciberbullying persistente puede causar depresión. Busque ayuda profesiónal si es necesario.",
+    "explanationWrong": "Sí, el ciberbullying prolongado puede llevar a la depresión.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses26_l3"
+  },
+  {
+    "id": "ac_st1_ses26_l3_q10",
+    "question": "¿El ciberbullying puede afectar el rendimiento en el trabajo o estudios?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Sí, el estrés y la tristeza pueden dificultar la concentración y causar ausentismo.",
+    "explanationWrong": "Sí, el ciberbullying afecta la concentración y el rendimiento.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses26_l3"
+  },
+  {
+    "id": "ac_st1_ses26_l3_q11",
+    "question": "¿Es normal sentir vergüenza de contarse que sufre ciberbullying?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Es común sentir vergüenza, pero buscar ayuda es un acto de valentía, no de debilidad.",
+    "explanationWrong": "La vergüenza es común pero no debe impedir que busque ayuda.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses26_l3"
+  },
+  {
+    "id": "ac_st1_ses26_l3_q12",
+    "question": "Don Pedro notó que su esposa Doña Carmen ha estado muy callada, no quiere salir, duerme mal y le duele la cabeza. ¿Qué podría pasar?",
+    "type": "miniCase",
+    "options": [
+      "Podría estar sufriendo los efectos del ciberbullying",
+      "Probablemente tiene un resfriado",
+      "Está cansada por la edad",
+      "No tiene ningún problema"
+    ],
+    "correctIndex": 3,
+    "explanationCorrect": "Los síntomas de Doña Carmen pueden ser efectos del ciberbullying. Don Pedro debe hablar con ella.",
+    "explanationWrong": "No es solo cansancio. Estos síntomas pueden indicar ciberbullying.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses26_l3"
+  },
+  {
+    "id": "ac_st1_ses26_l3_q13",
+    "question": "La nieta de Don Carlos tiene 16 años, ha dejado de comer bien, llora y no quiere ir al colegio. ¿Qué podría pasar?",
+    "type": "miniCase",
+    "options": [
+      "Podría estar sufriendo ciberbullying con efectos graves",
+      "Está en una etapa normal de la adolescencia",
+      "Simplemente no le gusta el colegio",
+      "Su celular se está dañando"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Los cambios graves pueden ser señales serias de ciberbullying que requieren atención inmediata.",
+    "explanationWrong": "No es solo una etapa normal. Los cambios graves pueden indicar ciberbullying.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses26_l3"
+  },
+  {
+    "id": "ac_st1_ses26_l3_q14",
+    "question": "Don Lucho sufrió ciberbullying hace un año. Ya bloqueó al acosador pero todavía siente miedo. ¿Qué le está pasando?",
+    "type": "miniCase",
+    "options": [
+      "Está experimentando secuelas emocionales que requieren atención",
+      "Está exagerando la situación",
+      "Ya debería haber superado el problema",
+      "No tiene ningún problema"
+    ],
+    "correctIndex": 3,
+    "explanationCorrect": "El ciberbullying puede dejar secuelas duraderas como miedo. Don Lucho necesita apoyo.",
+    "explanationWrong": "No está exagerando. Las secuelas son reales y pueden durar mucho tiempo.",
+    "difficulty": 3,
+    "lessonId": "ac_s1_ses26_l3"
+  },
+  {
+    "id": "ac_st1_ses26_l3_q15",
+    "question": "La señora Rosa dice que desde que la acosan por internet, ha dejado de hablar con sus vecinos. ¿Qué efecto tiene?",
+    "type": "miniCase",
+    "options": [
+      "Aislamiento social que afecta su vida cotidiana",
+      "Mayor sociabilidad con sus vecinos",
+      "Ningún efecto en su vida social",
+      "Le está ayudando a conocer más personas"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "El ciberbullying está causando aislamiento social. Está dejando de hacer actividades que disfrutaba.",
+    "explanationWrong": "No le está ayudando a sociabilizar. El ciberbullying causa aislamiento.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses26_l3"
+  },
+  {
+    "id": "ac_st1_ses26_l4_q01",
+    "question": "¿Qué es lo primero que debe hacer si es víctima de ciberbullying?",
+    "type": "multipleChoice",
+    "options": [
+      "No responder al acosador y guardar evidencia con capturas de pantalla",
+      "Responder con insultos para defenderse",
+      "Borrar todos sus mensajes",
+      "Cerrar todas sus cuentas"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Lo primero es no responder nunca. Después, guarde evidencia con capturas de pantalla.",
+    "explanationWrong": "Nunca responda. Lo primero es guardar evidencia.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses26_l4"
+  },
+  {
+    "id": "ac_st1_ses26_l4_q02",
+    "question": "¿Con quién debe hablar si sufre ciberbullying?",
+    "type": "multipleChoice",
+    "options": [
+      "Con un familiar de confianza, amigo cercano o autoridad competente",
+      "Con el acosador para pedirle que pare",
+      "Con todos sus contactos para que se enteren",
+      "Con nadie, es un problema privado"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "Hable con alguien de confianza: familiar, amigo o autoridad como la policía o Defensoría del Pueblo.",
+    "explanationWrong": "No hable con el acosador ni se quede solo.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses26_l4"
+  },
+  {
+    "id": "ac_st1_ses26_l4_q03",
+    "question": "¿Qué es la Defensoría del Pueblo en Perú?",
+    "type": "multipleChoice",
+    "options": [
+      "Una institución que protege los derechos de los ciudadaños",
+      "Una empresa de seguridad privada",
+      "Una tienda de tecnología",
+      "Un banco"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "La Defensoría del Pueblo es una institución del Estado que protege los derechos ciudadaños.",
+    "explanationWrong": "No es una empresa de seguridad ni un banco. Es una institución del Estado.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses26_l4"
+  },
+  {
+    "id": "ac_st1_ses26_l4_q04",
+    "question": "¿Qué medidas puede tomar la plataforma para ayudar a víctimas?",
+    "type": "multipleChoice",
+    "options": [
+      "Eliminar contenido ofensivo, bloquear cuentas y cooperar con las autoridades",
+      "No hacer nada porque es problema de los usuarios",
+      "Cerrar todas las cuentas de la plataforma",
+      "Cambiar el nombre de la plataforma"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Las plataformas tienen protocolos para eliminar contenido ofensivo, bloquear cuentas y cooperar con autoridades.",
+    "explanationWrong": "Las plataformas sí pueden ayudar con mecanismos de reporte.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses26_l4"
+  },
+  {
+    "id": "ac_st1_ses26_l4_q05",
+    "question": "¿Qué es la mediación escolar en casos de ciberbullying?",
+    "type": "multipleChoice",
+    "options": [
+      "Un proceso donde un tercero neutral ayuda a resolver el conflicto",
+      "Un castigo para el acosador",
+      "Una forma de expulsar al acosador",
+      "Un programa para enseñar tecnología"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "La mediación es un proceso donde un tercero neutral ayuda a resolver el conflicto de forma pacífica.",
+    "explanationWrong": "La mediación no es un castigo. Es un proceso de resolución pacífica.",
+    "difficulty": 3,
+    "lessonId": "ac_s1_ses26_l4"
+  },
+  {
+    "id": "ac_st1_ses26_l4_q06",
+    "question": "¿Qué es la línea 181 en Perú?",
+    "type": "multipleChoice",
+    "options": [
+      "Una línea de ayuda para víctimas de violencia",
+      "Una línea de atención al cliente de Movistar",
+      "Un número para reclamos de Claro",
+      "Una línea de emergencias médicas"
+    ],
+    "correctIndex": 3,
+    "explanationCorrect": "La línea 181 es de la Policía Naciónal para víctimas de violencia. Puede llamar si sufre ciberbullying.",
+    "explanationWrong": "No es una línea de telecomúnicaciones. Es de la Policía Naciónal.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses26_l4"
+  },
+  {
+    "id": "ac_st1_ses26_l4_q07",
+    "question": "¿Qué tipo de evidencia es más útil para una denuncia?",
+    "type": "multipleChoice",
+    "options": [
+      "Capturas de pantalla con fecha, hora y nombre de usuario del acosador",
+      "Solo el testimonio de la víctima",
+      "Fotos de paisajes",
+      "Mensajes escritos a mano"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Las capturas de pantalla con fecha, hora y usuario son las pruebas más sólidas.",
+    "explanationWrong": "El testimonio solo no es suficiente. Las capturas son las pruebas más sólidas.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses26_l4"
+  },
+  {
+    "id": "ac_st1_ses26_l4_q08",
+    "question": "¿Puede denunciar el ciberbullying ante la policía?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Sí, puede denunciar ante la Dirincri o en su comisaría con la evidencia recopilada.",
+    "explanationWrong": "Sí, el ciberbullying es un delito que puede denunciarse.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses26_l4"
+  },
+  {
+    "id": "ac_st1_ses26_l4_q09",
+    "question": "¿Debe borrar las evidencias después de denunciar?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "No debe borrar las evidencias. Guárdelas por si las necesita en el proceso legal.",
+    "explanationWrong": "No borre las evidencias. Guárdelas en un lugar seguro.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses26_l4"
+  },
+  {
+    "id": "ac_st1_ses26_l4_q10",
+    "question": "¿Cuánto tiempo debe esperar para denunciar ciberbullying?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "No debe esperar, denuncie lo antes posible con la evidencia que tenga.",
+    "explanationWrong": "No espere. Denuncie lo antes posible.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses26_l4"
+  },
+  {
+    "id": "ac_st1_ses26_l4_q11",
+    "question": "¿Cuál es el primer paso para denunciar ciberbullying?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Recopilar toda la evidencia disponible (capturas, fechas, números) y luego ir a la policía.",
+    "explanationWrong": "Recopile evidencia primero, luego presente la denuncia.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses26_l4"
+  },
+  {
+    "id": "ac_st1_ses26_l4_q12",
+    "question": "Doña Carmen ha recibido mensajes ofensivos por WhatsApp durante dos semanas. Ya tiene capturas. ¿Qué hacer?",
+    "type": "miniCase",
+    "options": [
+      "Presentar una denuncia en la comisaría o Dirincri con la evidencia",
+      "Esperar un mes más para ver si paran",
+      "Borrar los mensajes y olvidar el asunto",
+      "Pedir a un amigo que responda"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Debe presentar una denuncia con su evidencia. La Dirincri o su comisaría pueden atender su caso.",
+    "explanationWrong": "No debe esperar ni borrar. Tiene evidencia y debe denunciar.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses26_l4"
+  },
+  {
+    "id": "ac_st1_ses26_l4_q13",
+    "question": "Don Pedro sufre ciberbullying en su trabajo. Un compañero creó un grupo de WhatsApp donde se burlan. ¿Qué hacer?",
+    "type": "miniCase",
+    "options": [
+      "Reportar ante recursos humanos, guardar evidencia y denunciar si es necesario",
+      "No hacer nada porque es solo un grupo",
+      "Crear otro grupo para vengarse",
+      "Renunciar a su trabajo"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Debe reportar ante recursos humanos, guardar evidencia y si continúa, denunciar.",
+    "explanationWrong": "No debe quedarse quieto ni vengarse. Reporte y guarde evidencia.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses26_l4"
+  },
+  {
+    "id": "ac_st1_ses26_l4_q14",
+    "question": "La nieta de Don Lucho es acosada por redes sociales. Los profesores no le dan importancia. ¿Qué hacer?",
+    "type": "miniCase",
+    "options": [
+      "Escalar a la dirección del colegio, guardar evidencia y denunciar en la policía",
+      "Esperar a que los profesores hagan algo",
+      "Hablar con la familia de la acosadora",
+      "Cambiar a la nieta de colegio"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "Debe escalar el caso, guardar evidencia y si no hay respuesta, denunciar.",
+    "explanationWrong": "No debe esperar. Escale, guarde pruebas y busque ayuda de las autoridades.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses26_l4"
+  },
+  {
+    "id": "ac_st1_ses26_l4_q15",
+    "question": "Don Manuel recibió un mensaje amenazante por correo. Dicen que tienen fotos comprometedoras y piden dinero. ¿Qué hacer?",
+    "type": "miniCase",
+    "options": [
+      "No pagar nunca, guardar evidencia y denunciar en la Dirincri",
+      "Pagar lo que piden para que no publiquen",
+      "Responder pidiendo más información",
+      "Borrar el correo y olvidar el asunto"
+    ],
+    "correctIndex": 3,
+    "explanationCorrect": "Nunca pague. Guarde evidencia y denuncie inmediatamente. Pagar solo empeora la situación.",
+    "explanationWrong": "Nunca pague. Los criminales siempre pedirán más dinero. Guarde evidencia y denuncie.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses26_l4"
+  },
+  {
+    "id": "ac_st1_ses26_l5_q01",
+    "question": "¿Qué significa bloquear a alguien en una aplicación de mensajería?",
+    "type": "multipleChoice",
+    "options": [
+      "Impedir que esa persona le envíe mensajes o lo contacte",
+      "Eliminar a esa persona de sus contactos del celular",
+      "Borrar todos los mensajes que le envió",
+      "Reportar a esa persona ante la policía"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "Bloquear a alguien impide que esa persona le envíe mensajes o lo contacte por esa aplicación.",
+    "explanationWrong": "Bloquear no elimina de contactos ni borra mensajes. Impide nuevos contactos.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses26_l5"
+  },
+  {
+    "id": "ac_st1_ses26_l5_q02",
+    "question": "¿Cómo puede bloquear a alguien en WhatsApp?",
+    "type": "multipleChoice",
+    "options": [
+      "Abra el chat, toque el nombre del contacto, deslice hacia abajo y seleccióne Bloquear",
+      "Borre el chat y listo",
+      "Desinstale WhatsApp del celular",
+      "Cambie su número de teléfono"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Para bloquear en WhatsApp: abra el chat, toque el nombre, deslice y seleccióne Bloquear.",
+    "explanationWrong": "Borrar el chat no bloquea. Use la opción de bloquear dentro de WhatsApp.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses26_l5"
+  },
+  {
+    "id": "ac_st1_ses26_l5_q03",
+    "question": "¿Qué es reportar un usuario en redes sociales?",
+    "type": "multipleChoice",
+    "options": [
+      "Informar a la plataforma que ese usuario está violando las reglas con contenido ofensivo",
+      "Eliminar al usuario de la plataforma",
+      "Enviar un mensaje de felicitación",
+      "Seguir al usuario para ver qué publica"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Reportar es informar a la plataforma sobre contenido ofensivo o que viola las normas.",
+    "explanationWrong": "Reportar no elimina automáticamente al usuario. Es informar para que la plataforma revise.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses26_l5"
+  },
+  {
+    "id": "ac_st1_ses26_l5_q04",
+    "question": "¿Qué es la denuncia policial por ciberbullying?",
+    "type": "multipleChoice",
+    "options": [
+      "Presentar un reporte formal ante la policía con evidencia del acoso digital",
+      "Hablar con un policía en la calle",
+      "Enviar un mensaje al Facebook de la policía",
+      "Esperar a que la policía lo contacte"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Es un reporte formal que se presenta en una comisaría o Dirincri con toda la evidencia.",
+    "explanationWrong": "No es solo hablar con un policía. Es un reporte formal con evidencia.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses26_l5"
+  },
+  {
+    "id": "ac_st1_ses26_l5_q05",
+    "question": "¿Qué es el bloqueo preventivo en redes sociales?",
+    "type": "multipleChoice",
+    "options": [
+      "Bloquear a personas que podrían ser acosadoras antes de que envíen mensajes ofensivos",
+      "Borrar todas sus cuentas",
+      "Cerrar su perfil para que nadie lo vea",
+      "Dejar de usar internet"
+    ],
+    "correctIndex": 3,
+    "explanationCorrect": "El bloqueo preventivo es una medida de seguridad para bloquear personas sospechosas antes de que acosen.",
+    "explanationWrong": "No es cerrar cuentas ni dejar internet. Es una medida preventiva.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses26_l5"
+  },
+  {
+    "id": "ac_st1_ses26_l5_q06",
+    "question": "¿Qué es el derecho al olvido en relación al ciberbullying?",
+    "type": "multipleChoice",
+    "options": [
+      "El derecho a solicitar que se eliminen sus datos personales de internet",
+      "El derecho a olvidar sus contraseñas",
+      "El derecho a no usar internet nunca más",
+      "El derecho a cambiar de nombre"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "El derecho al olvido permite solicitar la eliminación de datos personales publicados sin consentimiento.",
+    "explanationWrong": "No es olvidar contraseñas. Es el derecho a eliminar datos difundidos sin permiso.",
+    "difficulty": 3,
+    "lessonId": "ac_s1_ses26_l5"
+  },
+  {
+    "id": "ac_st1_ses26_l5_q07",
+    "question": "¿Qué es el bloqueo de número en el celular?",
+    "type": "multipleChoice",
+    "options": [
+      "Impedir que un número específico le llame o envíe mensajes de texto",
+      "Borrar el historial de llamadas",
+      "Cambiar el número de teléfono",
+      "Desactivar el servicio de telefonía"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "El bloqueo de número impide que una persona específica le envíe llamadas o mensajes de texto.",
+    "explanationWrong": "No es borrar historial ni cambiar de número. Es impedir que un número específico le contacte.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses26_l5"
+  },
+  {
+    "id": "ac_st1_ses26_l5_q08",
+    "question": "¿Puede una víctima solicitar que se eliminen sus datos personales de internet?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Sí, la víctima puede solicitar la eliminación de sus datos difundidos sin permiso. Esto es parte del derecho al olvido.",
+    "explanationWrong": "Sí, puede solicitar la eliminación. Las plataformas y autoridades pueden ayudar.",
+    "difficulty": 3,
+    "lessonId": "ac_s1_ses26_l5"
+  },
+  {
+    "id": "ac_st1_ses26_l5_q09",
+    "question": "¿Puede bloquear a alguien en Instagram?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Sí, puede bloquear a cualquier persona en Instagram para que no pueda ver sus publicaciones.",
+    "explanationWrong": "Sí, Instagram tiene opciónes para bloquear usuarios.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses26_l5"
+  },
+  {
+    "id": "ac_st1_ses26_l5_q10",
+    "question": "¿Qué debe hacer después de bloquear a un acosador?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Guardar la evidencia del bloqueo y continuar con su vida normal. Si el acoso continúa, denuncie.",
+    "explanationWrong": "Guarde evidencia y continúe. Si el acoso continúa, denuncie.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses26_l5"
+  },
+  {
+    "id": "ac_st1_ses26_l5_q11",
+    "question": "¿Qué es el reporte de contenido en Facebook?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Una herramienta para informar sobre publicaciones que violan las normas de la comunidad.",
+    "explanationWrong": "Es una herramienta de Facebook para reportar contenido ofensivo.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses26_l5"
+  },
+  {
+    "id": "ac_st1_ses26_l5_q12",
+    "question": "Doña Carmen bloqueó a alguien en WhatsApp. Ahora recibe mensajes de otro número. ¿Qué hacer?",
+    "type": "miniCase",
+    "options": [
+      "Bloquear también al nuevo número y guardar evidencia de ambos",
+      "Desbloquear al primer número para ver si es el mismo",
+      "No hacer nada porque ya bloqueó al primero",
+      "Responder al nuevo número para preguntar quién es"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Debe bloquear al nuevo número y guardar evidencia. Es probable que sea la misma persona.",
+    "explanationWrong": "No desbloque ni responda. Bloquee y guarde evidencia. Si continúa, denuncie.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses26_l5"
+  },
+  {
+    "id": "ac_st1_ses26_l5_q13",
+    "question": "Don Pedro quiere denunciar ciberbullying pero no sabe cómo. ¿Qué pasos seguir?",
+    "type": "miniCase",
+    "options": [
+      "Recopilar evidencia, ir a la comisaría y presentar una denuncia formal",
+      "Enviar un mensaje a la policía por redes sociales",
+      "Esperar a que la policía lo contacte",
+      "Hablar con el acosador para que pare"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Debe recopilar evidencia, ir a la comisaría o Dirincri, y presentar una denuncia formal.",
+    "explanationWrong": "No debe esperar ni hablar con el acosador. Presente una denuncia con evidencia.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses26_l5"
+  },
+  {
+    "id": "ac_st1_ses26_l5_q14",
+    "question": "La señora Rosa quiere bloquear a alguien en Gmail. ¿Cómo hacerlo?",
+    "type": "miniCase",
+    "options": [
+      "Abrir el correo, hacer clic en los tres puntos y selecciónar Bloquear al remitente",
+      "Borrar todos los correos de esa persona",
+      "No abrir los correos de esa persona",
+      "Cambiar su dirección de correo"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "En Gmail, abra el correo, haga clic en los tres puntos y seleccióne Bloquear.",
+    "explanationWrong": "No es necesario borrar. La función de bloquear envía los correos futuros a spam.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses26_l5"
+  },
+  {
+    "id": "ac_st1_ses26_l5_q15",
+    "question": "Un acosador creó múltiples cuentas falsas para molestar a Don Manuel. ¿Qué hacer?",
+    "type": "miniCase",
+    "options": [
+      "Bloquear cada cuenta, guardar evidencia y denunciar ante la policía",
+      "Desinstalar todas las redes sociales",
+      "No hacer nada porque son solo cuentas falsas",
+      "Crear una cuenta falsa para vengarse"
+    ],
+    "correctIndex": 3,
+    "explanationCorrect": "Debe bloquear cada cuenta, guardar evidencia de todas y denunciar con toda la evidencia.",
+    "explanationWrong": "No desinstale redes sociales ni se vengeance. Bloquee, guarde evidencia y denuncie.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses26_l5"
+  },
+  {
+    "id": "ac_st1_ses27_l1_q01",
+    "question": "¿Cuál es la carácterística de una contraseña segura?",
+    "type": "multipleChoice",
+    "options": [
+      "Que tenga letras, números y símbolos, y al menos 12 carácteres",
+      "Que sea su fecha de nacimiento",
+      "Que sea la misma en todas sus cuentas",
+      "Que tenga solo 4 carácteres"
+    ],
+    "correctIndex": 3,
+    "explanationCorrect": "Una contraseña segura debe tener letras mayúsculas y minúsculas, números, símbolos y al menos 12 carácteres.",
+    "explanationWrong": "No use su fecha de nacimiento ni contraseñas cortas. Use una combinación variada.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses27_l1"
+  },
+  {
+    "id": "ac_st1_ses27_l1_q02",
+    "question": "¿Qué es un administrador de contraseñas?",
+    "type": "multipleChoice",
+    "options": [
+      "Un programa que guarda y genera contraseñas seguras para todas sus cuentas",
+      "Un tipo de virus que roba contraseñas",
+      "Un programa para borrar contraseñas",
+      "Un dispositivo para crear contraseñas"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Un administrador de contraseñas es un programa seguro que guarda todas sus contraseñas.",
+    "explanationWrong": "No es un virus ni un dispositivo. Es un programa para gestionar contraseñas de forma segura.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses27_l1"
+  },
+  {
+    "id": "ac_st1_ses27_l1_q03",
+    "question": "¿Cada cuánto es recomendable cambiar sus contraseñas importantes?",
+    "type": "multipleChoice",
+    "options": [
+      "Cada 3 a 6 meses para cuentas bancarias y correos",
+      "Nunca, una vez es para siempre",
+      "Solo cuando se la roban",
+      "Una vez al año es suficiente"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Es recomendable cambiar contraseñas importantes cada 3 a 6 meses.",
+    "explanationWrong": "No es para siempre. Cambiarlas regularmente reduce el riesgo.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses27_l1"
+  },
+  {
+    "id": "ac_st1_ses27_l1_q04",
+    "question": "¿Qué es la autenticación de dos factores?",
+    "type": "multipleChoice",
+    "options": [
+      "Un método que requiere dos pasos: contraseña y un código adicional",
+      "Un tipo de contraseña más larga",
+      "Un programa para crear contraseñas",
+      "Un método para recuperar contraseñas"
+    ],
+    "correctIndex": 3,
+    "explanationCorrect": "Requiere su contraseña y un código adicional enviado a su celular. Es como poner dos candados.",
+    "explanationWrong": "No es solo una contraseña más larga. Son dos pasos de verificación.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses27_l1"
+  },
+  {
+    "id": "ac_st1_ses27_l1_q05",
+    "question": "¿Por qué no debe escribir sus contraseñas en un papel pegado al computador?",
+    "type": "multipleChoice",
+    "options": [
+      "Porque cualquier persona que pase pueda verlas y robarlas",
+      "Porque el papel se puede borrar",
+      "Porque el computador no puede leer papeles",
+      "Porque es ilegal escribir contraseñas en papel"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Si alguien entra a su casa o mira por su ventana, puede ver su contraseña.",
+    "explanationWrong": "No es cuestión de legalidad. Es que cualquiera que vea el papel puede acceder a sus cuentas.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses27_l1"
+  },
+  {
+    "id": "ac_st1_ses27_l1_q06",
+    "question": "¿Qué es una passphrase o frase de contraseña?",
+    "type": "multipleChoice",
+    "options": [
+      "Una frase memorable que usa como contraseña, como MiGatoCome2Peces!",
+      "Un tipo de contraseña muy corta",
+      "Una contraseña que solo tiene números",
+      "Una contraseña que cambia automáticamente"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Una passphrase es una frase que usted recuerda fácilmente pero es difícil de adivinar.",
+    "explanationWrong": "No es una contraseña corta ni solo números. Es una frase memorable.",
+    "difficulty": 3,
+    "lessonId": "ac_s1_ses27_l1"
+  },
+  {
+    "id": "ac_st1_ses27_l1_q07",
+    "question": "¿Por qué no debe compartir su contraseña con familiares?",
+    "type": "multipleChoice",
+    "options": [
+      "Porque si ellos la comparten con otros, su cuenta queda en riesgo",
+      "Porque es ilegal compartir contraseñas",
+      "Porque las contraseñas solo sirven para una persona",
+      "Porque los familiares no saben usar contraseñas"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Si comparte su contraseña y esa persona la comparte con otros, su cuenta queda en riesgo.",
+    "explanationWrong": "No es cuestión de legalidad. Es que pierde control sobre quién tiene acceso.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses27_l1"
+  },
+  {
+    "id": "ac_st1_ses27_l1_q08",
+    "question": "¿Es seguro usar la misma contraseña en todas sus cuentas?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "No es seguro. Si roban su contraseña en una cuenta, podrán acceder a todas las demás.",
+    "explanationWrong": "Nunca use la misma contraseña en todas sus cuentas.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses27_l1"
+  },
+  {
+    "id": "ac_st1_ses27_l1_q09",
+    "question": "¿Es seguro guardar contraseñas en las notas del celular?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "No es seguro. Si alguien accede a su celular, puede ver todas sus contraseñas.",
+    "explanationWrong": "No es seguro. Si su celular es robado, sus contraseñas quedan expuestas.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses27_l1"
+  },
+  {
+    "id": "ac_st1_ses27_l1_q10",
+    "question": "¿Qué debe hacer si sospecha que robaron su contraseña?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Cambiarla inmediatamente en todas las cuentas donde la use, empezando por correo y bancos.",
+    "explanationWrong": "Cámbiela inmediatamente en todas las cuentas donde la haya usado.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses27_l1"
+  },
+  {
+    "id": "ac_st1_ses27_l1_q11",
+    "question": "¿Qué es el llenado automático de contraseñas del navegador?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Una función que guarda y completa sus contraseñas automáticamente. Es conveniente pero asegúrese de que su computadora esté segura.",
+    "explanationWrong": "No es un virus. Es una función de conveniencia que requiere seguridad.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses27_l1"
+  },
+  {
+    "id": "ac_st1_ses27_l1_q12",
+    "question": "Doña Carmen usa la contraseña 123456 para todas sus cuentas bancarias y de correo. ¿Qué riesgo corre?",
+    "type": "miniCase",
+    "options": [
+      "Que sea muy fácil de adivinar y puedan robar todas sus cuentas de una vez",
+      "Ningún riesgo, es perfecta",
+      "Que su celular se vuelva más lento",
+      "Que sus correos se envíen solos"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "La contraseña 123456 es extremadamente fácil de adivinar. Si la usan en todas sus cuentas, un criminal puede acceder a todo.",
+    "explanationWrong": "No es una contraseña segura. Es una de las más fáciles de hackear.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses27_l1"
+  },
+  {
+    "id": "ac_st1_ses27_l1_q13",
+    "question": "El señor Manuel recibe un correo de Interbank pidiéndole que actualice su contraseña haciendo clic en un enlace. ¿Qué hacer?",
+    "type": "miniCase",
+    "options": [
+      "No hacer clic, llamar al banco directamente usando el número de su tarjeta",
+      "Hacer clic porque es del banco",
+      "Responder pidiendo más información",
+      "Reenviar el correo a sus contactos"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "Los bancos nunca piden contraseñas por correo. Llame al número oficial de Interbank.",
+    "explanationWrong": "No haga clic. Llame al banco directamente usando el número oficial.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses27_l1"
+  },
+  {
+    "id": "ac_st1_ses27_l1_q14",
+    "question": "La señora Rosa quiere crear una contraseña para Yape. ¿Cuál sería la mejor opción?",
+    "type": "miniCase",
+    "options": [
+      "Yape2024!MiGato - combinación de letras, números y símbolos",
+      "yape - su nombre de usuario",
+      "123456 - la más común",
+      "rosa - su nombre"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "La mejor opción es una combinación variada. Yape2024!MiGato es fuerte y memorable.",
+    "explanationWrong": "No use su nombre ni contraseñas comunes. Use una combinación variada.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses27_l1"
+  },
+  {
+    "id": "ac_st1_ses27_l1_q15",
+    "question": "Don Pedro quiere activar la autenticación de dos factores en Gmail. ¿Qué necesita?",
+    "type": "miniCase",
+    "options": [
+      "Su contraseña y un código que llegará a su celular",
+      "Solo su contraseña",
+      "Su número de DNI",
+      "Su dirección de correo electrónico"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "La autenticación de dos factores necesita su contraseña y un código que llega a su celular.",
+    "explanationWrong": "No solo necesita la contraseña. Necesita también un código adicional.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses27_l1"
+  },
+  {
+    "id": "ac_st1_ses27_l2_q01",
+    "question": "¿Qué es el phishing?",
+    "type": "multipleChoice",
+    "options": [
+      "Una técnica para engañarlo y robarle información haciéndose pasar por una entidad confiable",
+      "Un tipo de virus que afecta los celulares",
+      "Un juego popular en internet",
+      "Una forma de aprender a usar computadoras"
+    ],
+    "correctIndex": 3,
+    "explanationCorrect": "El phishing es cuando alguien se hace pasar por un banco o empresa para engañarlo y robarle datos.",
+    "explanationWrong": "El phishing no es un virus ni un juego. Es una técnica de engaño.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses27_l2"
+  },
+  {
+    "id": "ac_st1_ses27_l2_q02",
+    "question": "¿Cómo puede identificar un correo de phishing?",
+    "type": "multipleChoice",
+    "options": [
+      "Tiene errores ortográficos, urgen a actuar rápido y piden datos personales",
+      "Siempre viene de una dirección conocida",
+      "Tiene el logotipo de la empresa",
+      "Es muy largo y detallado"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Los correos de phishing suelen tener errores, presionan a actuar rápido y piden datos personales.",
+    "explanationWrong": "No basta con tener logotipo. Los signos incluyen urgencia, errores y solicitud de datos.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses27_l2"
+  },
+  {
+    "id": "ac_st1_ses27_l2_q03",
+    "question": "¿Qué banco le pedirá por correo que ingrese su contraseña?",
+    "type": "multipleChoice",
+    "options": [
+      "Ninguno, los bancos nunca piden contraseñas por correo",
+      "Solo el BCP",
+      "Solo Interbank",
+      "Todos los bancos lo hacen"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "Ningún banco legítimo le pedirá su contraseña por correo electrónico.",
+    "explanationWrong": "Los bancos nunca piden contraseñas por correo. Si recibe esto, es una estafa.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses27_l2"
+  },
+  {
+    "id": "ac_st1_ses27_l2_q04",
+    "question": "¿Qué hacer si recibe un correo sospechoso de SUNAT?",
+    "type": "multipleChoice",
+    "options": [
+      "No hacer clic, eliminar el correo y llamar a SUNAT directamente",
+      "Hacer clic porque es de SUNAT",
+      "Responder pidiendo explicaciones",
+      "Reenviar el correo a amigos"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "No haga clic en enlaces. Si tiene dudas, llame al número oficial de SUNAT.",
+    "explanationWrong": "No haga clic ni responda. SUNAT no envía correos pidiendo contraseñas.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses27_l2"
+  },
+  {
+    "id": "ac_st1_ses27_l2_q05",
+    "question": "¿Qué es el vishing?",
+    "type": "multipleChoice",
+    "options": [
+      "Phosing realizado por llamadas telefónicas para robar información",
+      "Un tipo de virus informático",
+      "Un juego de palabras online",
+      "Una red social para jóvenes"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "El vishing es phishing por teléfono. Los criminales llaman haciéndose pasar de bancos para robarle datos.",
+    "explanationWrong": "El vishing no es un virus. Es phishing por llamadas telefónicas.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses27_l2"
+  },
+  {
+    "id": "ac_st1_ses27_l2_q06",
+    "question": "¿Cómo puede verificar si un sitio web es legítimo?",
+    "type": "multipleChoice",
+    "options": [
+      "Verificar que la dirección comience con HTTPS y que el dominio sea el oficial",
+      "Si tiene colores bonitos",
+      "Si tiene publicidad",
+      "Si es muy rápido"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Verifique HTTPS y que el dominio sea el oficial (interbank.com.pe, no interbank-seguridad.com).",
+    "explanationWrong": "Los colores bonitos no garantizan seguridad. Verifique HTTPS y el dominio oficial.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses27_l2"
+  },
+  {
+    "id": "ac_st1_ses27_l2_q07",
+    "question": "¿Qué es un dominio falso en un sitio web de phishing?",
+    "type": "multipleChoice",
+    "options": [
+      "Una dirección web que parece la oficial pero tiene pequeñas diferencias",
+      "Un sitio web que no tiene publicidad",
+      "Un sitio web que es muy lento",
+      "Un sitio web que no tiene logotipo"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "Un dominio falso parece el oficial pero tiene pequeños cambios: interbank-seguridad.com vs interbank.com.pe.",
+    "explanationWrong": "No se fije solo en el logotipo. Verifique la dirección web cuidadosamente.",
+    "difficulty": 3,
+    "lessonId": "ac_s1_ses27_l2"
+  },
+  {
+    "id": "ac_st1_ses27_l2_q08",
+    "question": "¿Puede el phishing atacar a personas mayores?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Sí, el phishing puede atacar a cualquier persona. Los criminales suelen buscar personas mayores.",
+    "explanationWrong": "Sí, el phishing afecta a personas de cualquier edad.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses27_l2"
+  },
+  {
+    "id": "ac_st1_ses27_l2_q09",
+    "question": "¿Es seguro hacer clic en un enlace que recibe por WhatsApp de un contacto?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "No siempre es seguro. Si la cuenta de su contacto fue hackeada, podrían enviarle enlaces peligrosos.",
+    "explanationWrong": "No siempre es seguro. Verifique siempre antes de hacer clic.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses27_l2"
+  },
+  {
+    "id": "ac_st1_ses27_l2_q10",
+    "question": "¿Qué debe hacer si hizo clic en un enlace sospechoso?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Cambiar sus contraseñas inmediatamente y revisar sus cuentas bancarias.",
+    "explanationWrong": "Cámbiela inmediatamente y revise sus cuentas bancarias.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses27_l2"
+  },
+  {
+    "id": "ac_st1_ses27_l2_q11",
+    "question": "¿Qué es el spear phishing?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Phishing dirigido a una persona específica usando información personal para ser más creíble.",
+    "explanationWrong": "El spear phishing usa datos personales específicos para ser más convincente.",
+    "difficulty": 3,
+    "lessonId": "ac_s1_ses27_l2"
+  },
+  {
+    "id": "ac_st1_ses27_l2_q12",
+    "question": "Don Carlos recibe un mensaje: Ha ganado un premio de S/. 5,000 de BCP. Haga clic aquí para reclamar. ¿Qué hacer?",
+    "type": "miniCase",
+    "options": [
+      "Eliminar el mensaje inmediatamente, es una estafa",
+      "Hacer clic para reclamar su premio",
+      "Responder pidiendo más información",
+      "Reenviar el mensaje a sus contactos"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Este es un mensaje de phishing. Los bancos no regalan dinero por mensaje. Elimínelo.",
+    "explanationWrong": "No haga clic ni responda. Los bancos no envían premios por mensaje.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses27_l2"
+  },
+  {
+    "id": "ac_st1_ses27_l2_q13",
+    "question": "La señora Rosa recibe un correo de Movistar con errores de ortografía que dice: Su cuenta será bloqueada. Actualice aquí. ¿Qué hacer?",
+    "type": "miniCase",
+    "options": [
+      "No hacer clic, eliminar y llamar a Movistar",
+      "Hacer clic porque es urgente",
+      "Responder al correo",
+      "Reenviar a sus hijos"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Los errores de ortografía son una señal de phishing. Llame a Movistar directamente.",
+    "explanationWrong": "Los errores de ortografía son una señal de phishing. No haga clic.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses27_l2"
+  },
+  {
+    "id": "ac_st1_ses27_l2_q14",
+    "question": "Don Pedro quiere verificar si un sitio web es seguro antes de comprar. ¿Qué buscar?",
+    "type": "miniCase",
+    "options": [
+      "HTTPS, opiniones de otros compradores y datos de contacto verificables",
+      "Que tenga muchos colores",
+      "Que tenga ofertas muy baratas",
+      "Que no tenga publicidad"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "Verifique HTTPS, opiniones de otros compradores y datos de contacto verificables.",
+    "explanationWrong": "No se fije solo en ofertas o colores. Verifique HTTPS y opiniones.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses27_l2"
+  },
+  {
+    "id": "ac_st1_ses27_l2_q15",
+    "question": "Un amigo le cuenta que le robaron dinero después de llenar un formulario en línea que parecía oficial. ¿Qué pasó?",
+    "type": "miniCase",
+    "options": [
+      "Fue víctima de phishing y sus datos fueron robados",
+      "Su banco cometió un error",
+      "Su celular tiene un virus",
+      "Es una coincidencia"
+    ],
+    "correctIndex": 3,
+    "explanationCorrect": "Su amigo fue víctima de phishing. El formulario falso robó sus datos bancarios.",
+    "explanationWrong": "No es un error del banco. Fue phishing. Debe denunciar y cambiar contraseñas.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses27_l2"
+  },
+  {
+    "id": "ac_st1_ses27_l3_q01",
+    "question": "¿Qué información personal no debe compartir en internet?",
+    "type": "multipleChoice",
+    "options": [
+      "Su contraseña, número de tarjeta, DNI y código de seguridad",
+      "Su nombre y apellido solamente",
+      "El nombre de su mascota",
+      "Su color favorito"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "Nunca comparta contraseñas, números de tarjeta, DNI o códigos de seguridad en internet.",
+    "explanationWrong": "Su nombre puede compartirse, pero nunca contraseñas, tarjetas o DNI.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses27_l3"
+  },
+  {
+    "id": "ac_st1_ses27_l3_q02",
+    "question": "¿Qué es la configuración de privacidad en las redes sociales?",
+    "type": "multipleChoice",
+    "options": [
+      "Opciónes que le permiten controlar quién puede ver su información y publicaciones",
+      "Un tipo de virus que afecta las redes sociales",
+      "Un programa para borrar cuentas",
+      "Una función para enviar mensajes masivos"
+    ],
+    "correctIndex": 3,
+    "explanationCorrect": "La configuración de privacidad le permite controlar quién ve sus publicaciones e información.",
+    "explanationWrong": "No es un virus ni un programa de borrado. Es para controlar quién ve su información.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses27_l3"
+  },
+  {
+    "id": "ac_st1_ses27_l3_q03",
+    "question": "¿Qué es la geolocalización y por qué debe desactivarla en sus fotos?",
+    "type": "multipleChoice",
+    "options": [
+      "Es la ubicación geográfica donde se tomó la foto; si la activa, revela dónde vive",
+      "Es el nombre del fotógrafo",
+      "Es el tipo de cámara que usa",
+      "Es el tamaño de la imagen"
+    ],
+    "correctIndex": 3,
+    "explanationCorrect": "La geolocalización guarda la ubicación exacta de la foto. Si la comparte, revela dónde vive.",
+    "explanationWrong": "No es el nombre del fotógrafo. Revela su dirección o lugares que frecuenta.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses27_l3"
+  },
+  {
+    "id": "ac_st1_ses27_l3_q04",
+    "question": "¿Qué es un perfil privado en redes sociales?",
+    "type": "multipleChoice",
+    "options": [
+      "Un perfil donde solo sus amigos aprobados pueden ver sus publicaciones",
+      "Un perfil que no tiene foto",
+      "Un perfil que solo ven los administradores",
+      "Un perfil temporal que se borra solo"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Un perfil privado solo permite que sus amigos aprobados vean sus publicaciones.",
+    "explanationWrong": "No es un perfil sin foto ni temporal. Es controlar quién ve su contenido.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses27_l3"
+  },
+  {
+    "id": "ac_st1_ses27_l3_q05",
+    "question": "¿Qué es un rastreador en internet?",
+    "type": "multipleChoice",
+    "options": [
+      "Software que recopila su actividad en internet sin su conocimiento para venderla",
+      "Un tipo de virus que destruye archivos",
+      "Un programa para mejorar la velocidad de internet",
+      "Una herramienta para encontrar archivos perdidos"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Los rastreadores recopilan su actividad en internet sin su conocimiento y la venden a empresas.",
+    "explanationWrong": "No es un virus destructivo. Recopila sus datos de navegación sin que usted lo sepa.",
+    "difficulty": 3,
+    "lessonId": "ac_s1_ses27_l3"
+  },
+  {
+    "id": "ac_st1_ses27_l3_q06",
+    "question": "¿Qué es el modo incógnito del navegador?",
+    "type": "multipleChoice",
+    "options": [
+      "Un modo que no guarda su historial de navegación en el dispositivo",
+      "Un modo que lo hace invisible en internet",
+      "Un modo que le da acceso a sitios restringidos",
+      "Un modo que descarga archivos automáticamente"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "El modo incógnito no guarda historial ni cookies en su dispositivo. Su proveedor sí puede ver su actividad.",
+    "explanationWrong": "No lo hace invisible en internet. Solo no guarda datos en su dispositivo.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses27_l3"
+  },
+  {
+    "id": "ac_st1_ses27_l3_q07",
+    "question": "¿Qué es una filtración de datos?",
+    "type": "multipleChoice",
+    "options": [
+      "Cuando los datos personales de muchos usuarios son expuestos sin autorización",
+      "Cuando usted comparte sus datos voluntariamente",
+      "Cuando su celular se moja con agua",
+      "Cuando su contraseña es muy débil"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Una filtración de datos es cuando la información de usuarios es robada de empresas o sitios web.",
+    "explanationWrong": "No es compartir datos voluntariamente. Es cuando los datos son robados de empresas.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses27_l3"
+  },
+  {
+    "id": "ac_st1_ses27_l3_q08",
+    "question": "¿Es recomendable aceptar solicitudes de amistad de desconocidos en redes sociales?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "No es recomendable. Los desconocidos podrían ser criminales que buscan robar su información.",
+    "explanationWrong": "No acepte solicitudes de desconocidos. Podrían ser criminales.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses27_l3"
+  },
+  {
+    "id": "ac_st1_ses27_l3_q09",
+    "question": "¿Puede su información personal ser usada para estafarlo aunque no la haya compartido en redes sociales?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Sí, los criminales pueden obtener su información de filtraciones de datos, formularios falsos o compras en línea.",
+    "explanationWrong": "Sí, su información puede obtenerse de filtraciones de datos.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses27_l3"
+  },
+  {
+    "id": "ac_st1_ses27_l3_q10",
+    "question": "¿Qué es el consentimiento informado en protección de datos?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Su autorización explícita para que una empresa use sus datos personales.",
+    "explanationWrong": "Es su autorización para que una empresa recopile y use sus datos.",
+    "difficulty": 3,
+    "lessonId": "ac_s1_ses27_l3"
+  },
+  {
+    "id": "ac_st1_ses27_l3_q11",
+    "question": "¿Qué debe hacer si sospecha que sus datos fueron filtrados en una brecha de seguridad?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Cambiar contraseñas, revisar cuentas bancarias y activar autenticación de dos factores.",
+    "explanationWrong": "No espere. Cambie contraseñas y revise sus cuentas.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses27_l3"
+  },
+  {
+    "id": "ac_st1_ses27_l3_q12",
+    "question": "Doña Carmen publicó una foto de su nuevo celular en Facebook con la geolocalización activada. ¿Qué riesgo corre?",
+    "type": "miniCase",
+    "options": [
+      "Alguien puede saber dónde vive y robarle el celular",
+      "Ningún riesgo, es solo una foto",
+      "Su celular se puede dañar",
+      "Facebook puede borrar la foto"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "La geolocalización revela su ubicación. Un criminal puede usarla para robarle.",
+    "explanationWrong": "No es solo una foto. La geolocalización revela su ubicación.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses27_l3"
+  },
+  {
+    "id": "ac_st1_ses27_l3_q13",
+    "question": "Don Pedro recibió un correo de una tienda donde compró hace tiempo. Le dicen que hubo una filtración y debe cambiar su contraseña. ¿Qué hacer?",
+    "type": "miniCase",
+    "options": [
+      "Verificar si el correo es legítimo contactando a la tienda directamente",
+      "Hacer clic en el enlace inmediatamente",
+      "No hacer nada porque es spam",
+      "Responder al correo pidiendo más información"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Verifique contactando a la tienda por sus canales oficiales. Si es real, cambie la contraseña.",
+    "explanationWrong": "No haga clic sin verificar. Contacte a la tienda directamente.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses27_l3"
+  },
+  {
+    "id": "ac_st1_ses27_l3_q14",
+    "question": "La señora Rosa quiere que su perfil de Facebook sea más privado. ¿Qué configuración cambiar?",
+    "type": "miniCase",
+    "options": [
+      "Hacer que sus publicaciones sean visibles solo para amigos",
+      "Poner una foto de perfil más bonita",
+      "Publicar más contenido",
+      "Agregar más amigos"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Debe configurar sus publicaciones para que solo sean visibles para amigos.",
+    "explanationWrong": "No es cuestión de foto bonita. Debe cambiar la configuración a solo amigos.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses27_l3"
+  },
+  {
+    "id": "ac_st1_ses27_l3_q15",
+    "question": "Don Carlos tiene una tienda en línea y quiere proteger los datos de sus clientes. ¿Qué hacer?",
+    "type": "miniCase",
+    "options": [
+      "Usar contraseñas seguras, cifrar datos y no compartir información innecesaria",
+      "No guardar ningún dato de clientes",
+      "Compartir los datos con todos sus empleados",
+      "No tener tienda en línea"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "Debe usar contraseñas seguras, cifrar datos sensibles y minimizar la información recopilada.",
+    "explanationWrong": "No es necesario no guardar datos. Debe protegerlos adecuadamente.",
+    "difficulty": 3,
+    "lessonId": "ac_s1_ses27_l3"
+  },
+  {
+    "id": "ac_st1_ses27_l4_q01",
+    "question": "¿Qué es un software malicioso (malware)?",
+    "type": "multipleChoice",
+    "options": [
+      "Programa diseñado para dañar o infiltrarse en su computadora o celular sin su conocimiento",
+      "Un tipo de antivirus",
+      "Un programa para optimizar su computadora",
+      "Un tipo de navegador de internet"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "El malware es software diseñado para dañar o infiltrarse en su dispositivo sin su conocimiento.",
+    "explanationWrong": "No es un antivirus ni un navegador. Es software malicioso.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses27_l4"
+  },
+  {
+    "id": "ac_st1_ses27_l4_q02",
+    "question": "¿Qué es un antivirus y por qué es importante?",
+    "type": "multipleChoice",
+    "options": [
+      "Un programa que detecta y elimina software malicioso para proteger su dispositivo",
+      "Un tipo de virus que protege su computadora",
+      "Un programa para borrar archivos",
+      "Un tipo de navegador web"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "El antivirus detecta y elimina software malicioso. Es importante tenerlo actualizado.",
+    "explanationWrong": "No es un virus. Es un programa que protege su dispositivo.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses27_l4"
+  },
+  {
+    "id": "ac_st1_ses27_l4_q03",
+    "question": "¿Qué es el ransomware?",
+    "type": "multipleChoice",
+    "options": [
+      "Un tipo de malware que secuestra sus archivos y pide dinero para liberarlos",
+      "Un tipo de antivirus",
+      "Un programa para crear copias de seguridad",
+      "Un tipo de contraseña segura"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "El ransomware cifra sus archivos y pide un rescate para devolverle el acceso.",
+    "explanationWrong": "No es un antivirus. Es un malware que secuestra sus archivos.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses27_l4"
+  },
+  {
+    "id": "ac_st1_ses27_l4_q04",
+    "question": "¿Por qué es importante actualizar el software de su dispositivo?",
+    "type": "multipleChoice",
+    "options": [
+      "Porque las actualizaciones corrigen errores de seguridad",
+      "Porque mejora el color de la pantalla",
+      "Porque hace que las fotos se vean más bonitas",
+      "Porque es obligatorio por ley"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Las actualizaciones corrigen vulnerabilidades de seguridad que los criminales pueden explotar.",
+    "explanationWrong": "No es por el color de pantalla. Las actualizaciones corrigen errores de seguridad.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses27_l4"
+  },
+  {
+    "id": "ac_st1_ses27_l4_q05",
+    "question": "¿Qué es una copia de seguridad (backup)?",
+    "type": "multipleChoice",
+    "options": [
+      "Una copia de sus archivos guardada en otro lugar para recuperarlos si pierde el dispositivo",
+      "Un tipo de virus que afecta sus archivos",
+      "Un programa para borrar archivos",
+      "Una contraseña de emergencia"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "Una copia de seguridad es una copia de sus archivos guardada en otro lugar (nube o disco externo).",
+    "explanationWrong": "No es un virus. Es una copia para recuperar sus datos si pierde el dispositivo.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses27_l4"
+  },
+  {
+    "id": "ac_st1_ses27_l4_q06",
+    "question": "¿Qué es un keylogger?",
+    "type": "multipleChoice",
+    "options": [
+      "Software que registra todo lo que escribe en su teclado, incluyendo contraseñas",
+      "Un tipo de teclado mejorado",
+      "Un programa para crear contraseñas seguras",
+      "Un tipo de virus que solo afecta a juegos"
+    ],
+    "correctIndex": 3,
+    "explanationCorrect": "Un keylogger es software malicioso que registra todo lo que escribe, incluyendo contraseñas.",
+    "explanationWrong": "No es un teclado mejorado. Es un software que graba todo lo que escribe.",
+    "difficulty": 3,
+    "lessonId": "ac_s1_ses27_l4"
+  },
+  {
+    "id": "ac_st1_ses27_l4_q07",
+    "question": "¿Qué es el phishing por SMS (smishing)?",
+    "type": "multipleChoice",
+    "options": [
+      "Mensajes de texto falsos con enlaces peligrosos para robar información",
+      "Un tipo de servicio de mensajería premium",
+      "Una función del celular para enviar mensajes más rápido",
+      "Un tipo de contraseña para mensajes"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "El smishing son mensajes de texto falsos con enlaces que llevan a sitios de phishing.",
+    "explanationWrong": "No es un servicio premium. Son mensajes falsos con enlaces peligrosos.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses27_l4"
+  },
+  {
+    "id": "ac_st1_ses27_l4_q08",
+    "question": "¿Es seguro descargar aplicaciones de fuentes no oficiales?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "No es seguro. Las fuentes no oficiales pueden contener malware. Use siempre las tiendas oficiales.",
+    "explanationWrong": "No es seguro. Use siempre Google Play o App Store.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses27_l4"
+  },
+  {
+    "id": "ac_st1_ses27_l4_q09",
+    "question": "¿Qué es la ingeniería social en ciberseguridad?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Técnicas para manipular psicológicamente a las personas y obtener información confidencial.",
+    "explanationWrong": "Es manipulación psicológica para obtener información.",
+    "difficulty": 3,
+    "lessonId": "ac_s1_ses27_l4"
+  },
+  {
+    "id": "ac_st1_ses27_l4_q10",
+    "question": "¿Qué hacer si su celular se comporta de forma extraña (se lenta, muestra anuncios)?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Podría tener malware; escanee con un antivirus y si es necesario restaure de fábrica.",
+    "explanationWrong": "Escanee con antivirus y restaure si es necesario.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses27_l4"
+  },
+  {
+    "id": "ac_st1_ses27_l4_q11",
+    "question": "¿Qué es un firewall?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Un sistema de seguridad que controla el tráfico de entrada y salida de su red para bloquear amenazas.",
+    "explanationWrong": "Es un sistema que filtra el tráfico de internet para proteger su dispositivo.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses27_l4"
+  },
+  {
+    "id": "ac_st1_ses27_l4_q12",
+    "question": "Don Pedro descargó una app de una fuente no oficial y ahora su celular muestra muchos anuncios. ¿Qué pasó?",
+    "type": "miniCase",
+    "options": [
+      "Descargó malware que muestra anuncios; debe eliminar la app y escanear con antivirus",
+      "Su celular se actualizó y es normal",
+      "Los anuncios son de la empresa del celular",
+      "Es una app que funciona correctamente"
+    ],
+    "correctIndex": 3,
+    "explanationCorrect": "Descargó malware. Debe eliminar la app, escanear con antivirus y restaurar si es necesario.",
+    "explanationWrong": "No es una actualización. Es malware que debe eliminarse.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses27_l4"
+  },
+  {
+    "id": "ac_st1_ses27_l4_q13",
+    "question": "La señora Rosa quiere hacer una copia de seguridad de sus fotos importantes. ¿Qué opciónes tiene?",
+    "type": "miniCase",
+    "options": [
+      "Guardarlas en un disco duro externo, en la nube o en una memoria USB",
+      "Solo guardarlas en el celular",
+      "Borrarlas y confiar en que el celular no se dañe",
+      "No tiene opciónes para hacer copias"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Puede guardar en disco duro externo, nube (Google Fotos, iCloud) o memoria USB.",
+    "explanationWrong": "Tiene varias opciónes. Tener solo una copia en el celular es arriesgado.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses27_l4"
+  },
+  {
+    "id": "ac_st1_ses27_l4_q14",
+    "question": "Don Manuel recibió un mensaje: Actualice su app de Yape haciendo clic aquí. El enlace parece sospechoso. ¿Qué hacer?",
+    "type": "miniCase",
+    "options": [
+      "No hacer clic; si necesita actualizar, vaya directamente a la tienda oficial",
+      "Hacer clic porque es de Yape",
+      "Responder al mensaje",
+      "Reenviar a sus contactos"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "No haga clic. Si necesita actualizar Yape, vaya directamente a Google Play o App Store.",
+    "explanationWrong": "No haga clic en enlaces sospechosos. Vaya directamente a la tienda oficial.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses27_l4"
+  },
+  {
+    "id": "ac_st1_ses27_l4_q15",
+    "question": "El señor Luis tiene una computadora vieja que ya no usa. ¿Qué hacer antes de regalarla?",
+    "type": "miniCase",
+    "options": [
+      "Hacer borrado seguro de todos sus datos y desactivar las cuentas vinculadas",
+      "Solo borrar los archivos de la papelera",
+      "No hacer nada porque es vieja",
+      "Darla sin preocuparse por los datos"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Debe hacer borrado seguro y desactivar todas las cuentas vinculadas.",
+    "explanationWrong": "No solo borrar de la papelera. Haga borrado seguro y desactive cuentas.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses27_l4"
+  },
+  {
+    "id": "ac_st1_ses27_l5_q02",
+    "question": "María tiene 68 años y recibe un correo de Interbank con errores de ortografía pidiéndole que haga clic para verificar su cuenta. ¿Qué hacer?",
+    "type": "multipleChoice",
+    "options": [
+      "No hacer clic, eliminar el correo y llamar a Interbank directamente",
+      "Hacer clic porque es urgente",
+      "Responder al correo con sus datos",
+      "Reenviar el correo a sus hijos"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Los errores de ortografía y la urgencia son señales de phishing. Llame a Interbank directamente.",
+    "explanationWrong": "No haga clic. Los correos con errores suelen ser estafas.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses27_l5"
+  },
+  {
+    "id": "ac_st1_ses27_l5_q03",
+    "question": "Don Carlos quiere enviar su DNI y comprobante de domicilio por WhatsApp a su hijo en otro país. ¿Es seguro?",
+    "type": "multipleChoice",
+    "options": [
+      "WhatsApp tiene cifrado, pero verifique que sea realmente su hijo",
+      "No, nunca debe enviar documentos por ningún medio digital",
+      "Solo si usa WiFi",
+      "Solo si el hijo está en Lima"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "WhatsApp tiene cifrado que protege los documentos. Pero verifique la identidad del receptor.",
+    "explanationWrong": "WhatsApp es relativamente seguro, pero verifique la identidad.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses27_l5"
+  },
+  {
+    "id": "ac_st1_ses27_l5_q04",
+    "question": "Doña Carmen usa 123456 para su correo, Yape y BCP. ¿Qué riesgo corre?",
+    "type": "multipleChoice",
+    "options": [
+      "Si roban una contraseña, pueden acceder a todas sus cuentas",
+      "Ningún riesgo, es perfecta",
+      "Que su celular se vuelva más lento",
+      "Que sus correos se envíen solos"
+    ],
+    "correctIndex": 3,
+    "explanationCorrect": "Si alguien adivina esa contraseña, puede acceder a todas sus cuentas. Debe usar contraseñas diferentes.",
+    "explanationWrong": "No es una contraseña segura. Si la comprometen, todas sus cuentas quedan en riesgo.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses27_l5"
+  },
+  {
+    "id": "ac_st1_ses27_l5_q05",
+    "question": "El señor Manuel está en un café de Miraflores y quiere revisar sus cuentas bancarias. Hay WiFi gratuito. ¿Qué hacer?",
+    "type": "multipleChoice",
+    "options": [
+      "Usar datos de celular o activar una VPN antes de conectarse al WiFi",
+      "Conectarse al WiFi porque es más rápido",
+      "Pedir la contraseña al mesonero",
+      "Esperar a llegar a su casa"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "Los WiFi públicos son inseguros para banca. Use datos móviles o una VPN.",
+    "explanationWrong": "El WiFi gratuito puede ser vigilado. Use datos móviles o una VPN.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses27_l5"
+  },
+  {
+    "id": "ac_st1_ses27_l5_q06",
+    "question": "La señora Rosa creó una cuenta en una red social. ¿Qué configuración activar inmediatamente?",
+    "type": "multipleChoice",
+    "options": [
+      "Hacer su perfil privado, desactivar geolocalización y revisar quién ve sus publicaciones",
+      "No cambiar nada, la configuración por defecto es segura",
+      "Poner su foto en público",
+      "Agregar a todos como amigos"
+    ],
+    "correctIndex": 3,
+    "explanationCorrect": "Debe hacer su perfil privado, desactivar geolocalización y controlar quién ve sus publicaciones.",
+    "explanationWrong": "No deje la configuración por defecto. Haga su perfil privado.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses27_l5"
+  },
+  {
+    "id": "ac_st1_ses27_l5_q07",
+    "question": "Don Pedro descargó una app no oficial y ahora su celular muestra anuncios extraños. ¿Qué pasar y qué hacer?",
+    "type": "multipleChoice",
+    "options": [
+      "Descargó malware; eliminar la app, escanear con antivirus y restaurar si es necesario",
+      "Su celular se actualizó y es normal",
+      "Los anuncios son de la empresa del celular",
+      "Es una app que funciona correctamente"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Descargó malware. Debe eliminar la app, escanear con antivirus y restaurar si es necesario.",
+    "explanationWrong": "No ignore el comportamiento extraño. Es malware que debe eliminarse.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses27_l5"
+  },
+  {
+    "id": "ac_st1_ses27_l5_q08",
+    "question": "Un grupo del trabajo publica fotos editadas de Don Carlos para burlarse. ¿Qué hacer?",
+    "type": "multipleChoice",
+    "options": [
+      "Recopilar evidencia, reportar a Recursos Humanos y denunciar si es necesario",
+      "No hacer nada porque no está en el grupo",
+      "Pedir que lo agreguen para defenderse",
+      "Vengarse publicando fotos de los compañeros"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Debe recopilar evidencia, reportar a Recursos Humanos y si continúa, presentar una denuncia.",
+    "explanationWrong": "No debe quedarse quieto ni vengarse. Reporte y guarde evidencia.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses27_l5"
+  },
+  {
+    "id": "ac_st1_ses27_l5_q09",
+    "question": "¿El ciberbullying puede causar daño emocional a personas mayores?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Sí, el ciberbullying puede causar ansiedad, tristeza y otros problemas emocionales a personas de cualquier edad.",
+    "explanationWrong": "Sí, el ciberbullying afecta a personas de cualquier edad.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses27_l5"
+  },
+  {
+    "id": "ac_st1_ses27_l5_q10",
+    "question": "¿Es seguro usar el WiFi gratuito del centro comercial para hacer transacciones bancarias?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "No es seguro. Los WiFi públicos pueden ser vigilados por criminales. Use datos de su celular o una VPN.",
+    "explanationWrong": "No es seguro usar WiFi público para banca.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses27_l5"
+  },
+  {
+    "id": "ac_st1_ses27_l5_q11",
+    "question": "¿Es seguro usar el WiFi gratuito del centro comercial para hacer transacciones bancarias?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "No es seguro. Los WiFi públicos pueden ser vigilados por criminales. Use datos de su celular o una VPN.",
+    "explanationWrong": "No es seguro usar WiFi público para banca.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses27_l5"
+  },
+  {
+    "id": "ac_st1_ses27_l5_q12",
+    "question": "¿Puede una persona mayor ser víctima de phishing?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Sí, el phishing puede atacar a cualquier persona. Los criminales suelen buscar personas mayores.",
+    "explanationWrong": "Sí, el phishing afecta a personas de cualquier edad.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses27_l5"
+  },
+  {
+    "id": "ac_st1_ses27_l5_q13",
+    "question": "Don Manuel recibe un mensaje: Ha ganado un premio de S/. 10,000 de Claro. Haga clic aquí. ¿Qué hacer?",
+    "type": "miniCase",
+    "options": [
+      "Eliminar el mensaje inmediatamente, es una estafa",
+      "Hacer clic para reclamar",
+      "Responder pidiendo más información",
+      "Reenviar a sus contactos"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Los premios por mensaje son una estafa clásica de phishing. Elimínelo sin hacer clic.",
+    "explanationWrong": "No haga clic ni responda. Los premios por mensaje son estafas.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses27_l5"
+  },
+  {
+    "id": "ac_st1_ses27_l5_q14",
+    "question": "Don Pedro quiere crear una copia de seguridad de sus documentos importantes. ¿Qué hacer?",
+    "type": "miniCase",
+    "options": [
+      "Hacer copias en un disco duro externo y en la nube",
+      "Solo guardarlas en su computadora",
+      "No hacer nada porque no se van a perder",
+      "Subir todo a Facebook"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "Debe hacer copias en al menos dos lugares: disco duro externo y nube.",
+    "explanationWrong": "Tener solo una copia es arriesgado. Use disco duro externo y nube.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses27_l5"
+  },
+  {
+    "id": "ac_st1_ses27_l5_q15",
+    "question": "Doña Carmen recibió una llamada de alguien que dice ser de SUNAT. Le piden su número de tarjeta para pagar una multa. ¿Qué hacer?",
+    "type": "miniCase",
+    "options": [
+      "Colgar inmediatamente y llamar a SUNAT directamente",
+      "Dar los datos porque SUNAT es del gobierno",
+      "Pagar la multa para evitar el arresto",
+      "Pedir más tiempo"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "SUNAT nunca pide pagos por teléfono ni amenaza con arresto. Colgar y verifique directamente.",
+    "explanationWrong": "No dé sus datos ni pague. SUNAT no funciona así.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses27_l5"
+  },
+  {
+    "id": "ac_st1_ses27_l5_q16",
+    "question": "Don Carlos tiene 75 años y le preocupa su información en internet. ¿Qué pasos seguir?",
+    "type": "miniCase",
+    "options": [
+      "Configurar perfiles privados, usar contraseñas fuertes y activar autenticación de dos factores",
+      "No usar internet nunca más",
+      "Compartir toda su información",
+      "Cambiar de nombre"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Debe configurar perfiles privados, usar contraseñas fuertes y activar doble autenticación.",
+    "explanationWrong": "No es necesario dejar de usar internet. Proteja su información con buenas prácticas.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses27_l5"
+  }
+]

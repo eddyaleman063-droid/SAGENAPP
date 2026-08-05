@@ -10,6 +10,7 @@ void main() {
       SharedPreferences.setMockInitialValues({});
       service = AnalyticsService.instance;
       await service.init();
+      await service.setConsent(true);
     });
 
     tearDown(() {
@@ -89,9 +90,8 @@ void main() {
       expect(service.unlocked.length, 0);
     });
 
-    test('flush cancels timer and persists if dirty', () {
+    test('track increments event count', () {
       service.track(AnalyticEvent.appOpen);
-      service.flush();
       expect(service.eventCount(AnalyticEvent.appOpen), 1);
     });
   });

@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/providers/providers.dart';
+import 'package:sagen/services/experience_service.dart';
+import 'package:sagen/services/app_logger.dart';
 import '../../../core/theme/theme_constants.dart';
-import '../../../services/experience_service.dart';
+
+import 'package:sagen/ui/widgets/common/premium_loader.dart';
+import 'package:sagen/ui/widgets/common/sage_emotion_widget.dart';
+import 'package:sagen/services/sage_emotion_service.dart';
 import 'package:sagen/ui/widgets/common/sagen_notification.dart';
 import 'package:sagen/ui/widgets/store/header.dart';
 import 'package:sagen/ui/widgets/store/streak_fire_card.dart';
 import 'package:sagen/ui/widgets/store/shop_item_card.dart';
-import 'package:sagen/ui/widgets/store/gems_shop_section.dart';
+import 'package:sagen/ui/widgets/store/supporter_tiers_section.dart';
+import 'package:sagen/core/theme/app_colors.dart';
 
 class StoreScreen extends ConsumerStatefulWidget {
   const StoreScreen({super.key});
@@ -20,68 +28,160 @@ class StoreScreen extends ConsumerStatefulWidget {
 
 class _StoreScreenState extends ConsumerState<StoreScreen>
     with AutomaticKeepAliveClientMixin {
-  void _buyItem(
-    BuildContext context,
-    String id,
-    int cost,
-    int gems,
-    bool dark,
-  ) {
-    final exp = ExperienceService.instance;
-    if (gems < cost) {
-      exp.errorHaptic();
-      if (context.mounted) {
-        SagenNotification.show(
-          context,
-          message: AppLocalizations.of(context)!.storeNotEnoughGems,
-          type: NotificationType.error,
-        );
-      }
-      return;
-    }
-    final success = ref.read(learningProvider.notifier).spendGemsAtomic(
-      cost,
-      () {
-        final bought = ref.read(shopProvider.notifier).buyItem(id);
-        if (bought) {
-          _logTransaction(context, 'purchase', cost, id);
+  final Set<String> _purchasingItems = {};
+  ShopCategory _selectedCategory = ShopCategory.consumables;
+
+  Future<bool> _validatePurchase(String itemId, int cost) async {
+    try {
+      final uid = ref.read(authServiceProvider).currentUser?.uid;
+      if (uid == null) return false;
+      
+      final userRef = FirebaseFirestore.instance.collection('users').doc(uid);
+      final inventoryRef = userRef.collection('inventory').doc('shop_items');
+      
+      final doc = await inventoryRef.get();
+      
+      if (doc.exists) {
+        final data = doc.data();
+        if (data != null && data['items'] is List) {
+          final ownedItems = List<String>.from(data['items']);
+          if (ownedItems.contains(itemId)) return false;
         }
-        return bought;
-      },
-    );
-    if (!success) {
-      exp.errorHaptic();
-      return;
-    }
-    exp.successHaptic();
-    if (context.mounted) {
-      SagenNotification.show(
-        context,
-        message: AppLocalizations.of(context)!.storePurchaseSuccess,
-        type: NotificationType.success,
-      );
+      }
+
+      // Validate gem balance
+      final gemBalance = ref.read(gemProvider).balance;
+      if (gemBalance < cost) return false;
+
+      return true;
+    } catch (_) {
+      AppLogger().warning('StoreScreen: failed to validate purchase');
+      return false;
     }
   }
 
-  void _logTransaction(
+  Future<void> _confirmAndBuy(
     BuildContext context,
-    String type,
-    int amount,
-    String itemId,
-  ) {
+    ShopItem item,
+    bool dark,
+  ) async {
+    final l = AppLocalizations.of(context)!;
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(l.storeConfirmTitle),
+        content: Text(l.storeConfirmMessage(item.name, item.gemCost)),
+        actions: [
+          Semantics(
+            button: true,
+            label: l.cancel,
+            child: TextButton(
+              onPressed: () {
+                ExperienceService.instance.lightHaptic();
+                context.pop(false);
+              },
+              child: Text(l.cancel),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              ExperienceService.instance.lightHaptic();
+              context.pop(true);
+            },
+            child: Text(l.storeBuyItem(item.id, item.gemCost)),
+          ),
+        ],
+      ),
+    );
+    if (confirmed == true && context.mounted) {
+      _buyItem(context, item, dark);
+    }
+  }
+
+  void _buyItem(
+    BuildContext context,
+    ShopItem item,
+    bool dark,
+  ) async {
+    if (_purchasingItems.contains(item.id)) return;
+    final l = AppLocalizations.of(context)!;
+    setState(() { _purchasingItems.add(item.id); });
     try {
-      final uid = ref.read(authServiceProvider).currentUser?.uid;
-      if (uid != null) {
-        FirebaseFirestore.instance.collection('transaction_logs').add({
-          'userId': uid,
-          'type': type,
-          'amount': amount,
-          'itemId': itemId,
-          'balanceAfter': ref.read(learningProvider).gems,
-          'timestamp': FieldValue.serverTimestamp(),
-        });
+      final exp = ref.read(experienceServiceProvider);
+      final isValid = await _validatePurchase(item.id, item.gemCost);
+      if (!isValid) {
+        exp.errorHaptic();
+        if (context.mounted) {
+          SagenNotification.show(
+            context,
+            message: l.storePurchaseFailed,
+            type: NotificationType.error,
+          );
+        }
+        return;
       }
-    } catch (_) {}
+
+      // Unlock item first, then spend gems. If spending fails, rollback.
+      ref.read(shopProvider.notifier).unlockItem(item.id);
+      bool spent = false;
+      try {
+        spent = ref.read(gemProvider.notifier).spendGems(item.gemCost);
+      } catch (e) {
+        ref.read(shopProvider.notifier).relockItem(item.id);
+        rethrow;
+      }
+      if (!spent) {
+        ref.read(shopProvider.notifier).relockItem(item.id);
+        exp.errorHaptic();
+        if (context.mounted) {
+          SagenNotification.show(
+            context,
+            message: l.storePurchaseFailed,
+            type: NotificationType.error,
+          );
+        }
+        return;
+      }
+
+      // Apply purchase effects
+      if (item.id == 'xp_boost') {
+        ref.read(shopProvider.notifier).activateXpBoost();
+      } else if (item.id == 'theme_blue') {
+        ref.read(themeProvider.notifier).setThemeVariant('blue');
+      } else if (item.id == 'theme_purple') {
+        ref.read(themeProvider.notifier).setThemeVariant('purple');
+      } else if (item.id == 'theme_dark_fire') {
+        ref.read(themeProvider.notifier).setThemeVariant('dark_fire');
+      } else if (item.id == 'theme_cyber_neon') {
+        ref.read(themeProvider.notifier).setThemeVariant('cyber_neon');
+      }
+
+      // Add special items to inventory
+      if (item.specialItemType != null) {
+        ref.read(itemProvider.notifier).addItem(item.specialItemType!);
+      }
+
+      if (!mounted) return;
+      exp.successHaptic();
+      if (context.mounted) {
+        SagenNotification.show(
+          context,
+          message: l.storePurchaseSuccess,
+          type: NotificationType.success,
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        final l = AppLocalizations.of(context)!;
+        SagenNotification.show(
+          context,
+          message: l.storePurchaseFailed,
+          type: NotificationType.error,
+        );
+      }
+    } finally {
+      if (mounted) setState(() { _purchasingItems.remove(item.id); });
+    }
   }
 
   @override
@@ -90,129 +190,316 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    final l = AppLocalizations.of(context)!;
     final dark = Theme.of(context).brightness == Brightness.dark;
     final learning = ref.watch(learningProvider);
-    final gems = learning.gems;
     final shop = ref.watch(shopProvider);
     final streak = ref.watch(streakProvider);
+    final gemBalance = ref.watch(gemProvider.select((g) => g.balance));
+
+    if (learning.isLoading) {
+      return PremiumLoader(
+        loading: true,
+        message: l.loading,
+        child: Scaffold(
+          backgroundColor: context.surfaceBackground,
+        ),
+      );
+    }
+
+    final filteredItems = shop.items.where((i) => i.category == _selectedCategory).toList();
 
     return Scaffold(
-      backgroundColor: dark ? PremiumColors.darkBg : PremiumColors.lightBg,
-      body: SafeArea(
-        child: RepaintBoundary(
-          child: CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(
-                child: StoreHeader(gems: gems, dark: dark),
-              ),
-              SliverPadding(
-                padding: const EdgeInsets.fromLTRB(
-                  AppSpacing.xxl,
-                  AppSpacing.md,
-                  AppSpacing.xxl,
-                  AppSpacing.md,
-                ),
-                sliver: SliverToBoxAdapter(
-                  child: Text(
-                    AppLocalizations.of(context)!.storeProtectStreak,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: dark
-                          ? Colors.white.withValues(alpha: 0.8)
-                          : Colors.black87,
+      backgroundColor: context.surfaceBackground,
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final isWide = constraints.maxWidth > 600;
+          final horizontalPadding = isWide ? AppSpacing.xxl * 2.0 : AppSpacing.xxl.toDouble();
+          return SafeArea(
+            child: RepaintBoundary(
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  ref.invalidate(shopProvider);
+                  ref.invalidate(learningProvider);
+                  await Future.delayed(const Duration(milliseconds: 500));
+                },
+                child: CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: StoreHeader(dark: dark),
+                  ),
+                  SliverPadding(
+                    padding: EdgeInsets.fromLTRB(
+                      horizontalPadding,
+                      AppSpacing.md,
+                      horizontalPadding,
+                      AppSpacing.md,
                     ),
-                  ),
-                ),
-              ),
-              SliverPadding(
-                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
-                sliver: SliverToBoxAdapter(
-                  child: StreakFireCard(
-                    shop: shop,
-                    learning: learning,
-                    streak: streak,
-                    dark: dark,
-                  ),
-                ),
-              ),
-              SliverPadding(
-                padding: const EdgeInsets.fromLTRB(
-                  AppSpacing.xxl,
-                  0,
-                  AppSpacing.xxl,
-                  AppSpacing.md,
-                ),
-                sliver: SliverToBoxAdapter(
-                  child: Text(
-                    AppLocalizations.of(context)!.storeGetGems,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: dark
-                          ? Colors.white.withValues(alpha: 0.8)
-                          : Colors.black87,
-                    ),
-                  ),
-                ),
-              ),
-              SliverPadding(
-                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
-                sliver: SliverToBoxAdapter(
-                  child: GemsShopSection(dark: dark, ref: ref),
-                ),
-              ),
-              SliverPadding(
-                padding: const EdgeInsets.fromLTRB(
-                  AppSpacing.xxl,
-                  AppSpacing.xl,
-                  AppSpacing.xxl,
-                  AppSpacing.md,
-                ),
-                sliver: SliverToBoxAdapter(
-                  child: Text(
-                    AppLocalizations.of(context)!.storePersonalization,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: dark
-                          ? Colors.white.withValues(alpha: 0.8)
-                          : Colors.black87,
-                    ),
-                  ),
-                ),
-              ),
-              SliverPadding(
-                padding: const EdgeInsets.fromLTRB(
-                  AppSpacing.xxl,
-                  0,
-                  AppSpacing.xxl,
-                  100,
-                ),
-                sliver: SliverList(
-                  delegate: SliverChildBuilderDelegate((ctx, i) {
-                    final item = shop.items[i];
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: AppSpacing.md),
-                      child: ShopItemCard(
-                        item: item,
-                        gems: learning.gems,
-                        dark: dark,
-                        onBuy: () => _buyItem(
-                          ctx,
-                          item.id,
-                          item.cost,
-                          learning.gems,
-                          dark,
+                    sliver: SliverToBoxAdapter(
+                      child: Text(
+                        l.storeProtectStreak,
+                        style: AppTextStyle.titleSmall.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: context.textSecondary,
                         ),
                       ),
-                    );
-                  }, childCount: shop.items.length),
+                    ),
+                  ),
+                  SliverPadding(
+                    padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                    sliver: SliverToBoxAdapter(
+                      child: StreakFireCard(
+                        streak: streak,
+                      ),
+                    ),
+                  ),
+                  SliverPadding(
+                    padding: EdgeInsets.fromLTRB(
+                      horizontalPadding,
+                      0,
+                      horizontalPadding,
+                      AppSpacing.md,
+                    ),
+                    sliver: SliverToBoxAdapter(
+                      child: Text(
+                        l.storeSupportTiers,
+                        style: AppTextStyle.titleSmall.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: context.textSecondary,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SliverPadding(
+                    padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                    sliver: SliverToBoxAdapter(
+                      child: SupporterTiersSection(dark: dark),
+                    ),
+                  ),
+                  // Gem earning tips
+                  SliverPadding(
+                    padding: EdgeInsets.fromLTRB(
+                      horizontalPadding,
+                      AppSpacing.xl,
+                      horizontalPadding,
+                      AppSpacing.md,
+                    ),
+                    sliver: SliverToBoxAdapter(
+                      child: _GemEarningTipsCard(dark: dark),
+                    ),
+                  ),
+                  SliverPadding(
+                    padding: EdgeInsets.fromLTRB(
+                      horizontalPadding,
+                      AppSpacing.xl,
+                      horizontalPadding,
+                      AppSpacing.md,
+                    ),
+                    sliver: SliverToBoxAdapter(
+                      child: Text(
+                        l.storePersonalization,
+                        style: AppTextStyle.titleSmall.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: context.textSecondary,
+                        ),
+                      ),
+                    ),
+                  ),
+                  // Category tabs
+                  SliverPadding(
+                    padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                    sliver: SliverToBoxAdapter(
+                      child: _CategoryTabs(
+                        selected: _selectedCategory,
+                        dark: dark,
+                        onChanged: (cat) => setState(() => _selectedCategory = cat),
+                      ),
+                    ),
+                  ),
+                  const SliverPadding(padding: EdgeInsets.only(top: AppSpacing.md)),
+                  if (filteredItems.isEmpty)
+                    SliverFillRemaining(
+                      hasScrollBody: false,
+                      child: Center(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const ExcludeSemantics(
+                              child: SageEmotionWidget(emotion: SageEmotion.curious),
+                            ),
+                            const SizedBox(height: AppSpacing.md),
+                            Text(
+                              l.emptyStore,
+                              style: AppTextStyle.bodyMd.copyWith(color: context.textTertiary),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  else SliverPadding(
+                    padding: EdgeInsets.fromLTRB(
+                      horizontalPadding,
+                      0,
+                      horizontalPadding,
+                      100,
+                    ),
+                    sliver: SliverList(
+                      delegate: SliverChildBuilderDelegate((ctx, i) {
+                        final item = filteredItems[i];
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: AppSpacing.md),
+                          child: Semantics(
+                            button: true,
+                            label: item.name,
+                            child: ShopItemCard(
+                              item: item,
+                              dark: dark,
+                              isLoading: _purchasingItems.contains(item.id),
+                              gemBalance: gemBalance,
+                              onBuy: () => _confirmAndBuy(ctx, item, dark),
+                            ),
+                          ),
+                        ).animate().fadeIn(delay: (i * 60).ms, duration: 300.ms).slideX(begin: 0.05);
+                      }, childCount: filteredItems.length),
+                    ),
+                  ),
+                ],
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _CategoryTabs extends StatelessWidget {
+  final ShopCategory selected;
+  final bool dark;
+  final ValueChanged<ShopCategory> onChanged;
+
+  const _CategoryTabs({
+    required this.selected,
+    required this.dark,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
+    return SizedBox(
+      height: 40,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        itemCount: ShopCategory.values.length,
+        separatorBuilder: (a, b) => const SizedBox(width: AppSpacing.sm),
+        itemBuilder: (ctx, i) {
+          final cat = ShopCategory.values[i];
+          final isSelected = cat == selected;
+          return ChoiceChip(
+            label: Text(_label(cat, l)),
+            selected: isSelected,
+            onSelected: (_) => onChanged(cat),
+            selectedColor: dark
+                ? PremiumColors.accentCyan.withValues(alpha: 0.2)
+                : PremiumColors.primary.withValues(alpha: 0.15),
+            backgroundColor: context.subtle,
+            labelStyle: AppTextStyle.label.copyWith(
+              color: isSelected
+                  ? (dark ? PremiumColors.accentCyan : PremiumColors.primary)
+                  : context.textSecondary,
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  String _label(ShopCategory cat, AppLocalizations l) {
+    switch (cat) {
+      case ShopCategory.consumables:
+        return l.storeCategoryConsumables;
+      case ShopCategory.cosmetics:
+        return l.storeCategoryCosmetics;
+      case ShopCategory.themes:
+        return l.storeCategoryThemes;
+    }
+  }
+}
+
+class _GemEarningTipsCard extends StatelessWidget {
+  final bool dark;
+  const _GemEarningTipsCard({required this.dark});
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
+    return Container(
+      padding: const EdgeInsets.all(AppSpacing.lg),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(AppRadius.xl),
+        color: context.surfaceCard,
+        border: Border.all(
+          color: context.subtleBorder,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const ExcludeSemantics(child: Icon(Icons.diamond_rounded, size: 18, color: PremiumColors.accentYellow)),
+              const SizedBox(width: AppSpacing.sm),
+              Expanded(
+                child: Text(
+                  l.storeHowToEarnGems,
+                  style: AppTextStyle.bodyMd.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: context.textSecondary,
+                  ),
                 ),
               ),
             ],
           ),
-        ),
+          const SizedBox(height: AppSpacing.md),
+          _TipRow(icon: Icons.school_rounded, text: l.storeGemTipLesson, dark: dark),
+          _TipRow(icon: Icons.star_rounded, text: l.storeGemTipPerfect, dark: dark),
+          _TipRow(icon: Icons.wb_sunny_rounded, text: l.storeGemTipFirstLesson, dark: dark),
+          _TipRow(icon: Icons.inventory_2_rounded, text: l.storeGemTipChest, dark: dark),
+          _TipRow(icon: Icons.task_alt_rounded, text: l.storeGemTipMission, dark: dark),
+          _TipRow(icon: Icons.local_fire_department_rounded, text: l.storeGemTipStreak, dark: dark),
+          _TipRow(icon: Icons.emoji_events_rounded, text: l.storeGemTipAchievement, dark: dark),
+        ],
+      ),
+    );
+  }
+}
+
+class _TipRow extends StatelessWidget {
+  final IconData icon;
+  final String text;
+  final bool dark;
+  const _TipRow({required this.icon, required this.text, required this.dark});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: AppSpacing.xs),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, size: 14, color: context.textTertiary),
+          const SizedBox(width: AppSpacing.sm),
+          Expanded(
+            child: Text(
+              text,
+              style: AppTextStyle.caption.copyWith(
+                color: context.textTertiary,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -1,12 +1,23 @@
+import 'dart:async';
+import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sagen/services/experience_service.dart';
+import 'package:sagen/services/app_logger.dart';
+
 import '../../../core/theme/theme_constants.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../models/learning/challenge.dart';
 import '../../../models/learning/quiz_score.dart';
+import '../../widgets/common/localization_helper.dart';
+import '../../widgets/common/sagen_notification.dart';
 
 enum _AnswerState { idle, correct, incorrect }
+
+const int _lowTimeThresholdSeconds = 30;
 
 class CyberQuizScreen extends StatefulWidget {
   final List<Challenge> questions;
@@ -16,7 +27,7 @@ class CyberQuizScreen extends StatefulWidget {
   const CyberQuizScreen({
     super.key,
     required this.questions,
-    this.lessonTitle = 'Cuestionario',
+    this.lessonTitle = '',
     this.timeBudgetSeconds = 300,
   });
 
@@ -25,29 +36,189 @@ class CyberQuizScreen extends StatefulWidget {
 }
 
 class _CyberQuizScreenState extends State<CyberQuizScreen>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin, WidgetsBindingObserver {
   int _currentIndex = 0;
   int _selectedAnswer = -1;
   _AnswerState _answerState = _AnswerState.idle;
   int _correctCount = 0;
   DateTime? _sessionStart;
+  Timer? _quizTimer;
+  int _timeRemaining = 300;
 
   late AnimationController _shakeCtrl;
   late AnimationController _pulseCtrl;
 
+  static const _progressPrefix = 'quiz_progress_';
+  static const _progressExpiry = Duration(hours: 24);
+
+  String get _progressKey => '$_progressPrefix${widget.lessonTitle}';
+
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _shakeCtrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 400));
     _pulseCtrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 600));
     _sessionStart = DateTime.now();
+    _timeRemaining = widget.timeBudgetSeconds;
+    _quizTimer = Timer.periodic(const Duration(seconds: 1), (t) {
+      if (!mounted) { t.cancel(); return; }
+      if (_timeRemaining <= 0) {
+        t.cancel();
+        _finishQuiz();
+      } else {
+        setState(() => _timeRemaining--);
+      }
+    });
+    _loadSavedProgress();
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _quizTimer?.cancel();
     _shakeCtrl.dispose();
     _pulseCtrl.dispose();
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused || state == AppLifecycleState.inactive) {
+      _saveProgress();
+    }
+  }
+
+  Future<void> _saveProgress() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final answers = <int>[];
+      for (int i = 0; i < _currentIndex; i++) {
+        answers.add(-1);
+      }
+      final data = {
+        'currentIndex': _currentIndex,
+        'score': _correctCount,
+        'answers': answers,
+        'startTime': _sessionStart?.toIso8601String(),
+        'timestamp': DateTime.now().toIso8601String(),
+        'timeRemaining': _timeRemaining,
+      };
+      await prefs.setString(_progressKey, jsonEncode(data));
+    } catch (e) {
+      AppLogger().warning('CyberQuiz: failed to save quiz progress: $e');
+    }
+  }
+
+  Future<void> _loadSavedProgress() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      if (!mounted) return;
+      final raw = prefs.getString(_progressKey);
+      if (raw == null) return;
+      final data = jsonDecode(raw) as Map<String, dynamic>;
+
+      final savedTime = DateTime.tryParse(data['timestamp'] as String? ?? '');
+      if (savedTime != null && DateTime.now().difference(savedTime) > _progressExpiry) {
+        await prefs.remove(_progressKey);
+        if (!mounted) return;
+        SagenNotification.show(
+          context,
+          message: l10n(context).quizProgressExpired,
+          type: NotificationType.info,
+        );
+        return;
+      }
+
+      final savedIndex = data['currentIndex'] as int? ?? 0;
+      final savedScore = data['score'] as int? ?? 0;
+      final savedTimeRemaining = data['timeRemaining'] as int? ?? widget.timeBudgetSeconds;
+
+      if (savedIndex > 0 && savedIndex < widget.questions.length) {
+        if (!mounted) return;
+        _quizTimer?.cancel();
+        final result = await showDialog<bool>(
+          context: context,
+          builder: (ctx) {
+            return AlertDialog(
+              backgroundColor: ctx.surfaceCard,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppRadius.xl),
+              ),
+              title: Text(
+                l10n(context).resumeQuiz,
+                style: AppTextStyle.titleLg.copyWith(
+                  color: ctx.textPrimary,
+                ),
+              ),
+              content: Text(
+                l10n(context).savedQuizProgress,
+                style: AppTextStyle.bodyMd.copyWith(
+                  color: ctx.textSecondary,
+                ),
+              ),
+              actions: [
+                Semantics(
+                  button: true,
+                  label: l10n(context).quizStartOver,
+                  child: TextButton(
+                    onPressed: () => context.pop(false),
+                      child: Text(
+                      l10n(context).quizStartOver,
+                      style: AppTextStyle.bodyBold.copyWith(
+                        color: PremiumColors.error,
+                      ),
+                    ),
+                  ),
+                ),
+                Semantics(
+                  button: true,
+                  label: l10n(context).quizResumeButton,
+                  child: TextButton(
+                    onPressed: () => context.pop(true),
+                      child: Text(
+                      l10n(context).quizResumeButton,
+                      style: AppTextStyle.bodyBold.copyWith(
+                        color: PremiumColors.primaryAccent,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+        if (result == true && mounted) {
+          setState(() {
+            _currentIndex = savedIndex;
+            _correctCount = savedScore;
+            _timeRemaining = savedTimeRemaining;
+          });
+          _quizTimer = Timer.periodic(const Duration(seconds: 1), (t) {
+            if (!mounted) { t.cancel(); return; }
+            if (_timeRemaining <= 0) {
+              t.cancel();
+              _finishQuiz();
+            } else {
+              setState(() => _timeRemaining--);
+            }
+          });
+        } else {
+          await prefs.remove(_progressKey);
+        }
+      }
+    } catch (e) {
+      AppLogger().warning('CyberQuiz: failed to load saved progress: $e');
+    }
+  }
+
+  Future<void> _clearProgress() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove(_progressKey);
+    } catch (_) {
+      AppLogger().warning('CyberQuiz: failed to clear quiz progress');
+    }
   }
 
   Challenge get _question => widget.questions[_currentIndex];
@@ -58,27 +229,32 @@ class _CyberQuizScreenState extends State<CyberQuizScreen>
   void _onSelect(int index) {
     if (_answerState != _AnswerState.idle) return;
     setState(() => _selectedAnswer = index);
-    HapticFeedback.lightImpact();
+    ExperienceService.instance.lightHaptic();
   }
 
   void _onCheck() {
     if (!_canCheck) return;
-    final correct = _selectedAnswer == _question.correctIndex;
+    // Validate correctIndex is within bounds; clamp if corrupted
+    final validCorrectIndex = _question.isCorrectIndexValid
+        ? _question.correctIndex
+        : 0.clamp(0, _question.options.length - 1);
+    final correct = _selectedAnswer == validCorrectIndex;
     setState(() {
       _answerState = correct ? _AnswerState.correct : _AnswerState.incorrect;
       if (correct) _correctCount++;
     });
     if (correct) {
-      HapticFeedback.mediumImpact();
+      ExperienceService.instance.mediumHaptic();
       _pulseCtrl.forward(from: 0);
     } else {
-      HapticFeedback.heavyImpact();
+      ExperienceService.instance.errorHaptic();
       _shakeCtrl.forward(from: 0);
     }
   }
 
   void _onContinue() {
     if (_answerState == _AnswerState.idle) return;
+    ExperienceService.instance.lightHaptic();
     if (_isLast) {
       _finishQuiz();
     } else {
@@ -91,6 +267,9 @@ class _CyberQuizScreenState extends State<CyberQuizScreen>
   }
 
   void _finishQuiz() {
+    _quizTimer?.cancel();
+    _clearProgress();
+    if (_sessionStart == null) return;
     final spent = DateTime.now().difference(_sessionStart!).inSeconds;
     final score = QuizScoreCalculator(
       correctCount: _correctCount,
@@ -103,28 +282,39 @@ class _CyberQuizScreenState extends State<CyberQuizScreen>
 
   Future<bool> _onWillPop() async {
     if (_answerState != _AnswerState.idle || _currentIndex > 0 || _selectedAnswer >= 0) {
+      final l = l10n(context);
       final result = await showDialog<bool>(
         context: context,
         builder: (ctx) {
-          final dialogDark = Theme.of(ctx).brightness == Brightness.dark;
           return AlertDialog(
-          backgroundColor: dialogDark ? PremiumColors.darkCard : Colors.white,
+          backgroundColor: ctx.surfaceCard,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.xl)),
-          title: Text('¿Abandonar?', style: TextStyle(color: dialogDark ? Colors.white : Colors.black87, fontSize: 20, fontWeight: FontWeight.bold)),
-          content: Text('Perderás tu progreso actual.', style: TextStyle(color: dialogDark ? Colors.white60 : Colors.black54, fontSize: 14)),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(ctx, false),
-              child: const Text('SEGUIR', style: TextStyle(color: PremiumColors.primaryAccent, fontWeight: FontWeight.bold)),
+          title: Text(l.quizAbandonTitle, style: AppTextStyle.titleLg.copyWith(color: ctx.textPrimary)),
+          content: Text(l.quizAbandonContent, style: AppTextStyle.bodyMd.copyWith(color: ctx.textSecondary)),
+           actions: [
+            Semantics(
+              button: true,
+              label: l.quizAbandonStay,
+              child: TextButton(
+                onPressed: () => context.pop(false),
+                child: Text(l.quizAbandonStay, style: AppTextStyle.bodyBold.copyWith(color: PremiumColors.primaryAccent)),
+              ),
             ),
-            TextButton(
-              onPressed: () => Navigator.pop(ctx, true),
-              child: const Text('SALIR', style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold)),
+            Semantics(
+              button: true,
+              label: l.quizAbandonExit,
+              child: TextButton(
+                onPressed: () => context.pop(true),
+                child: Text(l.quizAbandonExit, style: AppTextStyle.bodyBold.copyWith(color: PremiumColors.error)),
+              ),
             ),
           ],
         );
         },
       );
+      if (result == true) {
+        _clearProgress();
+      }
       return result ?? false;
     }
     return true;
@@ -132,16 +322,15 @@ class _CyberQuizScreenState extends State<CyberQuizScreen>
 
   @override
   Widget build(BuildContext context) {
-    final dark = Theme.of(context).brightness == Brightness.dark;
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, _) async {
         if (didPop) return;
         final shouldPop = await _onWillPop();
-        if (shouldPop && context.mounted) Navigator.pop(context);
+                  if (shouldPop && context.mounted) context.pop();
       },
       child: Scaffold(
-        backgroundColor: dark ? PremiumColors.darkBg : PremiumColors.lightBg,
+        backgroundColor: context.surfaceBackground,
         body: SafeArea(
           child: Column(
             children: [
@@ -149,18 +338,17 @@ class _CyberQuizScreenState extends State<CyberQuizScreen>
                 currentIndex: _currentIndex,
                 total: widget.questions.length,
                 title: widget.lessonTitle,
-                dark: dark,
                 onClose: () async {
                   final shouldPop = await _onWillPop();
-                  if (shouldPop && context.mounted) Navigator.pop(context);
+        if (shouldPop && context.mounted) context.pop();
                 },
-                isShaking: _shakeCtrl.isAnimating,
                 shakeValue: _shakeCtrl,
+                timeRemaining: _timeRemaining,
               ),
               Expanded(
-                child: _buildBody(dark),
+                child: _buildBody(),
               ),
-              _buildFooter(dark),
+              _buildFooter(),
             ],
           ),
         ),
@@ -168,7 +356,7 @@ class _CyberQuizScreenState extends State<CyberQuizScreen>
     );
   }
 
-  Widget _buildBody(bool dark) {
+  Widget _buildBody() {
     final shakeX = sin(_shakeCtrl.value * 6 * pi) * 8 * (1 - _shakeCtrl.value);
 
     return Transform.translate(
@@ -182,10 +370,8 @@ class _CyberQuizScreenState extends State<CyberQuizScreen>
             Text(
               _question.question,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
+              style: AppTextStyle.headlineMedium.copyWith(
+                color: context.textPrimary,
                 height: 1.4,
               ),
             ),
@@ -206,18 +392,18 @@ class _CyberQuizScreenState extends State<CyberQuizScreen>
                 borderColor = isSelected
                     ? PremiumColors.primaryAccent.withValues(alpha: 0.8)
                     : Colors.white.withValues(alpha: 0.06);
-                textColor = isSelected ? Colors.white : Colors.white.withValues(alpha: 0.7);
+                textColor = isSelected ? context.textPrimary : context.textSecondary;
                 icon = isSelected ? Icons.radio_button_checked_rounded : Icons.radio_button_unchecked_rounded;
               } else {
                 if (isCorrectAnswer) {
                   bgColor = PremiumColors.success.withValues(alpha: 0.15);
                   borderColor = PremiumColors.success;
-                  textColor = Colors.white;
+                  textColor = context.textPrimary;
                   icon = Icons.check_circle_rounded;
                 } else if (isSelected && !isCorrectAnswer) {
                   bgColor = PremiumColors.error.withValues(alpha: 0.15);
                   borderColor = PremiumColors.error;
-                  textColor = Colors.white;
+                  textColor = context.textPrimary;
                   icon = Icons.cancel_rounded;
                 } else {
                   bgColor = Colors.white.withValues(alpha: 0.03);
@@ -227,85 +413,94 @@ class _CyberQuizScreenState extends State<CyberQuizScreen>
                 }
               }
 
-              return Padding(
-                padding: const EdgeInsets.only(bottom: AppSpacing.md),
-                child: GestureDetector(
-                  onTap: _answerState == _AnswerState.idle ? () => _onSelect(i) : null,
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 200),
-                    padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md + 2),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(AppRadius.lg),
-                      color: bgColor,
-                      border: Border.all(color: borderColor, width: _answerState != _AnswerState.idle && (isCorrectAnswer || (isSelected && !isCorrectAnswer)) ? 2.5 : 1.5),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(icon, size: 22, color: textColor),
-                        const SizedBox(width: AppSpacing.md),
-                        Expanded(
-                          child: Text(
-                            opt,
-                            style: TextStyle(fontSize: 15, color: textColor, height: 1.3),
+              return Semantics(
+                button: true,
+                label: opt,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: AppSpacing.md),
+                  child: GestureDetector(
+                    onTap: _answerState == _AnswerState.idle ? () => _onSelect(i) : null,
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md + 2),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(AppRadius.lg),
+                        color: bgColor,
+                        border: Border.all(color: borderColor, width: _answerState != _AnswerState.idle && (isCorrectAnswer || (isSelected && !isCorrectAnswer)) ? 2.5 : 1.5),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(icon, size: 22, color: textColor),
+                          const SizedBox(width: AppSpacing.md),
+                          Expanded(
+                            child: Text(
+                              opt,
+                              style: AppTextStyle.body.copyWith(color: textColor, height: 1.3),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
               );
-            }),
+          }),
           ],
-        ),
+        ).animate().fadeIn(duration: 200.ms),
       ),
     );
   }
 
-  Widget _buildFooter(bool dark) {
+  Widget _buildFooter() {
+    final l = l10n(context);
     String label;
     Color bgColor;
 
     if (_answerState == _AnswerState.idle) {
-      label = 'COMPROBAR';
+      label = l.quizCheckAnswer;
       bgColor = PremiumColors.primaryAccent;
     } else if (_isCorrect) {
-      label = 'CONTINUAR';
+      label = l.quizContinue;
       bgColor = PremiumColors.success;
     } else {
-      label = 'CONTINUAR';
+      label = l.quizContinue;
       bgColor = PremiumColors.error;
     }
 
-    return Container(
-      padding: const EdgeInsets.fromLTRB(AppSpacing.xxl, AppSpacing.md, AppSpacing.xxl, AppSpacing.xxl),
-      child: SizedBox(
-        width: double.infinity,
-        height: 52,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 250),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(AppRadius.lg),
-            boxShadow: [
-              BoxShadow(
-                color: bgColor.withValues(alpha: 0.35),
-                blurRadius: 12,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: ElevatedButton(
-            onPressed: _answerState == _AnswerState.idle ? _onCheck : _onContinue,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: bgColor,
-              disabledBackgroundColor: Colors.white.withValues(alpha: 0.06),
-              disabledForegroundColor: Colors.white.withValues(alpha: 0.25),
-              foregroundColor: Colors.white,
-              elevation: 0,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
+    return Semantics(
+      button: true,
+      label: label,
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(AppSpacing.xxl, AppSpacing.md, AppSpacing.xxl, AppSpacing.xxl),
+        child: SizedBox(
+          width: double.infinity,
+          height: 52,
+            child: AnimatedContainer(
+            duration: const Duration(milliseconds: 250),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(AppRadius.lg),
+              boxShadow: [
+                BoxShadow(
+                  color: bgColor.withValues(alpha: 0.35),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
+                ),
+              ],
             ),
-            child: Text(
-              label,
-              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, letterSpacing: 1.2),
+            child: ElevatedButton(
+              onPressed: _answerState == _AnswerState.idle ? _onCheck : _onContinue,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: bgColor,
+                disabledBackgroundColor: Colors.white.withValues(alpha: 0.06),
+                disabledForegroundColor: Colors.white.withValues(alpha: 0.25),
+                foregroundColor: Colors.white,
+                elevation: 0,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
+              ),
+              child: Text(
+                label,
+                style: AppTextStyle.body.copyWith(fontWeight: FontWeight.bold, letterSpacing: 1.2),
+              ),
             ),
           ),
         ),
@@ -318,27 +513,26 @@ class _HudBar extends StatelessWidget {
   final int currentIndex;
   final int total;
   final String title;
-  final bool dark;
   final VoidCallback onClose;
-  final bool isShaking;
   final AnimationController shakeValue;
+  final int timeRemaining;
 
   const _HudBar({
     required this.currentIndex,
     required this.total,
     required this.title,
-    required this.dark,
     required this.onClose,
-    required this.isShaking,
     required this.shakeValue,
+    required this.timeRemaining,
   });
 
   @override
   Widget build(BuildContext context) {
+    final l = l10n(context);
     return Container(
       padding: const EdgeInsets.fromLTRB(AppSpacing.lg, AppSpacing.md, AppSpacing.lg, AppSpacing.md),
       decoration: BoxDecoration(
-        color: dark ? PremiumColors.darkCard : Colors.white,
+        color: context.surfaceCard,
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.2),
@@ -352,40 +546,59 @@ class _HudBar extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              GestureDetector(
-                onTap: onClose,
-                child: Container(
-                  padding: const EdgeInsets.all(AppSpacing.sm),
+              Semantics(
+                button: true,
+                label: l.closeButton,
+                child: GestureDetector(
+                  onTap: onClose,
+                  child: Container(
+                  padding: const EdgeInsets.all(AppSpacing.md),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: dark ? Colors.white.withValues(alpha: 0.06) : Colors.black.withValues(alpha: 0.06),
+                    color: context.surfaceTinted,
                   ),
-                  child: Icon(Icons.close_rounded, size: 18, color: dark ? Colors.white54 : Colors.black54),
+                   child: Icon(Icons.close_rounded, size: 18, color: context.textTertiary),
                 ),
+              ),
               ),
               Text(
                 title,
-                style: TextStyle(
-                  fontSize: 14,
+                style: AppTextStyle.bodyMd.copyWith(
                   fontWeight: FontWeight.w600,
-                  color: dark ? Colors.white70 : Colors.black87,
+                  color: context.textSecondary,
                 ),
               ),
-              const SizedBox(width: 34),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ExcludeSemantics(child: Icon(Icons.timer_rounded, size: 16, color: timeRemaining < _lowTimeThresholdSeconds ? PremiumColors.error: context.textTertiary)),
+                  const SizedBox(width: 4),
+                  Text(
+                    '${timeRemaining ~/ 60}:${(timeRemaining % 60).toString().padLeft(2, '0')}',
+                    style: AppTextStyle.bodyMd.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: timeRemaining < _lowTimeThresholdSeconds ? PremiumColors.error: context.textSecondary,
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
           const SizedBox(height: AppSpacing.md),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(AppRadius.pill),
-            child: TweenAnimationBuilder<double>(
-              tween: Tween(begin: 0, end: total > 0 ? currentIndex / total : 0),
-              duration: const Duration(milliseconds: 400),
-              curve: Curves.easeOutCubic,
-              builder: (context, value, _) => LinearProgressIndicator(
-                value: value,
-                backgroundColor: dark ? Colors.white.withValues(alpha: 0.06) : Colors.black.withValues(alpha: 0.06),
-                valueColor: const AlwaysStoppedAnimation<Color>(PremiumColors.splashBlue),
-                minHeight: 4,
+          Semantics(
+            label: l10n(context).cyberQuizProgress(currentIndex + 1, total),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(AppRadius.pill),
+              child: TweenAnimationBuilder<double>(
+                tween: Tween(begin: 0, end: total > 0 ? (currentIndex + 1) / total : 0),
+                duration: const Duration(milliseconds: 400),
+                curve: Curves.easeOutCubic,
+                builder: (context, value, _) => LinearProgressIndicator(
+                  value: value,
+                  backgroundColor: context.surfaceTinted,
+                  valueColor: const AlwaysStoppedAnimation<Color>(PremiumColors.splashBlue),
+                  minHeight: 4,
+                ),
               ),
             ),
           ),

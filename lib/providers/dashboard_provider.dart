@@ -1,10 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/learning/lesson.dart';
 import '../models/learning/stage.dart';
+import 'prefs_provider.dart';
 
 class DashboardState {
+  static const _defaultLessonMinutes = 10;
+
   final String displayName;
-  final int gems;
+  final double totalDonated;
   final int xp;
   final int level;
   final int nextLevelXp;
@@ -20,7 +23,7 @@ class DashboardState {
 
   const DashboardState({
     this.displayName = '',
-    this.gems = 0,
+    this.totalDonated = 0.0,
     this.xp = 0,
     this.level = 1,
     this.nextLevelXp = 100,
@@ -37,7 +40,7 @@ class DashboardState {
 
   DashboardState copyWith({
     String? displayName,
-    int? gems,
+    double? totalDonated,
     int? xp,
     int? level,
     int? nextLevelXp,
@@ -53,7 +56,7 @@ class DashboardState {
   }) {
     return DashboardState(
       displayName: displayName ?? this.displayName,
-      gems: gems ?? this.gems,
+      totalDonated: totalDonated ?? this.totalDonated,
       xp: xp ?? this.xp,
       level: level ?? this.level,
       nextLevelXp: nextLevelXp ?? this.nextLevelXp,
@@ -69,39 +72,20 @@ class DashboardState {
     );
   }
 
-  String get greeting {
-    final hour = DateTime.now().hour;
-    if (hour < 12) return 'Buenos días';
-    if (hour < 18) return 'Buenas tardes';
-    return 'Buenas noches';
-  }
-
   double get dailyProgress {
     if (dailyGoalMinutes <= 0) return 0;
-    return (lessonsCompletedToday * 10 / dailyGoalMinutes).clamp(0, 1);
+    return (lessonsCompletedToday * _defaultLessonMinutes / dailyGoalMinutes).clamp(0, 1);
   }
 }
 
 class DashboardNotifier extends Notifier<DashboardState> {
-  @override
-  DashboardState build() => const DashboardState();
+  static const _keyDailyGoal = 'dashboard_daily_goal';
 
-  String get displayName => state.displayName;
-  int get gems => state.gems;
-  int get xp => state.xp;
-  int get level => state.level;
-  int get nextLevelXp => state.nextLevelXp;
-  double get levelProgress => state.levelProgress;
-  int get currentStreak => state.currentStreak;
-  int get longestStreak => state.longestStreak;
-  int get dailyGoalMinutes => state.dailyGoalMinutes;
-  int get lessonsCompletedToday => state.lessonsCompletedToday;
-  Lesson? get nextLesson => state.nextLesson;
-  String? get nextLessonStageTitle => state.nextLessonStageTitle;
-  bool get isLoading => state.isLoading;
-  int get activeTab => state.activeTab;
-  String get greeting => state.greeting;
-  double get dailyProgress => state.dailyProgress;
+  @override
+  DashboardState build() {
+    final savedGoal = ref.read(prefsProvider).getInt(_keyDailyGoal) ?? 0;
+    return DashboardState(dailyGoalMinutes: savedGoal);
+  }
 
   void setActiveTab(int index) {
     if (index == state.activeTab) return;
@@ -110,11 +94,12 @@ class DashboardNotifier extends Notifier<DashboardState> {
 
   void setDailyGoalMinutes(int minutes) {
     state = state.copyWith(dailyGoalMinutes: minutes);
+    ref.read(prefsProvider).setInt(_keyDailyGoal, minutes);
   }
 
   void updateFrom({
     required String displayName,
-    required int gems,
+    required double totalDonated,
     required int xp,
     required int level,
     required int nextLevelXp,
@@ -138,7 +123,7 @@ class DashboardNotifier extends Notifier<DashboardState> {
 
     state = state.copyWith(
       displayName: displayName,
-      gems: gems,
+      totalDonated: totalDonated,
       xp: xp,
       level: level,
       nextLevelXp: nextLevelXp,

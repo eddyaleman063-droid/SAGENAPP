@@ -1,53 +1,70 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sagen/core/theme/app_colors.dart';
+import '../../../core/theme/theme_constants.dart';
+import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/models/update_entry.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 class UpdatesScreen extends ConsumerWidget {
   const UpdatesScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context)!;
     final entries = UpdateEntry.all();
-    final grouped = _groupByMonth(entries);
+    final grouped = _groupByMonth(entries, l);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Text(
-          'Actualizaciones y novedades',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
+          l.updatesTitle,
+          style: AppTextStyle.title.copyWith(
             color: context.textPrimary,
           ),
         ),
         centerTitle: true,
       ),
-      body: ListView.builder(
-        padding: const EdgeInsets.fromLTRB(16, 8, 16, 80),
+      body: grouped.isEmpty
+          ? Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.update_rounded, size: 48, color: context.textTertiary),
+                  const SizedBox(height: AppSpacing.lg),
+                  Text(
+                    l.emptyUpdates,
+                    style: AppTextStyle.body.copyWith(color: context.textSecondary),
+                  ),
+                ],
+              ),
+            )
+          : ListView.builder(
+        padding: const EdgeInsets.fromLTRB(AppSpacing.lg, AppSpacing.sm, AppSpacing.lg, 80),
         itemCount: grouped.length,
         itemBuilder: (context, i) {
           final month = grouped.keys.elementAt(i);
           final items = grouped[month]!;
-          return _MonthSection(month: month, entries: items);
+          return _MonthSection(key: ValueKey('update_$i'), month: month, entries: items);
         },
-      ),
+      ).animate().fadeIn().slideY(begin: 0.05),
     );
   }
 
-  Map<String, List<UpdateEntry>> _groupByMonth(List<UpdateEntry> entries) {
+  Map<String, List<UpdateEntry>> _groupByMonth(List<UpdateEntry> entries, AppLocalizations l) {
     final map = <String, List<UpdateEntry>>{};
     for (final e in entries) {
-      final key = _monthKey(e.date);
+      final key = _monthKey(e.date, l);
       map.putIfAbsent(key, () => []).add(e);
     }
     return map;
   }
 
-  String _monthKey(DateTime d) {
-    const months = [
-      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre',
+  String _monthKey(DateTime d, AppLocalizations l) {
+    final months = [
+      l.monthJan, l.monthFeb, l.monthMar, l.monthApr, l.monthMay, l.monthJun,
+      l.monthJul, l.monthAug, l.monthSep, l.monthOct, l.monthNov, l.monthDec,
     ];
     return '${months[d.month - 1]} ${d.year}';
   }
@@ -57,7 +74,7 @@ class _MonthSection extends StatelessWidget {
   final String month;
   final List<UpdateEntry> entries;
 
-  const _MonthSection({required this.month, required this.entries});
+  const _MonthSection({super.key, required this.month, required this.entries});
 
   @override
   Widget build(BuildContext context) {
@@ -65,11 +82,10 @@ class _MonthSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 4),
+          padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg, horizontal: AppSpacing.xxs),
           child: Text(
             month,
-            style: TextStyle(
-              fontSize: 18,
+            style: AppTextStyle.title.copyWith(
               fontWeight: FontWeight.bold,
               color: context.textPrimary,
             ),
@@ -89,11 +105,11 @@ class _UpdateCard extends StatelessWidget {
   Color _typeColor(BuildContext context) {
     switch (entry.type) {
       case UpdateType.feature:
-        return const Color(0xFF66BB6A);
+        return PremiumColors.heatmapMedium;
       case UpdateType.improvement:
-        return const Color(0xFF64B5F6);
+        return PremiumColors.updateImprovement;
       case UpdateType.fix:
-        return const Color(0xFFFFB74D);
+        return PremiumColors.updateFix;
     }
   }
 
@@ -108,39 +124,41 @@ class _UpdateCard extends StatelessWidget {
     }
   }
 
-  String get _typeLabel {
+  String _typeLabel(AppLocalizations l) {
     switch (entry.type) {
       case UpdateType.feature:
-        return 'NUEVA FUNCIÓN';
+        return l.updateTypeFeature;
       case UpdateType.improvement:
-        return 'MEJORA';
+        return l.updateTypeImprovement;
       case UpdateType.fix:
-        return 'CORRECCIÓN';
+        return l.updateTypeFix;
     }
   }
 
-  String get _formattedDate {
-    const days = [
-      'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'
+  String _formattedDate(AppLocalizations l) {
+    final days = [
+      l.dayAbbrMon, l.dayAbbrTue, l.dayAbbrWed,
+      l.dayAbbrThu, l.dayAbbrFri, l.dayAbbrSat, l.dayAbbrSun,
     ];
     return '${days[entry.date.weekday - 1]}, ${entry.date.day}';
   }
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     final typeColor = _typeColor(context);
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 10),
+      margin: const EdgeInsets.only(bottom: AppSpacing.sm),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surfaceContainerHigh,
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
           color: context.shimmerBase,
         ),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(14),
+        padding: const EdgeInsets.all(AppSpacing.lg),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -149,9 +167,11 @@ class _UpdateCard extends StatelessWidget {
               height: 40,
               decoration: BoxDecoration(
                 color: typeColor.withValues(alpha: 0.12),
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(AppRadius.sm),
               ),
-              child: Icon(_icon, color: typeColor, size: 22),
+              child: ExcludeSemantics(
+                child: Icon(_icon, color: typeColor, size: 22),
+              ),
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -163,8 +183,7 @@ class _UpdateCard extends StatelessWidget {
                       Expanded(
                         child: Text(
                           entry.title,
-                          style: TextStyle(
-                            fontSize: 15,
+                          style: AppTextStyle.body.copyWith(
                             fontWeight: FontWeight.w600,
                             color: context.textPrimary,
                           ),
@@ -177,12 +196,11 @@ class _UpdateCard extends StatelessWidget {
                           ),
                           decoration: BoxDecoration(
                             color: typeColor.withValues(alpha: 0.15),
-                            borderRadius: BorderRadius.circular(6),
+                            borderRadius: BorderRadius.circular(AppRadius.sm),
                           ),
                           child: Text(
-                            'NUEVO',
-                            style: TextStyle(
-                              fontSize: 9,
+                            l.newBadge,
+                            style: AppTextStyle.micro.copyWith(
                               fontWeight: FontWeight.bold,
                               color: typeColor,
                               letterSpacing: 0.8,
@@ -191,22 +209,20 @@ class _UpdateCard extends StatelessWidget {
                         ),
                     ],
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: AppSpacing.xxs),
                   Text(
                     entry.description,
-                      style: TextStyle(
-                        fontSize: 13,
+                      style: AppTextStyle.subtitle.copyWith(
                         color: context.textSecondary,
                         height: 1.4,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppSpacing.sm),
                   Row(
                     children: [
                       Text(
-                        _typeLabel,
-                        style: TextStyle(
-                          fontSize: 10,
+                        _typeLabel(l),
+                        style: AppTextStyle.tiny.copyWith(
                           fontWeight: FontWeight.w600,
                           color: typeColor,
                           letterSpacing: 0.5,
@@ -215,17 +231,15 @@ class _UpdateCard extends StatelessWidget {
                       const SizedBox(width: 8),
                       Text(
                         'v${entry.version}',
-                        style: TextStyle(
-                          fontSize: 11,
+                        style: AppTextStyle.label.copyWith(
                           color: context.textTertiary,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        _formattedDate,
-                        style: TextStyle(
-                          fontSize: 11,
+                        _formattedDate(l),
+                        style: AppTextStyle.label.copyWith(
                           color: context.textTertiary,
                         ),
                       ),

@@ -1,0 +1,448 @@
+[
+  {
+    "id": "ac_st4_qB6_001",
+    "question": "Que es un gestor de contraseñas",
+    "type": "multipleChoice",
+    "options": [
+      "Un tipo de virus",
+      "Una aplicación que guarda y organiza todas tus contraseñas de forma segura",
+      "Un navegador web",
+      "Una red social"
+    ],
+    "correctIndex": 1,
+    "explanation": "Un gestor de contraseñas es como una bóveda digital que guarda todas tus claves de forma cifrada.",
+    "difficulty": 1,
+    "lessonId": "ac_s4_ses1_l1"
+  },
+  {
+    "id": "ac_st4_qB6_002",
+    "question": "Que es el cifrado de extremo a extremo",
+    "type": "multipleChoice",
+    "options": [
+      "Una forma de enviar mensajes",
+      "Que solo tu puedes ver tus datos, ni siquiera la empresa del gestor",
+      "Un tipo de contraseña",
+      "Una forma de borrar datos"
+    ],
+    "correctIndex": 1,
+    "explanation": "Con cifrado E2E, tus datos estan protegidos de tal forma que nadie mas puede leerlos, ni la empresa.",
+    "difficulty": 3,
+    "lessonId": "ac_s4_ses1_l2"
+  },
+  {
+    "id": "ac_st4_qB6_003",
+    "question": "Cual es la diferencia entre un gestor local y uno en la nube",
+    "type": "multipleChoice",
+    "options": [
+      "El local es gratis y el de la nube es de pago",
+      "El local guarda en tu dispositivo, el de la nube en servidores protegidos",
+      "Son exactamente iguales",
+      "El de la nube no tiene seguridad"
+    ],
+    "correctIndex": 1,
+    "explanation": "El local guarda todo en tu computadora. El de la nube lo sincroniza entre tus dispositivos de forma segura.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses1_l4"
+  },
+  {
+    "id": "ac_st4_qB6_004",
+    "question": "Por que un gestor es mas seguro que el navegador",
+    "type": "multipleChoice",
+    "options": [
+      "Porque es mas rápido",
+      "Porque cifra las contraseñas, detecta phishing y genera claves fuertes",
+      "Porque es gratis",
+      "Porque no necesita contraseña maestra"
+    ],
+    "correctIndex": 1,
+    "explanation": "El gestor ofrece cifrado, autocompletado seguro y deteccion de sitios falsos.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses1_l3"
+  },
+  {
+    "id": "ac_st4_qB6_005",
+    "question": "Que es la arquitectura de cero conocimiento",
+    "type": "multipleChoice",
+    "options": [
+      "Que el gestor conoce tus contraseñas",
+      "Que la empresa no puede ver ni acceder a tus contraseñas",
+      "Que no necesitas internet",
+      "Que puedes compartir tus contraseñas"
+    ],
+    "correctIndex": 1,
+    "explanation": "En cero conocimiento, la empresa que ofrece el servicio no tiene acceso a tus datos cifrados.",
+    "difficulty": 3,
+    "lessonId": "ac_s4_ses2_l1"
+  },
+  {
+    "id": "ac_st4_qB6_006",
+    "question": "Como se cifran tus datos en un gestor",
+    "type": "multipleChoice",
+    "options": [
+      "Se guardan sin protección",
+      "Se transforman en codigo ilegible que solo tu clave maestra puede descifrar",
+      "Se envian por correo electrónico",
+      "Se guardan en un USB"
+    ],
+    "correctIndex": 1,
+    "explanation": "Tus datos se cifran con algoritmos fuertes. Solo tu clave maestra puede descifrarlos.",
+    "difficulty": 3,
+    "lessonId": "ac_s4_ses2_l2"
+  },
+  {
+    "id": "ac_st4_qB6_007",
+    "question": "Que es la sincronizacion entre dispositivos en un gestor",
+    "type": "multipleChoice",
+    "options": [
+      "Borrar tus contraseñas en todos los dispositivos",
+      "Mantener tus contraseñas actualizadas en celular, tablet y computadora",
+      "Enviar contraseñas por mensaje",
+      "Guardar contraseñas en papel"
+    ],
+    "correctIndex": 1,
+    "explanation": "La sincronizacion mantiene tus contraseñas iguales y actualizadas en todos tus dispositivos.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses2_l4"
+  },
+  {
+    "id": "ac_st4_qB6_008",
+    "question": "Cual es la ventaja principal de usar un gestor de contraseñas",
+    "type": "multipleChoice",
+    "options": [
+      "Que es gratis",
+      "Que solo necesitas recordar una contraseña maestra para acceder a todas tus claves",
+      "Que te genera dinero",
+      "Que reemplaza tu correo electrónico"
+    ],
+    "correctIndex": 1,
+    "explanation": "El gestor te permite tener contraseñas únicas y fuertes para cada cuenta, recordando solo una clave.",
+    "difficulty": 1,
+    "lessonId": "ac_s4_ses3_l1"
+  },
+  {
+    "id": "ac_st4_qB6_009",
+    "question": "Que es una contraseña única y compleja",
+    "type": "multipleChoice",
+    "options": [
+      "Una contraseña que usas en todas tus cuentas",
+      "Una contraseña diferente y fuerte para cada sitio donde tienes cuenta",
+      "Una contraseña corta y facil de recordar",
+      "Una contraseña que cambia cada dia"
+    ],
+    "correctIndex": 1,
+    "explanation": "Con un gestor, puedes tener una contraseña única y fuerte para cada cuenta sin tener que memorizarlas.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses3_l2"
+  },
+  {
+    "id": "ac_st4_qB6_010",
+    "question": "Que es el autocompletado seguro de un gestor",
+    "type": "multipleChoice",
+    "options": [
+      "Que el gestor escribe por ti",
+      "Que el gestor rellena tus datos de login de forma segura en sitios verificados",
+      "Que guardas contraseñas en el navegador",
+      "Que compartes contraseñas con otros"
+    ],
+    "correctIndex": 1,
+    "explanation": "El autocompletado seguro solo llena formularios en sitios legítimos, protegiendote de phishing.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses3_l3"
+  },
+  {
+    "id": "ac_st4_qB6_011",
+    "question": "Que es la deteccion de phishing integrada en gestores",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero: algunos gestores pueden detectar sitios falsos antes de que entres",
+      "Falso: los gestores no pueden detectar phishing"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los mejores gestores verifican la URL del sitio y te avisan si es sospechoso o falso.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses3_l4"
+  },
+  {
+    "id": "ac_st4_qB6_012",
+    "question": "Que es un gestor de contraseñas familiar",
+    "type": "multipleChoice",
+    "options": [
+      "Un gestor que solo usan los niños",
+      "Un plan que permite compartir contraseñas de forma segura con tu familia",
+      "Un tipo de juego",
+      "Una página web para crear familias"
+    ],
+    "correctIndex": 1,
+    "explanation": "El plan familiar permite compartir contraseñas de forma segura entre miembros de tu familia.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses1_l6"
+  },
+  {
+    "id": "ac_st4_qB6_013",
+    "question": "Caso: Tu mama guarda todas sus contraseñas en un papelito. Que le recomiendas",
+    "type": "miniCase",
+    "options": [
+      "Que sigue asi, es la forma mas segura",
+      "Que use un gestor de contraseñas para guardarlas de forma cifrada y accesible",
+      "Que las memorice todas",
+      "Que las guarde en el navegador sin protección"
+    ],
+    "correctIndex": 1,
+    "explanation": "Un gestor es mucho mas seguro que papel. Si se pierde el papel, pierde todo. El gestor siempre esta disponible.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses1_l1"
+  },
+  {
+    "id": "ac_st4_qB6_014",
+    "question": "Que es la clave maestra en un gestor de contraseñas",
+    "type": "multipleChoice",
+    "options": [
+      "La contraseña de tu correo",
+      "La única contraseña que debes recordar para acceder a todas tus demas contraseñas",
+      "Una contraseña que genera el gestor",
+      "La contraseña del gestor en si"
+    ],
+    "correctIndex": 1,
+    "explanation": "La clave maestra es la llave que abres tu bóveda. Debe ser fuerte y única.",
+    "difficulty": 1,
+    "lessonId": "ac_s4_ses1_l1"
+  },
+  {
+    "id": "ac_st4_qB6_015",
+    "question": "Que es el modelo de amenazas de un gestor",
+    "type": "multipleChoice",
+    "options": [
+      "Una lista de virus",
+      "Analiza los posibles ataques que podria recibir y como se protege contra ellos",
+      "Un tipo de contraseña",
+      "Un plan de emergencia"
+    ],
+    "correctIndex": 1,
+    "explanation": "El modelo de amenazas identifica que podria salir mal y que medidas de seguridad tiene el gestor.",
+    "difficulty": 3,
+    "lessonId": "ac_s4_ses2_l5"
+  },
+  {
+    "id": "ac_st4_qB6_016",
+    "question": "Cual es el riesgo de guardar contraseñas solo en el navegador",
+    "type": "detectRisk",
+    "options": [
+      "Ninguno, es seguro",
+      "Si alguien accede a tu navegador, puede ver todas tus contraseñas",
+      "Es mas seguro que un gestor",
+      "Solo es mala idea si no tienes internet"
+    ],
+    "correctIndex": 1,
+    "explanation": "El navegador no tiene la misma seguridad que un gestor. Si hackean tu computadora, pueden ver todo.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses1_l3"
+  },
+  {
+    "id": "ac_st4_qB6_017",
+    "question": "Que es la gestion de identidades digitales en un gestor",
+    "type": "multipleChoice",
+    "options": [
+      "Crear cuentas falsas",
+      "Organizar toda tu información personal de forma segura: correos, direcciónes, tarjetas",
+      "Borrar tus cuentas",
+      "Compartir tus datos con empresas"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los gestores modernos pueden guardar no solo contraseñas sino toda tu información personal cifrada.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses2_l6"
+  },
+  {
+    "id": "ac_st4_qB6_018",
+    "question": "Que harias si pierdes el acceso a tu gestor de contraseñas",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Borrar todas mis cuentas",
+      "Usar los codigos de recuperación que guarde en un lugar seguro",
+      "Esperar a que se arregle solo",
+      "Pedir ayuda en redes sociales"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los gestores tienen codigos de emergencia. Guardalos en un lugar fisico seguro.",
+    "difficulty": 3,
+    "lessonId": "ac_s4_ses2_l5"
+  },
+  {
+    "id": "ac_st4_qB6_019",
+    "question": "Por que no debes compartir tu clave maestra con nadie",
+    "type": "multipleChoice",
+    "options": [
+      "Porque es divertido tener un secreto",
+      "Porque quien la tenga tendrá acceso a TODAS tus contraseñas y datos",
+      "Porque es ilegal",
+      "Porque no funciona en celulares"
+    ],
+    "correctIndex": 1,
+    "explanation": "La clave maestra abre todo. Si alguien la obtiene, tiene acceso a toda tu vida digital.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses1_l1"
+  },
+  {
+    "id": "ac_st4_qB6_020",
+    "question": "Que es un generador de contraseñas en un gestor",
+    "type": "multipleChoice",
+    "options": [
+      "Una herramienta para adivinar contraseñas",
+      "Una función que crea contraseñas fuertes y aleatorias automáticamente",
+      "Una forma de borrar contraseñas",
+      "Un tipo de juego"
+    ],
+    "correctIndex": 1,
+    "explanation": "El generador crea contraseñas largas, complejas y únicas sin que tengas que pensarlas.",
+    "difficulty": 1,
+    "lessonId": "ac_s4_ses3_l2"
+  },
+  {
+    "id": "ac_st4_qB6_021",
+    "question": "Cual es la diferencia entre un gestor y un archivo de texto",
+    "type": "multipleChoice",
+    "options": [
+      "El gestor es mas bonito",
+      "El gestor cifra, detecta phishing y genera claves; el archivo de texto es inseguro",
+      "Son lo mismo",
+      "El archivo de texto es mas seguro"
+    ],
+    "correctIndex": 1,
+    "explanation": "Un archivo de texto es facilmente hackeable. Un gestor ofrece múltiples capas de protección.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses1_l3"
+  },
+  {
+    "id": "ac_st4_qB6_022",
+    "question": "Que es un gestor de contraseñas local vs en la nube",
+    "type": "detectRisk",
+    "options": [
+      "El local es mas seguro pero no se sincroniza; el de la nube sincroniza pero depende de internet",
+      "Son exactamente iguales",
+      "El de la nube es siempre mejor",
+      "El local no tiene cifrado"
+    ],
+    "correctIndex": 0,
+    "explanation": "El local da mas control pero menos comodidad. El de la nube es mas práctico pero requiere confianza en la empresa.",
+    "difficulty": 3,
+    "lessonId": "ac_s4_ses1_l4"
+  },
+  {
+    "id": "ac_st4_qB6_023",
+    "question": "Por que deberias usar un generador de contraseñas en vez de crearlas tu mismo",
+    "type": "multipleChoice",
+    "options": [
+      "Porque es mas divertido",
+      "Porque el generador crea combinaciónes que un humano no pensaria y son mas seguras",
+      "Porque no sabes escribir",
+      "Porque las tuyas siempre son iguales"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los humanos somos predecibles. Los generadores crean combinaciónes aleatorias mucho mas fuertes.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses3_l2"
+  },
+  {
+    "id": "ac_st4_qB6_024",
+    "question": "Caso: Quieres instalar un gestor de contraseñas. Que haces primero",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Descargo el primero que encuentro en internet",
+      "Investigo opciónes confiables, leo reviews y elijo uno con buena reputacion",
+      "Pido recomendacion a un desconocido en redes sociales",
+      "No instaló ninguno"
+    ],
+    "correctIndex": 1,
+    "explanation": "Investiga antes de elegir. Busca gestores con buena reputacion y revisa sus politicas de privacidad.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses1_l1"
+  },
+  {
+    "id": "ac_st4_qB6_025",
+    "question": "Que es un vault o bóveda en un gestor",
+    "type": "multipleChoice",
+    "options": [
+      "Un lugar para guardar dinero",
+      "El espacio cifrado donde se guardan todas tus contraseñas y datos sensibles",
+      "Un tipo de encriptación",
+      "Una red social"
+    ],
+    "correctIndex": 1,
+    "explanation": "La bóveda es el contenedor seguro donde el gestor guarda toda tu información cifrada.",
+    "difficulty": 1,
+    "lessonId": "ac_s4_ses1_l1"
+  },
+  {
+    "id": "ac_st4_qB6_026",
+    "question": "Que debes hacer antes de elegir un gestor de contraseñas",
+    "type": "multipleChoice",
+    "options": [
+      "Nada, todos son iguales",
+      "Verificar que tenga cifrado fuerte, buena reputacion y politica de cero conocimiento",
+      "Preguntar a todos en Facebook",
+      "Elegir el mas barato"
+    ],
+    "correctIndex": 1,
+    "explanation": "No todos los gestores son iguales. Verifica cifrado, reputacion y politicas de privacidad.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses1_l2"
+  },
+  {
+    "id": "ac_st4_qB6_027",
+    "question": "Que harias si un gestor de contraseñas tiene una brecha de seguridad",
+    "type": "miniCase",
+    "options": [
+      "No pasa nada, mis datos estan seguros",
+      "Cambiaria mi clave maestra inmediatamente y revisaria mis cuentas",
+      "Borraria todas mis contraseñas",
+      "No usaria ningun gestor jamas"
+    ],
+    "correctIndex": 1,
+    "explanation": "En una brecha, actua rápido: cambia tu clave maestra y revisa actividad sospechosa en tus cuentas.",
+    "difficulty": 3,
+    "lessonId": "ac_s4_ses2_l5"
+  },
+  {
+    "id": "ac_st4_qB6_028",
+    "question": "Por que el cifrado de extremo a extremo es importante en un gestor",
+    "type": "multipleChoice",
+    "options": [
+      "Para que sea mas rápido",
+      "Para que ni siquiera la empresa del gestor pueda ver tus contraseñas",
+      "Para que puedas compartir contraseñas",
+      "Para que se guarde en la nube"
+    ],
+    "correctIndex": 1,
+    "explanation": "E2E significa que solo tu puedes descifrar tus datos. La empresa solo ve codigo ilegible.",
+    "difficulty": 3,
+    "lessonId": "ac_s4_ses1_l2"
+  },
+  {
+    "id": "ac_st4_qB6_029",
+    "question": "Cual es el mayor beneficio de un gestor para adultos mayores",
+    "type": "multipleChoice",
+    "options": [
+      "Que es bonito",
+      "Que no necesitan memorizar docenas de contraseñas, solo una clave maestra",
+      "Que les da puntos en redes sociales",
+      "Que reemplaza su celular"
+    ],
+    "correctIndex": 1,
+    "explanation": "El gestor elimina la carga de memorizar muchas contraseñas, algo especialmente util para adultos mayores.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses3_l1"
+  },
+  {
+    "id": "ac_st4_qB6_030",
+    "question": "Que es la importancia de mantener actualizado tu gestor de contraseñas",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero: las actualizaciones corrigen vulnerabilidades y mejoran la seguridad",
+      "Falso: no es necesario actualizar nunca"
+    ],
+    "correctIndex": 0,
+    "explanation": "Las actualizaciones incluyen parches de seguridad que protegen contra nuevas amenazas.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses1_l5"
+  }
+]

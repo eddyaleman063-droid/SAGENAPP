@@ -1,9 +1,14 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter/services.dart';
+import 'package:sagen/services/experience_service.dart';
+import 'package:sagen/l10n/app_localizations.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/theme_constants.dart';
 import '../../../models/learning/quiz_score.dart';
+import '../../widgets/animations/particle_burst.dart';
+import '../../widgets/common/confetti_widget.dart';
 
 enum _FeedbackState { accuracy, speed, standard }
 
@@ -25,38 +30,38 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _glowCtrl;
   late _FeedbackState _state;
-  late String _dynamicText;
+  String _dynamicText = '';
   late String _sageAsset;
   final _random = Random();
 
-  static const _accuracyTexts = [
-    '¡Qué buena puntería!',
-    'Precisión quirúrgica.',
-    'Nivel experto alcanzado.',
-    'Francotirador del conocimiento.',
-    'Perfección casi absoluta.',
-    'No dejaste margen de error.',
-    'Impecable.',
+  List<String> _accuracyTexts(AppLocalizations l) => [
+    l.sessionSummaryAccuracy1,
+    l.sessionSummaryAccuracy2,
+    l.sessionSummaryAccuracy3,
+    l.sessionSummaryAccuracy4,
+    l.sessionSummaryAccuracy5,
+    l.sessionSummaryAccuracy6,
+    l.sessionSummaryAccuracy7,
   ];
 
-  static const _speedTexts = [
-    '¡Qué veloz!',
-    'Rompiste el cronómetro.',
-    'A la velocidad de la luz.',
-    'Reflejos de acero.',
-    'Nadie te alcanza hoy.',
-    '¡Tiempo récord!',
-    'Velocidad supersónica.',
+  List<String> _speedTexts(AppLocalizations l) => [
+    l.sessionSummarySpeed1,
+    l.sessionSummarySpeed2,
+    l.sessionSummarySpeed3,
+    l.sessionSummarySpeed4,
+    l.sessionSummarySpeed5,
+    l.sessionSummarySpeed6,
+    l.sessionSummarySpeed7,
   ];
 
-  static const _standardTexts = [
-    '¡Lección completada!',
-    'Un paso más cerca de tu meta.',
-    'El progreso es el camino.',
-    'Buen trabajo constante.',
-    'Sigue así, sumando días.',
-    'Constancia ante todo.',
-    'La disciplina da resultados.',
+  List<String> _standardTexts(AppLocalizations l) => [
+    l.sessionSummaryStandard1,
+    l.sessionSummaryStandard2,
+    l.sessionSummaryStandard3,
+    l.sessionSummaryStandard4,
+    l.sessionSummaryStandard5,
+    l.sessionSummaryStandard6,
+    l.sessionSummaryStandard7,
   ];
 
   static const _accuracyAssets = [
@@ -87,15 +92,7 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen>
 
   String _pickRandom(List<String> list) => list[_random.nextInt(list.length)];
 
-  int get _totalXp {
-    const base = 15;
-    final bonus = switch (_state) {
-      _FeedbackState.accuracy => 10,
-      _FeedbackState.speed => 5,
-      _FeedbackState.standard => 0,
-    };
-    return base + bonus;
-  }
+  int get _totalXp => widget.score.xp;
 
   @override
   void initState() {
@@ -103,25 +100,31 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen>
     final accuracy = widget.score.accuracyPercent;
     final avgTime = widget.score.avgTimePerQuestion;
     _state = _determineState(accuracy, avgTime);
-    _dynamicText = switch (_state) {
-      _FeedbackState.accuracy => _pickRandom(_accuracyTexts),
-      _FeedbackState.speed => _pickRandom(_speedTexts),
-      _FeedbackState.standard => _pickRandom(_standardTexts),
-    };
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final l = AppLocalizations.of(context)!;
+      setState(() {
+        _dynamicText = switch (_state) {
+          _FeedbackState.accuracy => _pickRandom(_accuracyTexts(l)),
+          _FeedbackState.speed => _pickRandom(_speedTexts(l)),
+          _FeedbackState.standard => _pickRandom(_standardTexts(l)),
+        };
+      });
+    });
     _sageAsset = switch (_state) {
       _FeedbackState.accuracy => _pickRandom(_accuracyAssets),
       _FeedbackState.speed => _pickRandom(_speedAssets),
       _FeedbackState.standard => _pickRandom(_standardAssets),
     };
     _glowCtrl = AnimationController(vsync: this, duration: const Duration(seconds: 3));
-    _glowCtrl.repeat(reverse: true);
+    _glowCtrl.forward();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      HapticFeedback.mediumImpact();
+      ExperienceService.instance.mediumHaptic();
       Future.delayed(const Duration(milliseconds: 200), () {
-        HapticFeedback.mediumImpact();
+        ExperienceService.instance.mediumHaptic();
       });
       Future.delayed(const Duration(milliseconds: 400), () {
-        HapticFeedback.mediumImpact();
+        ExperienceService.instance.mediumHaptic();
       });
     });
   }
@@ -141,55 +144,93 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen>
   @override
   Widget build(BuildContext context) {
     final dark = Theme.of(context).brightness == Brightness.dark;
-    return Scaffold(
+    final isPerfect = widget.score.accuracyPercent >= 90;
+    final isGood = widget.score.accuracyPercent >= 70;
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        context.go('/home');
+      },
+      child: Scaffold(
       backgroundColor: dark ? PremiumColors.darkBg : PremiumColors.lightBg,
-      body: SafeArea(
-        child: AnimatedBuilder(
-          animation: _glowCtrl,
-          builder: (context, _) {
-            return Container(
-              decoration: BoxDecoration(
-                gradient: RadialGradient(
-                  center: Alignment.topCenter,
-                  radius: 1.2,
-                  colors: [
-                    _primaryColor.withValues(alpha: 0.06 + _glowCtrl.value * 0.04),
-                    dark ? PremiumColors.darkBg : PremiumColors.lightBg,
-                    dark ? PremiumColors.darkBg : PremiumColors.lightBg,
-                  ],
-                ),
-              ),
-              child: Column(
-                children: [
-                  const Spacer(flex: 2),
-                  _buildMascot(),
-                  const SizedBox(height: AppSpacing.lg),
-                  _buildDynamicText(),
-                  const SizedBox(height: AppSpacing.xxl),
-                  _StatsGrid(
-                    totalXp: _totalXp,
-                    accuracyPercent: widget.score.accuracyPercent,
-                    timeSeconds: widget.score.timeSpentSeconds,
-                    primaryColor: _primaryColor,
+      body: Stack(
+        children: [
+          if (isPerfect)
+            const Positioned.fill(
+              child: ConfettiWidget(type: ConfettiType.level, particleCount: 80),
+            )
+          else if (isGood)
+            const Positioned.fill(
+              child: ConfettiWidget(type: ConfettiType.streak, particleCount: 40),
+            ),
+          SafeArea(
+            child: AnimatedBuilder(
+              animation: _glowCtrl,
+              builder: (context, _) {
+                return Container(
+                  decoration: BoxDecoration(
+                    gradient: RadialGradient(
+                      center: Alignment.topCenter,
+                      radius: 1.2,
+                      colors: [
+                        _primaryColor.withValues(alpha: 0.06 + _glowCtrl.value * 0.04),
+                        dark ? PremiumColors.darkBg : PremiumColors.lightBg,
+                        dark ? PremiumColors.darkBg : PremiumColors.lightBg,
+                      ],
+                    ),
                   ),
-                  const Spacer(flex: 3),
-                  _buildButton(),
-                  const SizedBox(height: AppSpacing.xl),
-                ],
-              ),
-            );
-          },
-        ),
+                  child: Column(
+                    children: [
+                      const Spacer(flex: 2),
+                      _buildMascot(),
+                      const SizedBox(height: AppSpacing.lg),
+                      _buildDynamicText(),
+                      const SizedBox(height: AppSpacing.xxl),
+                      _StatsGrid(
+                        totalXp: _totalXp,
+                        accuracyPercent: widget.score.accuracyPercent,
+                        timeSeconds: widget.score.timeSpentSeconds,
+                        primaryColor: _primaryColor,
+                      ),
+                      const Spacer(flex: 3),
+                      _buildButton(),
+                      const SizedBox(height: AppSpacing.xl),
+                    ],
+                  ).animate().fadeIn(),
+                );
+              },
+            ),
+          ),
+        ],
       ),
+    ),
     );
   }
 
   Widget _buildMascot() {
-    return Image.asset(
-      _sageAsset,
-      height: 120,
-      fit: BoxFit.contain,
-      errorBuilder: (_, _, _) => const SizedBox(height: 120, width: 120),
+    final isPerfect = widget.score.accuracyPercent >= 90;
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        if (isPerfect)
+          Positioned(
+            child: ParticleBurst(
+              color: _primaryColor,
+              count: 16,
+              radius: 80,
+              duration: const Duration(milliseconds: 800),
+            ),
+          ),
+        ExcludeSemantics(child: Image.asset(
+          _sageAsset,
+          height: 120,
+          cacheWidth: 240,
+          cacheHeight: 240,
+          fit: BoxFit.contain,
+          errorBuilder: (_, _, _) => const SizedBox(height: 120, width: 120),
+        )),
+      ],
     );
   }
 
@@ -199,8 +240,7 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen>
       child: Text(
         _dynamicText,
         textAlign: TextAlign.center,
-        style: TextStyle(
-          fontSize: 26,
+        style: AppTextStyle.headlineLarge.copyWith(
           fontWeight: FontWeight.bold,
           color: _primaryColor,
           height: 1.3,
@@ -216,34 +256,39 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen>
   }
 
   Widget _buildButton() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
-      child: SizedBox(
-        width: double.infinity,
-        height: 54,
-        child: ElevatedButton(
-          onPressed: () {
-            HapticFeedback.mediumImpact();
-            context.goNamed('habit-transition');
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: _primaryColor,
-            foregroundColor: Colors.white,
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(AppRadius.lg),
-            ),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                'RECIBIR RECOMPENSA',
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, letterSpacing: 1.2),
+    final l10n = AppLocalizations.of(context)!;
+    return Semantics(
+      button: true,
+      label: l10n.sessionSummaryReceiveRewardLabel,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
+        child: SizedBox(
+          width: double.infinity,
+          height: 54,
+          child: ElevatedButton(
+            onPressed: () {
+              ExperienceService.instance.mediumHaptic();
+              context.goNamed('habit-transition');
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: _primaryColor,
+              foregroundColor: Colors.white,
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppRadius.lg),
               ),
-              const SizedBox(width: AppSpacing.sm),
-              Icon(Icons.arrow_forward_rounded, size: 20, color: Colors.white.withValues(alpha: 0.8)),
-            ],
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  l10n.sessionSummaryReceiveReward,
+                  style: AppTextStyle.body.copyWith(fontWeight: FontWeight.bold, letterSpacing: 1.2),
+                ),
+                const SizedBox(width: AppSpacing.sm),
+                Icon(Icons.arrow_forward_rounded, size: 20, color: Colors.white.withValues(alpha: 0.8)),
+              ],
+            ),
           ),
         ),
       ),
@@ -266,8 +311,7 @@ class _StatsGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dark = Theme.of(context).brightness == Brightness.dark;
-    final valColor = dark ? Colors.white : Colors.black87;
+    final valColor = context.textPrimary;
     final minutes = (timeSeconds ~/ 60).toString().padLeft(2, '0');
     final secs = (timeSeconds % 60).toString().padLeft(2, '0');
     final timeFormatted = '$minutes:$secs';
@@ -276,43 +320,55 @@ class _StatsGrid extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
       child: Row(
         children: [
-          Expanded(child: _StatBlock(
-            icon: Icons.bolt_rounded,
-            label: 'EXP',
-            color: PremiumColors.streakOrange,
-            child: TweenAnimationBuilder<double>(
-              tween: Tween(begin: 0, end: totalXp.toDouble()),
-              duration: const Duration(milliseconds: 1000),
-              curve: Curves.easeOutCubic,
-              builder: (context, val, _) => Text(
-                '+${val.toInt()}',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: valColor),
+          Expanded(child: Semantics(
+            label: AppLocalizations.of(context)!.xpGainedLabel(totalXp),
+            container: true,
+            child: _StatBlock(
+              icon: Icons.bolt_rounded,
+              label: AppLocalizations.of(context)!.sessionSummaryExp,
+              color: PremiumColors.streakOrange,
+              child: TweenAnimationBuilder<double>(
+                tween: Tween(begin: 0, end: totalXp.toDouble()),
+                duration: const Duration(milliseconds: 1000),
+                curve: Curves.easeOutCubic,
+                builder: (context, val, _) => Text(
+                  '+${val.toInt()}',
+                  style: AppTextStyle.titleLg.copyWith(fontWeight: FontWeight.bold, color: valColor),
+                ),
               ),
             ),
           )),
           const SizedBox(width: AppSpacing.md),
-          Expanded(child: _StatBlock(
-            icon: Icons.gps_fixed_rounded,
-            label: 'PRECISIÓN',
-            color: PremiumColors.success,
-            child: TweenAnimationBuilder<double>(
-              tween: Tween(begin: 0, end: accuracyPercent),
-              duration: const Duration(milliseconds: 800),
-              curve: Curves.easeOutCubic,
-              builder: (context, val, _) => Text(
-                '${val.toStringAsFixed(0)}%',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: valColor),
+          Expanded(child: Semantics(
+            label: AppLocalizations.of(context)!.accuracyPercentLabel(accuracyPercent.toStringAsFixed(0)),
+            container: true,
+            child: _StatBlock(
+              icon: Icons.gps_fixed_rounded,
+              label: AppLocalizations.of(context)!.sessionSummaryAccuracy,
+              color: PremiumColors.success,
+              child: TweenAnimationBuilder<double>(
+                tween: Tween(begin: 0, end: accuracyPercent),
+                duration: const Duration(milliseconds: 800),
+                curve: Curves.easeOutCubic,
+                builder: (context, val, _) => Text(
+                  '${val.toStringAsFixed(0)}%',
+                  style: AppTextStyle.titleLg.copyWith(fontWeight: FontWeight.bold, color: valColor),
+                ),
               ),
             ),
           )),
           const SizedBox(width: AppSpacing.md),
-          Expanded(child: _StatBlock(
-            icon: Icons.timer_outlined,
-            label: 'TIEMPO',
-            color: PremiumColors.splashBlue,
-            child: Text(
-              timeFormatted,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: valColor),
+          Expanded(child: Semantics(
+            label: AppLocalizations.of(context)!.timeLabel(timeFormatted),
+            container: true,
+            child: _StatBlock(
+              icon: Icons.timer_outlined,
+              label: AppLocalizations.of(context)!.sessionSummaryTime,
+              color: PremiumColors.splashBlue,
+              child: Text(
+                timeFormatted,
+                style: AppTextStyle.title.copyWith(fontWeight: FontWeight.bold, color: valColor),
+              ),
             ),
           )),
         ],
@@ -336,13 +392,12 @@ class _StatBlock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg, horizontal: AppSpacing.xs),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppRadius.xl),
-        color: dark ? Colors.white.withValues(alpha: 0.04) : Colors.white,
-        border: Border.all(color: dark ? Colors.white.withValues(alpha: 0.06) : Colors.black.withValues(alpha: 0.06)),
+        color: context.surfaceCard,
+        border: Border.all(color: context.subtleBorder),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -354,17 +409,16 @@ class _StatBlock extends StatelessWidget {
               shape: BoxShape.circle,
               color: color.withValues(alpha: 0.12),
             ),
-            child: Icon(icon, size: 18, color: color),
+            child: ExcludeSemantics(child: Icon(icon, size: 18, color: color)),
           ),
           const SizedBox(height: AppSpacing.sm),
           child,
           const SizedBox(height: AppSpacing.xxs),
           Text(
             label,
-            style: TextStyle(
-              fontSize: 9,
+            style: AppTextStyle.micro.copyWith(
               fontWeight: FontWeight.w600,
-              color: dark ? Colors.white.withValues(alpha: 0.5) : Colors.black45,
+              color: context.textTertiary,
               letterSpacing: 1,
             ),
           ),

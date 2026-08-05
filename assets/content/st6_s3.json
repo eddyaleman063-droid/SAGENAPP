@@ -1,0 +1,1214 @@
+[
+  {
+    "id": "ac_st6_ses03_l01_q01",
+    "type": "multipleChoice",
+    "question": "¿Cómo identificar una llamada falsa de tu banco?",
+    "options": [
+      "Te piden contraseñas, PINs o transferir dinero a otra cuenta",
+      "Te dan información sobre promociones actuales",
+      "Te confirman un depósito que hiciste",
+      "Te preguntan por tu satisfacción con el servicio"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Los bancos nunca piden contraseñas, PINs o transferir dinero por teléfono.",
+    "explanationWrong": "Los bancos legítimos nunca solicitan datos sensibles por llamada."
+  },
+  {
+    "id": "ac_st6_ses03_l01_q02",
+    "type": "trueFalse",
+    "question": "Si el número que te llama coincide con el de tu banco, la llamada es segura.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Los estafadores pueden falsificar el número que aparece en tu teléfono.",
+    "explanationWrong": "El número puede ser falsificado. No es suficiente para confiar."
+  },
+  {
+    "id": "ac_st6_ses03_l01_q03",
+    "type": "multipleChoice",
+    "question": "¿Qué debes hacer si recibes una llamada sospechosa de tu banco?",
+    "options": [
+      "Dar tus datos para verificar tu cuenta",
+      "Colgar y llamar directamente al banco",
+      "Transferir tu dinero a una cuenta segura",
+      "Esperar a que te llamen de nuevo"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Siempre colgar y llamar directamente al banco con el número oficial.",
+    "explanationWrong": "Nunca proporciones información por llamadas no solicitadas."
+  },
+  {
+    "id": "ac_st6_ses03_l01_q04",
+    "type": "miniCase",
+    "question": "Jorge recibió una llamada de alguien que decía ser del BCP. Le informaron que su cuenta había sido hackeada y debía transferir sus fondos a una 'cuenta de protección'. Jorge estaba nervioso. ¿Qué debería hacer?",
+    "options": [
+      "Transferir su dinero inmediatamente",
+      "Colgar y llamar directamente al BCP",
+      "Pedir más detalles al llamante",
+      "Dar sus datos de acceso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Los bancos nunca te pedirán transferir tu dinero a otra cuenta. Siempre verifica.",
+    "explanationWrong": "Siempre verifica colgando y llamando al banco directamente."
+  },
+  {
+    "id": "ac_st6_ses03_l01_q05",
+    "type": "multipleChoice",
+    "question": "¿Qué información nunca debes dar por teléfono a tu banco?",
+    "options": [
+      "Contraseñas, PINs y códigos de verificación",
+      "Tu nombre completo",
+      "El tipo de cuenta que tienes",
+      "El saldo approximate de tu cuenta"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Nunca des contraseñas, PINs o códigos de verificación por teléfono.",
+    "explanationWrong": "Estos datos son extremadamente sensibles y no deben compartirse."
+  },
+  {
+    "id": "ac_st6_ses03_l01_q06",
+    "type": "trueFalse",
+    "question": "Los bancos pueden llamarte para ofrecerte nuevos productos o servicios.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Sí, los bancos pueden llamarte para ofrecer productos, pero nunca te pedirán datos sensibles.",
+    "explanationWrong": "Los bancos sí pueden llamarte, pero eso no significa que debas dar datos."
+  },
+  {
+    "id": "ac_st6_ses03_l01_q07",
+    "type": "multipleChoice",
+    "question": "¿Por qué los estafadores suplantan a los bancos por teléfono?",
+    "options": [
+      "Porque la gente confía en las llamadas del banco",
+      "Porque es ilegal llamar por teléfono",
+      "Porque los bancos nunca llaman",
+      "Porque solo los bancos pueden usar teléfono"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Los estafadores aprovechan la confianza que la gente tiene en las llamadas bancarias.",
+    "explanationWrong": "La confianza en las llamadas bancarias es lo que los estafadores explotan."
+  },
+  {
+    "id": "ac_st6_ses03_l01_q08",
+    "type": "miniCase",
+    "question": "Carmen recibió una llamada de 'Interbank' informándole que había una transacción sospechosa de S/. 5,000 en su cuenta. Para cancelarla, debía dar su código OTP. Carmen estaba asustada. ¿Qué debería hacer?",
+    "options": [
+      "Dar el código OTP para cancelar la transacción",
+      "Colgar y llamar directamente a Interbank",
+      "Pedir más detalles de la transacción",
+      "Dar solo los últimos 4 dígitos del código"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Nunca compartas tu código OTP. Los bancos nunca lo pedirán por teléfono.",
+    "explanationWrong": "Los códigos OTP son para tu uso exclusivo. Nunca los compartas."
+  },
+  {
+    "id": "ac_st6_ses03_l01_q09",
+    "type": "multipleChoice",
+    "question": "¿Qué táctica usan los estafadores que suplanban bancos?",
+    "options": [
+      "Crean urgencia y miedo para que actúes rápido",
+      "Siempre son amables y pacientes",
+      "Te dan tiempo para pensar",
+      "Nunca piden información"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Usan urgencia y miedo para que actúes sin verificar.",
+    "explanationWrong": "Los estafadores presionan para que no pienses racionalmente."
+  },
+  {
+    "id": "ac_st6_ses03_l01_q10",
+    "type": "trueFalse",
+    "question": "Si el llamante te da información que solo el banco debería saber, la llamada es segura.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Los estafadores pueden obtener información de bases de datos robadas.",
+    "explanationWrong": "El conocimiento de datos no garantiza la legitimidad."
+  },
+  {
+    "id": "ac_st6_ses03_l01_q11",
+    "type": "multipleChoice",
+    "question": "¿Qué número debes usar para verificar una llamada sospechosa?",
+    "options": [
+      "El número que te dio el llamante",
+      "El número oficial del banco que está en tu tarjeta o estado de cuenta",
+      "El número que aparece en el buzón de voz",
+      "Un número que encuentres en internet"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Siempre usa el número oficial que está en tu tarjeta o estado de cuenta físico.",
+    "explanationWrong": "Nunca uses los datos de contacto del llamante sospechoso."
+  },
+  {
+    "id": "ac_st6_ses03_l01_q12",
+    "type": "multipleChoice",
+    "question": "¿Qué hacer si el llamante te dice que no cuelgues porque es una emergencia?",
+    "options": [
+      "Colgar inmediatamente, es una táctica de presión",
+      "Esperar para ver si es verdad",
+      "Pedir un número para devolver la llamada",
+      "Dar tus datos para la emergencia"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Si sientes presión, cuelga y verifica por tu cuenta.",
+    "explanationWrong": "La urgencia es una táctica de estafa."
+  },
+  {
+    "id": "ac_st6_ses03_l01_q13",
+    "type": "miniCase",
+    "question": "Luis recibió una llamada de alguien que decía ser de su banco. Le informaron que necesitaba actualizar sus datos para evitar el bloqueo de su cuenta. ¿Qué debería hacer?",
+    "options": [
+      "Actualizar los datos inmediatamente",
+      "Colgar y verificar contactando directamente al banco",
+      "Pedir más tiempo",
+      "Dar solo algunos datos"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Siempre verifica contactando directamente al banco por tu cuenta.",
+    "explanationWrong": "Los bancos no te presionarán para actualizar datos por teléfono."
+  },
+  {
+    "id": "ac_st6_ses03_l01_q14",
+    "type": "trueFalse",
+    "question": "Los estafadores pueden hacer que su llamada suene como si viniera de tu banco usando tecnología de falsificación.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "La tecnología de spoofing permite falsificar números de llamada.",
+    "explanationWrong": "El spoofing de números es una técnica real y peligrosa."
+  },
+  {
+    "id": "ac_st6_ses03_l01_q15",
+    "type": "multipleChoice",
+    "question": "¿Cuál es la regla de oro ante llamadas sospechosas del banco?",
+    "options": [
+      "Si te piden datos sensibles, es una estafa. Cuelga y verifica",
+      "Si el número parece legítimo, es seguro",
+      "Si el llamante es amable, es real",
+      "Si la llamada es corta, es segura"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Si te piden datos sensibles, es una estafa. Cuelga siempre y verifica por tu cuenta.",
+    "explanationWrong": "Nunca des datos por teléfono sin verificar primero."
+  },
+  {
+    "id": "ac_st6_ses03_l02_q01",
+    "type": "multipleChoice",
+    "question": "¿Qué son los correos falsos de entidades financieras?",
+    "options": [
+      "Correos que imitan a bancos para robar datos personales y bancarios",
+      "Correos informativos del banco",
+      "Correos de promociones legítimas",
+      "Correos automáticos de estado de cuenta"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Son correos fraudulentos que parecen venir de bancos o entidades financieras para robar información.",
+    "explanationWrong": "Los correos falsos no son informativos ni promocionales."
+  },
+  {
+    "id": "ac_st6_ses03_l02_q02",
+    "type": "trueFalse",
+    "question": "Los correos falsos de bancos siempre tienen errores ortográficos.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Muchos están profesiónalmente escritos para parecer idénticos a los legítimos.",
+    "explanationWrong": "No confíes solo en la ausencia de errores."
+  },
+  {
+    "id": "ac_st6_ses03_l02_q03",
+    "type": "multipleChoice",
+    "question": "¿Cómo identificar un correo falso de tu banco?",
+    "options": [
+      "El enlace lleva a un dominio que no es oficial del banco",
+      "Viene de tu proveedor de correo",
+      "Tiene el logo del banco",
+      "Está en español correcto"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Si el dominio del enlace no es el oficial del banco, es falso.",
+    "explanationWrong": "El logo y el español correcto no garantizan legitimidad."
+  },
+  {
+    "id": "ac_st6_ses03_l02_q04",
+    "type": "miniCase",
+    "question": "María recibió un correo de 'BCP' con el asunto: 'Actualización de datos requerida'. El correo tenía el logo del BCP y un botón 'Actualizar ahora'. El enlace llevaba a 'bcp-actualizar.net'. ¿Qué debería hacer?",
+    "options": [
+      "Hacer clic porque tiene el logo",
+      "Ignorar y verificar contactando al BCP",
+      "Reenviar a su familia",
+      "Responder pidiendo información"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "El dominio no es oficial. Verifica contactando al banco directamente.",
+    "explanationWrong": "Los estafadores copian logos pero los dominios falsos revelan la estafa."
+  },
+  {
+    "id": "ac_st6_ses03_l02_q05",
+    "type": "multipleChoice",
+    "question": "¿Qué suelen pedir los correos falsos de bancos?",
+    "options": [
+      "Datos de acceso, contraseñas, números de tarjeta",
+      "Solo confirmar que recibiste el correo",
+      "Actualizar tu dirección postal",
+      "Descargar una nueva aplicación"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Los correos falsos piden datos sensibles como contraseñas y números de tarjeta.",
+    "explanationWrong": "Los bancos legítimos nunca piden estos datos por correo."
+  },
+  {
+    "id": "ac_st6_ses03_l02_q06",
+    "type": "trueFalse",
+    "question": "Si un correo de tu banco tiene el logo oficial, es seguro hacer clic en los enlaces.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Los estafadores pueden copiar logos fácilmente. Verifica siempre el dominio.",
+    "explanationWrong": "El logo no garantiza que el correo sea legítimo."
+  },
+  {
+    "id": "ac_st6_ses03_l02_q07",
+    "type": "multipleChoice",
+    "question": "¿Qué hacer si recibes un correo sospechoso de tu banco?",
+    "options": [
+      "Hacer clic para ver qué es",
+      "No interactuar y verificar contactando al banco",
+      "Reenviar a contactos",
+      "Responder pidiendo más información"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "No interactúes. Verifica contactando directamente al banco.",
+    "explanationWrong": "Nunca hagas clic en correos sospechosos."
+  },
+  {
+    "id": "ac_st6_ses03_l02_q08",
+    "type": "miniCase",
+    "question": "Pedro recibió un correo de 'Interbank' diciendo que su cuenta había sido bloqueada por actividad sospechosa. Para desbloquearla, debía hacer clic en un enlace y verificar su identidad. ¿Qué debería hacer?",
+    "options": [
+      "Hacer clic para desbloquear su cuenta",
+      "Ignorar el correo y llamar a Interbank",
+      "Esperar a que lo desbloqueen automáticamente",
+      "Reenviar el correo a su banco"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Siempre verifica llamando directamente al banco usando el número oficial.",
+    "explanationWrong": "Los bancos nunca bloquean cuentas por correo con enlaces."
+  },
+  {
+    "id": "ac_st6_ses03_l02_q09",
+    "type": "multipleChoice",
+    "question": "¿Por qué son efectivos los correos falsos de bancos?",
+    "options": [
+      "Porque la gente confía en los comúnicados oficiales de su banco",
+      "Porque siempre tienen errores",
+      "Porque son fáciles de detectar",
+      "Porque solo afectan a personas mayores"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Los estafadores aprovechan la confianza que la gente tiene en los comúnicados bancarios.",
+    "explanationWrong": "Los correos falsos son efectivos porque parecen oficiales."
+  },
+  {
+    "id": "ac_st6_ses03_l02_q10",
+    "type": "trueFalse",
+    "question": "Los correos de phishing bancarios a menudo crean una sensación de urgencia o alarma.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "La urgencia y la alarma son tácticas comunes para que actúes sin pensar.",
+    "explanationWrong": "Los estafadores usan urgencia para que no verifiques."
+  },
+  {
+    "id": "ac_st6_ses03_l02_q11",
+    "type": "multipleChoice",
+    "question": "¿Cómo verificar si un correo de tu banco es legítimo?",
+    "options": [
+      "Hacer clic en el enlace del correo",
+      "Llamar directamente al banco con el número oficial",
+      "Responder al correo con tus datos",
+      "Esperar a que te llamen del banco"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "La única forma segura es llamar directamente al banco con el número que tú conoces.",
+    "explanationWrong": "Nunca uses los datos del correo sospechoso."
+  },
+  {
+    "id": "ac_st6_ses03_l02_q12",
+    "type": "multipleChoice",
+    "question": "¿Qué información buscan los estafadores con correos falsos de bancos?",
+    "options": [
+      "Credenciales de acceso, datos de tarjetas, información personal",
+      "Solo confirmar que eres cliente",
+      "Promociones que no conocías",
+      "Tu opinión sobre el servicio"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Buscan robar credenciales y datos financieros para fraude.",
+    "explanationWrong": "Los estafadores buscan información que pueda ser monetizada."
+  },
+  {
+    "id": "ac_st6_ses03_l02_q13",
+    "type": "miniCase",
+    "question": "Carmen recibió un correo de su entidad financiera con un error ortográfico en el asunto. El correo le pedía verificar su cuenta. Aunque tenía el logo, el error le pareció extraño. ¿Qué debería hacer?",
+    "options": [
+      "Ignorar el error y hacer clic porque tiene el logo",
+      "Verificar contactando directamente a la entidad",
+      "Reenviar el correo a su banco",
+      "Responder pidiendo explicación"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Los errores son una señal de alerta. Verifica siempre contactando directamente.",
+    "explanationWrong": "Un error ortográfico en un correo 'oficial' es una señal de phishing."
+  },
+  {
+    "id": "ac_st6_ses03_l02_q14",
+    "type": "trueFalse",
+    "question": "Los bancos envían correos pidiendo que hagas clic en enlaces para actualizar datos de seguridad.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Los bancos nunca envían correos pidiendo actualizar datos por enlaces.",
+    "explanationWrong": "Los bancos tienen procesos seguros que no involucran enlaces en correos."
+  },
+  {
+    "id": "ac_st6_ses03_l02_q15",
+    "type": "multipleChoice",
+    "question": "¿Cuál es la mejor protección contra correos falsos de bancos?",
+    "options": [
+      "No abrir ningún correo del banco",
+      "Verificar siempre la legitimidad contactando al banco directamente",
+      "Hacer clic en todos los enlaces para probar",
+      "Compartir los correos con familiares"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "La verificación directa con el banco es la mejor protección.",
+    "explanationWrong": "No abrir correos no es práctico. Verificar siempre es la clave."
+  },
+  {
+    "id": "ac_st6_ses03_l03_q01",
+    "type": "multipleChoice",
+    "question": "¿Qué es la clonación de tarjetas?",
+    "options": [
+      "Copiar la información de una tarjeta bancaria para usarla fraudulentamente",
+      "Perder tu tarjeta",
+      "Que tu tarjeta se dañe físicamente",
+      "Que tu tarjeta sea rechazada en una tienda"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "La clonación es copiar los datos de una tarjeta para crear una réplica y hacer compras o retiros fraudulentos.",
+    "explanationWrong": "La clonación no es perder o dañar la tarjeta. Es un fraude."
+  },
+  {
+    "id": "ac_st6_ses03_l03_q02",
+    "type": "trueFalse",
+    "question": "Las tarjetas con chip son imposibles de clonar.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Aunque el chip es más seguro, las tarjetas aún pueden ser vulnerables a ciertas técnicas de clonación.",
+    "explanationWrong": "Ninguna tecnología es 100% infalible."
+  },
+  {
+    "id": "ac_st6_ses03_l03_q03",
+    "type": "multipleChoice",
+    "question": "¿Dónde pueden clonar tu tarjeta?",
+    "options": [
+      "En cajeros automáticos manipulados, tiendas o restaurantes",
+      "Solo en tu casa",
+      "Solo en el banco",
+      "Solo en internet"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Los estafadores pueden instalar dispositivos en cajeros, tiendas o cualquier lugar donde se lea la tarjeta.",
+    "explanationWrong": "La clonación puede ocurrir en múltiples lugares físicos."
+  },
+  {
+    "id": "ac_st6_ses03_l03_q04",
+    "type": "miniCase",
+    "question": "Roberto usó su tarjeta en un cajero automático que le pareció extraño. Al día siguiente, detectó compras que no había realizado. ¿Qué pudo haber pasado?",
+    "options": [
+      "Su tarjeta se dañó sola",
+      "Alguien clonó su tarjeta en el cajero",
+      "El banco hizo un error",
+      "Su hijo usó la tarjeta"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "El cajero pudo haber tenido un dispositivo de clonación instalado por estafadores.",
+    "explanationWrong": "Si ves algo sospechoso en un cajero, no uses tu tarjeta ahí."
+  },
+  {
+    "id": "ac_st6_ses03_l03_q05",
+    "type": "multipleChoice",
+    "question": "¿Cómo protegerte de la clonación de tarjetas en cajeros?",
+    "options": [
+      "Inspeccionar el cajero antes de usarlo, cubrir el PIN con la mano",
+      "Usar siempre el mismo cajero",
+      "No sacar nunca dinero",
+      "Compartir tu PIN con un familiar"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Inspecciona el cajero, busca dispositivos sospechosos y siempre cubre tu PIN.",
+    "explanationWrong": "La inspección visual y cubrir el PIN son medidas de protección importantes."
+  },
+  {
+    "id": "ac_st6_ses03_l03_q06",
+    "type": "trueFalse",
+    "question": "Los dispositivos de clonación de tarjetas son fáciles de detectar a simple vista.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Los dispositivos modernos son cada vez más pequeños y difíciles de detectar.",
+    "explanationWrong": "Los dispositivos de clonación son cada vez más sofisticados."
+  },
+  {
+    "id": "ac_st6_ses03_l03_q07",
+    "type": "multipleChoice",
+    "question": "¿Qué es un skimmer?",
+    "options": [
+      "Un dispositivo que lee la información de la banda magnética de tu tarjeta",
+      "Un tipo de virus informático",
+      "Una aplicación de banco",
+      "Un lector de código de barras"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Un skimmer es un dispositivo que se instala ilegalmente para copiar los datos de la banda magnética.",
+    "explanationWrong": "El skimmer es un dispositivo físico, no un virus."
+  },
+  {
+    "id": "ac_st6_ses03_l03_q08",
+    "type": "miniCase",
+    "question": "Luis notó que el lector de tarjetas de un comercio estaba suelto y parecía diferente a los demás. El comerciante le insistía en usar esa máquina. ¿Qué debería hacer Luis?",
+    "options": [
+      "Usar la máquina porque el comerciante es amable",
+      "No usar esa máquina y buscar otro comercio",
+      "Preguntar al comerciante sobre la máquina",
+      "Usar la máquina pero cubrir el PIN"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Si algo parece sospechoso, no uses esa máquina. Busca otro comercio o cajero.",
+    "explanationWrong": "La insistencia del comerciante es una señal de alerta."
+  },
+  {
+    "id": "ac_st6_ses03_l03_q09",
+    "type": "multipleChoice",
+    "question": "¿Qué debes hacer si sospechas que tu tarjeta fue clonada?",
+    "options": [
+      "Esperar a ver si hay más compras",
+      "Bloquear tu tarjeta inmediatamente y reportar al banco",
+      "Usar otra tarjeta en el mismo comercio",
+      "No hacer nada"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Bloquea tu tarjeta de inmediato y reporta el incidente al banco.",
+    "explanationWrong": "Actúa rápido para minimizar el daño."
+  },
+  {
+    "id": "ac_st6_ses03_l03_q10",
+    "type": "trueFalse",
+    "question": "Cubrir el PIN con la mano cuando lo ingresas en un cajero es una buena práctica de seguridad.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Cubrir el PIN evita que cámaras ocultas graben tu número secreto.",
+    "explanationWrong": "Cubrir el PIN es una medida de protección fundamental."
+  },
+  {
+    "id": "ac_st6_ses03_l03_q11",
+    "type": "multipleChoice",
+    "question": "¿Qué son las tarjetas con tecnología contactless y son vulnerables a la clonación?",
+    "options": [
+      "Permiten pagos sin contacto, pero pueden ser escaneadas a distancia",
+      "Son más seguras que las de chip",
+      "Nunca pueden ser clonadas",
+      "Solo funcionan en cajeros"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Las tarjetas contactless pueden ser escaneadas a cierta distancia, aunque los montos suelen estar limitados.",
+    "explanationWrong": "La tecnología contactless es conveniente pero tiene riesgos."
+  },
+  {
+    "id": "ac_st6_ses03_l03_q12",
+    "type": "multipleChoice",
+    "question": "¿Cuándo debes revisar tu estado de cuenta bancario?",
+    "options": [
+      "Una vez al año",
+      "Regularmente, al menos una vez por semana",
+      "Solo cuando el banco te llame",
+      "Nunca"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Revisa tu estado de cuenta regularmente para detectar transacciones no autorizadas.",
+    "explanationWrong": "El monitoreo regular es esencial para detectar fraudes."
+  },
+  {
+    "id": "ac_st6_ses03_l03_q13",
+    "type": "miniCase",
+    "question": "Teresa recibió una notificación de su banco por una compra de S/. 3,000 que no había realizado. Nunca perdió su tarjeta. ¿Qué pudo haber pasado?",
+    "options": [
+      "El banco se equivocó",
+      "Su tarjeta fue clonada sin que ella lo supiera",
+      "Su hijo hizo la compra",
+      "Es una promoción del banco"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Tu tarjeta pudo haber sido clonada sin que la perdieras. Los dispositivos de clonación pueden copiar datos sin contacto físico directo.",
+    "explanationWrong": "Si no reconoces una transacción, es posible que tu tarjeta haya sido clonada."
+  },
+  {
+    "id": "ac_st6_ses03_l03_q14",
+    "type": "trueFalse",
+    "question": "Si recibes una notificación de una compra que no realizaste, debes esperar a ver si se repite antes de actuar.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Actúa inmediatamente. Bloquea tu tarjeta y reporta al banco sin esperar.",
+    "explanationWrong": "Cada minuto cuenta. Actúa de inmediato ante transacciones sospechosas."
+  },
+  {
+    "id": "ac_st6_ses03_l03_q15",
+    "type": "multipleChoice",
+    "question": "¿Cuál es la mejor protección contra la clonación de tarjetas?",
+    "options": [
+      "No usar tarjetas nunca",
+      "Monitorear tus cuentas regularmente y usar cajeros seguros",
+      "Compartir tu PIN con familiares",
+      "Usar siempre el mismo cajero"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Monitorear regularmente y usar cajeros seguros son las mejores medidas.",
+    "explanationWrong": "El monitoreo y la precaución son las mejores defensas."
+  },
+  {
+    "id": "ac_st6_ses03_l04_q01",
+    "type": "multipleChoice",
+    "question": "¿Qué son los cajeros automáticos manipulados?",
+    "options": [
+      "Cajeros donde los estafadores instalan dispositivos para robar datos",
+      "Cajeros que funcionan mal",
+      "Cajeros que están fuera de servicio",
+      "Cajeros que solo aceptan billetes nuevos"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Son cajeros modificados ilegalmente con dispositivos que capturan datos de tarjetas y PINs.",
+    "explanationWrong": "Los cajeros manipulados no están defectuosos. Han sido alterados criminalmente."
+  },
+  {
+    "id": "ac_st6_ses03_l04_q02",
+    "type": "trueFalse",
+    "question": "Los dispositivos de clonación en cajeros son siempre fáciles de detectar.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Los dispositivos modernos son cada vez más sofisticados y difíciles de detectar.",
+    "explanationWrong": "Los dispositivos pueden ser muy difíciles de detectar."
+  },
+  {
+    "id": "ac_st6_ses03_l04_q03",
+    "type": "multipleChoice",
+    "question": "¿Qué debes buscar antes de usar un cajero automático?",
+    "options": [
+      "Si el lector de tarjetas parece suelto o diferente",
+      "Si hay alguien esperando",
+      "Si el cajero tiene pantalla grande",
+      "Si acepta monedas"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Inspecciona el lector de tarjetas. Si parece suelto, diferente o tiene partes adicionales, no lo uses.",
+    "explanationWrong": "El lector de tarjetas es el componente más vulnerable a manipulación."
+  },
+  {
+    "id": "ac_st6_ses03_l04_q04",
+    "type": "miniCase",
+    "question": "María fue a un cajero automático y notó que el lector de tarjetas estaba un poco suelto y parecía tener una pieza adicional. ¿Qué debería hacer María?",
+    "options": [
+      "Usar el cajero porque necesita dinero",
+      "No usar ese cajero y buscar otro más cercano",
+      "Forzar el lector para ver qué pasa",
+      "Llamar a su banco para preguntar"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Si el lector parece manipulado, no uses ese cajero. Busca otro más seguro.",
+    "explanationWrong": "Nunca uses un cajero que parezca sospechoso."
+  },
+  {
+    "id": "ac_st6_ses03_l04_q05",
+    "type": "multipleChoice",
+    "question": "¿Qué es una cámara oculta en un cajero manipulado?",
+    "options": [
+      "Un dispositivo que graba cómo ingresas tu PIN",
+      "Una cámara de seguridad del banco",
+      "Una cámara para hacer selfies",
+      "Un dispositivo para ver tu cara"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Las cámaras ocultas graban cómo ingresas tu PIN para que los estafadores puedan usarlo.",
+    "explanationWrong": "Las cámaras ocultas son diferentes a las de seguridad del banco."
+  },
+  {
+    "id": "ac_st6_ses03_l04_q06",
+    "type": "trueFalse",
+    "question": "Los cajeros de los centros comerciales son más seguros que los de la calle.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Los cajeros en cualquier ubicación pueden ser manipulados. Ninguno es 100% seguro.",
+    "explanationWrong": "Ningún cajero es completamente seguro. Siempre debes estar alerta."
+  },
+  {
+    "id": "ac_st6_ses03_l04_q07",
+    "type": "multipleChoice",
+    "question": "¿Cómo proteger tu PIN en un cajero?",
+    "options": [
+      "Cubriéndolo con la mano mientras lo ingresas",
+      "Mirando fijamente la pantalla",
+      "Ingresándolo rápidamente",
+      "Usando siempre el mismo PIN"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Cubrir el PIN con la mano evita que cámaras ocultas lo graben.",
+    "explanationWrong": "Cubrir el PIN es la mejor protección contra cámaras ocultas."
+  },
+  {
+    "id": "ac_st6_ses03_l04_q08",
+    "type": "miniCase",
+    "question": "Pedro notó que había una persona sospechosa cerca del cajero mirando fijamente cuando él ingresaba su PIN. ¿Qué debería hacer Pedro?",
+    "options": [
+      "Continuar normalmente porque es coincidencia",
+      "Retirarse inmediatamente y usar otro cajero",
+      "Pedir a la persona que se aleje",
+      "Cambiar su PIN después de usar el cajero"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Si alguien está mirando tu PIN, retírate y busca otro cajero más seguro.",
+    "explanationWrong": "La vigilancia de tu PIN es una táctica de los estafadores."
+  },
+  {
+    "id": "ac_st6_ses03_l04_q09",
+    "type": "multipleChoice",
+    "question": "¿Qué debes hacer si usaste un cajero que luego resultó estar manipulado?",
+    "options": [
+      "No hacer nada, ya pasó",
+      "Bloquear tu tarjeta, cambiar tu PIN y reportar al banco",
+      "Esperar a ver si hay cargos",
+      "Usar otro cajero del mismo banco"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Actúa de inmediato: bloquea tarjeta, cambia PIN y reporta al banco.",
+    "explanationWrong": "El tiempo es crucial para proteger tu dinero."
+  },
+  {
+    "id": "ac_st6_ses03_l04_q10",
+    "type": "trueFalse",
+    "question": "Si el cajero no te entrega el dinero pero te cobra la cantidad, puede estar manipulado.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Algunos dispositivos manipulados pueden retener tu tarjeta o no entregar dinero pero cobrar la cantidad.",
+    "explanationWrong": "Si el cajero no entrega dinero pero te cobra, es una señal de alerta."
+  },
+  {
+    "id": "ac_st6_ses03_l04_q11",
+    "type": "multipleChoice",
+    "question": "¿Qué es el 'leeching' en cajeros?",
+    "options": [
+      "Cuando los estafadores instalan dispositivos para capturar datos de tarjetas",
+      "Cuando el cajero no tiene dinero",
+      "Cuando el cajero está fuera de servicio",
+      "Cuando el cajero solo acepta monedas"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "El leeching es instalar dispositivos para capturar datos de las tarjetas que pasan por el lector.",
+    "explanationWrong": "El leeching es una técnica de fraude en cajeros."
+  },
+  {
+    "id": "ac_st6_ses03_l04_q12",
+    "type": "multipleChoice",
+    "question": "¿Por qué los estafadores manipulan cajeros?",
+    "options": [
+      "Para obtener datos de tarjetas y PINs y robar dinero",
+      "Para hacer que el cajero funcione mejor",
+      "Para ayudar a los clientes",
+      "Por diversión"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Los estafadores buscan robar datos financieros para cometer fraudes.",
+    "explanationWrong": "El objetivo es robar dinero, no mejorar el servicio."
+  },
+  {
+    "id": "ac_st6_ses03_l04_q13",
+    "type": "miniCase",
+    "question": "Luis usó un cajero en una zona poco concurrida. Al día siguiente, detectó retiros que no había realizado. El cajero parecía normal. ¿Qué pudo haber pasado?",
+    "options": [
+      "El banco se equivocó",
+      "El cajero tenía un dispositivo de clonación muy sofisticado",
+      "Su tarjeta se dañó",
+      "Alguien adivinó su PIN"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Los dispositivos modernos pueden ser muy difíciles de detectar. El cajero pudo haber sido manipulado.",
+    "explanationWrong": "Los dispositivos de clonación modernos son casi invisibles."
+  },
+  {
+    "id": "ac_st6_ses03_l04_q14",
+    "type": "trueFalse",
+    "question": "Los cajeros de los bancos grandes son inmunes a la manipulación.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Ningún cajero es completamente seguro. Los estafadores pueden manipular cualquier cajero.",
+    "explanationWrong": "Ningún banco puede garantizar que sus cajeros sean 100% seguros."
+  },
+  {
+    "id": "ac_st6_ses03_l04_q15",
+    "type": "multipleChoice",
+    "question": "¿Cuál es la mejor estrategia para usar cajeros de forma segura?",
+    "options": [
+      "Usar siempre el mismo cajero",
+      "Inspeccionar siempre el cajero, cubrir el PIN y monitorear tu cuenta",
+      "No usar cajeros nunca",
+      "Usar cajeros solo de noche"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Inspeccionar, cubrir el PIN y monitorear son las mejores prácticas.",
+    "explanationWrong": "La combinación de precaución y monitoreo es la mejor defensa."
+  },
+  {
+    "id": "ac_st6_ses03_l05_q01",
+    "type": "multipleChoice",
+    "question": "¿Cuál es la primera medida para proteger tus cuentas bancarias?",
+    "options": [
+      "Usar contraseñas fuertes y únicas para cada cuenta",
+      "Compartir tu contraseña con familiares",
+      "Usar la misma contraseña que tu correo",
+      "Anotar tu contraseña en un papel"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Contraseñas fuertes y únicas son la primera línea de defensa.",
+    "explanationWrong": "Nunca compartas contraseñas ni las anotes en lugares accesibles."
+  },
+  {
+    "id": "ac_st6_ses03_l05_q02",
+    "type": "trueFalse",
+    "question": "Debes cambiar tus contraseñas bancarias regularmente.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Cambiar contraseñas regularmente reduce el riesgo de que sean comprometidas.",
+    "explanationWrong": "La actualización regular es una buena práctica de seguridad."
+  },
+  {
+    "id": "ac_st6_ses03_l05_q03",
+    "type": "multipleChoice",
+    "question": "¿Qué es la autenticación de dos factores (2FA)?",
+    "options": [
+      "Un método que requiere dos formas de verificar tu identidad",
+      "Usar dos contraseñas diferentes",
+      "Tener dos cuentas bancarias",
+      "Usar dos tarjetas diferentes"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "La 2FA requiere algo que sabes (contraseña) y algo que tienes (código del teléfono).",
+    "explanationWrong": "La 2FA añade una capa extra de seguridad a tus cuentas."
+  },
+  {
+    "id": "ac_st6_ses03_l05_q04",
+    "type": "miniCase",
+    "question": "Roberto quiere proteger su cuenta del BCP. ¿Qué práctica es la más segura?",
+    "options": [
+      "Usar la misma contraseña que su correo",
+      "Usar una contraseña fuerte y única con autenticación de dos factores",
+      "Compartir su contraseña con su hijo",
+      "Anotar su contraseña en su billetera"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "La contraseña fuerte y la autenticación de dos factores son las mejores prácticas.",
+    "explanationWrong": "Nunca compartas contraseñas ni las anotes."
+  },
+  {
+    "id": "ac_st6_ses03_l05_q05",
+    "type": "multipleChoice",
+    "question": "¿Por qué es peligroso usar la misma contraseña en todas tus cuentas?",
+    "options": [
+      "Si una contraseña es comprometida, todas tus cuentas están en riesgo",
+      "Porque es ilegal",
+      "Porque es difícil de recordar",
+      "Porque el banco lo prohíbe"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Si un estafador obtiene tu contraseña, puede acceder a todas tus cuentas.",
+    "explanationWrong": "El riesgo es que una brecha afecte todas tus cuentas."
+  },
+  {
+    "id": "ac_st6_ses03_l05_q06",
+    "type": "trueFalse",
+    "question": "Debes activar las notificaciones de transacciones de tu banco.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Las notificaciones te permiten detectar transacciones no autorizadas de inmediato.",
+    "explanationWrong": "Las notificaciones son una herramienta clave de protección."
+  },
+  {
+    "id": "ac_st6_ses03_l05_q07",
+    "type": "multipleChoice",
+    "question": "¿Qué es una buena contraseña bancaria?",
+    "options": [
+      "Tu fecha de nacimiento",
+      "Una combinación de letras, números y símbolos que sea difícil de adivinar",
+      "Tu número de DNI",
+      "El nombre de tu mascota"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Una buena contraseña combina letras, números y símbolos, y es difícil de adivinar.",
+    "explanationWrong": "Nunca uses datos personales fáciles de encontrar en tu contraseña."
+  },
+  {
+    "id": "ac_st6_ses03_l05_q08",
+    "type": "miniCase",
+    "question": "Carmena quiere proteger su cuenta bancaria. ¿Qué acción combinada es más efectiva?",
+    "options": [
+      "Solo cambiar la contraseña cada año",
+      "Usar contraseña fuerte, 2FA, y monitorear movimientos regularmente",
+      "Compartir su contraseña con su hijo para que la ayude",
+      "No usar banca en línea"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "La combinación de contraseña fuerte, 2FA y monitoreo es la más efectiva.",
+    "explanationWrong": "Múltiples capas de seguridad protegen mejor que una sola."
+  },
+  {
+    "id": "ac_st6_ses03_l05_q09",
+    "type": "multipleChoice",
+    "question": "¿Qué debes hacer si recibes una notificación de transacción que no reconoces?",
+    "options": [
+      "Esperar a ver si se repite",
+      "Contactar inmediatamente a tu banco para bloquear la tarjeta",
+      "Ignorar la notificación",
+      "Culparte por no ser cuidadoso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Contacta a tu banco de inmediato para bloquear y reportar la transacción no autorizada.",
+    "explanationWrong": "Actúa rápido ante transacciones sospechosas."
+  },
+  {
+    "id": "ac_st6_ses03_l05_q10",
+    "type": "trueFalse",
+    "question": "Es seguro escribir tu contraseña en un papel y guardarla en tu billetera.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Si pierdes tu billetera, alguien podría acceder a tus cuentas.",
+    "explanationWrong": "Nunca anotes contraseñas en lugares donde puedan ser encontradas."
+  },
+  {
+    "id": "ac_st6_ses03_l05_q11",
+    "type": "multipleChoice",
+    "question": "¿Qué es el banca en línea seguro?",
+    "options": [
+      "Usar el mismo correo y contraseña para todo",
+      "Cerrar sesión siempre que termines y no usar redes públicas",
+      "Compartir tu sesión con familiares",
+      "No usar nunca el banca en línea"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Cierra sesión siempre y evita usar banca en línea en redes WiFi públicas.",
+    "explanationWrong": "Las redes públicas no son seguras para operaciónes bancarias."
+  },
+  {
+    "id": "ac_st6_ses03_l05_q12",
+    "type": "multipleChoice",
+    "question": "¿Por qué debes monitorear tus estados de cuenta?",
+    "options": [
+      "Para ver cuánto dinero tienes",
+      "Para detectar transacciones no autorizadas lo más rápido posible",
+      "Porque el banco te obliga",
+      "Para ver promociones"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "El monitoreo regular te permite detectar fraudes rápidamente y minimizar pérdidas.",
+    "explanationWrong": "Detectar fraudes temprano reduce el daño."
+  },
+  {
+    "id": "ac_st6_ses03_l05_q13",
+    "type": "miniCase",
+    "question": "Pedro descubrió que alguien hizo una transferencia no autorizada de S/. 2,000 de su cuenta. ¿Cuál es el orden correcto de acciones?",
+    "options": [
+      "Esperar un día para ver si se resuelve solo",
+      "Contactar al banco, cambiar contraseñas, revisar otros movimientos y reportar a la policía",
+      "Solo cambiar la contraseña",
+      "No hacer nada porque el banco lo resolverá"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Contacta al banco, cambia contraseñas, revisa movimientos y reporta a la policía.",
+    "explanationWrong": "Actúa rápido y de manera completa para protegerte."
+  },
+  {
+    "id": "ac_st6_ses03_l05_q14",
+    "type": "trueFalse",
+    "question": "Los bancos peruanos ofrecen aplicaciones móviles seguras para administrar tus cuentas.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Sí, los principales bancos peruanos ofrecen apps móviles con medidas de seguridad.",
+    "explanationWrong": "Usar la app oficial del banco es más seguro que usar el navegador web."
+  },
+  {
+    "id": "ac_st6_ses03_l05_q15",
+    "type": "multipleChoice",
+    "question": "¿Cuál es el resumen de las mejores prácticas para proteger cuentas bancarias?",
+    "options": [
+      "Contraseñas fuertes, 2FA, monitoreo regular y precaución",
+      "No usar banca en línea",
+      "Compartir contraseñas con familiares de confianza",
+      "Usar la misma contraseña en todo"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Contraseñas fuertes, autenticación de dos factores, monitoreo y precaución son las mejores prácticas.",
+    "explanationWrong": "La combinación de múltiples medidas es la mejor protección."
+  },
+  {
+    "id": "ac_st6_ses03_l06_q01",
+    "type": "multipleChoice",
+    "question": "¿Dónde debes reportar un fraude bancario en Perú?",
+    "options": [
+      "En tu banco, la DIVI de la Policía y la Superintendencia de Banca",
+      "Solo en tu banco",
+      "Solo en la policía",
+      "En la Sunat"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Debes reportar en tu banco, la DIVI de la Policía Naciónal y la SBS si es necesario.",
+    "explanationWrong": "Múltiples instituciones pueden ayudarte con reportes de fraude."
+  },
+  {
+    "id": "ac_st6_ses03_l06_q02",
+    "type": "trueFalse",
+    "question": "Debes reportar un fraude bancario aunque sea una cantidad pequeña.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Todo fraude debe ser reportado, sin importar la cantidad, para ayudar a las autoridades.",
+    "explanationWrong": "Los fraudes pequeños también deben reportarse."
+  },
+  {
+    "id": "ac_st6_ses03_l06_q03",
+    "type": "multipleChoice",
+    "question": "¿Qué documentos necesitas para reportar un fraude bancario?",
+    "options": [
+      "Estado de cuenta, comprobantes de transacciones sospechosas y tu DNI",
+      "Solo tu DNI",
+      "Solo el número de tu tarjeta",
+      "Ningún documento"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Necesitas estados de cuenta, comprobantes y tu documento de identidad para el reporte.",
+    "explanationWrong": "Tener documentación facilita el proceso de reporte."
+  },
+  {
+    "id": "ac_st6_ses03_l06_q04",
+    "type": "miniCase",
+    "question": "Rosa descubrió cargos no autorizados de S/. 1,500 en su tarjeta de crédito. ¿Cuál es el primer paso que debe dar?",
+    "options": [
+      "Esperar a que el banco se dé cuenta solo",
+      "Llamar inmediatamente a su banco para reportar y bloquear la tarjeta",
+      "Publicar en redes sociales lo que pasó",
+      "Cambiar el PIN y esperar"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "El primer paso es llamar a tu banco para reportar y bloquear la tarjeta inmediatamente.",
+    "explanationWrong": "El tiempo es crucial para prevenir más cargos."
+  },
+  {
+    "id": "ac_st6_ses03_l06_q05",
+    "type": "multipleChoice",
+    "question": "¿Qué es la Superintendencia de Banca, Seguros y AFP (SBS)?",
+    "options": [
+      "Una entidad que regula y supervisa las entidades financieras en Perú",
+      "Un banco más",
+      "Una empresa de seguros",
+      "Un hospital"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "La SBS supervisa a las entidades financieras y puede ayudar en casos de fraude bancario.",
+    "explanationWrong": "La SBS es el ente regulador del sistema financiero peruano."
+  },
+  {
+    "id": "ac_st6_ses03_l06_q06",
+    "type": "trueFalse",
+    "question": "Si tu banco no responde a tu reporte de fraude, puedes acudir a la SBS.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "La SBS puede intervenir si el banco no responde adecuadamente a tu queja.",
+    "explanationWrong": "La SBS protege los derechos de los usuarios financieros."
+  },
+  {
+    "id": "ac_st6_ses03_l06_q07",
+    "type": "multipleChoice",
+    "question": "¿Qué es la DIVI de la Policía Naciónal?",
+    "options": [
+      "La división encargada de investigar delitos cibernéticos",
+      "Un banco estatal",
+      "Una clínica pública",
+      "Una universidad"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "La DIVI investiga delitos cibernéticos incluyendo fraudes bancarios digitales.",
+    "explanationWrong": "La DIVI es la unidad especializada en delitos de alta tecnología."
+  },
+  {
+    "id": "ac_st6_ses03_l06_q08",
+    "type": "miniCase",
+    "question": "Jorge fue víctima de una estafa telefónica donde perdió S/. 8,000. ¿Cuáles son todos los pasos que debe seguir?",
+    "options": [
+      "Solo llamar al banco",
+      "Reportar al banco, a la DIVI, cambiar contraseñas y documentar todo",
+      "No hacer nada porque ya perdió el dinero",
+      "Esperar a que la policía lo contacte"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Debe reportar al banco, a la DIVI, cambiar contraseñas y documentar todo el incidente.",
+    "explanationWrong": "El reporte completo es esencial para aumentar las posibilidades de recuperación."
+  },
+  {
+    "id": "ac_st6_ses03_l06_q09",
+    "type": "multipleChoice",
+    "question": "¿Por qué es importante documentar todo cuando reportas un fraude?",
+    "options": [
+      "Para que el reporte sea tomado en serio y pueda ser investigado",
+      "Porque es requisito legal",
+      "Para recuperar tu dinero inmediatamente",
+      "Para que tus amigos sepan lo que pasó"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "La documentación completa facilita la investigación y aumenta las posibilidades de resolución.",
+    "explanationWrong": "Los reportes bien documentados son más efectivos."
+  },
+  {
+    "id": "ac_st6_ses03_l06_q10",
+    "type": "trueFalse",
+    "question": "Puedes presentar una queja formal ante la SBS si tu banco no responde a tu solicitud de fraude.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "La SBS tiene un sistema de quejas que puedes usar si el banco no responde.",
+    "explanationWrong": "La SBS protege a los usuarios financieros."
+  },
+  {
+    "id": "ac_st6_ses03_l06_q11",
+    "type": "multipleChoice",
+    "question": "¿Cuál es el plazo para reportar un fraude bancario?",
+    "options": [
+      "No hay plazo, reporta siempre",
+      "Solo puedes reportar en las primeras 24 horas",
+      "Solo una semana después",
+      "Un mes después"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Debes reportar lo antes posible, pero no hay un plazo máximo para hacerlo.",
+    "explanationWrong": "Mientras más rápido reportes, más posibilidades tienes de recuperar tu dinero."
+  },
+  {
+    "id": "ac_st6_ses03_l06_q12",
+    "type": "multipleChoice",
+    "question": "¿Qué información debes proporcionar al reportar un fraude?",
+    "options": [
+      "Fecha, hora, monto, número de transacción y descripción de lo ocurrido",
+      "Solo el monto perdido",
+      "Solo tu nombre",
+      "Solo el número de tarjeta"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Proporciona todos los detalles: fecha, hora, monto, transacción y descripción completa.",
+    "explanationWrong": "La información completa facilita la investigación."
+  },
+  {
+    "id": "ac_st6_ses03_l06_q13",
+    "type": "miniCase",
+    "question": "María reportó un fraude de S/. 3,000 a su banco. Después de 5 días no ha recibido respuesta. ¿Qué debe hacer?",
+    "options": [
+      "Esperar más tiempo",
+      "Presentar una queja formal ante la SBS",
+      "Cambiar de banco",
+      "No hacer nada más"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Si el banco no responde, puedes presentar una queja ante la SBS.",
+    "explanationWrong": "La SBS puede ayudar cuando el banco no responde adecuadamente."
+  },
+  {
+    "id": "ac_st6_ses03_l06_q14",
+    "type": "trueFalse",
+    "question": "Los reportes de fraude bancario son confidenciales.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Tus reportes son tratados con confidencialidad por las instituciones.",
+    "explanationWrong": "La confidencialidad protege tu información durante la investigación."
+  },
+  {
+    "id": "ac_st6_ses03_l06_q15",
+    "type": "multipleChoice",
+    "question": "¿Cuál es la actitud correcta al reportar un fraude bancario?",
+    "options": [
+      "Ser paciente, proporcionar información completa y seguir el caso",
+      "Desesperarse y amenazar al banco",
+      "No reportar porque es mucho trabajo",
+      "Esperar a que otros lo reporten"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "La paciencia, la información completa y el seguimiento son clave para resolver el caso.",
+    "explanationWrong": "Los reportes serios y completos son más efectivos."
+  }
+]

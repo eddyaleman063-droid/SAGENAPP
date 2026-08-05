@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'lesson_type.dart';
+import '../../core/theme/theme_constants.dart';
 
 part 'challenge.freezed.dart';
 part 'challenge.g.dart';
@@ -16,6 +17,8 @@ class Challenge with _$Challenge {
     required List<String> options,
     required int correctIndex,
     required String explanation,
+    @Default('') String lessonId,
+    @Default(1) int difficulty,
   }) = _Challenge;
 
   factory Challenge.fromJson(Map<String, dynamic> json) => _$ChallengeFromJson(json);
@@ -23,19 +26,21 @@ class Challenge with _$Challenge {
   Color get color {
     switch (type) {
       case LessonType.trueFalse:
-        return const Color(0xFF1565C0);
+        return PremiumColors.challengeTrueFalse;
       case LessonType.multipleChoice:
-        return const Color(0xFF7C3AED);
+        return PremiumColors.challengeMultipleChoice;
       case LessonType.completePhrase:
-        return const Color(0xFF00897B);
+        return PremiumColors.challengeCompletePhrase;
       case LessonType.detectRisk:
-        return const Color(0xFFE65100);
+        return PremiumColors.challengeDetectRisk;
       case LessonType.createPassword:
-        return const Color(0xFF2E7D32);
+        return PremiumColors.challengeCreatePassword;
       case LessonType.whatWouldYouDo:
-        return const Color(0xFF6A1B9A);
+        return PremiumColors.challengeWhatWouldYouDo;
       case LessonType.miniCase:
-        return const Color(0xFFFFB300);
+        return PremiumColors.challengeMiniCase;
     }
   }
+
+  bool get isCorrectIndexValid => correctIndex >= 0 && correctIndex < options.length;
 }

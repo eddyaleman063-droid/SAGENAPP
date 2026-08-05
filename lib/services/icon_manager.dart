@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:flutter_dynamic_icon_plus/flutter_dynamic_icon_plus.dart';
 import '../models/sagen_pass.dart';
-import '../providers/streak_state.dart';
+import '../providers/streak_provider.dart';
+import 'app_logger.dart';
 
 enum SageAppIcon {
   sageDefault,
@@ -28,6 +29,7 @@ const Map<SageAppIcon, String> _iconNames = {
   SageAppIcon.sageGolden: 'sage_golden',
 };
 
+/// Manages dynamic app icon changes based on user streak/pass.
 class IconManager {
   SageAppIcon? _lastSetIcon;
 
@@ -84,7 +86,7 @@ class IconManager {
           await FlutterDynamicIconPlus.setAlternateIconName();
         } else {
           await FlutterDynamicIconPlus.setAlternateIconName(
-            iconName: _iconNames[icon]!,
+            iconName: _iconNames[icon] ?? _iconNames[SageAppIcon.sageDefault]!,
             blacklistBrands: ['Redmi'],
             blacklistManufactures: ['Xiaomi'],
             blacklistModels: ['Redmi 200A'],
@@ -92,7 +94,10 @@ class IconManager {
         }
         _lastSetIcon = icon;
       }
-    } catch (_) {}
+    } catch (e) {
+      // Icon changes can fail on certain Android OEMs — log but don't crash
+      AppLogger().warning('IconManager: icon change failed for ${_iconNames[icon]}: $e');
+    }
   }
 
   void reset() {

@@ -17,7 +17,7 @@ class KeyboardAwareLayout extends StatelessWidget {
       child: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom + bottomPadding,
+            bottom: MediaQuery.viewInsetsOf(context).bottom + bottomPadding,
           ),
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           child: child,

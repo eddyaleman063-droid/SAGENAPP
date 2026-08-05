@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sagen/core/theme/app_colors.dart';
 import '../../../core/theme/theme_constants.dart';
+import 'package:sagen/services/experience_service.dart';
+import '../common/localization_helper.dart';
 
 class QuizProgressHeader extends StatelessWidget {
   final int current;
@@ -19,63 +22,62 @@ class QuizProgressHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
+      padding: const EdgeInsets.fromLTRB(AppSpacing.xl, AppSpacing.lg, AppSpacing.xl, AppSpacing.md),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surfaceContainerHigh,
-        boxShadow: [
-          BoxShadow(
-            color: Theme.of(context).colorScheme.shadow.withValues(alpha: 0.12),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        boxShadow: AppShadows.card(),
       ),
       child: Column(
         children: [
           Row(
             children: [
-              GestureDetector(
-                onTap: () => Navigator.of(context).pop(),
-                child: Container(
-                  padding: const EdgeInsets.all(AppSpacing.sm),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                    borderRadius: BorderRadius.circular(10),
+              Semantics(
+                label: '${l10n(context).exitText} quiz',
+                button: true,
+                child: GestureDetector(
+                  onTap: () {
+                    ExperienceService.instance.lightHaptic();
+                    context.pop();
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(AppSpacing.md),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                      borderRadius: BorderRadius.circular(AppRadius.sm),
+                    ),
+                    child: Icon(Icons.close_rounded, size: 18, color: context.textSecondary),
                   ),
-                  child: Icon(Icons.close_rounded, size: 18, color: context.textSecondary),
                 ),
               ),
               const SizedBox(width: AppSpacing.md),
               Expanded(
                 child: Text(
                   title,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15,
-                    color: context.textPrimary,
-                  ),
+                  style: AppTextStyle.body.copyWith(fontWeight: FontWeight.bold,
+                    color: context.textPrimary),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
               Text(
                 '$current / $total',
-                style: TextStyle(
-                  fontSize: 13,
-                  color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.54),
-                  fontWeight: FontWeight.w600,
-                ),
+                style: AppTextStyle.subtitle.copyWith(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.54),
+                  fontWeight: FontWeight.w600),
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.md),
           ClipRRect(
-            borderRadius: BorderRadius.circular(6),
-            child: LinearProgressIndicator(
-              value: progress,
-              minHeight: 6,
-              backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
-              valueColor: const AlwaysStoppedAnimation<Color>(
-                PremiumColors.primary,
+            borderRadius: BorderRadius.circular(AppRadius.sm),
+            child: Semantics(
+              label: l10n(context).quizProgress((progress * 100).round()),
+              value: '${(progress * 100).round()}',
+              child: LinearProgressIndicator(
+                value: progress,
+                minHeight: 6,
+                backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+                valueColor: const AlwaysStoppedAnimation<Color>(
+                  PremiumColors.primary,
+                ),
               ),
             ),
           ),

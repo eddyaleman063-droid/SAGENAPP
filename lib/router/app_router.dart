@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../core/theme/theme_constants.dart';
+import '../l10n/app_localizations.dart';
 import '../providers/providers.dart';
 import '../ui/screens/splash_screen.dart';
 import '../ui/screens/welcome_screen.dart';
 import '../ui/screens/auth/login_screen.dart';
 import '../ui/screens/auth/forgot_password_screen.dart';
+import '../ui/screens/auth/verify_email_screen.dart';
 import '../ui/screens/onboarding/onboarding_wizard_screen.dart';
 import '../ui/screens/onboarding/post_onboarding_flow.dart';
 import '../ui/screens/main_layout.dart';
@@ -20,6 +23,14 @@ import '../ui/screens/lesson/habit_transition_screen.dart';
 import '../ui/screens/streak/daily_streak_screen.dart';
 import '../ui/screens/payment/payment_success_screen.dart';
 import '../ui/screens/payment/payment_failed_screen.dart';
+import '../ui/screens/payment/payment_pending_screen.dart';
+import '../ui/screens/legal/privacy_policy_screen.dart';
+import '../ui/screens/mini_game/mini_game_hub.dart';
+import '../ui/screens/mini_game/memory_flip_screen.dart';
+import '../ui/screens/mini_game/word_match_screen.dart';
+import '../ui/screens/mini_game/speed_sort_screen.dart';
+import '../ui/screens/mini_game/pattern_trace_screen.dart';
+import '../models/mini_game.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -37,8 +48,9 @@ final routerProvider = Provider<GoRouter>((ref) {
       }
 
       if (!auth.isAuthenticated) {
+        if (location == '/') return '/welcome';
         final publicRoutes = <String>{
-          '/', '/welcome', '/login', '/forgot-password',
+          '/welcome', '/login', '/forgot-password',
           '/onboarding', '/onboarding/flow',
           '/payment/success', '/payment/failure', '/payment/pending',
         };
@@ -47,11 +59,17 @@ final routerProvider = Provider<GoRouter>((ref) {
       }
 
       if (auth.isAuthenticated) {
+        if (!auth.profileLoaded) return null;
         final authRoutes = <String>{
-          '/', '/welcome', '/login', '/forgot-password',
+          '/', '/welcome', '/login', '/forgot-password', '/verify-email',
           '/onboarding', '/onboarding/flow',
         };
-        if (authRoutes.contains(location)) return '/main';
+        if (authRoutes.contains(location)) {
+          return auth.onboardingCompleted ? '/main' : '/onboarding/flow';
+        }
+        if (!auth.onboardingCompleted && location != '/onboarding/flow') {
+          return '/onboarding/flow';
+        }
         return null;
       }
 
@@ -66,116 +84,363 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/welcome',
         name: 'welcome',
-        builder: (context, state) => const WelcomeScreen(),
+        pageBuilder: (context, state) => CustomTransitionPage<void>(
+          key: state.pageKey,
+          child: const WelcomeScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              FadeTransition(opacity: animation, child: child),
+        ),
       ),
       GoRoute(
         path: '/login',
         name: 'login',
-        builder: (context, state) {
+        pageBuilder: (context, state) {
           final isOnboarding = state.uri.queryParameters['onboarding'] == 'true';
-          return LoginScreen(isOnboarding: isOnboarding);
+          return CustomTransitionPage<void>(
+            key: state.pageKey,
+            child: LoginScreen(isOnboarding: isOnboarding),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+                SlideTransition(
+                  position: Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero)
+                      .animate(CurvedAnimation(parent: animation, curve: Curves.easeOut)),
+                  child: child,
+                ),
+          );
         },
       ),
       GoRoute(
         path: '/forgot-password',
         name: 'forgot-password',
-        builder: (context, state) => const ForgotPasswordScreen(),
+        pageBuilder: (context, state) => CustomTransitionPage<void>(
+          key: state.pageKey,
+          child: const ForgotPasswordScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              FadeTransition(opacity: animation, child: child),
+        ),
+      ),
+      GoRoute(
+        path: '/verify-email',
+        name: 'verify-email',
+        pageBuilder: (context, state) => CustomTransitionPage<void>(
+          key: state.pageKey,
+          child: const VerifyEmailScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              FadeTransition(opacity: animation, child: child),
+        ),
       ),
       GoRoute(
         path: '/onboarding',
         name: 'onboarding',
-        builder: (context, state) => const OnboardingWizardScreen(),
+        pageBuilder: (context, state) => CustomTransitionPage<void>(
+          key: state.pageKey,
+          child: const OnboardingWizardScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              SlideTransition(
+                position: Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero)
+                    .animate(CurvedAnimation(parent: animation, curve: Curves.easeOut)),
+                child: child,
+              ),
+        ),
       ),
       GoRoute(
         path: '/onboarding/flow',
         name: 'onboarding-flow',
-        builder: (context, state) => const PostOnboardingFlow(),
+        pageBuilder: (context, state) => CustomTransitionPage<void>(
+          key: state.pageKey,
+          child: const PostOnboardingFlow(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              FadeTransition(opacity: animation, child: child),
+        ),
       ),
       GoRoute(
         path: '/main',
         name: 'main',
-        builder: (context, state) => const MainLayout(),
+        pageBuilder: (context, state) => CustomTransitionPage<void>(
+          key: state.pageKey,
+          child: const MainLayout(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              FadeTransition(opacity: animation, child: child),
+        ),
       ),
       GoRoute(
         path: '/lessons',
         name: 'lessons',
-        builder: (context, state) => const LessonsScreen(),
+        pageBuilder: (context, state) => CustomTransitionPage<void>(
+          key: state.pageKey,
+          child: const LessonsScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              SlideTransition(
+                position: Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero)
+                    .animate(CurvedAnimation(parent: animation, curve: Curves.easeOut)),
+                child: child,
+              ),
+        ),
       ),
       GoRoute(
         path: '/lesson/:stageId/:lessonId',
         name: 'lesson-session',
-        builder: (context, state) => LessonSessionScreen(
-          stageId: state.pathParameters['stageId']!,
-          lessonId: state.pathParameters['lessonId']!,
-          lessonTitle: state.extra as String? ?? '',
+        pageBuilder: (context, state) => CustomTransitionPage<void>(
+          key: state.pageKey,
+          child: LessonSessionScreen(
+            stageId: state.pathParameters['stageId']!,
+            lessonId: state.pathParameters['lessonId']!,
+            lessonTitle: state.extra as String? ?? '',
+          ),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              SlideTransition(
+                position: Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero)
+                    .animate(CurvedAnimation(parent: animation, curve: Curves.easeOut)),
+                child: child,
+              ),
         ),
       ),
       GoRoute(
         path: '/lesson/:stageId/:lessonId/results',
         name: 'lesson-results',
-        builder: (context, state) => LessonResultsScreen(
-          stageId: state.pathParameters['stageId']!,
-          lessonId: state.pathParameters['lessonId']!,
+        pageBuilder: (context, state) => CustomTransitionPage<void>(
+          key: state.pageKey,
+          child: LessonResultsScreen(
+            stageId: state.pathParameters['stageId']!,
+            lessonId: state.pathParameters['lessonId']!,
+          ),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              SlideTransition(
+                position: Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero)
+                    .animate(CurvedAnimation(parent: animation, curve: Curves.easeOut)),
+                child: child,
+              ),
         ),
       ),
       GoRoute(
         path: '/learning/:stageId/:lessonId',
         name: 'learning-session',
-        builder: (context, state) => LearningSessionScreen(
-          stageId: state.pathParameters['stageId']!,
-          lessonId: state.pathParameters['lessonId']!,
-          lessonTitle: state.extra as String? ?? '',
+        pageBuilder: (context, state) => CustomTransitionPage<void>(
+          key: state.pageKey,
+          child: LearningSessionScreen(
+            stageId: state.pathParameters['stageId']!,
+            lessonId: state.pathParameters['lessonId']!,
+            lessonTitle: state.extra as String? ?? '',
+          ),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              SlideTransition(
+                position: Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero)
+                    .animate(CurvedAnimation(parent: animation, curve: Curves.easeOut)),
+                child: child,
+              ),
         ),
       ),
       GoRoute(
         path: '/quiz-summary',
         name: 'quiz-summary',
-        builder: (context, state) => SessionSummaryScreen(
-          score: state.extra as QuizScoreCalculator,
-        ),
+        pageBuilder: (context, state) {
+          final score = state.extra is QuizScoreCalculator ? state.extra as QuizScoreCalculator : null;
+          if (score == null) {
+            final l = AppLocalizations.of(context);
+            return CustomTransitionPage<void>(
+              key: state.pageKey,
+              child: Scaffold(body: Center(child: Text(l?.errorGeneric ?? ''))),
+              transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+                  FadeTransition(opacity: animation, child: child),
+            );
+          }
+          return CustomTransitionPage<void>(
+            key: state.pageKey,
+            child: SessionSummaryScreen(score: score),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+                FadeTransition(opacity: animation, child: child),
+          );
+        },
       ),
       GoRoute(
         path: '/habit-transition',
         name: 'habit-transition',
-        builder: (context, state) => const HabitTransitionScreen(),
+        pageBuilder: (context, state) => CustomTransitionPage<void>(
+          key: state.pageKey,
+          child: const HabitTransitionScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              FadeTransition(opacity: animation, child: child),
+        ),
       ),
       GoRoute(
         path: '/streak',
         name: 'streak',
-        builder: (context, state) => const DailyStreakScreen(),
+        pageBuilder: (context, state) => CustomTransitionPage<void>(
+          key: state.pageKey,
+          child: const DailyStreakScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              FadeTransition(opacity: animation, child: child),
+        ),
+      ),
+      GoRoute(
+        path: '/mini-games',
+        name: 'mini-games',
+        pageBuilder: (context, state) => CustomTransitionPage<void>(
+          key: state.pageKey,
+          child: const MiniGameHub(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              SlideTransition(
+                position: Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero)
+                    .animate(CurvedAnimation(parent: animation, curve: Curves.easeOut)),
+                child: child,
+              ),
+        ),
+      ),
+      GoRoute(
+        path: '/mini-game/:type',
+        name: 'mini-game',
+        pageBuilder: (context, state) {
+          final type = state.pathParameters['type']!;
+          final miniGameType = MiniGameType.values.firstWhere(
+            (t) => t.name == type,
+            orElse: () => MiniGameType.memoryFlip,
+          );
+          Widget child;
+          switch (miniGameType) {
+            case MiniGameType.memoryFlip:
+              child = const MemoryFlipScreen(config: MiniGameConfig(type: MiniGameType.memoryFlip));
+            case MiniGameType.wordMatch:
+              child = const WordMatchScreen(config: MiniGameConfig(type: MiniGameType.wordMatch));
+            case MiniGameType.speedSort:
+              child = const SpeedSortScreen(config: MiniGameConfig(type: MiniGameType.speedSort));
+            case MiniGameType.patternTrace:
+              child = const PatternTraceScreen(config: MiniGameConfig(type: MiniGameType.patternTrace));
+          }
+          return CustomTransitionPage<void>(
+            key: state.pageKey,
+            child: child,
+            transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+                SlideTransition(
+                  position: Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero)
+                      .animate(CurvedAnimation(parent: animation, curve: Curves.easeOut)),
+                  child: child,
+                ),
+          );
+        },
       ),
       GoRoute(
         path: '/profile/:uid',
         name: 'profile',
-        builder: (context, state) => UserProfileScreen(
-          uid: state.pathParameters['uid']!,
+        pageBuilder: (context, state) => CustomTransitionPage<void>(
+          key: state.pageKey,
+          child: UserProfileScreen(
+            uid: state.pathParameters['uid']!,
+          ),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              SlideTransition(
+                position: Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero)
+                    .animate(CurvedAnimation(parent: animation, curve: Curves.easeOut)),
+                child: child,
+              ),
         ),
       ),
       GoRoute(
         path: '/payment/success',
         name: 'payment-success',
-        builder: (context, state) {
-          final gemsParam = state.uri.queryParameters['gems'];
-          final gems = int.tryParse(gemsParam ?? '') ?? 0;
-          return PaymentSuccessScreen(gems: gems);
+        pageBuilder: (context, state) {
+          final donationParam = state.uri.queryParameters['donationAmount'];
+          final donationAmount = double.tryParse(donationParam ?? '') ?? 0.0;
+          return CustomTransitionPage<void>(
+            key: state.pageKey,
+            child: PaymentSuccessScreen(donationAmount: donationAmount),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) => SlideTransition(
+              position: Tween<Offset>(begin: const Offset(0, 0.4), end: Offset.zero)
+                  .animate(CurvedAnimation(parent: animation, curve: Curves.easeOut)),
+              child: FadeTransition(opacity: animation, child: child),
+            ),
+          );
         },
       ),
       GoRoute(
         path: '/payment/failure',
         name: 'payment-failure',
-        builder: (context, state) {
+        pageBuilder: (context, state) {
           final error = state.uri.queryParameters['error'];
-          return PaymentFailedScreen(error: error);
+          return CustomTransitionPage<void>(
+            key: state.pageKey,
+            child: PaymentFailedScreen(error: error),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) => SlideTransition(
+              position: Tween<Offset>(begin: const Offset(0, 0.4), end: Offset.zero)
+                  .animate(CurvedAnimation(parent: animation, curve: Curves.easeOut)),
+              child: FadeTransition(opacity: animation, child: child),
+            ),
+          );
         },
+      ),
+      GoRoute(
+        path: '/privacy-policy',
+        name: 'privacy-policy',
+        pageBuilder: (context, state) => CustomTransitionPage<void>(
+          key: state.pageKey,
+          child: const PrivacyPolicyScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              SlideTransition(
+                position: Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero)
+                    .animate(CurvedAnimation(parent: animation, curve: Curves.easeOut)),
+                child: child,
+              ),
+        ),
       ),
       GoRoute(
         path: '/payment/pending',
         name: 'payment-pending',
-        builder: (context, state) => const PaymentFailedScreen(
-          error: 'El pago está pendiente. Recibirás las gemas cuando se confirme.',
+        pageBuilder: (context, state) => CustomTransitionPage<void>(
+          key: state.pageKey,
+          child: const PaymentPendingScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) => SlideTransition(
+            position: Tween<Offset>(begin: const Offset(0, 0.4), end: Offset.zero)
+                .animate(CurvedAnimation(parent: animation, curve: Curves.easeOut)),
+            child: FadeTransition(opacity: animation, child: child),
+          ),
         ),
       ),
     ],
+    errorBuilder: (context, state) {
+      final l = AppLocalizations.of(context)!;
+      return Scaffold(
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(32),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.error_outline_rounded,
+                size: 80,
+                color: Theme.of(context).colorScheme.error,
+              ),
+              const SizedBox(height: 24),
+              Text(
+                '404',
+                style: AppTextStyle.hero.copyWith(
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                l.notFoundTitle,
+                style: AppTextStyle.title.copyWith(
+                  color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                l.notFoundDescription,
+                textAlign: TextAlign.center,
+                style: AppTextStyle.bodyMd.copyWith(
+                  color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
+                ),
+              ),
+              const SizedBox(height: 32),
+              ElevatedButton(
+                onPressed: () => context.goNamed('welcome'),
+                child: Text(l.notFoundBackHome),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+    },
   );
 
   ref.listen(authProvider, (_, _) => router.refresh());

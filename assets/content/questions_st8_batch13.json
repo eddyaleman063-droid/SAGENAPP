@@ -1,0 +1,452 @@
+[
+    {
+        "id": "ac_st8_qB13_001",
+        "question": "Cual es el concepto mas importante que aprendiste sobre contraseñas seguras",
+        "type": "multipleChoice",
+        "options": [
+            "Usar la misma contraseña en todas las cuentas",
+            "Crear contraseñas únicas, largas y diferentes para cada cuenta importante",
+            "No poner contraseña para que sea mas facil",
+            "Compartir contraseñas con familiares"
+        ],
+        "correctIndex": 1,
+        "explanation": "Cada cuenta debe tener su contraseña única y fuerte para que si una es comprometida, las demas sigan seguras.",
+        "difficulty": 1,
+        "lessonId": "ac_s8_ses1_l1"
+    },
+    {
+        "id": "ac_st8_qB13_002",
+        "question": "Que es la verificación en dos pasos y porque la recomiendan los expertos",
+        "type": "completePhrase",
+        "options": [
+            "Escribir tu contraseña dos veces",
+            "Una capa extra de seguridad que necesita algo mas que tu contraseña para entrar",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "La 2FA protege aunque roben tu contraseña, porque necesitan algo mas para acceder.",
+        "difficulty": 1,
+        "lessonId": "ac_s8_ses1_l2"
+    },
+    {
+        "id": "ac_st8_qB13_003",
+        "question": "Que es el phishing y como lo detectas",
+        "type": "detectRisk",
+        "options": [
+            "Un tipo de pez",
+            "Correos o mensajes falsos que intentan enganarte para robar tu información",
+            "Una forma de enviar dinero",
+            "Un tipo de red social"
+        ],
+        "correctIndex": 1,
+        "explanation": "El phishing usa sitios o correos falsos que parecen reales para robar tus datos.",
+        "difficulty": 1,
+        "lessonId": "ac_s8_ses1_l3"
+    },
+    {
+        "id": "ac_st8_qB13_004",
+        "question": "Que es un gestor de contraseñas y porque deberias usarlo",
+        "type": "multipleChoice",
+        "options": [
+            "Un programa para hackear",
+            "Una aplicación que guarda y protege todas tus contraseñas de forma segura",
+            "Un tipo de red social",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "Un gestor te ayuda a crear y guardar contraseñas fuertes sin tener que recordar todas.",
+        "difficulty": 1,
+        "lessonId": "ac_s8_ses1_l4"
+    },
+    {
+        "id": "ac_st8_qB13_005",
+        "question": "Cuales son las acciones básicas para proteger tu celular",
+        "type": "completePhrase",
+        "options": [
+            "No hacer nada porque es nuevo",
+            "Bloqueo de pantalla, actualizaciones y revision de permisos de apps",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "Estas tres acciones simples aumentan significativamente la seguridad de tu dispositivo.",
+        "difficulty": 1,
+        "lessonId": "ac_s8_ses1_l5"
+    },
+    {
+        "id": "ac_st8_qB13_006",
+        "question": "Que es la privacidad en redes sociales y como la proteges",
+        "type": "multipleChoice",
+        "options": [
+            "No es importante porque es publico",
+            "Controlar quien puede ver tu información ajustando la configuración de privacidad",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "Ajustar tu privacidad te permite decidir quien ve tu información personal.",
+        "difficulty": 1,
+        "lessonId": "ac_s8_ses1_l6"
+    },
+    {
+        "id": "ac_st8_qB13_007",
+        "question": "Que es la ingenieria social y como te proteges de ella",
+        "type": "detectRisk",
+        "options": [
+            "Un tipo de ingenieria civil",
+            "Técnicas de manipulacion para que reveles información voluntariamente",
+            "Una forma de enviar dinero",
+            "Un tipo de virus"
+        ],
+        "correctIndex": 1,
+        "explanation": "La ingenieria social te manipula emocionalmente para que des tu información sin darte cuenta.",
+        "difficulty": 2,
+        "lessonId": "ac_s8_ses2_l1"
+    },
+    {
+        "id": "ac_st8_qB13_008",
+        "question": "Que es la suplantacion de identidad y como la detectas",
+        "type": "completePhrase",
+        "options": [
+            "Copiar la ropa de alguien",
+            "Cuando alguien se hace pasar por ti o por una empresa de confianza para enganarte",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "La suplantacion usa correos, sitios o llamadas falsas que parecen ser de organizaciones reales.",
+        "difficulty": 2,
+        "lessonId": "ac_s8_ses2_l2"
+    },
+    {
+        "id": "ac_st8_qB13_009",
+        "question": "Que es la recuperación decontraseña decontraseña decontraseña decontraseña decontraseña decontraseña",
+        "type": "multipleChoice",
+        "options": [
+            "Recuperar fotos borradas",
+            "Proceso para volver a tener acceso a tus cuentas despues de un incidente",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "La recuperación incluye cambiar contraseñas, verificar identidad y restaurar el acceso.",
+        "difficulty": 2,
+        "lessonId": "ac_s8_ses2_l3"
+    },
+    {
+        "id": "ac_st8_qB13_010",
+        "question": "Que es la respuesta a incidentes de seguridad y por que es importante",
+        "type": "completePhrase",
+        "options": [
+            "No hacer nada",
+            "Acciones inmediatas que debes tomar cuando eres victima de un ciberataque",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "Actuar rápido y correctamente minimiza el daño y te ayuda a recuperarte mas facilmente.",
+        "difficulty": 2,
+        "lessonId": "ac_s8_ses2_l4"
+    },
+    {
+        "id": "ac_st8_qB13_011",
+        "question": "Cuales son los principios fundamentales de la ciberseguridad personal",
+        "type": "multipleChoice",
+        "options": [
+            "No hay principios importantes",
+            "Proteger, detectar y responder ante amenazas de forma continua",
+            "Solo usar contraseña",
+            "Confiar en todos los correos"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los tres pilares son: proteger tus datos, detectar amenazas y responder efectivamente.",
+        "difficulty": 2,
+        "lessonId": "ac_s8_ses2_l5"
+    },
+    {
+        "id": "ac_st8_qB13_012",
+        "question": "Que es la cultura de seguridad y como se construye",
+        "type": "completePhrase",
+        "options": [
+            "No es importante",
+            "Adoptar buenas prácticas de seguridad como parte de tu rutina diaria",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "La cultura de seguridad se construye con hábitos diarios como actualizar, verificar y proteger.",
+        "difficulty": 2,
+        "lessonId": "ac_s8_ses2_l6"
+    },
+    {
+        "id": "ac_st8_qB13_013",
+        "question": "Que es la concienciacion decontraseña decontraseña decontraseña decontraseña decontraseña decontraseña",
+        "type": "multipleChoice",
+        "options": [
+            "Estar despierto",
+            "Entender las amenazas y saber como protegerte de ellas en el dia a dia",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "La concienciacion te ayuda a reconocer amenazas y actuar correctamente ante ellas.",
+        "difficulty": 2,
+        "lessonId": "ac_s8_ses3_l1"
+    },
+    {
+        "id": "ac_st8_qB13_014",
+        "question": "Que es la educación en ciberseguridad y porque es vital para adultos mayores",
+        "type": "completePhrase",
+        "options": [
+            "No es necesaria",
+            "Aprender continuamente sobre nuevas amenazas y como protegerte de ellas",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "La educación continua te mantiene actualizado ante las nuevas técnicas de los atacantes.",
+        "difficulty": 2,
+        "lessonId": "ac_s8_ses3_l2"
+    },
+    {
+        "id": "ac_st8_qB13_015",
+        "question": "Que es la autoprotección digital y porque depende de ti",
+        "type": "multipleChoice",
+        "options": [
+            "Depende del gobierno",
+            "Tus acciones diarias son la primera linea de defensa contra ciberataques",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "Nadie puede protegerte si tu no tomas las medidas básicas de seguridad personal.",
+        "difficulty": 1,
+        "lessonId": "ac_s8_ses3_l3"
+    },
+    {
+        "id": "ac_st8_qB13_016",
+        "question": "Que es el pensamiento crítico en ciberseguridad y porque lo necesitas",
+        "type": "completePhrase",
+        "options": [
+            "Críticar a otros",
+            "Cuestionar y verificar la información antes de actuar o hacer clic",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "El pensamiento crítico te ayuda a no caer en enganos, verificando antes de confiar.",
+        "difficulty": 2,
+        "lessonId": "ac_s8_ses3_l4"
+    },
+    {
+        "id": "ac_st8_qB13_017",
+        "question": "Que es la verificación decontraseña decontraseña decontraseña decontraseña decontraseña decontraseña",
+        "type": "multipleChoice",
+        "options": [
+            "Ver tu perfil",
+            "Hábito de comprobar la autenticidad de correos, enlaces y sitios web",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "Verificar siempre antes de hacer clic o proporcionar información es un hábito esencial.",
+        "difficulty": 1,
+        "lessonId": "ac_s8_ses3_l5"
+    },
+    {
+        "id": "ac_st8_qB13_018",
+        "question": "Que es la protección decontraseña decontraseña decontraseña decontraseña decontraseña decontraseña decontraseña",
+        "type": "completePhrase",
+        "options": [
+            "No proteger nada",
+            "Medidas proactivas para evitar que tus datos sean comprometidos",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "La protección es el conjunto de acciones que tomas para mantener tus datos seguros.",
+        "difficulty": 1,
+        "lessonId": "ac_s8_ses3_l6"
+    },
+    {
+        "id": "ac_st8_qB13_019",
+        "question": "Que es la deteccion de amenazas en el dia a dia",
+        "type": "multipleChoice",
+        "options": [
+            "No es necesaria",
+            "Reconocer señales de alarma como correos sospechosos o comportamiento inusual",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "Saber reconocer las señales de peligro te permite actuar antes de que sea tarde.",
+        "difficulty": 1,
+        "lessonId": "ac_s8_ses4_l1"
+    },
+    {
+        "id": "ac_st8_qB13_020",
+        "question": "Que es la respuesta ante incidentes y como la preparas",
+        "type": "completePhrase",
+        "options": [
+            "No preparar nada",
+            "Tener un plan claro de pasos a seguir si eres victima de un ciberataque",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "Preparar un plan con anticipacion te permite actuar rápido y con calma.",
+        "difficulty": 2,
+        "lessonId": "ac_s8_ses4_l2"
+    },
+    {
+        "id": "ac_st8_qB13_021",
+        "question": "Que es la recuperación post-incidente y porque es importante",
+        "type": "multipleChoice",
+        "options": [
+            "Olvidar lo que paso",
+            "Proceso de restaurar tus cuentas, mejorar protecciónes y aprender del incidente",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "La recuperación completa incluye restaurar, mejorar y aprender para estar mejor preparado.",
+        "difficulty": 2,
+        "lessonId": "ac_s8_ses4_l3"
+    },
+    {
+        "id": "ac_st8_qB13_022",
+        "question": "Que es la mejora continua decontraseña decontraseña decontraseña decontraseña decontraseña decontraseña decontraseña",
+        "type": "completePhrase",
+        "options": [
+            "No cambiar nada",
+            "Actualizar continuamente tus conocimientos y protecciónes de seguridad",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "La seguridad es un proceso continuo que debes mantener y mejorar.",
+        "difficulty": 2,
+        "lessonId": "ac_s8_ses4_l4"
+    },
+    {
+        "id": "ac_st8_qB13_023",
+        "question": "Que es la prevención y porque es mejor que la curacion",
+        "type": "multipleChoice",
+        "options": [
+            "La prevención es mas complicada",
+            "Prevenir es mas facil, barato y efectivo que soluciónar un problema despues",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "Es mejor evitar un ataque que tener que recuperarse de uno. La prevención siempre vale la pena.",
+        "difficulty": 1,
+        "lessonId": "ac_s8_ses4_l5"
+    },
+    {
+        "id": "ac_st8_qB13_024",
+        "question": "Que es la resiliencia digital y como la logras",
+        "type": "completePhrase",
+        "options": [
+            "Tener suerte",
+            "Capacidad de resistir, recuperarse y aprender de los ciberataques",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "La resiliencia se construye con preparacion, respuesta efectiva y aprendizaje continuo.",
+        "difficulty": 2,
+        "lessonId": "ac_s8_ses4_l6"
+    },
+    {
+        "id": "ac_st8_qB13_025",
+        "question": "Cual es el paso mas importante que puedes tomar hoy para mejorar tu seguridad digital",
+        "type": "whatWouldYouDo",
+        "options": [
+            "No hacer nada porque ya estoy seguro",
+            "Revisar y actualizar las contraseñas de mis cuentas mas importantes",
+            "Comprar un celular nuevo",
+            "Eliminar todas mis cuentas de internet"
+        ],
+        "correctIndex": 1,
+        "explanation": "Empezar por actualizar contraseñas de cuentas importantes es un primer paso concreto y efectivo.",
+        "difficulty": 1,
+        "lessonId": "ac_s8_ses4_l6"
+    },
+    {
+        "id": "ac_st8_qB13_026",
+        "question": "Que es la protección decontraseña decontraseña decontraseña decontraseña decontraseña decontraseña decontraseña decontraseña",
+        "type": "completePhrase",
+        "options": [
+            "No proteger nada",
+            "Acciones diarias para mantener tus datos y cuentas seguros",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "La protección es un hábito diario que incluye verificar, actualizar y cuidar tu información.",
+        "difficulty": 1,
+        "lessonId": "ac_s8_ses4_l6"
+    },
+    {
+        "id": "ac_st8_qB13_027",
+        "question": "Caso: Un amigo te dice que la ciberseguridad es complicada y no vale la pena. Que le dices",
+        "type": "miniCase",
+        "options": [
+            "Que tiene razón porque es muy dificil",
+            "Que con pasos simples como contraseñas fuertes y 2FA ya esta mucho mas protegido",
+            "Que no use internet para nada",
+            "Que contrate a un experto para todo"
+        ],
+        "correctIndex": 1,
+        "explanation": "La ciberseguridad puede ser simple. Pequenos pasos como 2FA y contraseñas fuertes marcan gran diferencia.",
+        "difficulty": 1,
+        "lessonId": "ac_s8_ses4_l6"
+    },
+    {
+        "id": "ac_st8_qB13_028",
+        "question": "Que es el aprendizaje continuo en ciberseguridad",
+        "type": "multipleChoice",
+        "options": [
+            "No aprender nada nuevo",
+            "Mantenerse informado sobre nuevas amenazas y mejores prácticas de protección",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las amenazas cambian, por eso es importante aprender continuamente nuevas formas de protegerte.",
+        "difficulty": 1,
+        "lessonId": "ac_s8_ses4_l6"
+    },
+    {
+        "id": "ac_st8_qB13_029",
+        "question": "Que es la responsabilidad personal en ciberseguridad",
+        "type": "completePhrase",
+        "options": [
+            "Culpar a otros",
+            "Asumir que tu eres responsable de proteger tu propia información digital",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "Nadie puede protegerte mejor que tu mismo. Tu eres el dueño y responsable de tus datos.",
+        "difficulty": 1,
+        "lessonId": "ac_s8_ses4_l6"
+    },
+    {
+        "id": "ac_st8_qB13_030",
+        "question": "Que consejo final le darias a alguien que esta empezando a aprender sobre ciberseguridad",
+        "type": "whatWouldYouDo",
+        "options": [
+            "Que no empiece porque es muy tarde",
+            "Que empiece con lo básico: contraseña fuerte, 2FA y verificar antes de hacer clic",
+            "Que se meta en la deep web para aprender",
+            "Que pague un curso caro"
+        ],
+        "correctIndex": 1,
+        "explanation": "Empieza con lo básico y ve aprendiendo poco a poco. Cada paso cuenta para estar mas seguro.",
+        "difficulty": 1,
+        "lessonId": "ac_s8_ses4_l6"
+    }
+]

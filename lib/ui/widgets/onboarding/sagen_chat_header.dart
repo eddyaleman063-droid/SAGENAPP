@@ -15,11 +15,11 @@ class SagenChatHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final bubbleColor = isDark
-        ? const Color(0xFF1E293B)
+        ? PremiumColors.chatHeaderDark
         : Colors.white;
     final textColor = isDark
-        ? const Color(0xFFE2E8F0)
-        : const Color(0xFF1A1A2E);
+        ? PremiumColors.chatHeaderLight
+        : PremiumColors.chatLockedDark;
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,

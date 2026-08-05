@@ -5,8 +5,9 @@ import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/providers/providers.dart';
 import 'package:sagen/services/experience_service.dart';
-import 'package:sagen/services/notification_service.dart';
+import 'package:sagen/ui/widgets/common/tap_scale.dart';
 import 'package:sagen/ui/widgets/profile/settings_sheet.dart';
+import 'package:sagen/core/theme/app_colors.dart';
 
 class SettingsActions extends ConsumerWidget {
   final bool dark;
@@ -19,30 +20,34 @@ class SettingsActions extends ConsumerWidget {
       children: [
         SizedBox(
           width: double.infinity,
-          child: OutlinedButton.icon(
-            onPressed: () => _showSettings(context),
-            icon: const Icon(Icons.tune_rounded, size: 16),
-            label: Text(l.settingsTitle),
-            style: OutlinedButton.styleFrom(
-              foregroundColor: dark ? Colors.white70 : Colors.black54,
-              side: BorderSide(color: dark ? Colors.white12 : Colors.black12),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
-              padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
+          child: TapScale(
+            child: OutlinedButton.icon(
+              onPressed: () => _showSettings(context, ref),
+              icon: const Icon(Icons.tune_rounded, size: 16),
+              label: Text(l.settingsTitle),
+              style: OutlinedButton.styleFrom(
+                foregroundColor: context.textSecondary,
+                side: BorderSide(color: context.subtleBorder),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
+                padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
+              ),
             ),
           ),
         ),
         const SizedBox(height: AppSpacing.md),
         SizedBox(
           width: double.infinity,
-          child: OutlinedButton.icon(
-            onPressed: () => _confirmLogout(context, ref),
-            icon: const Icon(Icons.logout_rounded, size: 16),
-            label: Text(l.settingsLogout),
-            style: OutlinedButton.styleFrom(
-              foregroundColor: const Color(0xFFFF6B6B),
-              side: BorderSide(color: const Color(0xFFFF6B6B).withValues(alpha: 0.3)),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
-              padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
+          child: TapScale(
+            child: OutlinedButton.icon(
+              onPressed: () => _confirmLogout(context, ref),
+              icon: const Icon(Icons.logout_rounded, size: 16),
+              label: Text(l.settingsLogout),
+              style: OutlinedButton.styleFrom(
+                foregroundColor: PremiumColors.danger,
+                side: BorderSide(color: PremiumColors.danger.withValues(alpha: 0.3)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
+                padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
+              ),
             ),
           ),
         ),
@@ -50,8 +55,8 @@ class SettingsActions extends ConsumerWidget {
     );
   }
 
-  void _showSettings(BuildContext context) {
-    ExperienceService.instance.lightHaptic();
+  void _showSettings(BuildContext context, WidgetRef ref) {
+    ref.read(experienceServiceProvider).lightHaptic();
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -60,7 +65,7 @@ class SettingsActions extends ConsumerWidget {
   }
 
   void _confirmLogout(BuildContext context, WidgetRef ref) {
-    ExperienceService.instance.lightHaptic();
+    ref.read(experienceServiceProvider).lightHaptic();
     showDialog(
       context: context,
       builder: (ctx) {
@@ -70,20 +75,29 @@ class SettingsActions extends ConsumerWidget {
           title: Text(l.settingsLogout),
           content: Text(l.settingsLogoutConfirm),
           actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(ctx),
-              child: Text(l.cancel),
+            Semantics(
+              button: true,
+              label: l.cancel,
+              child: TextButton(
+                onPressed: () { ExperienceService.instance.lightHaptic(); context.pop(); },
+                child: Text(l.cancel),
+              ),
             ),
-            TextButton(
-              onPressed: () async {
-                Navigator.pop(ctx);
-                NotificationService.instance.cancelAll();
-                await ref.read(authProvider.notifier).signOut();
-                if (ctx.mounted) {
-                  ctx.goNamed('welcome');
-                }
-              },
-              child: Text(l.settingsLogout, style: const TextStyle(color: Color(0xFFFF6B6B))),
+            Semantics(
+              button: true,
+              label: l.settingsLogout,
+              child: TextButton(
+                onPressed: () async {
+                  ref.read(experienceServiceProvider).lightHaptic();
+                  context.pop();
+                  ref.read(notificationServiceProvider).cancelAll();
+                  await ref.read(authProvider.notifier).signOut();
+                  if (ctx.mounted) {
+                    ctx.goNamed('welcome');
+                  }
+                },
+                child: Text(l.settingsLogout, style: AppTextStyle.body.copyWith(color: PremiumColors.danger)),
+              ),
             ),
           ],
         );

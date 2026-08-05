@@ -1,0 +1,24 @@
+# Code Owners for SAGEN
+# These owners will be automatically requested for review
+# when someone opens a pull request.
+
+# Default owners for everything
+* @sagen-team
+
+# Core infrastructure
+/lib/core/ @sagen-team
+/lib/services/ @sagen-team
+/lib/providers/ @sagen-team
+
+# UI components
+/lib/ui/ @sagen-team
+
+# Firebase configuration
+/android/ @sagen-team
+/ios/ @sagen-team
+
+# CI/CD
+/.github/ @sagen-team
+
+# Documentation
+*.md @sagen-team

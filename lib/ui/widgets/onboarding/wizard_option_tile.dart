@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../config/onboarding_wizard_config.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/theme_constants.dart';
+import '../../../providers/providers.dart';
 import '../../../services/experience_service.dart';
 
-class WizardSingleChoiceTile extends StatelessWidget {
+class WizardSingleChoiceTile extends ConsumerWidget {
   final WizardOption option;
   final bool isSelected;
   final VoidCallback onTap;
@@ -17,7 +19,7 @@ class WizardSingleChoiceTile extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final cs = Theme.of(context).colorScheme;
     final textPrimary = context.textPrimary;
     final textSecondary = cs.onSurface.withValues(alpha: 0.7);
@@ -28,47 +30,49 @@ class WizardSingleChoiceTile extends StatelessWidget {
     final iconColor = context.textTertiary;
     const iconSelectedColor = PremiumColors.splashBlue;
 
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: ExperienceService.instance.fast,
-        curve: AppEasing.entrance,
-        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md),
-        decoration: BoxDecoration(
-          color: isSelected ? cardSelectedBg : cardBg,
-          borderRadius: BorderRadius.circular(AppRadius.md),
-          border: Border.all(
-            color: isSelected ? cardSelectedBorder : cardBorder,
-            width: isSelected ? 1.5 : 1.0,
+    return Semantics(
+      button: true,
+      selected: isSelected,
+      label: option.label,
+      child: GestureDetector(
+        onTap: () {
+          ExperienceService.instance.lightHaptic();
+          onTap();
+        },
+        child: AnimatedContainer(
+          duration: ref.read(experienceServiceProvider).fast,
+          curve: AppEasing.entrance,
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md),
+          decoration: BoxDecoration(
+            color: isSelected ? cardSelectedBg : cardBg,
+            borderRadius: BorderRadius.circular(AppRadius.md),
+            border: Border.all(
+              color: isSelected ? cardSelectedBorder : cardBorder,
+              width: isSelected ? 1.5 : 1.0,
+            ),
           ),
-        ),
-        child: Row(
-          children: [
-            Icon(option.icon, size: 22, color: isSelected ? iconSelectedColor : iconColor),
-            const SizedBox(width: AppSpacing.md),
-            Expanded(
-              child: Text(
-                option.label,
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-                  color: isSelected ? textPrimary : textSecondary,
+          child: Row(
+            children: [
+              ExcludeSemantics(
+                child: Icon(option.icon, size: 22, color: isSelected ? iconSelectedColor : iconColor),
+              ),
+              const SizedBox(width: AppSpacing.md),
+              Expanded(
+                child: Text(
+                  option.label,
+                  style: AppTextStyle.bodyMd.copyWith(fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                    color: isSelected ? textPrimary : textSecondary),
                 ),
               ),
-            ),
-            Icon(
-              isSelected ? Icons.radio_button_checked_rounded : Icons.radio_button_unchecked_rounded,
-              size: 22,
-              color: isSelected ? iconSelectedColor : iconColor,
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
-class WizardMultiChoiceTile extends StatelessWidget {
+class WizardMultiChoiceTile extends ConsumerWidget {
   final WizardOption option;
   final bool isSelected;
   final VoidCallback onTap;
@@ -81,7 +85,7 @@ class WizardMultiChoiceTile extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final cs = Theme.of(context).colorScheme;
     final textPrimary = context.textPrimary;
     final textSecondary = cs.onSurface.withValues(alpha: 0.7);
@@ -92,40 +96,47 @@ class WizardMultiChoiceTile extends StatelessWidget {
     final iconColor = context.textTertiary;
     const iconSelectedColor = PremiumColors.splashBlue;
 
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: ExperienceService.instance.fast,
-        curve: AppEasing.entrance,
-        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md),
-        decoration: BoxDecoration(
-          color: isSelected ? cardSelectedBg : cardBg,
-          borderRadius: BorderRadius.circular(AppRadius.md),
-          border: Border.all(
-            color: isSelected ? cardSelectedBorder : cardBorder,
-            width: isSelected ? 1.5 : 1.0,
+    return Semantics(
+      button: true,
+      selected: isSelected,
+      label: option.label,
+      child: GestureDetector(
+        onTap: () {
+          ExperienceService.instance.lightHaptic();
+          onTap();
+        },
+        child: AnimatedContainer(
+          duration: ref.read(experienceServiceProvider).fast,
+          curve: AppEasing.entrance,
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md),
+          decoration: BoxDecoration(
+            color: isSelected ? cardSelectedBg : cardBg,
+            borderRadius: BorderRadius.circular(AppRadius.md),
+            border: Border.all(
+              color: isSelected ? cardSelectedBorder : cardBorder,
+              width: isSelected ? 1.5 : 1.0,
+            ),
           ),
-        ),
-        child: Row(
-          children: [
-            Icon(option.icon, size: 22, color: isSelected ? iconSelectedColor : iconColor),
-            const SizedBox(width: AppSpacing.md),
-            Expanded(
-              child: Text(
-                option.label,
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-                  color: isSelected ? textPrimary : textSecondary,
+          child: Row(
+            children: [
+              ExcludeSemantics(
+                child: Icon(option.icon, size: 22, color: isSelected ? iconSelectedColor : iconColor),
+              ),
+              const SizedBox(width: AppSpacing.md),
+              Expanded(
+                child: Text(
+                  option.label,
+                  style: AppTextStyle.bodyMd.copyWith(fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                    color: isSelected ? textPrimary : textSecondary),
                 ),
               ),
-            ),
-            Icon(
-              isSelected ? Icons.check_box_rounded : Icons.check_box_outline_blank_rounded,
-              size: 22,
-              color: isSelected ? iconSelectedColor : iconColor,
-            ),
-          ],
+              Icon(
+                isSelected ? Icons.check_box_rounded : Icons.check_box_outline_blank_rounded,
+                size: 22,
+                color: isSelected ? iconSelectedColor : iconColor,
+              ),
+            ],
+          ),
         ),
       ),
     );

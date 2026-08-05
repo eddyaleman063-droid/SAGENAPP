@@ -5,6 +5,7 @@ import 'sage_prompt_builder.dart';
 
 enum AiErrorType { apiKey, auth, rateLimit, timeout, server, network, invalidResponse, unknown }
 
+/// Exception thrown when AI service encounters an error.
 class AiException implements Exception {
   final AiErrorType type;
   final String message;
@@ -15,13 +16,27 @@ class AiException implements Exception {
   String toString() => 'AiException($type): $message';
 }
 
+/// Abstract interface for AI text generation services.
 abstract class AiService {
-  Future<String> generate(List<ChatMessage> messages, {int retryCount = 0});
-  Stream<String> generateStream(List<ChatMessage> messages, {int retryCount = 0});
+  Future<String> generate(
+    List<ChatMessage> messages, {
+    String userName = '',
+    int userLevel = 1,
+    int currentStreak = 0,
+    List<String> weakTopics = const [],
+  });
+  Stream<String> generateStream(
+    List<ChatMessage> messages, {
+    String userName = '',
+    int userLevel = 1,
+    int currentStreak = 0,
+    List<String> weakTopics = const [],
+  });
   void dispose();
   bool get isAvailable;
 }
 
+/// AI service implementation using Google Gemini API.
 class GeminiAiService implements AiService {
   final GeminiApiClient _client;
   final SagePromptBuilder _promptBuilder;
@@ -41,14 +56,38 @@ class GeminiAiService implements AiService {
   }
 
   @override
-  Future<String> generate(List<ChatMessage> messages, {int retryCount = 0}) async {
+  Future<String> generate(
+    List<ChatMessage> messages, {
+    String userName = '',
+    int userLevel = 1,
+    int currentStreak = 0,
+    List<String> weakTopics = const [],
+  }) async {
     final contents = _promptBuilder.buildContents(messages);
-    return _client.generate(contents, retryCount: retryCount);
+    return _client.generate(
+      contents,
+      userName: userName,
+      userLevel: userLevel,
+      currentStreak: currentStreak,
+      weakTopics: weakTopics,
+    );
   }
 
   @override
-  Stream<String> generateStream(List<ChatMessage> messages, {int retryCount = 0}) async* {
+  Stream<String> generateStream(
+    List<ChatMessage> messages, {
+    String userName = '',
+    int userLevel = 1,
+    int currentStreak = 0,
+    List<String> weakTopics = const [],
+  }) async* {
     final contents = _promptBuilder.buildContents(messages);
-    yield* _client.generateStream(contents, retryCount: retryCount);
+    yield* _client.generateStream(
+      contents,
+      userName: userName,
+      userLevel: userLevel,
+      currentStreak: currentStreak,
+      weakTopics: weakTopics,
+    );
   }
 }

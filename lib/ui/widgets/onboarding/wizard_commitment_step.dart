@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sagen/providers/providers.dart';
 
@@ -6,29 +7,30 @@ import '../../../config/onboarding_wizard_config.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/theme_constants.dart';
 import '../../../l10n/app_localizations.dart';
-import '../../../services/experience_service.dart';
 import 'wizard_commitment_tile.dart';
 import 'wizard_sage_section.dart';
 
 class WizardCommitmentStep extends ConsumerWidget {
   final int stepIndex;
-  final String Function(int, dynamic, AppLocalizations) sageMessageForStep;
+  final WizardStepConfig stepConfig;
+  final String Function(int, OnboardingWizardState, AppLocalizations)? sageMessageForStep;
 
   const WizardCommitmentStep({
     super.key,
     required this.stepIndex,
-    required this.sageMessageForStep,
+    required this.stepConfig,
+    this.sageMessageForStep,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final textPrimary = context.textPrimary;
 
-    final config = OnboardingWizardConfig.steps[stepIndex];
+    final config = stepConfig;
     final state = ref.watch(onboardingWizardProvider);
     final selected = (state.sectionData[stepIndex] as List<String>?) ?? <String>[];
     final l = AppLocalizations.of(context)!;
-    final sageMsg = sageMessageForStep(stepIndex, state, l);
+    final sageMsg = sageMessageForStep != null ? sageMessageForStep!(stepIndex, state, l) : config.sageMessage;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
@@ -40,12 +42,9 @@ class WizardCommitmentStep extends ConsumerWidget {
           const SizedBox(height: AppSpacing.xl),
           Text(
             config.question,
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
+            style: AppTextStyle.title.copyWith(fontWeight: FontWeight.bold,
               color: textPrimary,
-              height: 1.3,
-            ),
+              height: 1.3),
           ),
           const SizedBox(height: AppSpacing.lg),
           Expanded(
@@ -59,7 +58,7 @@ class WizardCommitmentStep extends ConsumerWidget {
                       option: config.options[i],
                       isSelected: selected.contains(config.options[i].value),
                       onTap: () {
-                        ExperienceService.instance.lightHaptic();
+                        ref.read(experienceServiceProvider).lightHaptic();
                         final updated = List<String>.from(selected);
                         if (updated.contains(config.options[i].value)) {
                           updated.remove(config.options[i].value);
@@ -76,6 +75,6 @@ class WizardCommitmentStep extends ConsumerWidget {
           ),
         ],
       ),
-    );
+    ).animate().fadeIn().slideY(begin: 0.05);
   }
 }

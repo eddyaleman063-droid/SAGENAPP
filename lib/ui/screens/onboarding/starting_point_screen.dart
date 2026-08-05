@@ -1,12 +1,15 @@
-// ignore_for_file: prefer_const_constructors
-
-import 'dart:math' as math;
+﻿import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sagen/services/experience_service.dart';
+import 'package:sagen/core/theme/app_colors.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
+import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/providers/providers.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 class StartingPointScreen extends ConsumerStatefulWidget {
   final VoidCallback? onContinue;
@@ -37,11 +40,16 @@ class _StartingPointScreenState extends ConsumerState<StartingPointScreen> {
 
   void _onTapDown(TapDownDetails _) {
     setState(() => _isPressed = true);
-    HapticFeedback.mediumImpact();
+    ExperienceService.instance.mediumHaptic();
   }
 
   void _onTapUp(TapUpDetails _) {
     setState(() => _isPressed = false);
+    HapticFeedback.lightImpact();
+    if (_selectedCard != null) {
+      ref.read(diagnosticPathProvider.notifier).state =
+          _selectedCard == 0 ? DiagnosticPath.beginner : DiagnosticPath.experienced;
+    }
     widget.onContinue?.call();
   }
 
@@ -61,24 +69,31 @@ class _StartingPointScreenState extends ConsumerState<StartingPointScreen> {
           children: [
             // ── Header ──
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxs, vertical: AppSpacing.sm),
               child: Row(
                 children: [
-                  IconButton(
-                    icon: Icon(
-                      Icons.arrow_back,
-                      color: dark ? Colors.white.withValues(alpha: 0.6) : Colors.black54,
+                  Semantics(
+                    button: true,
+                    label: AppLocalizations.of(context)!.backButton,
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.arrow_back,
+                        color: context.textSecondary,
+                      ),
+                      onPressed: () {
+                        ExperienceService.instance.lightHaptic();
+                        (widget.onBack ?? () => context.pop())();
+                      },
+                      tooltip: AppLocalizations.of(context)!.backButton,
                     ),
-                    onPressed:
-                        widget.onBack ?? () => Navigator.pop(context),
                   ),
                   const SizedBox(width: AppSpacing.sm),
                   Expanded(
                     child: Container(
                       height: 12,
                       decoration: BoxDecoration(
-                        color: dark ? Colors.grey[850] : Colors.grey.shade200,
-                        borderRadius: BorderRadius.circular(6),
+                        color: context.surfaceCard,
+                        borderRadius: BorderRadius.circular(AppRadius.xs),
                       ),
                       child: FractionallySizedBox(
                         alignment: Alignment.centerLeft,
@@ -86,7 +101,7 @@ class _StartingPointScreenState extends ConsumerState<StartingPointScreen> {
                         child: Container(
                           decoration: BoxDecoration(
                             color: PremiumColors.primaryAccent,
-                            borderRadius: BorderRadius.circular(6),
+                            borderRadius: BorderRadius.circular(AppRadius.xs),
                           ),
                         ),
                       ),
@@ -107,33 +122,35 @@ class _StartingPointScreenState extends ConsumerState<StartingPointScreen> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Image.asset(
-                      'assets/mascot/emotions/sage_curious.png',
-                      width: 80,
-                      height: 80,
+                    ExcludeSemantics(
+                      child: Image.asset(
+                        'assets/mascot/emotions/sage_curious.png',
+                        width: 80,
+                        height: 80,
+                        cacheWidth: 160,
+                        cacheHeight: 160,
+                        errorBuilder: (_, _, _) => const Icon(Icons.pets, size: 48),
+                      ),
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppSpacing.sm),
                     Expanded(
                       child: Stack(
                         clipBehavior: Clip.none,
                         children: [
                           Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 16),
+                                horizontal: AppSpacing.xl, vertical: AppSpacing.lg),
                             decoration: BoxDecoration(
-                              color: dark ? const Color(0xFF2A3448) : Colors.white,
-                              borderRadius: BorderRadius.circular(16),
+                              color: dark ? PremiumColors.onboardingBubbleDark : Colors.white,
+                              borderRadius: BorderRadius.circular(AppRadius.xl),
                               border: Border.all(
-                                color: dark
-                                    ? Colors.white.withValues(alpha: 0.10)
-                                    : Colors.grey.withValues(alpha: 0.30),
+                                color: context.borderSubtle,
                               ),
                             ),
                             child: Text(
-                              "¡Perfecto! Veamos desde dónde arrancamos tu entrenamiento.",
-                              style: TextStyle(
-                                color: dark ? Colors.white : Colors.black87,
-                                fontSize: 15,
+                              AppLocalizations.of(context)!.onbStartingPerfecto,
+                              style: AppTextStyle.body.copyWith(
+                                color: context.textPrimary,
                                 height: 1.4,
                               ),
                             ),
@@ -148,11 +165,9 @@ class _StartingPointScreenState extends ConsumerState<StartingPointScreen> {
                                   width: 12,
                                   height: 12,
                                   decoration: BoxDecoration(
-                                    color: dark ? const Color(0xFF2A3448) : Colors.white,
+                                    color: dark ? PremiumColors.onboardingBubbleDark : Colors.white,
                                     border: Border.all(
-                                      color: dark
-                                          ? Colors.white.withValues(alpha: 0.10)
-                                          : Colors.grey.withValues(alpha: 0.30),
+                                      color: context.borderSubtle,
                                     ),
                                   ),
                                 ),
@@ -180,23 +195,21 @@ class _StartingPointScreenState extends ConsumerState<StartingPointScreen> {
                       child: _buildCard(
                         index: 0,
                         icon: Icons.menu_book,
-                        iconColor: const Color(0xFFFFA726),
-                        title: "¿Es tu primera vez en ciberdefensa?",
-                        subtitle:
-                            "¡Empieza desde cero y forja tu escudo!",
+                        iconColor: PremiumColors.onboardingAccentOrange,
+                        title: AppLocalizations.of(context)!.onbStartingTitle,
+                        subtitle: AppLocalizations.of(context)!.onbStartingSubtitle,
                         showBadge: _badgeOnCard1,
                         dark: dark,
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppSpacing.lg),
                     Expanded(
                       child: _buildCard(
                         index: 1,
                         icon: Icons.radar,
-                        iconColor: const Color(0xFF00BCD4),
-                        title: "¿Ya tienes nivel hacker?",
-                        subtitle:
-                            "¡Haz la prueba de nivel y sáltate lo básico!",
+                        iconColor: PremiumColors.onboardingAccentCyan,
+                        title: AppLocalizations.of(context)!.onbStartingExperienced,
+                        subtitle: AppLocalizations.of(context)!.onbStartingExperiencedSub,
                         showBadge: _badgeOnCard2,
                         dark: dark,
                       ),
@@ -210,42 +223,45 @@ class _StartingPointScreenState extends ConsumerState<StartingPointScreen> {
             Padding(
               padding: const EdgeInsets.fromLTRB(
                   AppSpacing.xxl, 0, AppSpacing.xxl, AppSpacing.xxl),
-              child: GestureDetector(
-                onTapDown: _canContinue ? _onTapDown : null,
-                onTapUp: _canContinue ? _onTapUp : null,
-                onTapCancel: _canContinue ? _onTapCancel : null,
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 80),
-                  transform: _isPressed
-                      ? Matrix4.translationValues(0, 4, 0)
-                      : Matrix4.identity(),
-                  height: 54,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: _canContinue
-                        ? PremiumColors.primaryAccent
-                        : dark ? Colors.grey[850] : Colors.grey.shade200,
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: _isPressed || !_canContinue
-                        ? []
-                        : [
-                            BoxShadow(
-                              color: PremiumColors.primaryDark,
-                              offset: const Offset(0, 4),
-                              blurRadius: 0,
-                            ),
-                          ],
-                  ),
-                  child: Center(
-                    child: Text(
-                      'CONTINUAR',
-                      style: TextStyle(
-                        color: _canContinue
-                            ? (dark ? Colors.white : Colors.black87)
-                            : (dark ? Colors.white.withValues(alpha: 0.30) : Colors.black.withValues(alpha: 0.30)),
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 1.5,
+              child: Semantics(
+                button: true,
+                label: AppLocalizations.of(context)!.continueText,
+                child: GestureDetector(
+                  onTapDown: _canContinue ? _onTapDown : null,
+                  onTapUp: _canContinue ? _onTapUp : null,
+                  onTapCancel: _canContinue ? _onTapCancel : null,
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 80),
+                    transform: _isPressed
+                        ? Matrix4.translationValues(0, 4, 0)
+                        : Matrix4.identity(),
+                    height: 54,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: _canContinue
+                          ? PremiumColors.primaryAccent
+                          : dark ? PremiumColors.darkCard : context.surfaceCard,
+                      borderRadius: BorderRadius.circular(AppRadius.xl),
+                      boxShadow: _isPressed || !_canContinue
+                          ? []
+                          : [
+                              const BoxShadow(
+                                color: PremiumColors.primaryDark,
+                                offset: Offset(0, 4),
+                                blurRadius: 0,
+                              ),
+                            ],
+                    ),
+                    child: Center(
+                      child: Text(
+                        AppLocalizations.of(context)!.continueText,
+                        style: AppTextStyle.titleSmall.copyWith(
+                          color: _canContinue
+                              ? context.textPrimary
+                              : context.textDisabled,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 1.5,
+                        ),
                       ),
                     ),
                   ),
@@ -253,7 +269,7 @@ class _StartingPointScreenState extends ConsumerState<StartingPointScreen> {
               ),
             ),
           ],
-        ),
+        ).animate().fadeIn().slideY(begin: 0.05),
       ),
     );
   }
@@ -267,26 +283,30 @@ class _StartingPointScreenState extends ConsumerState<StartingPointScreen> {
     required bool showBadge,
     required bool dark,
   }) {
+    final l = AppLocalizations.of(context)!;
     final isSelected = _selectedCard == index;
-    return GestureDetector(
-      onTap: () {
-        setState(() => _selectedCard = index);
-        HapticFeedback.lightImpact();
-      },
-      child: AnimatedContainer(
+    return Semantics(
+      button: true,
+      selected: isSelected,
+      label: title,
+      child: GestureDetector(
+        onTap: () {
+          HapticFeedback.lightImpact();
+          setState(() => _selectedCard = index);
+          ExperienceService.instance.lightHaptic();
+        },
+        child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         width: double.infinity,
         decoration: BoxDecoration(
           color: isSelected
               ? PremiumColors.primaryAccent.withValues(alpha: 0.08)
-              : (dark ? Colors.white.withValues(alpha: 0.03) : Colors.grey.withValues(alpha: 0.08)),
-          borderRadius: BorderRadius.circular(20),
+              : context.subtle,
+          borderRadius: BorderRadius.circular(AppRadius.xxl),
           border: Border.all(
             color: isSelected
                 ? PremiumColors.primaryAccent
-                : (dark
-                    ? Colors.white.withValues(alpha: 0.10)
-                    : Colors.grey.withValues(alpha: 0.30)),
+                : context.borderSubtle,
             width: isSelected ? 2.5 : 1,
           ),
         ),
@@ -295,7 +315,7 @@ class _StartingPointScreenState extends ConsumerState<StartingPointScreen> {
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(
-                  horizontal: 24, vertical: 16),
+                  horizontal: AppSpacing.xxl, vertical: AppSpacing.lg),
               child: Row(
                 children: [
                   Container(
@@ -303,11 +323,11 @@ class _StartingPointScreenState extends ConsumerState<StartingPointScreen> {
                     height: 64,
                     decoration: BoxDecoration(
                       color: iconColor.withValues(alpha: 0.15),
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(AppRadius.xl),
                     ),
                     child: Icon(icon, color: iconColor, size: 36),
                   ),
-                  const SizedBox(width: 20),
+                  const SizedBox(width: AppSpacing.xl),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -315,22 +335,16 @@ class _StartingPointScreenState extends ConsumerState<StartingPointScreen> {
                       children: [
                         Text(
                           title,
-                          style: TextStyle(
-                            color: isSelected
-                                ? (dark ? Colors.white : Colors.black87)
-                                : (dark
-                                    ? Colors.white.withValues(alpha: 0.90)
-                                    : Colors.black87),
-                            fontSize: 16,
+                          style: AppTextStyle.titleSmall.copyWith(
+                            color: context.textPrimary,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                        const SizedBox(height: 6),
+                        const SizedBox(height: AppSpacing.xs),
                         Text(
                           subtitle,
-                          style: TextStyle(
-                            color: dark ? Colors.white.withValues(alpha: 0.55) : Colors.black54,
-                            fontSize: 14,
+                          style: AppTextStyle.bodyMd.copyWith(
+                            color: context.textSecondary,
                           ),
                         ),
                       ],
@@ -348,21 +362,21 @@ class _StartingPointScreenState extends ConsumerState<StartingPointScreen> {
                       horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
                     color: PremiumColors.primaryAccent,
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(AppRadius.sm),
                   ),
                   child: Text(
-                    'RECOMENDADO',
-                    style: TextStyle(
-                      color: dark ? Colors.white : Colors.black87,
-                      fontSize: 11,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: 0.5,
+                    l.recommended,
+                      style: AppTextStyle.label.copyWith(
+                        color: context.textPrimary,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: 0.5,
                     ),
                   ),
                 ),
               ),
           ],
         ),
+      ),
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../services/storage_service.dart';
 import 'prefs_provider.dart';
+import 'package:sagen/services/app_logger.dart';
 
 class EnergyState {
   final int energy;
@@ -26,6 +27,7 @@ class EnergyState {
 class EnergyNotifier extends Notifier<EnergyState> {
   late final StorageService _storage;
   Timer? _regenTimer;
+  bool _consuming = false;
 
   static const _maxEnergy = 100;
   static const _lessonCost = 20;
@@ -40,9 +42,15 @@ class EnergyNotifier extends Notifier<EnergyState> {
 
   @override
   EnergyState build() {
-    final prefs = ref.watch(prefsProvider);
+    final prefs = ref.read(prefsProvider);
     _storage = StorageService(prefs);
-    final initial = _load();
+    EnergyState initial;
+    try {
+      initial = _load();
+    } catch (_) {
+      AppLogger().warning('Failed to load energy state: operation failed');
+      initial = EnergyState(energy: _maxEnergy, lastRegen: DateTime.now());
+    }
     _startRegen();
     ref.onDispose(() => _regenTimer?.cancel());
     return initial;
@@ -51,25 +59,39 @@ class EnergyNotifier extends Notifier<EnergyState> {
   EnergyState _load() {
     int energy = _storage.getInt(_keyEnergy, _maxEnergy).clamp(0, _maxEnergy);
     final last = _storage.getString(_keyLastRegen);
+    DateTime lastRegen = DateTime.now();
     if (last.isNotEmpty) {
-      final lastRegen = DateTime.tryParse(last) ?? DateTime.now();
-      final elapsed = DateTime.now().difference(lastRegen);
-      final minutes = elapsed.inMinutes;
-      if (minutes >= _regenInterval.inMinutes) {
-        final regenCycles = minutes ~/ _regenInterval.inMinutes;
-        energy = (energy + regenCycles * _regenAmount).clamp(0, _maxEnergy);
+      final parsedLast = DateTime.tryParse(last);
+      if (parsedLast != null) {
+        lastRegen = parsedLast;
+        final elapsed = DateTime.now().difference(parsedLast);
+        final minutes = elapsed.inMinutes;
+        if (minutes >= _regenInterval.inMinutes) {
+          final regenCycles = minutes ~/ _regenInterval.inMinutes;
+          energy = (energy + regenCycles * _regenAmount).clamp(0, _maxEnergy);
+          lastRegen = parsedLast.add(Duration(minutes: regenCycles * _regenInterval.inMinutes));
+        }
       }
     }
-    return EnergyState(energy: energy, lastRegen: DateTime.now());
+    _storage.setInt(_keyEnergy, energy);
+    _storage.setString(_keyLastRegen, lastRegen.toIso8601String());
+    return EnergyState(energy: energy, lastRegen: lastRegen);
   }
 
   void _startRegen() {
+    _regenTimer?.cancel();
+    if (state.energy >= _maxEnergy) return;
     _regenTimer = Timer.periodic(_regenInterval, (_) {
-      if (state.energy < _maxEnergy) {
-        final next = (state.energy + _regenAmount).clamp(0, _maxEnergy);
-        state = state.copyWith(energy: next);
-        _save();
+      if (state.energy >= _maxEnergy) {
+        _regenTimer?.cancel();
+        _regenTimer = null;
+        return;
       }
+      final next = (state.energy + _regenAmount).clamp(0, _maxEnergy);
+      final now = DateTime.now();
+      state = state.copyWith(energy: next, lastRegen: now);
+      _storage.setInt(_keyEnergy, next);
+      _storage.setString(_keyLastRegen, now.toIso8601String());
     });
   }
 
@@ -78,10 +100,16 @@ class EnergyNotifier extends Notifier<EnergyState> {
   bool get canDoLesson => state.energy >= _lessonCost;
 
   bool consumeForLesson() {
+    if (_consuming) return false;
     if (state.energy < _lessonCost) return false;
-    state = state.copyWith(energy: state.energy - _lessonCost);
-    _save();
-    return true;
+    _consuming = true;
+    try {
+      state = state.copyWith(energy: state.energy - _lessonCost);
+      _save();
+      return true;
+    } finally {
+      _consuming = false;
+    }
   }
 
   void addEnergy(int amount) {
@@ -97,6 +125,10 @@ class EnergyNotifier extends Notifier<EnergyState> {
 
   void _save() {
     _storage.setInt(_keyEnergy, state.energy);
-    _storage.setString(_keyLastRegen, DateTime.now().toIso8601String());
+    // Only update lastRegen on actual regen events, not on every save
+    // The lastRegen is already set correctly in _load() and _startRegen()
+    if (state.lastRegen.isAfter(DateTime.now().subtract(const Duration(seconds: 5)))) {
+      _storage.setString(_keyLastRegen, state.lastRegen.toIso8601String());
+    }
   }
 }

@@ -1,0 +1,797 @@
+[
+  {
+    "id": "ac_st3_qB3_001",
+    "question": "Que tipo de cuenta laboral suele requerir 2FA obligatorio",
+    "type": "multipleChoice",
+    "options": [
+      "Cuentas corporativas de correo y VPN",
+      "Cuentas de redes sociales personales",
+      "Cuentas de juegos en linea",
+      "Cuentas de streaming"
+    ],
+    "correctIndex": 0,
+    "explanation": "Las empresas obligan a usar 2FA en cuentas críticas como correo corporativo y VPN para proteger la información laboral.",
+    "difficulty": 1,
+    "lessonId": "ac_s3_ses5_l5"
+  },
+  {
+    "id": "ac_st3_qB3_002",
+    "question": "Una llave de seguridad fisica es ideal para proteger cuentas de trabajo porque no depende de internet",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Las llaves fisicas funcionan sin conexión, lo que las hace muy confiables en entornos laborales.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses5_l5"
+  },
+  {
+    "id": "ac_st3_qB3_003",
+    "question": "Que debes hacer si tu empresa no ofrece 2FA en sus sistemas",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Sugerir al departamento de TI implementar 2FA en los sistemas",
+      "No hacer nada porque no es tu responsabilidad",
+      "Usar tu propio metodo sin avisar",
+      "Cambiar de trabajo"
+    ],
+    "correctIndex": 0,
+    "explanation": "Proponer mejoras de seguridad al equipo de TI es parte de la responsabilidad de cada empleado.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses5_l5"
+  },
+  {
+    "id": "ac_st3_qB3_004",
+    "question": "En un trabajo remoto, que metodo de 2FA es mas práctico para diario",
+    "type": "multipleChoice",
+    "options": [
+      "App de autenticación en tu celular personal",
+      "Token fisico que debes llevar siempre",
+      "SMS a tu número personal",
+      "Ninguno es necesario en remoto"
+    ],
+    "correctIndex": 0,
+    "explanation": "Una app de autenticación es la opción mas práctica para uso diario en trabajo remoto.",
+    "difficulty": 1,
+    "lessonId": "ac_s3_ses5_l6"
+  },
+  {
+    "id": "ac_st3_qB3_005",
+    "question": "El 2FA en cuentas laborales protege solo tu información personal",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 1,
+    "explanation": "El 2FA laboral protege la información de toda la empresa, no solo la tuya.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses5_l6"
+  },
+  {
+    "id": "ac_st3_qB3_006",
+    "question": "Que pasa si pierdes acceso a tu app de autenticación laboral",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Contactar a soporte de TI de tu empresa para recuperar acceso",
+      "Usar el codigo de un compañero",
+      "Esperar a que se arregle solo",
+      "Crear una cuenta nueva"
+    ],
+    "correctIndex": 0,
+    "explanation": "El departamento de TI tiene procesos para ayudarte a recuperar acceso de forma segura.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses5_l6"
+  },
+  {
+    "id": "ac_st3_qB3_007",
+    "question": "Que es un exchange de criptomonedas",
+    "type": "multipleChoice",
+    "options": [
+      "Una plataforma donde compras, vendes y guardas criptomonedas",
+      "Un tipo de billetera fisica",
+      "Un banco tradicional",
+      "Una app de mensajeria"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los exchanges son plataformas digitales donde se operan criptomonedas.",
+    "difficulty": 1,
+    "lessonId": "ac_s3_ses11_l3"
+  },
+  {
+    "id": "ac_st3_qB3_008",
+    "question": "Los exchanges de criptomonedas son objetivo frecuente de hackers",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Por manejar grandes cantidades de dinero digital, los exchanges son targets principales de ciberataques.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses11_l3"
+  },
+  {
+    "id": "ac_st3_qB3_009",
+    "question": "Cual es el metodo mas seguro de 2FA para un exchange",
+    "type": "multipleChoice",
+    "options": [
+      "Llave de seguridad fisica como YubiKey",
+      "SMS a tu celular",
+      "Correo electrónico",
+      "Preguntas de seguridad"
+    ],
+    "correctIndex": 0,
+    "explanation": "Las llaves fisicas son el metodo mas resistente a ataques de phishing y robo de SIM.",
+    "difficulty": 3,
+    "lessonId": "ac_s3_ses11_l3"
+  },
+  {
+    "id": "ac_st3_qB3_010",
+    "question": "Que es una cuenta de videojuegos que necesita protección",
+    "type": "multipleChoice",
+    "options": [
+      "Cuentas de Steam, PlayStation, Xbox o Nintendo con juegos comprados",
+      "Solo cuentas gratuitas sin valor",
+      "Cuentas que solo usas una vez",
+      "Cuentas que no tienen información personal"
+    ],
+    "correctIndex": 0,
+    "explanation": "Las cuentas de gaming pueden tener valor economico por juegos comprados y datos personales.",
+    "difficulty": 1,
+    "lessonId": "ac_s3_ses13_l6"
+  },
+  {
+    "id": "ac_st3_qB3_011",
+    "question": "Activar 2FA en tu cuenta de Steam protege tus juegos comprados",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "El 2FA evita que otros accedan a tu cuenta y compren o jueguen con tus juegos.",
+    "difficulty": 1,
+    "lessonId": "ac_s3_ses13_l6"
+  },
+  {
+    "id": "ac_st3_qB3_012",
+    "question": "Que tipo de 2FA ofrecen las plataformas de gaming principales",
+    "type": "multipleChoice",
+    "options": [
+      "App de autenticación y aprobacion movil",
+      "Solo preguntas de seguridad",
+      "Ninguna forma de 2FA",
+      "Solo SMS"
+    ],
+    "correctIndex": 0,
+    "explanation": "Plataformas como Steam, PlayStation y Xbox ofrecen autenticación por app y notificaciones.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses13_l6"
+  },
+  {
+    "id": "ac_st3_qB3_013",
+    "question": "Que puedes hacer si tu familiar vive en otra ciudad y necesita ayuda con 2FA",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Guiarle por videollamada paso a paso para configurar el 2FA",
+      "Decirle que lo deje para cuando se vean",
+      "Pedirle la contraseña para hacerlo tu",
+      "No es necesario ayudarle"
+    ],
+    "correctIndex": 0,
+    "explanation": "Una videollamada te permite ver su pantalla y guiarle en la configuración sin importar la distancia.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses18_l4"
+  },
+  {
+    "id": "ac_st3_qB3_014",
+    "question": "La configuración remota de 2FA es segura si usas videollamada",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Videollamada permite ver la pantalla y guiar sin necesidad de acceder remotamente al dispositivo.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses18_l4"
+  },
+  {
+    "id": "ac_st3_qB3_015",
+    "question": "Que herramienta puedes usar para ayudar a configurar 2FA a distancia",
+    "type": "multipleChoice",
+    "options": [
+      "Videollamada con pantalla compartida",
+      "Correo electrónico con instrucciones",
+      "Mensaje de texto",
+      "No se puede ayudar a distancia"
+    ],
+    "correctIndex": 0,
+    "explanation": "La pantalla compartida en videollamada te permite ver y guiar cada paso en tiempo real.",
+    "difficulty": 1,
+    "lessonId": "ac_s3_ses18_l4"
+  },
+  {
+    "id": "ac_st3_qB3_016",
+    "question": "Cada cuanto debes revisar que el 2FA de tu familia siga funcionando",
+    "type": "multipleChoice",
+    "options": [
+      "Al menos una vez al mes o cuando haya cambios",
+      "Solo una vez al ano",
+      "Nunca, si se configuro ya queda",
+      "Cada dia"
+    ],
+    "correctIndex": 0,
+    "explanation": "Revisiones periodicas aseguran que el 2FA siga activo y funcional en todas las cuentas.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses18_l5"
+  },
+  {
+    "id": "ac_st3_qB3_017",
+    "question": "Si tu familiar cambia de celular, debes ayudarle a migrar el 2FA",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Al cambiar de dispositivo, el 2FA debe transferirse para no perder acceso a las cuentas.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses18_l5"
+  },
+  {
+    "id": "ac_st3_qB3_018",
+    "question": "Que debes verificar periodicamente del 2FA familiar",
+    "type": "multipleChoice",
+    "options": [
+      "Que siga activo en todas las cuentas importantes y que los codigos funcionen",
+      "Solo que el celular tenga bateria",
+      "Que no hayan cambiado las contraseñas",
+      "Nada, no necesita mantenimiento"
+    ],
+    "correctIndex": 0,
+    "explanation": "Verificar periodicamente que el 2FA funcione evita sorpresas desagradables cuando lo necesites.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses18_l5"
+  },
+  {
+    "id": "ac_st3_qB3_019",
+    "question": "Que es actualizar una app de autenticación",
+    "type": "multipleChoice",
+    "options": [
+      "Instalar la ultima version con mejoras de seguridad y funciones",
+      "Borrar la app e instalarla de nuevo",
+      "Cambiar de app de autenticación",
+      "Desactivar y reactivar el 2FA"
+    ],
+    "correctIndex": 0,
+    "explanation": "Actualizar la app asegura que tengas las ultimas correcciónes de seguridad.",
+    "difficulty": 1,
+    "lessonId": "ac_s3_ses19_l2"
+  },
+  {
+    "id": "ac_st3_qB3_020",
+    "question": "Mantener tu app de autenticación actualizada es importante para la seguridad",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Las actualizaciones incluyen parches de seguridad que protegen contra vulnerabilidades conocidas.",
+    "difficulty": 1,
+    "lessonId": "ac_s3_ses19_l2"
+  },
+  {
+    "id": "ac_st3_qB3_021",
+    "question": "Que pasa si no actualizas tu app de autenticación por mucho tiempo",
+    "type": "detectRisk",
+    "options": [
+      "Nada, las apps no necesitan actualizaciones",
+      "Puede tener vulnerabilidades de seguridad sin corregir",
+      "Se borran automáticamente tus codigos",
+      "La app deja de funcionar al dia siguiente"
+    ],
+    "correctIndex": 1,
+    "explanation": "Las versiones antiguas pueden contener errores de seguridad que los hackers pueden explotar.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses19_l2"
+  },
+  {
+    "id": "ac_st3_qB3_022",
+    "question": "Que dispositivos debes revisar que tengan tu app de autenticación",
+    "type": "multipleChoice",
+    "options": [
+      "Todos los dispositivos donde usas 2FA regularmente",
+      "Solo el celular principal",
+      "Solo la computadora",
+      "Ninguno en particular"
+    ],
+    "correctIndex": 0,
+    "explanation": "Debes asegurarte de que todos tus dispositivos tengan la app actualizada y sincronizada.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses19_l3"
+  },
+  {
+    "id": "ac_st3_qB3_023",
+    "question": "Si vendes un celular viejo, debes eliminar tus codigos 2FA de el",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "El nuevo propietario podria acceder a tus cuentas si los codigos quedan en el dispositivo.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses19_l3"
+  },
+  {
+    "id": "ac_st3_qB3_024",
+    "question": "Que es un calendario de revision de 2FA",
+    "type": "multipleChoice",
+    "options": [
+      "Un recordatorio programado para revisar tus metodos de 2FA periodicamente",
+      "Un tipo de app de autenticación",
+      "Un calendario de feriados",
+      "Un recordatorio de cumpleanos"
+    ],
+    "correctIndex": 0,
+    "explanation": "Un calendario de revision te ayuda a no olvidar verificar que tu 2FA este funcionando correctamente.",
+    "difficulty": 1,
+    "lessonId": "ac_s3_ses19_l5"
+  },
+  {
+    "id": "ac_st3_qB3_025",
+    "question": "Programar recordatorios de revision de 2FA es una buena práctica de seguridad",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Los recordatorios te ayudan a mantener tu seguridad actualizada sin depender de la memoria.",
+    "difficulty": 1,
+    "lessonId": "ac_s3_ses19_l5"
+  },
+  {
+    "id": "ac_st3_qB3_026",
+    "question": "Cada cuanto se recomienda hacer una revision completa de 2FA",
+    "type": "multipleChoice",
+    "options": [
+      "Cada 3 a 6 meses como parte de tu rutina de seguridad",
+      "Solo cuando hay un incidente",
+      "Nunca, una vez configurado no hay que tocarlo",
+      "Cada semana"
+    ],
+    "correctIndex": 0,
+    "explanation": "Revisiones trimestrales o semestrales mantienen tu seguridad al dia sin ser excesivas.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses19_l5"
+  },
+  {
+    "id": "ac_st3_qB3_027",
+    "question": "Cuales son los tres factores de autenticación principales",
+    "type": "multipleChoice",
+    "options": [
+      "Algo que sabes, algo que tienes, algo que eres",
+      "Contraseña, PIN y patron",
+      "Correo, telefono y dirección",
+      "Usuario, clave y token"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los tres factores son: conocimiento (algo que sabes), posesión (algo que tienes) y herencia (algo que eres).",
+    "difficulty": 1,
+    "lessonId": "ac_s3_ses21_l1"
+  },
+  {
+    "id": "ac_st3_qB3_028",
+    "question": "Una contraseña es un factor de conocimiento",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "La contraseña es algo que sabes, por eso pertenece al factor de conocimiento.",
+    "difficulty": 1,
+    "lessonId": "ac_s3_ses21_l1"
+  },
+  {
+    "id": "ac_st3_qB3_029",
+    "question": "Que tipo de factor es tu huella dactilar",
+    "type": "multipleChoice",
+    "options": [
+      "Algo que eres (factor de herencia)",
+      "Algo que tienes (factor de posesión)",
+      "Algo que sabes (factor de conocimiento)",
+      "Ninguno de los anteriores"
+    ],
+    "correctIndex": 0,
+    "explanation": "La huella dactilar es una carácteristica biometrica única, por eso es un factor de herencia.",
+    "difficulty": 1,
+    "lessonId": "ac_s3_ses21_l2"
+  },
+  {
+    "id": "ac_st3_qB3_030",
+    "question": "Un token fisico es un ejemplo de factor de posesión",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "El token fisico es algo que tienes en tu poder, por eso es un factor de posesión.",
+    "difficulty": 1,
+    "lessonId": "ac_s3_ses21_l2"
+  },
+  {
+    "id": "ac_st3_qB3_031",
+    "question": "Que hace mas segura la combinación de dos factores",
+    "type": "multipleChoice",
+    "options": [
+      "Que un atacante necesitaria comprometer ambos factores para acceder",
+      "Que es mas rápido de usar",
+      "Que no necesitas contraseña",
+      "Que funciona sin internet"
+    ],
+    "correctIndex": 0,
+    "explanation": "Con dos factores, robar solo la contraseña no es suficiente para acceder a tu cuenta.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses21_l3"
+  },
+  {
+    "id": "ac_st3_qB3_032",
+    "question": "El 2FA protege contra el robo de contraseñas",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Aunque roben tu contraseña, necesitarian el segundo factor para acceder a tu cuenta.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses21_l3"
+  },
+  {
+    "id": "ac_st3_qB3_033",
+    "question": "Cual es la desventaja principal del 2FA por SMS",
+    "type": "multipleChoice",
+    "options": [
+      "Puede ser interceptado por atacantes mediante robo de SIM",
+      "Es muy caro de implementar",
+      "Solo funciona en computadoras",
+      "No es compatible con ninguna cuenta"
+    ],
+    "correctIndex": 0,
+    "explanation": "El SMS puede ser interceptado si un atacante logra clonar tu número de telefono.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses21_l4"
+  },
+  {
+    "id": "ac_st3_qB3_034",
+    "question": "Que metodo de 2FA es mas recomendado actualmente",
+    "type": "multipleChoice",
+    "options": [
+      "App de autenticación o llave de seguridad",
+      "SMS porque es mas facil",
+      "Preguntas de seguridad",
+      "Correo electrónico"
+    ],
+    "correctIndex": 0,
+    "explanation": "Las apps de autenticación y llaves fisicas son mas seguras que el SMS.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses21_l4"
+  },
+  {
+    "id": "ac_st3_qB3_035",
+    "question": "Que debes hacer antes de desactivar temporalmente el 2FA",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Asegurarte de tener codigos de respaldo o metodo alternativo",
+      "Nada, solo desactivarlo",
+      "Pedir permiso a tus amigos",
+      "Borrar tu cuenta"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tener un metodo alternativo te permite acceder mientras el 2FA esta desactivado.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses21_l5"
+  },
+  {
+    "id": "ac_st3_qB3_036",
+    "question": "Los codigos de respaldo te permiten acceder si pierdes el segundo factor",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Los codigos de respaldo son un metodo alternativo para verificar tu identidad.",
+    "difficulty": 1,
+    "lessonId": "ac_s3_ses21_l5"
+  },
+  {
+    "id": "ac_st3_qB3_037",
+    "question": "Que tipo de cuenta es mas crítica para proteger con 2FA",
+    "type": "multipleChoice",
+    "options": [
+      "Tu correo electrónico principal",
+      "Una cuenta de juegos que no usas",
+      "Un foro antiguo",
+      "Una cuenta de prueba"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tu correo es la llave para recuperar muchas otras cuentas, por eso es la mas crítica.",
+    "difficulty": 1,
+    "lessonId": "ac_s3_ses22_l1"
+  },
+  {
+    "id": "ac_st3_qB3_038",
+    "question": "Si tu correo no tiene 2FA, todas tus cuentas que dependen de el estan en riesgo",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Un atacante podria usar tu correo para restablecer contraseñas de tus otras cuentas.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses22_l1"
+  },
+  {
+    "id": "ac_st3_qB3_039",
+    "question": "Cuantas cuentas aproximadamente puedes proteger si aseguras tu correo con 2FA",
+    "type": "multipleChoice",
+    "options": [
+      "Todas las que usan ese correo para recuperación",
+      "Solo el correo",
+      "Ninguna otra cuenta",
+      "Solo las cuentas bancarias"
+    ],
+    "correctIndex": 0,
+    "explanation": "Proteger tu correo protege indirectamente todas las cuentas que lo usan como metodo de recuperación.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses22_l1"
+  },
+  {
+    "id": "ac_st3_qB3_040",
+    "question": "Que banco peruano es conocido por usar token fisico",
+    "type": "multipleChoice",
+    "options": [
+      "Varios bancos como Interbank y BBVA ofrecen tokens",
+      "Ningun banco peruano usa tokens",
+      "Solo bancos internaciónales",
+      "Bancos solo usan SMS"
+    ],
+    "correctIndex": 0,
+    "explanation": "Bancos peruanos como Interbank y BBVA han implementado tokens fisicos para mayor seguridad.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses22_l2"
+  },
+  {
+    "id": "ac_st3_qB3_041",
+    "question": "Un token bancario genera codigos que cambian cada 30 segundos",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Los tokens bancarios usan el estandar OTP para generar codigos temporales.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses22_l2"
+  },
+  {
+    "id": "ac_st3_qB3_042",
+    "question": "Que harias si pierdes tu token bancario",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Llamar al banco inmediatamente para reportarlo y solicitar uno nuevo",
+      "Esperar a ver si aparece",
+      "Usar el token de un familiar",
+      "No hacer nada"
+    ],
+    "correctIndex": 0,
+    "explanation": "Reportar el token perdido al banco evita que alguien lo use para acceder a tu cuenta.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses22_l2"
+  },
+  {
+    "id": "ac_st3_qB3_043",
+    "question": "Que es un caso de uso real del 2FA en Peru",
+    "type": "multipleChoice",
+    "options": [
+      "Proteger tu cuenta de Yape o Plin con PIN y biometria",
+      "Usar contraseña en redes sociales",
+      "Leer los terminos y condiciones",
+      "Actualizar tu celular"
+    ],
+    "correctIndex": 0,
+    "explanation": "Yape y Plin usan PIN y biometria como factores de autenticación para proteger tus pagos.",
+    "difficulty": 1,
+    "lessonId": "ac_s3_ses22_l3"
+  },
+  {
+    "id": "ac_st3_qB3_044",
+    "question": "Las billeteras digitales peruanas usan autenticación de múltiples factores",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Yape y Plin combinan PIN, biometria y notificaciones para proteger cada transaccion.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses22_l3"
+  },
+  {
+    "id": "ac_st3_qB3_045",
+    "question": "Que puedes hacer para proteger tu cuenta de Yape",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Activar PIN, huella dactilar y notificaciones de transacciones",
+      "No usar la app",
+      "Compartir tu PIN con familiares",
+      "Usar el mismo PIN que tu celular"
+    ],
+    "correctIndex": 0,
+    "explanation": "Múltiples capas de protección como PIN y biometria hacen mas segura tu cuenta.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses22_l3"
+  },
+  {
+    "id": "ac_st3_qB3_046",
+    "question": "Que es lo primero que debes hacer si sospechas que hackearon tu cuenta",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Cambiar la contraseña inmediatamente y revisar actividad sospechosa",
+      "Esperar a ver que pasa",
+      "Eliminar la cuenta",
+      "Publicar en redes sociales"
+    ],
+    "correctIndex": 0,
+    "explanation": "Actuar rápido cambiando contraseñas y revisando actividad es crucial para minimizar el danio.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses22_l4"
+  },
+  {
+    "id": "ac_st3_qB3_047",
+    "question": "Despues de un ataque, debes revisar si otras cuentas estan comprometidas",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Si usas la misma contraseña en varias cuentas, todas podrian estar en riesgo.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses22_l4"
+  },
+  {
+    "id": "ac_st3_qB3_048",
+    "question": "Cuales son señales de que tu cuenta fue hackeada",
+    "type": "multipleChoice",
+    "options": [
+      "Actividad que no reconoces, cambios de configuración y correos de verificación inesperados",
+      "Solo si recibes muchos correos",
+      "Si tu celular se queda sin bateria",
+      "Si la app se actualiza"
+    ],
+    "correctIndex": 0,
+    "explanation": "Las señales incluyen actividad sospechosa, cambios no autorizados y notificaciones inesperadas.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses22_l4"
+  },
+  {
+    "id": "ac_st3_qB3_049",
+    "question": "Que es un reporte de incidente de seguridad",
+    "type": "multipleChoice",
+    "options": [
+      "Un documento que describe lo que paso y las acciones tomadas",
+      "Una denuncia policial",
+      "Una publicacion en redes sociales",
+      "Un correo al atacante"
+    ],
+    "correctIndex": 0,
+    "explanation": "Un reporte documenta el incidente para fines legales y de mejora de seguridad.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses22_l5"
+  },
+  {
+    "id": "ac_st3_qB3_050",
+    "question": "Despues de un incidente de seguridad, debes actualizar todas tus contraseñas críticas",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Actualizar contraseñas despues de un incidente es esencial para asegurar tus cuentas.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses22_l5"
+  },
+  {
+    "id": "ac_st3_qB3_051",
+    "question": "Que es un plan de respuesta a incidentes personal",
+    "type": "multipleChoice",
+    "options": [
+      "Un conjunto de pasos a seguir si tu cuenta es comprometida",
+      "Un seguro de ciberseguridad",
+      "Un tipo de 2FA",
+      "Un programa antivirus"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tener un plan preparado te permite actuar rápido y efectivamente ante un ataque.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses22_l5"
+  },
+  {
+    "id": "ac_st3_qB3_052",
+    "question": "En que orden debes recuperar tus cuentas despues de un ataque",
+    "type": "multipleChoice",
+    "options": [
+      "Correo primero, luego bancos, luego redes sociales",
+      "Redes sociales primero",
+      "Todas a la vez",
+      "No importa el orden"
+    ],
+    "correctIndex": 0,
+    "explanation": "El correo es prioridad porque permite recuperar las demas cuentas.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses23_l1"
+  },
+  {
+    "id": "ac_st3_qB3_053",
+    "question": "Tu correo electrónico es la cuenta mas importante para proteger primero",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "El correo es la llave maestra para recuperar todas las demas cuentas.",
+    "difficulty": 1,
+    "lessonId": "ac_s3_ses23_l1"
+  },
+  {
+    "id": "ac_st3_qB3_054",
+    "question": "Que debes hacer con las cuentas que ya no usas",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Eliminarlas o asegurarlas con 2FA para que no sean un punto de entrada",
+      "No hacer nada, no importan",
+      "Compartirlas con amigos",
+      "Dejarlas como estan"
+    ],
+    "correctIndex": 0,
+    "explanation": "Las cuentas abandonadas pueden ser comprometidas y usadas para acceder a otras cuentas.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses23_l1"
+  },
+  {
+    "id": "ac_st3_qB3_055",
+    "question": "Que es una revision de seguridad personal",
+    "type": "multipleChoice",
+    "options": [
+      "Un proceso de revisar y actualizar la seguridad de todas tus cuentas",
+      "Un escaneo de virus en tu celular",
+      "Una actualización del sistema operativo",
+      "Un cambio de contraseña"
+    ],
+    "correctIndex": 0,
+    "explanation": "La revision de seguridad personal es un check-up completo de todas tus cuentas y metodos de protección.",
+    "difficulty": 1,
+    "lessonId": "ac_s3_ses23_l2"
+  },
+  {
+    "id": "ac_st3_qB3_056",
+    "question": "Cada cuanto se recomienda hacer una revision de seguridad personal",
+    "type": "multipleChoice",
+    "options": [
+      "Cada 3 a 6 meses",
+      "Solo cuando hay un ataque",
+      "Cada dia",
+      "Nunca"
+    ],
+    "correctIndex": 0,
+    "explanation": "Revisiones regulares ayudan a detectar problemas antes de que se conviertan en incidentes.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses23_l2"
+  },
+  {
+    "id": "ac_st3_qB3_057",
+    "question": "Que herramienta digital puedes usar para recordar tus metodos de 2FA",
+    "type": "multipleChoice",
+    "options": [
+      "Un gestor de contraseñas o un documento cifrado",
+      "Un cuaderno en tu escritorio",
+      "Las notas de tu celular sin protección",
+      "Enviar un correo a ti mismo"
+    ],
+    "correctIndex": 0,
+    "explanation": "Un gestor de contraseñas o documento cifrado mantienen tu información segura y organizada.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses23_l3"
+  },
+  {
+    "id": "ac_st3_qB3_058",
+    "question": "Nunca debes guardar tus metodos de 2FA en un papel pegado al monitor",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Un papel visible es facilmente accesible para cualquiera que entre a tu espacio.",
+    "difficulty": 1,
+    "lessonId": "ac_s3_ses23_l3"
+  },
+  {
+    "id": "ac_st3_qB3_059",
+    "question": "Que debes incluir en tu plan de seguridad personal",
+    "type": "multipleChoice",
+    "options": [
+      "Lista de cuentas, metodos 2FA activos, codigos de respaldo y contactos de soporte",
+      "Solo tus contraseñas",
+      "Solo tus números de telefono",
+      "Nada, no es necesario un plan"
+    ],
+    "correctIndex": 0,
+    "explanation": "Un plan completo incluye toda la información necesaria para recuperar cuentas en emergencias.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses23_l4"
+  },
+  {
+    "id": "ac_st3_qB3_060",
+    "question": "Compartir tu plan de seguridad con una persona de confianza es recomendable",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Tener una persona de confianza que conozca tu plan puede ayudarte en caso de emergencia.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses23_l4"
+  }
+]

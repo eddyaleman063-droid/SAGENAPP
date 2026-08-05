@@ -63,13 +63,15 @@ class SessionState {
       : 0;
   bool get isPerfect => wrongCount == 0 && correctCount == totalQuestions;
   int get earnedXp {
-    final base = correctCount * 15;
-    final bonus = isPerfect ? 30 : 0;
+    const xpPerCorrect = 15;
+    const perfectBonusXp = 30;
+    final base = correctCount * xpPerCorrect;
+    final bonus = isPerfect ? perfectBonusXp : 0;
     return base + bonus;
   }
 }
 
-class SessionNotifier extends Notifier<SessionState> {
+class SessionNotifier extends AutoDisposeNotifier<SessionState> {
   @override
   SessionState build() => const SessionState();
 
@@ -90,10 +92,15 @@ class SessionNotifier extends Notifier<SessionState> {
   bool get isPerfect => state.isPerfect;
   int get earnedXp => state.earnedXp;
 
-  void startSession(String stageId, String lessonId, {int count = 5}) {
-    var challenges = QuestionBank.instance.getQuestionsForLesson(stageId, lessonId, count: count);
+  String _lastStageId = '';
+  String _lastLessonId = '';
+
+  Future<void> startSession(String stageId, String lessonId, {int count = 5}) async {
+    _lastStageId = stageId;
+    _lastLessonId = lessonId;
+    var challenges = await QuestionBank.instance.getQuestionsForLesson(stageId, lessonId, count: count);
     if (challenges.isEmpty) {
-      challenges = QuestionBank.instance.getQuestionsForLesson(stageId, lessonId, count: 3);
+      challenges = await QuestionBank.instance.getQuestionsForLesson(stageId, lessonId, count: 3);
     }
     final totalQuestions = challenges.length;
     state = state.copyWith(
@@ -112,20 +119,23 @@ class SessionNotifier extends Notifier<SessionState> {
 
   void submitAnswer(int selectedIndex) {
     if (state.phase != SessionPhase.playing || state.currentChallenge == null) return;
-    final feedbackCorrect = selectedIndex == state.currentChallenge!.correctIndex;
+    final challenge = state.currentChallenge;
+    if (challenge == null) return;
+    final feedbackCorrect = selectedIndex == challenge.correctIndex;
+    final newLives = feedbackCorrect ? state.lives : state.lives - 1;
     state = state.copyWith(
       feedbackSelected: selectedIndex,
       feedbackCorrect: feedbackCorrect,
       correctCount: feedbackCorrect ? state.correctCount + 1 : state.correctCount,
       wrongCount: feedbackCorrect ? state.wrongCount : state.wrongCount + 1,
-      lives: feedbackCorrect ? state.lives : state.lives - 1,
+      lives: newLives,
       phase: SessionPhase.feedback,
     );
+  }
 
+  void onFeedbackDismissed() {
     if (state.lives <= 0) {
-      Future.microtask(() {
-        state = state.copyWith(phase: SessionPhase.gameOver);
-      });
+      state = state.copyWith(phase: SessionPhase.gameOver);
     }
   }
 
@@ -145,10 +155,12 @@ class SessionNotifier extends Notifier<SessionState> {
   }
 
   void resetSession() {
+    _lastStageId = '';
+    _lastLessonId = '';
     state = const SessionState();
   }
 
   void retry() {
-    startSession('', '', count: state.totalQuestions);
+    startSession(_lastStageId, _lastLessonId, count: state.totalQuestions);
   }
 }

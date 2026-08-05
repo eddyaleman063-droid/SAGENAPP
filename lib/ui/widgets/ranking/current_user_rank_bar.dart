@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
+import 'package:sagen/core/theme/app_colors.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 
 class CurrentUserRankBar extends StatelessWidget {
@@ -16,18 +17,19 @@ class CurrentUserRankBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dark = Theme.of(context).brightness == Brightness.dark;
     final l = AppLocalizations.of(context)!;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppRadius.md),
-        color: dark ? PremiumColors.darkCard.withValues(alpha: 0.95) : Colors.white.withValues(alpha: 0.95),
+        color: context.surfaceCard,
         border: Border.all(color: PremiumColors.splashBlue.withValues(alpha: 0.2)),
       ),
       child: Row(
         children: [
-          const Icon(Icons.person_rounded, size: 20, color: PremiumColors.splashBlue),
+          const ExcludeSemantics(
+            child: Icon(Icons.person_rounded, size: 20, color: PremiumColors.splashBlue),
+          ),
           const SizedBox(width: AppSpacing.sm),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -35,12 +37,12 @@ class CurrentUserRankBar extends StatelessWidget {
             children: [
               Text(
                 l.rankingYourPosition(rank, _formatXp(totalXp)),
-                style: TextStyle(color: dark ? Colors.white.withValues(alpha: 0.85) : Colors.black87, fontSize: 13, fontWeight: FontWeight.w600),
+                style: AppTextStyle.subtitle.copyWith(color: context.textSecondary, fontWeight: FontWeight.w600),
               ),
               if (xpToNext > 0)
                 Text(
                   l.rankingXpToTop50(_formatXp(xpToNext)),
-                  style: TextStyle(color: dark ? Colors.white.withValues(alpha: 0.45) : Colors.black54, fontSize: 11),
+                  style: AppTextStyle.label.copyWith(color: context.textTertiary),
                 ),
             ],
           ),

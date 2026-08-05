@@ -14,9 +14,10 @@ class Lesson with _$Lesson {
     required String subtitle,
     required List<Challenge> challenges,
     @Default(15) int xpReward,
-    @Default(5) int gemReward,
     @Default(3) int estimatedMinutes,
     @Default(false) bool completed,
+    @Default(0) int correctAnswers,
+    @Default(0) int totalQuestions,
   }) = _Lesson;
 
   factory Lesson.fromJson(Map<String, dynamic> json) => _$LessonFromJson(json);

@@ -1,0 +1,902 @@
+[
+    {
+        "id": "ac_st6_qB3_001",
+        "question": "Cómo exportar tus datos de Apple ID?",
+        "type": "multipleChoice",
+        "options": [
+            "A través de privacy.apple.com",
+            "En iTunes directamente",
+            "No se pueden exportar",
+            "Llamando a Apple"
+        ],
+        "correctIndex": 0,
+        "explanation": "Apple ofrece un portal oficial para descargar y exportar todos tus datos.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses11_l4"
+    },
+    {
+        "id": "ac_st6_qB3_002",
+        "question": "Qué.formatos puedes obtener al exportar datos de Microsoft?",
+        "type": "multipleChoice",
+        "options": [
+            "JSON, CSV y XML entre otros",
+            "Solo PDF",
+            "Solo texto plano",
+            "No se pueden exportar"
+        ],
+        "correctIndex": 0,
+        "explanation": "Microsoft permite exportar datos en múltiples formatos para facilitar su uso.",
+        "difficulty": 3,
+        "lessonId": "ac_s6_ses11_l4"
+    },
+    {
+        "id": "ac_st6_qB3_003",
+        "question": "Cómo organizar los datos exportados de tus cuentas?",
+        "type": "multipleChoice",
+        "options": [
+            "Crear carpetas por servicio y mantener una copia en la nube y otra offline",
+            "Dejarlos en la carpeta de descargas",
+            "No es necesario organizarlos",
+            "Eliminarlos después de leerlos"
+        ],
+        "correctIndex": 0,
+        "explanation": "Organizar los datos facilita su acceso cuando los necesites.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses11_l5"
+    },
+    {
+        "id": "ac_st6_qB3_004",
+        "question": "Por qué es importante almacenar datos exportados en un lugar seguro?",
+        "type": "multipleChoice",
+        "options": [
+            "Porque contienen información personal sensible",
+            "No es importante",
+            "Solo para empresas",
+            "Para compartir con amigos"
+        ],
+        "correctIndex": 0,
+        "explanation": "Los datos exportados pueden contener información que, si cae en malas manos, compromete tu privacidad.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses11_l5"
+    },
+    {
+        "id": "ac_st6_qB3_005",
+        "question": "Qué incluir en un checklist de recuperación de datos exportados?",
+        "type": "multipleChoice",
+        "options": [
+            "Ubicación de archivos, contraseñas de acceso y fecha de último respaldo",
+            "Solo el nombre del archivo",
+            "No es necesario checklist",
+            "Solo la fecha"
+        ],
+        "correctIndex": 0,
+        "explanation": "Un checklist completo facilita la recuperación rápida de datos cuando los necesites.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses11_l6"
+    },
+    {
+        "id": "ac_st6_qB3_006",
+        "question": "Cuándo debes contactar al soporte técnico de un servicio?",
+        "type": "multipleChoice",
+        "options": [
+            "Cuando no puedes resolver un problema por tu cuenta o hay un incidente de seguridad",
+            "Solo los domingos",
+            "Nunca",
+            "Cuando quieras hacer una queja"
+        ],
+        "correctIndex": 0,
+        "explanation": "El soporte técnico está diseñado para ayudarte con problemas que no puedes resolver solo.",
+        "difficulty": 1,
+        "lessonId": "ac_s6_ses12_l1"
+    },
+    {
+        "id": "ac_st6_qB3_007",
+        "question": "Qué información tener lista antes de contactar soporte?",
+        "type": "multipleChoice",
+        "options": [
+            "Correo electrónico, descripción del problema, capturas de pantalla y datos de la cuenta",
+            "Solo tu nombre",
+            "No necesitas nada",
+            "Tu contraseña completa"
+        ],
+        "correctIndex": 0,
+        "explanation": "Tener toda la información lista agiliza el proceso de soporte.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses12_l2"
+    },
+    {
+        "id": "ac_st6_qB3_008",
+        "question": "Cómo verificar tu identidad ante el soporte técnico?",
+        "type": "multipleChoice",
+        "options": [
+            "Proporcionando información de la cuenta y documentos de identidad",
+            "Con cualquier dato",
+            "No es necesario verificar",
+            "Enviando una foto selfie"
+        ],
+        "correctIndex": 0,
+        "explanation": "Los servicios requieren verificación para proteger tu cuenta ante solicitantes no autorizados.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses12_l4"
+    },
+    {
+        "id": "ac_st6_qB3_009",
+        "question": "Caso: Contactaste soporte pero no obtienes respuesta. Cuál es la mejor acción?",
+        "type": "miniCase",
+        "options": [
+            "Escalar el caso a un nivel superior o usar redes oficiales de soporte",
+            "Rendirse",
+            "Compartir en redes sociales",
+            "Esperar indefinidamente"
+        ],
+        "correctIndex": 0,
+        "explanation": "Escalar el caso es la acción correcta cuando el soporte inicial no resuelve el problema.",
+        "difficulty": 3,
+        "lessonId": "ac_s6_ses12_l4"
+    },
+    {
+        "id": "ac_st6_qB3_010",
+        "question": "Qué documentos necesitas para verificar tu identidad en servicios digitales?",
+        "type": "multipleChoice",
+        "options": [
+            "DNI, pasaporte o licencia de conducir según el servicio",
+            "Solo tu nombre",
+            "No se necesitan documentos",
+            "Tu contraseña"
+        ],
+        "correctIndex": 0,
+        "explanation": "Cada servicio acepta diferentes tipos de documentos oficiales de identidad.",
+        "difficulty": 1,
+        "lessonId": "ac_s6_ses13_l1"
+    },
+    {
+        "id": "ac_st6_qB3_011",
+        "question": "Cómo funciona el proceso de verificación de identidad en línea?",
+        "type": "multipleChoice",
+        "options": [
+            "Envías documentos y el servicio los valida contra su base de datos",
+            "Solo con tu correo",
+            "No hay proceso",
+            "Te llaman por teléfono"
+        ],
+        "correctIndex": 0,
+        "explanation": "La verificación en línea compara tus documentos con la información registrada en la cuenta.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses13_l2"
+    },
+    {
+        "id": "ac_st6_qB3_012",
+        "question": "Qué tipos de documentos aceptan los servicios para verificación?",
+        "type": "multipleChoice",
+        "options": [
+            "DNI, pasaporte, licencia de conducir y comprobante de domicilio",
+            "Solo el DNI",
+            "Solo pasaporte",
+            "No aceptan documentos"
+        ],
+        "correctIndex": 0,
+        "explanation": "La mayoría de servicios aceptan múltiples documentos oficiales de identidad.",
+        "difficulty": 1,
+        "lessonId": "ac_s6_ses13_l3"
+    },
+    {
+        "id": "ac_st6_qB3_013",
+        "question": "Qué es la verificación por video llamada?",
+        "type": "multipleChoice",
+        "options": [
+            "Un proceso donde muestras tu documento en vivo a un asesor del servicio",
+            "Una videollamada casual",
+            "Un servicio de streaming",
+            "No existe"
+        ],
+        "correctIndex": 0,
+        "explanation": "La verificación por video llamada permite validar tu identidad en tiempo real.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses13_l4"
+    },
+    {
+        "id": "ac_st6_qB3_014",
+        "question": "Cuáles son los fraudes más comunes de verificación de identidad?",
+        "type": "multipleChoice",
+        "options": [
+            "Suplantación de soporte, correos falsos y sitios web de phishing",
+            "Solo el robo de contraseña",
+            "No hay fraudes",
+            "Solo en redes sociales"
+        ],
+        "correctIndex": 0,
+        "explanation": "Los atacantes pueden suplantar al soporte para obtener tus documentos de identidad.",
+        "difficulty": 3,
+        "lessonId": "ac_s6_ses13_l5"
+    },
+    {
+        "id": "ac_st6_qB3_015",
+        "question": "Qué hacer si recibes un correo falso pidiendo documentos de identidad?",
+        "type": "whatWouldYouDo",
+        "options": [
+            "No responder y reportar el correo como phishing",
+            "Enviar los documentos",
+            "Hablar con el remitente",
+            "Compartirlo"
+        ],
+        "correctIndex": 0,
+        "explanation": "Los servicios legítimos nunca solicitan documentos por correo electrónico.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses13_l5"
+    },
+    {
+        "id": "ac_st6_qB3_016",
+        "question": "Cómo recuperar tu correo si perdiste el acceso al SMS de verificación?",
+        "type": "multipleChoice",
+        "options": [
+            "Usar códigos de respaldo o verificar con correo alternativo",
+            "No se puede recuperar",
+            "Crear una cuenta nueva",
+            "Lamar a cualquier número"
+        ],
+        "correctIndex": 0,
+        "explanation": "Los códigos de respaldo y correos alternativos son métodos de recuperación cuando no tienes acceso al SMS.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses14_l1"
+    },
+    {
+        "id": "ac_st6_qB3_017",
+        "question": "Para qué sirven los códigos de respaldo?",
+        "type": "multipleChoice",
+        "options": [
+            "Para acceder a tu cuenta cuando no tienes acceso a otros métodos de verificación",
+            "Para compartir tu cuenta",
+            "No sirven para nada",
+            "Para crear nuevas cuentas"
+        ],
+        "correctIndex": 0,
+        "explanation": "Los códigos de respaldo son tu Plan B cuando los métodos principales fallan.",
+        "difficulty": 1,
+        "lessonId": "ac_s6_ses14_l2"
+    },
+    {
+        "id": "ac_st6_qB3_018",
+        "question": "Qué métodos alternativos de recuperación existen por servicio?",
+        "type": "multipleChoice",
+        "options": [
+            "Correo alternativo, teléfono de respaldo, códigos de respaldo y preguntas de seguridad",
+            "Solo el correo",
+            "No hay métodos alternativos",
+            "Solo el teléfono"
+        ],
+        "correctIndex": 0,
+        "explanation": "Cada servicio ofrece múltiples métodos de recuperación para mayor seguridad.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses14_l3"
+    },
+    {
+        "id": "ac_st6_qB3_019",
+        "question": "Cómo verificar tu identidad por preguntas de seguridad?",
+        "type": "multipleChoice",
+        "options": [
+            "Respondiendo preguntas personalizadas que configuraste previamente",
+            "Con cualquier respuesta",
+            "No es posible",
+            "Con tu contraseña"
+        ],
+        "correctIndex": 0,
+        "explanation": "Las preguntas de seguridad son un método de verificación cuando otros fallan.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses14_l4"
+    },
+    {
+        "id": "ac_st6_qB3_020",
+        "question": "Caso: Perdiste el acceso a tu correo y teléfono. Cuál es la mejor acción?",
+        "type": "miniCase",
+        "options": [
+            "Contactar al soporte del servicio con documentos de identidad",
+            "Crear una cuenta nueva",
+            "Rendirse",
+            "Pedir ayuda en redes sociales"
+        ],
+        "correctIndex": 0,
+        "explanation": "El soporte del servicio puede ayudarte a recuperar el acceso verificando tu identidad.",
+        "difficulty": 3,
+        "lessonId": "ac_s6_ses14_l5"
+    },
+    {
+        "id": "ac_st6_qB3_021",
+        "question": "Qué métodos alternativos de verificación existen cuando no tienes celular?",
+        "type": "multipleChoice",
+        "options": [
+            "Correo alternativo, códigos de respaldo y verificación por preguntas",
+            "No hay métodos",
+            "Solo el teléfono",
+            "Crear cuenta nueva"
+        ],
+        "correctIndex": 0,
+        "explanation": "Existen múltiples métodos alternativos cuando el teléfono no está disponible.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses15_l1"
+    },
+    {
+        "id": "ac_st6_qB3_022",
+        "question": "Qué es el período de espera de recuperación?",
+        "type": "multipleChoice",
+        "options": [
+            "Un tiempo de espera que los servicios imponen antes de conceder acceso",
+            "Un período de vacaciones",
+            "No existe",
+            "Un tipo de contraseña"
+        ],
+        "correctIndex": 0,
+        "explanation": "El período de espera protege contra accesos no autorizados durante la recuperación.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses15_l2"
+    },
+    {
+        "id": "ac_st6_qB3_023",
+        "question": "Cómo usar el correo de recuperación como alternativa al celular?",
+        "type": "multipleChoice",
+        "options": [
+            "Solicitando que el código de verificación se envíe al correo alternativo",
+            "No se puede usar",
+            "Solo con el teléfono",
+            "Creando una cuenta nueva"
+        ],
+        "correctIndex": 0,
+        "explanation": "Muchos servicios permiten recibir códigos de verificación por correo alternativo.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses15_l3"
+    },
+    {
+        "id": "ac_st6_qB3_024",
+        "question": "Para qué imprimir los códigos de respaldo?",
+        "type": "multipleChoice",
+        "options": [
+            "Para tener una copia física cuando no tienes acceso a dispositivos digitales",
+            "Para decorar",
+            "No es necesario",
+            "Para compartir"
+        ],
+        "correctIndex": 0,
+        "explanation": "Una copia física de códigos de respaldo es útil cuando todos tus dispositivos fallan.",
+        "difficulty": 1,
+        "lessonId": "ac_s6_ses15_l4"
+    },
+    {
+        "id": "ac_st6_qB3_025",
+        "question": "Cuánto dura el período de espera típico de recuperación?",
+        "type": "multipleChoice",
+        "options": [
+            "Desde unas horas hasta varios días según el servicio",
+            "Siempre es de 1 hora",
+            "No hay período de espera",
+            "Siempre es de 1 mes"
+        ],
+        "correctIndex": 0,
+        "explanation": "La duración varía según el servicio y el nivel de seguridad de la cuenta.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses15_l5"
+    },
+    {
+        "id": "ac_st6_qB3_026",
+        "question": "Por qué mantener tus datos de recuperación actualizados?",
+        "type": "multipleChoice",
+        "options": [
+            "Para poder recuperar tu cuenta cuando lo necesites",
+            "No es necesario",
+            "Solo para empresas",
+            "Es una pérdida de tiempo"
+        ],
+        "correctIndex": 0,
+        "explanation": "Si tus datos de recuperación están desactualizados, no podrás acceder a tu cuenta.",
+        "difficulty": 1,
+        "lessonId": "ac_s6_ses16_l1"
+    },
+    {
+        "id": "ac_st6_qB3_027",
+        "question": "Qué opciónes de recuperación debes revisar periódicamente?",
+        "type": "multipleChoice",
+        "options": [
+            "Correo alternativo, teléfono, códigos de respaldo y preguntas de seguridad",
+            "Solo la contraseña",
+            "No es necesario revisar",
+            "Solo el nombre de usuario"
+        ],
+        "correctIndex": 0,
+        "explanation": "Revisar todas las opciónes asegura que al menos una funcione cuando la necesites.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses16_l2"
+    },
+    {
+        "id": "ac_st6_qB3_028",
+        "question": "Cada cuánto debes actualizar tus métodos de recuperación?",
+        "type": "multipleChoice",
+        "options": [
+            "Al menos una vez cada 6 meses",
+            "Nunca",
+            "Solo cuando cambies de teléfono",
+            "Una vez al año"
+        ],
+        "correctIndex": 0,
+        "explanation": "La revisión semestral asegura que tus métodos estén siempre funcionales.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses16_l3"
+    },
+    {
+        "id": "ac_st6_qB3_029",
+        "question": "Cómo verificar que tus métodos de recuperación funcionan?",
+        "type": "multipleChoice",
+        "options": [
+            "Realizando un simulacro de recuperación periódicamente",
+            "No es necesario verificar",
+            "Solo preguntando a amigos",
+            "Esperando a que haya un problema"
+        ],
+        "correctIndex": 0,
+        "explanation": "Los simulacros permiten confirmar que tus métodos están activos y funcionando.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses16_l4"
+    },
+    {
+        "id": "ac_st6_qB3_030",
+        "question": "Por qué agregar múltiples opciónes de recuperación?",
+        "type": "multipleChoice",
+        "options": [
+            "Para tener alternativas si un método falla",
+            "No es necesario",
+            "Solo para complicar las cosas",
+            "Para crear más cuentas"
+        ],
+        "correctIndex": 0,
+        "explanation": "Tener múltiples opciónes aumenta tus posibilidades de recuperar la cuenta.",
+        "difficulty": 1,
+        "lessonId": "ac_s6_ses16_l5"
+    },
+    {
+        "id": "ac_st6_qB3_031",
+        "question": "Qué es la herencia digital?",
+        "type": "multipleChoice",
+        "options": [
+            "La planificación de qué pasa con tus cuentas digitales tras tu fallecimiento",
+            "Un tipo de criptomoneda",
+            "Un juego en línea",
+            "No existe"
+        ],
+        "correctIndex": 0,
+        "explanation": "La herencia digital asegura que tus seres queridos puedan gestionar tus cuentas.",
+        "difficulty": 1,
+        "lessonId": "ac_s6_ses17_l1"
+    },
+    {
+        "id": "ac_st6_qB3_032",
+        "question": "Qué es un gestor de herencia digital?",
+        "type": "multipleChoice",
+        "options": [
+            "Un servicio que guarda instrucciones para acceder a tus cuentas tras tu fallecimiento",
+            "Un tipo de banco",
+            "Un juego",
+            "No existe"
+        ],
+        "correctIndex": 0,
+        "explanation": "Los gestores de herencia digital facilitan la transición de cuentas a tus beneficiarios.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses17_l2"
+    },
+    {
+        "id": "ac_st6_qB3_033",
+        "question": "Cómo designar un beneficiario de tus cuentas digitales?",
+        "type": "multipleChoice",
+        "options": [
+            "Configurando la función de contactos de confianza en cada servicio",
+            "No se puede hacer",
+            "Escribiendo un testamento solamente",
+            "Compartiendo tu contraseña"
+        ],
+        "correctIndex": 0,
+        "explanation": "Muchos servicios permiten designar contactos de confianza que pueden acceder a tu cuenta.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses17_l3"
+    },
+    {
+        "id": "ac_st6_qB3_034",
+        "question": "Qué instrucciones póstumas documentar sobre tus cuentas?",
+        "type": "multipleChoice",
+        "options": [
+            "Lista de cuentas, métodos de acceso y contactos de soporte",
+            "Solo las contraseñas",
+            "No es necesario documentar",
+            "Solo el nombre de usuario"
+        ],
+        "correctIndex": 0,
+        "explanation": "Documentar toda la información facilita la gestión de tus cuentas por parte de tus beneficiarios.",
+        "difficulty": 3,
+        "lessonId": "ac_s6_ses17_l4"
+    },
+    {
+        "id": "ac_st6_qB3_035",
+        "question": "Qué herramientas de herencia digital ofrecen los gestores de contraseñas?",
+        "type": "multipleChoice",
+        "options": [
+            "Función de contactos de confianza y cuenta de emergencia",
+            "No ofrecen nada",
+            "Solo guardar contraseñas",
+            "Solo generar contraseñas"
+        ],
+        "correctIndex": 0,
+        "explanation": "Los gestores de contraseñas modernos incluyen herramientas para planificar la herencia digital.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses17_l5"
+    },
+    {
+        "id": "ac_st6_qB3_036",
+        "question": "Caso: Fallece un familiar y necesitas acceder a sus cuentas. Cuál es la mejor acción?",
+        "type": "miniCase",
+        "options": [
+            "Revisar si dejó instrucciones o contactar al soporte de cada servicio con documentación",
+            "Intentar adivinar las contraseñas",
+            "No hacer nada",
+            "Crear cuentas nuevas a su nombre"
+        ],
+        "correctIndex": 0,
+        "explanation": "El proceso correcto es seguir las instrucciones dejadas o contactar al soporte con documentación legal.",
+        "difficulty": 3,
+        "lessonId": "ac_s6_ses17_l5"
+    },
+    {
+        "id": "ac_st6_qB3_037",
+        "question": "Cómo simular una recuperación de cuenta sin riesgo?",
+        "type": "multipleChoice",
+        "options": [
+            "Usando una cuenta de prueba y siguiendo el proceso real de recuperación",
+            "Con tu cuenta principal",
+            "No se puede simular",
+            "Leyendo artículos"
+        ],
+        "correctIndex": 0,
+        "explanation": "Simular con una cuenta de prueba te prepara para situaciónes reales sin comprometer tus datos.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses19_l4"
+    },
+    {
+        "id": "ac_st6_qB3_038",
+        "question": "Qué aprender de un simulacro de recuperación exitoso?",
+        "type": "multipleChoice",
+        "options": [
+            "El tiempo que tardaste y si todos los métodos funcionaron",
+            "Nada",
+            "Solo si la contraseña es correcta",
+            "Si tienes buena conexión a internet"
+        ],
+        "correctIndex": 0,
+        "explanation": "Los simulacros revelan debilidades en tu plan de recuperación que debes mejorar.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses19_l5"
+    },
+    {
+        "id": "ac_st6_qB3_039",
+        "question": "Qué aprender de un simulacro de recuperación fallido?",
+        "type": "multipleChoice",
+        "options": [
+            "Qué métodos no funcionaron y qué debes mejorar",
+            "Nada, fue un error",
+            "Que la recuperación es imposible",
+            "Que debes crear más cuentas"
+        ],
+        "correctIndex": 0,
+        "explanation": "Los fallos en simulacros son oportunidades para mejorar tu plan antes de una emergencia real.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses19_l5"
+    },
+    {
+        "id": "ac_st6_qB3_040",
+        "question": "Qué incluir en una lista de verificación mensual de recuperación?",
+        "type": "multipleChoice",
+        "options": [
+            "Verificar métodos activos, actualizar datos y probar códigos de respaldo",
+            "Solo cambiar la contraseña",
+            "No es necesario checklist",
+            "Solo revisar el correo"
+        ],
+        "correctIndex": 0,
+        "explanation": "Un checklist mensual asegura que todos tus métodos de recuperación estén funcionando.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses18_l1"
+    },
+    {
+        "id": "ac_st6_qB3_041",
+        "question": "Cómo probar que tu plan de recuperación funciona?",
+        "type": "multipleChoice",
+        "options": [
+            "Realizando simulacros periódicos con cada método de recuperación",
+            "No es necesario probar",
+            "Esperando una emergencia",
+            "Preguntando a otros"
+        ],
+        "correctIndex": 0,
+        "explanation": "Los simulacros regulares confirman que tu plan está actualizado y funcional.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses18_l2"
+    },
+    {
+        "id": "ac_st6_qB3_042",
+        "question": "Qué verificar en la lista de métodos de recuperación activos?",
+        "type": "multipleChoice",
+        "options": [
+            "Que cada método esté vigente y sea accesible",
+            "Solo que existan",
+            "No es necesario verificar",
+            "Solo el correo"
+        ],
+        "correctIndex": 0,
+        "explanation": "Verificar que cada método esté activo evita sorpresas durante una emergencia real.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses18_l3"
+    },
+    {
+        "id": "ac_st6_qB3_043",
+        "question": "Caso: Al probar tu plan, descubres que un código de respaldo venció. Qué hacer?",
+        "type": "miniCase",
+        "options": [
+            "Generar nuevos códigos y actualizar tu registro",
+            "Ignorarlo",
+            "Esperar a que funcione",
+            "Eliminar todos los códigos"
+        ],
+        "correctIndex": 0,
+        "explanation": "Los códigos vencidos deben reemplazarse inmediatamente para mantener tu plan actualizado.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses18_l3"
+    },
+    {
+        "id": "ac_st6_qB3_044",
+        "question": "Cómo documentar el resultado de una verificación de recuperación?",
+        "type": "multipleChoice",
+        "options": [
+            "Registrar qué métodos funcionaron, cuáles fallaron y qué cambios realizaste",
+            "No documentar nada",
+            "Solo recordarlo",
+            "Compartir en redes sociales"
+        ],
+        "correctIndex": 0,
+        "explanation": "Documentar los resultados te ayuda a mejorar continuamente tu plan de recuperación.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses18_l5"
+    },
+    {
+        "id": "ac_st6_qB3_045",
+        "question": "Qué es un ejercicio práctico de recuperación de cuentas?",
+        "type": "multipleChoice",
+        "options": [
+            "Simular el proceso completo de recuperación en un entorno seguro",
+            "Leer un artículo sobre recuperación",
+            "Mirar un video tutorial",
+            "No existe"
+        ],
+        "correctIndex": 0,
+        "explanation": "Los ejercicios prácticos te dan experiencia real en el proceso de recuperación.",
+        "difficulty": 1,
+        "lessonId": "ac_s6_ses19_l1"
+    },
+    {
+        "id": "ac_st6_qB3_046",
+        "question": "Cómo crear un entorno de prueba seguro para simulacros?",
+        "type": "multipleChoice",
+        "options": [
+            "Usar cuentas de prueba sin datos reales y en un dispositivo dedicado",
+            "Con tu cuenta principal",
+            "No se puede crear",
+            "En un cyber café"
+        ],
+        "correctIndex": 0,
+        "explanation": "Un entorno de prueba aísla el simulacro para evitar riesgos a tus cuentas reales.",
+        "difficulty": 3,
+        "lessonId": "ac_s6_ses19_l3"
+    },
+    {
+        "id": "ac_st6_qB3_047",
+        "question": "Qué es la recuperación de cripto wallets?",
+        "type": "multipleChoice",
+        "options": [
+            "El proceso de recuperar acceso a tus activos digitales usando frases semilla o claves privadas",
+            "Un tipo de inversión",
+            "Un juego",
+            "No existe"
+        ],
+        "correctIndex": 0,
+        "explanation": "Las criptowallets requieren métodos especiales de recuperación basados en claves criptográficas.",
+        "difficulty": 3,
+        "lessonId": "ac_s6_ses1_l6"
+    },
+    {
+        "id": "ac_st6_qB3_048",
+        "question": "Qué es una frase semilla en criptomonedas?",
+        "type": "multipleChoice",
+        "options": [
+            "Un conjunto de 12 o 24 palabras que permite recuperar tu wallet",
+            "Una contraseña común",
+            "Un tipo de moneda",
+            "Un código de barras"
+        ],
+        "correctIndex": 0,
+        "explanation": "La frase semilla es la clave maestra para recuperar tu wallet en caso de pérdida.",
+        "difficulty": 3,
+        "lessonId": "ac_s6_ses1_l6"
+    },
+    {
+        "id": "ac_st6_qB3_049",
+        "question": "Por qué las preguntas de seguridad deben tener respuestas que no cambien con el tiempo?",
+        "type": "multipleChoice",
+        "options": [
+            "Para que puedas recordarlas y verificarlas años después",
+            "No importa",
+            "Para que sean fáciles de adivinar",
+            "Para compartirlas con otros"
+        ],
+        "correctIndex": 0,
+        "explanation": "Las respuestas estables aseguran que puedas recuperar tu cuenta sin importar cuánto tiempo pase.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses5_l2"
+    },
+    {
+        "id": "ac_st6_qB3_050",
+        "question": "Qué es una respuesta falsa pero memorable para preguntas de seguridad?",
+        "type": "multipleChoice",
+        "options": [
+            "Una respuesta inventada que solo tú conoces y puedes recordar",
+            "Una respuesta verdadera",
+            "Una respuesta que todos conocen",
+            "No existe este concepto"
+        ],
+        "correctIndex": 0,
+        "explanation": "Las respuestas falsas pero memorables son más seguras que las respuestas verdaderas.",
+        "difficulty": 3,
+        "lessonId": "ac_s6_ses5_l4"
+    },
+    {
+        "id": "ac_st6_qB3_051",
+        "question": "Cómo documentar respuestas de seguridad de forma segura?",
+        "type": "multipleChoice",
+        "options": [
+            "Cifrar el archivo y guardarlo en un lugar seguro offline",
+            "Escribirlas en un post-it",
+            "Compartirlas por correo",
+            "No documentarlas"
+        ],
+        "correctIndex": 0,
+        "explanation": "Las respuestas documentadas deben estar cifradas y en un lugar seguro para evitar accesos no autorizados.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses5_l5"
+    },
+    {
+        "id": "ac_st6_qB3_052",
+        "question": "Qué documentos de respaldo físico debes tener?",
+        "type": "multipleChoice",
+        "options": [
+            "Códigos de respaldo impresos, lista de cuentas y contactos de emergencia",
+            "Solo la cédula",
+            "No es necesario respaldo físico",
+            "Solo fotografías"
+        ],
+        "correctIndex": 0,
+        "explanation": "El respaldo físico es esencial cuando no tienes acceso a dispositivos digitales.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses5_l6"
+    },
+    {
+        "id": "ac_st6_qB3_053",
+        "question": "Cómo configurar respaldos automáticos en la nube?",
+        "type": "multipleChoice",
+        "options": [
+            "En la configuración de cada servicio activando la sincronización automática",
+            "No se pueden configurar",
+            "Solo manualmente",
+            "Con un técnico"
+        ],
+        "correctIndex": 0,
+        "explanation": "La mayoría de servicios ofrecen opciónes de respaldo automático en sus configuraciónes.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses20_l3"
+    },
+    {
+        "id": "ac_st6_qB3_054",
+        "question": "Qué es un Plan B para recuperar cuentas sin celular?",
+        "type": "multipleChoice",
+        "options": [
+            "Métodos alternativos como correo, códigos de respaldo o verificación por preguntas",
+            "No existe Plan B",
+            "Usar el celular de otro",
+            "Crear una cuenta nueva"
+        ],
+        "correctIndex": 0,
+        "explanation": "Un Plan B te permite recuperar cuentas cuando tu método principal no está disponible.",
+        "difficulty": 1,
+        "lessonId": "ac_s6_ses20_l4"
+    },
+    {
+        "id": "ac_st6_qB3_055",
+        "question": "Cómo recuperar cuentas de streaming como Netflix o Spotify?",
+        "type": "multipleChoice",
+        "options": [
+            "Usando el proceso de recuperación estándar por correo o teléfono",
+            "No se pueden recuperar",
+            "Creando cuentas nuevas",
+            "Llamando a la policía"
+        ],
+        "correctIndex": 0,
+        "explanation": "Las cuentas de streaming tienen procesos de recuperación similares a otros servicios.",
+        "difficulty": 1,
+        "lessonId": "ac_s6_ses20_l5"
+    },
+    {
+        "id": "ac_st6_qB3_056",
+        "question": "Qué es la herencia digital en Google?",
+        "type": "multipleChoice",
+        "options": [
+            "La función de administrador de cuentas inactivas que designa qué pasa con tu cuenta",
+            "Un tipo de almacenamiento",
+            "Un juego",
+            "No existe"
+        ],
+        "correctIndex": 0,
+        "explanation": "Google permite configurar qué persona accede a tu cuenta y qué pasa con ella tras la inactividad.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses3_l6"
+    },
+    {
+        "id": "ac_st6_qB3_057",
+        "question": "Caso: Quieres prácticar la recuperación de tu cuenta de Google. Cuál es la mejor acción?",
+        "type": "miniCase",
+        "options": [
+            "Crear una cuenta de prueba y simular el proceso completo de recuperación",
+            "Usar tu cuenta principal",
+            "No prácticar",
+            "Leer solo artículos"
+        ],
+        "correctIndex": 0,
+        "explanation": "Prácticar con una cuenta de prueba te prepara sin riesgo para una emergencia real.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses19_l1"
+    },
+    {
+        "id": "ac_st6_qB3_058",
+        "question": "Qué información debe incluir un plan de recuperación familiar?",
+        "type": "multipleChoice",
+        "options": [
+            "Cuentas de cada miembro, métodos de recuperación y contactos de emergencia",
+            "Solo nombres",
+            "No es necesario plan familiar",
+            "Solo contraseñas"
+        ],
+        "correctIndex": 0,
+        "explanation": "Un plan familiar asegura que todos los miembros estén preparados para emergencias digitales.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses8_l6"
+    },
+    {
+        "id": "ac_st6_qB3_059",
+        "question": "Cómo recuperar acceso a apps bancarias si olvidaste la contraseña?",
+        "type": "multipleChoice",
+        "options": [
+            "Usar la opción de recuperación en la app o llamar al banco",
+            "Intentar muchas veces",
+            "No se puede recuperar",
+            "Crear una cuenta nueva"
+        ],
+        "correctIndex": 0,
+        "explanation": "Los bancos tienen procesos de recuperación seguros que incluyen verificación de identidad.",
+        "difficulty": 1,
+        "lessonId": "ac_s6_ses8_l5"
+    },
+    {
+        "id": "ac_st6_qB3_060",
+        "question": "Por qué es importante tener un contacto de emergencia para cuentas digitales?",
+        "type": "multipleChoice",
+        "options": [
+            "Para que alguien de confianza pueda ayudarte a recuperar el acceso en caso de emergencia",
+            "No es importante",
+            "Solo para empresas",
+            "Para compartir contraseñas"
+        ],
+        "correctIndex": 0,
+        "explanation": "Un contacto de emergencia puede iniciar el proceso de recuperación cuando tú no puedes hacerlo.",
+        "difficulty": 1,
+        "lessonId": "ac_s6_ses1_l4"
+    }
+]

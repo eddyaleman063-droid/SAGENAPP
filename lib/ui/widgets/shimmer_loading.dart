@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sagen/core/theme/app_colors.dart';
+import 'shimmer_scope.dart';
 
 class ShimmerLoading extends StatefulWidget {
   final double width;
@@ -22,34 +24,39 @@ class ShimmerLoading extends StatefulWidget {
 
 class _ShimmerLoadingState extends State<ShimmerLoading>
     with SingleTickerProviderStateMixin {
-  late AnimationController _ctrl;
-  late Animation<double> _anim;
+  AnimationController? _ownCtrl;
+  AnimationController? _sharedCtrl;
+
+  AnimationController get _ctrl => _sharedCtrl ?? _ownCtrl!;
 
   @override
   void initState() {
     super.initState();
-    _ctrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 1500));
-    _anim = Tween<double>(begin: -2.0, end: 2.0).animate(
-      CurvedAnimation(parent: _ctrl, curve: Curves.easeInOutSine),
-    );
-    _ctrl.repeat();
+    _sharedCtrl = ShimmerScope.maybeOf(context);
+    if (_sharedCtrl == null) {
+      _ownCtrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 1500));
+      _ownCtrl!.repeat();
+    }
   }
 
   @override
   void dispose() {
-    _ctrl.dispose();
+    _ownCtrl?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final base = widget.baseColor ?? (isDark ? Colors.white.withValues(alpha: 0.06) : Colors.black.withValues(alpha: 0.06));
-    final highlight = widget.highlightColor ?? (isDark ? Colors.white.withValues(alpha: 0.12) : Colors.black.withValues(alpha: 0.12));
+    final anim = Tween<double>(begin: -2.0, end: 2.0).animate(
+      CurvedAnimation(parent: _ctrl, curve: Curves.easeInOutSine),
+    );
+
+    final base = widget.baseColor ?? context.surfaceTinted;
+    final highlight = widget.highlightColor ?? context.borderSubtle;
 
     return RepaintBoundary(
       child: AnimatedBuilder(
-        animation: _anim,
+        animation: anim,
         builder: (context, _) {
           return Container(
             width: widget.width,
@@ -59,8 +66,8 @@ class _ShimmerLoadingState extends State<ShimmerLoading>
               gradient: LinearGradient(
                 colors: [base, highlight, base],
                 stops: const [0.0, 0.5, 1.0],
-                begin: Alignment(_anim.value - 1, 0),
-                end: Alignment(_anim.value + 1, 0),
+                begin: Alignment(anim.value - 1, 0),
+                end: Alignment(anim.value + 1, 0),
               ),
             ),
           );

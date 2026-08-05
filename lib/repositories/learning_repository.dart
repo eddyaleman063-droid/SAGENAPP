@@ -2,61 +2,72 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/learning/stage.dart';
 import '../services/app_logger.dart';
-import '../services/cloud_sync_service.dart';
 import '../services/learning_stage_service.dart';
 
 const _checksumSalt = 'sagen_v5_integrity';
 
 abstract class LearningRepository {
   List<Stage> get stages;
-  int get gems;
+  double get totalDonated;
   int get xp;
   int get currentLevel;
   int get lessonsCompleted;
   List<String> get achievements;
   int get totalXpEarned;
-  int get totalGemsEarned;
+  int get sageTalks;
+  bool get isSupporter;
 
   Future<void> load();
   Future<List<Stage>> fetchStages();
   void saveStages(List<Stage> stages);
-  void saveGems(int amount);
+  void saveTotalDonated(double amount);
   void saveXp(int amount);
   void saveLevel(int level);
   void saveLessonsCompleted(int count);
   void saveAchievements(List<String> achievements);
   void saveTotalXp(int amount);
-  void saveTotalGems(int amount);
+  void saveSageTalks(int count);
+  void saveIsSupporter(bool value);
+  void saveAll({
+    required List<Stage> stages,
+    required double totalDonated,
+    required int xp,
+    required int level,
+    required int lessonsCompleted,
+    required List<String> achievements,
+    required int totalXp,
+    required int sageTalks,
+    required bool isSupporter,
+  });
   void saveIntegrity();
-  bool spendGems(int amount);
-  void addGems(int amount, {bool trackTotal = true});
-  void addXp(int amount, {bool trackTotal = true});
+  bool get needsServerReconciliation;
+  void markReconciled();
 }
 
 class LearningRepositoryImpl implements LearningRepository {
   final SharedPreferences _prefs;
   final LearningStageService _stageService;
-  final CloudSyncService _cloudSync;
 
-  int _gems = 0;
+  double _totalDonated = 0;
   int _xp = 0;
   int _currentLevel = 1;
   int _lessonsCompleted = 0;
   final List<Stage> _stages = [];
   final List<String> _achievements = [];
   int _totalXpEarned = 0;
-  int _totalGemsEarned = 0;
+  int _sageTalks = 0;
+  bool _isSupporter = false;
+  bool _needsServerReconciliation = false;
 
   LearningRepositoryImpl(
-    this._prefs,
-    this._cloudSync, [
+    this._prefs, [
     LearningStageService? stageService,
   ]) : _stageService = stageService ?? const LearningStageService();
 
   int _computeChecksum() => Object.hashAll([
-    _gems,
+    _totalDonated,
     _xp,
-    _totalGemsEarned,
+    _isSupporter,
     _totalXpEarned,
     _lessonsCompleted,
     _currentLevel,
@@ -69,7 +80,7 @@ class LearningRepositoryImpl implements LearningRepository {
 
   bool _verifyChecksum() {
     final stored = _prefs.getInt('learning_integrity');
-    if (stored == null) return true; // first run, nothing to verify
+    if (stored == null) return true;
     final expected = _computeChecksum();
     if (stored != expected) {
       AppLogger().warning(
@@ -81,7 +92,7 @@ class LearningRepositoryImpl implements LearningRepository {
   }
 
   @override
-  int get gems => _gems;
+  double get totalDonated => _totalDonated;
 
   @override
   int get xp => _xp;
@@ -102,35 +113,78 @@ class LearningRepositoryImpl implements LearningRepository {
   int get totalXpEarned => _totalXpEarned;
 
   @override
-  int get totalGemsEarned => _totalGemsEarned;
+  int get sageTalks => _sageTalks;
+
+  @override
+  bool get isSupporter => _isSupporter;
+
+  @override
+  bool get needsServerReconciliation => _needsServerReconciliation;
+
+  @override
+  void markReconciled() {
+    _needsServerReconciliation = false;
+    _saveChecksum();
+  }
 
   @override
   Future<void> load() async {
-    _gems = _prefs.getInt('learning_gems') ?? 0;
+    // Try atomic snapshot first (new format)
+    final snapshotRaw = _prefs.getString('learning_snapshot');
+    if (snapshotRaw != null && snapshotRaw.isNotEmpty) {
+      try {
+        final snapshot = jsonDecode(snapshotRaw) as Map<String, dynamic>;
+        _totalDonated = (snapshot['learning_total_donated'] as num?)?.toDouble() ?? 0.0;
+        _xp = snapshot['learning_xp'] as int? ?? 0;
+        _currentLevel = snapshot['learning_level'] as int? ?? 1;
+        _lessonsCompleted = snapshot['learning_lessons_completed'] as int? ?? 0;
+        _totalXpEarned = snapshot['learning_total_xp'] as int? ?? 0;
+        _sageTalks = snapshot['learning_sage_talks'] as int? ?? 0;
+        _isSupporter = snapshot['learning_is_supporter'] as bool? ?? false;
+
+        final stagesList = snapshot['learning_stages'] as List?;
+        if (stagesList != null) {
+          _stages..clear()..addAll(stagesList.map((j) => Stage.fromJson(j as Map<String, dynamic>)));
+        } else {
+          _stages.clear();
+        }
+
+        final ach = snapshot['learning_achievements'] as String? ?? '';
+        _achievements..clear()..addAll(ach.split(',').where((s) => s.isNotEmpty));
+      } catch (e) {
+        AppLogger().warning('learning_snapshot corrupted, falling back to legacy keys: $e');
+        _loadLegacy();
+      }
+    } else {
+      _loadLegacy();
+    }
+
+    final needsRechecksum = _prefs.getBool('learning_needs_rechecksum') ?? false;
+    if (needsRechecksum) {
+      await _prefs.setBool('learning_needs_rechecksum', false);
+      _saveChecksum();
+    } else if (!_verifyChecksum()) {
+      AppLogger().warning('Integrity check failed — possible data tampering, flagging for server reconciliation');
+      _needsServerReconciliation = true;
+    }
+  }
+
+  void _loadLegacy() {
+    _totalDonated = _prefs.getDouble('learning_total_donated') ?? 0.0;
     _xp = _prefs.getInt('learning_xp') ?? 0;
     _currentLevel = _prefs.getInt('learning_level') ?? 1;
     _lessonsCompleted = _prefs.getInt('learning_lessons_completed') ?? 0;
     _totalXpEarned = _prefs.getInt('learning_total_xp') ?? 0;
-    _totalGemsEarned = _prefs.getInt('learning_total_gems') ?? 0;
-
-    if (!_verifyChecksum()) {
-      AppLogger().warning('Integrity check failed — resetting economic values');
-      _gems = 0;
-      _xp = 0;
-      _currentLevel = 1;
-      _totalXpEarned = 0;
-      _totalGemsEarned = 0;
-      _lessonsCompleted = 0;
-    }
+    _sageTalks = _prefs.getInt('learning_sage_talks') ?? 0;
+    _isSupporter = _prefs.getBool('learning_is_supporter') ?? false;
 
     final raw = _prefs.getString('learning_stages');
     if (raw != null && raw.isNotEmpty) {
       try {
         final list = jsonDecode(raw) as List;
-        _stages
-          ..clear()
-          ..addAll(list.map((j) => Stage.fromJson(j as Map<String, dynamic>)));
+        _stages..clear()..addAll(list.map((j) => Stage.fromJson(j as Map<String, dynamic>)));
       } catch (_) {
+        AppLogger().warning('LearningRepository: failed to parse legacy stages JSON');
         _stages.clear();
       }
     } else {
@@ -138,9 +192,7 @@ class LearningRepositoryImpl implements LearningRepository {
     }
 
     final ach = _prefs.getString('learning_achievements') ?? '';
-    _achievements
-      ..clear()
-      ..addAll(ach.split(',').where((s) => s.isNotEmpty));
+    _achievements..clear()..addAll(ach.split(',').where((s) => s.isNotEmpty));
   }
 
   @override
@@ -148,14 +200,10 @@ class LearningRepositoryImpl implements LearningRepository {
     try {
       final fresh = await _stageService.fetchStages();
       if (fresh.isNotEmpty) return fresh;
-    } catch (_) {}
+    } catch (e) {
+      AppLogger().warning('Failed to fetch stages from network: $e');
+    }
     return [];
-  }
-
-  void _notifyFieldChanged(String key, int value) {
-    try {
-      _cloudSync.notifyFieldChanged(key, value);
-    } catch (_) {}
   }
 
   @override
@@ -170,24 +218,21 @@ class LearningRepositoryImpl implements LearningRepository {
   }
 
   @override
-  void saveGems(int amount) {
-    _gems = amount;
-    _prefs.setInt('learning_gems', amount);
-    _notifyFieldChanged('learning_gems', amount);
+  void saveTotalDonated(double amount) {
+    _totalDonated = amount;
+    _prefs.setDouble('learning_total_donated', amount);
   }
 
   @override
   void saveXp(int amount) {
     _xp = amount;
     _prefs.setInt('learning_xp', amount);
-    _notifyFieldChanged('learning_xp', amount);
   }
 
   @override
   void saveLevel(int level) {
     _currentLevel = level;
     _prefs.setInt('learning_level', level);
-    _notifyFieldChanged('learning_level', level);
   }
 
   @override
@@ -208,14 +253,56 @@ class LearningRepositoryImpl implements LearningRepository {
   void saveTotalXp(int amount) {
     _totalXpEarned = amount;
     _prefs.setInt('learning_total_xp', amount);
-    _notifyFieldChanged('learning_total_xp', amount);
   }
 
   @override
-  void saveTotalGems(int amount) {
-    _totalGemsEarned = amount;
-    _prefs.setInt('learning_total_gems', amount);
-    _notifyFieldChanged('learning_total_gems', amount);
+  void saveSageTalks(int count) {
+    _sageTalks = count;
+    _prefs.setInt('learning_sage_talks', count);
+  }
+
+  @override
+  void saveIsSupporter(bool value) {
+    _isSupporter = value;
+    _prefs.setBool('learning_is_supporter', value);
+  }
+
+  @override
+  void saveAll({
+    required List<Stage> stages,
+    required double totalDonated,
+    required int xp,
+    required int level,
+    required int lessonsCompleted,
+    required List<String> achievements,
+    required int totalXp,
+    required int sageTalks,
+    required bool isSupporter,
+  }) {
+    _stages..clear()..addAll(stages);
+    _totalDonated = totalDonated;
+    _xp = xp;
+    _currentLevel = level;
+    _lessonsCompleted = lessonsCompleted;
+    _achievements..clear()..addAll(achievements);
+    _totalXpEarned = totalXp;
+    _sageTalks = sageTalks;
+    _isSupporter = isSupporter;
+
+    // Atomic write: serialize all fields to a single JSON blob, then write once
+    final snapshot = {
+      'learning_stages': stages.map((s) => s.toJson()).toList(),
+      'learning_total_donated': totalDonated,
+      'learning_xp': xp,
+      'learning_level': level,
+      'learning_lessons_completed': lessonsCompleted,
+      'learning_achievements': achievements.join(','),
+      'learning_total_xp': totalXp,
+      'learning_sage_talks': sageTalks,
+      'learning_is_supporter': isSupporter,
+    };
+    _prefs.setString('learning_snapshot', jsonEncode(snapshot));
+    _saveChecksum();
   }
 
   @override
@@ -223,36 +310,4 @@ class LearningRepositoryImpl implements LearningRepository {
     _saveChecksum();
   }
 
-  @override
-  bool spendGems(int amount) {
-    if (_gems < amount) return false;
-    _gems -= amount;
-    _prefs.setInt('learning_gems', _gems);
-    _notifyFieldChanged('learning_gems', _gems);
-    return true;
-  }
-
-  @override
-  void addGems(int amount, {bool trackTotal = true}) {
-    _gems += amount;
-    _prefs.setInt('learning_gems', _gems);
-    _notifyFieldChanged('learning_gems', _gems);
-    if (trackTotal) {
-      _totalGemsEarned += amount;
-      _prefs.setInt('learning_total_gems', _totalGemsEarned);
-      _notifyFieldChanged('learning_total_gems', _totalGemsEarned);
-    }
-  }
-
-  @override
-  void addXp(int amount, {bool trackTotal = true}) {
-    _xp += amount;
-    _prefs.setInt('learning_xp', _xp);
-    _notifyFieldChanged('learning_xp', _xp);
-    if (trackTotal) {
-      _totalXpEarned += amount;
-      _prefs.setInt('learning_total_xp', _totalXpEarned);
-      _notifyFieldChanged('learning_total_xp', _totalXpEarned);
-    }
-  }
 }

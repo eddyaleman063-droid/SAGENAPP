@@ -3,6 +3,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 
 class FlexCardWidget extends ConsumerStatefulWidget {
@@ -61,14 +62,14 @@ class FlexCardWidgetState extends ConsumerState<FlexCardWidget> {
         width: 360,
         height: 640,
         decoration: const BoxDecoration(
-          color: Color(0xFF1B2433),
+          color: PremiumColors.deepBackground,
           gradient: RadialGradient(
             center: Alignment.topCenter,
             radius: 1.2,
             colors: [
-              Color(0x334AC2DD),
-              Color(0xFF1B2433),
-              Color(0xFF1B2433),
+Color(0x334AC2DD),
+              PremiumColors.deepBackground,
+              PremiumColors.deepBackground,
             ],
           ),
         ),
@@ -79,102 +80,91 @@ class FlexCardWidgetState extends ConsumerState<FlexCardWidget> {
               const Spacer(flex: 2),
               CircleAvatar(
                 radius: 48,
-                backgroundColor: const Color(0xFF253145),
+                backgroundColor: PremiumColors.darkCard,
                 backgroundImage: widget.photoUrl != null ? NetworkImage(widget.photoUrl!) : null,
                 child: widget.photoUrl == null
-                    ? Text(_initials, style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white))
+                    ? Text(_initials, style: AppTextStyle.displayMedium.copyWith(fontWeight: FontWeight.bold, color: Colors.white))
                     : null,
               ),
-              const SizedBox(height: 16),
+                const SizedBox(height: AppSpacing.lg),
               Text(
                 widget.displayName,
-                style: const TextStyle(
-                  fontSize: 26,
-                  fontWeight: FontWeight.bold,
+                style: AppTextStyle.headlineLarge.copyWith(fontWeight: FontWeight.bold,
                   color: Colors.white,
-                  letterSpacing: 0.5,
-                ),
+                  letterSpacing: 0.5),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppSpacing.md),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.xs),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(AppRadius.xxl),
                   color: const Color(0x334AC2DD),
                   border: Border.all(color: const Color(0x664AC2DD)),
                 ),
                 child: Text(
                   l.profileLevelValue(widget.level),
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF4AC2DD),
-                  ),
+                    style: AppTextStyle.titleSmall.copyWith(fontWeight: FontWeight.w600,
+                    color: PremiumColors.splashBlue),
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: AppSpacing.xxl),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.local_fire_department_rounded, color: Color(0xFFFF6D00), size: 24),
-                  const SizedBox(width: 8),
+                  const ExcludeSemantics(
+                    child: Icon(Icons.local_fire_department_rounded, color: PremiumColors.streakOrange, size: 24),
+                  ),
+                  const SizedBox(width: AppSpacing.sm),
                   Text(
                     '${widget.streak}',
-                    style: const TextStyle(
-                      fontSize: 36,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFFFF6D00),
+                    style: AppTextStyle.displayLarge.copyWith(
+                      color: PremiumColors.streakOrange,
                     ),
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppSpacing.sm),
                   Text(
                     widget.streak == 1 ? l.profileDay : l.profileDays,
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white.withValues(alpha: 0.5),
-                    ),
+                    style: AppTextStyle.bodyMd.copyWith(fontWeight: FontWeight.w500,
+                      color: Colors.white.withValues(alpha: 0.5)),
                   ),
                 ],
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSpacing.sm),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.auto_awesome_rounded, color: Color(0xFF7C3AED), size: 18),
-                  const SizedBox(width: 6),
+                  const ExcludeSemantics(
+                    child: Icon(Icons.auto_awesome_rounded, color: PremiumColors.xpColor, size: 18),
+                  ),
+                  const SizedBox(width: AppSpacing.xs),
                   Text(
                     '${widget.xp} XP',
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xFF7C3AED),
-                    ),
+                    style: AppTextStyle.title.copyWith(fontWeight: FontWeight.w600,
+                      color: PremiumColors.xpColor),
                   ),
                 ],
               ),
               if (widget.rank != null) ...[
-                const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.lg),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.xs),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(AppRadius.xxl),
                     color: const Color(0x33FFD700),
                     border: Border.all(color: const Color(0x44FFD700)),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(Icons.emoji_events_rounded, color: Color(0xFFFFD700), size: 16),
-                      const SizedBox(width: 6),
+                      const ExcludeSemantics(
+                        child: Icon(Icons.emoji_events_rounded, color: PremiumColors.gold, size: 16),
+                      ),
+                      const SizedBox(width: AppSpacing.xs),
                       Text(
                         l.rankingPosition(widget.rank!),
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xFFFFD700),
-                        ),
+                        style: AppTextStyle.bodyMd.copyWith(fontWeight: FontWeight.w600,
+                          color: PremiumColors.gold),
                       ),
                     ],
                   ),
@@ -183,14 +173,11 @@ class FlexCardWidgetState extends ConsumerState<FlexCardWidget> {
               const Spacer(flex: 3),
               Text(
                 widget.subtitleText ?? l.flexCardJoinAlliance,
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white.withValues(alpha: 0.35),
-                  letterSpacing: 1.0,
-                ),
+                style: AppTextStyle.caption.copyWith(fontWeight: FontWeight.w500,
+                  color: Colors.white.withValues(alpha: 0.55),
+                  letterSpacing: 1.0),
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: AppSpacing.xxxl),
             ],
           ),
         ),

@@ -31,7 +31,6 @@ mixin _$QuickChallenge {
   String get consequenceCorrect => throw _privateConstructorUsedError;
   String get consequenceWrong => throw _privateConstructorUsedError;
   int get xpReward => throw _privateConstructorUsedError;
-  int get gemReward => throw _privateConstructorUsedError;
 
   /// Serializes this QuickChallenge to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -61,7 +60,6 @@ abstract class $QuickChallengeCopyWith<$Res> {
     String consequenceCorrect,
     String consequenceWrong,
     int xpReward,
-    int gemReward,
   });
 }
 
@@ -90,7 +88,6 @@ class _$QuickChallengeCopyWithImpl<$Res, $Val extends QuickChallenge>
     Object? consequenceCorrect = null,
     Object? consequenceWrong = null,
     Object? xpReward = null,
-    Object? gemReward = null,
   }) {
     return _then(
       _value.copyWith(
@@ -134,10 +131,6 @@ class _$QuickChallengeCopyWithImpl<$Res, $Val extends QuickChallenge>
                 ? _value.xpReward
                 : xpReward // ignore: cast_nullable_to_non_nullable
                       as int,
-            gemReward: null == gemReward
-                ? _value.gemReward
-                : gemReward // ignore: cast_nullable_to_non_nullable
-                      as int,
           )
           as $Val,
     );
@@ -164,7 +157,6 @@ abstract class _$$QuickChallengeImplCopyWith<$Res>
     String consequenceCorrect,
     String consequenceWrong,
     int xpReward,
-    int gemReward,
   });
 }
 
@@ -192,7 +184,6 @@ class __$$QuickChallengeImplCopyWithImpl<$Res>
     Object? consequenceCorrect = null,
     Object? consequenceWrong = null,
     Object? xpReward = null,
-    Object? gemReward = null,
   }) {
     return _then(
       _$QuickChallengeImpl(
@@ -236,10 +227,6 @@ class __$$QuickChallengeImplCopyWithImpl<$Res>
             ? _value.xpReward
             : xpReward // ignore: cast_nullable_to_non_nullable
                   as int,
-        gemReward: null == gemReward
-            ? _value.gemReward
-            : gemReward // ignore: cast_nullable_to_non_nullable
-                  as int,
       ),
     );
   }
@@ -259,7 +246,6 @@ class _$QuickChallengeImpl extends _QuickChallenge {
     this.consequenceCorrect = '',
     this.consequenceWrong = '',
     this.xpReward = 15,
-    this.gemReward = 5,
   }) : _options = options,
        super._();
 
@@ -295,13 +281,10 @@ class _$QuickChallengeImpl extends _QuickChallenge {
   @override
   @JsonKey()
   final int xpReward;
-  @override
-  @JsonKey()
-  final int gemReward;
 
   @override
   String toString() {
-    return 'QuickChallenge(id: $id, type: $type, question: $question, scenario: $scenario, options: $options, correctIndex: $correctIndex, explanation: $explanation, consequenceCorrect: $consequenceCorrect, consequenceWrong: $consequenceWrong, xpReward: $xpReward, gemReward: $gemReward)';
+    return 'QuickChallenge(id: $id, type: $type, question: $question, scenario: $scenario, options: $options, correctIndex: $correctIndex, explanation: $explanation, consequenceCorrect: $consequenceCorrect, consequenceWrong: $consequenceWrong, xpReward: $xpReward)';
   }
 
   @override
@@ -325,9 +308,7 @@ class _$QuickChallengeImpl extends _QuickChallenge {
             (identical(other.consequenceWrong, consequenceWrong) ||
                 other.consequenceWrong == consequenceWrong) &&
             (identical(other.xpReward, xpReward) ||
-                other.xpReward == xpReward) &&
-            (identical(other.gemReward, gemReward) ||
-                other.gemReward == gemReward));
+                other.xpReward == xpReward));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -344,7 +325,6 @@ class _$QuickChallengeImpl extends _QuickChallenge {
     consequenceCorrect,
     consequenceWrong,
     xpReward,
-    gemReward,
   );
 
   /// Create a copy of QuickChallenge
@@ -376,7 +356,6 @@ abstract class _QuickChallenge extends QuickChallenge {
     final String consequenceCorrect,
     final String consequenceWrong,
     final int xpReward,
-    final int gemReward,
   }) = _$QuickChallengeImpl;
   const _QuickChallenge._() : super._();
 
@@ -403,8 +382,6 @@ abstract class _QuickChallenge extends QuickChallenge {
   String get consequenceWrong;
   @override
   int get xpReward;
-  @override
-  int get gemReward;
 
   /// Create a copy of QuickChallenge
   /// with the given fields replaced by the non-null parameter values.

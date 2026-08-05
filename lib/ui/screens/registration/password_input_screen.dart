@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/theme/theme_constants.dart';
 import 'package:sagen/providers/providers.dart';
 import 'package:sagen/l10n/app_localizations.dart';
+import 'package:sagen/core/theme/app_colors.dart';
 
 class PasswordInputScreen extends ConsumerWidget {
   final VoidCallback onContinue;
@@ -11,13 +13,12 @@ class PasswordInputScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final dark = Theme.of(context).brightness == Brightness.dark;
     final l = AppLocalizations.of(context)!;
     final state = ref.watch(registrationFunnelProvider);
     final passwordValid = ref.watch(funnelPasswordValidProvider);
 
     return Scaffold(
-      backgroundColor: dark ? PremiumColors.deepBackground : PremiumColors.lightBg,
+      backgroundColor: context.surfaceDeep,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(AppSpacing.xxl),
@@ -28,29 +29,26 @@ class PasswordInputScreen extends ConsumerWidget {
               const Spacer(flex: 2),
               Text(
                 l.regPasswordTitle,
-                style: TextStyle(
-                  fontSize: 24,
+                style: AppTextStyle.headline.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: dark ? Colors.white.withValues(alpha: 0.95) : Colors.black87,
+                  color: context.textPrimary,
                 ),
               ),
               const SizedBox(height: AppSpacing.sm),
               Text(
                 l.regPasswordDesc,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: dark ? Colors.white.withValues(alpha: 0.5) : Colors.black45,
+                style: AppTextStyle.bodyMd.copyWith(
+                  color: context.textTertiary,
                 ),
               ),
               const SizedBox(height: AppSpacing.xxl),
-              _PasswordField(dark: dark),
+              const _PasswordField(),
               if (state.password.isNotEmpty && !passwordValid)
                 Padding(
                   padding: const EdgeInsets.only(top: AppSpacing.sm),
                   child: Text(
                     l.authPasswordMinError,
-                    style: const TextStyle(
-                      fontSize: 13,
+                    style: AppTextStyle.subtitle.copyWith(
                       color: PremiumColors.error,
                       fontWeight: FontWeight.w500,
                     ),
@@ -60,22 +58,22 @@ class PasswordInputScreen extends ConsumerWidget {
               SizedBox(
                 width: double.infinity,
                 height: 54,
-                child: ElevatedButton(
+                child: Semantics(button: true, label: l.continueText, child: ElevatedButton(
                   onPressed: passwordValid ? onContinue : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: PremiumColors.primary,
                     foregroundColor: Colors.white,
-                    disabledBackgroundColor: dark ? Colors.white.withValues(alpha: 0.06) : Colors.black.withValues(alpha: 0.06),
-                    disabledForegroundColor: dark ? Colors.white.withValues(alpha: 0.25) : Colors.black.withValues(alpha: 0.25),
+                    disabledBackgroundColor: context.surfaceTinted,
+                    disabledForegroundColor: context.textDisabled,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
                     elevation: passwordValid ? 4 : 0,
                   ),
-                  child: Text(l.continueText, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                ),
+                  child: Text(l.continueText, style: AppTextStyle.titleSmall.copyWith(fontWeight: FontWeight.bold)),
+                )),
               ),
               const SizedBox(height: AppSpacing.md),
             ],
-          ),
+          ).animate().fadeIn().slideY(begin: 0.1),
         ),
       ),
     );
@@ -83,8 +81,7 @@ class PasswordInputScreen extends ConsumerWidget {
 }
 
 class _PasswordField extends ConsumerStatefulWidget {
-  final bool dark;
-  const _PasswordField({required this.dark});
+  const _PasswordField();
 
   @override
   ConsumerState<_PasswordField> createState() => _PasswordFieldState();
@@ -95,38 +92,37 @@ class _PasswordFieldState extends ConsumerState<_PasswordField> {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return Semantics(label: AppLocalizations.of(context)!.regPasswordTitle, child: TextField(
+      maxLength: 128,
       obscureText: _obscured,
-      style: TextStyle(
-        fontSize: 16,
-        color: widget.dark ? Colors.white.withValues(alpha: 0.95) : Colors.black87,
+      style: AppTextStyle.titleSmall.copyWith(
+        color: context.textPrimary,
       ),
       decoration: InputDecoration(
         hintText: '••••••',
-        hintStyle: TextStyle(
-          fontSize: 16,
-          color: widget.dark ? Colors.white.withValues(alpha: 0.2) : Colors.black.withValues(alpha: 0.15),
-        ),
+          hintStyle: AppTextStyle.titleSmall.copyWith(
+            color: context.subtle,
+          ),
         filled: true,
-        fillColor: widget.dark ? Colors.white.withValues(alpha: 0.05) : Colors.black.withValues(alpha: 0.03),
+        fillColor: context.surfaceTinted,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppRadius.xl),
           borderSide: BorderSide.none,
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.lg),
         prefixIcon: const Icon(Icons.lock_rounded, color: PremiumColors.primary, size: 20),
-        suffixIcon: GestureDetector(
+        suffixIcon: Semantics(button: true, label: _obscured ? AppLocalizations.of(context)!.showPassword : AppLocalizations.of(context)!.hidePassword, child: GestureDetector(
           onTap: () => setState(() => _obscured = !_obscured),
           child: Icon(
             _obscured ? Icons.visibility_off_rounded : Icons.visibility_rounded,
-            color: widget.dark ? Colors.white.withValues(alpha: 0.4) : Colors.black.withValues(alpha: 0.3),
+            color: context.textTertiary,
             size: 20,
           ),
-        ),
+        )),
       ),
       onChanged: (value) {
         ref.read(registrationFunnelProvider.notifier).setPassword(value);
       },
-    );
+    ));
   }
 }

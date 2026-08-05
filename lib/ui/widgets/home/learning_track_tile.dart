@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/theme/theme_constants.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../models/learning/stage.dart';
+import '../../../providers/providers.dart';
+import '../../../core/theme/app_colors.dart';
 
 enum StageStatus { locked, inProgress, completed }
 
-class LearningTrackTile extends StatelessWidget {
+class LearningTrackTile extends ConsumerStatefulWidget {
   final Stage stage;
   final StageStatus status;
   final VoidCallback? onTap;
@@ -22,137 +26,171 @@ class LearningTrackTile extends StatelessWidget {
   });
 
   @override
+  ConsumerState<LearningTrackTile> createState() => _LearningTrackTileState();
+}
+
+class _LearningTrackTileState extends ConsumerState<LearningTrackTile>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _pressCtrl;
+
+  @override
+  void initState() {
+    super.initState();
+    _pressCtrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 100),
+      lowerBound: 0.97,
+      upperBound: 1.0,
+      value: 1.0,
+    );
+  }
+
+  @override
+  void dispose() {
+    _pressCtrl.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final dark = Theme.of(context).brightness == Brightness.dark;
-    final completed = status == StageStatus.completed;
-    final inProgress = status == StageStatus.inProgress;
-    final locked = status == StageStatus.locked;
+    final completed = widget.status == StageStatus.completed;
+    final inProgress = widget.status == StageStatus.inProgress;
+    final locked = widget.status == StageStatus.locked;
 
     final glowColor = inProgress
         ? PremiumColors.splashBlue
         : completed
-            ? const Color(0xFFFFB300)
+            ? PremiumColors.achievementEnd
             : Colors.transparent;
 
-    final tile = Opacity(
-      opacity: locked ? 0.5 : 1.0,
-      child: Padding(
-        padding: EdgeInsets.only(bottom: isLast ? 0 : AppSpacing.md),
+    final tile = Semantics(
+      button: !locked,
+      enabled: !locked,
+      label: '${widget.stage.title}. ${widget.stage.subtitle}. ${AppLocalizations.of(context)!.stageProgress((widget.stage.progress * 100).round())}',
+      child: Opacity(
+        opacity: locked ? 0.5 : 1.0,
+        child: Padding(
+        padding: EdgeInsets.only(bottom: widget.isLast ? 0 : AppSpacing.md),
         child: GestureDetector(
-          onTap: locked ? null : onTap,
-          child: Container(
-            padding: const EdgeInsets.all(AppSpacing.lg),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(AppRadius.lg),
-              color: dark ? PremiumColors.darkCard.withValues(alpha: 0.6) : Colors.white.withValues(alpha: 0.9),
-              border: Border.all(
-                color: completed
-                    ? const Color(0xFFFFB300)
-                    : inProgress
-                        ? PremiumColors.splashBlue
-                        : dark ? Colors.white.withValues(alpha: 0.06) : Colors.black.withValues(alpha: 0.08),
-                width: inProgress ? 1.5 : 1.0,
+          onTapDown: locked ? null : (_) => _pressCtrl.reverse(),
+          onTapUp: locked ? null : (_) => _pressCtrl.forward(),
+          onTapCancel: locked ? null : () => _pressCtrl.forward(),
+          onTap: locked ? null : () {
+            ref.read(experienceServiceProvider).lightHaptic();
+            widget.onTap?.call();
+          },
+          child: ScaleTransition(
+            scale: _pressCtrl,
+            child: Container(
+              padding: const EdgeInsets.all(AppSpacing.lg),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(AppRadius.xl),
+                color: context.surfaceCard,
+                border: Border.all(
+                      color: completed
+                          ? PremiumColors.achievementEnd
+                          : inProgress
+                              ? PremiumColors.splashBlue
+                              : context.borderSubtle,
+                  width: inProgress ? 1.5 : 1.0,
+                ),
+                boxShadow: inProgress || completed
+                    ? [
+                        BoxShadow(
+                          color: glowColor.withValues(alpha: 0.15),
+                          blurRadius: 12,
+                          spreadRadius: 1,
+                        ),
+                      ]
+                    : null,
               ),
-              boxShadow: inProgress || completed
-                  ? [
-                      BoxShadow(
-                        color: glowColor.withValues(alpha: 0.15),
-                        blurRadius: 12,
-                        spreadRadius: 1,
-                      ),
-                    ]
-                  : null,
-            ),
-            child: Row(
-              children: [
-                Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(AppRadius.sm),
-                    color: completed
-                        ? const Color(0xFFFFB300).withValues(alpha: 0.15)
-                        : inProgress
-                            ? PremiumColors.splashBlue.withValues(alpha: 0.15)
-                            : dark ? Colors.white.withValues(alpha: 0.05) : Colors.black.withValues(alpha: 0.05),
+              child: Row(
+                children: [
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(AppRadius.sm),
+                      color: completed
+                          ? PremiumColors.achievementEnd.withValues(alpha: 0.15)
+                          : inProgress
+                              ? PremiumColors.splashBlue.withValues(alpha: 0.15)
+                              : context.subtle,
+                    ),
+                    child: Icon(
+                      locked ? Icons.lock_rounded : widget.stage.icon,
+                      size: 20,
+                      color: completed
+                          ? PremiumColors.achievementEnd
+                          : inProgress
+                              ? PremiumColors.splashBlue
+                              : context.iconSecondary,
+                    ),
                   ),
-                  child: Icon(
-                    locked ? Icons.lock_rounded : stage.icon,
-                    size: 20,
-                    color: completed
-                        ? const Color(0xFFFFB300)
-                        : inProgress
-                            ? PremiumColors.splashBlue
-                            : dark ? Colors.white38 : Colors.black38,
-                  ),
-                ),
-                const SizedBox(width: AppSpacing.md),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        stage.title,
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                          color: completed
-                              ? const Color(0xFFFFB300)
-                              : dark ? Colors.white.withValues(alpha: 0.9) : Colors.black87,
+                  const SizedBox(width: AppSpacing.md),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.stage.title,
+                          style: AppTextStyle.body.copyWith(fontWeight: FontWeight.w600,
+                            color: completed
+                                ? PremiumColors.achievementEnd
+                                : context.textPrimary),
                         ),
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        stage.subtitle,
-                        style: TextStyle(
-                          fontSize: 11,
-                          color: dark ? Colors.white.withValues(alpha: 0.4) : Colors.black54,
+                        const SizedBox(height: AppSpacing.xxs),
+                        Text(
+                          widget.stage.subtitle,
+                          style: AppTextStyle.label.copyWith(color: context.textTertiary),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(height: AppSpacing.sm),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(AppRadius.pill),
-                        child: LinearProgressIndicator(
-                          value: stage.progress,
-                          backgroundColor: dark ? Colors.white.withValues(alpha: 0.1) : Colors.black.withValues(alpha: 0.08),
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                            completed
-                                ? const Color(0xFFFFB300)
-                                : inProgress
-                                    ? PremiumColors.splashBlue
-                                    : Colors.white24,
+                        const SizedBox(height: AppSpacing.sm),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(AppRadius.pill),
+                          child: Semantics(
+                            label: AppLocalizations.of(context)!.stageProgress((widget.stage.progress * 100).round()),
+                            value: '${(widget.stage.progress * 100).round()}',
+                            child: LinearProgressIndicator(
+                              value: widget.stage.progress,
+                              backgroundColor: context.subtle,
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                completed
+                                    ? PremiumColors.achievementEnd
+                                    : inProgress
+                                        ? PremiumColors.splashBlue
+                                        : Colors.white24,
+                              ),
+                              minHeight: 3,
+                            ),
                           ),
-                          minHeight: 3,
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                const SizedBox(width: AppSpacing.sm),
-                Icon(
-                  completed
-                      ? Icons.check_circle_rounded
-                      : Icons.chevron_right_rounded,
-                  size: 22,
-                  color: completed
-                      ? const Color(0xFFFFB300)
-                      : dark ? Colors.white.withValues(alpha: 0.3) : Colors.black.withValues(alpha: 0.3),
-                ),
-              ],
+                  const SizedBox(width: AppSpacing.sm),
+                  Icon(
+                    completed
+                        ? Icons.check_circle_rounded
+                        : Icons.chevron_right_rounded,
+                    size: 22,
+                     color: completed
+                        ? PremiumColors.achievementEnd
+                        : context.textTertiary,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
       ),
+      ),
     );
 
-    return Hero(
-      tag: 'stage_${stage.id}',
-      child: tile.animate(delay: (index * 60).ms).fadeIn(
+    return tile.animate(delay: (widget.index * 60).ms).fadeIn(
         duration: 350.ms,
         curve: Curves.easeOut,
-      ).slideX(begin: 0.08, end: 0, duration: 350.ms, curve: Curves.easeOut),
-    );
+      ).slideX(begin: 0.08, end: 0, duration: 350.ms, curve: Curves.easeOut);
   }
 }

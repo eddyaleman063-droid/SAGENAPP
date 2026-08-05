@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:sagen/core/theme/app_colors.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/l10n/app_localizations.dart';
-import 'package:sagen/ui/widgets/gem_pile_widget.dart';
-import 'package:sagen/ui/widgets/gem_widget.dart';
-import 'package:sagen/ui/widgets/animations/gem_rain_animation.dart';
+import 'package:sagen/services/experience_service.dart';
 import 'package:sagen/ui/widgets/learning/quiz_session.dart';
-import 'package:sagen/ui/widgets/streak/flame_animation_widget.dart';
+import 'package:sagen/ui/widgets/rive_flame_widget.dart';
+import '../common/confetti_widget.dart';
+import '../common/localization_helper.dart';
 
 class QuizSummaryScreen extends StatefulWidget {
   final QuizResult result;
@@ -23,20 +25,30 @@ class QuizSummaryScreen extends StatefulWidget {
   State<QuizSummaryScreen> createState() => _QuizSummaryScreenState();
 }
 
-class _QuizSummaryScreenState extends State<QuizSummaryScreen> {
-  bool _showRain = false;
+class _QuizSummaryScreenState extends State<QuizSummaryScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _entranceCtrl;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) setState(() => _showRain = true);
-    });
+    _entranceCtrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1200),
+    );
+    _entranceCtrl.forward();
+    HapticFeedback.heavyImpact();
+  }
+
+  @override
+  void dispose() {
+    _entranceCtrl.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final l = AppLocalizations.of(context)!;
+    final l = l10n(context);
     final dark = Theme.of(context).brightness == Brightness.dark;
     final scorePercent = (widget.result.score * 100).round();
     final minutes = widget.result.timeTaken.inMinutes;
@@ -50,78 +62,95 @@ class _QuizSummaryScreenState extends State<QuizSummaryScreen> {
           const Positioned.fill(
             child: Padding(
               padding: EdgeInsets.only(bottom: 40),
-              child: FlameAnimationWidget(phase: null),
+              child: RiveFlameWidget(phase: null),
             ),
           ),
+          if (r.perfect)
+            const Positioned.fill(
+              child: ConfettiWidget(type: ConfettiType.level, particleCount: 80),
+            )
+          else if (r.score >= 0.7)
+            const Positioned.fill(
+              child: ConfettiWidget(type: ConfettiType.streak, particleCount: 40),
+            ),
           Center(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(AppSpacing.xxl),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Container(
-                    width: 100,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      gradient: r.perfect
-                          ? const LinearGradient(
-                              colors: [PremiumColors.achievementStart, PremiumColors.achievementEnd],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            )
-                          : r.score >= 0.7
-                              ? const LinearGradient(
-                                  colors: [PremiumColors.primary, PremiumColors.primaryLight],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                )
-                              : LinearGradient(
-                                  colors: [Colors.grey.shade400, Colors.grey.shade300],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: (r.perfect
-                                  ? PremiumColors.achievementEnd
-                                  : PremiumColors.primary)
-                              .withValues(alpha: 0.3),
-                          blurRadius: 24,
-                          spreadRadius: 2,
-                        ),
-                      ],
+                  ScaleTransition(
+                    scale: CurvedAnimation(
+                      parent: _entranceCtrl,
+                      curve: const Interval(0.0, 0.5, curve: Curves.elasticOut),
                     ),
-                    child: Center(
-                      child: Text(
-                        '$scorePercent%',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
+                    child: Container(
+                      width: 100,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: r.perfect
+                            ? const LinearGradient(
+                                colors: [PremiumColors.achievementStart, PremiumColors.achievementEnd],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              )
+                            : r.score >= 0.7
+                                ? const LinearGradient(
+                                    colors: [PremiumColors.primary, PremiumColors.primaryLight],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  )
+                                : LinearGradient(
+                                    colors: [context.borderSubtle, context.borderSubtle.withValues(alpha: 0.7)],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: (r.perfect
+                                    ? PremiumColors.achievementEnd
+                                    : PremiumColors.primary)
+                                .withValues(alpha: 0.3),
+                            blurRadius: 24,
+                            spreadRadius: 2,
+                          ),
+                        ],
+                      ),
+                      child: Center(
+                        child: Text(
+                          '$scorePercent%',
+                          style: AppTextStyle.displayMedium.copyWith(color: Colors.white,
+                            fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 24),
-                  Text(
-                    r.perfect
-                        ? l.summaryPerfect
-                        : r.score >= 0.7
-                            ? l.summaryGoodWork
-                            : l.summaryKeepPracticing,
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: dark ? Colors.white : const Color(0xFF1A1A2E),
+                  const SizedBox(height: AppSpacing.xxl),
+                  FadeTransition(
+                    opacity: CurvedAnimation(
+                      parent: _entranceCtrl,
+                      curve: const Interval(0.2, 0.6, curve: Curves.easeOut),
+                    ),
+                    child: Text(
+                      r.perfect
+                          ? l.summaryPerfect
+                          : r.score >= 0.7
+                              ? l.summaryGoodWork
+                              : l.summaryKeepPracticing,
+                      style: AppTextStyle.headline.copyWith(fontWeight: FontWeight.bold,
+                        color: context.textPrimary),
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  Text(
-                    l.correctAnswers(r.correctAnswers, r.totalQuestions),
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: dark ? Colors.white54 : Colors.grey.shade600,
+                  const SizedBox(height: AppSpacing.sm),
+                  FadeTransition(
+                    opacity: CurvedAnimation(
+                      parent: _entranceCtrl,
+                      curve: const Interval(0.3, 0.7, curve: Curves.easeOut),
+                    ),
+                    child: Text(
+                      l.correctAnswers(r.correctAnswers, r.totalQuestions),
+                      style: AppTextStyle.bodyMd.copyWith(color: context.textSecondary),
                     ),
                   ),
                   if (minutes > 0 || seconds > 0)
@@ -129,93 +158,115 @@ class _QuizSummaryScreenState extends State<QuizSummaryScreen> {
                       padding: const EdgeInsets.only(top: 4),
                       child: Text(
                         '${minutes}m ${seconds}s',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: dark ? Colors.white38 : Colors.grey.shade500,
-                        ),
+                        style: AppTextStyle.caption.copyWith(color: context.textTertiary),
                       ),
                     ),
-                  if (_showRain) ...[
-                    const SizedBox(height: 12),
-                    SizedBox(
-                      height: 80,
-                      child: GemRainAnimation(
-                        gemCount: r.gemsEarned.clamp(5, 20),
-                        totalGems: r.gemsEarned,
-                        height: 80,
+                  const SizedBox(height: AppSpacing.xxxl),
+                  SlideTransition(
+                    position: Tween<Offset>(
+                      begin: const Offset(0, 0.3),
+                      end: Offset.zero,
+                    ).animate(CurvedAnimation(
+                      parent: _entranceCtrl,
+                      curve: const Interval(0.3, 0.8, curve: Curves.easeOutCubic),
+                    )),
+                    child: FadeTransition(
+                      opacity: CurvedAnimation(
+                        parent: _entranceCtrl,
+                        curve: const Interval(0.3, 0.8, curve: Curves.easeOut),
+                      ),
+                      child: _RewardRow(
+                        iconWidget: const ExcludeSemantics(
+                          child: Icon(Icons.auto_awesome_rounded, size: 18, color: PremiumColors.achievementEnd),
+                        ),
+                        label: l.summaryXpEarned,
+                        value: '${r.xpEarned}',
+                        color: PremiumColors.achievementEnd,
+                        dark: dark,
                       ),
                     ),
-                    if (r.gemsEarned > 0)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8),
-                        child: GemPileWidget(
-                          gemCount: r.gemsEarned.clamp(1, 30),
-                          maxSize: 60 + r.gemsEarned.clamp(0, 20) * 2,
-                          itemSize: 14,
-                        ),
+                  ),
+                  const SizedBox(height: AppSpacing.md),
+                  SlideTransition(
+                    position: Tween<Offset>(
+                      begin: const Offset(0, 0.3),
+                      end: Offset.zero,
+                    ).animate(CurvedAnimation(
+                      parent: _entranceCtrl,
+                      curve: const Interval(0.45, 0.95, curve: Curves.easeOutCubic),
+                    )),
+                    child: FadeTransition(
+                      opacity: CurvedAnimation(
+                        parent: _entranceCtrl,
+                        curve: const Interval(0.45, 0.95, curve: Curves.easeOut),
                       ),
-                  ],
-                  const SizedBox(height: 32),
-                  _RewardRow(
-                    iconWidget: const Icon(Icons.auto_awesome_rounded, size: 18, color: PremiumColors.achievementEnd),
-                    label: l.summaryXpEarned,
-                    value: '${r.xpEarned}',
-                    color: PremiumColors.achievementEnd,
-                    dark: dark,
-                  ),
-                  const SizedBox(height: 12),
-                  _RewardRow(
-                    iconWidget: const GemWidget(size: 18, animate: false),
-                    label: l.summaryGemsEarned,
-                    value: '${r.gemsEarned}',
-                    color: PremiumColors.premiumBlue,
-                    dark: dark,
-                  ),
-                  const SizedBox(height: 12),
-                  _RewardRow(
-                    iconWidget: const Icon(Icons.emoji_events_rounded, size: 18, color: PremiumColors.achievementEnd),
-                    label: l.profileStreak,
-                    value: l.summaryStreakDays(r.perfect ? 2 : 1),
-                    color: PremiumColors.achievementEnd,
-                    dark: dark,
-                  ),
-                  const SizedBox(height: 40),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 52,
-                    child: ElevatedButton.icon(
-                      onPressed: widget.onContinue,
-                      icon: const Icon(Icons.arrow_forward_rounded, size: 20),
-                      label: Text(l.continueText,
-                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: PremiumColors.primary,
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(14),
+                      child: _RewardRow(
+                        iconWidget: const ExcludeSemantics(
+                          child: Icon(Icons.emoji_events_rounded, size: 18, color: PremiumColors.achievementEnd),
                         ),
-                        elevation: 4,
-                        shadowColor: PremiumColors.primary.withValues(alpha: 0.3),
+                        label: l.profileStreak,
+                        value: l.summaryStreakDays(r.perfect ? 2 : 1),
+                        color: PremiumColors.achievementEnd,
+                        dark: dark,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.huge),
+                  FadeTransition(
+                    opacity: CurvedAnimation(
+                      parent: _entranceCtrl,
+                      curve: const Interval(0.6, 1.0, curve: Curves.easeOut),
+                    ),
+                    child: SizedBox(
+                      width: double.infinity,
+                      height: 52,
+                      child: Semantics(
+                        button: true,
+                        label: AppLocalizations.of(context)?.continueText ?? '',
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            ExperienceService.instance.lightHaptic();
+                            widget.onContinue();
+                          },
+                          icon: const Icon(Icons.arrow_forward_rounded, size: 20),
+                          label: Text(l.continueText,
+                              style: AppTextStyle.titleSmall.copyWith(fontWeight: FontWeight.bold)),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: PremiumColors.primary,
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(AppRadius.lg),
+                            ),
+                            elevation: 4,
+                            shadowColor: PremiumColors.primary.withValues(alpha: 0.3),
+                          ),
+                        ),
                       ),
                     ),
                   ),
                   if (widget.onRetry != null) ...[
-                    const SizedBox(height: 12),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 48,
-                      child: OutlinedButton.icon(
-                        onPressed: widget.onRetry,
-                        icon: const Icon(Icons.refresh_rounded, size: 18),
-                        label: Text(l.sessionRetry,
-                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: PremiumColors.primary,
-                          side: BorderSide(
-                            color: PremiumColors.primary.withValues(alpha: 0.3),
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14),
+                    const SizedBox(height: AppSpacing.md),
+                    FadeTransition(
+                      opacity: CurvedAnimation(
+                        parent: _entranceCtrl,
+                        curve: const Interval(0.7, 1.0, curve: Curves.easeOut),
+                      ),
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: 48,
+                        child: OutlinedButton.icon(
+                          onPressed: widget.onRetry,
+                          icon: const Icon(Icons.refresh_rounded, size: 18),
+                          label: Text(l.sessionRetry,
+                              style: AppTextStyle.bodyMd.copyWith(fontWeight: FontWeight.bold)),
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: PremiumColors.primary,
+                            side: BorderSide(
+                              color: PremiumColors.primary.withValues(alpha: 0.3),
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(AppRadius.lg),
+                            ),
                           ),
                         ),
                       ),
@@ -252,7 +303,7 @@ class _RewardRow extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.lg),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.06),
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(color: color.withValues(alpha: 0.15)),
       ),
       child: Row(
@@ -261,26 +312,20 @@ class _RewardRow extends StatelessWidget {
             padding: const EdgeInsets.all(AppSpacing.sm),
             decoration: BoxDecoration(
               color: color.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(AppRadius.sm),
             ),
             child: iconWidget,
           ),
           const SizedBox(width: AppSpacing.md),
           Text(
             label,
-            style: TextStyle(
-              fontSize: 14,
-              color: dark ? Colors.white70 : Colors.black87,
-            ),
+            style: AppTextStyle.bodyMd.copyWith(color: context.textSecondary),
           ),
           const Spacer(),
           Text(
             value,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: color,
-            ),
+            style: AppTextStyle.titleSmall.copyWith(fontWeight: FontWeight.bold,
+              color: color),
           ),
         ],
       ),

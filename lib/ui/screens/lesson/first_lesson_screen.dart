@@ -1,25 +1,108 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'dart:async';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/theme_constants.dart';
 import '../../../models/learning/challenge.dart';
 import 'package:sagen/providers/providers.dart';
 import 'package:sagen/l10n/app_localizations.dart';
+import 'package:sagen/ui/widgets/common/premium_loader.dart';
 import 'package:sagen/ui/widgets/shimmer_loading.dart';
+import 'package:sagen/services/sage_emotion_service.dart';
+import 'package:sagen/ui/widgets/common/sage_emotion_widget.dart';
 
-class FirstLessonScreen extends ConsumerWidget {
+class FirstLessonScreen extends ConsumerStatefulWidget {
   final VoidCallback onComplete;
 
   const FirstLessonScreen({super.key, required this.onComplete});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<FirstLessonScreen> createState() => _FirstLessonScreenState();
+}
+
+class _FirstLessonScreenState extends ConsumerState<FirstLessonScreen> {
+  String? _loadError;
+  Timer? _timeoutTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final lesson = ref.read(firstLessonProvider);
+      if (lesson.questions.isEmpty) {
+        _startLessonWithTimeout();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _timeoutTimer?.cancel();
+    super.dispose();
+  }
+
+  void _startLessonWithTimeout() {
+    final path = ref.read(diagnosticPathProvider);
+    ref.read(firstLessonProvider.notifier).startLesson(path: path);
+    _timeoutTimer?.cancel();
+    _timeoutTimer = Timer(const Duration(seconds: 10), () {
+      if (!mounted) return;
+      final updated = ref.read(firstLessonProvider);
+      if (updated.questions.isEmpty && mounted) {
+        setState(() => _loadError = AppLocalizations.of(context)!.errorLoadQuestions);
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final dark = Theme.of(context).brightness == Brightness.dark;
     final l = AppLocalizations.of(context)!;
     final lesson = ref.watch(firstLessonProvider);
     final notifier = ref.read(firstLessonProvider.notifier);
 
+    ref.listen(firstLessonProvider, (prev, next) {
+      if (next.isComplete && mounted) {
+        widget.onComplete();
+      }
+    });
+
+    if (_loadError != null) {
+      return Scaffold(
+        backgroundColor: dark ? PremiumColors.deepBackground : PremiumColors.lightBg,
+        body: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const ExcludeSemantics(
+                child: SageEmotionWidget(emotion: SageEmotion.worried),
+              ),
+              const SizedBox(height: AppSpacing.lg),
+              Text(
+                _loadError!,
+                textAlign: TextAlign.center,
+                style: AppTextStyle.bodyMd.copyWith(
+                  color: context.textTertiary,
+                ),
+              ),
+              const SizedBox(height: AppSpacing.xxl),
+              ElevatedButton(
+                onPressed: () {
+                  HapticFeedback.lightImpact();
+                  setState(() { _loadError = null; });
+                  _startLessonWithTimeout();
+                },
+                child: Text(AppLocalizations.of(context)!.retry),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     if (lesson.questions.isEmpty) {
-      notifier.startLesson();
       return Scaffold(
         backgroundColor: dark ? PremiumColors.deepBackground : PremiumColors.lightBg,
         body: const _FirstLessonShimmer(),
@@ -27,75 +110,101 @@ class FirstLessonScreen extends ConsumerWidget {
     }
 
     if (lesson.isComplete) {
-      WidgetsBinding.instance.addPostFrameCallback((_) => onComplete());
-      return Scaffold(
-        backgroundColor: dark ? PremiumColors.deepBackground : PremiumColors.lightBg,
-        body: const Center(child: CircularProgressIndicator()),
+      return PremiumLoader(
+        loading: true,
+        message: AppLocalizations.of(context)!.loading,
+        child: Scaffold(
+          backgroundColor: dark ? PremiumColors.deepBackground : PremiumColors.lightBg,
+        ),
       );
     }
 
     final q = lesson.currentChallenge;
     if (q == null) return const SizedBox.shrink();
 
-    return Scaffold(
-      backgroundColor: dark ? PremiumColors.deepBackground : PremiumColors.lightBg,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(AppSpacing.xxl),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  const Icon(Icons.school_rounded, color: PremiumColors.splashBlue, size: 20),
-                  const SizedBox(width: AppSpacing.sm),
-                  Text(
-                    l.firstLessonProgress(lesson.currentIndex + 1, lesson.totalQuestions),
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                      color: dark ? Colors.white.withValues(alpha: 0.5) : Colors.black45,
-                    ),
-                  ),
-                  const Spacer(),
-                  Text(
-                    '${((lesson.currentIndex / lesson.totalQuestions) * 100).toInt()}%',
-                    style: const TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                      color: PremiumColors.splashBlue,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: AppSpacing.sm),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(AppRadius.pill),
-                child: LinearProgressIndicator(
-                  value: lesson.currentIndex / lesson.totalQuestions,
-                  backgroundColor: dark ? Colors.white.withValues(alpha: 0.06) : Colors.black.withValues(alpha: 0.06),
-                  valueColor: const AlwaysStoppedAnimation(PremiumColors.splashBlue),
-                  minHeight: 4,
-                ),
-              ),
-              const SizedBox(height: AppSpacing.xxl),
-              Expanded(
-                child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 300),
-                  child: _QuestionBody(
-                    key: ValueKey(lesson.currentIndex),
-                    question: q,
-                    showFeedback: lesson.showFeedback,
-                    selectedAnswer: lesson.selectedAnswer,
-                    answeredCorrectly: lesson.answeredCorrectly,
-                    isLastQuestion: lesson.currentIndex + 1 >= lesson.totalQuestions,
-                    dark: dark,
-                    onSelect: (index) => notifier.submitAnswer(index),
-                    onNext: () => notifier.nextQuestion(),
-                  ),
-                ),
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: Text(l.exitText),
+            content: Text(l.exitQuizTitle),
+            actions: [
+              TextButton(onPressed: () { HapticFeedback.lightImpact(); Navigator.pop(ctx); }, child: Text(l.cancel)),
+              TextButton(
+                onPressed: () {
+                  HapticFeedback.lightImpact();
+                  Navigator.pop(ctx);
+                  Navigator.pop(context);
+                },
+                child: Text(l.exitText),
               ),
             ],
+          ),
+        );
+      },
+      child: Scaffold(
+        backgroundColor: dark ? PremiumColors.deepBackground : PremiumColors.lightBg,
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(AppSpacing.xxl),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    const ExcludeSemantics(child: Icon(Icons.school_rounded, color: PremiumColors.splashBlue, size: 20)),
+                    const SizedBox(width: AppSpacing.sm),
+                    Text(
+                      l.firstLessonProgress(lesson.currentIndex + 1, lesson.totalQuestions),
+                      style: AppTextStyle.subtitle.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: context.textTertiary,
+                      ),
+                    ),
+                    const Spacer(),
+                    Text(
+                      '${lesson.totalQuestions > 0 ? ((lesson.currentIndex / lesson.totalQuestions) * 100).toInt() : 0}%',
+                      style: AppTextStyle.subtitle.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: PremiumColors.splashBlue,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: AppSpacing.sm),
+                Semantics(
+                  label: l.firstLessonProgress(lesson.currentIndex + 1, lesson.totalQuestions),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(AppRadius.pill),
+                    child: LinearProgressIndicator(
+                      value: lesson.totalQuestions > 0 ? lesson.currentIndex / lesson.totalQuestions : 0.0,
+                      backgroundColor: context.surfaceTinted,
+                      valueColor: const AlwaysStoppedAnimation(PremiumColors.splashBlue),
+                      minHeight: 4,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.xxl),
+                Expanded(
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 300),
+                    child: _QuestionBody(
+                      key: ValueKey(lesson.currentIndex),
+                      question: q,
+                      showFeedback: lesson.showFeedback,
+                      selectedAnswer: lesson.selectedAnswer,
+                      answeredCorrectly: lesson.answeredCorrectly,
+                      isLastQuestion: lesson.currentIndex + 1 >= lesson.totalQuestions,
+                      onSelect: (index) => notifier.submitAnswer(index),
+                      onNext: () => notifier.nextQuestion(),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -131,7 +240,6 @@ class _QuestionBody extends StatelessWidget {
   final int? selectedAnswer;
   final bool answeredCorrectly;
   final bool isLastQuestion;
-  final bool dark;
   final ValueChanged<int> onSelect;
   final VoidCallback onNext;
 
@@ -142,7 +250,6 @@ class _QuestionBody extends StatelessWidget {
     required this.selectedAnswer,
     required this.answeredCorrectly,
     required this.isLastQuestion,
-    required this.dark,
     required this.onSelect,
     required this.onNext,
   });
@@ -155,12 +262,11 @@ class _QuestionBody extends StatelessWidget {
       children: [
         Text(
           question.question,
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-            color: dark ? Colors.white.withValues(alpha: 0.95) : Colors.black87,
-            height: 1.4,
-          ),
+            style: AppTextStyle.title.copyWith(
+              fontWeight: FontWeight.w600,
+              color: context.textPrimary,
+              height: 1.4,
+            ),
         ),
         const SizedBox(height: AppSpacing.xxl),
         ...List.generate(question.options.length, (i) {
@@ -178,19 +284,25 @@ class _QuestionBody extends StatelessWidget {
               tileColor = PremiumColors.error.withValues(alpha: 0.12);
               borderColor = PremiumColors.error;
             } else {
-              tileColor = dark ? Colors.white.withValues(alpha: 0.03) : Colors.black.withValues(alpha: 0.03);
-              borderColor = dark ? Colors.white.withValues(alpha: 0.06) : Colors.black.withValues(alpha: 0.06);
+              tileColor = context.subtle;
+              borderColor = context.subtleBorder;
             }
           } else {
-            tileColor = dark ? Colors.white.withValues(alpha: 0.05) : Colors.black.withValues(alpha: 0.03);
-            borderColor = dark ? Colors.white.withValues(alpha: 0.08) : Colors.black.withValues(alpha: 0.06);
+            tileColor = context.subtle;
+            borderColor = context.subtleBorder;
           }
 
-          return Padding(
-            padding: const EdgeInsets.only(bottom: AppSpacing.md),
-            child: GestureDetector(
-              onTap: showFeedback ? null : () => onSelect(i),
-              child: AnimatedContainer(
+          return Semantics(
+            button: true,
+            label: opt,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: AppSpacing.md),
+              child: GestureDetector(
+                onTap: showFeedback ? null : () {
+                  HapticFeedback.lightImpact();
+                  onSelect(i);
+                },
+                child: AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
                 padding: const EdgeInsets.all(AppSpacing.lg),
                 decoration: BoxDecoration(
@@ -211,17 +323,14 @@ class _QuestionBody extends StatelessWidget {
                           ? PremiumColors.success
                           : showFeedback && isSelected && !isCorrect
                               ? PremiumColors.error
-                              : dark
-                                  ? Colors.white.withValues(alpha: 0.4)
-                                  : Colors.black.withValues(alpha: 0.3),
+                              : context.textTertiary,
                     ),
                     const SizedBox(width: AppSpacing.md),
                     Expanded(
                       child: Text(
                         opt,
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: dark ? Colors.white.withValues(alpha: 0.85) : Colors.black87,
+                        style: AppTextStyle.body.copyWith(
+                          color: context.textPrimary,
                         ),
                       ),
                     ),
@@ -229,6 +338,7 @@ class _QuestionBody extends StatelessWidget {
                 ),
               ),
             ),
+          ),
           );
         }),
         if (showFeedback) ...[
@@ -257,11 +367,10 @@ class _QuestionBody extends StatelessWidget {
                 Expanded(
                   child: Text(
                     question.explanation,
-                    style: TextStyle(
-                      fontSize: 13,
+                    style: AppTextStyle.subtitle.copyWith(
                       color: answeredCorrectly
-                          ? (dark ? Colors.white.withValues(alpha: 0.7) : Colors.black87)
-                          : (dark ? Colors.white.withValues(alpha: 0.7) : Colors.black87),
+                          ? (context.isDark ? PremiumColors.successLight : PremiumColors.success)
+                          : context.textSecondary,
                       height: 1.4,
                     ),
                   ),
@@ -270,24 +379,31 @@ class _QuestionBody extends StatelessWidget {
             ),
           ),
           const SizedBox(height: AppSpacing.xl),
-          SizedBox(
-            width: double.infinity,
-            height: 48,
-            child: ElevatedButton(
-              onPressed: onNext,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: PremiumColors.primary,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
-              ),
-              child: Text(
-                isLastQuestion ? l.firstLessonSeeResults : l.nextText.toUpperCase(),
-                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+          Semantics(
+            button: true,
+            label: isLastQuestion ? l.firstLessonSeeResults : l.nextText,
+            child: SizedBox(
+              width: double.infinity,
+              height: 48,
+              child: ElevatedButton(
+                onPressed: () {
+                  HapticFeedback.lightImpact();
+                  onNext();
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: PremiumColors.primary,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
+                ),
+                child: Text(
+                  isLastQuestion ? l.firstLessonSeeResults : l.nextText.toUpperCase(),
+                  style: AppTextStyle.body.copyWith(fontWeight: FontWeight.bold),
+                ),
               ),
             ),
           ),
         ],
-        ],
-      );
+      ],
+    ).animate().fadeIn(duration: 300.ms);
     }
   }

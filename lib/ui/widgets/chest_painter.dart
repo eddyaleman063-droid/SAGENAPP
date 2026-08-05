@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:sagen/core/theme/theme_constants.dart';
 import '../../models/chest_type.dart';
 import 'chest_config.dart';
 
@@ -63,43 +64,43 @@ class ChestPainter extends CustomPainter {
     switch (t) {
       case ChestType.bronze:
         return const ChestConfig(
-          bodyColor: Color(0xFFCD7F32),
-          accentColor: Color(0xFF8B5E3C),
-          glowColor: Color(0xFF8D6E63),
+          bodyColor: PremiumColors.chestBronzeBody,
+          accentColor: PremiumColors.chestBronzeAccent,
+          glowColor: PremiumColors.chestBronzeGlow,
           lidTop: 0.18, bodyTop: 0.46, bodyBottom: 0.82,
           bodyRadius: 0.035, bandCount: 1, bandWidth: 2.5,
           hasArch: false, lockGem: false, lockSize: 0.055,
-          particleColor: Color(0xFFCD7F32),
+          particleColor: PremiumColors.chestBronzeBody,
         );
       case ChestType.silver:
         return const ChestConfig(
-          bodyColor: Color(0xFFA0AAB8),
-          accentColor: Color(0xFF7A8A9A),
-          glowColor: Color(0xFFB0BEC5),
+          bodyColor: PremiumColors.chestSilverBody,
+          accentColor: PremiumColors.chestSilverAccent,
+          glowColor: PremiumColors.chestSilverGlow,
           lidTop: 0.16, bodyTop: 0.44, bodyBottom: 0.82,
           bodyRadius: 0.040, bandCount: 2, bandWidth: 3.0,
           hasArch: true, lockGem: false, lockSize: 0.060,
-          particleColor: Color(0xFFC0D0E0),
+          particleColor: PremiumColors.chestSilverParticle,
         );
       case ChestType.gold:
         return const ChestConfig(
-          bodyColor: Color(0xFFE6B800),
-          accentColor: Color(0xFFB8860B),
-          glowColor: Color(0xFFFFB300),
+          bodyColor: PremiumColors.chestGoldBody,
+          accentColor: PremiumColors.chestGoldAccent,
+          glowColor: PremiumColors.chestGoldGlow,
           lidTop: 0.14, bodyTop: 0.42, bodyBottom: 0.83,
           bodyRadius: 0.045, bandCount: 3, bandWidth: 3.5,
           hasArch: true, lockGem: true, lockSize: 0.065,
-          particleColor: Color(0xFFFFD700),
+          particleColor: PremiumColors.chestGoldParticle,
         );
       case ChestType.legendary:
         return const ChestConfig(
-          bodyColor: Color(0xFF9B6BFF),
-          accentColor: Color(0xFF7C4DFF),
-          glowColor: Color(0xFFB388FF),
+          bodyColor: PremiumColors.chestLegendaryBody,
+          accentColor: PremiumColors.deepPurple,
+          glowColor: PremiumColors.chestLegendaryGlow2,
           lidTop: 0.12, bodyTop: 0.40, bodyBottom: 0.84,
           bodyRadius: 0.050, bandCount: 2, bandWidth: 3.0,
           hasArch: true, lockGem: true, lockSize: 0.070,
-          particleColor: Color(0xFFE040FB),
+          particleColor: PremiumColors.chestLegendaryParticle,
         );
     }
   }
@@ -129,7 +130,7 @@ class ChestPainter extends CustomPainter {
     final a = (rt * 0.60).clamp(0.0, 1.0);
     _p.shader = null;
     _p.style = PaintingStyle.fill;
-    _p.color = const Color(0xFF1A0A00).withValues(alpha: a);
+    _p.color = PremiumColors.chestDarkBg.withValues(alpha: a);
     final inner = RRect.fromRectAndRadius(
       Rect.fromLTRB(cL + 4, bT + 2, cR - 4, bB - 4), Radius.circular(bR * 0.5));
     canvas.drawRRect(inner, _p);
@@ -212,7 +213,7 @@ class ChestPainter extends CustomPainter {
     if (_cfg.lockGem) {
       final gr = lr * 0.28;
       _p.color = type == ChestType.legendary
-          ? const Color(0xFFE040FB) : const Color(0xFFFF3D00);
+          ? PremiumColors.chestLegendaryParticle : PremiumColors.chestLegendaryRed;
       canvas.drawCircle(Offset(cx, lc.dy - lr * 0.4), gr, _p);
       _p.color = Colors.white.withValues(alpha: 0.30);
       canvas.drawCircle(Offset(cx - gr * 0.2, lc.dy - lr * 0.4 - gr * 0.2), gr * 0.35, _p);
@@ -230,7 +231,7 @@ class ChestPainter extends CustomPainter {
 
     _p.style = PaintingStyle.fill;
     _p.shader = null;
-    _p.color = const Color(0xFF2A1506);
+    _p.color = PremiumColors.chestDarkLine;
     canvas.drawRect(Rect.fromLTRB(cL, lT, cR, bT), _p);
 
     _p.shader = LinearGradient(
@@ -437,6 +438,8 @@ class ChestPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(ChestPainter old) {
+    if (isAnimating != old.isAnimating) return true;
+    if (!isAnimating && !old.isAnimating) return false;
     return old.progress != progress || old.isOpen != isOpen || old.type != type;
   }
 }

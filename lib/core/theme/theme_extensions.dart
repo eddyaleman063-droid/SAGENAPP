@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'theme_constants.dart';
 
 class ChestColors extends ThemeExtension<ChestColors> {
   final Color bronze;
@@ -34,17 +35,17 @@ class ChestColors extends ThemeExtension<ChestColors> {
   }
 
   static const light = ChestColors(
-    bronze: Color(0xFF8D6E63),
-    silver: Color(0xFF9E9E9E),
-    gold: Color(0xFFFFB300),
-    legendary: Color(0xFFFF8F00),
+    bronze: PremiumColors.bronzeGlow,
+    silver: PremiumColors.silverMedium,
+    gold: PremiumColors.rarityLegendary,
+    legendary: PremiumColors.wizardOrange,
   );
 
   static const dark = ChestColors(
-    bronze: Color(0xFFA1887F),
-    silver: Color(0xFFB0BEC5),
-    gold: Color(0xFFFFCA28),
-    legendary: Color(0xFFFFB300),
+    bronze: PremiumColors.bronzeLight,
+    silver: PremiumColors.chestSilverGlow,
+    gold: PremiumColors.achievementTier30,
+    legendary: PremiumColors.rarityLegendary,
   );
 }
 
@@ -71,13 +72,13 @@ class GemColors extends ThemeExtension<GemColors> {
   }
 
   static const light = GemColors(
-    primary: Color(0xFF4FC3F7),
-    secondary: Color(0xFF29B6F6),
+    primary: PremiumColors.gemPrimary,
+    secondary: PremiumColors.gemSecondaryLight,
   );
 
   static const dark = GemColors(
-    primary: Color(0xFF4FC3F7),
-    secondary: Color(0xFF81D4FA),
+    primary: PremiumColors.gemPrimary,
+    secondary: PremiumColors.gemSecondaryDark,
   );
 }
 
@@ -115,16 +116,16 @@ class StreakColors extends ThemeExtension<StreakColors> {
   }
 
   static const light = StreakColors(
-    chispa: Color(0xFFFF6D00),
-    constante: Color(0xFFD50000),
-    azul: Color(0xFF1565C0),
-    cosmica: Color(0xFFAA00FF),
+    chispa: PremiumColors.streakSpark,
+    constante: PremiumColors.streakConstantLight,
+    azul: PremiumColors.streakBlueLight,
+    cosmica: PremiumColors.streakCosmicLight,
   );
 
   static const dark = StreakColors(
-    chispa: Color(0xFFFFB300),
-    constante: Color(0xFFFF1744),
-    azul: Color(0xFF448AFF),
-    cosmica: Color(0xFFFFD700),
+    chispa: PremiumColors.rarityLegendary,
+    constante: PremiumColors.streakConstantDark,
+    azul: PremiumColors.streakBlueDark,
+    cosmica: PremiumColors.gold,
   );
 }

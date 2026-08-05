@@ -5,19 +5,59 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'app_logger.dart';
 import 'auth_models.dart';
 
-class FirebaseAuthClient {
+/// Abstract interface for Firebase Authentication operations.
+abstract class AuthClient {
+  bool get isAvailable;
+  firebase.User? get firebaseUser;
+  Stream<firebase.User?> get authStateChanges;
+
+  void init();
+  AppUser appUserFromFirebase(firebase.User user);
+
+  Future<AppUser> signInWithGoogle();
+  Future<AppUser> signInWithFacebook();
+
+  Future<AppUser> signUpWithEmail({
+    required String email,
+    required String password,
+    required String displayName,
+  });
+
+  Future<AppUser> signInWithEmail({
+    required String email,
+    required String password,
+  });
+
+  Future<void> sendEmailVerification();
+  Future<bool> reloadUser();
+  Future<void> sendPasswordResetEmail(String email);
+
+  Future<firebase.User?> reauthenticate(String email, String password);
+  Future<String?> getIdToken();
+
+  Future<void> signOutFirebase();
+  Future<void> deleteFirebaseUser();
+}
+
+/// Firebase Auth implementation with Google and email sign-in.
+class FirebaseAuthClient implements AuthClient {
   final AppLogger _logger;
   firebase.FirebaseAuth? _auth;
   GoogleSignIn? _googleSignIn;
 
   FirebaseAuthClient({AppLogger? logger}) : _logger = logger ?? AppLogger();
 
+  @override
   bool get isAvailable => _auth != null;
+  bool get isGoogleAvailable => _auth != null && _googleSignIn != null;
+  @override
   firebase.User? get firebaseUser => _auth?.currentUser;
 
+  @override
   Stream<firebase.User?> get authStateChanges =>
       _auth?.authStateChanges() ?? const Stream.empty();
 
+  @override
   void init() {
     try {
       _auth = firebase.FirebaseAuth.instance;
@@ -27,6 +67,7 @@ class FirebaseAuthClient {
     }
   }
 
+  @override
   AppUser appUserFromFirebase(firebase.User user) {
     return AppUser(
       uid: user.uid,
@@ -37,12 +78,18 @@ class FirebaseAuthClient {
     );
   }
 
+  @override
   Future<AppUser> signInWithGoogle() async {
-    if (!isAvailable) {
+    if (!isGoogleAvailable) {
+      throw const AuthException('firebase_unavailable');
+    }
+    final gs = _googleSignIn;
+    final auth = _auth;
+    if (gs == null || auth == null) {
       throw const AuthException('firebase_unavailable');
     }
     try {
-      final googleUser = await _googleSignIn!.signIn();
+      final googleUser = await gs.signIn();
       if (googleUser == null) {
         throw const AuthException('canceled');
       }
@@ -51,7 +98,7 @@ class FirebaseAuthClient {
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
-      final result = await _auth!.signInWithCredential(credential);
+      final result = await auth.signInWithCredential(credential);
       final fbUser = result.user;
       if (fbUser == null) {
         throw const AuthException('null_user');
@@ -62,10 +109,12 @@ class FirebaseAuthClient {
     } on AuthException {
       rethrow;
     } catch (e) {
+      _logger.warning('FirebaseAuthClient: signInWithGoogle failed: $e');
       throw const AuthException('unknown');
     }
   }
 
+  @override
   Future<AppUser> signInWithFacebook() async {
     if (!isAvailable) {
       throw const AuthException('firebase_unavailable');
@@ -82,8 +131,10 @@ class FirebaseAuthClient {
       if (accessToken == null) {
         throw const AuthException('null_token');
       }
+      final auth = _auth;
+      if (auth == null) throw const AuthException('firebase_unavailable');
       final credential = firebase.FacebookAuthProvider.credential(accessToken.tokenString);
-      final fbResult = await _auth!.signInWithCredential(credential);
+      final fbResult = await auth.signInWithCredential(credential);
       final fbUser = fbResult.user;
       if (fbUser == null) {
         throw const AuthException('null_user');
@@ -94,10 +145,12 @@ class FirebaseAuthClient {
     } on AuthException {
       rethrow;
     } catch (e) {
+      _logger.warning('FirebaseAuthClient: signInWithFacebook failed: $e');
       throw const AuthException('unknown');
     }
   }
 
+  @override
   Future<AppUser> signUpWithEmail({
     required String email,
     required String password,
@@ -107,7 +160,9 @@ class FirebaseAuthClient {
       throw const AuthException('firebase_unavailable');
     }
     try {
-      final result = await _auth!.createUserWithEmailAndPassword(
+      final auth = _auth;
+      if (auth == null) throw const AuthException('firebase_unavailable');
+      final result = await auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -121,10 +176,12 @@ class FirebaseAuthClient {
     } on firebase.FirebaseAuthException catch (e) {
       throw _mapFirebaseException(e);
     } catch (e) {
+      _logger.warning('FirebaseAuthClient: signUpWithEmail failed: $e');
       throw const AuthException('unknown');
     }
   }
 
+  @override
   Future<AppUser> signInWithEmail({
     required String email,
     required String password,
@@ -133,7 +190,9 @@ class FirebaseAuthClient {
       throw const AuthException('firebase_unavailable');
     }
     try {
-      final result = await _auth!.signInWithEmailAndPassword(
+      final auth = _auth;
+      if (auth == null) throw const AuthException('firebase_unavailable');
+      final result = await auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -146,13 +205,16 @@ class FirebaseAuthClient {
     } on firebase.FirebaseAuthException catch (e) {
       throw _mapFirebaseException(e);
     } catch (e) {
+      _logger.warning('FirebaseAuthClient: signInWithEmail failed: $e');
       throw const AuthException('unknown');
     }
   }
 
+  @override
   Future<void> sendEmailVerification() async {
-    if (!isAvailable) return;
-    final user = _auth!.currentUser;
+    final auth = _auth;
+    if (auth == null) return;
+    final user = auth.currentUser;
     if (user == null) {
       throw const AuthException('not_authenticated');
     }
@@ -163,61 +225,111 @@ class FirebaseAuthClient {
     }
   }
 
+  @override
   Future<bool> reloadUser() async {
-    if (!isAvailable) return false;
+    final auth = _auth;
+    if (auth == null) return false;
     try {
-      final user = _auth!.currentUser;
+      final user = auth.currentUser;
       if (user == null) return false;
       await user.reload();
-      final reloaded = _auth!.currentUser;
+      final reloaded = auth.currentUser;
       if (reloaded != null) {
         return reloaded.emailVerified;
       }
       return false;
-    } catch (_) {
+    } catch (e) {
+      _logger.warning('FirebaseAuthClient: reloadUser failed: $e');
       return false;
     }
   }
 
+  @override
   Future<void> sendPasswordResetEmail(String email) async {
-    if (!isAvailable) {
-      throw const AuthException('firebase_unavailable');
-    }
+    final auth = _auth;
+    if (auth == null) throw const AuthException('firebase_unavailable');
     try {
-      await _auth!.sendPasswordResetEmail(email: email);
+      await auth.sendPasswordResetEmail(email: email);
     } on firebase.FirebaseAuthException catch (e) {
       throw _mapFirebaseException(e);
     }
   }
 
-  Future<void> signOutFirebase() async {
+  @override
+  Future<firebase.User?> reauthenticate(String email, String password) async {
+    final auth = _auth;
+    if (auth == null) return null;
+    final user = auth.currentUser;
+    if (user == null) return null;
     try {
-      if (_googleSignIn != null) {
-        await _googleSignIn!.signOut();
-      }
-    } catch (_) {}
-    try {
-      await FacebookAuth.instance.logOut();
-    } catch (_) {}
-    if (_auth != null) {
-      await _auth!.signOut();
+      final credential = firebase.EmailAuthProvider.credential(
+        email: email,
+        password: password,
+      );
+      final result = await user.reauthenticateWithCredential(credential);
+      return result.user;
+    } on firebase.FirebaseAuthException catch (e) {
+      throw _mapFirebaseException(e);
     }
   }
 
+  @override
+  Future<String?> getIdToken() async {
+    final auth = _auth;
+    if (auth == null) return null;
+    final user = auth.currentUser;
+    if (user == null) return null;
+    try {
+      return await user.getIdToken();
+    } catch (e) {
+      _logger.warning('[FirebaseAuthClient] getIdToken error: $e');
+      return null;
+    }
+  }
+
+  @override
+  Future<void> signOutFirebase() async {
+    final gs = _googleSignIn;
+    try {
+      if (gs != null) {
+        await gs.signOut();
+      }
+    } catch (e) {
+      _logger.warning('FirebaseAuthClient: Google signOut failed: $e');
+    }
+    try {
+      await FacebookAuth.instance.logOut();
+    } catch (e) {
+      _logger.warning('FirebaseAuthClient: Facebook logOut failed: $e');
+    }
+    final auth = _auth;
+    if (auth != null) {
+      await auth.signOut();
+    }
+  }
+
+  @override
   Future<void> deleteFirebaseUser() async {
     try {
-      if (_auth != null) {
-        final user = _auth!.currentUser;
+      final auth = _auth;
+      if (auth != null) {
+        final user = auth.currentUser;
         if (user != null) {
           await user.delete();
         }
       }
-    } catch (_) {}
+    } catch (e) {
+      _logger.error('FirebaseAuthClient: user deletion failed: $e');
+      rethrow;
+    }
+    final gs = _googleSignIn;
     try {
-      if (_googleSignIn != null) {
-        await _googleSignIn!.disconnect();
+      if (gs != null) {
+        await gs.disconnect();
       }
-    } catch (_) {}
+    } catch (e) {
+      _logger.warning('FirebaseAuthClient: Google disconnect failed: $e');
+    }
   }
 
   AuthException _mapFirebaseException(firebase.FirebaseAuthException e) {

@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:sagen/core/theme/theme_constants.dart';
 
 class FlipCounterWidget extends StatefulWidget {
   final int value;
@@ -27,7 +28,7 @@ class FlipCounterWidget extends StatefulWidget {
 
 class _FlipCounterWidgetState extends State<FlipCounterWidget>
     with TickerProviderStateMixin {
-  final List<int> _displayed = [];
+  List<int> _displayed = [];
   late List<AnimationController> _controllers;
 
   List<int> _digitsOf(int n) {
@@ -47,6 +48,10 @@ class _FlipCounterWidgetState extends State<FlipCounterWidget>
   @override
   void didUpdateWidget(FlipCounterWidget old) {
     super.didUpdateWidget(old);
+    if (old.digitCount != widget.digitCount) {
+      setState(() { _displayed = _digitsOf(widget.value); });
+      return;
+    }
     if (old.value == widget.value) return;
     final newDigits = _digitsOf(widget.value);
     for (int i = 0; i < widget.digitCount; i++) {
@@ -168,8 +173,8 @@ class _FlipDigitCard extends StatelessWidget {
         height: height,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: backgroundColor ?? const Color(0xFF1E1E2E),
-          borderRadius: BorderRadius.circular(8),
+          color: backgroundColor ?? PremiumColors.darkSurface,
+          borderRadius: BorderRadius.circular(AppRadius.sm),
         ),
         child: Text('$digit', style: textStyle),
       ),

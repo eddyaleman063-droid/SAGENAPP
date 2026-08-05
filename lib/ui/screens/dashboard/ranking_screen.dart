@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/providers/providers.dart';
+import 'package:sagen/services/experience_service.dart';
 import '../../../core/theme/theme_constants.dart';
-import '../../../services/experience_service.dart';
+
 import '../../widgets/ranking/podium_widget.dart';
 import '../../widgets/ranking/ranking_tile.dart';
 import '../../widgets/ranking/current_user_rank_bar.dart';
+import '../../widgets/common/sage_emotion_widget.dart';
+import '../../../services/sage_emotion_service.dart';
 import '../../widgets/profile/flex_card_widget.dart';
 import '../../widgets/shimmer_loading.dart';
+import 'package:sagen/core/theme/app_colors.dart';
 
 class RankingScreen extends ConsumerStatefulWidget {
   const RankingScreen({super.key});
@@ -19,7 +25,7 @@ class RankingScreen extends ConsumerStatefulWidget {
 
 class _RankingScreenState extends ConsumerState<RankingScreen> with AutomaticKeepAliveClientMixin {
   void _showFlexCard(BuildContext context, WidgetRef ref, LeaderboardEntry entry, int rank) {
-    ExperienceService.instance.lightHaptic();
+    ref.read(experienceServiceProvider).lightHaptic();
     final auth = ref.read(authProvider);
     final learning = ref.read(learningProvider);
     final streak = ref.read(streakProvider);
@@ -29,7 +35,7 @@ class _RankingScreenState extends ConsumerState<RankingScreen> with AutomaticKee
       backgroundColor: Colors.transparent,
       builder: (_) => _RankingFlexCardShareSheet(
         displayName: entry.displayName,
-        photoUrl: auth.photoUrl,
+        photoUrl: entry.photoUrl ?? auth.photoUrl,
         level: learning.currentLevel,
         xp: entry.totalXp,
         streak: streak.currentStreak,
@@ -47,19 +53,23 @@ class _RankingScreenState extends ConsumerState<RankingScreen> with AutomaticKee
     final leaderboardAsync = ref.watch(leaderboardProvider);
     final currentUid = ref.watch(authProvider.select((a) => a.uid));
 
-    final dark = Theme.of(context).brightness == Brightness.dark;
+    final l = AppLocalizations.of(context)!;
     return Scaffold(
-      backgroundColor: dark ? PremiumColors.deepBackground : PremiumColors.lightBg,
+      backgroundColor: context.surfaceBackground,
       floatingActionButton: leaderboardAsync.when(
         loading: () => null,
         error: (err, stack) => null,
         data: (entries) {
           final currentIndex = entries.indexWhere((e) => e.uid == currentUid);
           if (currentIndex < 0) return null;
-          return FloatingActionButton(
-            onPressed: () => _showFlexCard(context, ref, entries[currentIndex], currentIndex + 1),
-            backgroundColor: PremiumColors.splashBlue,
-            child: const Icon(Icons.share_rounded, color: Colors.white),
+          return Semantics(
+            button: true,
+            label: l.shareRanking,
+            child: FloatingActionButton(
+              onPressed: () => _showFlexCard(context, ref, entries[currentIndex], currentIndex + 1),
+              backgroundColor: PremiumColors.splashBlue,
+              child: const Icon(Icons.share_rounded, color: Colors.white),
+            ),
           );
         },
       ),
@@ -70,9 +80,14 @@ class _RankingScreenState extends ConsumerState<RankingScreen> with AutomaticKee
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.cloud_off_rounded, size: 48, color: dark ? Colors.white.withValues(alpha: 0.3) : Colors.black.withValues(alpha: 0.3)),
-                const SizedBox(height: AppSpacing.md),
-                Text(AppLocalizations.of(context)!.rankingError, style: TextStyle(color: dark ? Colors.white.withValues(alpha: 0.5) : Colors.black.withValues(alpha: 0.5))),
+                const ExcludeSemantics(child: Icon(Icons.error_outline, size: 48, color: PremiumColors.error)),
+                const SizedBox(height: AppSpacing.xxl),
+                Text(l.rankingError, style: AppTextStyle.body.copyWith(color: context.textSecondary)),
+                const SizedBox(height: AppSpacing.xxl),
+                ElevatedButton(
+                  onPressed: () { ExperienceService.instance.lightHaptic(); ref.invalidate(leaderboardProvider); },
+                  child: Text(l.retry),
+                ),
               ],
             ),
           ),
@@ -83,15 +98,37 @@ class _RankingScreenState extends ConsumerState<RankingScreen> with AutomaticKee
   }
 }
 
-class _RankingContent extends StatelessWidget {
+class _RankingContent extends ConsumerWidget {
   final List<LeaderboardEntry> entries;
   final String? currentUid;
 
   const _RankingContent({required this.entries, required this.currentUid});
 
   @override
-  Widget build(BuildContext context) {
-    final dark = Theme.of(context).brightness == Brightness.dark;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context)!;
+
+    if (entries.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const ExcludeSemantics(
+              child: SageEmotionWidget(emotion: SageEmotion.curious, size: 64),
+            ),
+            const SizedBox(height: AppSpacing.lg),
+            Text(
+              l.rankingEmptyMessage,
+              textAlign: TextAlign.center,
+              style: AppTextStyle.bodyMd.copyWith(
+                color: context.textTertiary,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
     final top3 = entries.length > 3 ? entries.sublist(0, 3) : entries;
     final rest = entries.length > 3 ? entries.sublist(3) : <LeaderboardEntry>[];
 
@@ -101,87 +138,97 @@ class _RankingContent extends StatelessWidget {
 
     return Stack(
       children: [
-        CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(
-                  AppSpacing.xxl,
-                  MediaQuery.of(context).padding.top + AppSpacing.xxl,
-                  AppSpacing.xxl,
-                  AppSpacing.xxl,
+        RefreshIndicator(
+          onRefresh: () async {
+            ref.invalidate(leaderboardProvider);
+          },
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final isWide = constraints.maxWidth > 600;
+              final horizontalPadding = isWide ? AppSpacing.xxl * 2.0 : AppSpacing.xxl.toDouble();
+              return CustomScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                slivers: [
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(
+                      horizontalPadding,
+                      MediaQuery.paddingOf(context).top + AppSpacing.xxl,
+                      horizontalPadding,
+                      AppSpacing.xxl,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          l.rankingTitle,
+                          style: AppTextStyle.headline.copyWith(
+                            fontSize: isWide ? 30 : 26,
+                            color: context.textPrimary,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          l.rankingSubtitle,
+                          style: AppTextStyle.subtitle.copyWith(
+                            color: context.textTertiary,
+                          ),
+                        ),
+                      ],
+                    ).animate().fadeIn(duration: 400.ms).slideY(begin: 0.1),
+                  ),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      AppLocalizations.of(context)!.rankingTitle,
-                      style: TextStyle(
-                        fontSize: 26,
-                        fontWeight: FontWeight.bold,
-                        color: dark ? Colors.white.withValues(alpha: 0.9) : Colors.black87,
+                if (top3.isNotEmpty)
+                  SliverToBoxAdapter(child: Padding(
+                    padding: const EdgeInsets.only(bottom: AppSpacing.xxl),
+                    child: PodiumWidget(top3: top3),
+                  )),
+                if (rest.isNotEmpty)
+                  SliverPadding(
+                    padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                    sliver: SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          final entry = rest[index];
+                          final rank = index + 4;
+                          return RankingTileWidget(
+                            rank: rank,
+                            entry: entry,
+                            isCurrentUser: entry.uid == currentUid,
+                          ).animate().fadeIn(delay: (index * 40).ms, duration: 300.ms).slideX(begin: 0.05);
+                        },
+                        childCount: rest.length,
                       ),
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      AppLocalizations.of(context)!.rankingSubtitle,
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: dark ? Colors.white.withValues(alpha: 0.4) : Colors.black54,
+                  ),
+                if (isInTop50 && currentIndex >= 3)
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(horizontalPadding, AppSpacing.sm, horizontalPadding, AppSpacing.xxl),
+                      child: RankingTileWidget(
+                        rank: currentIndex + 1,
+                        entry: entries[currentIndex],
+                        isCurrentUser: true,
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ),
-            if (top3.isNotEmpty)
-              SliverToBoxAdapter(child: Padding(
-                padding: const EdgeInsets.only(bottom: AppSpacing.xxl),
-                child: PodiumWidget(top3: top3),
-              )),
-            if (rest.isNotEmpty)
-              SliverPadding(
-                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
-                sliver: SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      final entry = rest[index];
-                      final rank = index + 4;
-                      return RankingTileWidget(
-                        rank: rank,
-                        entry: entry,
-                        isCurrentUser: entry.uid == currentUid,
-                      );
-                    },
-                    childCount: rest.length,
                   ),
-                ),
-              ),
-            if (isInTop50 && currentIndex >= 3)
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(AppSpacing.xxl, AppSpacing.sm, AppSpacing.xxl, AppSpacing.xxl),
-                  child: RankingTileWidget(
-                    rank: currentIndex + 1,
-                    entry: entries[currentIndex],
-                    isCurrentUser: true,
-                  ),
-                ),
-              ),
-            if (!isInTop50)
-              SliverToBoxAdapter(
-                child: SizedBox(
-                  height: 100,
-                  child: Center(
-                    child: Text(
-                      AppLocalizations.of(context)!.rankingEmptyMessage,
-                      style: TextStyle(color: dark ? Colors.white.withValues(alpha: 0.3) : Colors.black.withValues(alpha: 0.3), fontSize: 13),
+                if (!isInTop50)
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 100,
+                      child: Center(
+                        child: Text(
+                           l.rankingEmptyMessage,
+                          style: AppTextStyle.subtitle.copyWith(color: context.textTertiary),
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-            const SliverToBoxAdapter(child: SizedBox(height: 100)),
-          ],
+                const SliverToBoxAdapter(child: SizedBox(height: 100)),
+              ],
+              );
+            },
+          ),
         ),
         if (!isInTop50 && currentEntry != null && entries.isNotEmpty)
           Positioned(
@@ -191,7 +238,7 @@ class _RankingContent extends StatelessWidget {
               child: CurrentUserRankBar(
               rank: currentIndex + 1,
               totalXp: currentEntry.totalXp,
-              xpToNext: entries.last.totalXp - currentEntry.totalXp,
+              xpToNext: currentIndex > 0 ? entries[currentIndex - 1].totalXp - currentEntry.totalXp : 0,
             ),
           ),
       ],
@@ -226,14 +273,14 @@ class _RankingFlexCardShareSheetState extends ConsumerState<_RankingFlexCardShar
 
   @override
   Widget build(BuildContext context) {
-    final dark = Theme.of(context).brightness == Brightness.dark;
+    final l = AppLocalizations.of(context)!;
 
     return Container(
-      height: MediaQuery.of(context).size.height * 0.85,
+      height: MediaQuery.sizeOf(context).height * 0.85,
       margin: const EdgeInsets.all(AppSpacing.xxl),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppRadius.xxl),
-        color: dark ? const Color(0xFF1B2433) : Colors.white,
+        color: context.surfaceBackground,
       ),
       child: Column(
         children: [
@@ -243,7 +290,7 @@ class _RankingFlexCardShareSheetState extends ConsumerState<_RankingFlexCardShar
             height: 4,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(AppRadius.pill),
-              color: dark ? Colors.white12 : Colors.black12,
+              color: context.subtle,
             ),
           ),
           const SizedBox(height: AppSpacing.lg),
@@ -258,7 +305,7 @@ class _RankingFlexCardShareSheetState extends ConsumerState<_RankingFlexCardShar
                 xp: widget.xp,
                 streak: widget.streak,
                 rank: widget.rank,
-                subtitleText: AppLocalizations.of(context)!.rankingShareSubtitle,
+                subtitleText: l.rankingShareSubtitle,
               ),
             ),
           ),
@@ -267,21 +314,25 @@ class _RankingFlexCardShareSheetState extends ConsumerState<_RankingFlexCardShar
             child: SizedBox(
               width: double.infinity,
               height: 48,
-              child: ElevatedButton.icon(
-                onPressed: _sharing ? null : _share,
-                icon: _sharing
-                    ? const SizedBox(
-                        width: 18,
-                        height: 18,
-                        child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
-                      )
-                    : const Icon(Icons.share_rounded, size: 18),
-                label: Text(_sharing ? AppLocalizations.of(context)!.rankingSharing : AppLocalizations.of(context)!.rankingShareButton),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: PremiumColors.splashBlue,
-                  foregroundColor: Colors.white,
-                  disabledBackgroundColor: PremiumColors.splashBlue.withValues(alpha: 0.5),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
+              child: Semantics(
+                button: true,
+                label: _sharing ? l.sharing : l.shareRanking,
+                child: ElevatedButton.icon(
+                  onPressed: _sharing ? null : _share,
+                  icon: _sharing
+                      ? const SizedBox(
+                          width: 18,
+                          height: 18,
+                          child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                        )
+                      : const Icon(Icons.share_rounded, size: 18),
+                  label: Text(_sharing ? l.rankingSharing : l.rankingShareButton),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: PremiumColors.splashBlue,
+                    foregroundColor: Colors.white,
+                    disabledBackgroundColor: PremiumColors.splashBlue.withValues(alpha: 0.5),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
+                  ),
                 ),
               ),
             ),
@@ -294,11 +345,12 @@ class _RankingFlexCardShareSheetState extends ConsumerState<_RankingFlexCardShar
   Future<void> _share() async {
     setState(() => _sharing = true);
     final bytes = await _flexCardKey.currentState?.capture();
-    if (bytes != null && mounted) {
-      await ref.read(shareServiceProvider).shareImage(bytes, source: 'ranking');
+    if (!mounted) return;
+    if (bytes != null) {
+      await ref.read(shareServiceProvider).shareImage(bytes, text: AppLocalizations.of(context)?.flexCardJoinAlliance, source: 'ranking');
     }
     if (mounted) {
-      Navigator.pop(context);
+      context.pop();
     }
   }
 }

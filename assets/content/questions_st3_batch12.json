@@ -1,0 +1,448 @@
+[
+  {
+    "id": "ac_st3_qB12_001",
+    "question": "Que es la autenticación en dos pasos (2FA)?",
+    "type": "multipleChoice",
+    "options": [
+      "Usar dos contraseñas diferentes",
+      "Un metodo que requiere dos formas de verificar tu identidad para acceder a una cuenta",
+      "Iniciar sesión dos veces",
+      "Cambiar la contraseña cada dos semanas"
+    ],
+    "correctIndex": 1,
+    "explanation": "El 2FA requiere dos factores de verificación: algo que sabes (contraseña) y algo que tienes (celular o llave).",
+    "difficulty": 1,
+    "lessonId": "ac_s3_ses1_l1"
+  },
+  {
+    "id": "ac_st3_qB12_002",
+    "question": "Cuales son los tipos principales de 2FA?",
+    "type": "multipleChoice",
+    "options": [
+      "Solo SMS",
+      "SMS, aplicaciones de autenticación y llaves de seguridad físicas",
+      "Solo aplicaciones",
+      "Solo correos electrónicos"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los tres tipos principales son SMS (mensaje de texto), apps como Google Authenticator y llaves físicas como YubiKey.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses1_l1"
+  },
+  {
+    "id": "ac_st3_qB12_003",
+    "question": "Como funciona el 2FA por SMS?",
+    "type": "multipleChoice",
+    "options": [
+      "Te envían un correo electrónico",
+      "Recibes un código de verificación por mensaje de texto que debes ingresar",
+      "Necesitas una huella dactilar",
+      "Debes answering una pregunta de seguridad"
+    ],
+    "correctIndex": 1,
+    "explanation": "El 2FA por SMS envía un código temporal a tu número de teléfono que debes escribir para verificar tu identidad.",
+    "difficulty": 1,
+    "lessonId": "ac_s3_ses1_l2"
+  },
+  {
+    "id": "ac_st3_qB12_004",
+    "question": "Que es una aplicación de autenticación como Google Authenticator?",
+    "type": "multipleChoice",
+    "options": [
+      "Una red social",
+      "Una app que genera códigos de verificación temporales sin necesidad de internet",
+      "Un tipo de banco digital",
+      "Una app de mensajería"
+    ],
+    "correctIndex": 1,
+    "explanation": "Las apps de autenticación generan códigos temporales que cambian cada 30 segundos sin necesidad de conexión a internet.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses1_l3"
+  },
+  {
+    "id": "ac_st3_qB12_005",
+    "question": "Que es una llave de seguridad física para 2FA?",
+    "type": "multipleChoice",
+    "options": [
+      "Una contraseña escrita en papel",
+      "Un dispositivo físico como YubiKey que se conecta al USB o usa NFC para verificar tu identidad",
+      "Un tipo de candado",
+      "Una tarjeta de crédito"
+    ],
+    "correctIndex": 1,
+    "explanation": "Las llaves físicas como YubiKey se conectan al dispositivo o usan NFC para autenticarte de forma segura.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses1_l4"
+  },
+  {
+    "id": "ac_st3_qB12_006",
+    "question": "Cual es la forma mas segura de 2FA?",
+    "type": "multipleChoice",
+    "options": [
+      "SMS porque es gratis",
+      "Llave de seguridad física (YubiKey)",
+      "Correo electrónico",
+      "No usar 2FA es suficiente"
+    ],
+    "correctIndex": 1,
+    "explanation": "Las llaves físicas son la forma más segura porque no pueden ser interceptadas como los SMS o correos.",
+    "difficulty": 3,
+    "lessonId": "ac_s3_ses1_l5"
+  },
+  {
+    "id": "ac_st3_qB12_007",
+    "question": "Como configurar 2FA en tu cuenta de Google?",
+    "type": "multipleChoice",
+    "options": [
+      "No se puede",
+      "Ir a Configuración de la cuenta > Seguridad > Verificación en dos pasos y seguir las instrucciones",
+      "Enviar un correo a Google",
+      "Llamar a soporte técnico"
+    ],
+    "correctIndex": 1,
+    "explanation": "En la configuración de tu cuenta Google, ve a Seguridad y activa la Verificación en dos pasos siguiendo el asistente.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses2_l1"
+  },
+  {
+    "id": "ac_st3_qB12_008",
+    "question": "Como activar 2FA en Facebook?",
+    "type": "multipleChoice",
+    "options": [
+      "No es posible en Facebook",
+      "Configuración > Seguridad y inicio de sesión > Autenticación en dos pasos",
+      "Solo con código de amigo",
+      "Enviar una carta a Facebook"
+    ],
+    "correctIndex": 1,
+    "explanation": "Ve a Configuración > Seguridad y inicio de sesión > Autenticación en dos pasos para activarla en Facebook.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses2_l2"
+  },
+  {
+    "id": "ac_st3_qB12_009",
+    "question": "Es posible usar 2FA en WhatsApp?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanation": "Verdadero. WhatsApp ofrece autenticación en dos pasos que puedes activar en Configuración > Cuenta > Verificación en dos pasos.",
+    "difficulty": 1,
+    "lessonId": "ac_s3_ses2_l3"
+  },
+  {
+    "id": "ac_st3_qB12_010",
+    "question": "Que debes hacer despues de activar 2FA en tus cuentas?",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Nada mas, ya quedo protegido",
+      "Probar que funciona cerrando sesión e iniciando de nuevo, y guardar los códigos de respaldo",
+      "Compartir los códigos con tu familia",
+      "Desactivar la contraseña"
+    ],
+    "correctIndex": 1,
+    "explanation": "Siempre prueba que el 2FA funciona correctamente y guarda los códigos de respaldo en un lugar seguro.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses2_l5"
+  },
+  {
+    "id": "ac_st3_qB12_011",
+    "question": "Que son los códigos de respaldo del 2FA?",
+    "type": "multipleChoice",
+    "options": [
+      "Códigos para desactivar el 2FA permanentemente",
+      "Códigos de un solo uso que puedes usar si pierdes acceso a tu método principal de 2FA",
+      "Contraseñas de tus amigos",
+      "Números de teléfono alternativos"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los códigos de respaldo son de un solo uso y te permiten acceder si pierdes tu celular o app de autenticación.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses3_l1"
+  },
+  {
+    "id": "ac_st3_qB12_012",
+    "question": "Donde debes guardar los códigos de respaldo del 2FA?",
+    "type": "multipleChoice",
+    "options": [
+      "En el celular en una nota sin protección",
+      "Impresos en un lugar seguro como una caja fuerte, o en un gestor de contraseñas cifrado",
+      "En tu correo electrónico",
+      "Compartidos en redes sociales"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los códigos deben guardarse en un lugar físico seguro (impresos) o digital seguro (gestor cifrado), nunca expuestos.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses3_l2"
+  },
+  {
+    "id": "ac_st3_qB12_013",
+    "question": "Que harías si pierdes tu celular con el 2FA activado?",
+    "type": "whatWouldYouDo",
+    "options": [
+      "No puedes hacer nada, perdiste el acceso para siempre",
+      "Usar un código de respaldo o contactar al soporte del servicio para recuperar el acceso",
+      "Comprar un nuevo celular y esperar",
+      "Pedir a un amigo que entre a tu cuenta"
+    ],
+    "correctIndex": 1,
+    "explanation": "Si pierdes tu celular, usa los códigos de respaldo o contacta al soporte del servicio para recuperar el acceso.",
+    "difficulty": 3,
+    "lessonId": "ac_s3_ses3_l3"
+  },
+  {
+    "id": "ac_st3_qB12_014",
+    "question": "Por qué es importante guardar bien los códigos de respaldo?",
+    "type": "multipleChoice",
+    "options": [
+      "No es importante, solo son para emergencias",
+      "Porque si los pierdes y pierdes tu celular, podrías perder el acceso a tu cuenta permanentemente",
+      "Para compartirlos con tus amigos",
+      "No tienen ninguna importancia"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los códigos de respaldo son tu última alternativa si pierdes acceso a tu método principal de 2FA.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses3_l4"
+  },
+  {
+    "id": "ac_st3_qB12_015",
+    "question": "Que hacer con los códigos de respaldo una vez que los uses?",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Nada, ya no sirven",
+      "Generar nuevos códigos de respaldo y guardarlos en un lugar seguro",
+      "Compartirlos en un grupo de WhatsApp",
+      "Borrarlos permanentemente"
+    ],
+    "correctIndex": 1,
+    "explanation": "Después de usar un código de respaldo, genera nuevos y guárdalos en un lugar seguro.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses3_l5"
+  },
+  {
+    "id": "ac_st3_qB12_016",
+    "question": "Que es 2FA en Gmail y por que es importante?",
+    "type": "multipleChoice",
+    "options": [
+      "Un tipo de contraseña extra",
+      "Una capa adicional de seguridad que requiere un código además de tu contraseña para acceder a tu correo",
+      "Un servicio premium de Gmail",
+      "Una forma de enviar correos más rápido"
+    ],
+    "correctIndex": 1,
+    "explanation": "El 2FA en Gmail protege tu correo incluso si alguien obtiene tu contraseña, requiriendo un código adicional.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses4_l1"
+  },
+  {
+    "id": "ac_st3_qB12_017",
+    "question": "Como activar 2FA en tu correo de Hotmail/Outlook?",
+    "type": "multipleChoice",
+    "options": [
+      "No se puede en Hotmail",
+      "Configuración de la cuenta > Seguridad > Verificación en dos pasos > Activar",
+      "Enviar un correo a Microsoft",
+      "Llamar a soporte"
+    ],
+    "correctIndex": 1,
+    "explanation": "Ve a la configuración de tu cuenta Microsoft, sección Seguridad, y activa la verificación en dos pasos.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses4_l2"
+  },
+  {
+    "id": "ac_st3_qB12_018",
+    "question": "Que es importante recordar al configurar 2FA en cuentas bancarias?",
+    "type": "multipleChoice",
+    "options": [
+      "No es necesario 2FA en bancos",
+      "Usar el número de celular correcto, guardar códigos de respaldo y probar que funciona",
+      "Compartir el código con el cajero",
+      "Activar y desactivar frecuentemente"
+    ],
+    "correctIndex": 1,
+    "explanation": "En cuentas bancarias es crucialasegurarel número sea correcto, guardar respaldos y probar el funcionamiento.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses4_l4"
+  },
+  {
+    "id": "ac_st3_qB12_019",
+    "question": "Que harías si pierdes los códigos de respaldo del 2FA de tu banco?",
+    "type": "whatWouldYouDo",
+    "options": [
+      "No puedes hacer nada",
+      "Contactar al banco inmediatamente para que te ajuden a recuperar el acceso o generar nuevos códigos",
+      "Cambiar de banco",
+      "Esperar a que se resuelva solo"
+    ],
+    "correctIndex": 1,
+    "explanation": "Contacta al banco inmediatamente para seguir su proceso de recuperación de cuenta y generar nuevos códigos.",
+    "difficulty": 3,
+    "lessonId": "ac_s3_ses4_l5"
+  },
+  {
+    "id": "ac_st3_qB12_020",
+    "question": "Que es la recuperación por contactos de confianza en 2FA?",
+    "type": "multipleChoice",
+    "options": [
+      "Pedir a tus amigos que entren a tu cuenta",
+      "Designar personas de confianza que pueden ayudarte a recuperar el acceso si pierdes tu método de 2FA",
+      "Compartir tu contraseña con familiares",
+      "Un tipo de red social"
+    ],
+    "correctIndex": 1,
+    "explanation": "Algunos servicios permiten designar contactos de confianza que pueden ayudarte a verificar tu identidad en emergencias.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses4_l6"
+  },
+  {
+    "id": "ac_st3_qB12_021",
+    "question": "Que es la verificación en dos pasos de Apple ID?",
+    "type": "multipleChoice",
+    "options": [
+      "Un tipo de contraseña de Apple",
+      "Un método de seguridad que protege tu cuenta de Apple requiriendo un código además de tu contraseña",
+      "Una función para comprar en la App Store",
+      "Un tipo de respaldo automático"
+    ],
+    "correctIndex": 1,
+    "explanation": "La verificación en dos pasos de Apple ID protege tu cuenta requiriendo un código enviado a tus dispositivos confiables.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses4_l6"
+  },
+  {
+    "id": "ac_st3_qB12_022",
+    "question": "Cual es la diferencia entre 2FA y la verificación en dos pasos?",
+    "type": "multipleChoice",
+    "options": [
+      "No hay diferencia, son lo mismo",
+      "Son términos similares que se usan indistintamente para describir la autenticación de dos factores",
+      "2FA es solo para empresas",
+      "La verificación en dos pasos es más segura"
+    ],
+    "correctIndex": 1,
+    "explanation": "Son términos que se usan indistintamente; ambos requieren dos formas de verificar tu identidad.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses4_l6"
+  },
+  {
+    "id": "ac_st3_qB12_023",
+    "question": "Por que el 2FA por SMS es menos seguro que una app de autenticación?",
+    "type": "multipleChoice",
+    "options": [
+      "Porque es más caro",
+      "Porque los SMS pueden ser interceptados mediante ataques de SIM swapping o interceptación",
+      "Porque es más lento",
+      "Porque no funciona en todos los países"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los SMS pueden ser interceptados mediante ataques de SIM swapping, haciendo que el 2FA por SMS sea menos seguro.",
+    "difficulty": 3,
+    "lessonId": "ac_s3_ses1_l5"
+  },
+  {
+    "id": "ac_st3_qB12_024",
+    "question": "Que haces si recibes un código de 2FA que no solicitaste?",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Lo ignoras y no haces nada",
+      "No lo compartes, lo reportas como spam, y cambias tu contraseña inmediatamente porque alguien la tiene",
+      "Lo compartes con tu familia",
+      "Respondes al mensaje agradeciendo"
+    ],
+    "correctIndex": 1,
+    "explanation": "Si recibes un código no solicitado, alguien está intentando acceder a tu cuenta. Cambia tu contraseña de inmediato.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses1_l5"
+  },
+  {
+    "id": "ac_st3_qB12_025",
+    "question": "Es seguro usar la misma app de autenticación para todas tus cuentas?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanation": "Verdadero. Puedes usar la misma app (como Google Authenticator) para múltiples cuentas, es seguro y práctica.",
+    "difficulty": 1,
+    "lessonId": "ac_s3_ses1_l3"
+  },
+  {
+    "id": "ac_st3_qB12_026",
+    "question": "Que debes hacer antes de cambiar de celular si usas 2FA?",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Nada, se transfiere automáticamente",
+      "Transferir los códigos de autenticación al nuevo celular o generar nuevos códigos de respaldo",
+      "Desactivar el 2FA permanentemente",
+      "Compartir los códigos en redes sociales"
+    ],
+    "correctIndex": 1,
+    "explanation": "Antes de cambiar de celular, transfiere tus códigos de autenticación o genera nuevos respaldos para no perder acceso.",
+    "difficulty": 3,
+    "lessonId": "ac_s3_ses2_l5"
+  },
+  {
+    "id": "ac_st3_qB12_027",
+    "question": "Que es un ataque de SIM swapping?",
+    "type": "multipleChoice",
+    "options": [
+      "Un tipo de ejercicio físico",
+      "Un ataque donde engañan a tu operador para que cambien tu número a otra SIM, robando tus códigos 2FA por SMS",
+      "Una forma de cambiar la contraseña",
+      "Un tipo de virus del celular"
+    ],
+    "correctIndex": 1,
+    "explanation": "En el SIM swapping, los atacantes engañan a tu operador para transferir tu número a su SIM y interceptar tus códigos.",
+    "difficulty": 3,
+    "lessonId": "ac_s3_ses1_l5"
+  },
+  {
+    "id": "ac_st3_qB12_028",
+    "question": "Cual es la mejor protección contra el SIM swapping?",
+    "type": "multipleChoice",
+    "options": [
+      "No usar teléfono celular",
+      "Usar app de autenticación en lugar de SMS, y agregar PIN extra con tu operador",
+      "Compartir tu número con todos",
+      "No usar 2FA en nada"
+    ],
+    "correctIndex": 1,
+    "explanation": "La mejor protección es usar apps de autenticación (no SMS) y agregar un PIN extra con tu operador.",
+    "difficulty": 3,
+    "lessonId": "ac_s3_ses1_l5"
+  },
+  {
+    "id": "ac_st3_qB12_029",
+    "question": "Que harías si pierdes tu celular y no tienes códigos de respaldo del 2FA?",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Perdiste el acceso para siempre",
+      "Contactar al soporte de cada servicio para seguir su proceso de recuperación de cuenta",
+      "Comprar el mismo celular y esperar que funcione",
+      "Pedir a un hacker que te ayude"
+    ],
+    "correctIndex": 1,
+    "explanation": "Contacta al soporte de cada servicio para seguir sus procedimientos de recuperación de cuenta.",
+    "difficulty": 3,
+    "lessonId": "ac_s3_ses3_l4"
+  },
+  {
+    "id": "ac_st3_qB12_030",
+    "question": "Cada cuantos meses es recomendable revisar la configuración de 2FA en tus cuentas importantes?",
+    "type": "multipleChoice",
+    "options": [
+      "Nunca, una vez configurado queda para siempre",
+      "Cada 3 a 6 meses para verificar que sigue activo y los métodos de respaldo están actualizados",
+      "Cada día",
+      "Solo cuando cambias de celular"
+    ],
+    "correctIndex": 1,
+    "explanation": "Revisa tu configuración de 2FA cada 3-6 meses para asegurarte de que sigue activo y los respaldos están actualizados.",
+    "difficulty": 2,
+    "lessonId": "ac_s3_ses4_l6"
+  }
+]

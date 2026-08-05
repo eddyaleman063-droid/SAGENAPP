@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/achievement_service.dart';
-import 'prefs_provider.dart';
+import 'providers.dart';
 
 class AchievementState {
   final bool isInitialized;
@@ -36,17 +36,20 @@ class AchievementState {
 }
 
 class AchievementNotifier extends Notifier<AchievementState> {
+  bool _disposed = false;
+
   @override
   AchievementState build() {
-    final prefs = ref.watch(prefsProvider);
-    AchievementProvider.unlockDelegate = (id) => unlockAchievement(id);
+    ref.onDispose(() => _disposed = true);
+    final prefs = ref.read(prefsProvider);
     _init(prefs);
     return const AchievementState();
   }
 
   Future<void> _init(SharedPreferences prefs) async {
-    final service = AchievementService.instance;
+    final service = ref.read(achievementServiceProvider);
     await service.init(prefs);
+    if (_disposed) return;
     state = AchievementState(
       isInitialized: true,
       achievements: service.achievements,
@@ -57,32 +60,20 @@ class AchievementNotifier extends Notifier<AchievementState> {
   }
 
   bool unlockAchievement(String id) {
-    final service = AchievementService.instance;
-    final unlocked = service.unlock(id);
-    if (unlocked) {
+    final service = ref.read(achievementServiceProvider);
+    final xpReward = service.unlock(id);
+    if (xpReward > 0) {
       state = state.copyWith(
         achievements: service.achievements,
         unlockedCount: service.unlockedCount,
         totalCount: service.totalCount,
         progress: service.progress,
       );
+      // Deliver XP reward through the learning provider
+      ref.read(learningProvider.notifier).addXp(xpReward, reason: 'achievement');
+      // Award gems from achievement
+      ref.read(gemProvider.notifier).awardAchievementGems(xpReward);
     }
-    return unlocked;
+    return xpReward > 0;
   }
-}
-
-// Backward-compat wrapper for non-Riverpod consumers (learning_provider, etc.)
-class AchievementProvider {
-  AchievementProvider._();
-
-  static AchievementProvider? _instance;
-  static AchievementProvider get instance {
-    _instance ??= AchievementProvider._();
-    return _instance!;
-  }
-
-  bool unlockAchievement(String id) => _unlockDelegate?.call(id) ?? false;
-
-  static bool Function(String id)? _unlockDelegate;
-  static set unlockDelegate(bool Function(String id)? fn) => _unlockDelegate = fn;
 }

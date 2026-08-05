@@ -198,7 +198,7 @@ class __$$ConversationImplCopyWithImpl<$Res>
 class _$ConversationImpl extends _Conversation {
   const _$ConversationImpl({
     this.id = '',
-    this.title = 'Nueva conversación',
+    this.title = '',
     final List<ChatMessage> messages = const [],
     required this.createdAt,
     required this.updatedAt,

@@ -1,18 +1,17 @@
-// ignore_for_file: prefer_final_fields
-
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter/services.dart';
+import 'package:sagen/core/theme/app_colors.dart';
+import 'package:sagen/core/theme/theme_constants.dart';
+import 'package:sagen/l10n/app_localizations.dart';
+import 'package:sagen/providers/providers.dart';
+import 'package:sagen/services/experience_service.dart';
+import 'package:sagen/services/sage_emotion_service.dart';
+import 'package:sagen/services/streak_visibility_service.dart';
+import 'package:sagen/ui/widgets/common/sage_emotion_widget.dart';
+import 'package:sagen/ui/widgets/rive_flame_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../../../core/theme/theme_constants.dart';
-import '../../../providers/providers.dart';
-import '../../../services/sage_emotion_service.dart';
-import '../../../services/streak_visibility_service.dart';
-import '../../widgets/common/sage_emotion_widget.dart';
-import '../../widgets/streak/flame_animation_widget.dart';
 
 class DailyStreakScreen extends ConsumerStatefulWidget {
   const DailyStreakScreen({super.key});
@@ -28,32 +27,33 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
   late final Animation<double> _fireScale;
   late final AnimationController _resetCtrl;
 
-  late final String _message;
+  String? _message;
 
   int _todayIndex = 0;
-  List<bool> _weekDays = List.filled(7, false);
+  final List<bool> _weekDays = List.filled(7, false);
   bool _isWeeklyReset = false;
   int _streakDays = 0;
   bool _streakFrozen = false;
   bool _showDefrosting = false;
   bool _circleFilled = false;
 
-  static const _dayLabels = ['Ma', 'Mi', 'J', 'V', 'S', 'D', 'L'];
+  List<String> _dayLabels(AppLocalizations l) => [
+    l.dayAbbrMon, l.dayAbbrTue, l.dayAbbrWed,
+    l.dayAbbrThu, l.dayAbbrFri, l.dayAbbrSat, l.dayAbbrSun,
+  ];
 
-  static const _messages = [
-    '¡Una nueva racha! Practica cada día y ayúdala a crecer.',
-    '¡Racha activa! La constancia es tu mejor arma hoy.',
-    'Cada día cuenta. Tu compromiso te hace más fuerte.',
-    '¡Sigue así! La disciplina de hoy es tu victoria de mañana.',
-    'Un día más, un paso más cerca de tu meta.',
+  List<String> _streakMessages(AppLocalizations l) => [
+    l.streakMsg1,
+    l.streakMsg2,
+    l.streakMsg3,
+    l.streakMsg4,
+    l.streakMsg5,
   ];
 
   @override
   void initState() {
     super.initState();
-    _message = _messages[Random().nextInt(_messages.length)];
-
-    _todayIndex = (DateTime.now().weekday - 2 + 7) % 7;
+    _todayIndex = (DateTime.now().weekday - 1) % 7;
     _weekDays[_todayIndex] = true;
     _isWeeklyReset = _todayIndex == 6;
 
@@ -80,14 +80,90 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
       Future.delayed(const Duration(milliseconds: 900), () {
         if (!mounted) return;
         setState(() => _circleFilled = true);
-        HapticFeedback.mediumImpact();
+        ExperienceService.instance.mediumHaptic();
         if (_isWeeklyReset) {
           Future.delayed(const Duration(milliseconds: 600), () {
             if (mounted) _resetCtrl.forward();
           });
         }
       });
+      _checkMilestone();
     });
+  }
+
+  void _checkMilestone() {
+    final streak = ref.read(streakProvider);
+    if (streak.justHitMilestone) {
+      final milestone = streak.lastMilestone;
+      ref.read(streakProvider.notifier).clearMilestone();
+      Future.delayed(const Duration(milliseconds: 1200), () {
+        if (!mounted) return;
+        _showMilestoneCelebration(milestone!);
+      });
+    }
+  }
+
+  void _showMilestoneCelebration(int milestone) {
+    ExperienceService.instance.mediumHaptic();
+    final l = AppLocalizations.of(context)!;
+    final dark = Theme.of(context).brightness == Brightness.dark;
+
+    showDialog(
+      context: context,
+      barrierColor: Colors.black54,
+      builder: (ctx) => Dialog(
+        backgroundColor: dark ? PremiumColors.darkCard : Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.xxl)),
+        child: Padding(
+              padding: const EdgeInsets.all(AppSpacing.xxl),
+              child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SageEmotionWidget(
+                emotion: SageEmotion.celebrating,
+                size: 80,
+                animated: true,
+              ),
+              const SizedBox(height: AppSpacing.lg),
+              Text(
+                l.challenge_streak_milestone_title,
+                style: AppTextStyle.titleLg.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: PremiumColors.streakOrange,
+                ),
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              Text(
+                l.challenge_streak_milestone_desc(milestone),
+                textAlign: TextAlign.center,
+                style: AppTextStyle.bodyMd.copyWith(
+                  color: context.textSecondary,
+                ),
+              ),
+              const SizedBox(height: AppSpacing.xl),
+              SizedBox(
+                width: double.infinity,
+                child: Semantics(
+                  button: true,
+                  label: l.closeButton,
+                  child: ElevatedButton(
+                    onPressed: () => context.pop(),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: PremiumColors.streakOrange,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(AppRadius.md),
+                      ),
+                    ),
+                    child: Text(l.closeButton),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   void _fetchStreakData() {
@@ -108,7 +184,7 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
       final key = date.toIso8601String().substring(0, 10);
       _weekDays[i] = heatmap.containsKey(key) && heatmap[key]! > 0;
     }
-    if (mounted) setState(() {});
+    if (mounted) setState(() {}); // rebuild with updated _streakDays, _weekDays, etc.
   }
 
   @override
@@ -119,8 +195,8 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
   }
 
   Future<void> _handleContinue() async {
-    HapticFeedback.lightImpact();
-    final prefs = await SharedPreferences.getInstance();
+    ExperienceService.instance.lightHaptic();
+    final prefs = ref.read(prefsProvider);
     StreakVisibilityService(prefs).markShown();
     if (!mounted) return;
     context.goNamed('main');
@@ -128,11 +204,14 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     final dark = Theme.of(context).brightness == Brightness.dark;
     final bg = dark ? PremiumColors.darkBg : PremiumColors.lightBg;
     final bubbleColor = dark ? PremiumColors.darkSurface : Colors.white;
     final textColor = dark ? PremiumColors.textLight : PremiumColors.textDark;
     const accent = PremiumColors.streakOrange;
+
+    _message ??= _streakMessages(l)[Random().nextInt(5)];
 
     return Scaffold(
       backgroundColor: bg,
@@ -142,25 +221,46 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
           child: LayoutBuilder(
             builder: (context, constraints) {
               final h = constraints.maxHeight;
-              return Column(
-                children: [
-                  SizedBox(height: h * 0.05),
-                  SizedBox(
-                    height: h * 0.20,
-                    child: _buildSpeechBubble(bubbleColor, textColor),
-                  ),
-                  SizedBox(
-                    height: h * 0.38,
-                    child: _buildHeroSection(accent),
-                  ),
-                  SizedBox(
-                    height: h * 0.18,
-                    child: _buildWeekTimeline(accent, dark),
-                  ),
-                  const Spacer(),
-                  _buildButton(),
-                  SizedBox(height: h * 0.04),
-                ],
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Semantics(
+                        button: true,
+                        label: AppLocalizations.of(context)!.backButton,
+                        child: IconButton(
+                          icon: const Icon(Icons.arrow_back_rounded),
+                          onPressed: () {
+                            ExperienceService.instance.lightHaptic();
+                            context.pop();
+                          },
+                          tooltip: AppLocalizations.of(context)!.backButton,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: h * 0.05),
+                    SizedBox(
+                      height: h * 0.20,
+                      child: _buildSpeechBubble(bubbleColor, textColor),
+                    ),
+                    SizedBox(
+                      height: h * 0.38,
+                      child: _buildHeroSection(accent, AppLocalizations.of(context)!),
+                    ),
+                    SizedBox(
+                      height: h * 0.18,
+                      child: _buildWeekTimeline(accent, dark, l),
+                    ),
+                    SizedBox(
+                      height: h * 0.08,
+                      child: _buildMonthlyHeatmap(accent, dark),
+                    ),
+                    const SizedBox(height: AppSpacing.xxl),
+                    _buildButton(AppLocalizations.of(context)!),
+                    SizedBox(height: h * 0.04),
+                  ],
+                ),
               );
             },
           ),
@@ -172,7 +272,7 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
   Widget _buildSpeechBubble(Color bgColor, Color textColor) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
+        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm),
         child: Stack(
           clipBehavior: Clip.none,
           children: [
@@ -181,7 +281,7 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
               decoration: BoxDecoration(
                 color: bgColor,
-                borderRadius: BorderRadius.circular(18),
+                borderRadius: BorderRadius.circular(AppRadius.xl),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withValues(alpha: 0.08),
@@ -191,10 +291,9 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
                 ],
               ),
               child: Text(
-                _message,
+                _message ?? '',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 15,
+                style: AppTextStyle.body.copyWith(
                   fontWeight: FontWeight.w500,
                   height: 1.4,
                   color: textColor,
@@ -237,7 +336,7 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
     );
   }
 
-  Widget _buildHeroSection(Color accent) {
+  Widget _buildHeroSection(Color accent, AppLocalizations l) {
     return FadeTransition(
       opacity: _fireFade,
       child: ScaleTransition(
@@ -248,7 +347,7 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
             Positioned.fill(
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 20),
-                child: FlameAnimationWidget(
+                child: RiveFlameWidget(
                   phase: _showDefrosting
                       ? FlamePhase.defrosting
                       : _streakFrozen
@@ -259,7 +358,7 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
             ),
             const Center(
               child: Padding(
-                padding: EdgeInsets.only(bottom: 30),
+                    padding: EdgeInsets.only(bottom: 30),
                 child: SageEmotionWidget(
                   emotion: SageEmotion.excitedWave,
                   size: 130,
@@ -274,37 +373,44 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  TweenAnimationBuilder<double>(
-                    tween: Tween(begin: 0, end: _streakDays.toDouble()),
-                    duration: const Duration(milliseconds: 900),
-                    curve: Curves.easeOutCubic,
-                    builder: (context, val, _) => Text(
-                      '${val.toInt()}',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 56,
-                        fontWeight: FontWeight.w900,
-                        color: accent,
-                        height: 1,
-                        letterSpacing: -1,
-                        shadows: [
-                          Shadow(
-                            color: accent.withValues(alpha: 0.3),
-                            blurRadius: 20,
+                  Semantics(
+                    label: l.currentStreakDays(_streakDays),
+                    container: true,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        TweenAnimationBuilder<double>(
+                          tween: Tween(begin: 0, end: _streakDays.toDouble()),
+                          duration: const Duration(milliseconds: 900),
+                          curve: Curves.easeOutCubic,
+                          builder: (context, val, _) => Text(
+                            '${val.toInt()}',
+                            textAlign: TextAlign.center,
+                      style: AppTextStyle.heroLarge.copyWith(
+                              fontWeight: FontWeight.w900,
+                              color: accent,
+                              height: 1,
+                              letterSpacing: -1,
+                              shadows: [
+                                Shadow(
+                                  color: accent.withValues(alpha: 0.3),
+                                  blurRadius: 20,
+                                ),
+                              ],
+                            ),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    'día de racha',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                      color: accent.withValues(alpha: 0.8),
-                      letterSpacing: 2,
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          l.streakDayLabel,
+                          textAlign: TextAlign.center,
+                          style: AppTextStyle.subtitle.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: accent.withValues(alpha: 0.8),
+                            letterSpacing: 2,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
@@ -316,9 +422,9 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
     );
   }
 
-  Widget _buildWeekTimeline(Color accent, bool dark) {
-    final grayColor = dark ? const Color(0xFF2A3448) : const Color(0xFFD0D0D0);
-    final grayText = dark ? Colors.white.withValues(alpha: 0.4) : Colors.black.withValues(alpha: 0.3);
+  Widget _buildWeekTimeline(Color accent, bool dark, AppLocalizations l) {
+    final grayColor = dark ? PremiumColors.streakInactiveDark : PremiumColors.streakInactiveLight;
+    final grayText = context.textTertiary;
 
     return AnimatedBuilder(
       animation: Listenable.merge([_resetCtrl]),
@@ -346,35 +452,46 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
               showCheck = filled;
             }
 
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  _dayLabels[i],
-                  style: TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
-                    color: _circleFilled && i == _todayIndex ? accent : grayText,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Transform.scale(
-                  scale: scale,
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.easeOutBack,
-                    width: 30,
-                    height: 30,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: circleColor,
+            final dayLabel = _dayLabels(l)[i];
+            final dayStatus = (isToday && _circleFilled) || isPast
+                ? 'completado'
+                : isToday
+                    ? 'hoy'
+                    : 'pendiente';
+            return Semantics(
+              label: '$dayLabel: $dayStatus',
+              container: true,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ExcludeSemantics(
+                    child: Text(
+                      dayLabel,
+                      style: AppTextStyle.label.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: _circleFilled && i == _todayIndex ? accent : grayText,
+                      ),
                     ),
-                    child: showCheck
-                        ? const Icon(Icons.check_rounded, size: 18, color: Colors.white)
-                        : null,
                   ),
-                ),
-              ],
+                  const SizedBox(height: AppSpacing.xs),
+                  Transform.scale(
+                    scale: scale,
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.easeOutBack,
+                      width: 30,
+                      height: 30,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: circleColor,
+                      ),
+                      child: showCheck
+                          ? const Icon(Icons.check_rounded, size: 18, color: Colors.white)
+                          : null,
+                    ),
+                  ),
+                ],
+              ),
             );
           }),
         );
@@ -398,7 +515,7 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
       if (dist < pulseWidth) {
         final pulse = 1.0 - dist / pulseWidth;
         outScale(1.0 + 0.25 * sin(pulse * pi));
-        outColor(Color.lerp(accent, Colors.white, pulse)!);
+        outColor(Color.lerp(accent, Colors.white, pulse) ?? accent);
         outCheck(true);
       } else {
         final shouldBeFilled = defaultPast || (rp > waveCenter);
@@ -421,36 +538,75 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
     }
   }
 
-  Widget _buildButton() {
+  Widget _buildMonthlyHeatmap(Color accent, bool dark) {
+    final streak = ref.read(streakProvider);
+    final heatmap = streak.heatmapData;
+    final now = DateTime.now();
+    final grayColor = dark ? PremiumColors.streakInactiveDark : PremiumColors.streakInactiveLight;
+
+    return Semantics(
+      label: AppLocalizations.of(context)!.activityMap30Days,
+      container: true,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: List.generate(30, (i) {
+          final date = now.subtract(Duration(days: 29 - i));
+          final key = date.toIso8601String().substring(0, 10);
+          final hasActivity = heatmap.containsKey(key) && heatmap[key]! > 0;
+          final isToday = i == 29;
+
+          return Container(
+            margin: const EdgeInsets.symmetric(horizontal: 1.5),
+            width: 6,
+            height: 6,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: hasActivity
+                  ? accent.withValues(alpha: isToday ? 1.0 : 0.6)
+                  : grayColor,
+              border: isToday
+                  ? Border.all(color: accent, width: 1.5)
+                  : null,
+            ),
+          );
+        }),
+      ),
+    );
+  }
+
+  Widget _buildButton(AppLocalizations l) {
     return SizedBox(
       width: double.infinity,
       height: 56,
-      child: ElevatedButton(
-        onPressed: _handleContinue,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: PremiumColors.streakOrange,
-          foregroundColor: Colors.white,
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.local_fire_department_rounded, size: 20),
-            const SizedBox(width: 8),
-            const Text(
-              'MANTENER MI COMPROMISO',
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 1.2,
-              ),
+      child: Semantics(
+        button: true,
+        label: l.onboardingCommitButton,
+        child: ElevatedButton(
+          onPressed: _handleContinue,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: PremiumColors.streakOrange,
+            foregroundColor: Colors.white,
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(AppRadius.xl),
             ),
-            const SizedBox(width: 4),
-            Icon(Icons.arrow_forward_rounded, size: 18, color: Colors.white.withValues(alpha: 0.7)),
-          ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.local_fire_department_rounded, size: 20),
+              const SizedBox(width: AppSpacing.sm),
+              Text(
+                l.onboardingCommitButton,
+                style: AppTextStyle.body.copyWith(
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1.2,
+                ),
+              ),
+              const SizedBox(width: AppSpacing.xxs),
+              Icon(Icons.arrow_forward_rounded, size: 18, color: Colors.white.withValues(alpha: 0.7)),
+            ],
+          ),
         ),
       ),
     );

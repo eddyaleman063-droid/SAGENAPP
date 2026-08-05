@@ -1,0 +1,2127 @@
+{
+  "@@locale": "pt",
+  "@sageAchievementUnlocked": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "@sageAdvancing": {
+    "placeholders": {
+      "levelHint": {},
+      "name": {}
+    }
+  },
+  "@sageCongratulations": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "@sageEmptyState": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "@sageGreatJob": {
+    "placeholders": {
+      "name": {},
+      "extra": {}
+    }
+  },
+  "@sageImpressiveStreak": {
+    "placeholders": {
+      "days": {},
+      "name": {}
+    }
+  },
+  "@sageStreakAtRiskMessage": {
+    "placeholders": {
+      "urgency": {},
+      "name": {}
+    }
+  },
+  "@sageStreakLostMessage": {
+    "placeholders": {
+      "name": {},
+      "encouragement": {}
+    }
+  },
+  "@sageTellMeMore": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "@sageWelcomeBack": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "@sageWhatDoYouThink": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "aboutSage": "Sobre o Sage",
+  "aboutSection": "Sobre",
+  "achievementConqueror": "Conquistador",
+  "achievementConquerorDesc": "Conclua sua primeira etapa",
+  "achievementConstant": "Constante",
+  "achievementConstantDesc": "Sequência de 3 dias",
+  "achievementCurious": "Curioso",
+  "achievementCuriousDesc": "Converse com o Sage 10 vezes",
+  "achievementCyberGuardian": "Ciber Guardião",
+  "achievementCyberGuardianDesc": "Conclua 50 lições",
+  "achievementDigitalMaster": "Mestre Digital",
+  "achievementDigitalMasterDesc": "Conclua todas as etapas",
+  "achievementDigitalStudent": "Estudante Digital",
+  "achievementDigitalStudentDesc": "Conclua 10 lições",
+  "achievementDigitalWeek": "Semana Digital",
+  "achievementDigitalWeekDesc": "Sequência de 7 dias",
+  "achievementFirstShield": "Primeiro Escudo",
+  "achievementFirstShieldDesc": "Conclua sua primeira lição",
+  "achievementGuardian": "Guardião",
+  "achievementGuardianDesc": "Conclua 25 lições",
+  "achievementLearner": "Aprendiz",
+  "achievementLearnerDesc": "Conclua 5 lições",
+  "achievementLegendaryStreak": "Sequência Lendária",
+  "achievementLegendaryStreakDesc": "Sequência de 30 dias",
+  "achievementLocked": "???",
+  "achievementPerfect": "Perfeito",
+  "achievementPerfectDesc": "Conclua uma lição sem erros",
+  "acquired": "Adquirido",
+  "adminCreditDonationA11y": "Creditar Doações",
+  "adminCreditDonationButton": "Creditar Doações",
+  "adminCreditDonationSuccess": "$gems doações creditadas para $userId",
+  "adminCreditDonationTitle": "Admin — Creditar Doações",
+  "adminCreditError": "Erro ao creditar. Verifique se seu usuário está na coleção \"admins\" do Firestore.",
+  "adminCreditSuccessNotification": "$gems doações creditadas para $userId",
+  "adminDonations": "Doações",
+  "adminFieldAmount": "Valor",
+  "adminFieldDonationAmount": "Valor da doação",
+  "adminFieldUserId": "User ID",
+  "adminInvalidInput": "Insira um User ID válido e valor",
+  "adminMercadoPago": "Mercado Pago",
+  "adminPaymentMethod": "Método de pagamento",
+  "adminTitle": "Admin — Doações de Crédito",
+  "adminUserId": "ID do Usuário",
+  "adminVerifyingPermissions": "Verificando permissões de administrador…",
+  "adminWhatsapp": "WhatsApp / Yape / Plin",
+  "analyzeFile": "Analisar arquivo",
+  "analyzeLink": "Analisar link",
+  "analyzing": "Analisando...",
+  "appName": "SAGEN",
+  "appSlogan": "Seu escudo digital",
+  "authAge": "Idade",
+  "authBack": "Voltar",
+  "authCanceled": "Login cancelado",
+  "authConfirmPassword": "Confirmar senha",
+  "authCreateAccount": "Criar conta",
+  "authCreateAccountError": "Erro ao criar conta",
+  "authCredentialExpired": "Sessão expirada. Faça login novamente.",
+  "authDefault": "Erro de autenticação",
+  "authDeleteAccountFailed": "Não foi possível excluir a conta. Tente novamente.",
+  "authEmailError": "Digite seu e-mail",
+  "authEmailInUse": "Já existe uma conta com este e-mail",
+  "authEmailInvalid": "E-mail inválido",
+  "authEmailLabel": "E-mail",
+  "authEmailVerificationSent": "Verifique seu e-mail para confirmar sua conta",
+  "authEnterEmailError": "Digite seu e-mail",
+  "authFacebookButton": "Continuar com Facebook",
+  "authFacebookError": "Erro ao entrar com Facebook",
+  "authFirebaseUnavailable": "Firebase não está disponível",
+  "authForgotPasswordButton": "REDEFINIR SENHA",
+  "authForgotPasswordDesc": "Enviaremos um link para redefinir sua senha.",
+  "authForgotPasswordTitle": "Redefinir senha",
+  "authFullName": "Nome completo",
+  "authGoogleButton": "Continuar com Google",
+  "authGoogleError": "Erro ao entrar com Google",
+  "authHaveAccount": "Já tem uma conta? ",
+  "authInvalidCredential": "E-mail ou senha incorretos",
+  "authInvalidEmail": "Formato de e-mail inválido",
+  "authLoginButton": "ENTRAR",
+  "authLoginError": "Erro ao fazer login",
+  "authLoginLink": "Entrar",
+  "authLoginTitle": "Insira seus dados",
+  "authNameError": "Digite seu nome",
+  "authNetworkError": "Sem conexão com a internet",
+  "authNoAccount": "Não tem uma conta? ",
+  "authNotAuthenticated": "Nenhum usuário autenticado",
+  "authNotFound": "Nenhuma conta encontrada com este e-mail",
+  "authNotFoundCancel": "Cancelar",
+  "authNotFoundCreate": "Criar conta",
+  "authNotFoundMessage": "Não existe uma conta registrada com $email. Deseja criar uma nova conta e começar a aprender?",
+  "authNotFoundTitle": "Conta não encontrada",
+  "authNotVerified": "E-mail ainda não verificado. Verifique sua caixa de entrada.",
+  "authNullToken": "Não foi possível obter o token do Facebook",
+  "authNullUser": "Não foi possível obter o usuário",
+  "authOrRegisterWith": "ou cadastre-se com",
+  "authPasswordError": "Digite sua senha",
+  "authPasswordLabel": "Senha",
+  "authPasswordMinError": "A senha deve ter 8+ caracteres com maiúscula, minúscula e um número",
+  "authPasswordMinHint": "Senha (8+ caracteres, A-Z, a-z, 0-9)",
+  "authPasswordsDoNotMatch": "As senhas não coincidem",
+  "authPrivacy": "Suas informações estão protegidas.",
+  "authRateLimited": "Muitas tentativas. Aguarde alguns segundos.",
+  "authReauthError": "Não foi possível verificar as credenciais. Tente novamente.",
+  "authReauthRequiredForDelete": "Digite sua senha para excluir sua conta.",
+  "authRecoveryEmailSentDesc": "Verifique sua caixa de entrada e siga as instruções para redefinir sua senha.",
+  "authRecoveryEmailSentMessage": "E-mail de recuperação enviado",
+  "authRecoveryEmailSentTitle": "E-mail enviado",
+  "authRecoveryError": "Não foi possível enviar e-mail de recuperação",
+  "authRegisterFacebookError": "Erro ao cadastrar com Facebook",
+  "authRegisterGoogleError": "Erro ao cadastrar com Google",
+  "authRegisterTitle": "Crie sua conta",
+  "authResendEmailError": "Não foi possível reenviar e-mail de verificação",
+  "authSendEmailError": "Erro ao enviar e-mail",
+  "authSendLink": "Enviar link",
+  "authSubtitle": "Aprenda, proteja-se e navegue na internet com mais segurança.",
+  "authTitle": "Sua proteção digital começa aqui",
+  "authTokenExpired": "Sessão expirada. Faça login novamente.",
+  "authTooManyRequests": "Muitas tentativas. Aguarde.",
+  "authUnknown": "Ocorreu um erro inesperado",
+  "authVerifyError": "Não foi possível verificar. Tente novamente.",
+  "authWeakPassword": "A senha deve ter pelo menos 6 caracteres",
+  "authWrongPassword": "Senha incorreta",
+  "back": "Voltar",
+  "backButton": "Voltar",
+  "biometricPrompt": "Desbloqueie o SAGEN para continuar",
+  "biometricReason": "Desbloqueie o SAGEN para continuar",
+  "cancel": "Cancelar",
+  "cancelButton": "Cancelar",
+  "careerCertifications": "Certificações",
+  "careerDescription": "Obtenha certificações e desenvolva habilidades que te tornam valioso na economia digital.",
+  "careerOpp1": "Consultor de Segurança Digital",
+  "careerOpp1Desc": "Ajude empresas a proteger seus dados",
+  "careerOpp2": "Treinador de Conscientização em Cibersegurança",
+  "careerOpp2Desc": "Ensine outros a ficarem seguros online",
+  "careerOpp3": "Auditor de Segurança Freelancer",
+  "careerOpp3Desc": "Ofereça auditorias de segurança para clientes",
+  "careerOpportunities": "Oportunidades Econômicas",
+  "careerSkill1": "Segurança de Senhas",
+  "careerSkill2": "Detecção de Phishing",
+  "careerSkill3": "Proteção de Privacidade",
+  "careerSkill4": "Segurança de Redes",
+  "careerSkill5": "Resposta a Incidentes",
+  "careerSkills": "Habilidades que você está desenvolvendo",
+  "careerSubtitle": "Seu caminho profissional em cibersegurança",
+  "careerTitle": "Carreira e Certificações",
+  "challengeComplete": "Complete a frase",
+  "challengeCreatePassword": "Criar senha",
+  "challengeDetectRisk": "Detectar risco",
+  "challengeMiniCase": "Caso real",
+  "challengeMultiple": "Múltipla escolha",
+  "challengeSafe": "Seguro",
+  "challengeSuspicious": "Suspeito",
+  "challengeTrueFalse": "Verdadeiro / Falso",
+  "challengeWhatWouldYouDo": "O que você faria?",
+  "challenge_analyze_link_desc": "Analise $count link(s)",
+  "challenge_analyze_link_title": "Analisar Links",
+  "challenge_answer_questions_desc": "Responda $count pergunta(s)",
+  "challenge_answer_questions_title": "Responder Perguntas",
+  "challenge_check_in_desc": "Faça check-in $count vez(es)",
+  "challenge_check_in_title": "Check-in Diário",
+  "challenge_complete_lesson_desc": "Conclua $count lição(ões)",
+  "challenge_complete_lesson_title": "Concluir Lições",
+  "challenge_complete_session_desc": "Conclua $count sessão(ões)",
+  "challenge_complete_session_title": "Sessões de Aprendizado",
+  "challenge_complete_stage_desc": "Conclua 1 etapa",
+  "challenge_complete_stage_title": "Concluir Etapa",
+  "challenge_correct_streak_desc": "Acerto $count respostas corretas seguidas",
+  "challenge_correct_streak_title": "Sequência Correta",
+  "challenge_detect_phishing_desc": "Detecte $count tentativa(s) de phishing",
+  "challenge_detect_phishing_title": "Detectar Phishing",
+  "challenge_earn_xp_desc": "Ganhe $xp XP",
+  "challenge_earn_xp_title": "Ganhar XP",
+  "challenge_learn_minutes_desc": "Aprenda por $count minutos",
+  "challenge_learn_minutes_title": "Tempo de Aprendizado",
+  "challenge_learn_topic_desc": "Aprenda $count tópico(s)",
+  "challenge_learn_topic_title": "Aprender um Tópico",
+  "challenge_perfect_lesson_desc": "Conclua uma lição sem erros",
+  "challenge_perfect_lesson_title": "Lição Perfeita",
+  "challenge_privacy_check_desc": "Revise configurações de privacidade $count vez(es)",
+  "challenge_privacy_check_title": "Verificação de Privacidade",
+  "challenge_quiz_night_desc": "Conclua $count mini quiz(es)",
+  "challenge_quiz_night_title": "Mini Quiz",
+  "challenge_review_tips_desc": "Revise $count dica(s) de segurança",
+  "challenge_review_tips_title": "Revisar Dicas",
+  "challenge_security_audit_desc": "Conclua $count auditoria(s) de segurança",
+  "challenge_security_audit_title": "Auditoria de Segurança",
+  "challenge_share_knowledge_desc": "Compartilhe $count dica(s)",
+  "challenge_share_knowledge_title": "Compartilhar Conhecimento",
+  "challenge_social_awareness_desc": "Conclua $count desafio(s) de consciência social",
+  "challenge_social_awareness_title": "Consciência Social",
+  "challenge_streak_milestone_desc": "Mantenha uma sequência de $count dias",
+  "challenge_streak_milestone_title": "Marco de Sequência",
+  "challenge_talk_sage_desc": "Converse com Sage $count vez(es)",
+  "challenge_talk_sage_title": "Conversar com Sage",
+  "challenge_test_password_desc": "Teste $count senha(s)",
+  "challenge_test_password_title": "Testar Senhas",
+  "challenge_use_dark_mode_desc": "Usar modo escuro",
+  "challenge_use_dark_mode_title": "Modo Escuro",
+  "changelogV4": "Fundação",
+  "changelogV4_1": "8 etapas de aprendizado com 1.099 lições",
+  "changelogV4_2": "Sequência e desafios diários",
+  "changelogV4_3": "Sistema de conquistas",
+  "changelogV5": "IA e Personalização",
+  "changelogV5Old": "Sistema de Baús e Gacha",
+  "changelogV5Old_1": "Sistema de evolução de baús (Bronze → Lendário)",
+  "changelogV5Old_2": "Botões 3D interativos",
+  "changelogV5Old_3": "Redesenho da UI com Glassmorphism",
+  "changelogV5_1": "Chat SAGE com IA para ajuda personalizada",
+  "changelogV5_2": "Emoções dinâmicas do mascote",
+  "changelogV5_3": "19.250 perguntas de cibersegurança",
+  "changelogV5_4": "Sociedade VIP para sequências de 30+ dias",
+  "chatAskSage": "Pergunte ao Sage",
+  "chatAskSageDesc": "Faça qualquer pergunta sobre cibersegurança ou escolha uma sugestão rápida.",
+  "chatBlocked": "Chat bloqueado",
+  "chatCancel": "Cancelar",
+  "chatClear": "Limpar",
+  "chatClearAction": "Limpar",
+  "chatClearMessage": "Tem certeza de que deseja limpar esta conversa? Esta ação não pode ser desfeita.",
+  "chatClearTitle": "Limpar conversa",
+  "chatEmptyTitle": "Inicie uma conversa",
+  "chatFallback": "Não consegui responder agora. Tente novamente.",
+  "chatFallbackSubtitle": "Escreva qualquer dúvida sobre cibersegurança ou escolha uma sugestão rápida.",
+  "chatFallbackTitle": "Pergunte ao Sage",
+  "chatGuideDesc": "Seu guia de cibersegurança",
+  "chatGuideSubtitle": "Seu guia de cibersegurança",
+  "chatHint": "Pergunte ao Sage...",
+  "chatInputHint": "Pergunte ao Sage...",
+  "chatNewConversation": "Nova conversa",
+  "chatSageTutor": "Tutor Sage",
+  "chatSageTutorLabel": "Tutor Sage",
+  "checkInDesc": "Check-in diário para manter sua sequência ativa",
+  "checkInTitle": "Check-in",
+  "chestCollect": "Coletar",
+  "chestEvolvedTo": "Evoluiu para $type",
+  "chestNoChange": "Nenhuma mudança",
+  "chestOpenedTitle": "Baú $type!",
+  "chestPityProgress": "Lendário em",
+  "chestReminder": "Lembretes de Baú",
+  "chestReminderSubtitle": "Receba lembretes para abrir o baú diário",
+  "chestRewardBronze": "Bronze!",
+  "chestRewardDefault": "Recompensa",
+  "chestRewardDialog": "Diálogo de recompensa do baú",
+  "chestRewardGold": "Ouro!",
+  "chestRewardLegendary": "Lendário!",
+  "chestRewardSilver": "Prata!",
+  "chestTapToOpen": "Toque para abrir",
+  "chestTapToUpgrade": "Toque para evoluir",
+  "chestTitle": "Baú $type",
+  "chestTreasure": "Cofre do tesouro $type",
+  "chestTreasureLabel": "Tesouro $type",
+  "chestTypeBronze": "Bronze",
+  "chestTypeGold": "Ouro",
+  "chestTypeLegendary": "Lendário",
+  "chestTypeSilver": "Prata",
+  "chestXpBoost": "x2 XP",
+  "closeButton": "Fechar",
+  "cloudDataDeleted": "Dados na nuvem excluídos",
+  "cloudSync": "Sincronização na Nuvem",
+  "commit1Month": "1 mês",
+  "commit1Week": "1 semana",
+  "commit2Weeks": "2 semanas",
+  "commitButton": "COMPROMETER-SE COM MINHA META",
+  "commitChooseGoal": "Escolha sua meta",
+  "commitChooseGoalDesc": "Selecione por quantos dias você seguirá seu plano de aprendizado.",
+  "commitDays": "$days dias",
+  "commitGoalLabel": "Sua meta: $days dias",
+  "commitSelected": "SELECIONADO",
+  "commitYourGoal": "Sua meta: $days dias",
+  "completePrevious": "Complete a etapa anterior",
+  "connectionErrorRetry": "Erro de conexão. Tente novamente.",
+  "continueLesson": "Continuar lição: $title",
+  "continueText": "Continuar",
+  "correct": "Correto",
+  "correctAnswer": "Resposta correta",
+  "correctAnswers": "$correct de $total corretas",
+  "currencySymbol": "R$",
+  "cyberQuizProgress": "Pergunta $current de $total",
+  "dailyGoalIntense": "Intenso",
+  "dailyGoalMinutesPerDay": "$minutes min/dia",
+  "dailyGoalNormal": "Normal",
+  "dailyGoalQuestion": "Qual é a sua meta diária de aprendizado?",
+  "dailyGoalRelaxed": "Relaxado",
+  "dailyGoalSerious": "Séria",
+  "dailyMissions": "Missões diárias",
+  "dailyMissionsAllCompleted": "Todos os desafios concluídos hoje!",
+  "dailyMissionsDesc": "Conclua suas missões para ganhar recompensas",
+  "darkModeEnd": "Finalizar modo escuro",
+  "darkModeScheduleInfo": "O modo escuro estará ativo das $start:00 às $end:00",
+  "darkModeStart": "Iniciar modo escuro",
+  "dayAbbrFri": "Sex",
+  "dayAbbrMon": "Seg",
+  "dayAbbrSat": "Sáb",
+  "dayAbbrSun": "Dom",
+  "dayAbbrThu": "Qui",
+  "dayAbbrTue": "Ter",
+  "dayAbbrWed": "Qua",
+  "dayShortFri": "S",
+  "dayShortMon": "S",
+  "dayShortSat": "S",
+  "dayShortSun": "D",
+  "dayShortThu": "Q",
+  "dayShortTue": "T",
+  "dayShortWed": "Q",
+  "daysLabel": "dias",
+  "delete": "Excluir",
+  "deleteAccountConfirm": "Excluir minha conta",
+  "deleteAccountDesc": "Isso excluirá permanentemente todos os seus dados. Esta ação é irreversível.",
+  "deleteAccountReauthRequired": "Autenticação recente necessária para excluir a conta",
+  "deleteAccountTitle": "Excluir conta",
+  "deleteAction": "Excluir",
+  "deleteCloudData": "Excluir Dados na Nuvem",
+  "deleteCloudDesc": "Tem certeza? Isso excluirá permanentemente seu progresso salvo na nuvem. Os dados locais não serão afetados.",
+  "deleteCloudTitle": "Excluir Dados na Nuvem",
+  "deleteHistory": "Excluir Histórico de Análises",
+  "deleteHistoryDesc": "Todas as análises de links salvas serão excluídas. Esta ação é irreversível.",
+  "deleteHistoryTitle": "Excluir Histórico",
+  "demoModeLabel": "MODO DEMO",
+  "demoStudentName": "Estudante demo",
+  "developedWith": "Desenvolvido com Flutter",
+  "donateToSupport": "Doar para apoiar",
+  "donationBasic": "Supporter",
+  "donationBasicDesc": "Ajude-nos a manter o SAGEN gratuito",
+  "donationLabel": "Doação",
+  "donationPopular": "Super Supporter",
+  "donationPopularDesc": "Badge exclusivo + agradecimento especial",
+  "donationPremium": "Campeão",
+  "donationPremiumDesc": "Todos os benefícios + seu nome nos créditos",
+  "donationValueLabel": "Valor",
+  "dot": "Ponto $number",
+  "ecoCo2Saved": "Emissões de CO₂ evitadas",
+  "ecoComparison": "SAGEN usa 99% menos recursos que a educação tradicional",
+  "ecoDescription": "Cada lição concluída economiza papel, água e reduz emissões de carbono em comparação com a educação tradicional.",
+  "ecoDigital": "📱 Digital: apenas seu celular",
+  "ecoDigitalLearning": "Aprendizado 100% Digital",
+  "ecoDigitalLearningDesc": "Sem papel, sem impressão, sem transporte necessário",
+  "ecoHowItWorks": "Digital vs Tradicional",
+  "ecoLiters": "litros",
+  "ecoPages": "páginas",
+  "ecoPaperSaved": "Papel economizado",
+  "ecoSubtitle": "Aprender cuidando do planeta",
+  "ecoTitle": "Impacto Ecológico",
+  "ecoTraditional": "📚 Tradicional: papel, tinta, transporte",
+  "ecoTrees": "árvores",
+  "ecoTreesEquivalent": "Equivalente em árvores",
+  "ecoWaterSaved": "Água economizada",
+  "ecoYourImpact": "Seu impacto ambiental",
+  "emotionPhrase1": "Você detecta riscos mais rápido agora.",
+  "emotionPhrase2": "Seu hábito digital está melhorando.",
+  "emotionPhrase3": "Cada dia você entende melhor como se proteger.",
+  "emotionPhrase4": "Você está construindo um instinto de segurança.",
+  "emotionPhrase5": "Seu julgamento digital está se afiando.",
+  "emotionPhrase6": "Você está aprendendo a ver o que outros não veem.",
+  "emotionPhrase7": "Seu mundo digital está mais seguro graças a você.",
+  "emotionPhraseStart": "Sua jornada digital começa hoje.",
+  "emotionalPhrase1": "Você detecta riscos mais rápido agora.",
+  "emotionalPhrase2": "Seu hábito digital está melhorando.",
+  "emotionalPhrase3": "Cada dia você entende melhor como se proteger.",
+  "emotionalPhrase4": "Você está construindo um instinto de segurança.",
+  "emotionalPhrase5": "Seu julgamento digital está se afiando.",
+  "emotionalPhrase6": "Você está aprendendo a ver o que outros não veem.",
+  "emotionalPhrase7": "Seu mundo digital é mais seguro por sua causa.",
+  "emotionalPhraseStart": "Sua jornada digital começa hoje.",
+  "emptyChatSubtitle": "Sage está pronto para ajudá-lo",
+  "emptyProfile": "Sem dados de perfil",
+  "emptyStore": "A loja está vazia",
+  "emptyUpdates": "Nenhuma atualização disponível",
+  "english": "Inglês",
+  "errorContentLoadFailed": "Não foi possível carregar o conteúdo. Verifique sua conexão e tente novamente.",
+  "errorFeedback": "Falha ao salvar feedback. Tente novamente.",
+  "errorGeneric": "Algo deu errado. Tente novamente.",
+  "errorIntegrityCheck": "Um problema de integridade foi detectado. Seu progresso foi mantido, mas verifique se está correto.",
+  "errorLoadContent": "Não foi possível carregar o conteúdo. Verifique sua conexão e tente novamente.",
+  "errorLoadProgress": "Não foi possível carregar seu progresso. Verifique sua conexão e tente novamente.",
+  "errorLoadQuestions": "Falha ao carregar perguntas. Tente novamente.",
+  "errorNetwork": "Sem conexão com a internet. Verifique sua rede.",
+  "errorPayment": "Falha ao registrar pagamento. Tente novamente.",
+  "errorProgressLoadFailed": "Não foi possível carregar seu progresso. Verifique sua conexão e tente novamente.",
+  "errorProgressReloadFailed": "Não foi possível recarregar seu progresso. Tente novamente.",
+  "errorReloadProgress": "Não foi possível recarregar seu progresso. Tente novamente.",
+  "errorRestartApp": "Reiniciar aplicativo",
+  "errorRetry": "Tentar novamente",
+  "errorShare": "Falha ao compartilhar. Tente novamente.",
+  "errorSomethingWrong": "Algo deu errado",
+  "errorStreak": "Falha ao salvar progresso da sequência.",
+  "errorUnexpected": "Ocorreu um erro inesperado. Você pode tentar novamente.",
+  "exitText": "Sair",
+  "experience": "Experiência",
+  "exportData": "Exportar meus dados",
+  "exportDataCopied": "Dados copiados para a área de transferência!",
+  "exportDataCopy": "Copiar para área de transferência",
+  "exportDataDesc": "Baixe uma cópia dos seus dados pessoais",
+  "exportDataLoading": "Coletando seus dados...",
+  "feedbackCatBug": "Relatar Bug",
+  "feedbackCatContent": "Conteúdo",
+  "feedbackCatDesign": "Design",
+  "feedbackCatFeature": "Sugerir Função",
+  "feedbackCatGeneral": "Geral",
+  "feedbackCategory": "Categoria",
+  "feedbackChangelog": "Novidades",
+  "feedbackComments": "Comentários",
+  "feedbackConfusing": "Confuso",
+  "feedbackContinue": "Continuar",
+  "feedbackExcellent": "Você é incrível!",
+  "feedbackGood": "Bom",
+  "feedbackHard": "Difícil",
+  "feedbackHint": "Conte-nos o que você acha...",
+  "feedbackHowDidYouFeel": "Como você se sentiu?",
+  "feedbackPerfect": "Perfeito",
+  "feedbackPoor": "Vamos melhorar",
+  "feedbackRateExperience": "Avalie sua experiência",
+  "feedbackSubmit": "Enviar Feedback",
+  "feedbackTapStars": "Toque em uma estrela para avaliar",
+  "feedbackThanks": "Obrigado!",
+  "feedbackThanksDesc": "Seu feedback nos ajuda a melhorar o SAGEN para todos.",
+  "feedbackTitle": "Feedback e Atualizações",
+  "fileAnalyzer": "Analisador de Arquivos",
+  "fileDangerous": "Perigoso",
+  "fileHighRisk": "Alto risco",
+  "fileLowRisk": "Baixo risco",
+  "fileMediumRisk": "Risco médio",
+  "fileSafe": "Seguro",
+  "finishText": "Finalizar",
+  "firstLessonProgress": "Lição $current de $total",
+  "firstLessonSeeResults": "VER RESULTADOS",
+  "flexCardJoinAlliance": "Junte-se à minha aliança no SAGEN",
+  "fontSizeLarge": "Grande",
+  "fontSizeNormal": "Normal",
+  "fontSizeSmall": "Pequeno",
+  "fontSizeTitle": "Tamanho do texto",
+  "fontSizeXLarge": "Extra grande",
+  "forceSync": "Forçar Sincronização",
+  "free": "Grátis",
+  "french": "Francês",
+  "gachaChestTap": "Baú gacha. Toque para melhorar.",
+  "gachaOrbFail": "Sem alteração",
+  "gachaOrbSuccess": "Melhoria bem-sucedida",
+  "gems": "gemas",
+  "goToLesson": "Ir para lições: $title",
+  "greetingAfternoon": "Boa tarde",
+  "greetingEvening": "Boa noite",
+  "greetingMorning": "Bom dia",
+  "habitMsg1": "Ótimo trabalho! Agora vamos fortalecer sua disciplina diária.",
+  "habitMsg2": "Primeiro passo concluído. Vamos construir o hábito que te leva ao objetivo.",
+  "habitMsg3": "Desempenho excelente. O segredo agora é a consistência.",
+  "habitMsg4": "Muito bem! Vamos definir seu ritmo de progresso diário.",
+  "habitMsg5": "Um começo perfeito. Vamos garantir seu sucesso criando um hábito inabalável.",
+  "habitTransition1": "Construindo seu hábito diário...",
+  "habitTransition2": "A consistência é a chave",
+  "habitTransition3": "Você está progredindo",
+  "habitTransition4": "Continue!",
+  "habitTransition5": "Quase lá!",
+  "hapticFeedback": "Resposta Tátil",
+  "hapticSubtitle": "Resposta tátil nas interações",
+  "heatmapLess": "Menos",
+  "heatmapLessons": "$count lições",
+  "heatmapMore": "Mais",
+  "heatmapTitle": "Atividade recente",
+  "hidePassword": "Ocultar senha",
+  "historyDeleted": "Histórico excluído",
+  "historyTitle": "Histórico",
+  "homeAllComplete": "Tudo completo!",
+  "homeAllCompleteDesc": "Você dominou todas as lições.",
+  "homeContinue": "Continuar",
+  "homeDefaultName": "Guardião",
+  "homeLearningPath": "Caminho de aprendizado",
+  "homeTitle": "Seu escudo digital está ativo",
+  "homeViewAchievements": "Ver conquistas",
+  "howItWorks": "Como o SAGEN funciona",
+  "impactAch": "Conquistas",
+  "impactActiveUsers": "Usuários ativos",
+  "impactCommunity": "Impacto Comunitário",
+  "impactCountriesReached": "Países alcançados",
+  "impactDonations": "Total Doado",
+  "impactHoursLearned": "Horas aprendidas",
+  "impactKnowledgeLevel": "Conhecimento em cibersegurança",
+  "impactLearningJourney": "Jornada de Aprendizado",
+  "impactLessons": "Lições feitas",
+  "impactLevelActiveLearner": "Aprendiz Ativo",
+  "impactLevelAwareUser": "Usuário Consciente",
+  "impactLevelBeginner": "Começando",
+  "impactLevelCybersecurityExpert": "Especialista em Cibersegurança",
+  "impactLevelDigitalGuardian": "Guardião Digital",
+  "impactProgressToNext": "$count lições para o próximo nível",
+  "impactProtectedUsers": "Usuários protegidos",
+  "impactQuestionsAnswered": "Perguntas respondidas",
+  "impactStreak": "Sequência atual",
+  "impactTestimonial": "O que os usuários dizem",
+  "impactTestimonial1": "O SAGEN me ajudou a proteger minha família do phishing. As lições interativas são incríveis!",
+  "impactTestimonial2": "Passei de não saber nada sobre cibersegurança a ajudar meus colegas a ficarem seguros online.",
+  "impactTestimonial3": "A gamificação torna o aprendizado divertido. Concluí 30 lições em apenas 2 semanas!",
+  "impactTitle": "Meu Impacto",
+  "impactTotalLessons": "Lições concluídas",
+  "impactXp": "XP ganhos",
+  "impactYourLevel": "SEU NÍVEL",
+  "impactYourStats": "Suas Estatísticas",
+  "incorrect": "Incorreto",
+  "incorrectAnswer": "Resposta incorreta",
+  "infoSection": "Informações",
+  "initialAction": "Comece aqui",
+  "inventoryFocusElixir": "Elixir de Foco",
+  "inventoryFocusElixirActivated": "Elixir de Foco ativado — x2 por 15 min",
+  "inventoryFocusElixirDesc": "Multiplica EXP x2 por 15 min",
+  "inventoryMonocleAvailable": "Monóculo do Sage disponível para o próximo desafio",
+  "inventoryPhoenixFeather": "Pena de Fênix",
+  "inventoryPhoenixFeatherDesc": "Revive sua sequência se perdida há menos de 24h",
+  "inventoryPhoenixFeatherRestored": "Pena de Fênix: sequência restaurada",
+  "inventorySagesMonocle": "Monóculo do Sábio",
+  "inventorySagesMonocleDesc": "Remove 2 respostas incorretas em um desafio",
+  "inventoryShieldProtected": "Escudo de Titânio: sequência protegida",
+  "inventoryTitaniumShield": "Escudo de Titânio",
+  "inventoryTitaniumShieldDesc": "Protege sua sequência automaticamente se faltar um dia",
+  "inventoryTitle": "Inventário",
+  "inventoryUse": "Usar",
+  "languageTitle": "Idioma",
+  "lastSync": "Última sincronização",
+  "learnSubtitle": "Lições interativas de segurança digital",
+  "learnTitle": "Aprender",
+  "learningPath": "Seu caminho de aprendizado",
+  "legalAnd": " e ",
+  "legalPrivacy": "Aceito a política de privacidade",
+  "legalRegisterAgree": "Ao se registrar, você aceita nossos ",
+  "legalTerms": "Termos",
+  "lessonComplete": "Lição concluída",
+  "lessonNoQuestions": "Nenhuma pergunta disponível para esta lição",
+  "lessonNoQuestionsHint": "Sage também está curioso! Volte em breve.",
+  "lessonPreparing": "Preparando suas perguntas...",
+  "lessonProgress": "Progresso: $percent%",
+  "lessonResultsPreparing": "Preparando resultados...",
+  "lessonsCompleted": "$count lições concluídas",
+  "lessonsCompletedPlural": "{count, plural, one{# lição concluída} other{# lições concluídas}}",
+  "lessonsCount": "$count lições",
+  "lessonsLevel": "Nível $level",
+  "lessonsNoAvailable": "Nenhuma lição disponível. Volte em breve.",
+  "lessonsYourPath": "Seu caminho de aprendizado",
+  "levelAssessment0": "Iniciante absoluto",
+  "levelAssessment1": "Iniciante",
+  "levelAssessment2": "Intermediário",
+  "levelAssessment3": "Avançado",
+  "levelAssessment4": "Especialista",
+  "levelAssessmentQuestion": "Qual é o seu nível atual em cibersegurança?",
+  "levelProgress": "Progresso do nível: $percent por cento",
+  "loading": "Carregando",
+  "madeWithLove": "Feito com ♥ para estudantes",
+  "miniGameBackupDef": "Cópia de segurança",
+  "miniGameComplete": "Concluído!",
+  "miniGameCorrect": "Correto",
+  "miniGameEncryptionDef": "Proteção de dados com chave",
+  "miniGameEncryptionTerm": "Criptografia",
+  "miniGameFirewallDef": "Barreira de segurança de rede",
+  "miniGameHiddenCard": "Carta oculta",
+  "miniGameMalwareDef": "Software malicioso",
+  "miniGameMatches": "Correspondências",
+  "miniGameMemory": "Memory Match",
+  "miniGameMemoryDesc": "Encontre os pares de cartas",
+  "miniGameMistakes": "Erros",
+  "miniGameMoves": "Movimentos",
+  "miniGameOver": "Boa tentativa!",
+  "miniGamePattern": "Pattern Trace",
+  "miniGamePatternDesc": "Memorize e reproduza padrões",
+  "miniGamePhishingDef": "E-mail falso que rouba dados",
+  "miniGamePlayAgain": "Jogar novamente",
+  "miniGameRound": "Rodada",
+  "miniGameScore": "Pontuação",
+  "miniGameSortInstruction": "Toque para classificar cada item na categoria correta",
+  "miniGameSpeed": "Speed Sort",
+  "miniGameSpeedDesc": "Classifique itens rapidamente",
+  "miniGameSubtitle": "Pratique suas habilidades de cibersegurança",
+  "miniGameTitle": "Mini Jogos",
+  "miniGameVpnDef": "Rede privada virtual",
+  "miniGameWatch": "Observe",
+  "miniGameWord": "Word Match",
+  "miniGameWordDesc": "Relacione termos com definições",
+  "miniGameWrong": "Errado",
+  "miniGameYourTurn": "Sua vez",
+  "minutes": "$min min",
+  "minutesPerDay": "$count minutos por dia",
+  "missionActiveLearnerDesc": "Complete 1 lição de segurança.",
+  "missionActiveLearnerTitle": "Aprendiz ativo",
+  "missionActiveStreakDesc": "Mantenha sua sequência de aprendizado hoje.",
+  "missionActiveStreakTitle": "Sequência ativa",
+  "missionChatWithSageDesc": "Fale com Sage sobre segurança digital.",
+  "missionChatWithSageTitle": "Converse com Sage",
+  "missionConsistentProtectorDesc": "Complete 3 lições hoje.",
+  "missionConsistentProtectorTitle": "Protetor consistente",
+  "missionDigitalDetectiveDesc": "Analise um link suspeito.",
+  "missionDigitalDetectiveTitle": "Detetive digital",
+  "missionExpressChallengeDesc": "Complete um desafio rápido de 30 segundos.",
+  "missionExpressChallengeTitle": "Desafio express",
+  "missionPerfectLessonDesc": "Complete uma lição sem erros.",
+  "missionPerfectLessonTitle": "Lição perfeita",
+  "missionPhishingHunterDesc": "Detecte corretamente uma tentativa de phishing.",
+  "missionPhishingHunterTitle": "Caçador de phishing",
+  "missionProgress": "Progresso da missão: $percent por cento",
+  "missionThreeQueriesDesc": "Fale com Sage 3 vezes sobre diferentes tópicos.",
+  "missionThreeQueriesTitle": "3 consultas",
+  "monthApr": "Abr",
+  "monthApril": "Abril",
+  "monthAug": "Ago",
+  "monthAugust": "Agosto",
+  "monthDec": "Dez",
+  "monthDecember": "Dezembro",
+  "monthFeb": "Fev",
+  "monthFebruary": "Fevereiro",
+  "monthJan": "Jan",
+  "monthJanuary": "Janeiro",
+  "monthJul": "Jul",
+  "monthJuly": "Julho",
+  "monthJun": "Jun",
+  "monthJune": "Junho",
+  "monthMar": "Mar",
+  "monthMarch": "Março",
+  "monthMay": "Maio",
+  "monthNov": "Nov",
+  "monthNovember": "Novembro",
+  "monthOct": "Out",
+  "monthOctober": "Outubro",
+  "monthSep": "Set",
+  "monthSeptember": "Setembro",
+  "motivationCareer": "Carreira profissional",
+  "motivationConnect": "Me conectar com pessoas",
+  "motivationDialogMultiple": "Múltiplas motivações selecionadas",
+  "motivationDialogNone": "Nenhuma motivação selecionada",
+  "motivationFun": "Me divertir",
+  "motivationMind": "Exercitar minha mente",
+  "motivationOther": "Outro",
+  "motivationStudies": "Estudos",
+  "motivationTravel": "Viajar",
+  "myAccount": "Minha Conta",
+  "navChest": "Baú",
+  "navHome": "Início",
+  "navProfile": "Perfil",
+  "navRanking": "Ranking",
+  "navSage": "Sage",
+  "never": "Nunca",
+  "newBadge": "NOVO",
+  "newsUpdates": "Novidades e Atualizações",
+  "nextText": "Próximo",
+  "noConnection": "Sem conexão com a internet.",
+  "noLessonsAvailable": "Nenhuma lição disponível",
+  "notFoundBackHome": "Voltar ao início",
+  "notFoundDescription": "A página que você procura não existe.",
+  "notFoundTitle": "Página não encontrada",
+  "notificationReminder": "Cinco minutos hoje podem ajudar você amanhã.",
+  "notificationStreakAlive": "Sua sequência ainda está viva!",
+  "notificationStreakLoss": "Nunca é tarde para recomeçar.",
+  "notificationTip": "Seu escudo digital está esperando por você.",
+  "notificationsTitle": "Notificações",
+  "offlineAction": "Conecte-se e tente novamente.",
+  "offlineMessage": "Sem conexão com a internet.",
+  "offlineNoConnection": "Sem conexão com a internet",
+  "offlineSavedForLater": "Salvo offline. Sincronizaremos em breve.",
+  "offlineSyncComplete": "Sincronização concluída!",
+  "onbDiagnosisMsg": "Ótimo! Ajustaremos seu plano de treinamento para proteger seu conhecimento desde o primeiro dia.",
+  "onbGoalCommit": "MANTER MEU COMPROMISSO",
+  "onbGoalIntense": "Intenso",
+  "onbGoalMinPerDay": "$minutes min/dia",
+  "onbGoalNormal": "Normal",
+  "onbGoalRelaxed": "Tranquilo",
+  "onbGoalSerious": "Sério",
+  "onbGoalTitle": "Qual é sua meta diária de aprendizado?",
+  "onbLevel0": "Zero absoluto (Não sei o que é phishing...)",
+  "onbLevel1": "Conheço o básico...",
+  "onbLevel2": "Nível intermediário...",
+  "onbLevel3": "Nível avançado...",
+  "onbLevel4": "Especialista em cibersegurança...",
+  "onbLevelContinue": "CONTINUAR",
+  "onbLevelQuestion": "Qual é o seu nível atual em cibersegurança?",
+  "onbLevelTitle": "Qual é seu nível atual em cibersegurança?",
+  "onbMotivationCareer": "Carreira profissional",
+  "onbMotivationCareerMsg": "Excelentes razões para aprender!",
+  "onbMotivationConnect": "Me conectar com pessoas",
+  "onbMotivationConnectMsg": "Vamos te preparar para se conectar!",
+  "onbMotivationFun": "Me divertir",
+  "onbMotivationFunMsg": "Amei! Diversão é minha especialidade.",
+  "onbMotivationMind": "Exercitar minha mente",
+  "onbMotivationMindMsg": "É uma decisão sábia.",
+  "onbMotivationOther": "Outro",
+  "onbMotivationOtherMsg": "Entendido! Conte-me mais ao longo do caminho.",
+  "onbMotivationStudies": "Estudos",
+  "onbMotivationStudiesMsg": "Um mundo de oportunidades se abrirá para você!",
+  "onbMotivationTitle": "Por que você tem interesse em dominar o mundo digital?",
+  "onbMotivationTravel": "Viajar",
+  "onbMotivationTravelMsg": "Nada melhor que viajar com seus dispositivos 100% protegidos!",
+  "onbNotifActivate": "ATIVAR NOTIFICAÇÕES",
+  "onbNotifDesc": "Ative as notificações para nunca perder sua sequência, lembretes diários e desafios importantes.",
+  "onbNotifSkip": "Agora não",
+  "onbNotifTitle": "Avisamos você?",
+  "onbProjHackerMind": "Forje uma mente de hacker",
+  "onbProjHackerMindDesc": "Lembretes estratégicos, desafios diários e táticas de defesa digital.",
+  "onbProjLockAccounts": "Proteja suas contas",
+  "onbProjLockAccountsDesc": "Proteja suas redes sociais e contas de jogos contra hackers e roubos.",
+  "onbProjNavImmunity": "Navegue com imunidade",
+  "onbProjNavImmunityDesc": "Detecte golpes, links maliciosos e phishing antes de clicar.",
+  "onbProjectionTitle": "Isso é o que você vai dominar em 3 meses!",
+  "onbQuizIntro": "Responda $count perguntas rápidas antes do seu primeiro treinamento digital!",
+  "onbRecommended": "RECOMENDADO",
+  "onbReferralFriends": "Recomendação de amigos",
+  "onbReferralGoogle": "Pesquisa Google",
+  "onbReferralOther": "Outro",
+  "onbReferralPlayStore": "Play Store",
+  "onbReferralQuestion": "Como você descobriu o SAGEN?",
+  "onbReferralSocial": "Instagram / Facebook",
+  "onbReferralTiktok": "TikTok",
+  "onbReferralTitle": "Como você descobriu o SAGEN?",
+  "onbReferralYoutube": "YouTube",
+  "onbRouteAvailable": "Rotas de treinamento disponíveis:",
+  "onbRouteQuestion": "Qual área do ambiente digital você gostaria de dominar primeiro?",
+  "onbRoutineMessage": "Escolha sua rotina de treinamento e proteção!",
+  "onbRoutineTitle": "Escolha sua rotina de treinamento e proteção!",
+  "onbStartingExperienced": "Já tem nível de hacker?",
+  "onbStartingExperiencedSub": "Faça o teste de nível e pule o básico!",
+  "onbStartingPerfecto": "Perfeito! Vamos ver por onde começar seu treinamento.",
+  "onbStartingSubtitle": "Comece do zero e forje seu escudo!",
+  "onbStartingTitle": "É sua primeira vez na ciberdefesa?",
+  "onbWelcomeMessage": "Olá! Eu sou o Sagen. Estou aqui para treinar você, proteger seu ambiente digital e torná-lo um especialista.",
+  "onbWelcomeMsg": "Olá! Sou o Sagen. Estou aqui para treinar você, proteger seu ambiente digital e torná-lo um especialista.",
+  "onboardingCommitButton": "MANTER MEU COMPROMISSO",
+  "onboardingComplete": "Ótimo! Agora você sabe detectar phishing básico.",
+  "onboardingDesc": "Seu assistente pessoal de segurança digital.\nAprenda, analise e proteja-se gratuitamente.",
+  "onboardingError": "É assim que eles agem. Eles sempre verificam antes de confiar.",
+  "onboardingHaveAccount": "Já tenho uma conta",
+  "onboardingSage50Days": "50 dias de dedicação. Uma lenda em formação!",
+  "onboardingSageExcellent": "Excelentes razões, mire alto!",
+  "onboardingSageMonth": "Um mês de disciplina. Hábitos são forjados.",
+  "onboardingSageStart": "Um ótimo começo! Cada dia conta.",
+  "onboardingSageTwoWeeks": "Duas semanas de consistência. Você é imbatível!",
+  "onboardingWelcome": "Aprenda a se proteger",
+  "onboardingWelcomeDesc": "SAGEN te ensina a navegar, detectar riscos e proteger suas informações na internet.",
+  "ourMission": "Nossa Missão",
+  "owned": "Obtido",
+  "passEarnSp": "Ganhe SP concluindo lições",
+  "passLevel": "Nível $level",
+  "passRewards": "Recompensas ($current/$max)",
+  "paymentCredited": "Creditado!",
+  "paymentGoHome": "Ir para o início",
+  "paymentMercadoPagoError": "Erro ao conectar ao MercadoPago. Tente novamente.",
+  "paymentNotCompleted": "Pagamento não concluído",
+  "paymentPending": "Pagamento pendente",
+  "paymentPendingDescription": "Seu pagamento está sendo processado. As doações serão creditadas assim que o pagamento for confirmado pelo fornecedor.",
+  "paymentReturnToSagen": "Voltar ao SAGEN",
+  "paymentTryAgain": "Tentar novamente",
+  "paywallBasic": "Básico",
+  "paywallDescription": "Escolha seu pacote e entraremos em contato via WhatsApp para coordenar o pagamento.",
+  "paywallMercadoPago": "Mercado Pago",
+  "paywallPackageAmount": "$gems doações",
+  "paywallPackageLabel": "Pacote $label",
+  "paywallPackageSupporter": "Nível de Supporter $level",
+  "paywallPaymentMethods": "Pague com Yape, Plin, MercadoPago ou transferência",
+  "paywallPopular": "Popular",
+  "paywallPremium": "Premium",
+  "paywallSupportUs": "Apoiar o SAGEN",
+  "paywallWhatsAppError": "Erro ao abrir WhatsApp. Pagar via: $link",
+  "paywallWhatsAppFallback": "Abra o WhatsApp e envie: $message",
+  "@paywallWhatsAppMessage": {
+    "placeholders": {
+      "currencySymbol": {},
+      "supporterLevel": {},
+      "price": {},
+      "userId": {}
+    }
+  },
+  "paywallWhatsAppMessage": "Olá, quero doar $currencySymbol$price para SAGEN (Supporter $supporterLevel). Meu ID de usuário é: $userId",
+  "portuguese": "Português",
+  "preferencesTitle": "Preferências",
+  "preparingResults": "Preparando resultados...",
+  "privacyLegal": "Privacidade e Legal",
+  "privacyPolicy": "Política de Privacidade",
+  "privacyPolicyTitle": "Política de Privacidade do SAGEN",
+  "privacyPolicyLastUpdate": "Última atualização: Julho de 2026",
+  "privacyPolicySection1Title": "1. Informações que Coletamos",
+  "privacyPolicySection1Body": "Coletamos informações que você fornece diretamente, como seu nome, email e idade, além de dados de uso do app como lições concluídas, sequências e pontuações.",
+  "privacyPolicySection2Title": "2. Uso das Informações",
+  "privacyPolicySection2Body": "Usamos suas informações para personalizar sua experiência de aprendizado, melhorar nossos serviços e enviar notificações relevantes sobre seu progresso.",
+  "privacyPolicySection3Title": "3. Armazenamento de Dados",
+  "privacyPolicySection3Body": "Seus dados são armazenados de forma segura em servidores protegidos. Usamos criptografia para proteger suas informações pessoais.",
+  "privacyPolicySection4Title": "4. Seus Direitos",
+  "privacyPolicySection4Body": "Você tem o direito de acessar, retificar ou excluir seus dados pessoais. Você pode nos contatar para exercer esses direitos.",
+  "privacyPolicySection5Title": "5. Terceiros",
+  "privacyPolicySection5Body": "Não vendemos suas informações a terceiros. Podemos compartilhar dados anonimizados para melhorar nossos serviços educacionais.",
+  "privacyPolicySection6Title": "6. Privacidade de Crianças",
+  "privacyPolicySection6Body": "Nosso app é voltado para adultos. Não coletamos intencionalmente informações de crianças menores de 13 anos.",
+  "privacyPolicySection7Title": "7. Segurança",
+  "privacyPolicySection7Body": "Implementamos medidas de segurança técnicas e organizacionais para proteger suas informações contra acesso não autorizado.",
+  "privacyPolicySection8Title": "8. Alterações nesta Política",
+  "privacyPolicySection8Body": "Reservamo-nos o direito de atualizar esta política. Notificaremos você sobre alterações significativas através do app.",
+  "privacyPolicySection9Title": "9. Contato",
+  "privacyPolicySection9Body": "Se você tiver dúvidas sobre esta política, entre em contato conosco em support@sagenapp.com",
+  "productBestOffer": "Melhor oferta",
+  "productBoost": "Impulso",
+  "productBoostPack": "Pacote Impulso",
+  "productBoostPackDesc": "200 doações + 1 Boost de XP",
+  "productDonationBasic": "Supporter",
+  "productDonationDesc": "Ajude-nos a manter o SAGEN gratuito",
+  "productDonationPremium": "Campeão",
+  "productDonationStandard": "Super Supporter",
+  "productDonations": "Doações",
+  "productDonationsDesc": "Doações para impulsionar seu aprendizado",
+  "productFortune": "Fortuna",
+  "productFortunePack": "Pacote Fortuna",
+  "productFortunePackDesc": "300 doações + 1 Multiplicador de XP",
+  "productLuck": "Sorte",
+  "productLuckBoostDesc": "1 Boost de Sorte (2x nos baús lendários)",
+  "productLuckPack": "Pacote Sorte",
+  "productLuckPackDesc": "250 doações + 1 Boost de Sorte",
+  "productOffer": "Oferta",
+  "productPopular": "Popular",
+  "productProtector": "Protetor",
+  "productProtectorPack": "Pacote Protetor",
+  "productProtectorPackDesc": "100 doações + 1 protetor de sequência",
+  "productStreakProtectorDesc": "1 Protetor de sequência",
+  "productSupporter": "Supporter",
+  "productUltra": "Ultra",
+  "productXpBoostDesc": "1 Boost de XP (2x na sua próxima lição)",
+  "productXpMultiplierDesc": "1 Multiplicador de XP (2x nos baús)",
+  "profileAchievements": "Conquistas",
+  "profileDay": "dia",
+  "profileDays": "dias",
+  "profileDefaultFirstName": "Guerreiro",
+  "profileDefaultLastName": "Anônimo",
+  "profileDefaultName": "Guardião",
+  "profileDonations": "Doações",
+  "profileError": "Erro ao carregar perfil",
+  "profileLevel": "Nível",
+  "profileLevelValue": "Nível $level",
+  "profileStreak": "Sequência",
+  "profileTitle": "Meu Perfil",
+  "profileTotalXp": "XP Total",
+  "profileXpLabel": "XP",
+  "progressRestored": "Progresso restaurado da nuvem",
+  "projectionBenefit1Subtitle": "Proteja suas redes sociais e e-mails",
+  "projectionBenefit1Title": "Proteja suas contas",
+  "projectionBenefit2Subtitle": "Identifique phishing e links maliciosos",
+  "projectionBenefit2Title": "Detecte golpes",
+  "projectionBenefit3Subtitle": "Navegue na internet com confiança",
+  "projectionBenefit3Title": "Navegue com segurança",
+  "promoPostLessonSubtitle": "Com SAGEN Pass, obtenha benefícios exclusivos",
+  "promoPostLessonTitle": "Continue assim! Desbloqueie mais",
+  "protectionBasic": "Básico",
+  "protectionBasicDesc": "Você começa a se proteger",
+  "protectionCyberShield": "Cyber Escudo",
+  "protectionCyberShieldDesc": "Você é um escudo ativo",
+  "protectionElite": "Proteção Elite",
+  "protectionEliteDesc": "Nível máximo de proteção",
+  "protectionGuardian": "Guardião",
+  "protectionGuardianDesc": "Você defende sua identidade digital",
+  "protectionProtected": "Protegido",
+  "protectionProtectedDesc": "Seus primeiros hábitos digitais",
+  "protectionSecureMind": "Secure Mind",
+  "protectionSecureMindDesc": "A segurança faz parte de você",
+  "questionProgress": "Pergunta $current de $total",
+  "questions": "$count perguntas",
+  "quickActions": "Ações rápidas",
+  "quickChallengeDetectPhishing": "Detecte phishing",
+  "quickChallengeDetectRisk": "Detecte o risco",
+  "quickChallengeSafePassword": "Senha segura",
+  "quickChallengeTrueFalse": "Verdadeiro ou Falso",
+  "quickChallengeWhatWouldYouDo": "O que você faria?",
+  "quizAbandonContent": "Você perderá seu progresso atual.",
+  "quizAbandonExit": "SAIR",
+  "quizAbandonMessage": "Você perderá seu progresso atual.",
+  "quizAbandonStay": "CONTINUAR",
+  "quizAbandonTitle": "Desistir?",
+  "quizBack": "Voltar",
+  "quizCheck": "VERIFICAR",
+  "quizCheckAnswer": "VERIFICAR",
+  "quizContinue": "CONTINUAR",
+  "quizContinueButton": "CONTINUAR",
+  "quizDefaultTitle": "Questionário",
+  "quizExit": "SAIR",
+  "quizIntroAnswer": "Responda",
+  "quizIntroBeforeTraining": "Antes do seu treinamento",
+  "quizIntroFastQuestions": "Perguntas rápidas",
+  "quizProgress": "Progresso do questionário: $percent por cento",
+  "quizProgressExpired": "O progresso do quiz expirou (mais de 24 horas).",
+  "quizResumeButton": "Retomar",
+  "quizStartOver": "Começar de novo",
+  "quizTitleDefault": "Quiz",
+  "rankActiveLearner": "Aprendiz Ativo",
+  "rankCybersecurityLegend": "Lenda da Cibersegurança",
+  "rankEliteDefender": "Defensor de Elite",
+  "rankExperiencedWarrior": "Guerreiro Experiente",
+  "rankNovice": "Novato",
+  "rankingEmptyMessage": "Conclua lições para entrar no ranking",
+  "rankingError": "Erro ao carregar ranking",
+  "rankingPosition": "Posição #$rank",
+  "rankingShareButton": "Compartilhar Flex Card",
+  "rankingShareSubtitle": "Supere meu ranking no SAGEN",
+  "rankingSharing": "Compartilhando...",
+  "rankingSubtitle": "Ranking global · Top 50",
+  "rankingTitle": "O Coliseu",
+  "rankingXpToTop50": "Você precisa de $xp XP para entrar no Top 50",
+  "rankingYourPosition": "Sua posição: #$rank · $xp XP",
+  "rarityGold": "Ouro",
+  "rarityPlatinum": "Platina",
+  "raritySilver": "Prata",
+  "reauthConfirm": "Confirmar",
+  "reauthDesc": "Por segurança, digite sua senha novamente",
+  "reauthOAuthInfo": "Você fez login com Google ou Facebook. Confirme a exclusão da conta.",
+  "reauthTitle": "Confirme sua senha",
+  "reauthWrongPassword": "Senha incorreta. Tente novamente.",
+  "recommended": "RECOMENDADO",
+  "reduceAnimations": "Reduzir Animações",
+  "reduceAnimationsSubtitle": "Reduz a intensidade das animações",
+  "referralSource1": "Recomendação de amigos",
+  "referralSource2": "Redes sociais",
+  "referralSource3": "Pesquisa Google",
+  "referralSource4": "App Store",
+  "referralSource5": "YouTube",
+  "referralSource6": "TikTok",
+  "referralSource7": "Outro",
+  "regAgeQuestion": "Quantos anos você tem?",
+  "regAgeValidation": "Por favor, informe sua idade real",
+  "regChooseMethod": "Escolha um método para criar sua conta.",
+  "regCloudSave": "Progresso salvo na nuvem",
+  "regCreateProfile": "CRIAR PERFIL",
+  "regEmailDesc": "Enviaremos um código de verificação.",
+  "regEmailHint": "exemplo@email.com",
+  "regEmailOption": "E-mail",
+  "regEmailTitle": "Seu e-mail",
+  "regHowContinue": "Como gostaria de continuar?",
+  "regLater": "Depois",
+  "regMethodTitle": "Escolha o método de registro",
+  "regNameHint": "Nome",
+  "regNameQuestion": "Qual é o seu nome?",
+  "regPasswordDesc": "Mínimo de 6 caracteres para proteger sua conta.",
+  "regPasswordTitle": "Crie uma senha",
+  "regProfileAlmostReady": "Quase pronto!",
+  "regProfileCreated": "PERFIL CRIADO",
+  "regProfileDesc": "Crie um perfil para salvar seu progresso e não perder sua sequência.",
+  "regReadyForLesson": "Prepare-se para sua primeira lição",
+  "regRewards": "Recompensas e conquistas pessoais",
+  "regStreakSync": "Sequência sincronizada entre dispositivos",
+  "regSurnameHint": "Sobrenome",
+  "regWelcomeSagen": "Bem-vindo ao SAGEN!",
+  "registerAgeEmpty": "Por favor, insira sua idade",
+  "registerAgeHint": "Sua idade (mínimo 13)",
+  "registerAgeInvalid": "Idade inválida",
+  "registerAgeMin": "Você deve ter pelo menos 13 anos",
+  "registerWithApple": "Registrar com Apple",
+  "registerWithFacebook": "Registrar com Facebook",
+  "registerWithGoogle": "Registrar com Google",
+  "restartApp": "Reiniciar app",
+  "restoreAction": "Restaurar",
+  "restoreCloud": "Restaurar da Nuvem",
+  "restoreDesc": "Quer restaurar seu progresso da nuvem? Isso substituirá os dados locais pelos dados salvos da sua conta.",
+  "restoreTitle": "Restaurar Progresso",
+  "resultAccuracy": "Precisão",
+  "resultCompleteTitle": "Lição concluída!",
+  "resultLives": "Vidas",
+  "resultNotPerfectDesc": "Continue praticando para conseguir uma sessão perfeita.",
+  "resultPerfectBadge": "SESSÃO PERFEITA",
+  "resultPerfectDesc": "Você não cometeu nenhum erro. Você é um guardião digital.",
+  "resultPerfectTitle": "Resultado impecável!",
+  "resumeQuiz": "Retomar quiz?",
+  "retry": "Tentar novamente",
+  "reviewComplete": "Revisão concluída!",
+  "reviewCorrect": "corretas",
+  "reviewFinish": "Finalizar revisão",
+  "reviewGoodProgress": "Bom progresso",
+  "reviewKeepGoing": "Continue assim!",
+  "reviewKeepPracticing": "Continue praticando",
+  "reviewNoErrors": "Nenhum erro para revisar",
+  "reviewSageGood": "Cada revisão fortalece seu escudo. Pronto para mais?",
+  "reviewSageKeep": "Revisar faz parte do aprendizado. Você pode tentar novamente quando quiser.",
+  "reviewSagePerfect": "Suas áreas fracas estão melhorando. Vejo seu esforço.",
+  "reviewTitle": "Revisão",
+  "reward100Xp": "100 XP",
+  "reward200Exp": "200 EXP",
+  "rewardAdCooldown": "Disponível novamente em $seconds segundos",
+  "rewardAdEarned": "Você ganhou $count doações!",
+  "rewardAdEarnedGems": "+$gems gemas",
+  "rewardAdEarnedXp": "+$xp XP ganhos!",
+  "rewardAdNotAvailable": "O anúncio não está disponível agora. Tente mais tarde.",
+  "rewardAdSubtitle": "Assista a um anúncio e receba doações instantaneamente",
+  "rewardAdTitle": "Ganhe doações extras",
+  "rewardAdWatch": "Assistir",
+  "rewardCopperFrame": "Moldura de Cobre",
+  "rewardEpicChest": "Baú Épico",
+  "rewardGoldenChest": "Baú Dourado",
+  "rewardIceFlame": "Chama Gelada + Guardião",
+  "rewardTitaniumShield": "Escudo de Titânio",
+  "routeSelection1": "Fundamentos primeiro",
+  "routeSelection2": "Rota intermediária",
+  "routeSelection3": "Rota avançada",
+  "sageAchievementUnlocked": "${name}Conquista desbloqueada!",
+  "sageAdvancing": "${name}Você continua avançando.$levelHint",
+  "sageChatDescription": "Escreva qualquer dúvida sobre cibersegurança ou escolha uma sugestão rápida.",
+  "sageChatHint": "Pergunte ao Sage...",
+  "sageChatTitle": "Pergunte ao Sage",
+  "sageCongratulations": "${name}Parabéns!",
+  "sageCriticalError": "Erro crítico",
+  "sageEasterEgg": "Você viu isso?",
+  "sageEmptyState": "${name}Nada aqui ainda",
+  "sageGreatJob": "${name}Excelente trabalho!$extra",
+  "sageHighStreakDays": " $streak dias seguidos.",
+  "sageImportant": "Isso é muito importante",
+  "sageImpressiveStreak": "${name}Sequência impressionante!$days",
+  "sageLevelHint": " O nível $level já está perto.",
+  "sageLoading": "Dê-me um segundo...",
+  "sageMascot": "Mascote Sage",
+  "sageMonocleActive": "Monóculo Sábio ativo",
+  "sageMonocleButton": "Usar Monóculo Sábio (remove 2 incorretas)",
+  "sageMotivational1": "Você está indo muito bem!",
+  "sageMotivational2": "Continue assim, você é incrível!",
+  "sageMotivational3": "Cada dia mais perto do seu objetivo!",
+  "sageMotivational4": "Eu acredito em você!",
+  "sageMotivational5": "Não desista, você consegue!",
+  "sageMotivational6": "Vamos juntos nesta aventura!",
+  "sageMotivational7": "Esforço dá frutos!",
+  "sageMotivational8": "Nunca pare de aprender!",
+  "sagePerfect": "Perfeito!",
+  "sagePreparing": "Preparando tudo para você",
+  "sageReadCarefully": "Leia com atenção",
+  "sageSomethingWrong": "Algo deu errado",
+  "sageStreakAmazing": "Sua sequência de $streak dias é incrível!",
+  "sageStreakAtRisk": " Não perca $streak dias de esforço!",
+  "sageStreakAtRiskMessage": "${name}Não perca sua sequência!$urgency",
+  "sageStreakLost": " Você tem o conhecimento para recomeçar.",
+  "sageStreakLostMessage": "${name}A sequência foi perdida.$encouragement",
+  "sageTellMeMore": "${name}Conte-me mais sobre você",
+  "sageTryAgain": "Tentar de novo?",
+  "sageWelcomeBack": "${name}Bem-vindo de volta!",
+  "sageWhatDoYouThink": "${name}O que você acha que está correto?",
+  "sagenPassClaim": "Resgatar",
+  "sagenPassSupportSubtitle": "Obtenha benefícios exclusivos e ajude a melhorar o app",
+  "sagenPassSupportTitle": "Apoiar SAGEN",
+  "sagenPassTitle": "Passe SAGEN",
+  "savedQuizProgress": "Você tem um progresso salvo. Gostaria de continuar?",
+  "scheduledDarkMode": "Modo Escuro Programado",
+  "scheduledDarkModeSubtitle": "Ativar/desativar automaticamente conforme horário",
+  "searchPlaceholder": "Pesquisar...",
+  "selectFile": "Selecionar arquivo",
+  "selectedAnswer": "Selecionada",
+  "sendMessage": "Enviar",
+  "sessionAccuracyText1": "Que pontaria!",
+  "sessionAccuracyText2": "Precisão cirúrgica.",
+  "sessionAccuracyText3": "Nível especialista alcançado.",
+  "sessionAccuracyText4": "Atirador de elite do conhecimento.",
+  "sessionAccuracyText5": "Precisão quase absoluta.",
+  "sessionAccuracyText6": "Sem margem para erro.",
+  "sessionAccuracyText7": "Impecável.",
+  "sessionBackToMap": "Voltar ao mapa",
+  "sessionClaimReward": "RECEBER RECOMPENSA",
+  "sessionCorrect": "Correto!",
+  "sessionCorrectAnswer": "Resposta correta: $answer",
+  "sessionExp": "XP",
+  "sessionIncorrect": "Incorreto",
+  "sessionLivesExhausted": "Vidas esgotadas",
+  "sessionLivesExhaustedDesc": "Você perdeu todas as suas vidas. Tente novamente.",
+  "sessionLoading": "Carregando...",
+  "sessionPrecision": "PRECISÃO",
+  "sessionQuestionsToAnswer": "perguntas para responder",
+  "sessionReadyToLearn": "Pronto para aprender?",
+  "sessionRetry": "Tentar novamente",
+  "sessionScore": "$correct/$total corretas",
+  "sessionSelectAnswer": "Selecione uma resposta",
+  "sessionSpeedText1": "Que rapidez!",
+  "sessionSpeedText2": "Você quebrou o cronômetro.",
+  "sessionSpeedText3": "Na velocidade da luz.",
+  "sessionSpeedText4": "Reflexos de aço.",
+  "sessionSpeedText5": "Ninguém te alcança hoje.",
+  "sessionSpeedText6": "Tempo recorde!",
+  "sessionSpeedText7": "Velocidade supersônica.",
+  "sessionStandardText1": "Lição concluída!",
+  "sessionStandardText2": "Um passo mais perto do seu objetivo.",
+  "sessionStandardText3": "O progresso é o caminho.",
+  "sessionStandardText4": "Bom trabalho constante.",
+  "sessionStandardText5": "Continue assim, somando dias.",
+  "sessionStandardText6": "Consistência acima de tudo.",
+  "sessionStandardText7": "Disciplina traz resultados.",
+  "sessionStartQuiz": "INICIAR QUIZ",
+  "sessionSummaryAccuracy": "PRECISÃO",
+  "sessionSummaryAccuracy1": "Sua precisão é extraordinária!",
+  "sessionSummaryAccuracy2": "Excelente pontaria!",
+  "sessionSummaryAccuracy3": "Bom progresso!",
+  "sessionSummaryAccuracy4": "Você está melhorando!",
+  "sessionSummaryAccuracy5": "Ótimo esforço!",
+  "sessionSummaryAccuracy6": "Continue aprendendo!",
+  "sessionSummaryAccuracy7": "Cada pergunta conta!",
+  "sessionSummaryExp": "EXP",
+  "sessionSummaryReceiveReward": "RECEBER RECOMPENSA",
+  "sessionSummaryReceiveRewardLabel": "Receber recompensa",
+  "sessionSummarySpeed1": "Velocidade relâmpago!",
+  "sessionSummarySpeed2": "Reflexo rápido!",
+  "sessionSummarySpeed3": "Aprendiz rápido!",
+  "sessionSummarySpeed4": "Bom ritmo!",
+  "sessionSummarySpeed5": "No caminho certo!",
+  "sessionSummarySpeed6": "Ganhou impulso!",
+  "sessionSummarySpeed7": "Progresso constante!",
+  "sessionSummaryStandard1": "Lição concluída!",
+  "sessionSummaryStandard2": "Muito bem!",
+  "sessionSummaryStandard3": "Bom trabalho!",
+  "sessionSummaryStandard4": "Legal!",
+  "sessionSummaryStandard5": "Você conseguiu!",
+  "sessionSummaryStandard6": "Mais um passo à frente!",
+  "sessionSummaryStandard7": "Continue!",
+  "sessionSummaryTime": "TEMPO",
+  "sessionTime": "TEMPO",
+  "settingsAmoledDark": "AMOLED Escuro",
+  "settingsAmoledDarkSubtitle": "Fundo puro #000000 para economizar bateria",
+  "settingsAnalytics": "Análises anônimas",
+  "settingsAnalyticsDesc": "Ajude a melhorar o Sagen com dados de uso anônimos",
+  "settingsDeleteAccount": "Excluir conta",
+  "settingsDeleteAccountConfirm": "Tem certeza? Esta ação não pode ser desfeita.",
+  "settingsExportData": "Exportar dados",
+  "settingsFontSize": "Tamanho da fonte",
+  "settingsLanguage": "Idioma",
+  "settingsLogout": "Sair",
+  "settingsLogoutConfirm": "Tem certeza que deseja sair?",
+  "settingsNotifications": "Notificações",
+  "settingsPrivacy": "Privacidade",
+  "settingsReduceAnimations": "Reduzir animações",
+  "settingsSound": "Som",
+  "settingsTheme": "Tema",
+  "settingsTitle": "Configurações",
+  "settingsVibration": "Vibração",
+  "shareProfile": "Compartilhar cartão de perfil",
+  "shareRanking": "Compartilhar ranking",
+  "sharing": "Compartilhando...",
+  "shieldTierBasic": "Escudo Básico",
+  "shieldTierCrystal": "Escudo de Cristal",
+  "shieldTierGlow": "Escudo Radiante",
+  "shieldTierInactive": "Sem Escudo",
+  "shieldTierLegendary": "Escudo Lendário",
+  "shieldTierParticles": "Escudo de Partículas",
+  "shopBgCyber": "Fundo Cyberpunk",
+  "shopBgCyberDesc": "Fundo de perfil futurista",
+  "shopBgMatrix": "Fundo Matrix",
+  "shopBgMatrixDesc": "Fundo matrix verde",
+  "shopFrameDiamond": "Moldura Diamante",
+  "shopFrameDiamondDesc": "Moldura exclusiva diamante",
+  "shopFrameNeon": "Moldura Neon",
+  "shopFrameNeonDesc": "Moldura de perfil neon",
+  "shopItemAcquired": "Adquirido",
+  "shopItemOwned": "Obtido",
+  "shopOwned": "Possuído",
+  "shopSageGolden": "Sage Dourado",
+  "shopSageGoldenDesc": "Skin dourada exclusiva",
+  "shopSageNeon": "Sage Neon",
+  "shopSageNeonDesc": "Skin ciano neon para Sage",
+  "shopSageShadow": "Sage Sombra",
+  "shopSageShadowDesc": "Skin escura para Sage",
+  "shopTitleGuardian": "Título Guardião Digital",
+  "shopTitleGuardianDesc": "Título de protetor",
+  "shopTitleHacker": "Título Hacker Ético",
+  "shopTitleHackerDesc": "Título especial no perfil",
+  "showPassword": "Mostrar senha",
+  "skipText": "Pular",
+  "skipToContent": "Pular para o conteúdo principal",
+  "sounds": "Sons",
+  "soundsSubtitle": "Efeitos sonoros do aplicativo",
+  "spanish": "Espanhol",
+  "speedSort2fa": "Autenticação em dois fatores",
+  "speedSortAntivirus": "Antivírus",
+  "speedSortDataEncryption": "Criptografia de dados",
+  "speedSortFakeEmail": "E-mail falso",
+  "speedSortFirewall": "Firewall",
+  "speedSortFraudulentCall": "Chamada fraudulenta",
+  "speedSortProtectionCategory": "Proteção",
+  "speedSortScamCategory": "Golpe",
+  "speedSortSecurityCategory": "Segurança",
+  "speedSortSmsLink": "Link SMS",
+  "speedSortStrongPassword": "Senha forte",
+  "speedSortVpn": "VPN",
+  "splashTitle": "SAGEN",
+  "stage1Subtitle": "Conceitos básicos de segurança digital",
+  "stage1Title": "Fundamentos",
+  "stage2Subtitle": "Identifique tentativas de engano",
+  "stage2Title": "Phishing",
+  "stage3Subtitle": "Crie chaves seguras e proteja-se",
+  "stage3Title": "Senhas",
+  "stage4Subtitle": "Proteja sua privacidade nas plataformas",
+  "stage4Title": "Redes Sociais",
+  "stage5Subtitle": "Desinformação e sites confiáveis",
+  "stage5Title": "Navegação Segura",
+  "stage6Subtitle": "Controle seus dados pessoais",
+  "stage6Title": "Privacidade Digital",
+  "stage7Subtitle": "Proteção total para especialistas",
+  "stage7Title": "Cibersegurança Avançada",
+  "stage8Subtitle": "Torne-se um guardião digital",
+  "stage8Title": "Especialista Digital",
+  "stageProgress": "Progresso da etapa: $percent por cento",
+  "startText": "Começar",
+  "statsExcellent": "Excelente!",
+  "statsIncredible": "Incrível!",
+  "statsKeepTrying": "Continue tentando.",
+  "statsNoData": "Nenhum dado de lição",
+  "statsNoErrors": "Sem erros!",
+  "statsReceiveXp": "RECEBER XP",
+  "statsSpeed": "Velocidade",
+  "statsStartStage1": "Você começará pela Etapa 1, Aula 1",
+  "statsStartStage2": "Você começará pela Etapa 2, Aula 1",
+  "statsWellDone": "Muito bem!",
+  "statusCompleted": "concluída",
+  "storeAdEarnXp": "Ganhe XP assistindo",
+  "storeAdRewardMessage": "+1 Doação por assistir ao anúncio",
+  "storeAdWatchVideo": "Assista a um vídeo de 30 segundos",
+  "storeBuyItem": "Comprar $item por $cost doações",
+  "storeCategoryConsumables": "Consumíveis",
+  "storeCategoryCosmetics": "Cosméticos",
+  "storeCategoryThemes": "Temas",
+  "storeChestAvailable": "Baú Diário Disponível!",
+  "storeChestComeBack": "Volte amanhã",
+  "storeChestExpiresIn": "$gems doados — expira à meia-noite",
+  "storeChestRenews": "Seu baú renova a cada dia",
+  "storeClaimError": "Falha ao resgatar recompensa. Tente novamente.",
+  "storeConfirmMessage": "Deseja comprar $item por $cost doações?",
+  "storeConfirmTitle": "Confirmar compra",
+  "storeDonate": "Doar",
+  "storeDonateSubtitle": "A partir de $price",
+  "storeDonationsLabel": "doações",
+  "storeGemTipAchievement": "Conquistas: gemas baseadas na dificuldade",
+
+  "storeGemTipChest": "Abra baús: gemas baseadas no tipo de baú",
+  "storeGemTipFirstLesson": "Primeira lição do dia: +10 gemas",
+  "storeGemTipLesson": "Complete lições: 5 gemas por resposta correta",
+  "storeGemTipMission": "Missões diárias: +12 gemas",
+  "storeGemTipPerfect": "Lição perfeita: +20 gemas extras",
+  "storeGemTipStreak": "Sequências: até +150 gemas",
+  "storeHowToEarnGems": "Como ganhar gemas?",
+  "storeNoItems": "Nenhum item disponível no momento.",
+  "storeOpen": "Abrir",
+  "storePersonalization": "Personalização",
+  "storeProtectStreak": "Proteja sua sequência",
+  "storePurchaseFailed": "Falha na validação da compra. Tente novamente.",
+  "storePurchaseSuccess": "Compra realizada com sucesso!",
+  "storeShieldLimitReached": "Limite de escudos atingido",
+  "storeSupport": "Apoie-nos",
+  "storeSupportTiers": "Níveis de apoio",
+  "storeThankYou": "Obrigado pelo seu apoio!",
+  "storeTitle": "Loja",
+  "storeWatch": "Assistir",
+  "storeWhatsappPackages": "Pacotes a partir de $price — Pagamento via WhatsApp",
+  "streakAchievements": "Conquistas e medalhas pela consistência",
+  "streakBadge": "SEQUÊNCIA",
+  "streakChest100Message": "100 dias. Lenda.",
+  "streakChest100Title": "Sequência de 100 dias!",
+  "streakChest14Message": "Duas semanas de consistência. Continue assim!",
+  "streakChest14Title": "Sequência de 14 dias!",
+  "streakChest30Message": "Um mês. Você é um Guardião Digital.",
+  "streakChest30Title": "Sequência de 30 dias!",
+  "streakChest7Message": "Uma semana protegendo sua identidade digital.",
+  "streakChest7Title": "Sequência de 7 dias!",
+  "streakCommitButton": "MANTER MEU COMPROMISSO",
+  "streakCurrent": "Sequência atual",
+  "streakCurrentProgress": "Sequência atual: $current / $goal dias",
+  "streakDayFri": "S",
+  "streakDayLabel": "dia de sequência",
+  "streakDayMon": "S",
+  "streakDayOfStreak": "dia de sequência",
+  "streakDaySat": "S",
+  "streakDaySun": "D",
+  "streakDayThu": "Q",
+  "streakDayTue": "T",
+  "streakDayWed": "Q",
+  "streakDays": "$count dias",
+  "streakDaysCount": "Sequência de $count dias",
+  "streakDaysCountPlural": "{count, plural, one{# dia de sequência} other{# dias de sequência}}",
+  "streakEmotional100": "100 dias de proteção constante. Lenda.",
+  "streakEmotional14": "Duas semanas de consistência. Seu escudo brilha.",
+  "streakEmotional3": "3 dias seguidos. Você está construindo um hábito sólido.",
+  "streakEmotional30": "Um mês de aprendizado. Sua dedicação te faz um Guardião Digital.",
+  "streakEmotional50": "50 dias de proteção digital constante.",
+  "streakEmotional7": "Uma semana protegendo sua identidade digital. Continue assim!",
+  "streakFireCard": "Cartão de sequência em chamas",
+  "streakFireCardA11y": "Cartão de sequência de fogo",
+  "streakFireCardLabel": "Sequência de Fogo",
+  "streakFreeze": "Protetor de sequência",
+  "streakFreezeDescription": "Mantenha sua sequência quando perder um dia",
+  "streakFreezeUsed": "Um congelamento protegeu sua sequência.",
+  "streakFrozen": "Sequência congelada",
+  "streakGotIt": "ENTENDI",
+  "streakKeepAlive": "Mantenha sua sequência viva!",
+  "streakKeepAliveDesc": "Conclua uma lição a cada dia para manter sua sequência.\nCada dia conta para fortalecer seu escudo digital.",
+  "streakKeepCommitment": "MANTER MEU COMPROMISSO",
+  "streakLongest": "Melhor sequência",
+  "streakMessage100Days": "100 dias. Lenda.",
+  "streakMessage14Days": "Duas semanas. Seu escudo brilha.",
+  "streakMessage30Days": "Um mês. Você é um Guardião Digital.",
+  "streakMessage3Days": "3 dias. Bom começo.",
+  "streakMessage50Days": "50 dias de proteção constante.",
+  "streakMessage7Days": "Uma semana! Continue assim.",
+  "streakMessageActive": "Sequência ativa! A consistência é sua melhor arma hoje.",
+  "streakMessageAtRisk": "Sua sequência está em risco!",
+  "streakMessageCloser": "Um dia mais, um passo mais perto do seu objetivo.",
+  "streakMessageEachDay": "Cada dia conta. Seu compromisso te torna mais forte.",
+  "streakMessageKeepGoing": "Continue assim! A disciplina de hoje é a vitória de amanhã.",
+  "streakMessageKeepProtecting": "Continue se protegendo!",
+  "streakMessageNew": "Uma nova sequência! Pratique todos os dias e ajude-a a crescer.",
+  "streakMessageStartActivities": "Complete atividades para iniciar sua sequência.",
+  "streakMsg1": "Uma nova sequência! Pratique todos os dias e ajude-a a crescer.",
+  "streakMsg2": "Sequência ativa! Consistência é sua melhor arma hoje.",
+  "streakMsg3": "Cada dia conta. Seu compromisso te fortalece.",
+  "streakMsg4": "Continue assim! A disciplina de hoje é a vitória de amanhã.",
+  "streakMsg5": "Mais um dia, um passo mais perto do seu objetivo.",
+  "streakNoActiveStreak": "Nenhuma sequência ativa",
+  "streakReminder": "Lembretes de Sequência",
+  "streakReminderSubtitle": "Receba lembretes para manter sua sequência",
+  "streakRewards": "Recompensas exclusivas ao atingir metas",
+  "streakShieldActive": "Escudo ativo — sua sequência está protegida hoje!",
+  "streakShieldOnboarding": "Compre um escudo para proteger sua sequência se perder um dia.",
+  "streakStrongerShield": "Um escudo mais forte a cada dia",
+  "streakTitle": "Minha Sequência",
+  "streakTitleShort": "Sequência",
+  "summarizeButton": "Resumo rápido",
+  "summaryCommitment": "Compromisso",
+  "summaryDailyGoal": "Meta diária",
+  "summaryGoodWork": "Bom trabalho!",
+  "summaryInterest": "Interesse",
+  "summaryKeepPracticing": "Continue praticando",
+  "summaryKnowledge": "Conhecimento",
+  "summaryLearning": "Aprendizado",
+  "summaryMotivations": "Motivações",
+  "summaryOrigin": "Origem",
+  "summaryPerfect": "Perfeito!",
+  "summaryReady": "Tudo pronto para começar sua jornada de segurança digital.",
+  "summaryStreakDays": "+$days dia(s)",
+  "summaryXpBonus": "Bônus XP",
+  "summaryXpEarned": "XP ganho",
+  "supporterBadge": "Supporter",
+  "syncSnackbar": "Progresso sincronizado",
+  "syncStatus": "Status da Sincronização",
+  "syncing": "Sincronizando...",
+  "termsConditions": "Termos e Condições",
+  "thankYouForSupport": "Obrigado pelo seu apoio!",
+  "themeDark": "Escuro",
+  "themeDarkLabel": "Escuro",
+  "themeLabel": "Tema",
+  "themeLight": "Claro",
+  "themeLightLabel": "Claro",
+  "themeSystem": "Sistema",
+  "themeSystemLabel": "Sistema",
+  "themeTitle": "Aparência",
+  "tierBasic": "Básico",
+  "tierCrystal": "Cristal",
+  "tierGlow": "Brilho",
+  "tierInactive": "Inativo",
+  "tierLegendary": "Lendário",
+  "tierParticles": "Partículas",
+  "totalProgress": "Progresso total",
+  "tryAgain": "Conecte-se e tente novamente.",
+  "tutorLessonsProgress": "$completed / $required lições",
+  "tutorLocked": "Tutor IA Bloqueado",
+  "tutorLockedDescription": "Conclua pelo menos 10 lições para desbloquear o Sage, seu tutor pessoal de cibersegurança.",
+  "tutorMotivationAlmost": "Quase lá, faltam apenas $count lições. Continue!",
+  "tutorMotivationGeneral": "Cada lição te aproxima do seu tutor pessoal de cibersegurança.",
+  "tutorMotivationGood": "Bom ritmo! Você precisa de mais $count lições para acessar o Sage.",
+  "tutorSampleAnswer1": "Nunca compartilhe sua senha. Use um gerenciador de senhas e ative a autenticação de dois fatores.",
+  "tutorSampleQuestion1": "O que devo fazer se receber um e-mail suspeito?",
+  "tutorSampleQuestion2": "Como posso criar uma senha forte?",
+  "tutorSampleTitle": "Conversa de exemplo",
+  "tutorTitle": "Tutor IA",
+  "tutorialNext": "Próximo",
+  "tutorialSkip": "Pular",
+  "tutorialStart": "Vamos lá!",
+  "tutorialStep1": "Olá! Sou o Sage, seu guia de cibersegurança.",
+  "tutorialStep2": "Conclua lições para ganhar doações e subir de nível.",
+  "tutorialStep3": "Mantenha sua sequência diária para desbloquear baús especiais.",
+  "tutorialStep4": "Sua missão: proteger sua identidade digital. Vamos aprender juntos!",
+  "unknownLabel": "Desconhecido",
+  "updateChangelog": "Atualizações e novidades",
+  "updateChangelogDesc": "Nova tela na barra inferior mostrando o histórico de alterações e novidades do app.",
+  "updateChestSystem": "Baús de sequência e lição",
+  "updateChestSystemDesc": "Novo sistema de baús: baú diário para sequência, baú de lição a cada 3/5/6/10 lições concluídas.",
+  "updateDailyMissions": "Missões diárias",
+  "updateDailyMissionsDesc": "Sistema de missões diárias com recompensas em doações e experiência.",
+  "updateEnergySystem": "Sistema de Energia",
+  "updateEnergySystemDesc": "Agora cada lição usa energia. Responda corretamente para gastar apenas 1, falhar custa 2. Combos de acertos regeneram energia. Ao chegar a 0 não pode continuar.",
+  "updateFirstVersion": "Primeira versão",
+  "updateFirstVersionDesc": "Lançamento inicial com lições interativas, sequência diária, doações, loja e perfil do usuário.",
+  "updateImprovedIcons": "Ícones de itens melhorados",
+  "updateImprovedIconsDesc": "Todos os itens especiais agora têm ícones personalizados e mais chamativos na loja e inventário.",
+  "updateInfiniteEnergy": "Energia Infinita",
+  "updateInfiniteEnergyDesc": "Novo item especial na loja que concede energia ilimitada por tempo limitado. Ative pelo seu inventário.",
+  "updateLessonBoosters": "Potenciadores de lição",
+  "updateLessonBoostersDesc": "Novos itens: Boost de XP (2x), Multiplicador de XP (2x nos baús), Boost de Sorte (2x chances). Compre e ative na loja.",
+  "updateMercadoPago": "Mercado Pago integrado",
+  "updateMercadoPagoDesc": "Pagamentos diretos com Mercado Pago para pacotes de doações e bundles. Pagamento por WhatsApp também disponível.",
+  "updateNew": "NOVO",
+  "updateProgrammaticMascot": "Mascote programático",
+  "updateProgrammaticMascotDesc": "O mascote agora é desenhado com CustomPainter. 29 emoções, sem assets, transições suaves entre emoções.",
+  "updateStreakProtectorImproved": "Protetor de sequência melhorado",
+  "updateStreakProtectorImprovedDesc": "Limite máximo de 2 protetores. Ao atingir, ofertas de potenciadores são exibidas.",
+  "updateTestFix": "Correção de testes unitários",
+  "updateTestFixDesc": "7 testes com falha corrigidos. Todos os testes passam agora (419 testes). 0 problemas de análise.",
+  "updateTypeFeature": "NOVA FUNÇÃO",
+  "updateTypeFix": "CORREÇÃO",
+  "updateTypeImprovement": "MELHORIA",
+  "updateTypedRoutes": "Rotas tipadas com GoRouter Builder",
+  "updateTypedRoutesDesc": "As rotas de splash e welcome agora são tipadas, detectando erros em tempo de compilação.",
+  "updates": "Atualizações",
+  "updatesTitle": "Atualizações e novidades",
+  "verifyEmailCheckButton": "Já verifiquei",
+  "verifyEmailMessage": "Enviamos um link de verificação para $email. Clique no link para ativar sua conta.",
+  "verifyEmailNotVerified": "Seu e-mail ainda não foi verificado. Verifique sua caixa de entrada.",
+  "verifyEmailResendButton": "Reenviar e-mail de verificação",
+  "verifyEmailResendError": "Não foi possível reenviar o e-mail. Tente novamente.",
+  "verifyEmailSent": "E-mail de verificação enviado. Verifique sua caixa de entrada.",
+  "verifyEmailSignOut": "Sair da conta",
+  "verifyEmailSuccess": "E-mail verificado! Bem-vindo ao SAGEN.",
+  "verifyEmailTitle": "Verifique seu e-mail",
+  "viewAchievements": "Ver conquistas",
+  "viewAll": "Ver tudo",
+  "weeklyChestComplete": "Baú semanal ganho!",
+  "weeklyChestDesc": "Conclua 5 missões diárias para um baú épico",
+  "weeklyChestProgress": "Progresso do Baú Semanal",
+  "weeklyChestProgressCount": "$done/$total",
+  "welcomeLoginButton": "JÁ TENHO UMA CONTA",
+  "welcomeStartButton": "COMEÇAR AGORA",
+  "welcomeSubtitle": "Análise inteligente e segurança digital.\nGratuito para sempre.",
+  "wizardAllAbove": "Tudo isso",
+  "wizardAppStore": "App Store",
+  "wizardArticles": "Ler artigos",
+  "wizardBoostStudies": "Impulsionar meus estudos",
+  "wizardChatSage": "Conversar com Sage",
+  "wizardCommit14": "14 dias",
+  "wizardCommit14Sub": "80 doações",
+  "wizardCommit30": "30 dias",
+  "wizardCommit30Sub": "200 doações",
+  "wizardCommit50": "50 dias",
+  "wizardCommit50Sub": "400 doações",
+  "wizardCommit7": "7 dias",
+  "wizardCommit7Sub": "30 doações",
+  "wizardCommitment": "Escolha seu compromisso",
+  "wizardCommitmentSage": "Selecione suas metas de consistência",
+  "wizardConfirmed": "Compromisso confirmado",
+  "wizardConfirmedSage": "Você configurou seu caminho de aprendizado!",
+  "wizardCuriosity": "Curiosidade",
+  "wizardDetectScams": "Detectar golpes",
+  "wizardFacebook": "Facebook",
+  "wizardFriends": "Amigos",
+  "wizardGoal10": "10 min",
+  "wizardGoal10Sub": "Normal",
+  "wizardGoal15": "15 min",
+  "wizardGoal15Sub": "Sério",
+  "wizardGoal3": "3 min",
+  "wizardGoal30": "30 min",
+  "wizardGoal30Sub": "Intenso",
+  "wizardGoal3Sub": "Tranquilo",
+  "wizardGoogle": "Google",
+  "wizardHaveFun": "Me divertir",
+  "wizardHowDidYouFind": "Como você conheceu o SAGEN?",
+  "wizardHowDidYouFindSage": "Diga-me, como você nos encontrou?",
+  "wizardHowFound": "Como você encontrou o SAGEN?",
+  "wizardHowFoundSage": "Me conta, como nos encontrou?",
+  "wizardHowMuchKnow": "Quanto você sabe sobre segurança digital?",
+  "wizardHowMuchKnowSage": "Quanto você sabe sobre o assunto?",
+  "wizardHowMuchSage": "Quanto você sabe sobre o assunto?",
+  "wizardHowMuchYouKnow": "Quanto você sabe sobre segurança digital?",
+  "wizardHowPrefer": "Como você prefere aprender?",
+  "wizardHowPreferSage": "Escolha suas formas favoritas de aprender",
+  "wizardInstagram": "Instagram",
+  "wizardLevel1": "Estou começando",
+  "wizardLevel1Sub": "Nunca explorei este tópico",
+  "wizardLevel2": "Conheço alguns conceitos",
+  "wizardLevel2Sub": "Reconheço alguns termos",
+  "wizardLevel3": "Posso me defender",
+  "wizardLevel3Sub": "Entendo e pratico o básico",
+  "wizardLevel4": "Entendo vários tópicos",
+  "wizardLevel4Sub": "Domino vários conceitos",
+  "wizardLevel5": "Sei bastante sobre o assunto",
+  "wizardLevel5Sub": "Posso debater tópicos avançados",
+  "wizardLinks": "Analisar links",
+  "wizardNews": "Notícias",
+  "wizardOther": "Outro",
+  "wizardPrepareWork": "Me preparar para o trabalho",
+  "wizardProtect": "Me proteger",
+  "wizardProtectAccounts": "Proteger minhas contas",
+  "wizardProtectFamily": "Proteger minha família",
+  "wizardProtectPrivacy": "Proteger minha privacidade",
+  "wizardQuizzes": "Praticar com quizzes",
+  "wizardSafeBrowsing": "Navegar com segurança",
+  "wizardTV": "TV",
+  "wizardTikTok": "TikTok",
+  "wizardTimeDedicate": "Quanto tempo pode dedicar por dia?",
+  "wizardTimeSage": "Escolha seu ritmo de aprendizado ideal",
+  "wizardVideos": "Assistir vídeos educativos",
+  "wizardWelcome": "Bem-vindo ao SAGEN!",
+  "wizardWelcomeSage": "Olá! Sou o Sage, seu guia de segurança digital. Vamos começar?",
+  "wizardWelcomeTitle": "Bem-vindo ao SAGEN!",
+  "wizardWhatLearn": "O que você gostaria de aprender?",
+  "wizardWhatLearnSage": "O que você gostaria de aprender primeiro?",
+  "wizardWhyLearn": "Por que você quer aprender?",
+  "wizardWhyLearnSage": "Por que você quer aprender segurança digital?",
+  "wizardYouTube": "YouTube",
+  "xpBoostLabel": "x2 Boost de XP",
+  "xpLevelUp": "Subir de nível!",
+  "xpReward": "+$xp XP",
+  "xpRewardLabel": "+$gems XP",
+  "yourActivity": "Sua atividade",
+  "yourLearning": "Seu aprendizado",
+  "xpLabel": "XP",
+  "xpMultiplier": "x2 XP",
+  "chatTypingIndicator": "Sage está digitando...",
+  "demoModeOffline": "MODO DEMO — Offline",
+  "errorSync": "Erro de sincronização",
+  "shareChestText": "Recebi {items} de um baú {type} no SAGEN!",
+  "paymentMethodsLocal": "WhatsApp / Yape / Plin",
+  "paymentMethodsMercadoPago": "Mercado Pago",
+  "streakFlame": "Chama de sequência",
+  "treasureChest": "Baú do tesouro {type}",
+  "errorRestart": "Reiniciar",
+  "chatEmptyDesc": "Pergunte sobre cibersegurança ou escolha uma sugestão rápida.",
+  "continueButton": "Continuar",
+  "shareButton": "Compartilhar",
+  "tapToContinue": "Toque para continuar",
+  "paymentSuccessful": "Pagamento bem-sucedido",
+  "errorLoadingQuestions": "Erro ao carregar perguntas.",
+  "errorGenericShort": "Erro",
+  "@adminCreditDonationSuccess": {
+    "placeholders": {
+      "gems": {},
+      "userId": {}
+    }
+  },
+  "@adminCreditSuccessNotification": {
+    "placeholders": {
+      "gems": {},
+      "userId": {}
+    }
+  },
+  "@authNotFoundMessage": {
+    "placeholders": {
+      "email": {}
+    }
+  },
+  "@challenge_analyze_link_desc": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@challenge_answer_questions_desc": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@challenge_check_in_desc": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@challenge_complete_lesson_desc": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@challenge_complete_session_desc": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@challenge_correct_streak_desc": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@challenge_detect_phishing_desc": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@challenge_earn_xp_desc": {
+    "placeholders": {
+      "xp": {}
+    }
+  },
+  "@challenge_learn_minutes_desc": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@challenge_learn_topic_desc": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@challenge_privacy_check_desc": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@challenge_quiz_night_desc": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@challenge_review_tips_desc": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@challenge_security_audit_desc": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@challenge_share_knowledge_desc": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@challenge_social_awareness_desc": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@challenge_streak_milestone_desc": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@challenge_talk_sage_desc": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@challenge_test_password_desc": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@chestEvolvedTo": {
+    "placeholders": {
+      "type": {}
+    }
+  },
+  "@chestOpenedTitle": {
+    "placeholders": {
+      "type": {}
+    }
+  },
+  "@chestTitle": {
+    "placeholders": {
+      "type": {}
+    }
+  },
+  "@chestTreasure": {
+    "placeholders": {
+      "type": {}
+    }
+  },
+  "@chestTreasureLabel": {
+    "placeholders": {
+      "type": {}
+    }
+  },
+  "@commitDays": {
+    "placeholders": {
+      "days": {}
+    }
+  },
+  "@commitGoalLabel": {
+    "placeholders": {
+      "days": {}
+    }
+  },
+  "@commitYourGoal": {
+    "placeholders": {
+      "days": {}
+    }
+  },
+  "@continueLesson": {
+    "placeholders": {
+      "title": {}
+    }
+  },
+  "@correctAnswers": {
+    "placeholders": {
+      "correct": {},
+      "total": {}
+    }
+  },
+  "@cyberQuizProgress": {
+    "placeholders": {
+      "current": {},
+      "total": {}
+    }
+  },
+  "@dailyGoalMinutesPerDay": {
+    "placeholders": {
+      "minutes": {}
+    }
+  },
+  "@darkModeScheduleInfo": {
+    "placeholders": {
+      "end": {},
+      "start": {}
+    }
+  },
+  "@dot": {
+    "placeholders": {
+      "number": {}
+    }
+  },
+  "@firstLessonProgress": {
+    "placeholders": {
+      "current": {},
+      "total": {}
+    }
+  },
+  "@goToLesson": {
+    "placeholders": {
+      "title": {}
+    }
+  },
+  "@heatmapLessons": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@impactProgressToNext": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@lessonProgress": {
+    "placeholders": {
+      "percent": {}
+    }
+  },
+  "@lessonsCompleted": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@lessonsCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@lessonsLevel": {
+    "placeholders": {
+      "level": {}
+    }
+  },
+  "@levelProgress": {
+    "placeholders": {
+      "percent": {}
+    }
+  },
+  "@minutes": {
+    "placeholders": {
+      "min": {}
+    }
+  },
+  "@minutesPerDay": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@missionProgress": {
+    "placeholders": {
+      "percent": {}
+    }
+  },
+  "@onbGoalMinPerDay": {
+    "placeholders": {
+      "minutes": {}
+    }
+  },
+  "@onbQuizIntro": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@passLevel": {
+    "placeholders": {
+      "level": {}
+    }
+  },
+  "@passRewards": {
+    "placeholders": {
+      "max": {},
+      "current": {}
+    }
+  },
+  "@paywallPackageAmount": {
+    "placeholders": {
+      "gems": {}
+    }
+  },
+  "@paywallPackageLabel": {
+    "placeholders": {
+      "label": {}
+    }
+  },
+  "@paywallPackageSupporter": {
+    "placeholders": {
+      "level": {}
+    }
+  },
+  "@paywallWhatsAppError": {
+    "placeholders": {
+      "link": {}
+    }
+  },
+  "@paywallWhatsAppFallback": {
+    "placeholders": {
+      "message": {}
+    }
+  },
+  "@profileLevelValue": {
+    "placeholders": {
+      "level": {}
+    }
+  },
+  "@questionProgress": {
+    "placeholders": {
+      "current": {},
+      "total": {}
+    }
+  },
+  "@questions": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@quizProgress": {
+    "placeholders": {
+      "percent": {}
+    }
+  },
+  "@rankingPosition": {
+    "placeholders": {
+      "rank": {}
+    }
+  },
+  "@rankingXpToTop50": {
+    "placeholders": {
+      "xp": {}
+    }
+  },
+  "@rankingYourPosition": {
+    "placeholders": {
+      "xp": {},
+      "rank": {}
+    }
+  },
+  "@rewardAdCooldown": {
+    "placeholders": {
+      "seconds": {}
+    }
+  },
+  "@rewardAdEarned": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@rewardAdEarnedGems": {
+    "placeholders": {
+      "gems": {}
+    }
+  },
+  "@rewardAdEarnedXp": {
+    "placeholders": {
+      "xp": {}
+    }
+  },
+  "@sageHighStreakDays": {
+    "placeholders": {
+      "streak": {}
+    }
+  },
+  "@sageLevelHint": {
+    "placeholders": {
+      "level": {}
+    }
+  },
+  "@sageStreakAmazing": {
+    "placeholders": {
+      "streak": {}
+    }
+  },
+  "@sageStreakAtRisk": {
+    "placeholders": {
+      "streak": {}
+    }
+  },
+  "@sessionCorrectAnswer": {
+    "placeholders": {
+      "answer": {}
+    }
+  },
+  "@sessionScore": {
+    "placeholders": {
+      "correct": {},
+      "total": {}
+    }
+  },
+  "@stageProgress": {
+    "placeholders": {
+      "percent": {}
+    }
+  },
+  "@storeBuyItem": {
+    "placeholders": {
+      "cost": {},
+      "item": {}
+    }
+  },
+  "@storeChestExpiresIn": {
+    "placeholders": {
+      "gems": {}
+    }
+  },
+  "@storeConfirmMessage": {
+    "placeholders": {
+      "cost": {},
+      "item": {}
+    }
+  },
+  "@storeDonateSubtitle": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "@storeWhatsappPackages": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "@streakCurrentProgress": {
+    "placeholders": {
+      "goal": {},
+      "current": {}
+    }
+  },
+  "@streakDays": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@streakDaysCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@summaryStreakDays": {
+    "placeholders": {
+      "days": {}
+    }
+  },
+  "@tutorLessonsProgress": {
+    "placeholders": {
+      "completed": {},
+      "required": {}
+    }
+  },
+  "@tutorMotivationAlmost": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@tutorMotivationGood": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@verifyEmailMessage": {
+    "placeholders": {
+      "email": {}
+    }
+  },
+  "@weeklyChestProgressCount": {
+    "placeholders": {
+      "done": {},
+      "total": {}
+    }
+  },
+  "@xpReward": {
+    "placeholders": {
+      "xp": {}
+    }
+  },
+  "@xpRewardLabel": {
+    "placeholders": {
+      "gems": {}
+    }
+  },
+  "exitQuizTitle": "Tem certeza de que deseja sair da lição?",
+  "@exitQuizTitle": {},
+  "exitQuizContent": "Tem certeza de que deseja sair do questionário?",
+  "@exitQuizContent": {},
+  "currentStreakDays": "Sequência atual: {count} dias",
+  "@currentStreakDays": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "activityMap30Days": "Mapa de atividade dos últimos 30 dias",
+  "@activityMap30Days": {},
+  "courseProgressLabel": "Progresso total do curso: {percent}%",
+  "@courseProgressLabel": {
+    "placeholders": {
+      "percent": {}
+    }
+  },
+  "stageProgressLabel": "Progresso da etapa: {percent}%",
+  "@stageProgressLabel": {
+    "placeholders": {
+      "percent": {}
+    }
+  },
+  "collapseSession": "Recolher sessão: {title}",
+  "@collapseSession": {
+    "placeholders": {
+      "title": {}
+    }
+  },
+  "expandSession": "Expandir sessão: {title}",
+  "@expandSession": {
+    "placeholders": {
+      "title": {}
+    }
+  },
+  "xpGainedLabel": "+{xp} XP ganhos",
+  "@xpGainedLabel": {
+    "placeholders": {
+      "xp": {}
+    }
+  },
+  "accuracyPercentLabel": "Precisão: {percent}%",
+  "@accuracyPercentLabel": {
+    "placeholders": {
+      "percent": {}
+    }
+  },
+  "timeLabel": "Tempo: {time}",
+  "@timeLabel": {
+    "placeholders": {
+      "time": {}
+    }
+  },
+  "livesRemainingLabel": "Vidas restantes: {count} de 3",
+  "@livesRemainingLabel": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "miniGameExitTitle": "Sair do jogo?",
+  "@miniGameExitTitle": {},
+  "miniGameExitContent": "Você perderá o progresso atual. Tem certeza?",
+  "@miniGameExitContent": {},
+  "paymentCancelTitle": "Cancelar pagamento",
+  "@paymentCancelTitle": {},
+  "paymentCancelContent": "Tem certeza de que deseja cancelar? O progresso será perdido.",
+  "@paymentCancelContent": {},
+  "resultXpGained": "{xp} ganhos",
+  "@resultXpGained": {
+    "placeholders": {
+      "xp": {}
+    }
+  },
+  "resultAccuracyLabel": "Precisão: {percent}%",
+  "@resultAccuracyLabel": {
+    "placeholders": {
+      "percent": {}
+    }
+  },
+  "resultLivesLabel": "Vidas: {count}",
+  "@resultLivesLabel": {
+    "placeholders": {
+      "count": {}
+    }
+  }
+}

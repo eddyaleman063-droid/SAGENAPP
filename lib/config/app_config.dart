@@ -3,10 +3,10 @@ class AppConfig {
 
   static const String appName = 'SAGEN';
   static const String appVersion = String.fromEnvironment('APP_VERSION', defaultValue: '5.1.0');
-  static const String appBuildNumber = String.fromEnvironment('APP_BUILD', defaultValue: '6');
-  static const String appTagline = 'Tu guía digital';
-  static const String appTaglineAlt = 'Aprende ciberseguridad de forma inteligente';
-  static const String appSlogan = 'Tu guía de ciberseguridad.';
+  static const String appBuildNumber = String.fromEnvironment('APP_BUILD', defaultValue: '7');
+  static const String appTagline = 'Your digital guide';
+  static const String appTaglineAlt = 'Learn cybersecurity the smart way';
+  static const String appSlogan = 'Your cybersecurity guide.';
 
   static const String geminiModel = 'gemini-2.5-flash';
   static const int geminiMaxOutputTokens = 8192;
@@ -26,13 +26,26 @@ class AppConfig {
   /// Mercado Pago payment link — must be set before release.
   static const String mercadopagoLink = String.fromEnvironment(
     'MERCADOPAGO_LINK',
-    defaultValue: 'https://mpago.li/XXXXXXXXX',
+    defaultValue: '',
   );
 
   /// Base URL for Mercado Pago API (Vercel).
-  /// Cambiar después de crear el proyecto en Vercel.
   static const String mercadopagoFunctionsUrl = String.fromEnvironment(
     'MP_FUNCTIONS_URL',
-    defaultValue: 'https://sagen-vercel-api.vercel.app',
+    defaultValue: '',
+  );
+
+  /// Donation package prices (USD) — used by PaywallBottomSheet.
+  static const double donationBasic = 3.00;
+  static const double donationPopular = 5.00;
+  static const double donationPremium = 10.00;
+  static const int supporterLevelBasic = 1;
+  static const int supporterLevelPopular = 2;
+  static const int supporterLevelPremium = 3;
+
+  /// WhatsApp support number — must be set before release.
+  static const String whatsappNumber = String.fromEnvironment(
+    'WHATSAPP_NUMBER',
+    defaultValue: '',
   );
 }

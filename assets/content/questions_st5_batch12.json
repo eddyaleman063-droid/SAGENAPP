@@ -1,0 +1,452 @@
+[
+  {
+    "id": "ac_st5_qB12_001",
+    "question": "Por que es importante monitorear la seguridad de tus cuentas?",
+    "type": "multipleChoice",
+    "options": [
+      "No es importante si usas contraseñas fuertes",
+      "Para detectar actividad sospechosa a tiempo y prevenir accesos no autorizados",
+      "Solo para empresas grandes",
+      "No tiene ninguna ventaja"
+    ],
+    "correctIndex": 1,
+    "explanation": "El monitoreo permite detectar intrusiones tempranamente antes de que causen daños importantes.",
+    "difficulty": 1,
+    "lessonId": "ac_s5_ses1_l1"
+  },
+  {
+    "id": "ac_st5_qB12_002",
+    "question": "Que señales indican actividad sospechosa en tus cuentas?",
+    "type": "detectRisk",
+    "options": [
+      "Cuando recibes muchos correos de spam",
+      "Inicios de sesión en ubicaciones desconocidas, cambios no autorizados en configuración o movimientos financieros sospechosos",
+      "Cuando tu celular va lento",
+      "Cuando llueve mucho"
+    ],
+    "correctIndex": 1,
+    "explanation": "Las señales incluyen logins desde lugares extraños, cambios en tu cuenta o transacciones que no reconoces.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses1_l2"
+  },
+  {
+    "id": "ac_st5_qB12_003",
+    "question": "Que son los dispositivos conectados a tu cuenta?",
+    "type": "multipleChoice",
+    "options": [
+      "Los cables de tu celular",
+      "Todos los celulares, computadoras o tablets que tienen acceso a tu cuenta y puedes revisar en la configuración de seguridad",
+      "Los cargadores USB",
+      "Los altavoces Bluetooth"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los dispositivos conectados son todas las equipos que tienen acceso a tu cuenta y puedes gestionarlos desde la configuración.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses1_l3"
+  },
+  {
+    "id": "ac_st5_qB12_004",
+    "question": "Que hacer si detectas cambios no autorizados en tu cuenta?",
+    "type": "whatWouldYouDo",
+    "options": [
+      "No hacer nada, probablemente es un error",
+      "Cambiar la contraseña inmediatamente, cerrar sesiónes activas y reportar el incidente al servicio",
+      "Esperar a ver si pasa algo más",
+      "Borrar la cuenta"
+    ],
+    "correctIndex": 1,
+    "explanation": "Actúa rápido: cambia contraseña, cierra sesiónes y reporta al servicio para proteger tu cuenta.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses1_l4"
+  },
+  {
+    "id": "ac_st5_qB12_005",
+    "question": "Que es una alerta de seguridad y por que es importante?",
+    "type": "multipleChoice",
+    "options": [
+      "Un tipo de notificación de cumpleaños",
+      "Un aviso que recibes cuando el sistema detecta actividad inusual en tu cuenta, permitiéndote actuar rápido",
+      "Un tipo de virus",
+      "Una función del teléfono"
+    ],
+    "correctIndex": 1,
+    "explanation": "Las alertas de seguridad te notifican de actividad sospechosa para que puedas proteger tu cuenta a tiempo.",
+    "difficulty": 1,
+    "lessonId": "ac_s5_ses1_l5"
+  },
+  {
+    "id": "ac_st5_qB12_006",
+    "question": "Como revisar la actividad reciente de tu cuenta de Google?",
+    "type": "multipleChoice",
+    "options": [
+      "No se puede",
+      "Ir a myaccount.google.com > Seguridad > Actividad de la cuenta para ver inicios de sesión y cambios recientes",
+      "Enviar un correo a Google",
+      "Llamar a soporte"
+    ],
+    "correctIndex": 1,
+    "explanation": "Ve a myaccount.google.com, sección Seguridad, y revisa la actividad reciente de tu cuenta.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses2_l1"
+  },
+  {
+    "id": "ac_st5_qB12_007",
+    "question": "Que es la verificación de actividad en Google?",
+    "type": "multipleChoice",
+    "options": [
+      "Un tipo de captcha",
+      "Una función que muestra todos los inicios de sesión, dispositivos conectados y actividad reciente de tu cuenta",
+      "Un juego de Google",
+      "Una app para hacer ejercicio"
+    ],
+    "correctIndex": 1,
+    "explanation": "La verificación de actividad muestra un historial completo de todos los accesos y acciones en tu cuenta de Google.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses2_l2"
+  },
+  {
+    "id": "ac_st5_qB12_008",
+    "question": "Como ver los dispositivos vinculados a tu cuenta de Google?",
+    "type": "multipleChoice",
+    "options": [
+      "No es posible",
+      "Ir a myaccount.google.com > Seguridad > Tus dispositivos para ver y gestionar todos los dispositivos conectados",
+      "Llamar a Google",
+      "Enviar un mensaje de texto"
+    ],
+    "correctIndex": 1,
+    "explanation": "En la configuración de seguridad de Google, puedes ver y gestionar todos los dispositivos vinculados a tu cuenta.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses2_l3"
+  },
+  {
+    "id": "ac_st5_qB12_009",
+    "question": "Que son las sesiónes activas en tu cuenta?",
+    "type": "multipleChoice",
+    "options": [
+      "Las veces que has iniciado sesión hoy",
+      "Los momentos en que tu cuenta está abierta en algún dispositivo o navegador, que puedes cerrar remotamente",
+      "Las aplicaciones instaladas",
+      "Los correos electrónicos enviados"
+    ],
+    "correctIndex": 1,
+    "explanation": "Las sesiónes activas muestran dónde está abierta tu cuenta y puedes cerrarlas remotamente si es necesario.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses2_l4"
+  },
+  {
+    "id": "ac_st5_qB12_010",
+    "question": "Que harías si ves una sesión activa en una ubicación que no reconoces?",
+    "type": "whatWouldYouDo",
+    "options": [
+      "No hacer nada, probablemente soy yo",
+      "Cerrar esa sesión inmediatamente y cambiar la contraseña de la cuenta",
+      "Tomar una captura de pantalla y compartirla",
+      "Esperar a que se cierre solo"
+    ],
+    "correctIndex": 1,
+    "explanation": "Si ves una sesión desconocida, ciérrala de inmediato y cambia tu contraseña por seguridad.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses2_l5"
+  },
+  {
+    "id": "ac_st5_qB12_011",
+    "question": "Que es Have I Been Pwned?",
+    "type": "multipleChoice",
+    "options": [
+      "Una red social",
+      "Un sitio web gratuito que verifica si tu correo o contraseñas han sido expuestos en brechas de seguridad conocidas",
+      "Un tipo de virus",
+      "Un servicio de streaming"
+    ],
+    "correctIndex": 1,
+    "explanation": "Have I Been Pwned es una herramienta gratuita que te dice si tus datos aparecen en filtraciones conocidas.",
+    "difficulty": 1,
+    "lessonId": "ac_s5_ses3_l1"
+  },
+  {
+    "id": "ac_st5_qB12_012",
+    "question": "Como usar Have I Been Pwned?",
+    "type": "multipleChoice",
+    "options": [
+      "Necesitas crear una cuenta primero",
+      "Ingresar tu correo electrónico en haveibeenpwned.com y te dirá si apareces en alguna brecha conocida",
+      "Llamar a un técnico",
+      "Descargar una aplicación especial"
+    ],
+    "correctIndex": 1,
+    "explanation": "Solo ingresa tu correo en el sitio y te mostrará instantáneamente si tus datos han sido comprometidos.",
+    "difficulty": 1,
+    "lessonId": "ac_s5_ses3_l2"
+  },
+  {
+    "id": "ac_st5_qB12_013",
+    "question": "Que significa si Have I Been Pwned encuentra tu correo en una brecha?",
+    "type": "multipleChoice",
+    "options": [
+      "Nada importante",
+      "Tus datos fueron expuestos en una filtración y debes cambiar las contraseñas afectadas inmediatamente",
+      "Tu correo fue hackeado personalmente",
+      "Es un error del sitio"
+    ],
+    "correctIndex": 1,
+    "explanation": "Si apareces en una brecha, tus datos están comprometidos y debes cambiar las contraseñas de esas cuentas.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses3_l3"
+  },
+  {
+    "id": "ac_st5_qB12_014",
+    "question": "Que hacer si Have I Been Pwned muestra que tu contraseña fue filtrada?",
+    "type": "whatWouldYouDo",
+    "options": [
+      "No hacer nada, ya pasó",
+      "Cambiar esa contraseña inmediatamente y en cualquier otra cuenta donde la hayas reutilizado",
+      "Borrar tu correo electrónico",
+      "Crear una cuenta nueva"
+    ],
+    "correctIndex": 1,
+    "explanation": "Cambia inmediatamente la contraseña filtrada y en cualquier cuenta donde la reutilizaras.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses3_l4"
+  },
+  {
+    "id": "ac_st5_qB12_015",
+    "question": "Que es la verificación de seguridad de Google?",
+    "type": "multipleChoice",
+    "options": [
+      "Un antivirus de Google",
+      "Una guía paso a paso que te ayuda a revisar y mejorar la configuración de seguridad de tu cuenta",
+      "Un juego de seguridad",
+      "Una app para celular"
+    ],
+    "correctIndex": 1,
+    "explanation": "La verificación de seguridad es un asistente que te guía para revisar y mejorar la protección de tu cuenta.",
+    "difficulty": 1,
+    "lessonId": "ac_s5_ses4_l1"
+  },
+  {
+    "id": "ac_st5_qB12_016",
+    "question": "Como configurar alertas de seguridad en Google?",
+    "type": "multipleChoice",
+    "options": [
+      "No se pueden configurar",
+      "Ir a myaccount.google.com > Seguridad > Alertas de seguridad y activar las notificaciones que prefieras",
+      "Enviar un correo a Google",
+      "Llamar a soporte"
+    ],
+    "correctIndex": 1,
+    "explanation": "En la configuración de seguridad de Google, activa las alertas para recibir notificaciones de actividad sospechosa.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses4_l3"
+  },
+  {
+    "id": "ac_st5_qB12_017",
+    "question": "Cada cuánto tiempo es recomendable revisar la actividad de tus cuentas importantes?",
+    "type": "multipleChoice",
+    "options": [
+      "Nunca, es innecesario",
+      "Al menos una vez a la semana para cuentas críticas como bancos y correo, y una vez al mes para las demás",
+      "Solo cuando algo sale mal",
+      "Una vez al año"
+    ],
+    "correctIndex": 1,
+    "explanation": "Revisa cuentas críticas semanalmente y las demás mensualmente para detectar actividad sospechosa a tiempo.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses4_l4"
+  },
+  {
+    "id": "ac_st5_qB12_018",
+    "question": "Que son los cambios importantes que debes buscar en la actividad de tu cuenta?",
+    "type": "multipleChoice",
+    "options": [
+      "Solo los correos enviados",
+      "Cambios de contraseña, adicionales de correo de recuperación, nuevas aplicaciones con acceso y cambios de configuración",
+      "Solo los inicios de sesión",
+      "Solo los pagos realizados"
+    ],
+    "correctIndex": 1,
+    "explanation": "Busca cambios en contraseña, correos de recuperación, apps con acceso y configuración de seguridad.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses4_l5"
+  },
+  {
+    "id": "ac_st5_qB12_019",
+    "question": "Que tipos de alertas de seguridad existen?",
+    "type": "multipleChoice",
+    "options": [
+      "Solo de inicio de sesión",
+      "Inicio de sesión nuevo, cambio de contraseña, actividad sospechosa, intentos de acceso fallidos y más",
+      "Solo de pagos",
+      "Solo de correos"
+    ],
+    "correctIndex": 1,
+    "explanation": "Las alertas incluyen nuevos inicios de sesión, cambios de contraseña, actividad sospechosa e intentos fallidos.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses5_l2"
+  },
+  {
+    "id": "ac_st5_qB12_020",
+    "question": "Que tan urgente es actuar ante una alerta de seguridad?",
+    "type": "multipleChoice",
+    "options": [
+      "No es urgente, puedes esperar",
+      "Muy urgente: debes actuar inmediatamente para proteger tu cuenta antes de que sea demasiado tarde",
+      "Solo es urgente si es de tu banco",
+      "No tiene importancia"
+    ],
+    "correctIndex": 1,
+    "explanation": "Las alertas de seguridad requieren acción inmediata para prevenir acceso no autorizado o daños mayores.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses5_l3"
+  },
+  {
+    "id": "ac_st5_qB12_021",
+    "question": "Que hacer cuando recibes una alerta de seguridad urgente?",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Esperar a ver si pasa algo más",
+      "Actuar inmediatamente: cambiar contraseña, revisar actividad y reportar si es necesario",
+      "Ignorarla",
+      "Compartirla en redes sociales"
+    ],
+    "correctIndex": 1,
+    "explanation": "Actúa rápido: cambia contraseña, revisa actividad reciente y reporta al servicio si es necesario.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses5_l4"
+  },
+  {
+    "id": "ac_st5_qB12_022",
+    "question": "Como reportar un incidente de seguridad en una cuenta?",
+    "type": "multipleChoice",
+    "options": [
+      "No se puede reportar",
+      "Usar el formulario de soporte del servicio, sección de seguridad, o contactar al soporte directamente",
+      "Escribir en redes sociales",
+      "Esperar a que ellos se den cuenta"
+    ],
+    "correctIndex": 1,
+    "explanation": "Cada servicio tiene formularios o canales de soporte para reportar incidentes de seguridad.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses5_l5"
+  },
+  {
+    "id": "ac_st5_qB12_023",
+    "question": "Que es el historial de seguridad de Google?",
+    "type": "multipleChoice",
+    "options": [
+      "Un registro de tus búsquedas",
+      "Un registro completo de todos los eventos de seguridad de tu cuenta como inicios de sesión, cambios y alertas",
+      "Un tipo de contraseña",
+      "Una función del navegador"
+    ],
+    "correctIndex": 1,
+    "explanation": "El historial de seguridad muestra todos los eventos importantes de protección de tu cuenta de Google.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses4_l2"
+  },
+  {
+    "id": "ac_st5_qB12_024",
+    "question": "Que haces si recibes una alerta de un intento de acceso fallido a tu cuenta?",
+    "type": "whatWouldYouDo",
+    "options": [
+      "No hacer nada, es normal que falle alguna vez",
+      "Revisar si fuiste tú; si no, cambiar la contraseña y revisar que no haya cambios sospechosos",
+      "Llamar a la policía inmediatamente",
+      "Borrar la cuenta"
+    ],
+    "correctIndex": 1,
+    "explanation": "Si no fuiste tú, cambia la contraseña y revisa la actividad reciente para asegurarte de que todo está bien.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses5_l2"
+  },
+  {
+    "id": "ac_st5_qB12_025",
+    "question": "Por qué es útil configurar notificaciones de seguridad en tu celular?",
+    "type": "multipleChoice",
+    "options": [
+      "No es útil, solo molestan",
+      "Para recibir alertas inmediatas de actividad sospechosa y poder actuar rápido desde tu celular",
+      "Solo para ver el tiempo",
+      "No tiene ventajas"
+    ],
+    "correctIndex": 1,
+    "explanation": "Las notificaciones te permiten actuar rápidamente ante amenazas desde la comodidad de tu celular.",
+    "difficulty": 1,
+    "lessonId": "ac_s5_ses5_l1"
+  },
+  {
+    "id": "ac_st5_qB12_026",
+    "question": "Que es la revocación de acceso en cuentas?",
+    "type": "multipleChoice",
+    "options": [
+      "Borrar la cuenta permanentemente",
+      "Eliminar el acceso de aplicaciones o servicios que ya no usas a tu cuenta",
+      "Cambiar la contraseña",
+      "Cerrar sesión en todos los dispositivos"
+    ],
+    "correctIndex": 1,
+    "explanation": "La revocación elimina permisos de apps o servicios que ya no necesitan acceder a tu cuenta.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses1_l3"
+  },
+  {
+    "id": "ac_st5_qB12_027",
+    "question": "Cada cuánto es recomendable revisar las apps con acceso a tu cuenta de Google?",
+    "type": "multipleChoice",
+    "options": [
+      "Nunca",
+      "Cada 3 meses para revocar acceso de apps que ya no usas",
+      "Solo cuando cambias de celular",
+      "Una vez al año"
+    ],
+    "correctIndex": 1,
+    "explanation": "Revisa periódicamente las apps con acceso y elimina las que ya no utilizas para reducir riesgos.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses1_l3"
+  },
+  {
+    "id": "ac_st5_qB12_028",
+    "question": "Que es un informe de actividad de cuenta?",
+    "type": "multipleChoice",
+    "options": [
+      "Un reporte de tu saldo bancario",
+      "Un documento que resume toda la actividad reciente de tu cuenta incluyendo inicios de sesión y cambios",
+      "Un tipo de contraseña",
+      "Una factura del servicio"
+    ],
+    "correctIndex": 1,
+    "explanation": "Un informe de actividad resume todos los eventos importantes de tu cuenta para que puedas revisarlos fácilmente.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses4_l4"
+  },
+  {
+    "id": "ac_st5_qB12_029",
+    "question": "Que harías si descubres que alguien agregó un correo de recuperación que no reconoces?",
+    "type": "whatWouldYouDo",
+    "options": [
+      "No hacer nada, probablemente es mío",
+      "Eliminar ese correo de inmediato, cambiar la contraseña y revisar toda la actividad de la cuenta",
+      "Enviar un correo al nuevo correo de recuperación",
+      "Esperar a ver qué pasa"
+    ],
+    "correctIndex": 1,
+    "explanation": "Un correo de recuperación no reconocido es una señal de alerta: elimínalo, cambia contraseña y revisa actividad.",
+    "difficulty": 3,
+    "lessonId": "ac_s5_ses4_l5"
+  },
+  {
+    "id": "ac_st5_qB12_030",
+    "question": "Cual es la mejor estrategia de monitoreo para proteger tus cuentas?",
+    "type": "multipleChoice",
+    "options": [
+      "No monitorear nada, confiar en los antivirus",
+      "Combinar revisiones periódicas de actividad, alertas de seguridad, Have I Been Pwned y verificación de dispositivos conectados",
+      "Solo revisar cuando algo salga mal",
+      "Monitorear solo las cuentas bancarias"
+    ],
+    "correctIndex": 1,
+    "explanation": "La mejor estrategia combina revisiones regulares, alertas activas, verificación de brechas y gestión de dispositivos.",
+    "difficulty": 3,
+    "lessonId": "ac_s5_ses5_l5"
+  }
+]

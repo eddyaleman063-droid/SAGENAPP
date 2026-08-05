@@ -1,0 +1,452 @@
+[
+    {
+        "id": "ac_st3_qB13_001",
+        "question": "Que es la verificación en dos pasos (2FA)",
+        "type": "multipleChoice",
+        "options": [
+            "Un metodo para recordar contraseñas",
+            "Una capa extra de seguridad que necesita algo mas que tu contraseña",
+            "Una forma de cambiar tu contraseña",
+            "Un tipo de virus"
+        ],
+        "correctIndex": 1,
+        "explanation": "La 2FA requiere algo mas que tu contraseña, como un codigo por SMS o una aplicación.",
+        "difficulty": 1,
+        "lessonId": "ac_s3_ses1_l1"
+    },
+    {
+        "id": "ac_st3_qB13_002",
+        "question": "Que es un codigo de verificación por SMS",
+        "type": "completePhrase",
+        "options": [
+            "Una contraseña que envias por mensaje",
+            "Un codigo temporal que recibes en tu celular para verificar tu identidad",
+            "Un tipo de correo electrónico",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "Es un codigo de uso único que llega a tu celular para confirmar que eres tu quien esta ingresando.",
+        "difficulty": 1,
+        "lessonId": "ac_s3_ses1_l2"
+    },
+    {
+        "id": "ac_st3_qB13_003",
+        "question": "Que es una aplicación de autenticación como Google Authenticator",
+        "type": "multipleChoice",
+        "options": [
+            "Un juego para pasar el tiempo",
+            "Una app que genera codigos temporales para verificar tu identidad",
+            "Un tipo de red social",
+            "Una app para enviar mensajes"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las apps de autenticación generan codigos que cambian cada 30 segundos para proteger tus cuentas.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses1_l3"
+    },
+    {
+        "id": "ac_st3_qB13_004",
+        "question": "Cual es la diferencia entre SMS 2FA y app de autenticación",
+        "type": "detectRisk",
+        "options": [
+            "No hay diferencia",
+            "El SMS puede ser interceptado, la app es mas segura porque funciona sin internet",
+            "El SMS es mas seguro siempre",
+            "La app cuesta dinero y el SMS es gratis"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los SMS pueden ser interceptados por hackers. La app de autenticación es mas segura porque genera codigos localmente.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses1_l3"
+    },
+    {
+        "id": "ac_st3_qB13_005",
+        "question": "Caso: Activaste 2FA en tu correo y ahora no recibes el codigo. Que haces",
+        "type": "whatWouldYouDo",
+        "options": [
+            "Desactivar la 2FA porque es incomoda",
+            "Usar los codigos de respaldo que te dieron al activar la 2FA",
+            "Pedirle a alguien que te envie un codigo",
+            "Esperar a que el problema se arregle solo"
+        ],
+        "correctIndex": 1,
+        "explanation": "Al activar 2FA siempre debes guardar los codigos de respaldo en un lugar seguro.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses1_l4"
+    },
+    {
+        "id": "ac_st3_qB13_006",
+        "question": "Que es un token de hardware para autenticación",
+        "type": "multipleChoice",
+        "options": [
+            "Un tipo de contraseña virtual",
+            "Un dispositivo fisico que genera codigos de verificación",
+            "Un programa de computadora",
+            "Una tarjeta de credito"
+        ],
+        "correctIndex": 1,
+        "explanation": "Un token de hardware es un dispositivo fisico como una llavero que genera codigos para verificar tu identidad.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses1_l5"
+    },
+    {
+        "id": "ac_st3_qB13_007",
+        "question": "Por que la 2FA por SMS no es tan segura como parece",
+        "type": "detectRisk",
+        "options": [
+            "Es perfectamente segura",
+            "Los hackers pueden interceptar los SMS o hackear tu número",
+            "Solo es insegura en pais lejanos",
+            "No hay riego alguno"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los SMS viajan por redes que pueden ser interceptadas, y si hackean tu número, pueden recibir tus codigos.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses2_l1"
+    },
+    {
+        "id": "ac_st3_qB13_008",
+        "question": "Que es el secuestro de sesión y como te proteges con 2FA",
+        "type": "completePhrase",
+        "options": [
+            "Cerrar sesión manualmente",
+            "Cuando un hacker roba tu sesión activa, pero la 2FA lo bloquea",
+            "Un tipo de virus",
+            "Una forma de recordar contraseñas"
+        ],
+        "correctIndex": 1,
+        "explanation": "El secuestro de sesión ocurre cuando roban tu sesión, pero la 2FA adiciona una barrera que los detiene.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses2_l2"
+    },
+    {
+        "id": "ac_st3_qB13_009",
+        "question": "Que harías si alguien te llama diciendo ser del banco y te pide tu codigo 2FA",
+        "type": "whatWouldYouDo",
+        "options": [
+            "Darle el codigo porque es del banco",
+            "Colgar y llamar al banco directamente para verificar",
+            "Enviarle el codigo por WhatsApp",
+            "Decirle que lo llames despues"
+        ],
+        "correctIndex": 1,
+        "explanation": "El banco nunca te pedira tu codigo 2FA. Si es urgente, llama directamente al banco.",
+        "difficulty": 1,
+        "lessonId": "ac_s3_ses2_l3"
+    },
+    {
+        "id": "ac_st3_qB13_010",
+        "question": "Que es la recuperación de cuenta y por que es importante tener un plan",
+        "type": "multipleChoice",
+        "options": [
+            "Es para cambiar tu contraseña",
+            "Es el proceso para recuperar acceso si pierdes tu dispositivo o contraseña",
+            "Es para eliminar tu cuenta",
+            "Es para crear nuevas cuentas"
+        ],
+        "correctIndex": 1,
+        "explanation": "La recuperación es vital porque sin ella podrias perder acceso permanente a tus cuentas importantes.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses2_l4"
+    },
+    {
+        "id": "ac_st3_qB13_011",
+        "question": "Que es la verificación en dos pasos con backup telefónico",
+        "type": "multipleChoice",
+        "options": [
+            "Una forma de guardar tus fotos",
+            "La opción de usar otro número telefonico para recibir codigos si pierdes el principal",
+            "Un tipo de red social",
+            "Una forma de cambiar tu número"
+        ],
+        "correctIndex": 1,
+        "explanation": "El backup telefonico te permite recibir codigos en un segundo número si pierdes acceso al principal.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses2_l5"
+    },
+    {
+        "id": "ac_st3_qB13_012",
+        "question": "Por que es importante guardar los codigos de respaldo de 2FA",
+        "type": "detectRisk",
+        "options": [
+            "No es importante guardarlos",
+            "Porque si pierdes tu celular, necesitas esos codigos para recuperar tu cuenta",
+            "Solo sirven para hackear cuentas",
+            "Los puedes regenerate cuando quieras"
+        ],
+        "correctIndex": 1,
+        "explanation": "Si pierdes tu dispositivo, los codigos de respaldo son tu única forma de acceder a tu cuenta.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses2_l5"
+    },
+    {
+        "id": "ac_st3_qB13_013",
+        "question": "Que es la autenticación por biometria y como se usa en 2FA",
+        "type": "completePhrase",
+        "options": [
+            "Usar tu contraseña dos veces",
+            "Usar huella dactilar, rostro u otra carácteristica fisica como segundo factor",
+            "Un tipo de codigo numerico",
+            "Una pregunta de seguridad"
+        ],
+        "correctIndex": 1,
+        "explanation": "La biometria usa carácteristicas únicas de tu cuerpo como segundo factor de autenticación.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses3_l1"
+    },
+    {
+        "id": "ac_st3_qB13_014",
+        "question": "Que es mas seguro: usar solo contraseña o contraseña mas 2FA",
+        "type": "detectRisk",
+        "options": [
+            "Solo contraseña es suficiente",
+            "Contraseña mas 2FA porque necesitan ambas cosas para entrar",
+            "Ambas son igual de seguras",
+            "Depende del tipo de cuenta"
+        ],
+        "correctIndex": 1,
+        "explanation": "Con 2FA, aunque roben tu contraseña, necesitan algo mas para acceder a tu cuenta.",
+        "difficulty": 1,
+        "lessonId": "ac_s3_ses3_l2"
+    },
+    {
+        "id": "ac_st3_qB13_015",
+        "question": "Que es un ataque SIM swap y como afecta tu 2FA por SMS",
+        "type": "multipleChoice",
+        "options": [
+            "Un tipo de virus",
+            "Cuando un hacker convence a tu operador de transferir tu número a su chip",
+            "Una forma de cambiar tu número",
+            "Un tipo de red social"
+        ],
+        "correctIndex": 1,
+        "explanation": "En un SIM swap, el hacker obtiene tu número y recibe tus codigos 2FA por SMS en su chip.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses3_l3"
+    },
+    {
+        "id": "ac_st3_qB13_016",
+        "question": "Que debes hacer si pierdes el celular donde tenias tu app de autenticación",
+        "type": "whatWouldYouDo",
+        "options": [
+            "No hacer nada porque se pierde solo",
+            "Usar los codigos de respaldo o contactar soporte de la cuenta inmediatamente",
+            "Comprar el mismo celular y funcionara automáticamente",
+            "Esperar a que alguien lo encuentre"
+        ],
+        "correctIndex": 1,
+        "explanation": "Debes actuar rápido: usa codigos de respaldo o contacta soporte antes de que alguien acceda a tus cuentas.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses3_l4"
+    },
+    {
+        "id": "ac_st3_qB13_017",
+        "question": "Que es WebAuthn y como mejora la seguridad",
+        "type": "completePhrase",
+        "options": [
+            "Un tipo de contraseña",
+            "Un estandar que usa llaves digitales para autenticarte sin contraseñas",
+            "Una red social",
+            "Un tipo de virus"
+        ],
+        "correctIndex": 1,
+        "explanation": "WebAuthn usa llaves criptograficas para autenticarte de forma mas segura que las contraseñas tradicionales.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses3_l5"
+    },
+    {
+        "id": "ac_st3_qB13_018",
+        "question": "Que es la autenticación adaptativa y porque la usan los bancos",
+        "type": "multipleChoice",
+        "options": [
+            "Es una forma de cambiar tu contraseña",
+            "Es un sistema que ajusta la seguridad segun el riesgo detectado",
+            "Es un tipo de rede social",
+            "Es una forma de guardar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los bancos usan autenticación adaptativa: si detectan algo sospechoso, piden mas verificación.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses3_l6"
+    },
+    {
+        "id": "ac_st3_qB13_019",
+        "question": "Que es una llave de seguridad fisica como YubiKey",
+        "type": "multipleChoice",
+        "options": [
+            "Un tipo de llave para tu casa",
+            "Un dispositivo fisico que se conecta al USB y verifica tu identidad",
+            "Una contraseña escrita en papel",
+            "Un tipo de tarjeta de credito"
+        ],
+        "correctIndex": 1,
+        "explanation": "Una YubiKey es un dispositivo fisico que actua como segundo factor, mas seguro que SMS o apps.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses4_l1"
+    },
+    {
+        "id": "ac_st3_qB13_020",
+        "question": "Que es el phishing de 2FA y como te proteges",
+        "type": "detectRisk",
+        "options": [
+            "Un tipo de pez",
+            "Cuando un sitio falso te pide tu codigo 2FA para robarlo",
+            "Una forma de enviar dinero",
+            "Un tipo de red social"
+        ],
+        "correctIndex": 1,
+        "explanation": "El phishing de 2FA usa sitios falsos para que ingreses tu codigo, permitiendo al hacker acceder a tu cuenta.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses4_l2"
+    },
+    {
+        "id": "ac_st3_qB13_021",
+        "question": "Que es la autenticación por push y como funciona",
+        "type": "completePhrase",
+        "options": [
+            "Enviar un mensaje de texto",
+            "Recibir una notificacion en tu celular para aprobar o rechazar el acceso",
+            "Escribir tu contraseña dos veces",
+            "Usar tu huella dactilar"
+        ],
+        "correctIndex": 1,
+        "explanation": "La autenticación push te envia una notificacion para que apruebes o rechaces el inicio de sesión.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses4_l3"
+    },
+    {
+        "id": "ac_st3_qB13_022",
+        "question": "Por que deberias activar 2FA en tu cuenta de Yape o Plin",
+        "type": "whatWouldYouDo",
+        "options": [
+            "No es necesario porque ya tienen contraseña",
+            "Para proteger tu dinero de accesos no autorizados",
+            "Porque la app lo pide obligatoriamente",
+            "Para poder enviar mas dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "Tu dinero esta en riesgo si alguien accede a tu cuenta. La 2FA protege tus transacciones financieras.",
+        "difficulty": 1,
+        "lessonId": "ac_s3_ses4_l4"
+    },
+    {
+        "id": "ac_st3_qB13_023",
+        "question": "Que es el login sin contraseña y como funciona",
+        "type": "multipleChoice",
+        "options": [
+            "Es entrar sin ninguna verificación",
+            "Usar un enlace magico o biometria en lugar de contraseña",
+            "Es usar la misma contraseña siempre",
+            "Es no tener cuenta"
+        ],
+        "correctIndex": 1,
+        "explanation": "El login sin contraseña usa enlaces temporales o biometria para autenticarte sin recordar contraseñas.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses4_l5"
+    },
+    {
+        "id": "ac_st3_qB13_024",
+        "question": "Que es un ataque man-in-the-middle y como lo detiene la 2FA",
+        "type": "detectRisk",
+        "options": [
+            "Alguien que se para entre dos personas",
+            "Cuando un hacker intercepta tu comúnicacion, pero la 2FA le impide completar el acceso",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "El ataque man-in-the-middle intercepta datos, pero sin el segundo factor de 2FA no puede completar la sesión.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses4_l6"
+    },
+    {
+        "id": "ac_st3_qB13_025",
+        "question": "Que es un codigo TOTP y por que cambia cada 30 segundos",
+        "type": "completePhrase",
+        "options": [
+            "Una contraseña que nunca cambia",
+            "Un codigo temporal basado en el tiempo que se renueva cada 30 segundos",
+            "Un tipo de mensaje de texto",
+            "Un codigo que usas una sola vez en la vida"
+        ],
+        "correctIndex": 1,
+        "explanation": "TOTP usa la hora actual para generar codigos que expiran rápido, haciendolos mas seguros.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses4_l6"
+    },
+    {
+        "id": "ac_st3_qB13_026",
+        "question": "Que es la recuperación de cuenta y como planificarla",
+        "type": "whatWouldYouDo",
+        "options": [
+            "No planificar nada, ya se arreglara solo",
+            "Guardar codigos de respaldo, configurar emails de recuperación y tener un plan B",
+            "Cambiar todas tus contraseñas cada mes",
+            "Pedirle a un amigo que guarde tus contraseñas"
+        ],
+        "correctIndex": 1,
+        "explanation": "Un buen plan de recuperación incluye codigos de respaldo, email de recuperación y alternativas.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses4_l6"
+    },
+    {
+        "id": "ac_st3_qB13_027",
+        "question": "Caso: Tu amigo tiene 2FA activado pero usa el mismo codigo para todas sus cuentas. Que le dices",
+        "type": "miniCase",
+        "options": [
+            "Que esta bien porque es mas práctico",
+            "Que cada cuenta debe tener su propia configuración de 2FA",
+            "Que no necesita 2FA porque ya tiene contraseña",
+            "Que use el codigo de otros"
+        ],
+        "correctIndex": 1,
+        "explanation": "Cada cuenta debe tener su propia 2FA para que si una es comprometida, las demas sigan seguras.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses4_l6"
+    },
+    {
+        "id": "ac_st3_qB13_028",
+        "question": "Que es un ataque de replay y como lo previene la 2FA",
+        "type": "detectRisk",
+        "options": [
+            "Volver a jugar un videojuego",
+            "Cuando reusan un codigo ya usado, pero la 2A lo invalida porque expiro",
+            "Un tipo de musica",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "El ataque de replay intenta reusar codigos viejos, pero la 2FA los invalida porque ya expiraron.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses4_l6"
+    },
+    {
+        "id": "ac_st3_qB13_029",
+        "question": "Que es la autenticación sin contraseña y porque es el futuro",
+        "type": "multipleChoice",
+        "options": [
+            "Es entrar sin verificar nada",
+            "Usa biometria o llaves digitales para eliminar las contraseñas tradicionales",
+            "Es usar la misma contraseña siempre",
+            "Es no tener cuenta en nada"
+        ],
+        "correctIndex": 1,
+        "explanation": "La autenticación sin contraseña usa tecnologías modernas que son mas seguras y prácticas que las contraseñas.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses4_l6"
+    },
+    {
+        "id": "ac_st3_qB13_030",
+        "question": "Que consejo le darias a alguien que nunca ha usado 2FA y le da miedo activarla",
+        "type": "whatWouldYouDo",
+        "options": [
+            "Que no la active porque es complicada",
+            "Que empiece con una cuenta importante y vaya aprendiendo paso a paso",
+            "Que le pida a alguien que la active por el",
+            "Que no la necesite porque nadie va a hackearlo"
+        ],
+        "correctIndex": 1,
+        "explanation": "Empieza poco a poco con una cuenta importante. La 2F es sencilla y te protege mucho.",
+        "difficulty": 1,
+        "lessonId": "ac_s3_ses4_l6"
+    }
+]

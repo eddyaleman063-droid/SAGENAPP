@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Safe Student necesita acceso al micrófono para que puedas preguntarle a Sage usando tu voz.</string>
+	<string>SAGEN necesita acceso al micrófono para que puedas preguntarle a Sage usando tu voz.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>Safe Student necesita reconocimiento de voz para convertir tus preguntas en texto.</string>
+	<string>SAGEN necesita reconocimiento de voz para convertir tus preguntas en texto.</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleURLTypes</key>

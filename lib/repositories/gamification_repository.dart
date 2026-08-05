@@ -1,29 +1,54 @@
+import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sagen/services/app_logger.dart';
 
-class GamificationRepository {
+/// Repository for gamification data persistence.
+/// Tracks daily chest and missions.
+abstract class GamificationRepository {
+  bool get hasUnclaimedDailyChest;
+  bool get canClaimDailyChest;
+  int claimDailyChest();
+  void setUnclaimedChest(bool value);
+  void checkMidnightReset();
+  int get secondsUntilMidnight;
+  Map<String, int> getMissions();
+  void saveMissions(Map<String, int> missions);
+  void incrementMission(String missionId, {int amount = 1});
+  bool isMissionComplete(String missionId, {int target = 1});
+  Set<String> getCountedMissions();
+  void saveCountedMissions(Set<String> missions);
+}
+
+class GamificationRepositoryImpl implements GamificationRepository {
   final SharedPreferences _prefs;
 
-  GamificationRepository(this._prefs);
+  /// Base reward for claiming the daily chest. Server may override.
+  static const int baseDailyChestReward = 2;
+
+  GamificationRepositoryImpl(this._prefs);
 
   static const _keyLastClaim = 'gamification_last_claim_date';
   static const _keyUnclaimedChest = 'gamification_unclaimed_chest';
   static const _keyMissions = 'gamification_missions';
-  // ── Daily Chest ──
+  static const _keyCountedMissions = 'gamification_counted_missions';
 
-  /// Returns today's date as YYYY-MM-DD in local timezone
-  String _today() => DateTime.now().toIso8601String().substring(0, 10);
+  Map<String, int>? _missionsCache;
 
-  /// Whether the user has an unclaimed daily chest
+  String _today() {
+    final now = DateTime.now();
+    return '${now.year.toString().padLeft(4, '0')}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
+  }
+
+  @override
   bool get hasUnclaimedDailyChest {
     final stored = _prefs.getBool(_keyUnclaimedChest) ?? false;
     if (!stored) return false;
-    // If stored date doesn't match today, the chest is from a previous day → expired
     final lastClaimDate = _prefs.getString(_keyLastClaim) ?? '';
     return lastClaimDate == _today();
   }
 
-  /// Whether the user can claim a chest right now
+  @override
   bool get canClaimDailyChest {
     final lastClaimDate = _prefs.getString(_keyLastClaim) ?? '';
     if (lastClaimDate.isNotEmpty && lastClaimDate.compareTo(_today()) > 0) {
@@ -33,87 +58,122 @@ class GamificationRepository {
     return _prefs.getBool(_keyUnclaimedChest) ?? false;
   }
 
-  /// Claim the daily chest. Returns the gem reward (2).
-  /// Resets the unclaimed flag. Performs anti-cheat check.
+  @override
   int claimDailyChest() {
-    // Anti-cheat: check date before any mutations
     final storedDate = _prefs.getString(_keyLastClaim) ?? '';
     if (storedDate.isNotEmpty && storedDate.compareTo(_today()) > 0) {
       _prefs.setBool(_keyUnclaimedChest, false);
       throw PlatformException(
         code: 'CLOCK_MANIPULATION',
-        message: 'Se detectó manipulación del reloj. No es posible reclamar el cofre.',
+        message: 'Clock manipulation detected. Cannot claim chest.',
       );
     }
 
-    // Handle new day
     if (storedDate != _today()) {
       _prefs.setBool(_keyUnclaimedChest, true);
       _prefs.setString(_keyLastClaim, _today());
     }
 
-    if (!_prefs.getBool(_keyUnclaimedChest)!) {
+    if (!(_prefs.getBool(_keyUnclaimedChest) ?? false)) {
       throw StateError('No chest available to claim today');
     }
 
-    const reward = 2; // fixed: 2 gems per daily chest
+    const reward = baseDailyChestReward;
     _prefs.setBool(_keyUnclaimedChest, false);
     return reward;
   }
 
-  /// Midnight expiration check: if it's a new day and chest wasn't claimed,
-  /// the previous chest is lost. This is called on app start.
+  @override
+  void setUnclaimedChest(bool value) {
+    _prefs.setBool(_keyUnclaimedChest, value);
+  }
+
+  @override
   void checkMidnightReset() {
     final lastClaimDate = _prefs.getString(_keyLastClaim) ?? '';
     if (lastClaimDate.isNotEmpty && lastClaimDate != _today()) {
       final wasUnclaimed = _prefs.getBool(_keyUnclaimedChest) ?? false;
       if (wasUnclaimed) {
-        // Chest expired — user lost it
         _prefs.setBool(_keyUnclaimedChest, false);
       }
     }
   }
 
-  /// Returns seconds until midnight local time
+  @override
   int get secondsUntilMidnight {
     final now = DateTime.now();
     final midnight = DateTime(now.year, now.month, now.day + 1);
     return midnight.difference(now).inSeconds;
   }
 
-  // ── Missions ──
-
+  @override
   Map<String, int> getMissions() {
+    if (_missionsCache != null) return Map<String, int>.from(_missionsCache!);
     final raw = _prefs.getString(_keyMissions);
     if (raw == null) return {};
     try {
-      return Map<String, int>.from(
-        raw.split(',').fold<Map<String, int>>({}, (map, pair) {
-          final parts = pair.split(':');
-          if (parts.length == 2) {
-            map[parts[0]] = int.tryParse(parts[1]) ?? 0;
-          }
-          return map;
-        }),
-      );
+      final parsed = jsonDecode(raw);
+      if (parsed is Map) {
+        _missionsCache = Map<String, int>.from(parsed.map((k, v) => MapEntry(k.toString(), (v as num).toInt())));
+        return Map<String, int>.from(_missionsCache!);
+      }
+      return {};
     } catch (_) {
+      AppLogger().warning('GamificationRepository: failed to decode missions JSON');
+      return _migrateCsvMissions(raw);
+    }
+  }
+
+  Map<String, int> _migrateCsvMissions(String raw) {
+    try {
+      final map = <String, int>{};
+      for (final pair in raw.split(',')) {
+        if (pair.isEmpty) continue;
+        final colonIdx = pair.lastIndexOf(':');
+        if (colonIdx < 0) continue;
+        final key = pair.substring(0, colonIdx);
+        final value = int.tryParse(pair.substring(colonIdx + 1)) ?? 0;
+        map[key] = value;
+      }
+      if (map.isNotEmpty) {
+        saveMissions(map);
+      }
+      return map;
+    } catch (_) {
+      AppLogger().warning('GamificationRepository: failed to parse CSV missions');
       return {};
     }
   }
 
+  @override
   void saveMissions(Map<String, int> missions) {
-    final raw = missions.entries.map((e) => '${e.key}:${e.value}').join(',');
-    _prefs.setString(_keyMissions, raw);
+    _missionsCache = Map<String, int>.from(missions);
+    _prefs.setString(_keyMissions, jsonEncode(missions));
   }
 
+  @override
   void incrementMission(String missionId, {int amount = 1}) {
     final missions = getMissions();
     missions[missionId] = (missions[missionId] ?? 0) + amount;
-    saveMissions(missions);
+    _missionsCache = missions;
+    _prefs.setString(_keyMissions, jsonEncode(missions));
   }
 
+  @override
   bool isMissionComplete(String missionId, {int target = 1}) {
     final missions = getMissions();
     return (missions[missionId] ?? 0) >= target;
+  }
+
+  @override
+  Set<String> getCountedMissions() {
+    final raw = _prefs.getString(_keyCountedMissions);
+    if (raw == null || raw.isEmpty) return {};
+    return raw.split(',').where((s) => s.isNotEmpty).toSet();
+  }
+
+  @override
+  void saveCountedMissions(Set<String> missions) {
+    _prefs.setString(_keyCountedMissions, missions.join(','));
   }
 }

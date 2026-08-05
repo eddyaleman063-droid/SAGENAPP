@@ -1,0 +1,452 @@
+[
+  {
+    "id": "ac_st7_qB4_001",
+    "question": "¿Por qué es importante saber cuántos dispositivos usas?",
+    "type": "multipleChoice",
+    "options": [
+      "Porque cada dispositivo es una posible puerta de entrada a tus cuentas",
+      "Porque es obligatorio por ley",
+      "Para ganar puntos de recompensa",
+      "No es importante saberlo"
+    ],
+    "correctIndex": 0,
+    "explanation": "Cada dispositivo conectado a internet representa un punto potencial de acceso a tus cuentas, por es importante conocerlos todos.",
+    "difficulty": 1,
+    "lessonId": "ac_s7_ses1_l1"
+  },
+  {
+    "id": "ac_st7_qB4_002",
+    "question": "¿Qué significa que cada dispositivo es 'una puerta de entrada'?",
+    "type": "multipleChoice",
+    "options": [
+      "Que desde ese dispositivo alguien podría acceder a tus cuentas si no está protegido",
+      "Que los dispositivos son puertas físicas",
+      "Que debes bloquear todos los dispositivos",
+      "No tiene relación con la seguridad"
+    ],
+    "correctIndex": 0,
+    "explanation": "Cada dispositivo con acceso a internet puede ser usado para acceder a tus cuentas, por lo que debe estar protegido adecuadamente.",
+    "difficulty": 1,
+    "lessonId": "ac_s7_ses1_l2"
+  },
+  {
+    "id": "ac_st7_qB4_003",
+    "question": "¿Qué es un inventario de dispositivos?",
+    "type": "multipleChoice",
+    "options": [
+      "Una lista de todos los dispositivos que usas para acceder a tus cuentas",
+      "Una aplicación para contar dispositivos",
+      "Un tipo de contraseña especial",
+      "Un método para crear cuentas nuevas"
+    ],
+    "correctIndex": 0,
+    "explanation": "Un inventario te ayuda a llevar registro de todos los dispositivos que usas, facilitando su gestión y seguridad.",
+    "difficulty": 1,
+    "lessonId": "ac_s7_ses1_l3"
+  },
+  {
+    "id": "ac_st7_qB4_004",
+    "question": "¿Por qué debes revisar los dispositivos conectados regularmente?",
+    "type": "multipleChoice",
+    "options": [
+      "Para detectar dispositivos que no reconozcas o que ya no uses",
+      "Porque es obligatorio por ley",
+      "Para ganar espacio de almacenamiento",
+      "No es necesario revisarlos"
+    ],
+    "correctIndex": 0,
+    "explanation": "Revisar regularmente te permite identificar y eliminar acceso desde dispositivos que ya no usas o que no reconozcas.",
+    "difficulty": 1,
+    "lessonId": "ac_s7_ses2_l4"
+  },
+  {
+    "id": "ac_st7_qB4_005",
+    "question": "¿Qué debes hacer si encuentras un dispositivo que no reconoces?",
+    "type": "multipleChoice",
+    "options": [
+      "Eliminar su acceso inmediatamente y cambiar tu contraseña",
+      "Ignorarlo si no estás seguro",
+      "Esperar a que se desconecte solo",
+      "Compartirlo en redes sociales"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los dispositivos desconocidos podrían indicar acceso no autorizado, por lo que debes eliminar su acceso de inmediato.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses2_l5"
+  },
+  {
+    "id": "ac_st7_qB4_006",
+    "question": "¿Qué es cerrar sesión en dispositivos viejos?",
+    "type": "multipleChoice",
+    "options": [
+      "Terminar la sesión activa en dispositivos que ya no usas para proteger tus cuentas",
+      "Borrar todos los datos del dispositivo",
+      "Desinstalar las aplicaciones",
+      "No tiene relación con la seguridad"
+    ],
+    "correctIndex": 0,
+    "explanation": "Cerrar sesión en dispositivos viejos asegura que no queden accesos activos que puedan ser explotados.",
+    "difficulty": 1,
+    "lessonId": "ac_s7_ses3_l1"
+  },
+  {
+    "id": "ac_st7_qB4_007",
+    "question": "¿Qué son las sesiónes activas?",
+    "type": "multipleChoice",
+    "options": [
+      "Los accesos abiertos a tus cuentas desde diferentes dispositivos o navegadores",
+      "Las aplicaciones instaladas en tu dispositivo",
+      "Las contraseñas guardadas",
+      "Los correos electrónicos recibidos"
+    ],
+    "correctIndex": 0,
+    "explanation": "Las sesiónes activas muestran desde qué dispositivos y navegadores hay acceso actual a tus cuentas.",
+    "difficulty": 1,
+    "lessonId": "ac_s7_ses4_l1"
+  },
+  {
+    "id": "ac_st7_qB4_008",
+    "question": "¿Cuándo debes cerrar todas las sesiónes?",
+    "type": "multipleChoice",
+    "options": [
+      "Si sospechas que tu cuenta está comprometida o usaste un dispositivo público",
+      "Nunca, es innecesario",
+      "Solo cuando cambias de contraseña",
+      "Una vez al año como máximo"
+    ],
+    "correctIndex": 0,
+    "explanation": "Cerrar todas las sesiónes es una medida de seguridad cuando sospechas de actividad no autorizada o después de usar dispositivos públicos.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses4_l2"
+  },
+  {
+    "id": "ac_st7_qB4_009",
+    "question": "¿Qué debes hacer al usar una red WiFi pública?",
+    "type": "multipleChoice",
+    "options": [
+      "Usar una VPN y evitar acceder a cuentas sensibles",
+      "Acceder normalmente a todas tus cuentas",
+      "Compartir la contraseña de la red con todos",
+      "No hay precauciones necesarias"
+    ],
+    "correctIndex": 0,
+    "explanation": "Las redes WiFi públicas son inseguras; usa VPN y evita acceder a cuentas bancarias o sensibles.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses4_l6"
+  },
+  {
+    "id": "ac_st7_qB4_010",
+    "question": "¿Qué es un dispositivo confiable?",
+    "type": "multipleChoice",
+    "options": [
+      "Un dispositivo que controlas y que tiene medidas de seguridad adecuadas",
+      "Cualquier dispositivo público",
+      "Un dispositivo sin contraseña",
+      "Un dispositivo prestado"
+    ],
+    "correctIndex": 0,
+    "explanation": "Un dispositivo confiable es aquel que controlas personalmente y que mantiene actualizaciones y protecciónes de seguridad.",
+    "difficulty": 1,
+    "lessonId": "ac_s7_ses5_l1"
+  },
+  {
+    "id": "ac_st7_qB4_011",
+    "question": "¿Qué riesgos tiene usar dispositivos públicos?",
+    "type": "multipleChoice",
+    "options": [
+      "Pueden tener keyloggers, malware o no estar actualizados",
+      "No tienen ningún riesgo",
+      "Son más rápidos que los personales",
+      "Siempre son seguros"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los dispositivos públicos pueden estar comprometidos con software malicioso o no tener las últimas actualizaciones de seguridad.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses5_l2"
+  },
+  {
+    "id": "ac_st7_qB4_012",
+    "question": "¿Qué son las app passwords o contraseñas de aplicación?",
+    "type": "multipleChoice",
+    "options": [
+      "Contraseñas específicas generadas para aplicaciones que no soportan autenticación moderna",
+      "Contraseñas para desbloquear aplicaciones",
+      "Contraseñas que se comparten entre aplicaciones",
+      "Un tipo de autenticación biométrica"
+    ],
+    "correctIndex": 0,
+    "explanation": "Las app passwords son contraseñas de un solo uso generadas para aplicaciones que no pueden usar métodos modernos de autenticación.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses6_l1"
+  },
+  {
+    "id": "ac_st7_qB4_013",
+    "question": "¿Cuándo debes usar una app password en vez de tu contraseña normal?",
+    "type": "multipleChoice",
+    "options": [
+      "Cuando el servicio lo requiere específicamente para aplicaciones de terceros",
+      "Siempre, para mayor seguridad",
+      "Nunca, siempre usa tu contraseña normal",
+      "Solo para cuentas de redes sociales"
+    ],
+    "correctIndex": 0,
+    "explanation": "Algunos servicios requieren app passwords para aplicaciones que no soportan autenticación de dos factores moderna.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses6_l2"
+  },
+  {
+    "id": "ac_st7_qB4_014",
+    "question": "¿Por qué debes revocar app passwords que no usas?",
+    "type": "multipleChoice",
+    "options": [
+      "Para reducir la superficie de ataque y mantener tu cuenta más segura",
+      "Porque ocupan espacio",
+      "Para ganar puntos de recompensa",
+      "No es necesario revocarlas"
+    ],
+    "correctIndex": 0,
+    "explanation": "Las app passwords no utilizadas representan un riesgo; revocarlas reduce posibles puntos de entrada no autorizados.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses6_l4"
+  },
+  {
+    "id": "ac_st7_qB4_015",
+    "question": "¿Qué son los permisos de OAuth?",
+    "type": "multipleChoice",
+    "options": [
+      "Autorizaciones que otorgas a aplicaciones de terceros para acceder a tu cuenta",
+      "Contraseñas especiales",
+      "Configuraciónes de privacidad",
+      "Tipos de dispositivos"
+    ],
+    "correctIndex": 0,
+    "explanation": "OAuth permite a aplicaciones de terceros acceder a partes específicas de tu cuenta sin compartir tu contraseña.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses7_l1"
+  },
+  {
+    "id": "ac_st7_qB4_016",
+    "question": "¿Qué debes hacer periódicamente con las apps vinculadas a tu cuenta?",
+    "type": "multipleChoice",
+    "options": [
+      "Revisarlas y revocar acceso a las que ya no usas",
+      "No hacer nada, son permanentes",
+      "Compartirlas con amigos",
+      "Eliminar todas las apps"
+    ],
+    "correctIndex": 0,
+    "explanation": "Revisar y revocar apps que ya no usas reduce el riesgo de acceso no autorizado a tu cuenta.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses7_l3"
+  },
+  {
+    "id": "ac_st7_qB4_017",
+    "question": "¿Qué es el cifrado de disco completo?",
+    "type": "multipleChoice",
+    "options": [
+      "Una protección que cifra todos los datos en tu disco duro para que no sean legibles sin tu contraseña",
+      "Un tipo de contraseña",
+      "Una aplicación de seguridad",
+      "Un método para borrar datos"
+    ],
+    "correctIndex": 0,
+    "explanation": "El cifrado de disco completo protege todos los datos en tu dispositivo; si lo pierden, no podrán leer la información.",
+    "difficulty": 3,
+    "lessonId": "ac_s7_ses5_l6"
+  },
+  {
+    "id": "ac_st7_qB4_018",
+    "question": "¿Qué es la gestión de parches de seguridad?",
+    "type": "multipleChoice",
+    "options": [
+      "Mantener tus dispositivos y aplicaciones actualizadas con las últimas correcciónes de seguridad",
+      "Instalar parches físicos en dispositivos",
+      "Usar parches de tela en dispositivos",
+      "No tiene relación con la seguridad"
+    ],
+    "correctIndex": 0,
+    "explanation": "La gestión de parches asegura que tus dispositivos tengan las últimas correcciónes de seguridad para vulnerabilidades conocidas.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses6_l6"
+  },
+  {
+    "id": "ac_st7_qB4_019",
+    "question": "¿Por qué es importante programar cierres de sesión periódicos?",
+    "type": "multipleChoice",
+    "options": [
+      "Para asegurar que no queden accesos activos en dispositivos que ya no usas",
+      "Porque es obligatorio por ley",
+      "Para ganar puntos de recompensa",
+      "No es necesario programarlos"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los cierres periódicos eliminan accesos residuales que podrían ser explotados si un dispositivo se pierde o es robado.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses4_l5"
+  },
+  {
+    "id": "ac_st7_qB4_020",
+    "question": "¿Qué debes hacer si pierdes un dispositivo con acceso a tus cuentas?",
+    "type": "multipleChoice",
+    "options": [
+      "Cerrar sesión remotamente, cambiar contraseñas y reportar el pérdida",
+      "Esperar a que aparezca",
+      "No hacer nada",
+      "Comprarlo nuevo inmediatamente"
+    ],
+    "correctIndex": 0,
+    "explanation": "Debes actuar rápidamente: cerrar sesiónes remotamente, cambiar contraseñas y reportar el dispositivo perdido.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses3_l4"
+  },
+  {
+    "id": "ac_st7_qB4_021",
+    "question": "¿Qué es un perfil de trabajo en Android?",
+    "type": "multipleChoice",
+    "options": [
+      "Una separación entre datos laborales y personales en el mismo dispositivo",
+      "Un tipo de contraseña especial",
+      "Una aplicación de seguridad",
+      "Un método para crear cuentas nuevas"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los perfiles de trabajo permiten separar y proteger datos laborales de los personales en un mismo dispositivo.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses2_l6"
+  },
+  {
+    "id": "ac_st7_qB4_022",
+    "question": "¿Qué debes considerar al marcar un dispositivo como confiable?",
+    "type": "multipleChoice",
+    "options": [
+      "Que sea tuyo, que lo controles y que tenga medidas de seguridad adecuadas",
+      "Que sea rápido",
+      "Que tenga buena batería",
+      "No hay nada que considerar"
+    ],
+    "correctIndex": 0,
+    "explanation": "Solo debes marcar como confiables dispositivos que controles personalmente y que estén protegidos adecuadamente.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses5_l3"
+  },
+  {
+    "id": "ac_st7_qB4_023",
+    "question": "¿Qué riesgos tiene marcar muchos dispositivos como confiables?",
+    "type": "multipleChoice",
+    "options": [
+      "Si pierdes uno o es robado, el atacante podría tener acceso más fácil a tus cuentas",
+      "No hay riesgos",
+      "El dispositivo se vuelve más lento",
+      "Se llena el almacenamiento"
+    ],
+    "correctIndex": 0,
+    "explanation": "Marcar demasiados dispositivos como confiables aumenta la superficie de ataque si alguno es comprometido.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses5_l4"
+  },
+  {
+    "id": "ac_st7_qB4_024",
+    "question": "¿Qué diferencia hay entre app passwords y OAuth?",
+    "type": "multipleChoice",
+    "options": [
+      "Las app passwords son contraseñas de un solo uso; OAuth otorga permisos específicos sin compartir contraseña",
+      "Son lo mismo",
+      "OAuth es menos seguro",
+      "Las app passwords son permanentes"
+    ],
+    "correctIndex": 0,
+    "explanation": "Las app passwords son contraseñas específicas, mientras que OAuth permite acceso parcial sin compartir credenciales.",
+    "difficulty": 3,
+    "lessonId": "ac_s7_ses6_l5"
+  },
+  {
+    "id": "ac_st7_qB4_025",
+    "question": "¿Qué debes hacer si vendes o regalas un dispositivo?",
+    "type": "multipleChoice",
+    "options": [
+      "Cerrar sesión en todas las cuentas, restablecer el dispositivo y eliminar tus datos",
+      "Solo borrar las aplicaciones",
+      "No hay nada que hacer",
+      "Dejarlo como está"
+    ],
+    "correctIndex": 0,
+    "explanation": "Antes de entregar un dispositivo, debes cerrar sesiónes, restablecerlo de fábrica y eliminar toda tu información personal.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses1_l5"
+  },
+  {
+    "id": "ac_st7_qB4_026",
+    "question": "¿Por qué es importante monitorear dispositivos IoT?",
+    "type": "multipleChoice",
+    "options": [
+      "Porque dispositivos como cámaras y sensores inteligentes pueden ser puntos de entrada si no están protegidos",
+      "Porque consumen mucha electricidad",
+      "Porque son caros",
+      "No es necesario monitorearlos"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los dispositivos IoT a menudo tienen seguridad limitada y pueden ser usados como punto de entrada a tu red.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses1_l6"
+  },
+  {
+    "id": "ac_st7_qB4_027",
+    "question": "¿Qué debes hacer con las sesiónes activas en servicios de streaming?",
+    "type": "multipleChoice",
+    "options": [
+      "Revisarlas periódicamente y cerrar acceso desde dispositivos que no reconozcas",
+      "No hacer nada",
+      "Compartir la sesión con amigos",
+      "Cerrar siempre todas las sesiónes"
+    ],
+    "correctIndex": 0,
+    "explanation": "Revisar sesiónes en streaming te ayuda a detectar uso no autorizado y asegurar que solo tú uses tu suscripción.",
+    "difficulty": 1,
+    "lessonId": "ac_s7_ses4_l3"
+  },
+  {
+    "id": "ac_st7_qB4_028",
+    "question": "¿Qué debes hacer con las sesiónes activas en apps de mensajería?",
+    "type": "multipleChoice",
+    "options": [
+      "Revisarlas y cerrar acceso desde dispositivos que ya no uses o no reconozcas",
+      "No hacer nada",
+      "Compartir las sesiónes con familiares",
+      "Cerrar siempre todas las sesiónes"
+    ],
+    "correctIndex": 0,
+    "explanation": "Las apps de mensajería pueden contener conversaciones privadas; revisar sesiónes protege tu privacidad.",
+    "difficulty": 1,
+    "lessonId": "ac_s7_ses4_l4"
+  },
+  {
+    "id": "ac_st7_qB4_029",
+    "question": "¿Qué es la VPN (Red Privada Virtual)?",
+    "type": "multipleChoice",
+    "options": [
+      "Un servicio que cifra tu conexión a internet y oculta tu ubicación real",
+      "Un tipo de contraseña",
+      "Una aplicación de mensajería",
+      "Un método para crear cuentas nuevas"
+    ],
+    "correctIndex": 0,
+    "explanation": "Una VPN cifra todo tu tráfico de internet y te da una IP diferente, mejorando tu privacidad y seguridad.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses3_l6"
+  },
+  {
+    "id": "ac_st7_qB4_030",
+    "question": "¿Cuándo debes usar una VPN?",
+    "type": "multipleChoice",
+    "options": [
+      "Especialmente en redes WiFi públicas o cuando quieres proteger tu privacidad",
+      "Nunca, es innecesaria",
+      "Solo para descargar archivos",
+      "Solo para ver videos en streaming"
+    ],
+    "correctIndex": 0,
+    "explanation": "Las VPN son especialmente útiles en redes públicas para proteger tu tráfico de posibles atacantes en la misma red.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses3_l6"
+  }
+]

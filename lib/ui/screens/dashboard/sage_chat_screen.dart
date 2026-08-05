@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sagen/core/theme/app_colors.dart';
+import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/providers/providers.dart';
 import '../../../core/theme/theme_constants.dart';
-import '../../../services/experience_service.dart';
+import '../../../services/analytics_service.dart';
+
 import '../../widgets/sage_chat/locked_gatekeeper.dart';
 import '../../widgets/sage_chat/header.dart';
 import '../../widgets/sage_chat/message_list.dart';
@@ -17,11 +21,10 @@ class SageChatScreen extends ConsumerStatefulWidget {
   ConsumerState<SageChatScreen> createState() => _SageChatScreenState();
 }
 
-class _SageChatScreenState extends ConsumerState<SageChatScreen> with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+class _SageChatScreenState extends ConsumerState<SageChatScreen> with AutomaticKeepAliveClientMixin {
   final _textCtrl = TextEditingController();
   final _focusNode = FocusNode();
   final _scrollCtrl = ScrollController();
-  bool _showChips = true;
 
   @override
   void dispose() {
@@ -34,15 +37,15 @@ class _SageChatScreenState extends ConsumerState<SageChatScreen> with SingleTick
   void _scrollDown() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_scrollCtrl.hasClients && mounted) {
-        _scrollCtrl.animateTo(0, duration: const Duration(milliseconds: 200), curve: Curves.easeOut);
+        _scrollCtrl.animateTo(_scrollCtrl.position.maxScrollExtent, duration: const Duration(milliseconds: 200), curve: Curves.easeOut);
       }
     });
   }
 
   void _send(String text) {
     if (text.trim().isEmpty) return;
-    _showChips = false;
-    ExperienceService.instance.lightHaptic();
+    ref.read(experienceServiceProvider).lightHaptic();
+    AnalyticsService.instance.track(AnalyticEvent.tutorQuery, properties: {'query': text});
     ref.read(sageAiProvider.notifier).sendMessage(text);
     _textCtrl.clear();
     _focusNode.unfocus();
@@ -50,8 +53,7 @@ class _SageChatScreenState extends ConsumerState<SageChatScreen> with SingleTick
   }
 
   void _onChipTap(String text) {
-    ExperienceService.instance.lightHaptic();
-    _showChips = false;
+    ref.read(experienceServiceProvider).lightHaptic();
     ref.read(sageAiProvider.notifier).sendMessage(text);
     _scrollDown();
   }
@@ -66,9 +68,13 @@ class _SageChatScreenState extends ConsumerState<SageChatScreen> with SingleTick
     final dark = Theme.of(context).brightness == Brightness.dark;
 
     if (sageState.isLocked) {
-      return GestureDetector(
-        onTap: () => ExperienceService.instance.errorHaptic(),
-        child: LockedGatekeeper(sage: sageState, dark: dark),
+      return Semantics(
+        button: true,
+        label: AppLocalizations.of(context)!.chatBlocked,
+        child: GestureDetector(
+          onTap: () => ref.read(experienceServiceProvider).errorHaptic(),
+          child: LockedGatekeeper(sage: sageState, dark: dark),
+        ),
       );
     }
 
@@ -94,8 +100,8 @@ class _SageChatScreenState extends ConsumerState<SageChatScreen> with SingleTick
               if (sageState.errorMessage != null)
                 _ErrorBanner(message: sageState.errorMessage!, dark: dark),
               if (sageState.isLoading)
-                TypingIndicator(dark: dark),
-              if (_showChips && sageState.messages.isEmpty && sageState.suggestionChips.isNotEmpty)
+                const TypingIndicator(),
+              if (sageState.suggestionChips.isNotEmpty)
                 QuickChips(
                   chips: sageState.suggestionChips,
                   onTap: (t) => _onChipTap(t),
@@ -109,7 +115,7 @@ class _SageChatScreenState extends ConsumerState<SageChatScreen> with SingleTick
                 onSend: () => _send(_textCtrl.text),
               ),
             ],
-          ),
+          ).animate().fadeIn(),
         ),
       ),
     );
@@ -126,15 +132,18 @@ class _ErrorBanner extends StatelessWidget {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.sm),
-      color: Colors.red.shade400.withValues(alpha: 0.1),
+      color: PremiumColors.error.withValues(alpha: 0.1),
       child: Row(
         children: [
-          Icon(Icons.warning_amber_rounded, size: 16, color: Colors.red.shade400),
+          Semantics(
+            label: AppLocalizations.of(context)?.errorGeneric ?? '',
+            child: const Icon(Icons.warning_amber_rounded, size: 16, color: PremiumColors.error),
+          ),
           const SizedBox(width: AppSpacing.sm),
           Expanded(
             child: Text(
               message,
-              style: TextStyle(fontSize: 12, color: dark ? Colors.white70 : Colors.black87),
+              style: AppTextStyle.caption.copyWith(color: context.textSecondary),
             ),
           ),
         ],

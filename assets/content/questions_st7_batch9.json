@@ -1,0 +1,302 @@
+[
+    {
+        "id": "ac_st7_qB9_001",
+        "question": "Por que es importante gestionar los dispositivos vinculados a tus cuentas",
+        "type": "multipleChoice",
+        "options": ["No es importante", "Cada dispositivo es una puerta de entrada potencial a tus cuentas", "Para que funcione mas rápido", "Para guardar mas archivos"],
+        "correctIndex": 1,
+        "explanation": "Los dispositivos no autorizados pueden ser usados para acceder a tus cuentas sin tu conocimiento.",
+        "difficulty": 1,
+        "lessonId": "ac_s7_ses1_l1"
+    },
+    {
+        "id": "ac_st7_qB9_002",
+        "question": "Verdadero o Falso: Todos tus dispositivos son igualmente seguros",
+        "type": "trueFalse",
+        "options": ["Verdadero", "Falso"],
+        "correctIndex": 1,
+        "explanation": "Cada dispositivo tiene diferentes niveles de seguridad; algunos pueden ser mas vulnerables que otros.",
+        "difficulty": 1,
+        "lessonId": "ac_s7_ses1_l2"
+    },
+    {
+        "id": "ac_st7_qB9_003",
+        "question": "Que es una sesión activa en una cuenta",
+        "type": "multipleChoice",
+        "options": ["Un tipo de virus", "Un acceso actualmente abierto a tu cuenta desde un dispositivo o navegador", "Una app de seguridad", "Un tipo de encriptado"],
+        "correctIndex": 1,
+        "explanation": "Las sesiónes activas muestran desde donde y cuando hay accesos abiertos a tu cuenta.",
+        "difficulty": 1,
+        "lessonId": "ac_s7_ses2_l1"
+    },
+    {
+        "id": "ac_st7_qB9_004",
+        "question": "Que debes hacer si ves una sesión activa que no reconoces",
+        "type": "whatWouldYouDo",
+        "options": ["Dejarla", "Cerrar la sesión inmediatamente y cambiar tu contraseña", "Ignorarla", "Compartir tu cuenta con esa sesión"],
+        "correctIndex": 1,
+        "explanation": "Una sesión no reconocida puede indicar que alguien mas tiene acceso a tu cuenta.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses2_l2"
+    },
+    {
+        "id": "ac_st7_qB9_005",
+        "question": "Como puedes cerrar sesiónes de forma remota en tus cuentas",
+        "type": "multipleChoice",
+        "options": ["No se puede", "Desde la configuración de seguridad de la cuenta, cerrando sesiónes específicas o todas", "Solo desde el dispositivo", "Con un antivirus"],
+        "correctIndex": 1,
+        "explanation": "La mayoria de servicios permiten cerrar sesiónes desde su panel de seguridad web.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses3_l1"
+    },
+    {
+        "id": "ac_st7_qB9_006",
+        "question": "Que es la sesión persistente y por que puede ser un riesgo",
+        "type": "detectRisk",
+        "options": ["Una sesión segura", "Una sesión que permanece abierta indefinidamente, aumentando el riesgo de acceso no autorizado", "Una función de seguridad", "Un tipo de encriptado"],
+        "correctIndex": 1,
+        "explanation": "Las sesiónes que no se cierran automáticamente pueden ser explotadas si el dispositivo es comprometido.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses3_l2"
+    },
+    {
+        "id": "ac_st7_qB9_007",
+        "question": "Que es el bloqueo remoto de dispositivos",
+        "type": "multipleChoice",
+        "options": ["Un tipo de virus", "Una función que te permite bloquear tu dispositivo desde otro dispositivo si lo pierdes", "Una app de seguridad", "Un tipo de encriptado"],
+        "correctIndex": 1,
+        "explanation": "El bloqueo remoto protege tus datos impidiendo el acceso a tu dispositivo perdido o robado.",
+        "difficulty": 1,
+        "lessonId": "ac_s7_ses4_l1"
+    },
+    {
+        "id": "ac_st7_qB9_008",
+        "question": "Que es Find My Device en Android o Find My iPhone en Apple",
+        "type": "multipleChoice",
+        "options": ["Un tipo de virus", "Herramientas para localizar, bloquear o borrar tu dispositivo de forma remota", "Una app de seguridad", "Un tipo de encriptado"],
+        "correctIndex": 1,
+        "explanation": "Estas herramientas integradas te ayudan a recuperar o proteger tu dispositivo perdido.",
+        "difficulty": 1,
+        "lessonId": "ac_s7_ses4_l2"
+    },
+    {
+        "id": "ac_st7_qB9_009",
+        "question": "Que es el borrado remoto de datos",
+        "type": "multipleChoice",
+        "options": ["Un tipo de virus", "Eliminar todos los datos de tu dispositivo desde otro lugar para proteger tu información", "Una app de seguridad", "Un tipo de encriptado"],
+        "correctIndex": 1,
+        "explanation": "El borrado remoto asegura que tus datos no puedan ser accedidos si el dispositivo es robado.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses5_l1"
+    },
+    {
+        "id": "ac_st7_qB9_010",
+        "question": "Que debes hacer antes de vender o regalar tu celular",
+        "type": "whatWouldYouDo",
+        "options": ["Solo borrar los contactos", "Cerrar sesión en todas las cuentas, borrar datos y restablecer la configuración de fabrica", "No hay nada que hacer", "Desinstalar algunas apps"],
+        "correctIndex": 1,
+        "explanation": "Un restablecimiento completo asegura que tus datos personales no queden en el dispositivo.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses5_l2"
+    },
+    {
+        "id": "ac_st7_qB9_011",
+        "question": "Que son los dispositivos de confianza en una cuenta",
+        "type": "multipleChoice",
+        "options": ["Todos los dispositivos", "Dispositivos que has autorizado previamente para acceder a tu cuenta sin verificación adicional", "Dispositivos nuevos", "Dispositivos prestados"],
+        "correctIndex": 1,
+        "explanation": "Los dispositivos de confianza simplifican el acceso pero deben revisarse periodicamente.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses6_l1"
+    },
+    {
+        "id": "ac_st7_qB9_012",
+        "question": "Que es la revocacion de acceso a dispositivos",
+        "type": "multipleChoice",
+        "options": ["Un tipo de virus", "Eliminar la autorizacion de un dispositivo para que ya no pueda acceder a tu cuenta", "Una app de seguridad", "Un tipo de encriptado"],
+        "correctIndex": 1,
+        "explanation": "Revocar el acceso de dispositivos antiguos o sospechosos protege tu cuenta.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses6_l2"
+    },
+    {
+        "id": "ac_st7_qB9_013",
+        "question": "Por que es importante actualizar el sistema operativo de tus dispositivos",
+        "type": "multipleChoice",
+        "options": ["Para tener los ultimos emojis", "Las actualizaciones corrigen vulnerabilidades de seguridad", "Para que sea mas rápido", "No es necesario"],
+        "correctIndex": 1,
+        "explanation": "Las actualizaciones incluyen parches de seguridad que protegen contra amenazas conocidas.",
+        "difficulty": 1,
+        "lessonId": "ac_s7_ses7_l1"
+    },
+    {
+        "id": "ac_st7_qB9_014",
+        "question": "Que es el cifrado de dispositivos y por que es importante",
+        "type": "multipleChoice",
+        "options": ["Un tipo de virus", "Protege los datos de tu dispositivo para que no puedan ser leidos si es robado", "Una app de seguridad", "Un tipo de encriptado"],
+        "correctIndex": 1,
+        "explanation": "El cifrado asegura que tus datos sean inaccesibles incluso si alguien obtiene físicamente tu dispositivo.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses7_l2"
+    },
+    {
+        "id": "ac_st7_qB9_015",
+        "question": "Que es la gestion de permisos de apps en tus dispositivos",
+        "type": "multipleChoice",
+        "options": ["Un tipo de virus", "Revisar y controlar que apps tienen acceso a tus datos, camara, microfono y ubicacion", "Una app de seguridad", "Un tipo de encriptado"],
+        "correctIndex": 1,
+        "explanation": "Algunas apps piden permisos excesivos que pueden comprometer tu privacidad y seguridad.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses8_l1"
+    },
+    {
+        "id": "ac_st7_qB9_016",
+        "question": "Que debes hacer si una app pide permisos que no parecen necesarios",
+        "type": "whatWouldYouDo",
+        "options": ["Aprobar todos los permisos", "Investigar por que necesita ese permiso y negar si no es justificable", "Desinstalar la app inmediatamente", "Compartir la app con amigos"],
+        "correctIndex": 1,
+        "explanation": "Los permisos innecesarios pueden indicar una app maliciosa que recopila datos excesivos.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses8_l2"
+    },
+    {
+        "id": "ac_st7_qB9_017",
+        "question": "Que es el bloqueo de pantalla y por que es la primera linea de defensa",
+        "type": "multipleChoice",
+        "options": ["Un tipo de virus", "Impide el acceso fisico no autorizado a tu dispositivo", "Una app de seguridad", "Un tipo de encriptado"],
+        "correctIndex": 1,
+        "explanation": "Un bloqueo de pantalla efectivo previene que personas no autorizadas accedan a tus datos.",
+        "difficulty": 1,
+        "lessonId": "ac_s7_ses9_l1"
+    },
+    {
+        "id": "ac_st7_qB9_018",
+        "question": "Cuales son los metodos de bloqueo mas seguros",
+        "type": "multipleChoice",
+        "options": ["Ninguno es seguro", "Biometria (huella, rostro) o PIN/contraseña fuerte", "Solo el patrón", "No usar bloqueo"],
+        "correctIndex": 1,
+        "explanation": "La biometria ofrece comodidad y seguridad, mientras que un PIN fuerte es una buena alternativa.",
+        "difficulty": 1,
+        "lessonId": "ac_s7_ses9_l2"
+    },
+    {
+        "id": "ac_st7_qB9_019",
+        "question": "Que es el tiempo de espera automático para el bloqueo de pantalla",
+        "type": "multipleChoice",
+        "options": ["Un tipo de virus", "La configuración que bloquea tu dispositivo automáticamente despues de un periodo de inactividad", "Una app de seguridad", "Un tipo de encriptado"],
+        "correctIndex": 1,
+        "explanation": "Este ajuste asegura que tu dispositivo se bloquee si lo dejas desatendido.",
+        "difficulty": 1,
+        "lessonId": "ac_s7_ses10_l1"
+    },
+    {
+        "id": "ac_st7_qB9_020",
+        "question": "Que es la localizacion de dispositivos y cuando es util",
+        "type": "multipleChoice",
+        "options": ["Un tipo de virus", "Una función que te permite ver donde esta tu dispositivo en un mapa", "Una app de navegación", "Un tipo de encriptado"],
+        "correctIndex": 1,
+        "explanation": "La localizacion es util para recuperar dispositivos perdidos o robados.",
+        "difficulty": 1,
+        "lessonId": "ac_s7_ses10_l2"
+    },
+    {
+        "id": "ac_st7_qB9_021",
+        "question": "Caso: Tu padre perdió su telefono en el bus. Que pasos debe seguir inmediatamente",
+        "type": "miniCase",
+        "options": ["Esperar a que lo encuentren", "Usar Find My Device para localizarlo, bloquearlo remotamente y contactar a su operadora", "Comprar uno nuevo", "Pedir prestado un telefono y no hacer nada"],
+        "correctIndex": 1,
+        "explanation": "Actuar rápido maximiza las posibilidades de recuperar el dispositivo o proteger tus datos.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses11_l1"
+    },
+    {
+        "id": "ac_st7_qB9_022",
+        "question": "Que es la gestion de sesiónes en cuentas de trabajo",
+        "type": "multipleChoice",
+        "options": ["Un tipo de virus", "Revisar y controlar los dispositivos autorizados para acceder a cuentas corporativas", "Una app de seguridad", "Un tipo de encriptado"],
+        "correctIndex": 1,
+        "explanation": "Las cuentas corporativas suelen tener politicas estrictas de dispositivos autorizados.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses11_l2"
+    },
+    {
+        "id": "ac_st7_qB9_023",
+        "question": "Que es el modo invitado en un dispositivo",
+        "type": "multipleChoice",
+        "options": ["Un tipo de virus", "Un perfil limitado que no accede a tus datos personales", "Una app de seguridad", "Un tipo de encriptado"],
+        "correctIndex": 1,
+        "explanation": "El modo invitado protege tus datos cuando alguien mas usa tu dispositivo.",
+        "difficulty": 1,
+        "lessonId": "ac_s7_ses12_l1"
+    },
+    {
+        "id": "ac_st7_qB9_024",
+        "question": "Que es la sincronizacion de dispositivos y por que es importante para la seguridad",
+        "type": "multipleChoice",
+        "options": ["Un tipo de virus", "Mantener tus dispositivos sincronizados asegura que tengas la misma configuración de seguridad en todos", "Una app de seguridad", "Un tipo de encriptado"],
+        "correctIndex": 1,
+        "explanation": "La sincronizacion permite aplicar politicas de seguridad consistentes en todos tus dispositivos.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses12_l2"
+    },
+    {
+        "id": "ac_st7_qB9_025",
+        "question": "Que es la eliminación remota de datos en dispositivos moviles",
+        "type": "multipleChoice",
+        "options": ["Un tipo de virus", "Borrar selectivamente o totalmente los datos de tu celular desde otro dispositivo", "Una app de seguridad", "Un tipo de encriptado"],
+        "correctIndex": 1,
+        "explanation": "Esta función protege tu información si tu dispositivo es robado o perdido.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses13_l1"
+    },
+    {
+        "id": "ac_st7_qB9_026",
+        "question": "Que debes hacer antes de conectar tu celular a una computadora publica",
+        "type": "whatWouldYouDo",
+        "options": ["Conectarlo directamente", "Asegurarte de que no se sincronicen datos y desconectarlo inmediatamente despues", "No hay riesgo", "Dejarlo conectado todo el dia"],
+        "correctIndex": 1,
+        "explanation": "Las computadoras publicas pueden transferir malware o acceder a tus datos.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses13_l2"
+    },
+    {
+        "id": "ac_st7_qB9_027",
+        "question": "Que es la gestion de dispositivos en cuentas de Apple ID",
+        "type": "multipleChoice",
+        "options": ["Un tipo de virus", "El panel donde puedes ver, gestionar y eliminar dispositivos vinculados a tu Apple ID", "Una app de seguridad", "Un tipo de encriptado"],
+        "correctIndex": 1,
+        "explanation": "Apple ID te muestra todos los dispositivos conectados y permite gestionar su acceso.",
+        "difficulty": 1,
+        "lessonId": "ac_s7_ses14_l1"
+    },
+    {
+        "id": "ac_st7_qB9_028",
+        "question": "Que es la gestion de dispositivos en cuentas de Google",
+        "type": "multipleChoice",
+        "options": ["Un tipo de virus", "El panel donde puedes ver y gestionar todos los dispositivos conectados a tu cuenta de Google", "Una app de seguridad", "Un tipo de encriptado"],
+        "correctIndex": 1,
+        "explanation": "Google te permite ver la actividad de cada dispositivo y eliminar accesos no deseados.",
+        "difficulty": 1,
+        "lessonId": "ac_s7_ses14_l2"
+    },
+    {
+        "id": "ac_st7_qB9_029",
+        "question": "Caso: Tu hermano presto su tablet a un amigo y ahora ve sesiónes extrañas en su cuenta. Que le recomiendas",
+        "type": "miniCase",
+        "options": ["No hacer nada", "Cerrar todas las sesiónes remotamente, cambiar la contraseña y revisar los dispositivos autorizados", "Pedir a su amigo que se registre", "Desinstalar las apps"],
+        "correctIndex": 1,
+        "explanation": "Cerrar sesiónes y cambiar la contraseña asegura que el acceso no autorizado se elimine.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses15_l1"
+    },
+    {
+        "id": "ac_st7_qB9_030",
+        "question": "Cuales son las mejores prácticas para gestionar dispositivos y sesiónes",
+        "type": "multipleChoice",
+        "options": ["No hacer nada", "Revisar sesiónes regularmente, cerrar las que no reconoces, actualizar dispositivos y usar bloqueo de pantalla", "Compartir dispositivos con todos", "No usar bloqueo de pantalla"],
+        "correctIndex": 1,
+        "explanation": "Una gestion activa de dispositivos y sesiónes es fundamental para la seguridad digital.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses15_l2"
+    }
+]

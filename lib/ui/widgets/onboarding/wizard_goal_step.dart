@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sagen/providers/providers.dart';
 
 import 'package:sagen/core/theme/app_colors.dart';
 import '../../../config/onboarding_wizard_config.dart';
 import '../../../core/theme/theme_constants.dart';
-import '../../../services/experience_service.dart';
 
 class WizardGoalStep extends ConsumerWidget {
   final int stepIndex;
+  final WizardStepConfig stepConfig;
 
-  const WizardGoalStep({super.key, required this.stepIndex});
+  const WizardGoalStep({super.key, required this.stepIndex, required this.stepConfig});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -20,9 +21,9 @@ class WizardGoalStep extends ConsumerWidget {
     final cardBg = cs.onSurface.withValues(alpha: 0.04);
     final cardBorder = cs.onSurface.withValues(alpha: 0.08);
     final subTitleColor = cs.onSurface.withValues(alpha: 0.4);
-    final exp = ExperienceService.instance;
+    final exp = ref.read(experienceServiceProvider);
 
-    final config = OnboardingWizardConfig.steps[stepIndex];
+    final config = stepConfig;
     final state = ref.watch(onboardingWizardProvider);
     final selected = state.sectionData[stepIndex] as String?;
 
@@ -34,12 +35,9 @@ class WizardGoalStep extends ConsumerWidget {
           const SizedBox(height: AppSpacing.sm),
           Text(
             config.question,
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
+            style: AppTextStyle.title.copyWith(fontWeight: FontWeight.bold,
               color: textPrimary,
-              height: 1.3,
-            ),
+              height: 1.3),
           ),
           const SizedBox(height: AppSpacing.lg),
           ...config.options.map((opt) {
@@ -48,11 +46,15 @@ class WizardGoalStep extends ConsumerWidget {
 
             return Padding(
               padding: const EdgeInsets.only(bottom: AppSpacing.md),
-              child: GestureDetector(
-                onTap: () {
-                  exp.lightHaptic();
-                  ref.read(onboardingWizardProvider.notifier).setSectionData(stepIndex, opt.value);
-                },
+              child: Semantics(
+                button: true,
+                selected: isSel,
+                label: opt.label,
+                child: GestureDetector(
+                  onTap: () {
+                    exp.lightHaptic();
+                    ref.read(onboardingWizardProvider.notifier).setSectionData(stepIndex, opt.value);
+                  },
                 child: AnimatedContainer(
                   duration: exp.fast,
                   curve: AppEasing.entrance,
@@ -81,7 +83,9 @@ class WizardGoalStep extends ConsumerWidget {
                           color: isSel ? accentColor.withValues(alpha: 0.2) : context.shimmerBase,
                           borderRadius: BorderRadius.circular(AppRadius.md),
                         ),
-                        child: Icon(opt.icon, size: 26, color: accentColor),
+                        child: ExcludeSemantics(
+                          child: Icon(opt.icon, size: 26, color: accentColor),
+                        ),
                       ),
                       const SizedBox(width: AppSpacing.lg),
                       Expanded(
@@ -90,20 +94,14 @@ class WizardGoalStep extends ConsumerWidget {
                           children: [
                             Text(
                               opt.label,
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: isSel ? textPrimary : textSecondary,
-                              ),
+                              style: AppTextStyle.title.copyWith(fontWeight: FontWeight.bold,
+                                color: isSel ? textPrimary : textSecondary),
                             ),
                             if (opt.subtitle != null) ...[
                               const SizedBox(height: 2),
                               Text(
                                 opt.subtitle!,
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  color: isSel ? textSecondary.withValues(alpha: 0.7) : subTitleColor,
-                                ),
+                                style: AppTextStyle.subtitle.copyWith(color: isSel ? textSecondary.withValues(alpha: 0.7) : subTitleColor),
                               ),
                             ],
                           ],
@@ -128,10 +126,11 @@ class WizardGoalStep extends ConsumerWidget {
                   ),
                 ),
               ),
+              ),
             );
           }),
         ],
       ),
-    );
+    ).animate().fadeIn().slideY(begin: 0.05);
   }
 }

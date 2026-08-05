@@ -1,5 +1,5 @@
 # ─────────────────────────────────────────────────────────────
-# Safe Student — ProGuard / R8 Rules (Optimized for Release)
+# SAGEN — ProGuard / R8 Rules (Optimized for Release)
 # ─────────────────────────────────────────────────────────────
 
 # ── Flutter Engine ───────────────────────────────────────────
@@ -114,6 +114,10 @@
 # ── google_generative_ai SDK ─────────────────────────────────
 -keep class com.google.ai.generativelanguage.** { *; }
 -dontwarn com.google.ai.generativelanguage.**
+
+# ── WorkManager (background sync) ────────────────────────────
+-keep class be.tramorkes.workmanager.** { *; }
+-dontwarn be.tramorkes.workmanager.**
 
 # ── Remove debug metadata from release ──────────────────────
 -assumenosideeffects class java.io.PrintStream {

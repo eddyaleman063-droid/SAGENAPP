@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:sagen/core/theme/app_colors.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
+import 'package:sagen/l10n/app_localizations.dart';
+import 'package:sagen/services/sage_emotion_service.dart';
+import '../common/sage_emotion_widget.dart';
 
 class EmptyChat extends StatelessWidget {
-  final bool dark;
-  const EmptyChat({super.key, required this.dark});
+  const EmptyChat({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,31 +14,26 @@ class EmptyChat extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            width: 80,
-            height: 80,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              gradient: LinearGradient(colors: PremiumColors.gradientSage),
+            const ExcludeSemantics(
+              child: SageEmotionWidget(
+                emotion: SageEmotion.curious,
+                size: 80,
+                animated: true,
+              ),
             ),
-            child: const Icon(Icons.auto_awesome_rounded, size: 36, color: Colors.white),
-          ),
           const SizedBox(height: AppSpacing.xl),
           Text(
-            'Pregunta a Sage',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: dark ? Colors.white.withValues(alpha: 0.8) : Colors.black87,
-            ),
+            AppLocalizations.of(context)?.chatEmptyTitle ?? AppLocalizations.of(context)?.chatFallbackTitle ?? '',
+            style: AppTextStyle.title.copyWith(fontWeight: FontWeight.bold,
+              color: context.textPrimary),
           ),
           const SizedBox(height: AppSpacing.sm),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl * 2),
             child: Text(
-              'Escribe cualquier duda sobre ciberseguridad o elige una sugerencia rapida.',
+              AppLocalizations.of(context)?.emptyChatSubtitle ?? AppLocalizations.of(context)?.chatFallbackSubtitle ?? '',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 13, color: dark ? Colors.white38 : Colors.black45),
+              style: AppTextStyle.subtitle.copyWith(color: context.textTertiary),
             ),
           ),
         ],

@@ -1,20 +1,14 @@
 rules_version = '2';
 
-// Safe Student — Firestore Security Rules
+// SAGEN — Firestore Security Rules
 // =========================================
 // Deploy: firebase deploy --only firestore:rules
 //
-// Structure:
-//   users/{uid}/{collection}/data
-//
-// Collections: profile, progress, missions
-//
-// Design:
-// - Each user reads/writes ONLY their own data (uid-based)
-// - Auth required for all operations
-// - No public access
-// - Merged writes only (no overwrite of other fields)
-// - Server timestamps enforced
+// SECURITY MODEL:
+// - Client can ONLY write profile fields (name, email, prefs)
+// - Economic fields (donations, XP, streak, level) are SERVER-ONLY
+//   via Cloud Functions (admin SDK bypasses rules)
+// - Cloud Functions use admin.firestore which is not subject to these rules
 
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -24,36 +18,117 @@ service cloud.firestore {
       allow read, write: if false;
     }
 
-    // User data — only the authenticated owner can access
-    match /users/{userId}/{document=**} {
-      allow read, write: if request.auth != null
-                         && request.auth.uid == userId;
+    // User data — only the authenticated owner can read
+    match /users/{userId} {
+      allow read: if request.auth != null
+                  && request.auth.uid == userId;
 
-      // Optional: validate write structure
-      allow write: if request.auth != null
-                   && request.auth.uid == userId
-                   && request.resource.data.keys.hasAll(['updatedAt']);
+      // Client can ONLY write profile fields
+      // Economic fields are updated exclusively by Cloud Functions (admin SDK)
+      allow create: if request.auth != null
+                    && request.auth.uid == userId
+                    && isProfileCreate();
+
+      allow update: if request.auth != null
+                    && request.auth.uid == userId
+                    && isProfileUpdate();
+
+      // Nested collections under users (inventory, etc.)
+      // Client can read but NOT write directly — writes via Cloud Functions
+      match /{document=**} {
+        allow read: if request.auth != null
+                    && request.auth.uid == userId;
+        allow write: if false; // Server-only via Cloud Functions
+      }
     }
 
-    // Rate limiting note:
-    // Consider adding Firebase App Check enforcement in production
-    // to prevent abuse from unverified clients.
+    // Profile-only field validation (client-writable)
+    function profileKeys() {
+      return [
+        'firstName', 'lastName', 'email', 'age', 'photoUrl',
+        'lastLoginDate', 'onboardingCompleted',
+        'dailyGoalMinutes', 'dailyLessonsGoal', 'preferredLanguage',
+        'referralSource', 'routeType', 'motivation',
+        'updatedAt', 'updatedBy',
+        '_ts_firstName', '_ts_lastName', '_ts_email', '_ts_age',
+        '_ts_photoUrl', '_ts_onboardingCompleted',
+        '_ts_dailyGoalMinutes', '_ts_dailyLessonsGoal',
+        '_ts_preferredLanguage', '_ts_referralSource',
+        '_ts_routeType', '_ts_motivation'
+      ];
+    }
 
-    // Transaction logs — users can write their own
+    // CREATE: all incoming keys must be profile fields with valid types
+    function isProfileCreate() {
+      let data = request.resource.data;
+      return data.keys().hasOnly(profileKeys())
+        && data.firstName is string
+        && data.firstName.size() <= 50
+        && data.lastName is string
+        && data.lastName.size() <= 50
+        && data.email is string
+        && data.email.size() <= 254
+        && data.email.matches('^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,}$')
+        && data.age is int
+        && data.age >= 13
+        && data.age <= 120
+        && data.photoUrl is string
+        && data.photoUrl.size() <= 500
+        && (data.photoUrl.size() == 0 || data.photoUrl.matches('^https://'))
+        && data.onboardingCompleted is bool
+        && data.dailyGoalMinutes is int
+        && data.dailyGoalMinutes >= 0
+        && data.dailyGoalMinutes <= 480
+        && data.dailyLessonsGoal is int
+        && data.dailyLessonsGoal >= 0
+        && data.dailyLessonsGoal <= 50
+        && data.preferredLanguage is string
+        && data.preferredLanguage.size() <= 10
+        && data.referralSource is string
+        && data.referralSource.size() <= 50
+        && data.routeType is string
+        && data.routeType.size() <= 20
+        && data.motivation is string
+        && data.motivation.size() <= 200
+        && data.lastLoginDate is string
+        && data.lastLoginDate.size() <= 30
+        && data.updatedAt is string
+        && data.updatedAt.size() <= 30
+        && data.updatedBy is string
+        && data.updatedBy == request.auth.uid;
+    }
+
+    // UPDATE: only CHANGED keys must be profile fields
+    // diff().affectedKeys() tolerates existing server-written economic fields
+    function isProfileUpdate() {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly(profileKeys());
+    }
+
+    // Transaction logs — server-only (Cloud Functions admin SDK)
+    // Clients can read their own logs but NEVER create/update/delete
     match /transaction_logs/{logId} {
-      allow create: if request.auth != null
-                    && request.resource.data.userId == request.auth.uid;
       allow read: if request.auth != null
                   && resource.data.userId == request.auth.uid;
+      allow create, update, delete: if false;
     }
 
-    // Pending payments — users can register their own
+    // Pending payments — users can register their own (with field validation)
     match /pending_payments/{paymentId} {
       allow create: if request.auth != null
-                    && request.resource.data.userId == request.auth.uid;
+                    && request.resource.data.userId == request.auth.uid
+                    && request.resource.data.paymentMethod is string
+                    && request.resource.data.paymentMethod.size() > 0
+                    && request.resource.data.paymentMethod.size() <= 20
+                    && request.resource.data.operationId is string
+                    && request.resource.data.operationId.size() > 0
+                    && request.resource.data.operationId.size() <= 100
+                    && request.resource.data.amount == 0
+                    && request.resource.data.status == 'pending'
+                    && request.resource.data.keys.size() <= 10;
       allow read: if request.auth != null
                   && (resource.data.userId == request.auth.uid
                       || get(/databases/$(database)/documents/admins/$(request.auth.uid)).exists);
+      allow update, delete: if false;
     }
 
     // Payment logs — only server functions (admin SDK)
@@ -61,11 +136,19 @@ service cloud.firestore {
       allow read, write: if false;
     }
 
-    // Admins collection — only server access
+    // Admins collection — server-only (admin SDK bypasses rules)
     match /admins/{adminId} {
-      allow read: if request.auth != null
-                  && request.auth.uid == adminId;
-      allow write: if false;
+      allow read, write: if false;
+    }
+
+    // Rate limits — server-only (Cloud Functions admin SDK)
+    match /rate_limits/{userId} {
+      allow read, write: if false;
+    }
+
+    // Config collection — server-only
+    match /config/{docId} {
+      allow read, write: if false;
     }
   }
 }

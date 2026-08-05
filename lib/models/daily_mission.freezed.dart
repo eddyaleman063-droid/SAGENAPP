@@ -31,8 +31,6 @@ mixin _$DailyMission {
   set type(MissionType value) => throw _privateConstructorUsedError;
   int get xpReward => throw _privateConstructorUsedError;
   set xpReward(int value) => throw _privateConstructorUsedError;
-  int get gemReward => throw _privateConstructorUsedError;
-  set gemReward(int value) => throw _privateConstructorUsedError;
   int get target => throw _privateConstructorUsedError;
   set target(int value) => throw _privateConstructorUsedError;
   MissionDifficulty get difficulty => throw _privateConstructorUsedError;
@@ -41,8 +39,6 @@ mixin _$DailyMission {
   set rarity(MissionRarity value) => throw _privateConstructorUsedError;
   int get xpBonus => throw _privateConstructorUsedError;
   set xpBonus(int value) => throw _privateConstructorUsedError;
-  int get gemBonus => throw _privateConstructorUsedError;
-  set gemBonus(int value) => throw _privateConstructorUsedError;
   int get streakBonus => throw _privateConstructorUsedError;
   set streakBonus(int value) => throw _privateConstructorUsedError;
   MissionCategory get category => throw _privateConstructorUsedError;
@@ -75,12 +71,10 @@ abstract class $DailyMissionCopyWith<$Res> {
     String description,
     MissionType type,
     int xpReward,
-    int gemReward,
     int target,
     MissionDifficulty difficulty,
     MissionRarity rarity,
     int xpBonus,
-    int gemBonus,
     int streakBonus,
     MissionCategory category,
     int progress,
@@ -108,12 +102,10 @@ class _$DailyMissionCopyWithImpl<$Res, $Val extends DailyMission>
     Object? description = null,
     Object? type = null,
     Object? xpReward = null,
-    Object? gemReward = null,
     Object? target = null,
     Object? difficulty = null,
     Object? rarity = null,
     Object? xpBonus = null,
-    Object? gemBonus = null,
     Object? streakBonus = null,
     Object? category = null,
     Object? progress = null,
@@ -141,10 +133,6 @@ class _$DailyMissionCopyWithImpl<$Res, $Val extends DailyMission>
                 ? _value.xpReward
                 : xpReward // ignore: cast_nullable_to_non_nullable
                       as int,
-            gemReward: null == gemReward
-                ? _value.gemReward
-                : gemReward // ignore: cast_nullable_to_non_nullable
-                      as int,
             target: null == target
                 ? _value.target
                 : target // ignore: cast_nullable_to_non_nullable
@@ -160,10 +148,6 @@ class _$DailyMissionCopyWithImpl<$Res, $Val extends DailyMission>
             xpBonus: null == xpBonus
                 ? _value.xpBonus
                 : xpBonus // ignore: cast_nullable_to_non_nullable
-                      as int,
-            gemBonus: null == gemBonus
-                ? _value.gemBonus
-                : gemBonus // ignore: cast_nullable_to_non_nullable
                       as int,
             streakBonus: null == streakBonus
                 ? _value.streakBonus
@@ -202,12 +186,10 @@ abstract class _$$DailyMissionImplCopyWith<$Res>
     String description,
     MissionType type,
     int xpReward,
-    int gemReward,
     int target,
     MissionDifficulty difficulty,
     MissionRarity rarity,
     int xpBonus,
-    int gemBonus,
     int streakBonus,
     MissionCategory category,
     int progress,
@@ -234,12 +216,10 @@ class __$$DailyMissionImplCopyWithImpl<$Res>
     Object? description = null,
     Object? type = null,
     Object? xpReward = null,
-    Object? gemReward = null,
     Object? target = null,
     Object? difficulty = null,
     Object? rarity = null,
     Object? xpBonus = null,
-    Object? gemBonus = null,
     Object? streakBonus = null,
     Object? category = null,
     Object? progress = null,
@@ -267,10 +247,6 @@ class __$$DailyMissionImplCopyWithImpl<$Res>
             ? _value.xpReward
             : xpReward // ignore: cast_nullable_to_non_nullable
                   as int,
-        gemReward: null == gemReward
-            ? _value.gemReward
-            : gemReward // ignore: cast_nullable_to_non_nullable
-                  as int,
         target: null == target
             ? _value.target
             : target // ignore: cast_nullable_to_non_nullable
@@ -286,10 +262,6 @@ class __$$DailyMissionImplCopyWithImpl<$Res>
         xpBonus: null == xpBonus
             ? _value.xpBonus
             : xpBonus // ignore: cast_nullable_to_non_nullable
-                  as int,
-        gemBonus: null == gemBonus
-            ? _value.gemBonus
-            : gemBonus // ignore: cast_nullable_to_non_nullable
                   as int,
         streakBonus: null == streakBonus
             ? _value.streakBonus
@@ -321,12 +293,10 @@ class _$DailyMissionImpl extends _DailyMission {
     required this.description,
     required this.type,
     this.xpReward = 30,
-    this.gemReward = 10,
     this.target = 1,
     this.difficulty = MissionDifficulty.easy,
     this.rarity = MissionRarity.common,
     this.xpBonus = 0,
-    this.gemBonus = 0,
     this.streakBonus = 0,
     this.category = MissionCategory.learning,
     this.progress = 0,
@@ -349,9 +319,6 @@ class _$DailyMissionImpl extends _DailyMission {
   int xpReward;
   @override
   @JsonKey()
-  int gemReward;
-  @override
-  @JsonKey()
   int target;
   @override
   @JsonKey()
@@ -362,9 +329,6 @@ class _$DailyMissionImpl extends _DailyMission {
   @override
   @JsonKey()
   int xpBonus;
-  @override
-  @JsonKey()
-  int gemBonus;
   @override
   @JsonKey()
   int streakBonus;
@@ -380,7 +344,7 @@ class _$DailyMissionImpl extends _DailyMission {
 
   @override
   String toString() {
-    return 'DailyMission(id: $id, title: $title, description: $description, type: $type, xpReward: $xpReward, gemReward: $gemReward, target: $target, difficulty: $difficulty, rarity: $rarity, xpBonus: $xpBonus, gemBonus: $gemBonus, streakBonus: $streakBonus, category: $category, progress: $progress, completed: $completed)';
+    return 'DailyMission(id: $id, title: $title, description: $description, type: $type, xpReward: $xpReward, target: $target, difficulty: $difficulty, rarity: $rarity, xpBonus: $xpBonus, streakBonus: $streakBonus, category: $category, progress: $progress, completed: $completed)';
   }
 
   /// Create a copy of DailyMission
@@ -404,12 +368,10 @@ abstract class _DailyMission extends DailyMission {
     required String description,
     required MissionType type,
     int xpReward,
-    int gemReward,
     int target,
     MissionDifficulty difficulty,
     MissionRarity rarity,
     int xpBonus,
-    int gemBonus,
     int streakBonus,
     MissionCategory category,
     int progress,
@@ -436,9 +398,6 @@ abstract class _DailyMission extends DailyMission {
   int get xpReward;
   set xpReward(int value);
   @override
-  int get gemReward;
-  set gemReward(int value);
-  @override
   int get target;
   set target(int value);
   @override
@@ -450,9 +409,6 @@ abstract class _DailyMission extends DailyMission {
   @override
   int get xpBonus;
   set xpBonus(int value);
-  @override
-  int get gemBonus;
-  set gemBonus(int value);
   @override
   int get streakBonus;
   set streakBonus(int value);

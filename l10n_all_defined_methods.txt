@@ -1,0 +1,8 @@
+lessonsCompletedPlural
+sageAdvancing
+sageEmptyState
+sageStreakLostMessage
+sageTellMeMore
+shareChestText
+streakDaysCountPlural
+treasureChest

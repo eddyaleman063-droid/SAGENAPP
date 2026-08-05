@@ -1,0 +1,302 @@
+[
+    {
+        "id": "ac_st6_qB8_001",
+        "question": "Que es un plan de recuperación de cuentas y porque lo necesitas",
+        "type": "multipleChoice",
+        "options": ["Un plan para borrar tus cuentas", "Un conjunto de pasos y herramientas para recuperar el acceso a tus cuentas si las pierdes", "Un tipo de contraseña", "Un servicio de internet"],
+        "correctIndex": 1,
+        "explanation": "Un plan de recuperación te prepara para recuperar tus cuentas si las hackean o pierdes acceso a tus dispositivos.",
+        "difficulty": 1,
+        "lessonId": "ac_s6_ses1_l1"
+    },
+    {
+        "id": "ac_st6_qB8_002",
+        "question": "Que es un correo de recuperación y por que debes configurarlo en todas tus cuentas",
+        "type": "multipleChoice",
+        "options": ["Un correo que solo usas para redes sociales", "Un correo alternativo que te permite recuperar el acceso si pierdes el principal", "Un tipo de contraseña", "Un servicio de backup"],
+        "correctIndex": 1,
+        "explanation": "El correo de recuperación es tu respaldo si pierdes acceso a tu correo principal. Configuralo en todas tus cuentas importantes.",
+        "difficulty": 1,
+        "lessonId": "ac_s6_ses1_l1"
+    },
+    {
+        "id": "ac_st6_qB8_003",
+        "question": "Que es un número telefonico de respaldo y donde deberias guardarlo",
+        "type": "detectRisk",
+        "options": ["En tu correo electrónico", "En un lugar seguro fisico, como tu cartera o una caja fuerte en casa", "En las redes sociales", "No es necesario tener uno"],
+        "correctIndex": 1,
+        "explanation": "El número de respaldo te permite recuperar cuentas si pierdes tu celular. Guárdalo en un lugar fisico seguro.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses1_l1"
+    },
+    {
+        "id": "ac_st6_qB8_004",
+        "question": "Caso: Tu hermana pierde su celular y no puede acceder a su correo. Que haces",
+        "type": "miniCase",
+        "options": ["Decirle que espere a comprar uno nuevo", "Ayudarla a recuperar su correo usando su número de respaldo o el de recuperación", "Crearle un correo nuevo", "No hay nada que hacer"],
+        "correctIndex": 1,
+        "explanation": "Usa los metodos de recuperación configurados: número telefonico alternativo o correo de respaldo para recuperar el acceso.",
+        "difficulty": 1,
+        "lessonId": "ac_s6_ses1_l2"
+    },
+    {
+        "id": "ac_st6_qB8_005",
+        "question": "Que es un codigo de recuperación y por que deberias guardarlo fuera de linea",
+        "type": "multipleChoice",
+        "options": ["Un tipo de contraseña normal", "Un codigo de un solo uso que te permite acceder a tu cuenta si pierdes el 2FA", "Un servicio de internet", "Un tipo de pregunta de seguridad"],
+        "correctIndex": 1,
+        "explanation": "Los codigos de recuperación son tu ultima opción si pierdes tu dispositivo con la app de 2FA. Guardalos fuera de linea.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses2_l1"
+    },
+    {
+        "id": "ac_st6_qB8_006",
+        "question": "Que es la verificación de identidad y como funciona cuando recuperas una cuenta",
+        "type": "multipleChoice",
+        "options": ["Un tipo de contraseña", "Un proceso donde demuestras que eres el dueño legítimo de la cuenta con documentos o preguntas", "Una función automática que siempre funciona", "Un servicio de tercero"],
+        "correctIndex": 1,
+        "explanation": "El servicio verifica tu identidad con documentos oficiales, preguntas de seguridad o fotos para confirmar que eres tu.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses2_l2"
+    },
+    {
+        "id": "ac_st6_qB8_007",
+        "question": "Que es un backup de tus contactos y como hacerlo de forma segura",
+        "type": "multipleChoice",
+        "options": ["Tomar screenshot de tu agenda", "Exportar tus contactos a un archivo cifrado o usar la sincronizacion segura del servicio de correo", "Escribirlos en un cuaderno", "Enviarlos por WhatsApp"],
+        "correctIndex": 1,
+        "explanation": "Exporta tus contactos desde la configuración de tu correo o usa la sincronizacion segura del servicio para tener un respaldo.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses3_l1"
+    },
+    {
+        "id": "ac_st6_qB8_008",
+        "question": "Que es un backup de fotos y porque es importante tenerlo",
+        "type": "trueFalse",
+        "options": ["Verdadero", "Falso"],
+        "correctIndex": 0,
+        "explanation": "Las fotos pueden contener momentos importantes y datos sensibles. Un backup asegura que no las pierdas ni sean accesibles por otros.",
+        "difficulty": 1,
+        "lessonId": "ac_s6_ses3_l2"
+    },
+    {
+        "id": "ac_st6_qB8_009",
+        "question": "Caso: Tu padre quiere recuperar una cuenta de Facebook que no usa hace años. Que le aconsejas",
+        "type": "miniCase",
+        "options": ["Que la deje asi porque no la necesita", "Que use la función de recuperación de Facebook con su correo o número registrado", "Que cree una cuenta nueva", "Que pida ayuda en grupos de Facebook"],
+        "correctIndex": 1,
+        "explanation": "Facebook tiene herramientas de recuperación. Si tiene acceso al correo o número original, puede recuperar la cuenta facilmente.",
+        "difficulty": 1,
+        "lessonId": "ac_s6_ses4_l1"
+    },
+    {
+        "id": "ac_st6_qB8_010",
+        "question": "Que es la recuperación de cuentas de Google y que opciónes ofrece",
+        "type": "multipleChoice",
+        "options": ["Solo puedes recuperar con correo", "Ofrece varias opciónes: correo, telefono, preguntas de seguridad y verificación por dispositivos", "No hay forma de recuperar", "Solo funciona con documentos"],
+        "correctIndex": 1,
+        "explanation": "Google ofrece múltiples metodos de recuperación. Configura todos los que puedas para tener mas opciónes si pierdes acceso.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses4_l2"
+    },
+    {
+        "id": "ac_st6_qB8_011",
+        "question": "Que es la recuperación de cuentas de Microsoft y que es la verificación de identidad",
+        "type": "multipleChoice",
+        "options": ["Un tipo de contraseña", "Un proceso donde envias documentos para demostrar que eres el dueño de la cuenta", "Una función automática", "Un servicio de terceros"],
+        "correctIndex": 1,
+        "explanation": "Microsoft puede pedirte documentos como tu DNI para verificar tu identidad cuando no puedes acceder a tus metodos de recuperación.",
+        "difficulty": 3,
+        "lessonId": "ac_s6_ses4_l3"
+    },
+    {
+        "id": "ac_st6_qB8_012",
+        "question": "Que es la recuperación de cuentas de Apple ID y porque es importante tener datos actualizados",
+        "type": "detectRisk",
+        "options": ["No es importante actualizar datos", "Si tu información de recuperación no esta actualizada, podrias perder el acceso permanentemente", "Solo es importante para iPhone nuevo", "No afecta la seguridad"],
+        "correctIndex": 1,
+        "explanation": "Apple ID esta fuertemente ligado a tu dispositivos. Si no tienes datos actualizados, recuperar la cuenta puede ser muy dificil.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses4_l4"
+    },
+    {
+        "id": "ac_st6_qB8_013",
+        "question": "Caso: Tu madre quiere cambiar el correo de recuperación de su cuenta bancaria. Que le aconsejas",
+        "type": "miniCase",
+        "options": ["Que lo cambie directamente en la app", "Que llame al banco o valla a una sucursal para hacer el cambio de forma segura", "Que lo haga por un enlace que le llego por correo", "Que no es necesario cambiarlo"],
+        "correctIndex": 1,
+        "explanation": "Los cambios de datos sensibles en bancos deben hacerse por canales oficiales para evitar fraudes.",
+        "difficulty": 1,
+        "lessonId": "ac_s6_ses1_l2"
+    },
+    {
+        "id": "ac_st6_qB8_014",
+        "question": "Que es un gestor de contraseñas y por que facilita la recuperación de cuentas",
+        "type": "multipleChoice",
+        "options": ["Un antivirus", "Una herramienta que guarda todas tus contraseñas y metodos de recuperación de forma segura", "Un tipo de navegador", "Un servicio de correo"],
+        "correctIndex": 1,
+        "explanation": "Los gestores guardan tus contraseñas y datos de recuperación cifrados, facilitando el proceso si pierdes acceso a algo.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses5_l1"
+    },
+    {
+        "id": "ac_st6_qB8_015",
+        "question": "Que es la exportacion de datos de tus cuentas y porque es importante",
+        "type": "trueFalse",
+        "options": ["Verdadero", "Falso"],
+        "correctIndex": 0,
+        "explanation": "Exportar tus datos te permite tener copias de tu información por si pierdes acceso a la cuenta o quieres migrar a otro servicio.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses5_l2"
+    },
+    {
+        "id": "ac_st6_qB8_016",
+        "question": "Que es un plan de emergencia digital y que debe incluir",
+        "type": "multipleChoice",
+        "options": ["Solo tener contraseña segura", "Una lista de cuentas importantes, metodos de recuperación, contactos de emergencia y donde guardar documentos", "Nada especial", "Solo usar 2FA"],
+        "correctIndex": 1,
+        "explanation": "Tu plan debe incluir todas tus cuentas críticas, sus metodos de recuperación, contactos de emergencia y documentos importantes.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses5_l3"
+    },
+    {
+        "id": "ac_st6_qB8_017",
+        "question": "Caso: Tu hermano necesita recuperar su cuenta de WhatsApp porque cambio de celular. Que haces",
+        "type": "miniCase",
+        "options": ["Que cree una cuenta nueva", "Que verifique su número telefonico en el nuevo celular para recuperar la cuenta y los respaldos", "Que pida a sus amigos que le envien sus conversaciones", "Que use una app de terceros"],
+        "correctIndex": 1,
+        "explanation": "WhatsApp se vincula a tu número. Al verificar tu número en el nuevo celular, recuperas tu cuenta y puedes restaurar el respaldo.",
+        "difficulty": 1,
+        "lessonId": "ac_s6_ses4_l5"
+    },
+    {
+        "id": "ac_st6_qB8_018",
+        "question": "Que es la verificación en dos pasos y porque es fundamental para la recuperación",
+        "type": "multipleChoice",
+        "options": ["Un tipo de contraseña", "Una capa extra de seguridad que protege tus metodos de recuperación", "Un servicio de backup", "Un tipo de pregunta"],
+        "correctIndex": 1,
+        "explanation": "El 2FA protege tus cuentas y asegura que solo tu puedas usar los metodos de recuperación configurados.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses6_l1"
+    },
+    {
+        "id": "ac_st6_qB8_019",
+        "question": "Que es un contacto de emergencia digital y como configurarlo",
+        "type": "multipleChoice",
+        "options": ["Enviar todas tus contraseñas a un amigo", "Designar una persona de confianza que pueda ayudarte a recuperar cuentas en caso de emergencia", "No es necesario tener uno", "Usar un servicio de terceros"],
+        "correctIndex": 1,
+        "explanation": "Un contacto de emergencia es alguien de confianza que puede ayudarte a verificar tu identidad ante los proveedores de servicios.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses6_l2"
+    },
+    {
+        "id": "ac_st6_qB8_020",
+        "question": "Que es la recuperación de cuentas de redes sociales y que debes tener configurado",
+        "type": "detectRisk",
+        "options": ["No configurar nada", "Correo de recuperación actualizado, número telefonico y 2FA activado en todas tus cuentas", "Solo tener contraseña fuerte", "No usar redes sociales"],
+        "correctIndex": 1,
+        "explanation": "Para recuperar redes sociales necesitas tener actualizado tu correo, número telefonico y tener 2FA activado.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses7_l1"
+    },
+    {
+        "id": "ac_st6_qB8_021",
+        "question": "Caso: Tu vecina pierde el acceso a su cuenta de Yape. Que le aconsejas",
+        "type": "miniCase",
+        "options": ["Que espere a que se arregle solo", "Que contacte a soporte de Yape con su DNI y datos verificables para recuperar el acceso", "Que cree una cuenta nueva", "Que pida prestada la cuenta de un amigo"],
+        "correctIndex": 1,
+        "explanation": "Yape tiene soporte para recuperación. Debe contactar con documentos que demuestren su identidad para recuperar la cuenta.",
+        "difficulty": 1,
+        "lessonId": "ac_s6_ses7_l2"
+    },
+    {
+        "id": "ac_st6_qB8_022",
+        "question": "Que es el cifrado de extremo a extremo en la recuperación de cuentas",
+        "type": "multipleChoice",
+        "options": ["Un tipo de contraseña", "Protección donde tus datos de recuperación estan cifrados y solo tu puedes descifrarlos", "Un servicio de internet", "Un tipo de pregunta"],
+        "correctIndex": 1,
+        "explanation": "El cifrado E2E asegura que tus datos de recuperación esten protegidos incluso durante el proceso de verificación.",
+        "difficulty": 3,
+        "lessonId": "ac_s6_ses6_l3"
+    },
+    {
+        "id": "ac_st6_qB8_023",
+        "question": "Que es la recuperación de cuentas de banca en linea y que precauciones tomar",
+        "type": "detectRisk",
+        "options": ["Dar tus datos por correo", "Usar solo los canales oficiales del banco: sucursal, linea telefonica oficial o app oficial", "Llamar a números que aparecen en Google", "Pedir ayuda en redes sociales"],
+        "correctIndex": 1,
+        "explanation": "Nunca uses canales no oficiales para recuperar cuentas bancarias. Usa siempre los medios oficiales del banco.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses7_l3"
+    },
+    {
+        "id": "ac_st6_qB8_024",
+        "question": "Que es un respaldo de tus aplicaciones y como hacerlo",
+        "type": "multipleChoice",
+        "options": ["No es necesario", "Usar la copia de seguridad nativa del sistema operativo para guardar configuraciónes y datos de apps", "Hacer screenshot de cada app", "Enviar los datos por correo"],
+        "correctIndex": 1,
+        "explanation": "Los sistemas operativos tienen funciones de respaldo que guardan las configuraciónes y datos de tus aplicaciones de forma automática.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses3_l3"
+    },
+    {
+        "id": "ac_st6_qB8_025",
+        "question": "Caso: Tu tio necesita recuperar su cuenta de Plin para recibir un pago urgente. Que haces",
+        "type": "miniCase",
+        "options": ["Le prestas tu cuenta de Plin", "Le ayudas a contactar soporte de Plin para recuperar su cuenta con su DNI", "Le dices que no se preocupe", "Le envias el dinero por otro medio"],
+        "correctIndex": 1,
+        "explanation": "Plin tiene soporte para recuperación de cuentas. Contacta con documentos verificables para resolver el problema.",
+        "difficulty": 1,
+        "lessonId": "ac_s6_ses7_l4"
+    },
+    {
+        "id": "ac_st6_qB8_026",
+        "question": "Que es la recuperación de cuentas de streaming como Netflix o Spotify",
+        "type": "multipleChoice",
+        "options": ["No se pueden recuperar", "Usar el correo o número registrado para recibir un enlace de recuperación", "Crear una cuenta nueva y pagar de nuevo", "Pedir ayuda en foros"],
+        "correctIndex": 1,
+        "explanation": "La mayoria de servicios de streaming tienen opción de recuperación por correo o número telefonico registrado.",
+        "difficulty": 1,
+        "lessonId": "ac_s6_ses8_l1"
+    },
+    {
+        "id": "ac_st6_qB8_027",
+        "question": "Que es un backup cifrado y porque es mejor que un backup normal",
+        "type": "multipleChoice",
+        "options": ["Es mas rápido", "Protege tus datos con contraseña para que solo tu puedas acceder al respaldo", "Ocupa menos espacio", "No necesita internet"],
+        "correctIndex": 1,
+        "explanation": "El backup cifrado asegura que aunque alguien obtenga tu copia de seguridad, no pueda leer tus datos sin tu contraseña.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses3_l4"
+    },
+    {
+        "id": "ac_st6_qB8_028",
+        "question": "Que es la recuperación de cuentas de plataformas de aprendizaje en linea",
+        "type": "trueFalse",
+        "options": ["Verdadero", "Falso"],
+        "correctIndex": 0,
+        "explanation": "Plataformas como Coursera o edX tienen procesos de recuperación. Mantener tus datos actualizados facilita el proceso.",
+        "difficulty": 1,
+        "lessonId": "ac_s6_ses8_l2"
+    },
+    {
+        "id": "ac_st6_qB8_029",
+        "question": "Que es el monitoreo de actividad de tus cuentas y porque es importante para la recuperación",
+        "type": "multipleChoice",
+        "options": ["No es necesario monitorear", "Revisar la actividad reciente te permite detectar accesos no autorizados y actuar rápido", "Solo es para empresas", "Un tipo de virus"],
+        "correctIndex": 1,
+        "explanation": "Monitorear la actividad te ayuda a detectar intrusiones tempranamente, antes de que causen daños irreparables.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses8_l3"
+    },
+    {
+        "id": "ac_st6_qB8_030",
+        "question": "Caso: Tu abuela quiere que le ayudes a configurar la recuperación de todas sus cuentas importantes. Que haces",
+        "type": "miniCase",
+        "options": ["Decirle que no es necesario", "Ayudarla a configurar correo de recuperación, número telefonico y 2FA en cada cuenta importante", "Hacerlo por ella sin explicarle", "Decirle que pida ayuda a otro familiar"],
+        "correctIndex": 1,
+        "explanation": "Ayuda a tu abuela paso a paso, explicandole que hace cada configuración para que entienda su importancia.",
+        "difficulty": 1,
+        "lessonId": "ac_s6_ses9_l1"
+    }
+]

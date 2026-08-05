@@ -1,0 +1,452 @@
+[
+    {
+        "id": "ac_st6_qB7_001",
+        "question": "Que es un plan de recuperación de cuentas?",
+        "type": "multipleChoice",
+        "options": [
+            "Un juego",
+            "Un conjunto de pasos para recuperar tu cuenta si pierdes el acceso",
+            "Una app",
+            "No existe"
+        ],
+        "correctIndex": 1,
+        "explanation": "Un plan de recuperación te prepara para recuperar cuentas en caso de emergencia.",
+        "difficulty": 1,
+        "lessonId": "ac_s6_ses1_l1"
+    },
+    {
+        "id": "ac_st6_qB7_002",
+        "question": "Por que tener un plan de recuperación?",
+        "type": "multipleChoice",
+        "options": [
+            "No es necesario",
+            "Para no perder el acceso a tus cuentas importantes",
+            "Porque es obligatorio",
+            "No sirve"
+        ],
+        "correctIndex": 1,
+        "explanation": "Sin un plan, puedes perder acceso permanentemente a cuentas críticas.",
+        "difficulty": 1,
+        "lessonId": "ac_s6_ses1_l2"
+    },
+    {
+        "id": "ac_st6_qB7_003",
+        "question": "Cuales son los elementos de un plan de recuperación?",
+        "type": "multipleChoice",
+        "options": [
+            "Solo contraseña",
+            "Correos alternativos, números de teléfono, códigos de respaldo y contactos de emergencia",
+            "Nada más",
+            "No hay elementos"
+        ],
+        "correctIndex": 1,
+        "explanation": "Un plan incluye múltiples métodos de respaldo y contactos de emergencia.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses1_l3"
+    },
+    {
+        "id": "ac_st6_qB7_004",
+        "question": "Que es un método de recuperación alternativo?",
+        "type": "multipleChoice",
+        "options": [
+            "La misma contraseña",
+            "Un correo o número de teléfono alternativo para verificar tu identidad",
+            "Nada",
+            "No existe"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los métodos alternativos te permiten verificar tu identidad si pierdes el acceso principal.",
+        "difficulty": 1,
+        "lessonId": "ac_s6_ses1_l4"
+    },
+    {
+        "id": "ac_st6_qB7_005",
+        "question": "Que son los códigos de respaldo de 2FA?",
+        "type": "multipleChoice",
+        "options": [
+            "Codigos para compartir",
+            "Codigos de un solo uso para acceder si pierdes tu dispositivo de autenticación",
+            "Contraseñas",
+            "No existen"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los códigos de respaldo te permiten acceder si no tienes tu dispositivo de 2FA.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses1_l5"
+    },
+    {
+        "id": "ac_st6_qB7_006",
+        "question": "Como guardar los códigos de respaldo de forma segura?",
+        "type": "multipleChoice",
+        "options": [
+            "En el celular",
+            "En un lugar físico seguro, no digital",
+            "Compartirlos",
+            "No guardarlos"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los códigos deben guardarse en un lugar físico seguro, no en dispositivos digitales.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses1_l6"
+    },
+    {
+        "id": "ac_st6_qB7_007",
+        "question": "Que es la recuperación por correo alternativo?",
+        "type": "multipleChoice",
+        "options": [
+            "No existe",
+            "Usar un segundo correo para recibir enlaces de recuperación",
+            "Enviar un correo a amigos",
+            "No sirve"
+        ],
+        "correctIndex": 1,
+        "explanation": "El correo alternativo te permite recibir enlaces de recuperación si pierdes acceso al principal.",
+        "difficulty": 1,
+        "lessonId": "ac_s6_ses2_l1"
+    },
+    {
+        "id": "ac_st6_qB7_008",
+        "question": "Como configurar la recuperación por número de teléfono?",
+        "type": "multipleChoice",
+        "options": [
+            "No se puede",
+            "Registrar tu número en los ajustes de seguridad de tu cuenta",
+            "No es necesario",
+            "Llamando a soporte"
+        ],
+        "correctIndex": 1,
+        "explanation": "Registrar tu número te permite recibir códigos de recuperación por SMS.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses2_l2"
+    },
+    {
+        "id": "ac_st6_qB7_009",
+        "question": "Que son las preguntas de seguridad para recuperación?",
+        "type": "multipleChoice",
+        "options": [
+            "Preguntas personales que solo tu puedes responder",
+            "Preguntas que estableciste al crear la cuenta para verificar tu identidad",
+            "Preguntas de un cuestionario",
+            "No existen"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las preguntas de seguridad son un método para verificar tu identidad durante la recuperación.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses2_l3"
+    },
+    {
+        "id": "ac_st6_qB7_010",
+        "question": "Por que no usar preguntas de seguridad con respuestas publicas?",
+        "type": "multipleChoice",
+        "options": [
+            "No importa",
+            "Porque cualquiera puede encontrar las respuestas en redes sociales",
+            "Son muy seguras",
+            "No hay problema"
+        ],
+        "correctIndex": 1,
+        "explanation": "Si la respuesta es pública (nombre de mascota, ciudad), alguien más puede adivinarla.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses2_l4"
+    },
+    {
+        "id": "ac_st6_qB7_011",
+        "question": "Que es la verificación de identidad avanzada?",
+        "type": "multipleChoice",
+        "options": [
+            "No existe",
+            "Procesos como enviar documentos o hacer videollamada para recuperar cuenta",
+            "Solo para empresas",
+            "No sirve"
+        ],
+        "correctIndex": 1,
+        "explanation": "Algunos servicios requieren verificación avanzada para cuentas muy comprometidas.",
+        "difficulty": 3,
+        "lessonId": "ac_s6_ses2_l5"
+    },
+    {
+        "id": "ac_st6_qB7_012",
+        "question": "Que es el código de recuperación de Google?",
+        "type": "multipleChoice",
+        "options": [
+            "No existe",
+            "Un código de respaldo que te da Google al activar 2FA",
+            "Tu contraseña",
+            "Un PIN"
+        ],
+        "correctIndex": 1,
+        "explanation": "Google te da códigos de respaldo al activar 2FA para usar si pierdes tu dispositivo.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses2_l6"
+    },
+    {
+        "id": "ac_st6_qB7_013",
+        "question": "Que hacer si pierdes el acceso a tu correo principal?",
+        "type": "multipleChoice",
+        "options": [
+            "No hay nada que hacer",
+            "Usar el correo o número alternativo configurado para recuperación",
+            "Crear una cuenta nueva",
+            "Esperar"
+        ],
+        "correctIndex": 1,
+        "explanation": "El correo alternativo o número de teléfono te permite recuperar el acceso.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses3_l1"
+    },
+    {
+        "id": "ac_st6_qB7_014",
+        "question": "Como recuperar cuenta de Facebook si no puedes acceder?",
+        "type": "multipleChoice",
+        "options": [
+            "No se puede",
+            "Usar la opción de recuperación con identificación o amigos de confianza",
+            "Crear otra cuenta",
+            "No hay opción"
+        ],
+        "correctIndex": 1,
+        "explanation": "Facebook ofrece recuperación con documentos o verificación por amigos de confianza.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses3_l2"
+    },
+    {
+        "id": "ac_st6_qB7_015",
+        "question": "Que es la recuperación por dispositivos de confianza?",
+        "type": "multipleChoice",
+        "options": [
+            "No existe",
+            "Usar un dispositivo previamente autorizado para verificar tu identidad",
+            "Pedir a un amigo",
+            "No sirve"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los dispositivos de confianza previamente autorizados pueden ayudar a recuperar acceso.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses3_l3"
+    },
+    {
+        "id": "ac_st6_qB7_016",
+        "question": "Que es la recuperación por contactos de emergencia?",
+        "type": "multipleChoice",
+        "options": [
+            "No existe",
+            "Designar contactos que pueden ayudar a verificar tu identidad",
+            "Llamar a la policía",
+            "No sirve"
+        ],
+        "correctIndex": 1,
+        "explanation": "Algunos servicios permiten designar contactos que pueden ayudar en la recuperación.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses3_l4"
+    },
+    {
+        "id": "ac_st6_qB7_017",
+        "question": "Que es la recuperación por identificación oficial?",
+        "type": "multipleChoice",
+        "options": [
+            "No existe",
+            "Enviar una foto de tu DNI o pasaporte para verificar identidad",
+            "No sirve",
+            "Solo para bancos"
+        ],
+        "correctIndex": 1,
+        "explanation": "Algunos servicios permiten recuperar cuenta enviando documentos de identidad oficiales.",
+        "difficulty": 3,
+        "lessonId": "ac_s6_ses3_l5"
+    },
+    {
+        "id": "ac_st6_qB7_018",
+        "question": "Como recuperar cuenta de Instagram si la hackearon?",
+        "type": "multipleChoice",
+        "options": [
+            "No se puede",
+            "Usar la opción de reportar cuenta y seguir el proceso de recuperación",
+            "Crear otra cuenta",
+            "No hay opción"
+        ],
+        "correctIndex": 1,
+        "explanation": "Instagram tiene un proceso de recuperación para cuentas comprometidas.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses3_l6"
+    },
+    {
+        "id": "ac_st6_qB7_019",
+        "question": "Que es un plan de recuperación familiar?",
+        "type": "multipleChoice",
+        "options": [
+            "No existe",
+            "Coordinar métodos de recuperación para cuentas familiares compartidas",
+            "Un juego familiar",
+            "No sirve"
+        ],
+        "correctIndex": 1,
+        "explanation": "El plan familiar coordina cómo recuperar cuentas que usa toda la familia.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses4_l1"
+    },
+    {
+        "id": "ac_st6_qB7_020",
+        "question": "Que hacer si un familiar fallece y necesitas acceder a sus cuentas?",
+        "type": "multipleChoice",
+        "options": [
+            "No hay nada que hacer",
+            "Seguir el proceso de recuperación de cuenta fallecido del servicio",
+            "Adivinar la contraseña",
+            "No se puede"
+        ],
+        "correctIndex": 1,
+        "explanation": "Muchos servicios tienen procesos para cuentas de fallecidos con documentación adecuada.",
+        "difficulty": 3,
+        "lessonId": "ac_s6_ses4_l2"
+    },
+    {
+        "id": "ac_st6_qB7_021",
+        "question": "Como preparar a tu familia para emergencias digitales?",
+        "type": "multipleChoice",
+        "options": [
+            "No es necesario",
+            "Compartir métodos de recuperación y contactos de emergencia",
+            "No hablar del tema",
+            "Dejar que se arreglen solos"
+        ],
+        "correctIndex": 1,
+        "explanation": "Es importante que tu familia sepa cómo recuperar cuentas en caso de emergencia.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses4_l3"
+    },
+    {
+        "id": "ac_st6_qB7_022",
+        "question": "Que documentos guardar para recuperación de cuentas?",
+        "type": "multipleChoice",
+        "options": [
+            "Ninguno",
+            "Códigos de respaldo, métodos de recuperación y datos de contacto de soporte",
+            "Solo contraseñas",
+            "No es necesario"
+        ],
+        "correctIndex": 1,
+        "explanation": "Debes guardar códigos de respaldo y datos de contacto de soporte de cada servicio.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses4_l4"
+    },
+    {
+        "id": "ac_st6_qB7_023",
+        "question": "Que es un buzón de emergencia digital?",
+        "type": "multipleChoice",
+        "options": [
+            "Un juego",
+            "Un lugar seguro donde guardas toda la información de recuperación",
+            "Un correo",
+            "No existe"
+        ],
+        "correctIndex": 1,
+        "explanation": "Un buzón de emergencia es un repositorio seguro con toda tu información de recuperación.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses4_l5"
+    },
+    {
+        "id": "ac_st6_qB7_024",
+        "question": "Como actualizar tu plan de recuperación?",
+        "type": "multipleChoice",
+        "options": [
+            "No es necesario",
+            "Revisar y actualizar periódicamente los métodos de contacto y códigos",
+            "Nunca cambiar",
+            "No se puede"
+        ],
+        "correctIndex": 1,
+        "explanation": "Debes actualizar tu plan cuando cambies números, correos o dispositivos.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses4_l6"
+    },
+    {
+        "id": "ac_st6_qB7_025",
+        "question": "Que hacer si te bloquearon la cuenta por actividad sospechosa?",
+        "type": "multipleChoice",
+        "options": [
+            "No hay nada que hacer",
+            "Seguir el proceso de verificación de identidad del servicio",
+            "Crear otra cuenta",
+            "Esperar infinitamente"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los servicios tienen procesos para verificar tu identidad y desbloquear la cuenta.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses5_l1"
+    },
+    {
+        "id": "ac_st6_qB7_026",
+        "question": "Que es la recuperación por video verificación?",
+        "type": "multipleChoice",
+        "options": [
+            "No existe",
+            "Un proceso donde grabas un video para demostrar que eres tu",
+            "Ver un video tutorial",
+            "No sirve"
+        ],
+        "correctIndex": 1,
+        "explanation": "Algunos servicios usan video verificación para cuentas de alto riesgo.",
+        "difficulty": 3,
+        "lessonId": "ac_s6_ses5_l2"
+    },
+    {
+        "id": "ac_st6_qB7_027",
+        "question": "Como recuperar cuenta bancaria comprometida?",
+        "type": "multipleChoice",
+        "options": [
+            "No se puede",
+            "Contactar al banco inmediatamente y seguir su proceso de recuperación",
+            "Cambiar la contraseña",
+            "Esperar"
+        ],
+        "correctIndex": 1,
+        "explanation": "Para cuentas bancarias, contacta inmediatamente al banco para bloquear y recuperar.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses5_l3"
+    },
+    {
+        "id": "ac_st6_qB7_028",
+        "question": "Que es la recuperación por verificación en persona?",
+        "type": "multipleChoice",
+        "options": [
+            "No existe",
+            "Ir a una oficina del servicio con documentos para recuperar acceso",
+            "Encontrar a alguien en la calle",
+            "No sirve"
+        ],
+        "correctIndex": 1,
+        "explanation": "Algunos servicios requieren verificación presencial con documentos para casos extremos.",
+        "difficulty": 3,
+        "lessonId": "ac_s6_ses5_l4"
+    },
+    {
+        "id": "ac_st6_qB7_029",
+        "question": "Que hacer si te roban el celular y tenías acceso a tus cuentas?",
+        "type": "multipleChoice",
+        "options": [
+            "No hay nada que hacer",
+            "Bloquear el celular remotamente y cambiar contraseñas desde otro dispositivo",
+            "Comprar uno nuevo",
+            "Esperar"
+        ],
+        "correctIndex": 1,
+        "explanation": "Bloquea el celular remotamente y cambia contraseñas inmediatamente desde otro dispositivo.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses5_l5"
+    },
+    {
+        "id": "ac_st6_qB7_030",
+        "question": "Como testear tu plan de recuperación?",
+        "type": "multipleChoice",
+        "options": [
+            "No es necesario",
+            "Intentar recuperar una cuenta de prueba para verificar que funciona",
+            "No se puede",
+            "Esperar una emergencia real"
+        ],
+        "correctIndex": 1,
+        "explanation": "Testea tu plan con una cuenta de prueba para asegurarte de que funciona en una emergencia.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses5_l6"
+    }
+]

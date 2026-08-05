@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'app_logger.dart';
 
 enum AnalyticEvent {
   appOpen,
@@ -25,27 +27,28 @@ enum AnalyticEvent {
   signUp,
   signIn,
   chestOpened,
+  achievementUnlocked,
 }
 
 enum Achievement {
-  firstQuery('Primera consulta', 'Preguntaste algo a Sage por primera vez'),
-  streak3('3 días seguidos', 'Mantuviste tu racha por 3 días'),
-  streak7('7 días seguidos', 'Una semana completa de actividad'),
-  streak14('14 días seguidos', 'Dos semanas imparable'),
-  streak30('30 días seguidos', 'Un mes de aprendizaje continuo'),
-  streak100('100 días seguidos', 'Maestro de la ciberseguridad'),
-  tenQueries('10 consultas', 'Le preguntaste 10 cosas a Sage'),
-  voiceFirst('Primera voz', 'Usaste el micrófono por primera vez'),
-  linkFirst('Primer análisis', 'Analizaste tu primer enlace'),
-  perfectWeek('Semana perfecta', 'Completaste 7 días sin fallar'),
-  protectedMonth('Mes protegido', 'Mantuviste tu racha todo el mes'),
-  cyberGuardian('Guardian Digital', 'Lograste 30+ días de racha'),
-  shieldBasic('Escudo Inicial', 'Tu primer día de protección'),
-  shieldGlow('Escudo Radiante', 'Llegaste a 7 días de racha'),
-  shieldCrystal('Escudo de Cristal', 'Alcanzaste 30 días de racha'),
-  shieldLegendary('Escudo Legendario', 'Lograste 100 días de racha'),
-  firstLinkSafe('Enlace Seguro', 'Analizaste tu primer enlace seguro'),
-  firstLinkDanger('Alerta Temprana', 'Detectaste tu primer enlace peligroso'),
+  firstQuery('First Query', 'Asked Sage something for the first time'),
+  streak3('3-Day Streak', 'Kept your streak for 3 days'),
+  streak7('7-Day Streak', 'A full week of activity'),
+  streak14('14-Day Streak', 'Two unstoppable weeks'),
+  streak30('30-Day Streak', 'One month of continuous learning'),
+  streak100('100-Day Streak', 'Cybersecurity master'),
+  tenQueries('10 Queries', 'Asked Sage 10 things'),
+  voiceFirst('First Voice', 'Used the microphone for the first time'),
+  linkFirst('First Analysis', 'Analyzed your first link'),
+  perfectWeek('Perfect Week', 'Completed 7 days without failing'),
+  protectedMonth('Protected Month', 'Kept your streak the whole month'),
+  cyberGuardian('Digital Guardian', 'Reached 30+ day streak'),
+  shieldBasic('Initial Shield', 'Your first day of protection'),
+  shieldGlow('Glowing Shield', 'Reached 7-day streak'),
+  shieldCrystal('Crystal Shield', 'Reached 30-day streak'),
+  shieldLegendary('Legendary Shield', 'Reached 100-day streak'),
+  firstLinkSafe('Safe Link', 'Analyzed your first safe link'),
+  firstLinkDanger('Early Alert', 'Detected your first dangerous link'),
   ;
 
   final String title;
@@ -53,6 +56,7 @@ enum Achievement {
   const Achievement(this.title, this.description);
 }
 
+/// Tracks user analytics events and manages achievement progression.
 class AnalyticsService {
   static final AnalyticsService _instance = AnalyticsService._();
   static AnalyticsService get instance => _instance;
@@ -61,16 +65,26 @@ class AnalyticsService {
   static const _keyEvents = 'analytics_events';
   static const _keyAggregated = 'analytics_aggregated';
   static const _keyAchievements = 'analytics_achievements';
+  static const _keyConsent = 'analytics_consent_given';
   static const _maxStoredEvents = 500;
+  static const _maxAggregatedKeys = 500;
+  static const _batchSize = 20;
+  static const _flushInterval = Duration(seconds: 15);
 
+  final AppLogger _logger = AppLogger();
   bool _initialized = false;
   SharedPreferences? _prefs;
   FirebaseAnalytics? _firebase;
   final List<Map<String, dynamic>> _eventLog = [];
   final Set<Achievement> _unlocked = {};
   Map<String, int> _aggregated = {};
+  Timer? _flushTimer;
+  bool _dirty = false;
+  int _pendingCount = 0;
+  bool _consentGiven = false;
 
   bool get isInitialized => _initialized;
+  bool get consentGiven => _consentGiven;
   Set<Achievement> get unlocked => Set.unmodifiable(_unlocked);
   List<Achievement> get allAchievements => Achievement.values.toList();
   Map<String, int> get aggregated => Map.unmodifiable(_aggregated);
@@ -78,65 +92,114 @@ class AnalyticsService {
   Future<void> init() async {
     try {
       _prefs = await SharedPreferences.getInstance();
+      _consentGiven = _prefs?.getBool(_keyConsent) ?? false;
       _load();
-    } catch (_) {}
+    } catch (e) {
+      _logger.warning('AnalyticsService: SharedPreferences init failed: $e');
+    }
     try {
       _firebase = FirebaseAnalytics.instance;
-    } catch (_) {}
+    } catch (e) {
+      _logger.warning('AnalyticsService: FirebaseAnalytics unavailable: $e');
+    }
     _initialized = true;
   }
 
+  /// Sets GDPR analytics consent. When false, no events are tracked or sent.
+  Future<void> setConsent(bool given) async {
+    _consentGiven = given;
+    try {
+      await _prefs?.setBool(_keyConsent, given);
+    } catch (e) {
+      _logger.warning('AnalyticsService.setConsent: failed to save consent preference: $e');
+    }
+    if (!given) {
+      await _firebase?.setAnalyticsCollectionEnabled(false);
+      _logger.info('AnalyticsService: analytics disabled by user consent');
+    } else {
+      await _firebase?.setAnalyticsCollectionEnabled(true);
+      _logger.info('AnalyticsService: analytics enabled by user consent');
+    }
+  }
+
   void _load() {
-    final eventsJson = _prefs?.getString(_keyEvents);
-    if (eventsJson != null) {
-      final list = jsonDecode(eventsJson) as List;
-      _eventLog.addAll(list.cast<Map<String, dynamic>>());
-      if (_eventLog.length > _maxStoredEvents) {
-        _eventLog.removeRange(0, _eventLog.length - _maxStoredEvents);
+    try {
+      final eventsJson = _prefs?.getString(_keyEvents);
+      if (eventsJson != null) {
+        final list = jsonDecode(eventsJson) as List;
+        _eventLog.addAll(list.cast<Map<String, dynamic>>());
+        if (_eventLog.length > _maxStoredEvents) {
+          _eventLog.removeRange(0, _eventLog.length - _maxStoredEvents);
+        }
       }
-    }
-    final aggJson = _prefs?.getString(_keyAggregated);
-    if (aggJson != null) {
-      final map = jsonDecode(aggJson) as Map<String, dynamic>;
-      _aggregated = map.map((k, v) => MapEntry(k, v as int));
-    }
-    final achJson = _prefs?.getString(_keyAchievements);
-    if (achJson != null) {
-      final list = jsonDecode(achJson) as List;
-      for (final item in list) {
-        final a = Achievement.values.firstWhere(
-          (a) => a.name == item,
-          orElse: () => Achievement.firstQuery,
-        );
-        _unlocked.add(a);
+      final aggJson = _prefs?.getString(_keyAggregated);
+      if (aggJson != null) {
+        final map = jsonDecode(aggJson) as Map<String, dynamic>;
+        _aggregated = map.map((k, v) => MapEntry(k, v as int));
       }
+      final achJson = _prefs?.getString(_keyAchievements);
+      if (achJson != null) {
+        final list = jsonDecode(achJson) as List;
+        for (final item in list) {
+          final a = Achievement.values.firstWhere(
+            (a) => a.name == item,
+            orElse: () => Achievement.firstQuery,
+          );
+          _unlocked.add(a);
+        }
+      }
+    } catch (e) {
+      _logger.warning('AnalyticsService: _load failed: $e');
     }
   }
 
   void _save() {
+    _dirty = true;
+    _pendingCount++;
+    if (_pendingCount >= _batchSize) {
+      _flushSave();
+      return;
+    }
+    _flushTimer?.cancel();
+    _flushTimer = Timer(_flushInterval, _flushSave);
+  }
+
+  Future<void> _flushSave() async {
+    if (!_dirty) return;
+    _dirty = false;
+    _pendingCount = 0;
+    _flushTimer?.cancel();
+    _flushTimer = null;
     try {
-      if (_eventLog.length > _maxStoredEvents) {
-        final trimmed = _eventLog.sublist(_eventLog.length - _maxStoredEvents);
-        _prefs?.setString(_keyEvents, jsonEncode(trimmed));
-      } else {
-        _prefs?.setString(_keyEvents, jsonEncode(_eventLog));
-      }
-      _prefs?.setString(_keyAggregated, jsonEncode(_aggregated));
-      _prefs?.setString(
-        _keyAchievements,
-        jsonEncode(_unlocked.map((a) => a.name).toList()),
+      final eventsJson = jsonEncode(
+        _eventLog.length > _maxStoredEvents
+          ? _eventLog.sublist(_eventLog.length - _maxStoredEvents)
+          : _eventLog,
       );
-    } catch (_) {}
+      final aggregatedJson = jsonEncode(_aggregated);
+      final achievementsJson = jsonEncode(_unlocked.map((a) => a.name).toList());
+      await Future.wait([
+        _prefs?.setString(_keyEvents, eventsJson) ?? Future.value(),
+        _prefs?.setString(_keyAggregated, aggregatedJson) ?? Future.value(),
+        _prefs?.setString(_keyAchievements, achievementsJson) ?? Future.value(),
+      ]);
+    } catch (e) {
+      _logger.warning('AnalyticsService: _flushSave failed: $e');
+    }
   }
 
   void track(AnalyticEvent event, {Map<String, dynamic>? properties}) {
-    if (!_initialized) return;
+    if (!_initialized || !_consentGiven) return;
     final entry = <String, dynamic>{
       'event': event.name,
       'timestamp': DateTime.now().toIso8601String(),
     };
     if (properties != null) entry['properties'] = properties;
     _eventLog.add(entry);
+
+    if (_eventLog.length > _maxStoredEvents * 2) {
+      _eventLog.removeRange(0, _eventLog.length - _maxStoredEvents);
+    }
 
     final key = 'count_${event.name}';
     _aggregated[key] = (_aggregated[key] ?? 0) + 1;
@@ -148,11 +211,24 @@ class AnalyticsService {
       }
     }
 
+    // Evict oldest property-based keys if map grows too large
+    if (_aggregated.length > _maxAggregatedKeys) {
+      final keysToRemove = _aggregated.keys
+          .where((k) => k.startsWith('${event.name}_') && !k.startsWith('count_'))
+          .toList()
+        ..sort();
+      final removeCount = _aggregated.length - _maxAggregatedKeys;
+      for (int i = 0; i < removeCount && i < keysToRemove.length; i++) {
+        _aggregated.remove(keysToRemove[i]);
+      }
+    }
+
     _save();
     _logToFirebase(event, properties);
   }
 
   void _logToFirebase(AnalyticEvent event, Map<String, dynamic>? properties) {
+    if (!_consentGiven) return;
     try {
       final fb = _firebase;
       if (fb == null) return;
@@ -162,7 +238,9 @@ class AnalyticsService {
       } else {
         fb.logEvent(name: name);
       }
-    } catch (_) {}
+    } catch (e) {
+      _logger.warning('AnalyticsService: Firebase logEvent failed: $e');
+    }
   }
 
   String _firebaseEventName(AnalyticEvent event) {
@@ -222,9 +300,6 @@ class AnalyticsService {
     track(AnalyticEvent.featureUsed, properties: {'feature': feature});
   }
 
-  void trackAdRewardClaimed() {
-    track(AnalyticEvent.featureUsed, properties: {'feature': 'ad_reward'});
-  }
 
   void trackFlexCardShared(String source) {
     track(AnalyticEvent.featureUsed, properties: {
@@ -254,7 +329,7 @@ class AnalyticsService {
   void unlockAchievement(Achievement achievement) {
     if (_unlocked.contains(achievement)) return;
     _unlocked.add(achievement);
-    track(AnalyticEvent.appOpen, properties: {
+    track(AnalyticEvent.achievementUnlocked, properties: {
       'achievement': achievement.name,
       'title': achievement.title,
     });
@@ -262,15 +337,21 @@ class AnalyticsService {
 
   void remove(Achievement achievement) {
     _unlocked.remove(achievement);
-    _save();
+    _flushSave();
   }
 
   void clearAll() {
     _unlocked.clear();
     _eventLog.clear();
     _aggregated.clear();
-    _save();
+    _pendingCount = 0;
+    _flushTimer?.cancel();
+    _flushTimer = null;
+    _flushSave();
   }
 
-  void save() {}
+  void dispose() {
+    _flushTimer?.cancel();
+    _flushTimer = null;
+  }
 }

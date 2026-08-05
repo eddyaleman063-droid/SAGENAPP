@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import '../../../core/theme/theme_constants.dart';
 import '../../../ui/widgets/common/sage_emotion_widget.dart';
 import '../../../services/sage_emotion_service.dart';
 import 'package:sagen/l10n/app_localizations.dart';
+import 'package:sagen/core/theme/app_colors.dart';
 
 class ProfileHookScreen extends StatelessWidget {
   final VoidCallback onCreateProfile;
@@ -16,11 +18,10 @@ class ProfileHookScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dark = Theme.of(context).brightness == Brightness.dark;
     final l = AppLocalizations.of(context)!;
 
     return Scaffold(
-      backgroundColor: dark ? PremiumColors.deepBackground : PremiumColors.lightBg,
+      backgroundColor: context.surfaceDeep,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(AppSpacing.xxl),
@@ -31,27 +32,25 @@ class ProfileHookScreen extends StatelessWidget {
               const SizedBox(
                 width: 110,
                 height: 110,
-                child: SageEmotionWidget(
+                child: ExcludeSemantics(child: SageEmotionWidget(
                   emotion: SageEmotion.happy,
                   size: 110,
-                ),
+                )),
               ),
               const SizedBox(height: AppSpacing.xxl),
               Text(
                 l.regProfileAlmostReady,
-                style: TextStyle(
-                  fontSize: 26,
+                style: AppTextStyle.headlineLarge.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: dark ? Colors.white.withValues(alpha: 0.95) : Colors.black87,
+                  color: context.textPrimary,
                 ),
               ),
               const SizedBox(height: AppSpacing.md),
               Text(
                 l.regProfileDesc,
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: dark ? Colors.white.withValues(alpha: 0.5) : Colors.black45,
+                style: AppTextStyle.bodyMd.copyWith(
+                  color: context.textTertiary,
                   height: 1.5,
                 ),
               ),
@@ -60,18 +59,18 @@ class ProfileHookScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(AppSpacing.lg),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(AppRadius.xl),
-                  color: dark ? Colors.white.withValues(alpha: 0.04) : Colors.black.withValues(alpha: 0.03),
+                  color: context.surfaceTinted,
                   border: Border.all(
-                    color: dark ? Colors.white.withValues(alpha: 0.08) : Colors.black.withValues(alpha: 0.06),
+                    color: context.subtleBorder,
                   ),
                 ),
                 child: Column(
                   children: [
-                    _BenefitRow2(icon: Icons.cloud_done_rounded, text: l.regCloudSave, dark: dark),
+                    _BenefitRow2(icon: Icons.cloud_done_rounded, text: l.regCloudSave),
                     const SizedBox(height: AppSpacing.md),
-                    _BenefitRow2(icon: Icons.local_fire_department_rounded, text: l.regStreakSync, dark: dark),
+                    _BenefitRow2(icon: Icons.local_fire_department_rounded, text: l.regStreakSync),
                     const SizedBox(height: AppSpacing.md),
-                    _BenefitRow2(icon: Icons.auto_awesome_rounded, text: l.regRewards, dark: dark),
+                    _BenefitRow2(icon: Icons.auto_awesome_rounded, text: l.regRewards),
                   ],
                 ),
               ),
@@ -79,7 +78,7 @@ class ProfileHookScreen extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 height: 54,
-                child: ElevatedButton(
+                child: Semantics(button: true, label: l.regCreateProfile, child: ElevatedButton(
                   onPressed: onCreateProfile,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: PremiumColors.primary,
@@ -87,22 +86,21 @@ class ProfileHookScreen extends StatelessWidget {
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
                     elevation: 4,
                   ),
-                  child: Text(l.regCreateProfile, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                ),
+                  child: Text(l.regCreateProfile, style: AppTextStyle.titleSmall.copyWith(fontWeight: FontWeight.bold)),
+                )),
               ),
               const SizedBox(height: AppSpacing.md),
-              TextButton(
+              Semantics(button: true, label: l.regLater, child: TextButton(
                 onPressed: onSkipToHome,
                 child: Text(
                   l.regLater,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: dark ? Colors.white.withValues(alpha: 0.4) : Colors.black.withValues(alpha: 0.35),
+                  style: AppTextStyle.subtitle.copyWith(
+                    color: context.textSecondary,
                   ),
                 ),
-              ),
+              )),
             ],
-          ),
+          ).animate().fadeIn().slideY(begin: 0.1),
         ),
       ),
     );
@@ -112,9 +110,8 @@ class ProfileHookScreen extends StatelessWidget {
 class _BenefitRow2 extends StatelessWidget {
   final IconData icon;
   final String text;
-  final bool dark;
 
-  const _BenefitRow2({required this.icon, required this.text, required this.dark});
+  const _BenefitRow2({required this.icon, required this.text});
 
   @override
   Widget build(BuildContext context) {
@@ -125,9 +122,8 @@ class _BenefitRow2 extends StatelessWidget {
         Expanded(
           child: Text(
             text,
-            style: TextStyle(
-              fontSize: 13,
-              color: dark ? Colors.white.withValues(alpha: 0.7) : Colors.black87,
+            style: AppTextStyle.subtitle.copyWith(
+              color: context.textPrimary,
             ),
           ),
         ),

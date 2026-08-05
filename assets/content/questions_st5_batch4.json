@@ -1,0 +1,447 @@
+[
+  {
+    "id": "ac_st5_qB4_001",
+    "question": "¿Por qué es importante monitorear tus cuentas regularmente?",
+    "type": "multipleChoice",
+    "options": [
+      "Para detectar actividad sospechosa o accesos no autorizados tempranamente",
+      "Para ganar seguidores en redes sociales",
+      "Porque es obligatorio por ley",
+      "No es importante monitorear"
+    ],
+    "correctIndex": 0,
+    "explanation": "El monitoreo regular permite detectar intrusiones antes de que causen daños mayores.",
+    "difficulty": 1,
+    "lessonId": "ac_s5_ses1_l1"
+  },
+  {
+    "id": "ac_st5_qB4_002",
+    "question": "¿Qué es la detección temprana de intrusiones?",
+    "type": "multipleChoice",
+    "options": [
+      "Identificar accesos no autorizados lo antes posible para minimizar daños",
+      "Esperar a que un hacker entre a tu cuenta",
+      "Bloquear todos los dispositivos desconocidos permanentemente",
+      "No tiene relación con la seguridad"
+    ],
+    "correctIndex": 0,
+    "explanation": "La detección temprana reduce el tiempo que un atacante puede permanecer en tu cuenta.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses1_l2"
+  },
+  {
+    "id": "ac_st5_qB4_003",
+    "question": "¿Cómo reduces el tiempo de exposición ante un ataque?",
+    "type": "multipleChoice",
+    "options": [
+      "Configurando alertas inmediatas y revisando actividad regularmente",
+      "Cambiando tu contraseña una vez al año",
+      "No usando internet",
+      "Usando la misma contraseña en todas partes"
+    ],
+    "correctIndex": 0,
+    "explanation": "Las alertas inmediatas y el monitoreo reducen la ventana de tiempo que un atacante tiene para causar daño.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses1_l3"
+  },
+  {
+    "id": "ac_st5_qB4_004",
+    "question": "¿Qué es una alerta de inicio de sesión?",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Una alerta de inicio de sesión te notifica cuando alguien accede a tu cuenta desde un dispositivo o ubicación no reconocida.",
+    "difficulty": 1,
+    "lessonId": "ac_s5_ses2_l1"
+  },
+  {
+    "id": "ac_st5_qB4_005",
+    "question": "¿Qué debes hacer al recibir una alerta de dispositivo desconocido?",
+    "type": "multipleChoice",
+    "options": [
+      "Verificar si fuiste tú y, si no, cambiar la contraseña inmediatamente",
+      "Ignorarla si no estás seguro",
+      "Esperar unos días para ver si se repite",
+      "Compartir la alerta en redes sociales"
+    ],
+    "correctIndex": 0,
+    "explanation": "Debes verificar inmediatamente y tomar acción si no reconoces el dispositivo o ubicación.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses2_l5"
+  },
+  {
+    "id": "ac_st5_qB4_006",
+    "question": "¿Qué es Have I Been Pwned?",
+    "type": "multipleChoice",
+    "options": [
+      "Un servicio que verifica si tu correo o contraseña aparece en filtraciones conocidas",
+      "Un tipo de ataque de phishing",
+      "Una aplicación para crear contraseñas",
+      "Una red social para compartir información"
+    ],
+    "correctIndex": 0,
+    "explanation": "Have I Been Pwned es un servicio gratuito que verifica si tus datos aparecen en filtraciones de seguridad conocidas.",
+    "difficulty": 1,
+    "lessonId": "ac_s5_ses6_l1"
+  },
+  {
+    "id": "ac_st5_qB4_007",
+    "question": "¿Qué es Firefox Monitor?",
+    "type": "multipleChoice",
+    "options": [
+      "Un servicio que te alerta si tu correo aparece en filtraciones de seguridad",
+      "Un navegador web",
+      "Un tipo de virus",
+      "Una aplicación de mensajería"
+    ],
+    "correctIndex": 0,
+    "explanation": "Firefox Monitor es un servicio que verifica filtraciones y te notifica si tus datos han sido comprometidos.",
+    "difficulty": 1,
+    "lessonId": "ac_s5_ses6_l2"
+  },
+  {
+    "id": "ac_st5_qB4_008",
+    "question": "¿Qué muestra el Google Dark Web Report?",
+    "type": "multipleChoice",
+    "options": [
+      "Información tuya que pueda estar disponible en la dark web",
+      "Tus contraseñas guardadas",
+      "El historial de tu navegador",
+      "Las aplicaciones instaladas en tu celular"
+    ],
+    "correctIndex": 0,
+    "explanation": "Google Dark Web Report escanea la dark web para ver si tu información personal está expuesta.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses6_l3"
+  },
+  {
+    "id": "ac_st5_qB4_009",
+    "question": "¿Qué son los 'dashboards de seguridad centralizados'?",
+    "type": "multipleChoice",
+    "options": [
+      "Paneles que muestran el estado de seguridad de todas tus cuentas en un solo lugar",
+      "Aplicaciónes para crear contraseñas",
+      "Formas de compartir contraseñas",
+      "Tipos de contraseñas seguras"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los dashboards centralizados te permiten ver y gestionar la seguridad de múltiples cuentas desde un solo lugar.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses2_l6"
+  },
+  {
+    "id": "ac_st5_qB4_010",
+    "question": "¿Qué es la 'protección de identidad en Perú'?",
+    "type": "multipleChoice",
+    "options": [
+      "Servicios y prácticas para proteger tu DNI e información personal en línea",
+      "Un tipo de contraseña especial para peruanos",
+      "Una red social peruana",
+      "Un navegador web peruano"
+    ],
+    "correctIndex": 0,
+    "explanation": "La protección de identidad en Perú incluye servicios que monitorean el uso indebido de tu DNI y documentos.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses7_l2"
+  },
+  {
+    "id": "ac_st5_qB4_011",
+    "question": "¿Qué debes hacer si recibes una alerta de actividad inusual?",
+    "type": "multipleChoice",
+    "options": [
+      "Verificar la actividad, cambiar contraseña si es necesario y revisar configuración de seguridad",
+      "Ignorarla si no estás seguro",
+      "Esperar a que te contacten",
+      "Compartirla con amigos"
+    ],
+    "correctIndex": 0,
+    "explanation": "Debes actuar rápidamente: verificar, cambiar credenciales si es necesario y revisar toda la configuración de seguridad.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses5_l2"
+  },
+  {
+    "id": "ac_st5_qB4_012",
+    "question": "¿Qué es el monitoreo de la dark web?",
+    "type": "multipleChoice",
+    "options": [
+      "Vigilar si tu información personal aparece en mercados ilegales en línea",
+      "Usar la dark web para comprar cosas",
+      "Crear cuentas en la dark web",
+      "Navegar por la dark web sin protección"
+    ],
+    "correctIndex": 0,
+    "explanation": "El monitoreo de la dark web busca tu información en mercados ilegales para alertarte si está expuesta.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses6_l6"
+  },
+  {
+    "id": "ac_st5_qB4_013",
+    "question": "¿Qué es una 'rutina de monitoreo'?",
+    "type": "multipleChoice",
+    "options": [
+      "Un hábito regular de revisar la actividad y seguridad de tus cuentas",
+      "Una aplicación de monitoreo",
+      "Un tipo de contraseña",
+      "Una configuración del navegador"
+    ],
+    "correctIndex": 0,
+    "explanation": "Una rutina de monitoreo es un hábito programado de revisar periódicamente la actividad y configuración de seguridad de tus cuentas.",
+    "difficulty": 1,
+    "lessonId": "ac_s5_ses1_l5"
+  },
+  {
+    "id": "ac_st5_qB4_014",
+    "question": "¿Qué muestra el historial de actividad de cuenta?",
+    "type": "multipleChoice",
+    "options": [
+      "Inicios de sesión, cambios de configuración y acciones realizadas en tu cuenta",
+      "Solo tus contraseñas guardadas",
+      "El contenido de tus correos electrónicos",
+      "Las aplicaciones que tienes instaladas"
+    ],
+    "correctIndex": 0,
+    "explanation": "El historial de actividad muestra un registro de las acciones importantes realizadas en tu cuenta.",
+    "difficulty": 1,
+    "lessonId": "ac_s5_ses4_l1"
+  },
+  {
+    "id": "ac_st5_qB4_015",
+    "question": "¿Por qué debes preocuparte por ubicaciones y horarios sospechosos?",
+    "type": "multipleChoice",
+    "options": [
+      "Porque pueden indicar que alguien más está accediendo a tu cuenta",
+      "Porque es un hobby interesante",
+      "Porque es obligatorio por ley",
+      "No hay razón para preocuparse"
+    ],
+    "correctIndex": 0,
+    "explanation": "Las ubicaciones y horarios inusuales son indicadores fuertes de acceso no autorizado a tu cuenta.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses4_l2"
+  },
+  {
+    "id": "ac_st5_qB4_016",
+    "question": "¿Qué son los 'reportes semanales de seguridad'?",
+    "type": "multipleChoice",
+    "options": [
+      "Resúmenes automáticos del estado de seguridad de tus cuentas",
+      "Correos de spam sobre seguridad",
+      "Contraseñas que cambian cada semana",
+      "Aplicaciónes de monitoreo"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los reportes semanales te dan un resumen automático del estado de seguridad de tus cuentas sin tener que revisarlo manualmente.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses5_l6"
+  },
+  {
+    "id": "ac_st5_qB4_017",
+    "question": "¿Qué es la 'automatización de respuestas' en seguridad?",
+    "type": "multipleChoice",
+    "options": [
+      "Configurar acciones automáticas ante ciertos tipos de incidentes de seguridad",
+      "Responder manualmente a cada alerta",
+      "No hacer nada ante los incidentes",
+      "Dejar que otros respondan por ti"
+    ],
+    "correctIndex": 0,
+    "explanation": "La automatización permite que ciertas acciones de seguridad se ejecuten automáticamente sin intervención manual.",
+    "difficulty": 3,
+    "lessonId": "ac_s5_ses4_l6"
+  },
+  {
+    "id": "ac_st5_qB4_018",
+    "question": "¿Qué son las 'alertas de crédito y financieras'?",
+    "type": "multipleChoice",
+    "options": [
+      "Notificaciones cuando hay actividad sospechosa en tus cuentas financieras",
+      "Correos de ofertas de crédito",
+      "Aplicaciónes para pedir préstamos",
+      "Redes sociales financieras"
+    ],
+    "correctIndex": 0,
+    "explanation": "Las alertas de crédito te notifican cuando hay actividad inusual o intentos de apertura de cuentas en tu nombre.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses7_l4"
+  },
+  {
+    "id": "ac_st5_qB4_019",
+    "question": "¿Qué es el monitoreo de DNI y documentos?",
+    "type": "multipleChoice",
+    "options": [
+      "Vigilar si tus documentos personales están siendo usados indebidamente",
+      "Escanear tu DNI con el celular",
+      "Crear copias digitales de tus documentos",
+      "Compartir tu DNI en redes sociales"
+    ],
+    "correctIndex": 0,
+    "explanation": "El monitoreo de DNI y documentos detecta si alguien está usando tu identidad de forma fraudulenta.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses7_l3"
+  },
+  {
+    "id": "ac_st5_qB4_020",
+    "question": "¿Qué debes hacer si detectas cambios en ajustes que no hiciste?",
+    "type": "multipleChoice",
+    "options": [
+      "Restablecer los ajustes, cambiar contraseña y revisar actividad reciente",
+      "Ignorar los cambios",
+      "Esperar a que se corrijan solos",
+      "Eliminar la cuenta inmediatamente"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los cambios no autorizados en configuración son una señal de que tu cuenta puede estar comprometida.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses5_l3"
+  },
+  {
+    "id": "ac_st5_qB4_021",
+    "question": "¿Qué son los 'dispositivos autorizados' en una cuenta?",
+    "type": "multipleChoice",
+    "options": [
+      "Los dispositivos que han sido aprobados para acceder a tu cuenta",
+      "Todos los dispositivos que existen",
+      "Los dispositivos que venden en tiendas",
+      "Los dispositivos que no tienes"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los dispositivos autorizados son aquellos que has aprobado explícitamente para acceder a tu cuenta.",
+    "difficulty": 1,
+    "lessonId": "ac_s5_ses3_l5"
+  },
+  {
+    "id": "ac_st5_qB4_022",
+    "question": "¿Qué información muestran las alertas de ubicación y horario?",
+    "type": "multipleChoice",
+    "options": [
+      "Desde dónde y cuándo se inició sesión en tu cuenta",
+      "Tu contraseña actual",
+      "El contenido de tus correos",
+      "Las aplicaciones instaladas"
+    ],
+    "correctIndex": 0,
+    "explanation": "Las alertas de ubicación y horario te dan contexto sobre quién y cuándo está accediendo a tu cuenta.",
+    "difficulty": 1,
+    "lessonId": "ac_s5_ses3_l4"
+  },
+  {
+    "id": "ac_st5_qB4_023",
+    "question": "¿Qué es el monitoreo incluido en gestores de contraseñas?",
+    "type": "multipleChoice",
+    "options": [
+      "La función que verifica si tus contraseñas guardadas aparecen en filtraciones",
+      "Una aplicación separada de monitoreo",
+      "Un tipo de contraseña especial",
+      "Una configuración del navegador"
+    ],
+    "correctIndex": 0,
+    "explanation": "Muchos gestores de contraseñas incluyen monitoreo automático de filtraciones para las contraseñas que guardas.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses6_l4"
+  },
+  {
+    "id": "ac_st5_qB4_024",
+    "question": "¿Por qué es importante la 'detección temprana de intrusiones'?",
+    "type": "multipleChoice",
+    "options": [
+      "Reduce el daño potencial al mínimo al actuar rápidamente",
+      "Permite que los hackers entren más tiempo",
+      "No tiene beneficios reales",
+      "Solo es útil para empresas grandes"
+    ],
+    "correctIndex": 0,
+    "explanation": "Cuanto antes detectes una intrusión, menos tiempo tiene el atacante para causar daño o robar información.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses1_l2"
+  },
+  {
+    "id": "ac_st5_qB4_025",
+    "question": "¿Qué debes hacer si recibes un mensaje enviado sin tu conocimiento?",
+    "type": "multipleChoice",
+    "options": [
+      "Cambiar contraseña inmediatamente y revisar actividad de la cuenta",
+      "Ignorar el mensaje",
+      "Esperar a que te contacten",
+      "Compartirlo con amigos"
+    ],
+    "correctIndex": 0,
+    "explanation": "Si se enviaron mensajes sin tu permiso, tu cuenta está comprometida y debes actuar de inmediato.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses5_l4"
+  },
+  {
+    "id": "ac_st5_qB4_026",
+    "question": "¿Qué es LifeLock o Experian en el contexto de monitoreo?",
+    "type": "multipleChoice",
+    "options": [
+      "Servicios de monitoreo de identidad y protección contra robo de identidad",
+      "Redes sociales",
+      "Aplicaciónes de mensajería",
+      "Tiendas en línea"
+    ],
+    "correctIndex": 0,
+    "explanation": "LifeLock y Experian son servicios que monitorean el uso de tu identidad y alertan sobre actividad sospechosa.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses7_l1"
+  },
+  {
+    "id": "ac_st5_qB4_027",
+    "question": "¿Qué es la 'personalización de sensibilidad de alertas'?",
+    "type": "multipleChoice",
+    "options": [
+      "Ajustar qué tipos de actividad generan notificaciones para evitar alertas excesivas",
+      "Hacer que todas las alertas sean más frecuentes",
+      "Eliminar todas las alertas",
+      "Compartir alertas con otros usuarios"
+    ],
+    "correctIndex": 0,
+    "explanation": "Personalizar la sensibilidad te permite recibir solo las alertas más relevantes y evitar la fatiga de notificaciones.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses2_l4"
+  },
+  {
+    "id": "ac_st5_qB4_028",
+    "question": "¿Qué es el monitoreo de cuentas de hijos?",
+    "type": "multipleChoice",
+    "options": [
+      "Vigilar la actividad online de menores para protegerlos de amenazas",
+      "Crear cuentas falsas para niños",
+      "Permitir que los niños accedan a cualquier contenido",
+      "No tiene relación con la seguridad"
+    ],
+    "correctIndex": 0,
+    "explanation": "El monitoreo de cuentas de hijos ayuda a proteger a los menores de contenido inapropiado y amenazas en línea.",
+    "difficulty": 1,
+    "lessonId": "ac_s5_ses1_l6"
+  },
+  {
+    "id": "ac_st5_qB4_029",
+    "question": "¿Por qué debes revisar el historial de cambios de configuración?",
+    "type": "multipleChoice",
+    "options": [
+      "Para detectar cambios no autorizados que puedan comprometer tu seguridad",
+      "Porque es obligatorio por ley",
+      "Para ganar puntos de recompensa",
+      "No es necesario revisarlo"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los cambios no autorizados en configuración son una señal clara de que alguien podría haber accedido a tu cuenta.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses4_l3"
+  },
+  {
+    "id": "ac_st5_qB4_030",
+    "question": "¿Qué son los 'reportes semanales de seguridad'?",
+    "type": "multipleChoice",
+    "options": [
+      "Resúmenes automáticos que te informan sobre el estado de seguridad de tus cuentas",
+      "Correos de spam sobre seguridad",
+      "Contraseñas que cambian cada semana",
+      "Aplicaciónes de monitoreo"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los reportes semanales te dan un resumen automático y periódico del estado de seguridad de tus cuentas.",
+    "difficulty": 1,
+    "lessonId": "ac_s5_ses5_l6"
+  }
+]

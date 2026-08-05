@@ -1,0 +1,443 @@
+[
+  {
+    "id": "ac_st1_qB6_001",
+    "question": "Que es una cuenta digital",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Una cuenta digital es un registro en un servicio en linea que te permite acceder con tus datos.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses1_l1"
+  },
+  {
+    "id": "ac_st1_qB6_002",
+    "question": "Para que sirve un correo electrónico como cuenta digital",
+    "type": "multipleChoice",
+    "options": [
+      "Solo para enviar mensajes",
+      "Para recibir alertas, recuperar cuentas y comúnicarte",
+      "Solo para redes sociales",
+      "No sirve para nada importante"
+    ],
+    "correctIndex": 1,
+    "explanation": "El correo electrónico es fundamental para recuperar cuentas y recibir alertas de seguridad.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses1_l1"
+  },
+  {
+    "id": "ac_st1_qB6_003",
+    "question": "Que elemento hace que una cuenta sea segura",
+    "type": "multipleChoice",
+    "options": [
+      "Que tenga mucho followers",
+      "Que tenga contraseña fuerte y verificación en dos pasos",
+      "Que sea gratis",
+      "Que sea de una empresa conocida"
+    ],
+    "correctIndex": 1,
+    "explanation": "Una cuenta segura necesita contraseña fuerte y doble factor de autenticación.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses1_l2"
+  },
+  {
+    "id": "ac_st1_qB6_004",
+    "question": "Cual de estas es una cuenta local y cual en linea",
+    "type": "multipleChoice",
+    "options": [
+      "Word es local, Gmail es en linea",
+      "Excel es en linea, Facebook es local",
+      "Las dos son locales",
+      "Las dos son en linea"
+    ],
+    "correctIndex": 0,
+    "explanation": "Word se instala en tu computadora (local), Gmail funciona por internet (en linea).",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses1_l3"
+  },
+  {
+    "id": "ac_st1_qB6_005",
+    "question": "Caso: Usas la misma contraseña para tu correo y tu banco. Que riesgo corres",
+    "type": "detectRisk",
+    "options": [
+      "Ninguno, es conveniente",
+      "Alto riesgo: si hackean una cuenta, hackean todas",
+      "Riesgo bajo solo si la contraseña es larga",
+      "Solo si no usas WiFi publico"
+    ],
+    "correctIndex": 1,
+    "explanation": "Usar la misma contraseña en varios sitios es muy peligroso porque un hackeo afecta todas tus cuentas.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses1_l2"
+  },
+  {
+    "id": "ac_st1_qB6_006",
+    "question": "Que harías si alguien te pide tu contraseña por mensaje",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Se la doy si es un amigo cercano",
+      "Nunca la comparto, ninguna empresa pide contraseñas por mensaje",
+      "Se la doy pero primero verifico que no sea mentira",
+      "Espero a que me la pidan por correo"
+    ],
+    "correctIndex": 1,
+    "explanation": "Ninguna empresa o banco te pide contraseñas por mensaje. Esto es una estafa.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses1_l1"
+  },
+  {
+    "id": "ac_st1_qB6_007",
+    "question": "Cual es la mejor forma de proteger tu cuenta de correo",
+    "type": "completePhrase",
+    "options": [
+      "Poner la misma contraseña que tus redes",
+      "Usar contraseña única y activar verificación en dos pasos",
+      "No poner ninguna contraseña",
+      "Cambiar el nombre de usuario cada semana"
+    ],
+    "correctIndex": 1,
+    "explanation": "Usar contraseña única y activar 2FA protege tu correo de accesos no autorizados.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses1_l6"
+  },
+  {
+    "id": "ac_st1_qB6_008",
+    "question": "Que es una red social y para que la usas",
+    "type": "multipleChoice",
+    "options": [
+      "Solo para jugar",
+      "Para comúnicarte, compartir fotos y conectar con personas",
+      "Solo para comprar en linea",
+      "No sirve para nada"
+    ],
+    "correctIndex": 1,
+    "explanation": "Las redes sociales sirven para comúnicarte, compartir momentos y conectar con otros.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses2_l2"
+  },
+  {
+    "id": "ac_st1_qB6_009",
+    "question": "Que tipo de información NO debes publicar en Facebook",
+    "type": "detectRisk",
+    "options": [
+      "Fotos de tu familia",
+      "Tu número de DNI, dirección y número de telefono",
+      "Fotos de tu mascota",
+      "El nombre de tu ciudad"
+    ],
+    "correctIndex": 1,
+    "explanation": "Tu DNI, dirección y telefono son datos sensibles que pueden ser usados para robarte.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses4_l4"
+  },
+  {
+    "id": "ac_st1_qB6_010",
+    "question": "Caso: Te llega un correo del banco pidiendote que hagas clic en un enlace para verificar tu cuenta. Que haces",
+    "type": "miniCase",
+    "options": [
+      "Hago clic porque es mi banco",
+      "No hago clic, llamo al banco directamente para verificar",
+      "Reenvio el correo a mis contactos",
+      "Respondo al correo con mis datos"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los bancos nunca piden datos por correo. Llama directamente al banco para verificar.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses17_l1"
+  },
+  {
+    "id": "ac_st1_qB6_011",
+    "question": "Que es una aplicación bancaria y como la usas de forma segura",
+    "type": "multipleChoice",
+    "options": [
+      "La uso sin contraseña porque es segura",
+      "La uso con contraseña fuerte y sin connectarme a WiFi publico",
+      "La uso desde cualquier celular prestado",
+      "La uso solo para ver el saldo"
+    ],
+    "correctIndex": 1,
+    "explanation": "Usa la app bancaria con contraseña fuerte y evita conectarte a WiFi publico.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses2_l3"
+  },
+  {
+    "id": "ac_st1_qB6_012",
+    "question": "Que es Yape y que cuidados debes tener",
+    "type": "multipleChoice",
+    "options": [
+      "Es una app para jugar en linea",
+      "Es una app de pagos que requiere contraseña segura y verificación",
+      "No necesita protección porque es segura",
+      "Solo sirve para enviar dinero"
+    ],
+    "correctIndex": 1,
+    "explanation": "Yape es una app de pagos. Protegela con contraseña fuerte y activa las notificaciones.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses2_l3"
+  },
+  {
+    "id": "ac_st1_qB6_013",
+    "question": "Cada cuanto debes revisar la seguridad de tus cuentas",
+    "type": "multipleChoice",
+    "options": [
+      "Nunca, no es necesario",
+      "Al menos una vez al mes",
+      "Solo cuando me hackeen",
+      "Una vez al año"
+    ],
+    "correctIndex": 1,
+    "explanation": "Revisar la seguridad de tus cuentas cada mes te ayuda a detectar problemas a tiempo.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses11_l2"
+  },
+  {
+    "id": "ac_st1_qB6_014",
+    "question": "Que es la navegación privada y cuando la usas",
+    "type": "multipleChoice",
+    "options": [
+      "Para que nadie sepa que páginas visito en ese momento",
+      "Para que mis contraseñas se guarden automáticamente",
+      "Para navegar mas rápido",
+      "Para no necesitar contraseña"
+    ],
+    "correctIndex": 0,
+    "explanation": "La navegación privada no guarda historial ni cookies en tu dispositivo.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses15_l2"
+  },
+  {
+    "id": "ac_st1_qB6_015",
+    "question": "Cual de estas situaciónes presenta el MAYOR riesgo para tus cuentas",
+    "type": "detectRisk",
+    "options": [
+      "Usar contraseña fuerte con 2FA activado",
+      "Conectarte a WiFi publico y entrar a tu banco",
+      "Cerrar sesión despues de usar internet",
+      "Actualizar tu celular regularmente"
+    ],
+    "correctIndex": 1,
+    "explanation": "El WiFi publico puede ser interceptado. Nunca hagas operaciónes bancarias desde ahi.",
+    "difficulty": 3,
+    "lessonId": "ac_s1_ses2_l6"
+  },
+  {
+    "id": "ac_st1_qB6_016",
+    "question": "Que debes hacer si pierdes tu celular con tus cuentas vinculadas",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Esperar a encontrarlo",
+      "Cambiar contraseñas de inmediato y cerrar sesiónes remotamente",
+      "Comprar uno nuevo y olvidar el asunto",
+      "Preguntar en redes sociales que hacer"
+    ],
+    "correctIndex": 1,
+    "explanation": "Actua rápido: cambia contraseñas y usa las opciónes de borrado remoto si es posible.",
+    "difficulty": 3,
+    "lessonId": "ac_s1_ses13_l1"
+  },
+  {
+    "id": "ac_st1_qB6_017",
+    "question": "Que es un permiso de aplicación y por que importa",
+    "type": "multipleChoice",
+    "options": [
+      "Es un juego que viene en el celular",
+      "Es el acceso que una app pide a tus datos como camara o contactos",
+      "Es la contraseña de la app",
+      "No es importante"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los permisos determinan que datos puede acceder una app. Revisalos siempre antes de aceptar.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses19_l1"
+  },
+  {
+    "id": "ac_st1_qB6_018",
+    "question": "Caso: Tu sobrino te pide que publiques una foto con tu DNI visible para verificar tu identidad en una red. Que haces",
+    "type": "miniCase",
+    "options": [
+      "Publico la foto porque es mi sobrino",
+      "No publico ninguna foto con documentos personales visibles",
+      "Envio la foto por privado sin DNI visible",
+      "Pedir a otro familiar que la publique"
+    ],
+    "correctIndex": 1,
+    "explanation": "Nunca publiques fotos de documentos de identidad. Pueden ser usadas para robo de identidad.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses4_l1"
+  },
+  {
+    "id": "ac_st1_qB6_019",
+    "question": "Que es el historial de actividad en tu cuenta de Google",
+    "type": "multipleChoice",
+    "options": [
+      "Es una lista de tus correos enviados",
+      "Muestra donde y cuando accediste a tu cuenta",
+      "Es un juego dentro de Google",
+      "No existe esa función"
+    ],
+    "correctIndex": 1,
+    "explanation": "El historial de actividad muestra ubicacion, dispositivo y hora de cada inicio de sesión.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses12_l1"
+  },
+  {
+    "id": "ac_st1_qB6_020",
+    "question": "Que es un archivo cifrado y para que sirve",
+    "type": "multipleChoice",
+    "options": [
+      "Un archivo que se borra solo",
+      "Un archivo protegido que solo puede abrir quien tiene la clave",
+      "Un archivo de musica",
+      "Un tipo de virus"
+    ],
+    "correctIndex": 1,
+    "explanation": "Un archivo cifrado esta protegido con contraseña, solo quien tiene la clave puede abrirlo.",
+    "difficulty": 3,
+    "lessonId": "ac_s1_ses7_l6"
+  },
+  {
+    "id": "ac_st1_qB6_021",
+    "question": "Que es la herencia digital",
+    "type": "multipleChoice",
+    "options": [
+      "Un tipo de juego en linea",
+      "Lo que pasa con tus cuentas cuando ya no estas",
+      "Una app de seguridad",
+      "Un tipo de contraseña"
+    ],
+    "correctIndex": 1,
+    "explanation": "La herencia digital se refiere a lo que sucede con tus cuentas y datos despues de ti.",
+    "difficulty": 3,
+    "lessonId": "ac_s1_ses5_l1"
+  },
+  {
+    "id": "ac_st1_qB6_022",
+    "question": "Cual es la mejor forma de organizar tus contraseñas",
+    "type": "detectRisk",
+    "options": [
+      "Escribirlas en un papelito pegado al monitor",
+      "Usar un gestor de contraseñas cifrado",
+      "Guardarlas en el navegador sin protección",
+      "Usar siempre la misma contraseña"
+    ],
+    "correctIndex": 1,
+    "explanation": "Un gestor de contraseñas guarda todas tus claves de forma segura y cifrada.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses3_l1"
+  },
+  {
+    "id": "ac_st1_qB6_023",
+    "question": "Que es un SIM swapping y porque es peligroso",
+    "type": "multipleChoice",
+    "options": [
+      "Un tipo de juego",
+      "Cuando alguien roba tu número de telefono para hackear tus cuentas",
+      "Una forma de cambiar de celular",
+      "Un tipo de contraseña"
+    ],
+    "correctIndex": 1,
+    "explanation": "El SIM swapping es cuando un atacante roba tu número para recibir tus codigos de verificación.",
+    "difficulty": 3,
+    "lessonId": "ac_s1_ses9_l2"
+  },
+  {
+    "id": "ac_st1_qB6_024",
+    "question": "Que es el modo incognito y como funciona",
+    "type": "trueFalse",
+    "options": [
+      "Guarda tu historial pero no muestra publicidad",
+      "No guarda historial, cookies ni datos de busqueda en tu dispositivo"
+    ],
+    "correctIndex": 1,
+    "explanation": "El modo incognito no guarda nada en tu dispositivo, pero tu proveedor de internet puede ver tu actividad.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses15_l4"
+  },
+  {
+    "id": "ac_st1_qB6_025",
+    "question": "Que es una actualización de seguridad",
+    "type": "multipleChoice",
+    "options": [
+      "Un cambio de color del celular",
+      "Una mejora que corrige problemas y protege contra amenazas",
+      "Una app nueva que se instala sola",
+      "No es necesario instalarla"
+    ],
+    "correctIndex": 1,
+    "explanation": "Las actualizaciones corrigen vulnerabilidades y mantienen tu dispositivo protegido.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses16_l1"
+  },
+  {
+    "id": "ac_st1_qB6_026",
+    "question": "Caso: Recibes un mensaje de que ganaste un premio en un concurso que no participaste. Que haces",
+    "type": "miniCase",
+    "options": [
+      "Hago clic en el enlace para reclamar mi premio",
+      "Ignoro el mensaje y lo borro, es una estafa",
+      "Comparto el mensaje con mis amigos",
+      "Respondo con mis datos personales"
+    ],
+    "correctIndex": 1,
+    "explanation": "Si no participaste en ningun concurso, es una estafa. Nunca hagas clic en enlaces sospechosos.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses18_l1"
+  },
+  {
+    "id": "ac_st1_qB6_027",
+    "question": "Que es un filtro antispam y para que sirve",
+    "type": "multipleChoice",
+    "options": [
+      "Para enviar mas correos",
+      "Para detectar y bloquear correos no deseados o peligrosos",
+      "Para borrar todos tus correos",
+      "Para configurar tu celular"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los filtros antispam ayudan a detectar y bloquear correos de phishing y publicidad no deseada.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses8_l4"
+  },
+  {
+    "id": "ac_st1_qB6_028",
+    "question": "Que es un backup o copia de seguridad digital",
+    "type": "multipleChoice",
+    "options": [
+      "Un tipo de virus informatico",
+      "Una copia de tus datos importantes guardada en otro lugar",
+      "Una forma de borrar tu celular",
+      "Un juego de mesa"
+    ],
+    "correctIndex": 1,
+    "explanation": "Un backup es una copia de tus fotos, contactos y archivos importantes guardados de forma segura.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses14_l1"
+  },
+  {
+    "id": "ac_st1_qB6_029",
+    "question": "Por que es importante cerrar sesión en dispositivos compartidos",
+    "type": "trueFalse",
+    "options": [
+      "No es importante porque el dispositivo guarda tus datos",
+      "Es importante porque otra persona podria acceder a tus cuentas"
+    ],
+    "correctIndex": 1,
+    "explanation": "Cerrar sesión evita que otras personas puedan entrar a tus cuentas despues de ti.",
+    "difficulty": 1,
+    "lessonId": "ac_s1_ses15_l1"
+  },
+  {
+    "id": "ac_st1_qB6_030",
+    "question": "Que debes hacer despues de completar un curso de seguridad digital",
+    "type": "whatWouldYouDo",
+    "options": [
+      "No hacer nada, ya se todo",
+      "Aplicar lo aprendido, compartir con familiares y revisar tus cuentas",
+      "Cambiar todos mis dispositivos",
+      "Borrar todas mis cuentas"
+    ],
+    "correctIndex": 1,
+    "explanation": "Aplica lo aprendido, educa a tu familia y revisa la seguridad de todas tus cuentas.",
+    "difficulty": 2,
+    "lessonId": "ac_s1_ses20_l1"
+  }
+]

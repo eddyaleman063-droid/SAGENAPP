@@ -1,0 +1,452 @@
+[
+    {
+        "id": "ac_st3_qB4_001",
+        "question": "Que es la recuperación con múltiples factores y porque es importante?",
+        "type": "multipleChoice",
+        "options": [
+            "Usar muchos codigos a la vez",
+            "Tener varios metodos de respaldo para recuperar tu cuenta si pierdes uno",
+            "Usar el mismo metodo en todas las cuentas",
+            "Tener varias contraseñas iguales"
+        ],
+        "correctIndex": 1,
+        "explanation": "Tener múltiples metodos de recuperación como codigos de respaldo, correo alternativo y otro dispositivo te da opciónes si pierdes acceso.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses6_l6"
+    },
+    {
+        "id": "ac_st3_qB4_002",
+        "question": "Que es la autenticación por voz y donde se usa?",
+        "type": "multipleChoice",
+        "options": [
+            "Una llamada telefonica normal",
+            "Un sistema que verifica tu identidad por las carácteristicas únicas de tu voz",
+            "Un mensaje de voz",
+            "Una contraseña hablada"
+        ],
+        "correctIndex": 1,
+        "explanation": "La autenticación por voz usa las carácteristicas únicas de tu voz para verificar quien eres, usada en algunos bancos y servicios.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses20_l3"
+    },
+    {
+        "id": "ac_st3_qB4_003",
+        "question": "Que es un token fisico que usan las empresas en Peru?",
+        "type": "multipleChoice",
+        "options": [
+            "Una contraseña escrita en papel",
+            "Un dispositivo como un llavero que genera codigos numericos de acceso",
+            "Un codigo QR impreso",
+            "Una tarjeta de presentacion"
+        ],
+        "correctIndex": 1,
+        "explanation": "Un token fisico es un dispositivo pequeno que genera codigos numericos que cambian cada 30 segundos para autenticarte.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses12_l4"
+    },
+    {
+        "id": "ac_st3_qB4_004",
+        "question": "Que debes hacer si recibes un intento de 2FA fallido en tu cuenta bancaria?",
+        "type": "whatWouldYouDo",
+        "options": [
+            "Ignorar la alerta",
+            "Llamar al banco inmediatamente y cambiar tu contraseña",
+            "Esperar a ver que pasa",
+            "Compartir la alerta en redes sociales"
+        ],
+        "correctIndex": 1,
+        "explanation": "Una alerta de 2FA fallido significa que alguien intento acceder a tu cuenta. Actua rápido contactando al banco.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses11_l6"
+    },
+    {
+        "id": "ac_st3_qB4_005",
+        "question": "Que es la revocacion de dispositivos en el 2FA?",
+        "type": "multipleChoice",
+        "options": [
+            "Agregar dispositivos nuevos",
+            "Eliminar el acceso de dispositivos antiguos que ya no usas a tus cuentas",
+            "Cambiar tu contraseña",
+            "Cerrar sesión normalmente"
+        ],
+        "correctIndex": 1,
+        "explanation": "Revocar dispositivos elimina el acceso de equipos viejos que pudieran estar comprometidos o que ya no utilizas.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses9_l6"
+    },
+    {
+        "id": "ac_st3_qB4_006",
+        "question": "Que es una passkey y porque reemplaza a la contraseña?",
+        "type": "multipleChoice",
+        "options": [
+            "Una contraseña muy larga",
+            "Una credencial digital que usa criptografia para autenticarte sin contraseña",
+            "Un codigo SMS",
+            "Una pregunta de seguridad"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las passkeys eliminan la necesidad de contraseñas usando criptografia, siendo mas seguras y faciles de usar.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses15_l1"
+    },
+    {
+        "id": "ac_st3_qB4_007",
+        "question": "Que es el estandar FIDO2 en autenticación?",
+        "type": "multipleChoice",
+        "options": [
+            "Un tipo de WiFi",
+            "Un estandar que permite autenticación sin contraseña usando llaves o biometria",
+            "Un sistema operativo",
+            "Una app de mensajeria"
+        ],
+        "correctIndex": 1,
+        "explanation": "FIDO2 es un estandar que permite autenticarte con llaves fisicas o biometria sin necesidad de contraseñas.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses17_l4"
+    },
+    {
+        "id": "ac_st3_qB4_008",
+        "question": "Que es la autenticación de múltiples factores?",
+        "type": "multipleChoice",
+        "options": [
+            "Usar muchos codigos a la vez",
+            "Combinar dos o mas metodos de verificación diferentes para entrar a tu cuenta",
+            "Usar la misma contraseña en todo",
+            "Tener varias contraseñas iguales"
+        ],
+        "correctIndex": 1,
+        "explanation": "La autenticación multifactor combina por ejemplo contraseña + codigo SMS + huella digital para mayor seguridad.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses2_l2"
+    },
+    {
+        "id": "ac_st3_qB4_009",
+        "question": "Que es un token OTP de hardware y como funciona?",
+        "type": "multipleChoice",
+        "options": [
+            "Una memoria USB comun",
+            "Un dispositivo fisico que genera codigos temporales de un solo uso",
+            "Un chip de celular",
+            "Una tarjeta de bus"
+        ],
+        "correctIndex": 1,
+        "explanation": "Un token OTP es un dispositivo que genera codigos numericos que cambian cada 30 segundos para autenticarte.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses17_l1"
+    },
+    {
+        "id": "ac_st3_qB4_010",
+        "question": "Que es la comparativa de seguridad entre diferentes metodos de 2FA?",
+        "type": "multipleChoice",
+        "options": [
+            "Todos los metodos son igual de seguros",
+            "Las llaves fisicas son las mas seguras, seguidas de apps de autenticación y luego SMS",
+            "El SMS es el metodo mas seguro",
+            "No hay diferencias de seguridad"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las llaves fisicas son las mas seguras, las apps de autenticación son buenas, y el SMS es el menos seguro de los tres.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses2_l4"
+    },
+    {
+        "id": "ac_st3_qB4_011",
+        "question": "Que debes hacer si pierdes tu llave de seguridad fisica?",
+        "type": "whatWouldYouDo",
+        "options": [
+            "No hacer nada",
+            "Usar tus codigos de respaldo y desactivar la llave pérdida en tu cuenta",
+            "Comprar otra llave igual",
+            "Pedir ayuda en redes sociales"
+        ],
+        "correctIndex": 1,
+        "explanation": "Recupera acceso con tus codigos de respaldo y luego desactiva la llave pérdida en la configuración de seguridad.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses13_l2"
+    },
+    {
+        "id": "ac_st3_qB4_012",
+        "question": "Que es la sincronizacion de codigos 2FA entre dispositivos?",
+        "type": "multipleChoice",
+        "options": [
+            "Enviar tus contraseñas por correo",
+            "Tener tus codigos de autenticación disponibles en múltiples dispositivos como respaldo",
+            "Compartir tu contraseña con amigos",
+            "Usar la misma contraseña en todo"
+        ],
+        "correctIndex": 1,
+        "explanation": "Apps como Authy permiten sincronizar tus codigos entre celular, tablet y computer como respaldo.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses4_l5"
+    },
+    {
+        "id": "ac_st3_qB4_013",
+        "question": "Que es una llave USB de seguridad como YubiKey?",
+        "type": "multipleChoice",
+        "options": [
+            "Un pendrive para guardar archivos",
+            "Un dispositivo fisico que conectas al USB para autenticarte en sitios web",
+            "Un cable de carga",
+            "Un adaptador de corriente"
+        ],
+        "correctIndex": 1,
+        "explanation": "Una YubiKey es un dispositivo fisico que tocas o conectas para verificar tu identidad cuando inicias sesión.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses5_l1"
+    },
+    {
+        "id": "ac_st3_qB4_014",
+        "question": "Que es Face ID y como protege tus cuentas?",
+        "type": "multipleChoice",
+        "options": [
+            "Un tipo de contraseña",
+            "Un sistema de reconocimiento facial que verifica tu identidad para acceder a tus cuentas",
+            "Una app de fotos",
+            "Un filtro de redes sociales"
+        ],
+        "correctIndex": 1,
+        "explanation": "Face ID usa el reconocimiento facial para autenticarte, funcionando como segundo factor de seguridad en tus cuentas.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses7_l2"
+    },
+    {
+        "id": "ac_st3_qB4_015",
+        "question": "Que es la aprobacion push en el 2FA y como funciona?",
+        "type": "multipleChoice",
+        "options": [
+            "Recibir un SMS con codigo",
+            "Recibir una notificacion en tu celular donde tocas para aprobar o rechazar el acceso",
+            "Enviar un correo con la contraseña",
+            "Llamar a soporte técnico"
+        ],
+        "correctIndex": 1,
+        "explanation": "La aprobacion push te envia una notificacion donde solo tocas un boton para aprobar o rechazar el inicio de sesión.",
+        "difficulty": 1,
+        "lessonId": "ac_s3_ses8_l1"
+    },
+    {
+        "id": "ac_st3_qB4_016",
+        "question": "Que es la recuperación de acceso si pierdes el segundo factor?",
+        "type": "multipleChoice",
+        "options": [
+            "Crear una cuenta nueva",
+            "Usar codigos de respaldo o contactar al soporte para verificar tu identidad",
+            "Pedir a un amigo que entre por ti",
+            "No hay nada que hacer"
+        ],
+        "correctIndex": 1,
+        "explanation": "Si pierdes tu segundo factor, puedes usar codigos de respaldo o contactar al soporte del servicio para recuperar acceso.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses13_l2"
+    },
+    {
+        "id": "ac_st3_qB4_017",
+        "question": "Que es un token de hardware para autenticación en empresas?",
+        "type": "multipleChoice",
+        "options": [
+            "Una memoria USB comun",
+            "Un dispositivo que genera codigos de autenticación para acceder a la red corporativa",
+            "Un chip de celular viejo",
+            "Una tarjeta de bus"
+        ],
+        "correctIndex": 1,
+        "explanation": "Un token de hardware genera codigos numericos para autenticarte en la red de tu empresa, proporcionando seguridad adicional.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses17_l3"
+    },
+    {
+        "id": "ac_st3_qB4_018",
+        "question": "Que es la verificación en dos pasos en redes sociales como Facebook?",
+        "type": "multipleChoice",
+        "options": [
+            "Escribir tu contraseña dos veces",
+            "Activar un metodo adicional como SMS o app de autenticación para proteger tu cuenta",
+            "Cambiar tu contraseña",
+            "Cerrar sesión y volver a entrar"
+        ],
+        "correctIndex": 1,
+        "explanation": "El 2FA en redes sociales agrega una capa extra de seguridad, pidiendote un codigo adicional ademas de tu contraseña.",
+        "difficulty": 1,
+        "lessonId": "ac_s3_ses9_l1"
+    },
+    {
+        "id": "ac_st3_qB4_019",
+        "question": "Que es un intento de phishing para obtener tu codigo 2FA?",
+        "type": "detectRisk",
+        "options": [
+            "Un correo normal de tu banco",
+            "Un mensaje falso que te pide tu codigo de verificación haciendose pasar por un servicio legitimo",
+            "Una actualización de sistema",
+            "Un codigo de descuento"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los atacantes pueden intentar engañarte para que les des tu codigo 2FA haciendose pasar por tu banco o servicio.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses9_l5"
+    },
+    {
+        "id": "ac_st3_qB4_020",
+        "question": "Que es el 2FA en servicios de streaming como Netflix?",
+        "type": "multipleChoice",
+        "options": [
+            "No existe 2FA en streaming",
+            "Un metodo adicional para proteger tu cuenta de accesos no autorizados",
+            "Una forma de compartir tu cuenta",
+            "Un tipo de contraseña"
+        ],
+        "correctIndex": 1,
+        "explanation": "Netflix y otros servicios de streaming ofrecen 2FA para proteger tu cuenta y evitar que otros usen tu suscripcion.",
+        "difficulty": 1,
+        "lessonId": "ac_s3_ses1_l6"
+    },
+    {
+        "id": "ac_st3_qB4_021",
+        "question": "Que es la ventaja de las passkeys sobre las contraseñas tradicionales?",
+        "type": "multipleChoice",
+        "options": [
+            "Son mas cortas",
+            "No pueden ser robadas por phishing porque estan vinculadas al sitio web",
+            "Funciónan sin internet siempre",
+            "Se pueden compartir por WhatsApp"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las passkeys estan vinculadas criptograficamente al sitio web, por lo que el phishing no funciona con ellas.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses15_l3"
+    },
+    {
+        "id": "ac_st3_qB4_022",
+        "question": "Que debes hacer si tu mama no puede recordar como usar 2FA?",
+        "type": "whatWouldYouDo",
+        "options": [
+            "No usar 2FA porque es complicado",
+            "Explicarle con analogias simples como tener dos candados en la puerta",
+            "Ponerle la misma contraseña para todo",
+            "No es necesario ensenarle"
+        ],
+        "correctIndex": 1,
+        "explanation": "Explicar con analogias simples como 'tener dos candados' ayuda a que las personas mayores entiendan el 2FA.",
+        "difficulty": 1,
+        "lessonId": "ac_s3_ses18_l3"
+    },
+    {
+        "id": "ac_st3_qB4_023",
+        "question": "Que es un codigo de respaldo de 2FA y cuando lo usas?",
+        "type": "multipleChoice",
+        "options": [
+            "Un codigo permanente",
+            "Una lista de codigos de un solo uso que te dan al configurar 2FA para usar si pierdes tu dispositivo",
+            "Un codigo de WiFi",
+            "Una contraseña temporal"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los codigos de respaldo son de un solo uso y te permiten acceder a tu cuenta si pierdes el dispositivo con tu app de 2FA.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses6_l1"
+    },
+    {
+        "id": "ac_st3_qB4_024",
+        "question": "Que es la poliitica 2FA empresarial en Peru?",
+        "type": "multipleChoice",
+        "options": [
+            "Un juego de oficina",
+            "Las reglas de la empresa que obligan a usar 2FA en cuentas laborales",
+            "Un tipo de contraseña especial",
+            "Una app de mensajeria"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las politicas empresariales en Peru establecen que los empleados deben usar 2FA para proteger los datos de la empresa.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses12_l3"
+    },
+    {
+        "id": "ac_st3_qB4_025",
+        "question": "Que es la revocacion de dispositivos 2FA y cuando la usas?",
+        "type": "whatWouldYouDo",
+        "options": [
+            "Cuando quieres agregar un dispositivo nuevo",
+            "Cuando pierdes o vendes un dispositivo y quieres eliminar su acceso a tus cuentas",
+            "Cuando cambias tu contraseña",
+            "Nunca es necesario"
+        ],
+        "correctIndex": 1,
+        "explanation": "La revocacion elimina el acceso de dispositivos antiguos que ya no usas, evitando que alguien acceda con ellos.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses9_l6"
+    },
+    {
+        "id": "ac_st3_qB4_026",
+        "question": "Que es la autenticación de voz en algunos bancos peruanos?",
+        "type": "multipleChoice",
+        "options": [
+            "Una llamada de servicio al cliente",
+            "Un sistema que verifica tu identidad por las carácteristicas únicas de tu voz",
+            "Un mensaje de voz automatizado",
+            "Una contraseña hablada"
+        ],
+        "correctIndex": 1,
+        "explanation": "Algunos bancos usan la autenticación por voz como factor adicional de seguridad para operaciónes telefonicas.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses20_l3"
+    },
+    {
+        "id": "ac_st3_qB4_027",
+        "question": "Que es la biometria como segundo factor en apps bancarias de Peru?",
+        "type": "multipleChoice",
+        "options": [
+            "Usar tu contraseña dos veces",
+            "Usar tu huella dactilar o reconocimiento facial para confirmar transferencias",
+            "Un codigo SMS",
+            "Una pregunta de seguridad"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los bancos peruanos como BCP e Interbank usan la biometria para confirmar que eres tu quien realiza la transaccion.",
+        "difficulty": 1,
+        "lessonId": "ac_s3_ses7_l5"
+    },
+    {
+        "id": "ac_st3_qB4_028",
+        "question": "Que debes hacer antes de eliminar una app de autenticación de tu celular viejo?",
+        "type": "whatWouldYouDo",
+        "options": [
+            "Borrarla directamente",
+            "Migrar todos los codigos de autenticación a tu nuevo celular o app",
+            "Desactivar el 2FA de todas tus cuentas",
+            "No hacer nada"
+        ],
+        "correctIndex": 1,
+        "explanation": "Siempre migra tus codigos antes de eliminar la app para no perder acceso a tus cuentas protegidas con 2FA.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses19_l4"
+    },
+    {
+        "id": "ac_st3_qB4_029",
+        "question": "Cuales son los tres factores de autenticación fundamentales?",
+        "type": "multipleChoice",
+        "options": [
+            "Usuario, contraseña y correo",
+            "Algo que sabes, algo que tienes y algo que eres",
+            "Nombre, apellido y DNI",
+            "Celular, computadora y tablet"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los tres factores son: conocimiento (sabes como contraseña), posesión (tienes como celular) y herencia (eres como huella).",
+        "difficulty": 1,
+        "lessonId": "ac_s3_ses2_l1"
+    },
+    {
+        "id": "ac_st3_qB4_030",
+        "question": "Que es la ventaja de un token OTP fisico sobre una app de autenticación?",
+        "type": "multipleChoice",
+        "options": [
+            "Es mas barato",
+            "No depende de internet ni bateria del celular para funcionar",
+            "Es mas bonito",
+            "Se puede copiar facilmente"
+        ],
+        "correctIndex": 1,
+        "explanation": "Un token fisico funciona sin internet ni bateria, lo que lo hace muy confiable incluso si tu celular se apaga.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses17_l1"
+    }
+]

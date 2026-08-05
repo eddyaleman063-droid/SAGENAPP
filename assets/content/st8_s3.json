@@ -1,0 +1,1304 @@
+[
+  {
+    "id": "ac_st8_ses03_l04_q14",
+    "type": "multipleChoice",
+    "question": "Que es el principio de minimizacion en datos personales?",
+    "options": [
+      "Obtener la mayor cantidad de datos posible",
+      "Recopilar solo los datos necesarios para la finalidad",
+      "Eliminar todos los datos",
+      "No recopilar ningun dato"
+    ],
+    "correct": "Recopilar solo los datos necesarios para la finalidad",
+    "correctIndex": 1,
+    "explanationCorrect": "Solo se deben recopilar los datos estrictamente necesarios.",
+    "explanationWrong": "No, es recopilar lo minimo necesario."
+  },
+  {
+    "id": "ac_st8_ses03_l01_q11",
+    "type": "multipleChoice",
+    "question": "Que es el derecho de supresion en protección de datos?",
+    "options": [
+      "Derecho a copiar datos",
+      "Derecho a eliminar datos personales",
+      "Derecho a compartir datos",
+      "Derecho a modificar datos"
+    ],
+    "correct": "Derecho a eliminar datos personales",
+    "correctIndex": 1,
+    "explanationCorrect": "El titular puede solicitar la eliminación de sus datos.",
+    "explanationWrong": "No, es el derecho a eliminar datos."
+  },
+  {
+    "id": "ac_st8_ses03_l03_q13",
+    "type": "multipleChoice",
+    "question": "Un banco pide consentimiento para abrir cuenta pero incluye clausula de marketing. Es valido?",
+    "options": [
+      "Si, es estandar",
+      "No, debe ser específico por finalidad",
+      "Solo si el cliente firma",
+      "Depende del banco"
+    ],
+    "correct": "No, debe ser específico por finalidad",
+    "correctIndex": 1,
+    "explanationCorrect": "El consentimiento debe ser específico para cada finalidad.",
+    "explanationWrong": "No, debe ser específico."
+  },
+  {
+    "id": "ac_st8_ses03_l01_q02",
+    "type": "trueFalse",
+    "question": "El titular de datos personales tiene derecho a acceder a su información.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correct": "Verdadero",
+    "correctIndex": 0,
+    "explanationCorrect": "Si, el titular siempre tiene derecho a acceder a sus datos.",
+    "explanationWrong": "No, el titular si tiene derecho a acceder a su información."
+  },
+  {
+    "id": "ac_st8_ses03_l05_q13",
+    "type": "multipleChoice",
+    "question": "Un empleado pierde un USB con datos de clientes. Es esto una brecha?",
+    "options": [
+      "No, es un accidente menor",
+      "Si, es una brecha que debe reportarse",
+      "Solo si se pierde el USB",
+      "Depende del tamanio del USB"
+    ],
+    "correct": "Si, es una brecha que debe reportarse",
+    "correctIndex": 1,
+    "explanationCorrect": "Cualquier pérdida o acceso no autorizado es una brecha.",
+    "explanationWrong": "No, toda pérdida es una brecha."
+  },
+  {
+    "id": "ac_st8_ses03_l05_q07",
+    "type": "multipleChoice",
+    "question": "Un cajero automático es hackeado y se roban datos de 500 tarjetas. Que debe hacer el banco?",
+    "options": [
+      "Esperar una semana",
+      "Notificar inmediatamente a la ANPDP y a los titulares",
+      "Solo cambiar las contraseñas",
+      "Ignorar el incidente"
+    ],
+    "correct": "Notificar inmediatamente a la ANPDP y a los titulares",
+    "correctIndex": 1,
+    "explanationCorrect": "Se debe notificar oportunamente a la autoridad y a los afectados.",
+    "explanationWrong": "No, la notificacion es obligatoria y urgente."
+  },
+  {
+    "id": "ac_st8_ses03_l02_q01",
+    "type": "multipleChoice",
+    "question": "Cual de estos es un derecho del titular de datos personales?",
+    "options": [
+      "Derecho a vender sus datos",
+      "Derecho a acceder a su información",
+      "Derecho a recibir publicidad",
+      "Derecho a compartir datos con extranos"
+    ],
+    "correct": "Derecho a acceder a su información",
+    "correctIndex": 1,
+    "explanationCorrect": "El titular tiene derecho a acceder a sus datos personales.",
+    "explanationWrong": "No, el derecho principal es acceder a la información."
+  },
+  {
+    "id": "ac_st8_ses03_l02_q12",
+    "type": "multipleChoice",
+    "question": "Que puede hacer el titular si el banco no responde a su solicitud?",
+    "options": [
+      "Nada",
+      "Presentar reclamo ante la ANPDP",
+      "Demandar directamente",
+      "Cambiar de banco"
+    ],
+    "correct": "Presentar reclamo ante la ANPDP",
+    "correctIndex": 1,
+    "explanationCorrect": "Puede reclamar ante la Autoridad Naciónal de Protección de Datos.",
+    "explanationWrong": "No, puede reclamar ante la ANPDP."
+  },
+  {
+    "id": "ac_st8_ses03_l03_q11",
+    "type": "trueFalse",
+    "question": "El consentimiento para datos sensibles debe ser siempre expreso.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correct": "Verdadero",
+    "correctIndex": 0,
+    "explanationCorrect": "Si, los datos sensibles requieren consentimiento expreso.",
+    "explanationWrong": "No, siempre debe ser expreso."
+  },
+  {
+    "id": "ac_st8_ses03_l03_q03",
+    "type": "multipleChoice",
+    "question": "Que es el interes legitimo como base legal?",
+    "options": [
+      "El banco puede usar datos por cualquier razón",
+      "El banco puede usar datos cuando es necesario para su función legitima",
+      "El banco puede vender datos",
+      "No existe"
+    ],
+    "correct": "El banco puede usar datos cuando es necesario para su función legitima",
+    "correctIndex": 1,
+    "explanationCorrect": "El interes legitimo permite tratamiento necesario para funciones legales.",
+    "explanationWrong": "No, es una excepcion limitada y específica."
+  },
+  {
+    "id": "ac_st8_ses03_l04_q01",
+    "type": "multipleChoice",
+    "question": "Que es la pseudonimizacion de datos?",
+    "options": [
+      "Borrar datos permanentemente",
+      "Reemplazar identificadores porseudonimos",
+      "Vender datos anonimos",
+      "Compartir datos sin permiso"
+    ],
+    "correct": "Reemplazar identificadores porseudonimos",
+    "correctIndex": 1,
+    "explanationCorrect": "La pseudonimizacion reemplaza datos identificables por pseudonimos.",
+    "explanationWrong": "No, es reemplazar identificadores."
+  },
+  {
+    "id": "ac_st8_ses03_l04_q03",
+    "type": "multipleChoice",
+    "question": "Que medida de seguridad debe tomar un banco para proteger datos?",
+    "options": [
+      "Usar contraseñas simples",
+      "Encriptar datos sensibles",
+      "Compartir contraseñas entre empleados",
+      "No usar respaldos"
+    ],
+    "correct": "Encriptar datos sensibles",
+    "correctIndex": 1,
+    "explanationCorrect": "La encriptación es una medida fundamental de seguridad.",
+    "explanationWrong": "No, debe encriptar los datos sensibles."
+  },
+  {
+    "id": "ac_st8_ses03_l05_q08",
+    "type": "multipleChoice",
+    "question": "Que es la evaluacion de impacto en protección de datos?",
+    "options": [
+      "Medir satisfaccion del cliente",
+      "Analizar riesgos antes de implementar un tratamiento de datos",
+      "Contar clientes",
+      "Hacer encuestas"
+    ],
+    "correct": "Analizar riesgos antes de implementar un tratamiento de datos",
+    "correctIndex": 1,
+    "explanationCorrect": "Es un analisis preventivo de riesgos para los derechos de los titulares.",
+    "explanationWrong": "No, es un analisis de riesgos preventivo."
+  },
+  {
+    "id": "ac_st8_ses03_l02_q05",
+    "type": "multipleChoice",
+    "question": "Cuando puede un banco denegar una solicitud de acceso a datos?",
+    "options": [
+      "Nunca",
+      "Cuando comprometa la seguridad naciónal",
+      "Cuando el usuario no pague la deuda",
+      "Cuando el banco quiera"
+    ],
+    "correct": "Cuando comprometa la seguridad naciónal",
+    "correctIndex": 1,
+    "explanationCorrect": "Solo por excepciones legales muy específicas.",
+    "explanationWrong": "No, hay excepciones muy limitadas."
+  },
+  {
+    "id": "ac_st8_ses03_l04_q15",
+    "type": "trueFalse",
+    "question": "Los respaldos de datos personales deben estar encriptados.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correct": "Verdadero",
+    "correctIndex": 0,
+    "explanationCorrect": "Si, los respaldos tambien deben estar protegidos.",
+    "explanationWrong": "No, deben estar encriptados."
+  },
+  {
+    "id": "ac_st8_ses03_l04_q11",
+    "type": "multipleChoice",
+    "question": "Que es la autenticación de dos factores (2FA)?",
+    "options": [
+      "Solo contraseña",
+      "Dos metodos diferentes para verificar identidad",
+      "Dos contraseñas iguales",
+      "Un codigo por dia"
+    ],
+    "correct": "Dos metodos diferentes para verificar identidad",
+    "correctIndex": 1,
+    "explanationCorrect": "2FA combina dos factores: algo que sabes, tienes o eres.",
+    "explanationWrong": "No, son dos metodos diferentes."
+  },
+  {
+    "id": "ac_st8_ses03_l05_q03",
+    "type": "multipleChoice",
+    "question": "Cuando se debe notificar una brecha a la ANPDP?",
+    "options": [
+      "Despues de 1 ano",
+      "En un plazo razónable despues de detectada",
+      "Nunca",
+      "Solo si hay demandas"
+    ],
+    "correct": "En un plazo razónable despues de detectada",
+    "correctIndex": 1,
+    "explanationCorrect": "La notificacion debe ser oportununa.",
+    "explanationWrong": "No, debe ser en un plazo razónable."
+  },
+  {
+    "id": "ac_st8_ses03_l05_q11",
+    "type": "multipleChoice",
+    "question": "Que es el plan de respuesta a incidentes?",
+    "options": [
+      "Un manual de emergencia para brechas de datos",
+      "Un plan de marketing",
+      "Un reglamento interno",
+      "Un documento sin uso práctico"
+    ],
+    "correct": "Un manual de emergencia para brechas de datos",
+    "correctIndex": 0,
+    "explanationCorrect": "Es un protocolo establecido para manejar brechas de datos.",
+    "explanationWrong": "No, es un protocolo de respuesta."
+  },
+  {
+    "id": "ac_st8_ses03_l04_q07",
+    "type": "multipleChoice",
+    "question": "Un hacker accede a una base de datos encriptada. Que protección funciono?",
+    "options": [
+      "Ninguna",
+      "El cifrado de datos",
+      "El firewall",
+      "La contraseña del admin"
+    ],
+    "correct": "El cifrado de datos",
+    "correctIndex": 1,
+    "explanationCorrect": "El cifrado protege los datos aunque se acceda a la base.",
+    "explanationWrong": "No, el cifrado es la protección clave."
+  },
+  {
+    "id": "ac_st8_ses03_l04_q12",
+    "type": "multipleChoice",
+    "question": "Que hacer cuando se detecta una brecha de datos?",
+    "options": [
+      "Ignorarla",
+      "Notificar a la ANPDP y a los titulares afectados",
+      "Esperar a que se resuelva sola",
+      "Borrar los registros"
+    ],
+    "correct": "Notificar a la ANPDP y a los titulares afectados",
+    "correctIndex": 1,
+    "explanationCorrect": "Se debe notificar tanto a la autoridad como a los titulares.",
+    "explanationWrong": "No, hay obligacion de notificar."
+  },
+  {
+    "id": "ac_st8_ses03_l04_q05",
+    "type": "multipleChoice",
+    "question": "Cual es una buena práctica para contraseñas en datos personales?",
+    "options": [
+      "Usar la misma contraseña para todo",
+      "Usar contraseñas largas y únicas",
+      "Compartir contraseñas",
+      "Anotarlas en papel visible"
+    ],
+    "correct": "Usar contraseñas largas y únicas",
+    "correctIndex": 1,
+    "explanationCorrect": "Las contraseñas deben ser largas, únicas y seguras.",
+    "explanationWrong": "No, deben ser largas y únicas."
+  },
+  {
+    "id": "ac_st8_ses03_l06_q11",
+    "type": "multipleChoice",
+    "question": "Que es la responsabilidad posterior a la transferencia?",
+    "options": [
+      "El banco se olvida de los datos",
+      "El banco sigue siendo responsable del uso que se de a los datos transferidos",
+      "El receptor asume toda la responsabilidad",
+      "No existe"
+    ],
+    "correct": "El banco sigue siendo responsable del uso que se de a los datos transferidos",
+    "correctIndex": 1,
+    "explanationCorrect": "El banco original mantiene responsabilidad sobre los datos.",
+    "explanationWrong": "No, el banco sigue siendo responsable."
+  },
+  {
+    "id": "ac_st8_ses03_l06_q05",
+    "type": "multipleChoice",
+    "question": "Puede un banco transferir datos a un pais sin protección adecuada?",
+    "options": [
+      "Si, siempre",
+      "No, a menos que se garanticen medidas de seguridad adicionales",
+      "Solo con permiso del presidente",
+      "Depende del monto"
+    ],
+    "correct": "No, a menos que se garanticen medidas de seguridad adicionales",
+    "correctIndex": 1,
+    "explanationCorrect": "Solo si hay garantias adicionales que aseguren la protección.",
+    "explanationWrong": "No, hay restricciones estrictas."
+  },
+  {
+    "id": "ac_st8_ses03_l05_q04",
+    "type": "multipleChoice",
+    "question": "A quien se debe notificar en caso de brecha grave?",
+    "options": [
+      "Solo al gerente",
+      "A la ANPDP y a los titulares afectados",
+      "A nadie",
+      "Solo a la policia"
+    ],
+    "correct": "A la ANPDP y a los titulares afectados",
+    "correctIndex": 1,
+    "explanationCorrect": "Se debe notificar tanto a la autoridad como a los titulares.",
+    "explanationWrong": "No, a ambos."
+  },
+  {
+    "id": "ac_st8_ses03_l03_q04",
+    "type": "multipleChoice",
+    "question": "Cuando NO se necesita consentimiento para tratar datos?",
+    "options": [
+      "Siempre se necesita",
+      "Cuando hay obligacion legal",
+      "Cuando el banco quiera",
+      "Nunca"
+    ],
+    "correct": "Cuando hay obligacion legal",
+    "correctIndex": 1,
+    "explanationCorrect": "Hay excepciones como obligaciones legales o judiciales.",
+    "explanationWrong": "No, hay excepciones como obligaciones legales."
+  },
+  {
+    "id": "ac_st8_ses03_l01_q09",
+    "type": "multipleChoice",
+    "question": "Que datos son considerados sensibles bajo la ley?",
+    "options": [
+      "Nombre y dirección",
+      "Salud, origen etnico, orientacion sexual",
+      "Número de telefono",
+      "Correo electrónico"
+    ],
+    "correct": "Salud, origen etnico, orientacion sexual",
+    "correctIndex": 1,
+    "explanationCorrect": "Los datos sensibles incluyen información sobre salud, origen, orientacion, etc.",
+    "explanationWrong": "No, los datos sensibles son información intima."
+  },
+  {
+    "id": "ac_st8_ses03_l03_q08",
+    "type": "multipleChoice",
+    "question": "Que es el consentimiento expreso?",
+    "options": [
+      "Aceptacion implicita",
+      "Declaracion clara y afirmativa del titular",
+      "Silencio del usuario",
+      "Firma en un contrato"
+    ],
+    "correct": "Declaracion clara y afirmativa del titular",
+    "correctIndex": 1,
+    "explanationCorrect": "El consentimiento expreso es una declaracion clara del titular.",
+    "explanationWrong": "No, es una declaracion clara y afirmativa."
+  },
+  {
+    "id": "ac_st8_ses03_l05_q12",
+    "type": "multipleChoice",
+    "question": "Que sancion puede recibir un banco por no reportar una brecha?",
+    "options": [
+      "Solo una llamada de atencion",
+      "Multa y posibles acciones legales",
+      "Nada",
+      "Descuento en impuestos"
+    ],
+    "correct": "Multa y posibles acciones legales",
+    "correctIndex": 1,
+    "explanationCorrect": "La omision puede generar sanciones graves.",
+    "explanationWrong": "No, hay sanciones significativas."
+  },
+  {
+    "id": "ac_st8_ses03_l03_q01",
+    "type": "multipleChoice",
+    "question": "Cual es la base legal principal para que un banco trate datos personales?",
+    "options": [
+      "Interes legitimo del banco",
+      "Consentimiento del titular o ejecucion de contrato",
+      "Venta de datos",
+      "Ninguna necesaria"
+    ],
+    "correct": "Consentimiento del titular o ejecucion de contrato",
+    "correctIndex": 1,
+    "explanationCorrect": "El tratamiento requiere consentimiento o base contractual.",
+    "explanationWrong": "No, se requiere consentimiento o base legal."
+  },
+  {
+    "id": "ac_st8_ses03_l03_q14",
+    "type": "multipleChoice",
+    "question": "El banco puede compartir datos con socios comerciales sin consentimiento?",
+    "options": [
+      "Si, siempre",
+      "Solo si hay contrato",
+      "No, necesita consentimiento",
+      "Depende del socio"
+    ],
+    "correct": "No, necesita consentimiento",
+    "correctIndex": 2,
+    "explanationCorrect": "Para compartir con terceros se requiere consentimiento.",
+    "explanationWrong": "No, se necesita consentimiento."
+  },
+  {
+    "id": "ac_st8_ses03_l05_q02",
+    "type": "trueFalse",
+    "question": "Una brecha de datos solo ocurre por hackers externos.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correct": "Falso",
+    "correctIndex": 1,
+    "explanationCorrect": "Correcto, pueden ser internas, accidentales o por negligencia.",
+    "explanationWrong": "No, hay múltiples causas."
+  },
+  {
+    "id": "ac_st8_ses03_l03_q12",
+    "type": "multipleChoice",
+    "question": "Que es una finalidad específica en tratamiento de datos?",
+    "options": [
+      "Usar datos para lo que se recogieron",
+      "Usar datos para cualquier cosa",
+      "Vender datos",
+      "Compartir datos libremente"
+    ],
+    "correct": "Usar datos para lo que se recogieron",
+    "correctIndex": 1,
+    "explanationCorrect": "Los datos solo deben usarse para la finalidad informada.",
+    "explanationWrong": "No, es usar solo para la finalidad informada."
+  },
+  {
+    "id": "ac_st8_ses03_l03_q10",
+    "type": "multipleChoice",
+    "question": "Que pasa si un banco trata datos sin base legal?",
+    "options": [
+      "Nada",
+      "Esta cometiendo una infraccion",
+      "Es normal",
+      "Depende del caso"
+    ],
+    "correct": "Esta cometiendo una infraccion",
+    "correctIndex": 1,
+    "explanationCorrect": "Tratar datos sin base legal es una infraccion a la ley.",
+    "explanationWrong": "No, es una infraccion."
+  },
+  {
+    "id": "ac_st8_ses03_l06_q14",
+    "type": "multipleChoice",
+    "question": "Que sucede si un banco transfiere datos sin las garantias requeridas?",
+    "options": [
+      "Nada",
+      "Incurre en una infraccion grave",
+      "Es una práctica recomendada",
+      "Solo una advertencia verbal"
+    ],
+    "correct": "Incurre en una infraccion grave",
+    "correctIndex": 1,
+    "explanationCorrect": "Transferir sin garantias es una infraccion grave a la ley.",
+    "explanationWrong": "No, es una infraccion grave."
+  },
+  {
+    "id": "ac_st8_ses03_l04_q02",
+    "type": "trueFalse",
+    "question": "La encriptación protege los datos en caso de robo.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correct": "Verdadero",
+    "correctIndex": 0,
+    "explanationCorrect": "Si, la encriptación hace inutilizables los datos robados.",
+    "explanationWrong": "No, si protege en caso de robo."
+  },
+  {
+    "id": "ac_st8_ses03_l06_q03",
+    "type": "multipleChoice",
+    "question": "Que garantia se requiere para transferir datos a otro pais?",
+    "options": [
+      "Ninguna",
+      "Que el pais tenga protección adecuada o se usen clausulas contractuales",
+      "Solo permiso del gerente",
+      "Firma del cliente"
+    ],
+    "correct": "Que el pais tenga protección adecuada o se usen clausulas contractuales",
+    "correctIndex": 1,
+    "explanationCorrect": "Se requiere que el destino tenga garantias equivalentes.",
+    "explanationWrong": "No, se necesitan garantias adecuadas."
+  },
+  {
+    "id": "ac_st8_ses03_l01_q13",
+    "type": "multipleChoice",
+    "question": "Juan solicita eliminar sus datos de un banco. Que debe hacer el banco?",
+    "options": [
+      "Negarse a eliminar los datos",
+      "Eliminar los datos si no hay obligacion legal",
+      "Cobrar una tarifa",
+      "Responder en 6 meses"
+    ],
+    "correct": "Eliminar los datos si no hay obligacion legal",
+    "correctIndex": 1,
+    "explanationCorrect": "El banco debe eliminar si no hay obligacion legal de conservar.",
+    "explanationWrong": "No, debe eliminar si no hay obligacion legal."
+  },
+  {
+    "id": "ac_st8_ses03_l03_q07",
+    "type": "multipleChoice",
+    "question": "Un banco envia publicidad por SMS a sus clientes sin avisarles. Es correcto?",
+    "options": [
+      "Si, es permitido",
+      "No, necesita consentimiento previo",
+      "Solo si es publicidad del banco",
+      "Depende del monto"
+    ],
+    "correct": "No, necesita consentimiento previo",
+    "correctIndex": 1,
+    "explanationCorrect": "Para enviar publicidad se requiere consentimiento previo.",
+    "explanationWrong": "No, siempre se requiere consentimiento."
+  },
+  {
+    "id": "ac_st8_ses03_l02_q09",
+    "type": "multipleChoice",
+    "question": "Cuanto tiempo tiene un banco para responder a una solicitud de derechos?",
+    "options": [
+      "30 dias",
+      "15 dias habiles",
+      "Sin limite",
+      "3 dias"
+    ],
+    "correct": "15 dias habiles",
+    "correctIndex": 1,
+    "explanationCorrect": "La ley establece plazos específicos para responder.",
+    "explanationWrong": "No, hay un plazo de 15 dias habiles."
+  },
+  {
+    "id": "ac_st8_ses03_l02_q04",
+    "type": "multipleChoice",
+    "question": "Que es el derecho de oposicion en protección de datos?",
+    "options": [
+      "Derecho a pelear con el banco",
+      "Derecho a oponerse al tratamiento de sus datos",
+      "Derecho a demandar",
+      "Derecho a quejarse"
+    ],
+    "correct": "Derecho a oponerse al tratamiento de sus datos",
+    "correctIndex": 1,
+    "explanationCorrect": "El titular puede oponerse al uso de sus datos para ciertos fines.",
+    "explanationWrong": "No, es oponerse al tratamiento."
+  },
+  {
+    "id": "ac_st8_ses03_l05_q06",
+    "type": "trueFalse",
+    "question": "El banco puede demorar la notificacion de brecha para no alarmar a los clientes.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correct": "Falso",
+    "correctIndex": 1,
+    "explanationCorrect": "Correcto, la notificacion debe ser oportuna.",
+    "explanationWrong": "No, la demora puede agravar los daños."
+  },
+  {
+    "id": "ac_st8_ses03_l05_q09",
+    "type": "multipleChoice",
+    "question": "Que medidas debe tomar un banco despues de una brecha?",
+    "options": [
+      "Nada",
+      "Investigar, corregir vulnerabilidades y prevenir futuras brechas",
+      "Cambiar de nombre",
+      "Mudar de oficina"
+    ],
+    "correct": "Investigar, corregir vulnerabilidades y prevenir futuras brechas",
+    "correctIndex": 1,
+    "explanationCorrect": "Debe investigar, corregir y mejorar la seguridad.",
+    "explanationWrong": "No, debe tomar medidas correctivas."
+  },
+  {
+    "id": "ac_st8_ses03_l04_q08",
+    "type": "multipleChoice",
+    "question": "Que es la anonimizacion de datos?",
+    "options": [
+      "Hacer datos visibles",
+      "Eliminar información identificatoria permanentemente",
+      "Compartir datos",
+      "Vender información"
+    ],
+    "correct": "Eliminar información identificatoria permanentemente",
+    "correctIndex": 1,
+    "explanationCorrect": "La anonimizacion elimina toda posibilidad de identificar al titular.",
+    "explanationWrong": "No, es eliminar identificadores permanentemente."
+  },
+  {
+    "id": "ac_st8_ses03_l01_q08",
+    "type": "multipleChoice",
+    "question": "Cual es una sancion por incumplir la Ley 29733?",
+    "options": [
+      "Solo una advertencia",
+      "Multa de hasta 50 UIT",
+      "Cierre inmediato del negocio",
+      "Ninguna sancion"
+    ],
+    "correct": "Multa de hasta 50 UIT",
+    "correctIndex": 1,
+    "explanationCorrect": "La ley establece multas significativas por incumplimientos.",
+    "explanationWrong": "No, existen multas importantes."
+  },
+  {
+    "id": "ac_st8_ses03_l03_q05",
+    "type": "multipleChoice",
+    "question": "Que debe contener un consentimiento valido?",
+    "options": [
+      "Solo el nombre del usuario",
+      "Información clara sobre el tratamiento y finalidad",
+      "Nada especial",
+      "Una firma ilegible"
+    ],
+    "correct": "Información clara sobre el tratamiento y finalidad",
+    "correctIndex": 1,
+    "explanationCorrect": "Debe ser informado, específico y libre.",
+    "explanationWrong": "No, debe ser informado y específico."
+  },
+  {
+    "id": "ac_st8_ses03_l05_q14",
+    "type": "multipleChoice",
+    "question": "Que es la notificacion a terceros en caso de brecha?",
+    "options": [
+      "Informar a otros bancos",
+      "Informar a entidades que puedan ayudar a mitigar daños",
+      "Vender la información",
+      "No hacer nada"
+    ],
+    "correct": "Informar a entidades que puedan ayudar a mitigar daños",
+    "correctIndex": 1,
+    "explanationCorrect": "A veces es necesario informar a otros actores relevantes.",
+    "explanationWrong": "No, es informar a actores relevantes."
+  },
+  {
+    "id": "ac_st8_ses03_l01_q03",
+    "type": "multipleChoice",
+    "question": "Que autoridad fiscaliza la protección de datos en Peru?",
+    "options": [
+      "SUNAT",
+      "Ministerio de Salud",
+      "Autoridad Naciónal de Protección de Datos Personales",
+      "BCP"
+    ],
+    "correct": "Autoridad Naciónal de Protección de Datos Personales",
+    "correctIndex": 2,
+    "explanationCorrect": "La ANPDP es la autoridad encargada de fiscalizar.",
+    "explanationWrong": "No, es la Autoridad Naciónal de Protección de Datos Personales."
+  },
+  {
+    "id": "ac_st8_ses03_l02_q02",
+    "type": "trueFalse",
+    "question": "El titular puede solicitar la rectificacion de datos inexactos.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correct": "Verdadero",
+    "correctIndex": 0,
+    "explanationCorrect": "Si, el titular puede corregir datos incorrectos.",
+    "explanationWrong": "No, si puede solicitar rectificacion."
+  },
+  {
+    "id": "ac_st8_ses03_l03_q09",
+    "type": "multipleChoice",
+    "question": "Puede el titular revocar su consentimiento?",
+    "options": [
+      "No, es permanente",
+      "Si, en cualquier momento",
+      "Solo despues de 1 ano",
+      "Solo si el banco acepta"
+    ],
+    "correct": "Si, en cualquier momento",
+    "correctIndex": 1,
+    "explanationCorrect": "El titular puede revocar su consentimiento cuando quiera.",
+    "explanationWrong": "No, puede revocarlo en cualquier momento."
+  },
+  {
+    "id": "ac_st8_ses03_l04_q06",
+    "type": "trueFalse",
+    "question": "Los datos personales deben almacenarse en servidores seguros.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correct": "Verdadero",
+    "correctIndex": 0,
+    "explanationCorrect": "Si, los servidores deben tener medidas de seguridad adecuadas.",
+    "explanationWrong": "No, deben estar en servidores seguros."
+  },
+  {
+    "id": "ac_st8_ses03_l02_q08",
+    "type": "multipleChoice",
+    "question": "Que es el derecho de limitacion del tratamiento?",
+    "options": [
+      "Limitar el acceso al banco",
+      "Solicitar que se dejen de usar sus datos temporalmente",
+      "Cerrar la cuenta",
+      "Cambiar de banco"
+    ],
+    "correct": "Solicitar que se dejen de usar sus datos temporalmente",
+    "correctIndex": 1,
+    "explanationCorrect": "El titular puede solicitar que se limiten sus datos mientras se verifica algo.",
+    "explanationWrong": "No, es limitar el uso temporal de datos."
+  },
+  {
+    "id": "ac_st8_ses03_l06_q04",
+    "type": "multipleChoice",
+    "question": "Que son las clausulas contractuales estandar?",
+    "options": [
+      "Un contrato de venta",
+      "Clausulas preaprobadas que garantizan protección de datos en transferencias",
+      "Un tipo de contraseña",
+      "Un documento sin valor legal"
+    ],
+    "correct": "Clausulas preaprobadas que garantizan protección de datos en transferencias",
+    "correctIndex": 1,
+    "explanationCorrect": "Son clausulas que garantizan el mismo nivel de protección.",
+    "explanationWrong": "No, son garantias contractuales predefinidas."
+  },
+  {
+    "id": "ac_st8_ses03_l02_q10",
+    "type": "trueFalse",
+    "question": "El derecho de supresion es absoluto y siempre debe ser atendido.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correct": "Falso",
+    "correctIndex": 1,
+    "explanationCorrect": "Correcto, hay excepciones como obligaciones legales de conservar.",
+    "explanationWrong": "No, hay excepciones como obligaciones legales."
+  },
+  {
+    "id": "ac_st8_ses03_l01_q06",
+    "type": "multipleChoice",
+    "question": "Que significa consentimiento informado en protección de datos?",
+    "options": [
+      "El usuario acepta sin leer",
+      "El usuario comprende como se usaran sus datos",
+      "El usuario firma cualquier documento",
+      "El usuario paga por el servicio"
+    ],
+    "correct": "El usuario comprende como se usaran sus datos",
+    "correctIndex": 1,
+    "explanationCorrect": "El consentimiento debe ser informado y específico.",
+    "explanationWrong": "No, debe ser informado y específico."
+  },
+  {
+    "id": "ac_st8_ses03_l01_q07",
+    "type": "multipleChoice",
+    "question": "Maria recibe un correo de su banco solicitando sus datos de tarjeta. Que deberia hacer primero?",
+    "options": [
+      "Compartir los datos inmediatamente",
+      "Verificar si es phishing",
+      "Ignorar el correo",
+      "Responder con su DNI"
+    ],
+    "correct": "Verificar si es phishing",
+    "correctIndex": 1,
+    "explanationCorrect": "Siempre verificar la legitimidad antes de compartir datos.",
+    "explanationWrong": "Nunca compartir datos sin verificar primero."
+  },
+  {
+    "id": "ac_st8_ses03_l05_q01",
+    "type": "multipleChoice",
+    "question": "Que es una brecha de datos personales?",
+    "options": [
+      "Un error del sistema",
+      "Acceso no autorizado o pérdida de datos personales",
+      "Una actualización de software",
+      "Un cambio de contraseña"
+    ],
+    "correct": "Acceso no autorizado o pérdida de datos personales",
+    "correctIndex": 1,
+    "explanationCorrect": "Una brecha es cualquier incidente que comprometa la seguridad de datos.",
+    "explanationWrong": "No, es un incidente de seguridad."
+  },
+  {
+    "id": "ac_st8_ses03_l04_q04",
+    "type": "multipleChoice",
+    "question": "Que es un cifrado de extremo a extremo?",
+    "options": [
+      "Cifrado solo en el servidor",
+      "Cifrado que solo puede descifrar el destinatario",
+      "Cifrado parcial",
+      "Cifrado inexistente"
+    ],
+    "correct": "Cifrado que solo puede descifrar el destinatario",
+    "correctIndex": 1,
+    "explanationCorrect": "El cifrado E2E garantiza que solo el destinatario pueda leer el mensaje.",
+    "explanationWrong": "No, es un cifrado exclusivo para el destinatario."
+  },
+  {
+    "id": "ac_st8_ses03_l06_q08",
+    "type": "multipleChoice",
+    "question": "Que es la evaluacion de adecuacion de un pais destino?",
+    "options": [
+      "Evaluar el clima del pais",
+      "Determinar si un pais tiene nivel de protección equivalente a Peru",
+      "Medir la distancia",
+      "Contar la poblacion"
+    ],
+    "correct": "Determinar si un pais tiene nivel de protección equivalente a Peru",
+    "correctIndex": 1,
+    "explanationCorrect": "Es verificar que el pais tenga estandares equivalentes.",
+    "explanationWrong": "No, es evaluar el nivel de protección."
+  },
+  {
+    "id": "ac_st8_ses03_l01_q10",
+    "type": "trueFalse",
+    "question": "Una empresa puede vender datos personales sin consentimiento del titular.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correct": "Falso",
+    "correctIndex": 1,
+    "explanationCorrect": "Correcto, esta prohibido vender datos sin consentimiento.",
+    "explanationWrong": "No, esta prohibido vender datos sin consentimiento."
+  },
+  {
+    "id": "ac_st8_ses03_l06_q09",
+    "type": "multipleChoice",
+    "question": "Que debe hacer el banco si no puede garantizar la protección en el extranjero?",
+    "options": [
+      "Transferir de todas formas",
+      "Suspender la transferencia hasta obtener garantias",
+      "Esperar un ano",
+      "Informar solo al gerente general"
+    ],
+    "correct": "Suspender la transferencia hasta obtener garantias",
+    "correctIndex": 1,
+    "explanationCorrect": "No debe transferirse hasta tener las garantias necesarias.",
+    "explanationWrong": "No, debe suspenderse."
+  },
+  {
+    "id": "ac_st8_ses03_l02_q07",
+    "type": "multipleChoice",
+    "question": "Rosa solicita copia de todos sus datos al BCP. Que debe incluir la respuesta?",
+    "options": [
+      "Solo el nombre",
+      "Toda la información personal que tiene el banco sobre ella",
+      "Ninguna información",
+      "Solo los movimientos recientes"
+    ],
+    "correct": "Toda la información personal que tiene el banco sobre ella",
+    "correctIndex": 1,
+    "explanationCorrect": "Debe incluir toda la información que el banco tenga sobre el titular.",
+    "explanationWrong": "No, debe incluir toda la información."
+  },
+  {
+    "id": "ac_st8_ses03_l05_q15",
+    "type": "trueFalse",
+    "question": "La prueba de que se tomo accion rápida puede reducir las sanciones por brecha.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correct": "Verdadero",
+    "correctIndex": 0,
+    "explanationCorrect": "Si, la respuesta rápida y adecuada puede atenuar sanciones.",
+    "explanationWrong": "No, la accion rápida puede reducir sanciones."
+  },
+  {
+    "id": "ac_st8_ses03_l03_q15",
+    "type": "trueFalse",
+    "question": "La ejecucion de un contrato es una base valida para tratar datos personales.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correct": "Verdadero",
+    "correctIndex": 0,
+    "explanationCorrect": "Si, es una de las bases legales validas.",
+    "explanationWrong": "No, si es una base valida."
+  },
+  {
+    "id": "ac_st8_ses03_l02_q06",
+    "type": "trueFalse",
+    "question": "El titular tiene derecho a transferir sus datos a otro banco.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correct": "Verdadero",
+    "correctIndex": 0,
+    "explanationCorrect": "Si, existe el derecho de portabilidad de datos.",
+    "explanationWrong": "No, si existe el derecho de portabilidad."
+  },
+  {
+    "id": "ac_st8_ses03_l01_q01",
+    "type": "multipleChoice",
+    "question": "Que es la Ley 29733 - Ley de Protección de Datos Personales del Peru?",
+    "options": [
+      "Una ley que regula el comercio electrónico",
+      "Una ley que protege los datos personales de los ciudadaños",
+      "Una ley sobre ciberseguridad bancaria",
+      "Una ley de protección al consumidor"
+    ],
+    "correct": "Una ley que protege los datos personales de los ciudadaños",
+    "correctIndex": 1,
+    "explanationCorrect": "La Ley 29733 protege los datos personales de los ciudadaños peruanos.",
+    "explanationWrong": "No, esta ley protege específicamente los datos personales."
+  },
+  {
+    "id": "ac_st8_ses03_l06_q12",
+    "type": "multipleChoice",
+    "question": "Que documentos debe conservar el banco sobre transferencias internaciónales?",
+    "options": [
+      "Ninguno",
+      "Registro de transferencias, evaluaciones y garantias aplicables",
+      "Solo facturas",
+      "Contratos de trabajo"
+    ],
+    "correct": "Registro de transferencias, evaluaciones y garantias aplicables",
+    "correctIndex": 1,
+    "explanationCorrect": "Debe mantener documentacion completa de las transferencias.",
+    "explanationWrong": "No, debe conservar documentacion completa."
+  },
+  {
+    "id": "ac_st8_ses03_l04_q13",
+    "type": "multipleChoice",
+    "question": "Un empleado del banco accede a datos de clientes sin autorizacion. Que medida técnica podria haberlo evitado?",
+    "options": [
+      "Ninguna",
+      "Control de acceso basado en roles",
+      "Mejor iluminación",
+      "Mas computadoras"
+    ],
+    "correct": "Control de acceso basado en roles",
+    "correctIndex": 1,
+    "explanationCorrect": "El control de acceso por roles limita lo que cada empleado puede ver.",
+    "explanationWrong": "No, el control de acceso es la medida clave."
+  },
+  {
+    "id": "ac_st8_ses03_l06_q10",
+    "type": "trueFalse",
+    "question": "Los datos personales pueden transferirse libremente entre bancos del mismo grupo multinaciónal.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correct": "Falso",
+    "correctIndex": 1,
+    "explanationCorrect": "Correcto, incluso dentro del grupo se requieren garantias.",
+    "explanationWrong": "No, siempre se requieren garantias."
+  },
+  {
+    "id": "ac_st8_ses03_l04_q09",
+    "type": "multipleChoice",
+    "question": "Cada cuanto se recomienda actualizar las contraseñas de acceso a datos?",
+    "options": [
+      "Nunca",
+      "Cada 3 a 6 meses",
+      "Cada 5 anos",
+      "Solo cuando haya una brecha"
+    ],
+    "correct": "Cada 3 a 6 meses",
+    "correctIndex": 1,
+    "explanationCorrect": "Es recomendable actualizar contraseñas periodicamente.",
+    "explanationWrong": "No, se recomienda cada cierto tiempo."
+  },
+  {
+    "id": "ac_st8_ses03_l06_q15",
+    "type": "trueFalse",
+    "question": "La ANPDP puede suspender transferencias internaciónales que no cumplan la ley.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correct": "Verdadero",
+    "correctIndex": 0,
+    "explanationCorrect": "Si, la autoridad tiene facultades de fiscalizacion y sancion.",
+    "explanationWrong": "No, si tiene esa facultad."
+  },
+  {
+    "id": "ac_st8_ses03_l02_q11",
+    "type": "multipleChoice",
+    "question": "Que documentos debe presentar el titular para ejercer sus derechos?",
+    "options": [
+      "Solo el DNI",
+      "DNI y carta de solicitud",
+      "Ninguno",
+      "Pasaporte"
+    ],
+    "correct": "DNI y carta de solicitud",
+    "correctIndex": 1,
+    "explanationCorrect": "Generalmente se requiere identificación y solicitud formal.",
+    "explanationWrong": "No, se necesita identificación y solicitud."
+  },
+  {
+    "id": "ac_st8_ses03_l06_q02",
+    "type": "trueFalse",
+    "question": "Peru permite transferencias internaciónales de datos bajo ciertas condiciones.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correct": "Verdadero",
+    "correctIndex": 0,
+    "explanationCorrect": "Si, la ley lo permite con garantias adecuadas.",
+    "explanationWrong": "No, si lo permite bajo condiciones."
+  },
+  {
+    "id": "ac_st8_ses03_l05_q05",
+    "type": "multipleChoice",
+    "question": "Que información debe incluir la notificacion de brecha?",
+    "options": [
+      "Solo el nombre del responsable",
+      "Descripcion del incidente, datos afectados y medidas tomadas",
+      "Nada especial",
+      "Solo el número de clientes"
+    ],
+    "correct": "Descripcion del incidente, datos afectados y medidas tomadas",
+    "correctIndex": 1,
+    "explanationCorrect": "Debe incluir todos los detalles relevantes del incidente.",
+    "explanationWrong": "No, debe ser completa."
+  },
+  {
+    "id": "ac_st8_ses03_l02_q15",
+    "type": "trueFalse",
+    "question": "Un menor de edad puede ejercer sus derechos de datos por si mismo.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correct": "Falso",
+    "correctIndex": 1,
+    "explanationCorrect": "Correcto, un menor requiere representante legal.",
+    "explanationWrong": "No, un menor requiere representante."
+  },
+  {
+    "id": "ac_st8_ses03_l02_q13",
+    "type": "multipleChoice",
+    "question": "Pedro quiere saber que datos tiene Interbank sobre el. Que tipo de solicitud es?",
+    "options": [
+      "Solicitud de acceso",
+      "Solicitud de supresion",
+      "Solicitud de rectificacion",
+      "Solicitud de oposicion"
+    ],
+    "correct": "Solicitud de acceso",
+    "correctIndex": 0,
+    "explanationCorrect": "Es una solicitud de acceso a datos personales.",
+    "explanationWrong": "No, es una solicitud de acceso."
+  },
+  {
+    "id": "ac_st8_ses03_l06_q06",
+    "type": "trueFalse",
+    "question": "El titular debe ser informado sobre transferencias internaciónales de sus datos.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correct": "Verdadero",
+    "correctIndex": 0,
+    "explanationCorrect": "Si, el titular tiene derecho a saber donde van sus datos.",
+    "explanationWrong": "No, es un derecho del titular."
+  },
+  {
+    "id": "ac_st8_ses03_l06_q13",
+    "type": "multipleChoice",
+    "question": "Un cliente solicita saber si sus datos se transfieren al extranjero. Que debe responder el banco?",
+    "options": [
+      "No responder",
+      "Informar sobre las transferencias y las garantias aplicables",
+      "Decir que no hay transferencias",
+      "Cobrar por la información"
+    ],
+    "correct": "Informar sobre las transferencias y las garantias aplicables",
+    "correctIndex": 1,
+    "explanationCorrect": "El titular tiene derecho a ser informado sobre transferencias.",
+    "explanationWrong": "No, debe informar con transparencia."
+  },
+  {
+    "id": "ac_st8_ses03_l01_q05",
+    "type": "trueFalse",
+    "question": "La Ley 29733 obliga a las empresas a notificar sobre brechas de datos.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correct": "Verdadero",
+    "correctIndex": 0,
+    "explanationCorrect": "Si, la ley exige notificar sobre brechas de seguridad.",
+    "explanationWrong": "No, si existe esa obligacion."
+  },
+  {
+    "id": "ac_st8_ses03_l04_q10",
+    "type": "trueFalse",
+    "question": "El registro de accesos a datos personales es obligatorio.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correct": "Verdadero",
+    "correctIndex": 0,
+    "explanationCorrect": "Si, las empresas deben llevar registro de accesos.",
+    "explanationWrong": "No, es una obligacion."
+  },
+  {
+    "id": "ac_st8_ses03_l06_q01",
+    "type": "multipleChoice",
+    "question": "Que es una transferencia internaciónal de datos personales?",
+    "options": [
+      "Enviar datos a otro servidor",
+      "Enviar datos personales a un pais diferente",
+      "Compartir datos con un colega",
+      "Borrar datos"
+    ],
+    "correct": "Enviar datos personales a un pais diferente",
+    "correctIndex": 1,
+    "explanationCorrect": "Es enviar datos personales fuera del territorio naciónal.",
+    "explanationWrong": "No, es transferir datos al extranjero."
+  },
+  {
+    "id": "ac_st8_ses03_l01_q12",
+    "type": "multipleChoice",
+    "question": "Cuanto tiempo puede una empresa conservar datos personales?",
+    "options": [
+      "Indefinidamente",
+      "Solo el tiempo necesario para la finalidad",
+      "Hasta que el usuario muera",
+      "Sin limite de tiempo"
+    ],
+    "correct": "Solo el tiempo necesario para la finalidad",
+    "correctIndex": 1,
+    "explanationCorrect": "Los datos deben conservarse solo lo necesario para la finalidad.",
+    "explanationWrong": "No, hay un limite de tiempo."
+  },
+  {
+    "id": "ac_st8_ses03_l05_q10",
+    "type": "trueFalse",
+    "question": "Los empleados del banco pueden acceder a datos de clientes por curiosidad.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correct": "Falso",
+    "correctIndex": 1,
+    "explanationCorrect": "Correcto, el acceso debe ser solo por necesidad del cargo.",
+    "explanationWrong": "No, el acceso es solo por necesidad laboral."
+  },
+  {
+    "id": "ac_st8_ses03_l01_q14",
+    "type": "multipleChoice",
+    "question": "Que es el Registro Naciónal de Bases de Datos Personales?",
+    "options": [
+      "Una lista de telefonos",
+      "Un registro de las bases de datos que manejan datos personales",
+      "Un directorio de empresas",
+      "Una base de datos de clientes"
+    ],
+    "correct": "Un registro de las bases de datos que manejan datos personales",
+    "correctIndex": 1,
+    "explanationCorrect": "Es el registro donde las empresas deben inscribir sus bases de datos.",
+    "explanationWrong": "No, es un registro de bases de datos personales."
+  },
+  {
+    "id": "ac_st8_ses03_l02_q03",
+    "type": "multipleChoice",
+    "question": "Que debe hacer un banco cuando el titular solicita acceso a sus datos?",
+    "options": [
+      "Cobrar una tarifa alta",
+      "Proporcionar la información en un plazo razónable",
+      "Ignorar la solicitud",
+      "Pedir autorizacion judicial"
+    ],
+    "correct": "Proporcionar la información en un plazo razónable",
+    "correctIndex": 1,
+    "explanationCorrect": "El banco debe responder en un plazo razónable y sin costo excesivo.",
+    "explanationWrong": "No, debe proporcionar la información oportunamente."
+  },
+  {
+    "id": "ac_st8_ses03_l02_q14",
+    "type": "multipleChoice",
+    "question": "El derecho de portabilidad aplica a todos los bancos?",
+    "options": [
+      "Solo a bancos estatales",
+      "Si, a todos los que manejen datos personales",
+      "No aplica a bancos",
+      "Solo a bancos privados"
+    ],
+    "correct": "Si, a todos los que manejen datos personales",
+    "correctIndex": 1,
+    "explanationCorrect": "Aplica a todas las entidades que manejen datos personales.",
+    "explanationWrong": "No, aplica a todas las entidades."
+  },
+  {
+    "id": "ac_st8_ses03_l03_q02",
+    "type": "trueFalse",
+    "question": "El consentimiento puede ser verbal.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correct": "Verdadero",
+    "correctIndex": 0,
+    "explanationCorrect": "Si, la ley permite consentimiento verbal en ciertos casos.",
+    "explanationWrong": "No, si esta permitido en ciertos casos."
+  },
+  {
+    "id": "ac_st8_ses03_l03_q06",
+    "type": "trueFalse",
+    "question": "Un banco puede usar los datos de un cliente para marketing sin su consentimiento.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correct": "Falso",
+    "correctIndex": 1,
+    "explanationCorrect": "Correcto, para marketing se requiere consentimiento.",
+    "explanationWrong": "No, para marketing se necesita consentimiento."
+  },
+  {
+    "id": "ac_st8_ses03_l01_q04",
+    "type": "multipleChoice",
+    "question": "Cual es el primer paso cuando un banco recopila datos personales?",
+    "options": [
+      "Vender la información",
+      "Obtener consentimiento del titular",
+      "Compartir con terceros",
+      "Ignorar la normativa"
+    ],
+    "correct": "Obtener consentimiento del titular",
+    "correctIndex": 1,
+    "explanationCorrect": "Siempre se debe obtener consentimiento previo del titular.",
+    "explanationWrong": "No, primero se debe obtener consentimiento."
+  },
+  {
+    "id": "ac_st8_ses03_l01_q15",
+    "type": "trueFalse",
+    "question": "Los bancos estan exentos de cumplir la Ley 29733.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correct": "Falso",
+    "correctIndex": 1,
+    "explanationCorrect": "Correcto, los bancos tambien deben cumplir la ley.",
+    "explanationWrong": "No, los bancos tambien deben cumplir."
+  },
+  {
+    "id": "ac_st8_ses03_l06_q07",
+    "type": "multipleChoice",
+    "question": "Un banco peruano usa un servicio de nube en Estados Unidos. Que debe garantizar?",
+    "options": [
+      "Nada especial",
+      "Que el proveedor en EE.UU. tenga garantias de protección equivalentes",
+      "Solo que el servicio funcione",
+      "Que el proveedor sea barato"
+    ],
+    "correct": "Que el proveedor en EE.UU. tenga garantias de protección equivalentes",
+    "correctIndex": 1,
+    "explanationCorrect": "Debe garantizar que el proveedor extranjero proteja los datos adecuadamente.",
+    "explanationWrong": "No, debe haber garantias equivalentes."
+  }
+]

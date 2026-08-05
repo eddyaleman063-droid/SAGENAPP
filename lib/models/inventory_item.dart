@@ -1,3 +1,5 @@
+import '../l10n/app_localizations.dart';
+
 enum InventoryItemType {
   focusElixir,
   phoenixFeather,
@@ -6,23 +8,41 @@ enum InventoryItemType {
 
   String get displayName {
     switch (this) {
-      case InventoryItemType.focusElixir: return 'Elixir de Foco';
-      case InventoryItemType.phoenixFeather: return 'Pluma de Fénix';
-      case InventoryItemType.sagesMonocle: return 'Monóculo del Sabio';
-      case InventoryItemType.titaniumShield: return 'Escudo de Titanio';
+      case InventoryItemType.focusElixir: return 'Focus Elixir';
+      case InventoryItemType.phoenixFeather: return 'Phoenix Feather';
+      case InventoryItemType.sagesMonocle: return "Sage's Monocle";
+      case InventoryItemType.titaniumShield: return 'Titanium Shield';
+    }
+  }
+
+  String localizedDisplayName(AppLocalizations l) {
+    switch (this) {
+      case InventoryItemType.focusElixir: return l.inventoryFocusElixir;
+      case InventoryItemType.phoenixFeather: return l.inventoryPhoenixFeather;
+      case InventoryItemType.sagesMonocle: return l.inventorySagesMonocle;
+      case InventoryItemType.titaniumShield: return l.inventoryTitaniumShield;
     }
   }
 
   String get description {
     switch (this) {
       case InventoryItemType.focusElixir:
-        return 'Multiplica EXP y Gemas x2 durante 15 min';
+        return 'Double EXP and Gems for 15 min';
       case InventoryItemType.phoenixFeather:
-        return 'Revive tu racha si la perdiste hace menos de 24h';
+        return 'Revive your streak if lost within 24h';
       case InventoryItemType.sagesMonocle:
-        return 'Elimina 2 respuestas incorrectas en un reto';
+        return 'Eliminates 2 wrong answers in a challenge';
       case InventoryItemType.titaniumShield:
-        return 'Protege tu racha automáticamente si faltas un día';
+        return 'Automatically protects your streak if you miss a day';
+    }
+  }
+
+  String localizedDescription(AppLocalizations l) {
+    switch (this) {
+      case InventoryItemType.focusElixir: return l.inventoryFocusElixirDesc;
+      case InventoryItemType.phoenixFeather: return l.inventoryPhoenixFeatherDesc;
+      case InventoryItemType.sagesMonocle: return l.inventorySagesMonocleDesc;
+      case InventoryItemType.titaniumShield: return l.inventoryTitaniumShieldDesc;
     }
   }
 
@@ -36,9 +56,25 @@ enum InventoryItemType {
   }
 }
 
+/// An inventory item with type and quantity.
 class InventoryItem {
   final InventoryItemType type;
-  int quantity;
+  final int quantity;
 
-  InventoryItem({required this.type, this.quantity = 0});
+  const InventoryItem({required this.type, this.quantity = 0});
+
+  InventoryItem copyWith({InventoryItemType? type, int? quantity}) {
+    return InventoryItem(
+      type: type ?? this.type,
+      quantity: quantity ?? this.quantity,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is InventoryItem && type == other.type && quantity == other.quantity;
+
+  @override
+  int get hashCode => type.hashCode ^ quantity.hashCode;
 }

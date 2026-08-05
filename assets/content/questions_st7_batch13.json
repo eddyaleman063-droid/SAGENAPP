@@ -1,0 +1,452 @@
+[
+    {
+        "id": "ac_st7_qB13_001",
+        "question": "Que es la seguridad de dispositivos moviles y porque es importante",
+        "type": "multipleChoice",
+        "options": [
+            "Solo es importante para empresas",
+            "Proteger tu celular o tablet de amenazas que pueden robar tu información",
+            "Un tipo de red social",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los dispositivos moviles contienen información personal sensible que debes proteger.",
+        "difficulty": 1,
+        "lessonId": "ac_s7_ses1_l1"
+    },
+    {
+        "id": "ac_st7_qB13_002",
+        "question": "Que es el bloqueo de pantalla y porque es la primera linea de defensa",
+        "type": "completePhrase",
+        "options": [
+            "Decorar tu pantalla",
+            "Mecanismo que impide el acceso no autorizado a tu dispositivo cuando esta cerrado",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "El bloqueo de pantalla es lo primero que impide que alguien acceda a tu información si pierdes el dispositivo.",
+        "difficulty": 1,
+        "lessonId": "ac_s7_ses1_l2"
+    },
+    {
+        "id": "ac_st7_qB13_003",
+        "question": "Que es mas seguro: PIN, patron o huella dactilar",
+        "type": "multipleChoice",
+        "options": [
+            "El PIN porque es corto",
+            "La huella dactilar porque es única y dificil de replicar",
+            "El patron porque es visual",
+            "Todos son igual de seguros"
+        ],
+        "correctIndex": 1,
+        "explanation": "La biometria como huella dactilar es mas segura que PIN o patron porque es única para ti.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses1_l3"
+    },
+    {
+        "id": "ac_st7_qB13_004",
+        "question": "Que es la actualización desoftware decontraseña decontraseña decontraseña decontraseña decontraseña",
+        "type": "completePhrase",
+        "options": [
+            "Cambiar el fondo de pantalla",
+            "Instalar parches de seguridad que corrigen vulnerabilidades en tu dispositivo",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las actualizaciones corrigen fallos de seguridad que los atacantes pueden explotar.",
+        "difficulty": 1,
+        "lessonId": "ac_s7_ses1_l4"
+    },
+    {
+        "id": "ac_st7_qB13_005",
+        "question": "Que es la descarga segura de aplicaciones",
+        "type": "detectRisk",
+        "options": [
+            "Descargar de cualquier página web",
+            "Solo usar tiendas oficiales como Google Play o App Store para descargar apps",
+            "Pedirle a alguien que la descargue por ti",
+            "No descargar ninguna aplicación"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las tiendas oficiales revisan las apps para eliminar malware antes de ofrecerlas.",
+        "difficulty": 1,
+        "lessonId": "ac_s7_ses1_l5"
+    },
+    {
+        "id": "ac_st7_qB13_006",
+        "question": "Que es la red wifi publica y por que es peligrosa para tu seguridad",
+        "type": "detectRisk",
+        "options": [
+            "Es perfectamente segura",
+            "Los hackers pueden interceptar tu información en redes publicas sin cifrar",
+            "Solo es peligrosa en otros paises",
+            "No hay riesgo alguno"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las redes publicas son objetivo de hackers que pueden espiar tu trafico de datos.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses1_l6"
+    },
+    {
+        "id": "ac_st7_qB13_007",
+        "question": "Que es la copia de seguridad de tu celular y como se hace",
+        "type": "completePhrase",
+        "options": [
+            "Tomar fotos de la pantalla",
+            "Guardar una copia de tu información en la nube o en un dispositivo externo",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "La copia de seguridad te permite recuperar tus datos si pierdes o te roban el celular.",
+        "difficulty": 1,
+        "lessonId": "ac_s7_ses2_l1"
+    },
+    {
+        "id": "ac_st7_qB13_008",
+        "question": "Que es la localizacion de dispositivo perdido",
+        "type": "multipleChoice",
+        "options": [
+            "Una forma de espiar a otros",
+            "Función que te permite encontrar, bloquear o borrar tu celular si lo pierdes",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "La localizacion te ayuda a recuperar tu celular o proteger tus datos si es robado.",
+        "difficulty": 1,
+        "lessonId": "ac_s7_ses2_l2"
+    },
+    {
+        "id": "ac_st7_qB13_009",
+        "question": "Que es el borrado remoto de datos",
+        "type": "completePhrase",
+        "options": [
+            "Borrar fotos del album",
+            "Función que elimina toda tu información del celular remotamente si es robado",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "El borrado remoto protege tu información eliminandola si no puedes recuperar el dispositivo.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses2_l3"
+    },
+    {
+        "id": "ac_st7_qB13_010",
+        "question": "Que es la contraseña de la red wifi y por que deberias cambiarla",
+        "type": "detectRisk",
+        "options": [
+            "No es necesario cambiarla",
+            "La contraseña por defecto es conocida por hackers, cambiala por una única y fuerte",
+            "Solo cambiarla si hay problemas",
+            "Pedirle al proveedor que la cambie"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las contraseñas por defecto son publicas. Cambiala para proteger tu red domestica.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses2_l4"
+    },
+    {
+        "id": "ac_st7_qB13_011",
+        "question": "Que es la configuración de privacidad en tu celular",
+        "type": "multipleChoice",
+        "options": [
+            "Cambiar el color de la pantalla",
+            "Ajustar que aplicaciones pueden acceder a tu ubicacion, camara y contactos",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "La configuración de privacidad te permite controlar que datos comparten tus aplicaciones.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses2_l5"
+    },
+    {
+        "id": "ac_st7_qB13_012",
+        "question": "Que es la verificación decontraseña decontraseña decontraseña decontraseña decontraseña decontraseña",
+        "type": "completePhrase",
+        "options": [
+            "Ver tu perfil en redes sociales",
+            "Comprobar que las aplicaciones que instalas sean legítimas y seguras",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "Verificar la legitimidad de apps evita instalar malware disfrazado de aplicaciones utiles.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses2_l6"
+    },
+    {
+        "id": "ac_st7_qB13_013",
+        "question": "Que es la protección contra malware en dispositivos moviles",
+        "type": "multipleChoice",
+        "options": [
+            "No es necesaria en celulares",
+            "Software que detecta y elimina virus y programas maliciosos de tu dispositivo",
+            "Un tipo de red social",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los celulares tambien pueden infectarse con malware, por eso necesitan protección.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses3_l1"
+    },
+    {
+        "id": "ac_st7_qB13_014",
+        "question": "Que es el bloqueo decontraseña decontraseña decontraseña decontraseña decontraseña decontraseña",
+        "type": "completePhrase",
+        "options": [
+            "Cerrar sesión en redes sociales",
+            "Función que bloquea tu dispositivo despues de varios intentos fallidos de desbloqueo",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "El bloqueo automático protege tu dispositivo si alguien intenta adivinar tu PIN o patron.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses3_l2"
+    },
+    {
+        "id": "ac_st7_qB13_015",
+        "question": "Que es la verificación decontraseña decontraseña decontraseña decontraseña decontraseña",
+        "type": "multipleChoice",
+        "options": [
+            "Ver tu perfil en redes sociales",
+            "Comprobar que tus dispositivos no tengan vulnerabilidades conocidas",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "La verificación identifica debilidades en tu dispositivo que podrian ser explotadas.",
+        "difficulty": 3,
+        "lessonId": "ac_s7_ses3_l3"
+    },
+    {
+        "id": "ac_st7_qB13_016",
+        "question": "Que es la encriptación de dispositivo y porque es importante",
+        "type": "completePhrase",
+        "options": [
+            "Borrar datos del dispositivo",
+            "Proteger la información de tu celular para que no pueda leerse si es robado",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "La encriptación asegura que aunque roben tu celular, no puedan leer tu información.",
+        "difficulty": 3,
+        "lessonId": "ac_s7_ses3_l4"
+    },
+    {
+        "id": "ac_st7_qB13_017",
+        "question": "Que es la seguridad en dispositivos IoT como asistentes virtuales",
+        "type": "multipleChoice",
+        "options": [
+            "No son dispositivos de seguridad",
+            "Medidas para proteger dispositivos conectados a internet como Alexa o Google Home",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los dispositivos IoT pueden ser puertas de entrada si no se configuran de forma segura.",
+        "difficulty": 3,
+        "lessonId": "ac_s7_ses3_l5"
+    },
+    {
+        "id": "ac_st7_qB13_018",
+        "question": "Que es la actualización automática decontraseña decontraseña decontraseña decontraseña decontraseña decontraseña",
+        "type": "completePhrase",
+        "options": [
+            "Actualizar manualmente cada semana",
+            "Configurar tu dispositivo para que se actualice solo con los ultimos parches de seguridad",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las actualizaciones automáticas aseguran que siempre tengas las ultimas protecciónes.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses3_l6"
+    },
+    {
+        "id": "ac_st7_qB13_019",
+        "question": "Que es la higiene digital en dispositivos moviles",
+        "type": "multipleChoice",
+        "options": [
+            "Limpiar la pantalla",
+            "Buenas prácticas como cerrar sesiónes, borrar apps viejas y revisar permisos",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "La higiene digital incluye mantener tu dispositivo limpio de apps innecesarias y permisos excesivos.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses4_l1"
+    },
+    {
+        "id": "ac_st7_qB13_020",
+        "question": "Que es la eliminación segura de datos antes de vender o regalar un celular",
+        "type": "completePhrase",
+        "options": [
+            "Solo borrar fotos",
+            "Restablecer el celular de fabrica para eliminar toda tu información personal",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "El restablecimiento de fabrica elimina todos tus datos, asegurando que el nuevo propietario no los tenga.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses4_l2"
+    },
+    {
+        "id": "ac_st7_qB13_021",
+        "question": "Que es la deteccion decontraseña decontraseña decontraseña decontraseña decontraseña decontraseña",
+        "type": "multipleChoice",
+        "options": [
+            "Ver tus aplicaciones",
+            "Mecanismo que identifica y bloquea aplicaciones maliciosas en tu dispositivo",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "La deteccion de apps maliciosas protege contra software disfrazado que roba información.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses4_l3"
+    },
+    {
+        "id": "ac_st7_qB13_022",
+        "question": "Que es la segmentacion de red en tu hogar y como protege tus dispositivos",
+        "type": "completePhrase",
+        "options": [
+            "Conectar todos los dispositivos juntos",
+            "Separar tu red wifi en partes para limitar el acceso en caso de compromiso",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "La segmentacion limita el daño si un dispositivo es comprometido, protegiendo los demas.",
+        "difficulty": 3,
+        "lessonId": "ac_s7_ses4_l4"
+    },
+    {
+        "id": "ac_st7_qB13_023",
+        "question": "Que es la verificación decontraseña decontraseña decontraseña decontraseña decontraseña decontraseña decontraseña",
+        "type": "completePhrase",
+        "options": [
+            "Ver tu perfil en redes sociales",
+            "Comprobar que tus dispositivos no tengan accesos no autorizados o configuraciónes peligrosas",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "La verificación regular asegura que tus dispositivos se mantengan seguros con el tiempo.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses4_l5"
+    },
+    {
+        "id": "ac_st7_qB13_024",
+        "question": "Que es la mejora continua decontraseña decontraseña decontraseña decontraseña decontraseña decontraseña",
+        "type": "multipleChoice",
+        "options": [
+            "No cambiar nada",
+            "Actualizar y mejorar continuamente las protecciónes de tus dispositivos",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "La seguridad es un proceso continuo que debes mantener y mejorar con el tiempo.",
+        "difficulty": 3,
+        "lessonId": "ac_s7_ses4_l6"
+    },
+    {
+        "id": "ac_st7_qB13_025",
+        "question": "Que es la prevención decontraseña decontraseña decontraseña decontraseña decontraseña decontraseña decontraseña",
+        "type": "completePhrase",
+        "options": [
+            "No hacer nada",
+            "Medidas proactivas para que tus dispositivos no sean vulnerables a ataques",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "La prevención incluye buenas prácticas que reducen significativamente el riesgo de ataque.",
+        "difficulty": 1,
+        "lessonId": "ac_s7_ses4_l6"
+    },
+    {
+        "id": "ac_st7_qB13_026",
+        "question": "Que consejo le darias a alguien que usa su celular sin ninguna protección",
+        "type": "whatWouldYouDo",
+        "options": [
+            "Que no se preocupe porque nada va a pasar",
+            "Que active el bloqueo de pantalla, actualice el sistema y revise los permisos de apps",
+            "Que compre un celular nuevo",
+            "Que no use el celular para nada importante"
+        ],
+        "correctIndex": 1,
+        "explanation": "Es facil proteger tu celular: activa bloqueo, actualiza y revisa los permisos de tus apps.",
+        "difficulty": 1,
+        "lessonId": "ac_s7_ses4_l6"
+    },
+    {
+        "id": "ac_st7_qB13_027",
+        "question": "Caso: Tu tio tiene un celular viejo que nunca actualiza. Que le recomiendas",
+        "type": "miniCase",
+        "options": [
+            "Que no actualice porque es viejo y puede fallar",
+            "Que verifique si hay actualizaciones disponibles y las instale para protegerse",
+            "Que lo guarde en un cajon",
+            "Que le pida a un niño que lo configure"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las actualizaciones corrigen problemas de seguridad importantes, incluso en dispositivos viejos.",
+        "difficulty": 1,
+        "lessonId": "ac_s7_ses4_l6"
+    },
+    {
+        "id": "ac_st7_qB13_028",
+        "question": "Que es la recuperación decontraseña decontraseña decontraseña decontraseña decontraseña decontraseña decontraseña decontraseña",
+        "type": "multipleChoice",
+        "options": [
+            "Recuperar fotos borradas",
+            "Acciones para proteger tus cuentas si tu celular es robado o perdido",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "Si pierdes tu celular, actua rápido: localizalo, borra datos y cambia contraseñas importantes.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses4_l6"
+    },
+    {
+        "id": "ac_st7_qB13_029",
+        "question": "Que es la resiliencia de dispositivo y como se logra",
+        "type": "completePhrase",
+        "options": [
+            "Tener un celular nuevo",
+            "Capacidad de tu dispositivo para resistir, recuperarse y funcionar despues de un ataque",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "La resiliencia se logra con buenas prácticas de mantenimiento, actualizaciones y copias de seguridad.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses4_l6"
+    },
+    {
+        "id": "ac_st7_qB13_030",
+        "question": "Que es la planificacion de contingencia para dispositivos y por que es importante",
+        "type": "whatWouldYouDo",
+        "options": [
+            "No es necesario porque no van a perder el celular",
+            "Tener un plan claro de que hacer si pierdes o te roban tu dispositivo",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "Planificar con antelacion te permite actuar rápido y minimizar el daño si algo malo ocurre.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses4_l6"
+    }
+]

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sagen/core/theme/app_colors.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/services/achievement_service.dart';
@@ -8,16 +9,16 @@ class AchievementCard extends StatelessWidget {
   final bool dark;
   const AchievementCard({super.key, required this.achievement, required this.dark});
 
-  static const _rarityGradients = <int, List<Color>>{
-    10: [Color(0xFF90A4AE), Color(0xFFB0BEC5)],
-    20: [Color(0xFF90A4AE), Color(0xFFCFD8DC)],
-    25: [Color(0xFFFFB300), Color(0xFFFFD54F)],
-    30: [Color(0xFFFFB300), Color(0xFFFFCA28)],
-    40: [Color(0xFF7C4DFF), Color(0xFFB388FF)],
-    50: [Color(0xFF7C4DFF), Color(0xFFB388FF)],
-    60: [Color(0xFFFF6F00), Color(0xFFFFB300)],
-    100: [Color(0xFFFF6F00), Color(0xFFFFD54F)],
-    200: [Color(0xFFFF6F00), Color(0xFFFFE082)],
+  static final _rarityGradients = <int, List<Color>>{
+    10: [PremiumColors.achievementTier10, PremiumColors.achievementTier20],
+    20: [PremiumColors.achievementTier10, PremiumColors.achievementTier20Light],
+    25: [PremiumColors.rarityLegendary, PremiumColors.achievementTier25],
+    30: [PremiumColors.rarityLegendary, PremiumColors.achievementTier30],
+    40: [PremiumColors.deepPurple, PremiumColors.achievementTier40],
+    50: [PremiumColors.deepPurple, PremiumColors.achievementTier40],
+    60: [PremiumColors.achievementTier60, PremiumColors.rarityLegendary],
+    100: [PremiumColors.achievementTier60, PremiumColors.achievementTier25],
+    200: [PremiumColors.achievementTier60, PremiumColors.achievementTier200Light],
   };
 
   List<Color> get _gradient {
@@ -42,12 +43,12 @@ class AchievementCard extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppRadius.xl),
         color: unlocked
-            ? const Color(0xFF253145)
-            : (dark ? Colors.white.withValues(alpha: 0.03) : Colors.black.withValues(alpha: 0.03)),
+            ? PremiumColors.darkCard
+            : context.subtle,
         border: Border.all(
           color: unlocked
               ? _gradient.first.withValues(alpha: 0.2)
-              : (dark ? Colors.white12 : Colors.black.withValues(alpha: 0.06)),
+              : context.subtleBorder,
         ),
       ),
       padding: const EdgeInsets.all(AppSpacing.md),
@@ -64,50 +65,48 @@ class AchievementCard extends StatelessWidget {
                   gradient: unlocked ? LinearGradient(colors: _gradient) : null,
                   color: unlocked
                       ? null
-                      : (dark ? Colors.white.withValues(alpha: 0.06) : Colors.black.withValues(alpha: 0.04)),
+                      : context.subtle,
                 ),
-                child: Icon(
-                  achievement.icon,
-                  size: 20,
-                  color: unlocked
-                      ? Colors.white
-                      : (dark ? Colors.white24 : Colors.black26),
+                child: ExcludeSemantics(
+                  child: Icon(
+                    achievement.icon,
+                    size: 20,
+                    color: unlocked
+                        ? Colors.white
+                        : context.textTertiary,
+                  ),
                 ),
               ),
               if (!unlocked)
                 Positioned(
                   top: 2,
                   right: 2,
-                  child: Icon(Icons.lock_rounded, size: 12, color: dark ? Colors.white24 : Colors.black26),
+                  child: ExcludeSemantics(
+                    child: Icon(Icons.lock_rounded, size: 12, color: context.textTertiary),
+                  ),
                 ),
             ],
           ),
           const SizedBox(height: AppSpacing.sm),
           Text(
-            achievement.title,
+            _localizedTitle(achievement.id, l),
             textAlign: TextAlign.center,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
+            style: AppTextStyle.caption.copyWith(fontWeight: FontWeight.w600,
               color: unlocked
-                  ? (dark ? Colors.white.withValues(alpha: 0.9) : Colors.black87)
-                  : (dark ? Colors.white38 : Colors.black38),
-            ),
+                  ? context.textPrimary
+                  : context.textTertiary),
           ),
-          const SizedBox(height: 2),
+          const SizedBox(height: AppSpacing.xxs),
           Text(
-            unlocked ? achievement.description : l.achievementLocked,
+            unlocked ? _localizedDescription(achievement.id, l) : l.achievementLocked,
             textAlign: TextAlign.center,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontSize: 10,
-              color: unlocked
-                  ? (dark ? Colors.white38 : Colors.black45)
-                  : (dark ? Colors.white12 : Colors.black12),
-            ),
+            style: AppTextStyle.tiny.copyWith(color: unlocked
+                  ? context.textTertiary
+                  : context.subtle),
           ),
           if (unlocked) ...[
             const SizedBox(height: AppSpacing.xs),
@@ -119,12 +118,48 @@ class AchievementCard extends StatelessWidget {
               ),
               child: Text(
                 _rarityLabel(l),
-                style: const TextStyle(fontSize: 9, fontWeight: FontWeight.bold, color: Colors.white, letterSpacing: 0.5),
+                style: AppTextStyle.micro.copyWith(fontWeight: FontWeight.bold, color: Colors.white, letterSpacing: 0.5),
               ),
             ),
           ],
         ],
       ),
     );
+  }
+
+  static String _localizedTitle(String id, AppLocalizations l) {
+    switch (id) {
+      case 'first_lesson': return l.achievementFirstShield;
+      case 'five_lessons': return l.achievementLearner;
+      case 'ten_lessons': return l.achievementDigitalStudent;
+      case 'twenty_five_lessons': return l.achievementGuardian;
+      case 'fifty_lessons': return l.achievementCyberGuardian;
+      case 'stage_complete': return l.achievementConqueror;
+      case 'all_stages': return l.achievementDigitalMaster;
+      case 'streak_3': return l.achievementConstant;
+      case 'streak_7': return l.achievementDigitalWeek;
+      case 'streak_30': return l.achievementLegendaryStreak;
+      case 'perfect_lesson': return l.achievementPerfect;
+      case 'sage_talk': return l.achievementCurious;
+      default: return id;
+    }
+  }
+
+  static String _localizedDescription(String id, AppLocalizations l) {
+    switch (id) {
+      case 'first_lesson': return l.achievementFirstShieldDesc;
+      case 'five_lessons': return l.achievementLearnerDesc;
+      case 'ten_lessons': return l.achievementDigitalStudentDesc;
+      case 'twenty_five_lessons': return l.achievementGuardianDesc;
+      case 'fifty_lessons': return l.achievementCyberGuardianDesc;
+      case 'stage_complete': return l.achievementConquerorDesc;
+      case 'all_stages': return l.achievementDigitalMasterDesc;
+      case 'streak_3': return l.achievementConstantDesc;
+      case 'streak_7': return l.achievementDigitalWeekDesc;
+      case 'streak_30': return l.achievementLegendaryStreakDesc;
+      case 'perfect_lesson': return l.achievementPerfectDesc;
+      case 'sage_talk': return l.achievementCuriousDesc;
+      default: return id;
+    }
   }
 }

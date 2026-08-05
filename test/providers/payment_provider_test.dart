@@ -6,38 +6,73 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../helpers/mock_learning_provider.dart';
 
+class MockPaymentNotifier extends PaymentNotifier {
+  @override
+  PaymentState build() => const PaymentState();
+
+  @override
+  Future<void> initiateWhatsApp({
+    required double price,
+    dynamic product,
+  }) async {
+    state = state.copyWith(
+      status: PaymentStatus.waitingPayment,
+      pendingAmount: price,
+      selectedMethod: PaymentMethod.whatsapp,
+      donatedBefore: ref.read(learningProvider).totalDonated.toInt(),
+      selectedProduct: product,
+      clearError: true,
+    );
+  }
+
+  @override
+  void onPaymentFailure({String? error}) {
+    state = state.copyWith(
+      status: PaymentStatus.failed,
+      errorMessage: error ?? 'El pago fue cancelado o no se completó',
+    );
+  }
+
+  @override
+  void reset() {
+    state = const PaymentState();
+  }
+
+  @override
+  Future<void> refreshGems() async {
+    state = state.copyWith(donatedAfter: ref.read(learningProvider).totalDonated.toInt());
+  }
+}
+
 void main() {
   group('PaymentState', () {
     test('initial state has correct defaults', () {
       const state = PaymentState();
       expect(state.status, PaymentStatus.idle);
       expect(state.errorMessage, isNull);
-      expect(state.pendingGems, isNull);
       expect(state.pendingAmount, isNull);
       expect(state.selectedMethod, isNull);
       expect(state.preferenceId, isNull);
       expect(state.initPoint, isNull);
-      expect(state.gemsBefore, isNull);
-      expect(state.gemsAfter, isNull);
+      expect(state.donatedBefore, isNull);
+      expect(state.donatedAfter, isNull);
     });
 
     test('copyWith updates specified fields', () {
       const state = PaymentState();
       final updated = state.copyWith(
         status: PaymentStatus.completed,
-        pendingGems: 100,
         pendingAmount: 5.0,
         selectedMethod: PaymentMethod.mercadopago,
-        gemsBefore: 50,
-        gemsAfter: 150,
+        donatedBefore: 50,
+        donatedAfter: 150,
       );
       expect(updated.status, PaymentStatus.completed);
-      expect(updated.pendingGems, 100);
       expect(updated.pendingAmount, 5.0);
       expect(updated.selectedMethod, PaymentMethod.mercadopago);
       expect(updated.preferenceId, isNull);
-      expect(updated.gemsBefore, 50);
-      expect(updated.gemsAfter, 150);
+      expect(updated.donatedBefore, 50);
+      expect(updated.donatedAfter, 150);
     });
 
     test('copyWith clearError clears errorMessage', () {
@@ -47,9 +82,8 @@ void main() {
     });
 
     test('copyWith preserves unspecified fields', () {
-      const state = PaymentState(pendingGems: 100, pendingAmount: 5.0);
+      const state = PaymentState(pendingAmount: 5.0);
       final updated = state.copyWith(status: PaymentStatus.waitingPayment);
-      expect(updated.pendingGems, 100);
       expect(updated.pendingAmount, 5.0);
       expect(updated.status, PaymentStatus.waitingPayment);
       expect(updated.errorMessage, isNull);
@@ -61,10 +95,11 @@ void main() {
 
     setUp(() async {
       SharedPreferences.setMockInitialValues({});
-      final prefs = await SharedPreferences.getInstance();
+      await SharedPreferences.getInstance();
       container = ProviderContainer(
         overrides: [
           learningProvider.overrideWith(MockLearningNotifier.new),
+          paymentProvider.overrideWith(() => MockPaymentNotifier()),
         ],
       );
     });
@@ -76,30 +111,20 @@ void main() {
       expect(state.status, PaymentStatus.idle);
     });
 
-    test('initiateWhatsApp sets waiting state with gems and price', () async {
+    test('initiateWhatsApp sets waiting state with price', () async {
       final notifier = container.read(paymentProvider.notifier);
-      await notifier.initiateWhatsApp(gems: 80, price: 10.0);
+      await notifier.initiateWhatsApp(price: 10.0);
       final state = container.read(paymentProvider);
       expect(state.status, PaymentStatus.waitingPayment);
-      expect(state.pendingGems, 80);
       expect(state.pendingAmount, 10.0);
       expect(state.selectedMethod, PaymentMethod.whatsapp);
-      expect(state.gemsBefore, 0);
+      expect(state.donatedBefore, 0);
       expect(state.errorMessage, isNull);
-    });
-
-    test('onPaymentSuccess sets completed status with gemsAfter', () async {
-      final notifier = container.read(paymentProvider.notifier);
-      await notifier.initiateWhatsApp(gems: 50, price: 5.0);
-      notifier.onPaymentSuccess('user123|50|123456');
-      final state = container.read(paymentProvider);
-      expect(state.status, PaymentStatus.completed);
-      expect(state.gemsAfter, 50);
     });
 
     test('onPaymentFailure sets failed status with default error', () async {
       final notifier = container.read(paymentProvider.notifier);
-      await notifier.initiateWhatsApp(gems: 50, price: 5.0);
+      await notifier.initiateWhatsApp(price: 5.0);
       notifier.onPaymentFailure();
       final state = container.read(paymentProvider);
       expect(state.status, PaymentStatus.failed);
@@ -116,37 +141,28 @@ void main() {
 
     test('reset clears everything back to default', () async {
       final notifier = container.read(paymentProvider.notifier);
-      await notifier.initiateWhatsApp(gems: 80, price: 10.0);
+      await notifier.initiateWhatsApp(price: 10.0);
       notifier.reset();
       final state = container.read(paymentProvider);
       expect(state.status, PaymentStatus.idle);
-      expect(state.pendingGems, isNull);
       expect(state.pendingAmount, isNull);
       expect(state.selectedMethod, isNull);
     });
 
-    test('onPaymentSuccess without initiate still completes', () {
+    test('refreshGems reads donatedAfter from learningProvider', () async {
       final notifier = container.read(paymentProvider.notifier);
-      notifier.onPaymentSuccess('user123|50|123456');
+      await notifier.initiateWhatsApp(price: 5.0);
+      await notifier.refreshGems();
       final state = container.read(paymentProvider);
-      expect(state.status, PaymentStatus.completed);
-    });
-
-    test('refreshGems reads gemsAfter from learningProvider', () async {
-      final notifier = container.read(paymentProvider.notifier);
-      await notifier.initiateWhatsApp(gems: 50, price: 5.0);
-      notifier.refreshGems();
-      final state = container.read(paymentProvider);
-      expect(state.gemsAfter, 0);
+      expect(state.donatedAfter, 0);
     });
 
     test('initiateWhatsApp clears previous error', () async {
       final notifier = container.read(paymentProvider.notifier);
       notifier.onPaymentFailure(error: 'previous error');
-      await notifier.initiateWhatsApp(gems: 80, price: 10.0);
+      await notifier.initiateWhatsApp(price: 10.0);
       final state = container.read(paymentProvider);
       expect(state.errorMessage, isNull);
-      expect(state.pendingGems, 80);
     });
   });
 }

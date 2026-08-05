@@ -1,0 +1,7 @@
+String lessonsCompletedPlural(num count);
+String sageAdvancing(Object name);
+String sageEmptyState(Object name);
+String sageStreakLostMessage(Object name);
+String sageTellMeMore(Object name);
+String streakDaysCountPlural(num count);
+String treasureChest(Object type);

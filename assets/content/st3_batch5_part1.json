@@ -1,0 +1,1012 @@
+[
+  {
+    "id": "ac_st3_ses25_l1_q01",
+    "type": "multipleChoice",
+    "question": "Qué es el 2FA (Autenticación de Dos Factores)?",
+    "options": [
+      "Un método que requiere dos contraseñas diferentes",
+      "Un sistema que verifica tu identidad con dos métodos distintos",
+      "Un tipo de antivirus para el celular",
+      "Una aplicación para enviar mensajes"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "El 2FA usa dos factores distintos para confirmar tu identidad y proteger tus cuentas.",
+    "explanationWrong": "El 2FA no usa dos contraseñas ni es un antivirus. Es un sistema de doble verificación."
+  },
+  {
+    "id": "ac_st3_ses25_l1_q02",
+    "type": "multipleChoice",
+    "question": "¿Cuáles son los tres tipos de factores de autenticación?",
+    "options": [
+      "Correo, contraseña y pregunta secreta",
+      "Algo que sabes, algo que tienes y algo que eres",
+      "Celular, computadora y tableta",
+      "Nombre, DNI y fecha de nacimiento"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Los tres factores son: algo que sabes (contraseña), algo que tienes (celular) y algo que eres (huella).",
+    "explanationWrong": "Los factores no son dispositivos ni datos personales, sino categorías de verificación."
+  },
+  {
+    "id": "ac_st3_ses25_l1_q03",
+    "type": "multipleChoice",
+    "question": "¿Quién te envía los códigos de verificación por SMS en el Perú?",
+    "options": [
+      "Solo Yape",
+      "Tu operador de celular (Claro, Movistar, Entel)",
+      "Solo el BCP",
+      "Google"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Tu operador de celular es quien te envía los códigos de verificación por SMS.",
+    "explanationWrong": "Yape y el BCP no envían códigos SMS de verificación; eso lo hace tu operador."
+  },
+  {
+    "id": "ac_st3_ses25_l1_q04",
+    "type": "multipleChoice",
+    "question": "¿Cuál es la primera cuenta que deberías proteger con 2FA en tu familia?",
+    "options": [
+      "La cuenta de redes sociales de tus hijos",
+      "Tu correo electrónico principal",
+      "La cuenta de Yape de tu esposo",
+      "La tienda virtual de tu negocio"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Tu correo principal es lo primero porque desde ahí puedes recuperar todas las demás cuentas familiares.",
+    "explanationWrong": "Aunque las otras son importantes, tu correo es la clave para recuperar todas las demás."
+  },
+  {
+    "id": "ac_st3_ses25_l1_q05",
+    "type": "multipleChoice",
+    "question": "¿Qué es una aplicación autenticadora como Google Authenticator?",
+    "options": [
+      "Una app que genera códigos temporales para verificar tu identidad",
+      "Una app para guardar contraseñas",
+      "Un programa para enviar correos",
+      "Una aplicación para jugar en línea"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Google Authenticator genera códigos de 6 dígitos que cambian cada 30 segundos para verificar tu identidad.",
+    "explanationWrong": "Las apps autenticadoras generan códigos temporales, no guardan contraseñas ni envían correos."
+  },
+  {
+    "id": "ac_st3_ses25_l1_q06",
+    "type": "trueFalse",
+    "question": "Activar 2FA en la cuenta de Yape de tu familia es importante para evitar robos.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Yape maneja dinero real, así que 2FA protege tus ahorros y transacciones familiares.",
+    "explanationWrong": "Yape maneja dinero y activar 2FA ayuda a prevenir accesos no autorizados."
+  },
+  {
+    "id": "ac_st3_ses25_l1_q07",
+    "type": "trueFalse",
+    "question": "Solo una persona de la familia necesita configurar 2FA.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Todos los miembros que tengan cuentas importantes deben configurar 2FA.",
+    "explanationWrong": "Cada miembro con cuentas propias debe tener su propio 2FA configurado."
+  },
+  {
+    "id": "ac_st3_ses25_l1_q08",
+    "type": "trueFalse",
+    "question": "El 2FA por SMS es el método más seguro que existe.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "El SMS es vulnerable a ataques de intercambio de SIM; las apps autenticadoras son más seguras.",
+    "explanationWrong": "Las apps autenticadoras y llaves físicas son más seguras que el SMS."
+  },
+  {
+    "id": "ac_st3_ses25_l1_q09",
+    "type": "trueFalse",
+    "question": "Debes compartir los códigos de verificación 2FA con tu familia para que te ayuden.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Los códigos 2FA son personales y secretos; compartiéndolos reduces la seguridad.",
+    "explanationWrong": "Los códigos 2FA son para uso personal; compartirlos compromete la cuenta."
+  },
+  {
+    "id": "ac_st3_ses25_l1_q10",
+    "type": "miniCase",
+    "question": "María quiere configurar 2FA para la cuenta de correo de su esposo Carlos. ¿Qué debe hacer primero?",
+    "options": [
+      "Pedirle a Carlos que ingrese a su cuenta y active 2FA desde la configuración",
+      "Crear una nueva cuenta de correo para Carlos",
+      "Instalar un antivirus en la computadora",
+      "Cambiar la contraseña de su propia cuenta"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Carlos debe ingresar a su cuenta y activar 2FA desde la configuración de seguridad de su correo.",
+    "explanationWrong": "Para activar 2FA en la cuenta de Carlos, él debe hacerlo desde su propia configuración."
+  },
+  {
+    "id": "ac_st3_ses25_l1_q11",
+    "type": "miniCase",
+    "question": "La familia García tiene cuentas en el BCP, Yape y redes sociales. ¿Cuál es prioridad para activar 2FA?",
+    "options": [
+      "Las redes sociales primero",
+      "La cuenta del BCP primero",
+      "Yape primero",
+      "Todas al mismo tiempo"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "La cuenta bancaria (BCP) es prioridad porque maneja el dinero familiar y puede causar pérdidas mayores.",
+    "explanationWrong": "La cuenta bancaria tiene mayor impacto económico si es comprometida."
+  },
+  {
+    "id": "ac_st3_ses25_l1_q12",
+    "type": "miniCase",
+    "question": "Don Pedro necesita configurar 2FA en su correo pero no sabe cómo. ¿Qué debe hacer?",
+    "options": [
+      "Pedir ayuda a un nieto o familiar de confianza que le explique paso a paso",
+      "No configurar nada porque es complicado",
+      "Compartir su contraseña con un amigo",
+      "Esperar a que alguien lo haga por él"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Lo ideal es recibir ayuda de un familiar de confianza que le guíe paso a paso.",
+    "explanationWrong": "Es importante aprender con ayuda de alguien de confianza, no delegar sin entender."
+  },
+  {
+    "id": "ac_st3_ses25_l1_q13",
+    "type": "multipleChoice",
+    "question": "¿Qué pasa si tu hijo configura 2FA con su celular pero este se daña?",
+    "options": [
+      "Pierde el acceso a su cuenta permanentemente",
+      "Puede recuperar la cuenta con códigos de respaldo si los guardó",
+      "No pasa nada, el 2FA se desactiva solo",
+      "Necesita crear una cuenta nueva"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Con códigos de respaldo guardados, puede recuperar su cuenta aunque pierda el celular.",
+    "explanationWrong": "Los códigos de respaldo son esenciales para recuperar acceso cuando pierdes el dispositivo."
+  },
+  {
+    "id": "ac_st3_ses25_l1_q14",
+    "type": "multipleChoice",
+    "question": "¿Cuántas cuentas importantes debería proteger con 2FA un usuario promedio?",
+    "options": [
+      "Solo una",
+      "Todas las que usen contraseña y manejen información personal o dinero",
+      "Ninguna, es excesivo",
+      "Solo las redes sociales"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Todas las cuentas con contraseña que manejen información sensible o dinero deben tener 2FA.",
+    "explanationWrong": "Proteger solo algunas deja vulnerabilidades."
+  },
+  {
+    "id": "ac_st3_ses25_l1_q15",
+    "type": "multipleChoice",
+    "question": "¿Qué beneficio tiene usar Google Authenticator sobre el SMS para 2FA?",
+    "options": [
+      "Es más bonito",
+      "No depende de la señal de celular y es más resistente a interceptaciones",
+      "Es más fácil de configurar",
+      "No necesita internet"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Google Authenticator genera códigos en tu dispositivo sin necesidad de señal ni internet, y no puede ser interceptado como un SMS.",
+    "explanationWrong": "Las apps autenticadoras son más seguras porque operan offline."
+  },
+  {
+    "id": "ac_st3_ses25_l2_q01",
+    "type": "multipleChoice",
+    "question": "¿Cuál es la mejor manera de explicar a un niño qué es el 2FA?",
+    "options": [
+      "Decirle que es un código secreto que cambia",
+      "Compararlo con tener dos llaves para abrir la puerta de casa",
+      "Explicarle que es un tipo de juego",
+      "Decirle que es lo mismo que una contraseña"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Comparar el 2FA con dos llaves hace que el niño entienda que necesita dos cosas para entrar.",
+    "explanationWrong": "Las analogías con situaciónes cotidianas ayudan a los niños a entender conceptos de seguridad."
+  },
+  {
+    "id": "ac_st3_ses25_l2_q02",
+    "type": "multipleChoice",
+    "question": "¿A partir de qué edad es recomendable enseñar a un niño sobre 2FA?",
+    "options": [
+      "Desde los 5 años",
+      "A partir de los 10 años cuando usan redes sociales",
+      "Solo cuando son adolescentes",
+      "No es necesario hasta que sean adultos"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "A partir de los 10 años, cuando muchos niños usan redes sociales, es buen momento para enseñarles sobre 2FA.",
+    "explanationWrong": "Los niños más pequeños pueden no entender el concepto, pero a partir de los 10 años es apropiado."
+  },
+  {
+    "id": "ac_st3_ses25_l2_q03",
+    "type": "multipleChoice",
+    "question": "Un niño de 12 años te pregunta para qué sirve el código que llega por SMS. ¿Qué le respondes?",
+    "options": [
+      "Es un código que confirma que eres tú quien está usando la cuenta",
+      "Es un código para ganar puntos en un juego",
+      "Es un número que no tiene importancia",
+      "Es la contraseña nueva de tu correo"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "El código SMS es una segunda capa de seguridad que confirma que quien usa la cuenta es realmente el dueño.",
+    "explanationWrong": "El código SMS no es para juegos ni es la contraseña; es una verificación adicional."
+  },
+  {
+    "id": "ac_st3_ses25_l2_q04",
+    "type": "multipleChoice",
+    "question": "¿Qué debes hacer si un niño comparte un código de verificación con un amigo?",
+    "options": [
+      "Nada, es normal entre amigos",
+      "Explicarle que el código es personal y cambiar la contraseña inmediatamente",
+      "Regañarlo sin explicar por qué está mal",
+      "Quitarle el celular como castigo"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Explica por qué el código es personal y cambia la contraseña para proteger la cuenta.",
+    "explanationWrong": "Es importante educar y tomar acción correctiva, no solo castigar sin explicar."
+  },
+  {
+    "id": "ac_st3_ses25_l2_q05",
+    "type": "multipleChoice",
+    "question": "¿Qué juego educativo puedes usar para enseñar a niños sobre contraseñas seguras?",
+    "options": [
+      "Crear un acertijo donde cada letra es un número",
+      "Hacer un concurso de quién crea la contraseña más corta",
+      "Enseñarles a usar solo su nombre como contraseña",
+      "Decirles que usen la fecha de cumpleaños"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Crear acertijos donde las contraseñas tengan letras, números y símbolos hace que aprendan de forma divertida.",
+    "explanationWrong": "Las contraseñas cortas y predecibles son fáciles de adivinar."
+  },
+  {
+    "id": "ac_st3_ses25_l2_q06",
+    "type": "trueFalse",
+    "question": "Los niños no necesitan usar 2FA porque sus cuentas no son importantes.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Las cuentas de los niños también pueden ser objetivo de hackers, especialmente si tienen redes sociales.",
+    "explanationWrong": "Todas las cuentas, incluidas las de los niños, deben estar protegidas con 2FA."
+  },
+  {
+    "id": "ac_st3_ses25_l2_q07",
+    "type": "trueFalse",
+    "question": "Se puede enseñar a un niño a usar una aplicación autenticadora.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Con supervisión y explicaciones simples, un niño puede aprender a usar una app autenticadora.",
+    "explanationWrong": "Los niños pueden aprender con guía y supervisión de un adulto."
+  },
+  {
+    "id": "ac_st3_ses25_l2_q08",
+    "type": "trueFalse",
+    "question": "Es seguro que un niño guarde sus códigos de respaldo pegados al celular.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Los códigos de respaldo deben guardarse en un lugar seguro y secreto, no pegados al dispositivo.",
+    "explanationWrong": "Los códigos de respaldo deben estar en un lugar seguro y no visible para otros."
+  },
+  {
+    "id": "ac_st3_ses25_l2_q09",
+    "type": "trueFalse",
+    "question": "Un niño puede perder acceso a su cuenta si no guarda los códigos de respaldo de 2FA.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Sin códigos de respaldo, si pierde acceso al dispositivo con la app, puede perder su cuenta.",
+    "explanationWrong": "Los códigos de respaldo son esenciales para recuperar el acceso."
+  },
+  {
+    "id": "ac_st3_ses25_l2_q10",
+    "type": "miniCase",
+    "question": "Lucía de 11 años tiene Instagram. Su madre quiere ayudarle a configurar 2FA. ¿Qué debe hacer?",
+    "options": [
+      "Configurar 2FA en la cuenta de Lucía usando su propio celular",
+      "Ayudar a Lucía a configurar 2FA en su celular, explicándole cada paso",
+      "No hacer nada porque Lucía es muy pequeña",
+      "Cambiar la contraseña cada semana"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "La madre debe guiar a Lucía para que ella misma configure 2FA con supervisión.",
+    "explanationWrong": "Es importante que Lucía aprenda a proteger su cuenta con supervisión de su madre."
+  },
+  {
+    "id": "ac_st3_ses25_l2_q11",
+    "type": "miniCase",
+    "question": "El profesor Carlos quiere enseñar a sus alumnos de secundaria sobre 2FA. ¿Cuál es la mejor actividad?",
+    "options": [
+      "Mostrarles un video largo sobre seguridad informática",
+      "Hacer un taller donde cada alumno active 2FA en su correo paso a paso",
+      "Darles un examen escrito",
+      "Pedirles que memoricen los tipos de 2FA"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Un taller práctico donde cada alumno active 2FA es la mejor manera de aprender haciendo.",
+    "explanationWrong": "Aprender haciendo es más efectivo que solo ver videos o memorizar."
+  },
+  {
+    "id": "ac_st3_ses25_l2_q12",
+    "type": "miniCase",
+    "question": "Andrés de 13 años recibió un código de Instagram por SMS y se lo mostró a su amigo para que lo ingrese. ¿Qué riesgo corrío?",
+    "options": [
+      "Ninguno, su amigo lo estaba ayudando",
+      "Su amigo podría usar el código para acceder a su cuenta",
+      "Podría perder datos del celular",
+      "Podría recibir más publicidad"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Al compartir el código, su amigo podría usarlo para acceder a la cuenta de Andrés.",
+    "explanationWrong": "Los códigos de verificación son personales; compartiéndolos permites que otros accedan a tu cuenta."
+  },
+  {
+    "id": "ac_st3_ses25_l2_q13",
+    "type": "multipleChoice",
+    "question": "¿Qué app puede un niño usar de forma segura para prácticar con códigos de verificación?",
+    "options": [
+      "Google Authenticator en modo de práctica",
+      "Redes sociales sin protección",
+      "Juegos en línea que piden códigos",
+      "Ninguna app es segura para niños"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Google Authenticator tiene funciones de práctica que permiten aprender sin riesgo.",
+    "explanationWrong": "Existen opciónes seguras para que los niños practiquen con códigos de verificación."
+  },
+  {
+    "id": "ac_st3_ses25_l2_q14",
+    "type": "multipleChoice",
+    "question": "¿Por qué es importante explicar a los niños que los códigos 2FA son temporales?",
+    "options": [
+      "Porque les gusta saber cosas nuevas",
+      "Para que entiendan que no pueden compartirlos porque caducan rápido",
+      "Para que no los usen",
+      "Porque es obligatorio"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Entender que los códigos son temporales les ayuda a dimensionar la importancia de no compartirlos.",
+    "explanationWrong": "La temporalidad es una medida de seguridad que los niños deben comprender."
+  },
+  {
+    "id": "ac_st3_ses25_l2_q15",
+    "type": "multipleChoice",
+    "question": "¿Cómo puedes motivar a un niño a usar 2FA en sus cuentas?",
+    "options": [
+      "Regañándolo si no lo usa",
+      "Mostrándole ejemplos de cómo protege sus juegos y redes sociales favoritas",
+      "Prohibiéndole usar internet",
+      "No motivarlo, que lo haga solo"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Motivar con ejemplos relevantes para su vida (juegos, redes sociales) es más efectivo.",
+    "explanationWrong": "La educación positiva funciona mejor que el castigo o la prohibición."
+  },
+  {
+    "id": "ac_st3_ses25_l3_q01",
+    "type": "multipleChoice",
+    "question": "¿Cuál es la principal dificultad para enseñar 2FA a personas mayores?",
+    "options": [
+      "No tienen celular",
+      "Les cuesta entender conceptos tecnológicos nuevos",
+      "No les interesa la seguridad",
+      "Prefieren usar computadoras viejas"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "A muchas personas mayores les resulta difícil entender conceptos tecnológicos nuevos, pero con paciencia pueden aprender.",
+    "explanationWrong": "La mayoría tiene celular y les interesa su seguridad; la dificultad está en lo nuevo."
+  },
+  {
+    "id": "ac_st3_ses25_l3_q02",
+    "type": "multipleChoice",
+    "question": "¿Cuál es la mejor forma de ayudar a una persona mayor a configurar 2FA?",
+    "options": [
+      "Hacerlo por ella sin explicar nada",
+      "Explicar cada paso con paciencia y usar ejemplos cotidianos",
+      "Darle un manual escrito y dejar que lo haga sola",
+      "Decirle que no necesita 2FA porque es mayor"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "La paciencia y las explicaciones con ejemplos cotidianos ayudan a las personas mayores a aprender.",
+    "explanationWrong": "Hacerlo por ella no le enseña; la guía personalizada es mejor."
+  },
+  {
+    "id": "ac_st3_ses25_l3_q03",
+    "type": "multipleChoice",
+    "question": "¿Qué analogía puedes usar para explicar el 2FA a una persona mayor?",
+    "options": [
+      "Es como cambiar el aceite del carro",
+      "Es como necesitar llave y candado para abrir la puerta",
+      "Es como usar el televisor remoto",
+      "Es como tomar una pastilla"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "La analogía de llave y candado es fácil de entender: necesitas dos cosas para entrar.",
+    "explanationWrong": "Las analogías con situaciónes cotidianas ayudan a entender mejor el concepto."
+  },
+  {
+    "id": "ac_st3_ses25_l3_q04",
+    "type": "multipleChoice",
+    "question": "Una abuela no puede leer el código de verificación que llega por SMS. ¿Qué le sugieres?",
+    "options": [
+      "Que pida ayuda a un familiar para que le lea el código",
+      "Que use el mismo código siempre",
+      "Que desactive el 2FA",
+      "Que cambie de celular"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Pedir ayuda a un familiar de confianza para leer el código es una solución práctica y segura.",
+    "explanationWrong": "Usar el mismo código o desactivar 2FA no es seguro; pedir ayuda es la mejor opción."
+  },
+  {
+    "id": "ac_st3_ses25_l3_q05",
+    "type": "multipleChoice",
+    "question": "¿Cuántas veces debes repetir la explicación de 2FA a una persona mayor?",
+    "options": [
+      "Una sola vez",
+      "Las veces que sea necesario, con paciencia",
+      "Nunca, ellos deben aprender solos",
+      "Solo una vez por semana"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "La paciencia es clave; cada persona aprende a su ritmo y puede necesitar varias repeticiones.",
+    "explanationWrong": "Aprender tecnología toma tiempo; la repetición paciente es la mejor estrategia."
+  },
+  {
+    "id": "ac_st3_ses25_l3_q06",
+    "type": "trueFalse",
+    "question": "Las personas mayores no pueden aprender a usar 2FA.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Con paciencia y buenas explicaciones, las personas mayores pueden aprender a usar 2FA.",
+    "explanationWrong": "La edad no es barrera para aprender; con guía adecuada, cualquier persona puede."
+  },
+  {
+    "id": "ac_st3_ses25_l3_q07",
+    "type": "trueFalse",
+    "question": "Es mejor que un familiar configure 2FA por la persona mayor sin explicarle nada.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Es importante que entienda el proceso para que pueda usarlo por sí misma.",
+    "explanationWrong": "Explicar el proceso es fundamental para que la persona mayor confíe en el sistema."
+  },
+  {
+    "id": "ac_st3_ses25_l3_q08",
+    "type": "trueFalse",
+    "question": "El 2FA por SMS es conveniente para personas mayores porque el código llega automáticamente.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "El 2FA por SMS es práctico porque no requiere abrir aplicaciones adicionales.",
+    "explanationWrong": "El SMS es conveniente para quienes no pueden manejar apps complejas."
+  },
+  {
+    "id": "ac_st3_ses25_l3_q09",
+    "type": "trueFalse",
+    "question": "Una persona mayor puede perder acceso a su cuenta si cambia de celular sin configurar 2FA en el nuevo.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Al cambiar de celular, es importante configurar 2FA en el nuevo dispositivo para no perder acceso.",
+    "explanationWrong": "Si no configuras 2FA en el nuevo dispositivo, podrías quedar bloqueado."
+  },
+  {
+    "id": "ac_st3_ses25_l3_q10",
+    "type": "miniCase",
+    "question": "Don Miguel de 70 años tiene Yape pero le da miedo activar 2FA porque cree que va a perder su dinero. ¿Qué debes hacer?",
+    "options": [
+      "Convencerlo de que active 2FA mostrándole que protege su dinero, y ayudarle paso a paso",
+      "Decirle que tiene razón y no active nada",
+      "Pedirle a su hijo que le quite el Yape",
+      "Cambiarle la contraseña sin explicarle"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Explicarle que 2FA protege su dinero y acompañarlo en el proceso le dará confianza.",
+    "explanationWrong": "Es importante educar con paciencia; el 2FA protege, no pierde."
+  },
+  {
+    "id": "ac_st3_ses25_l3_q11",
+    "type": "miniCase",
+    "question": "La señora Rosa tiene Gmail con 2FA por SMS. Le cambian el chip. ¿Qué debe hacer?",
+    "options": [
+      "Usar códigos de respaldo para recuperar acceso",
+      "Crear una nueva cuenta de correo",
+      "Llamar a Google para que le envíen un código",
+      "Esperar a que se arregle solo"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Si tiene códigos de respaldo guardados, puede usarlos para acceder y configurar 2FA en el nuevo chip.",
+    "explanationWrong": "Los códigos de respaldo son esenciales para recuperar acceso al perder el método principal."
+  },
+  {
+    "id": "ac_st3_ses25_l3_q12",
+    "type": "miniCase",
+    "question": "Don Augusto olvidó su contraseña y no puede acceder a su correo porque tiene 2FA. ¿Qué debe hacer?",
+    "options": [
+      "Usar la recuperación de cuenta con códigos de respaldo o correo alternativo",
+      "Pedir ayuda a un hacker",
+      "Crear una nueva cuenta",
+      "Esperar a que Google le envíe un WhatsApp"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "La recuperación con códigos de respaldo o correo alternativo es el método seguro y oficial.",
+    "explanationWrong": "Nunca pidas ayuda a hackers; usa los métodos oficiales de recuperación."
+  },
+  {
+    "id": "ac_st3_ses25_l3_q13",
+    "type": "multipleChoice",
+    "question": "¿Qué puedes hacer si una persona mayor no puede usar la app de autenticación?",
+    "options": [
+      "Desactivar el 2FA para siempre",
+      "Usar SMS como método alternativo, que es más sencillo",
+      "Decirle que no use tecnología",
+      "Prestarle tu celular"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "El SMS es una alternativa más sencilla para quienes no pueden manejar apps complejas.",
+    "explanationWrong": "El SMS puede ser una buena opción para personas mayores."
+  },
+  {
+    "id": "ac_st3_ses25_l3_q14",
+    "type": "multipleChoice",
+    "question": "¿Por qué es importante que una persona mayor entienda qué es el 2FA antes de activarlo?",
+    "options": [
+      "Para que no le tenga miedo",
+      "Para que pueda explicárselo a otros",
+      "Para que se sienta segura y pueda usarlo independientemente",
+      "No es necesario entender, solo activarlo"
+    ],
+    "correctIndex": 2,
+    "explanationCorrect": "Entender el proceso le da autonomía y confianza para usar 2FA sin depender de otros.",
+    "explanationWrong": "La comprensión genera autonomía."
+  },
+  {
+    "id": "ac_st3_ses25_l3_q15",
+    "type": "multipleChoice",
+    "question": "¿Qué recurso puede ayudar a una persona mayor a aprender sobre 2FA?",
+    "options": [
+      "Videos cortos con explicaciones simples y paso a paso",
+      "Manuales técnicos escritos en inglés",
+      "Cursos universitarios avanzados",
+      "Ningún recurso sirve"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Videos cortos con explicaciones claras y paso a paso son ideales para personas mayores.",
+    "explanationWrong": "Los recursos accesibles y en lenguaje simple son los más efectivos."
+  },
+  {
+    "id": "ac_st3_ses25_l4_q01",
+    "type": "multipleChoice",
+    "question": "¿Por qué es importante que toda la familia tenga 2FA activado?",
+    "options": [
+      "Para que todos tengan la misma contraseña",
+      "Porque si una cuenta familiar es hackeada puede afectar a todos",
+      "Para usar menos aplicaciones",
+      "Porque es obligatorio por ley"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Si una cuenta familiar es comprometida, los hackers pueden usar esa información para atacar otras cuentas.",
+    "explanationWrong": "El 2FA no es obligatorio, pero protege a cada miembro y a la familia en conjunto."
+  },
+  {
+    "id": "ac_st3_ses25_l4_q02",
+    "type": "multipleChoice",
+    "question": "¿Qué cuenta familiar es prioritaria para tener 2FA activado?",
+    "options": [
+      "La cuenta de entretenimiento",
+      "La cuenta de correo principal de la familia",
+      "Una cuenta de prueba",
+      "La cuenta de juegos de los hijos"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "El correo principal familiar es prioritario porque desde ahí se pueden recuperar todas las demás cuentas.",
+    "explanationWrong": "El correo principal es la llave para recuperar otras cuentas."
+  },
+  {
+    "id": "ac_st3_ses25_l4_q03",
+    "type": "multipleChoice",
+    "question": "¿Qué debes hacer si tu hijo activó 2FA con su celular pero se le dañó?",
+    "options": [
+      "Usar los códigos de respaldo para recuperar la cuenta y configurar 2FA en un nuevo dispositivo",
+      "Desactivar 2FA permanentemente",
+      "Esperar a que el celular se repare",
+      "Crear una nueva cuenta"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Los códigos de respaldo permiten recuperar la cuenta y configurar 2FA en un nuevo dispositivo.",
+    "explanationWrong": "Desactivar 2FA no es recomendable; con los códigos de respaldo puedes recuperar el acceso."
+  },
+  {
+    "id": "ac_st3_ses25_l4_q04",
+    "type": "multipleChoice",
+    "question": "¿Cómo puedes recordar a toda la familia que mantenga sus 2FA activados?",
+    "options": [
+      "Pidiéndoles cada día que lo revisen",
+      "Estableciendo una fecha mensual para verificar la seguridad de todas las cuentas",
+      "Cambiando las contraseñas cada semana",
+      "No es necesario recordar nada"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Establecer una fecha mensual crea un hábito sin ser molesto.",
+    "explanationWrong": "Revisar cada día es excesivo; una vez al mes es ideal."
+  },
+  {
+    "id": "ac_st3_ses25_l4_q05",
+    "type": "multipleChoice",
+    "question": "¿Qué es una cuenta familiar de recuperación?",
+    "options": [
+      "Una cuenta que toda la familia comparte para todo",
+      "Un correo o método alternativo donde se envían códigos de recuperación de toda la familia",
+      "Una cuenta bancaria familiar",
+      "Una cuenta de redes sociales grupal"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Es un correo o método alternativo donde se envían códigos cuando hay problemas de acceso.",
+    "explanationWrong": "No es una cuenta compartida para usar diario; es un método de respaldo."
+  },
+  {
+    "id": "ac_st3_ses25_l4_q06",
+    "type": "trueFalse",
+    "question": "Si tu esposo tiene 2FA activado, no es necesario que tú también lo tengas.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Cada persona debe tener su propio 2FA en sus cuentas personales para máxima seguridad.",
+    "explanationWrong": "Cada cuenta personal debe tener su propio 2FA."
+  },
+  {
+    "id": "ac_st3_ses25_l4_q07",
+    "type": "trueFalse",
+    "question": "Es seguro guardar los códigos de respaldo de toda la familia en un solo lugar seguro.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Guardar los códigos en un lugar seguro y secreto como una caja de documentos es recomendable.",
+    "explanationWrong": "Un lugar seguro y centralizado facilita la gestión familiar de emergencias."
+  },
+  {
+    "id": "ac_st3_ses25_l4_q08",
+    "type": "trueFalse",
+    "question": "Debes cambiar los métodos de 2FA de toda la familia cuando alguien pierda su celular.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Cuando alguien pierde su celular, es importante actualizar sus métodos de 2FA.",
+    "explanationWrong": "Perder un celular puede comprometer el 2FA; actualizar es prudente."
+  },
+  {
+    "id": "ac_st3_ses25_l4_q09",
+    "type": "trueFalse",
+    "question": "Un niño puede tener el mismo método 2FA que sus padres en la misma aplicación.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Cada persona debe tener su propio método 2FA; usar el mismo dispositivo reduce la seguridad.",
+    "explanationWrong": "Cada miembro debe usar su propio método de 2FA."
+  },
+  {
+    "id": "ac_st3_ses25_l4_q10",
+    "type": "miniCase",
+    "question": "La familia Torres tiene 4 miembros con cuentas en el BCP, Yape y redes sociales. ¿Qué plan de 2FA familiar deben seguir?",
+    "options": [
+      "Que solo el padre active 2FA en todas las cuentas",
+      "Que cada miembro active 2FA en sus propias cuentas, con códigos de respaldo guardados en un lugar seguro familiar",
+      "No hacer nada porque son pocas cuentas",
+      "Usar la misma contraseña y 2FA para todos"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Cada miembro debe proteger sus propias cuentas con códigos de respaldo en un lugar seguro familiar.",
+    "explanationWrong": "Cada cuenta personal necesita su propia protección; compartir credenciales es inseguro."
+  },
+  {
+    "id": "ac_st3_ses25_l4_q11",
+    "type": "miniCase",
+    "question": "El hijo mayor de la familia López va a estudiar en otra ciudad. ¿Qué debe hacer con su 2FA familiar?",
+    "options": [
+      "Desactivar 2FA porque ya no vive con la familia",
+      "Configurar 2FA con su propio dispositivo y tener sus códigos de respaldo",
+      "Dejar que sus padres manejen su 2FA a distancia",
+      "No necesita 2FA porque es universitario"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Cada persona debe tener su propio 2FA configurado sin importar dónde viva.",
+    "explanationWrong": "La distancia no cambia la necesidad de seguridad."
+  },
+  {
+    "id": "ac_st3_ses25_l4_q12",
+    "type": "miniCase",
+    "question": "La abuela Carmen tiene acceso al correo familiar de recuperación. ¿Qué precaución debe tomar?",
+    "options": [
+      "No tomar ninguna precaución porque es de su familia",
+      "No compartir el acceso con nadie fuera de la familia y usar 2FA en ese correo",
+      "Dar la contraseña a los vecinos",
+      "No usar 2FA porque es solo familiar"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "El correo familiar de recuperación debe estar protegido con 2FA y no compartirse fuera de la familia.",
+    "explanationWrong": "Un correo de recuperación familiar es muy sensible; protegerlo es fundamental."
+  },
+  {
+    "id": "ac_st3_ses25_l4_q13",
+    "type": "multipleChoice",
+    "question": "¿Qué hacer si un familiar fallece y tiene cuentas con 2FA activado?",
+    "options": [
+      "Borrar las cuentas inmediatamente",
+      "Seguir el plan familiar de seguridad para recuperar o cerrar las cuentas del fallecido",
+      "Ignorar las cuentas",
+      "Pedir ayuda a un hacker"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Un plan familiar debe contemplar este escenario para manejar cuentas de familiares fallecidos.",
+    "explanationWrong": "El plan familiar debe incluir procedimientos para situaciónes difíciles."
+  },
+  {
+    "id": "ac_st3_ses25_l4_q14",
+    "type": "multipleChoice",
+    "question": "¿Por qué es recomendable que un solo adulto coordine el 2FA familiar?",
+    "options": [
+      "Para tener el control total",
+      "Para centralizar la información de seguridad y poder ayudar a la familia en emergencias",
+      "Para que sea más fácil hackear",
+      "No es recomendable"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Un coordinador familiar de seguridad puede organizar y ayudar eficientemente en emergencias.",
+    "explanationWrong": "La coordinación centralizada facilita la gestión de seguridad familiar."
+  },
+  {
+    "id": "ac_st3_ses25_l4_q15",
+    "type": "multipleChoice",
+    "question": "¿Qué herramienta puede ayudar a una familia a gestionar sus 2FA?",
+    "options": [
+      "Un cuaderno de notas compartido en la nube protegido con contraseña",
+      "Una hoja de cálculo en redes sociales",
+      "No hay herramientas útiles",
+      "Un grupo de WhatsApp"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Un documento seguro en la nube protegido con contraseña puede organizar la información familiar.",
+    "explanationWrong": "Las redes sociales y WhatsApp no son seguros para información sensible."
+  },
+  {
+    "id": "ac_st3_ses25_l5_q01",
+    "type": "multipleChoice",
+    "question": "¿Qué debe incluir un plan familiar de seguridad?",
+    "options": [
+      "Solo una lista de contraseñas",
+      "Una lista de cuentas, métodos 2FA, códigos de respaldo y contactos de emergencia",
+      "Solo los correos electrónicos",
+      "Nada, cada quien se cuida solo"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Un plan completo incluye cuentas, métodos 2FA, códigos de respaldo y contactos de emergencia.",
+    "explanationWrong": "Un plan de seguridad familiar debe ser completo y organizado."
+  },
+  {
+    "id": "ac_st3_ses25_l5_q02",
+    "type": "multipleChoice",
+    "question": "¿Cada cuánto tiempo se debe revisar el plan familiar de seguridad?",
+    "options": [
+      "Una vez al año",
+      "Cada 6 meses como mínimo, o cuando haya cambios importantes",
+      "Nunca, un plan es para siempre",
+      "Cada día"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Revisar cada 6 meses o cuando haya cambios mantiene el plan actualizado.",
+    "explanationWrong": "Un plan desactualizado no es útil."
+  },
+  {
+    "id": "ac_st3_ses25_l5_q03",
+    "type": "multipleChoice",
+    "question": "¿Dónde es recomendable guardar el plan familiar de seguridad?",
+    "options": [
+      "En el correo electrónico de la familia",
+      "En un documento físico seguro y una copia digital encriptada",
+      "En las redes sociales",
+      "En la nota rápida del celular de todos"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Un lugar seguro físico y una copia digital protegida garantizan acceso incluso si falla la tecnología.",
+    "explanationWrong": "Las redes sociales y notas del celular no son seguras para información sensible."
+  },
+  {
+    "id": "ac_st3_ses25_l5_q04",
+    "type": "multipleChoice",
+    "question": "¿Qué debe hacer la familia si alguien pierde su celular con 2FA activado?",
+    "options": [
+      "Nada, el 2FA lo protege automáticamente",
+      "Usar los códigos de respaldo para recuperar la cuenta y configurar 2FA en un nuevo dispositivo",
+      "Esperar a que el celular aparezca",
+      "Desactivar 2FA de todos en la familia"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Con los códigos de respaldo se puede recuperar la cuenta y configurar 2FA en un nuevo dispositivo.",
+    "explanationWrong": "Perder el celular no desactiva 2FA; necesitas códigos de respaldo."
+  },
+  {
+    "id": "ac_st3_ses25_l5_q05",
+    "type": "multipleChoice",
+    "question": "¿Quién debe ser el responsable del plan familiar de seguridad?",
+    "options": [
+      "El hijo mayor",
+      "Un adulto de confianza que entienda de tecnología y pueda coordinar con toda la familia",
+      "Nadie, cada quien lo hace solo",
+      "El miembro más joven"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Un adulto responsable que entienda de tecnología puede coordinar y mantener el plan.",
+    "explanationWrong": "Necesitas a alguien que pueda liderar la seguridad familiar."
+  },
+  {
+    "id": "ac_st3_ses25_l5_q06",
+    "type": "trueFalse",
+    "question": "Un plan familiar de seguridad debe incluir qué hacer en caso de fallecimiento de un miembro.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "En situaciónes difíciles, saber cómo acceder a las cuentas de un familiar fallecido es importante.",
+    "explanationWrong": "El plan debe contemplar escenarios difíciles."
+  },
+  {
+    "id": "ac_st3_ses25_l5_q07",
+    "type": "trueFalse",
+    "question": "El plan familiar de seguridad puede ser conocido por amigos cercanos de la familia.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "El plan debe ser conocido solo por los miembros de la familia para mantener la seguridad.",
+    "explanationWrong": "La información de seguridad familiar debe ser confidencial."
+  },
+  {
+    "id": "ac_st3_ses25_l5_q08",
+    "type": "trueFalse",
+    "question": "Es buena idea incluir un abogado de confianza como contacto de emergencia en el plan.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "En emergencias legales, un abogado puede ayudar con asuntos de cuentas y herencias digitales.",
+    "explanationWrong": "Un abogado puede ser útil en emergencias legales relaciónadas con cuentas digitales."
+  },
+  {
+    "id": "ac_st3_ses25_l5_q09",
+    "type": "trueFalse",
+    "question": "El plan familiar de seguridad debe ser secreto incluso para los miembros de la familia.",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Todos los miembros deben conocer el plan para poder usarlo en caso de emergencia.",
+    "explanationWrong": "El plan debe ser conocido por toda la familia."
+  },
+  {
+    "id": "ac_st3_ses25_l5_q10",
+    "type": "miniCase",
+    "question": "La familia Vargas quiere crear su plan de seguridad. ¿Cuál es el primer paso?",
+    "options": [
+      "Hacer una lista de todas las cuentas importantes de cada miembro con sus métodos 2FA actuales",
+      "Comprar un programa de seguridad costoso",
+      "Cambiar todas las contraseñas inmediatamente",
+      "Crear un grupo de WhatsApp"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "El primer paso es hacer un inventario de todas las cuentas y sus métodos de protección actuales.",
+    "explanationWrong": "Antes de actuar, necesitas saber qué tienes."
+  },
+  {
+    "id": "ac_st3_ses25_l5_q11",
+    "type": "miniCase",
+    "question": "La familia Rojas quiere actualizar su plan porque el padre cambió de celular. ¿Qué deben hacer?",
+    "options": [
+      "Actualizar la información del padre: nuevo número y método 2FA configurado",
+      "Borrar el plan y empezar de cero",
+      "No cambiar nada",
+      "Pedirle al padre que no cambie de celular"
+    ],
+    "correctIndex": 0,
+    "explanationCorrect": "Cuando hay cambios personales como un nuevo celular, el plan debe actualizarse.",
+    "explanationWrong": "El plan debe mantenerse actualizado con los cambios personales."
+  },
+  {
+    "id": "ac_st3_ses25_l5_q12",
+    "type": "miniCase",
+    "question": "La familia Mendoza quiere que todos sepan qué hacer si alguien pierde acceso a su cuenta. ¿Qué incluyen en su plan?",
+    "options": [
+      "Solo la contraseña de recuperación",
+      "Pasos para recuperar cuenta: códigos de respaldo, correo alternativo y contacto de soporte de cada plataforma",
+      "Nada, ya saben qué hacer",
+      "Un número de teléfono para llamar a un técnico"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "El plan debe incluir los pasos específicos de recuperación para cada plataforma importante.",
+    "explanationWrong": "Cada plataforma tiene su proceso; tener los pasos documentados facilita la recuperación."
+  },
+  {
+    "id": "ac_st3_ses25_l5_q13",
+    "type": "multipleChoice",
+    "question": "¿Qué documento debe tener cada miembro de la familia relaciónado con su seguridad digital?",
+    "options": [
+      "Ninguno",
+      "Una hoja personal con sus cuentas, métodos 2FA y códigos de respaldo guardados en un sobre cerrado",
+      "Una tarjeta de crédito",
+      "Un pasaporte digital"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Cada miembro debe tener su propia información de seguridad documentada y segura.",
+    "explanationWrong": "La documentación personal de seguridad es importante para cada miembro."
+  },
+  {
+    "id": "ac_st3_ses25_l5_q14",
+    "type": "multipleChoice",
+    "question": "¿Qué escenario debe contemplar un plan familiar de seguridad?",
+    "options": [
+      "Solo robo de celular",
+      "Pérdida de celular, robo de identidad, fallecimiento de un miembro y hackeo de cuentas",
+      "Solo hackeo de cuentas",
+      "Solo fallecimiento"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Un plan completo debe contemplar múltiples escenarios para estar preparado.",
+    "explanationWrong": "Los planes de seguridad deben ser integrales y contemplar diversas situaciónes."
+  },
+  {
+    "id": "ac_st3_ses25_l5_q15",
+    "type": "multipleChoice",
+    "question": "¿Qué hacer después de completar el plan familiar de seguridad?",
+    "options": [
+      "Nada, el plan está terminado",
+      "Prácticar con la familia qué hacer en una emergencia simulada y guardar el plan en un lugar seguro",
+      "Compartirlo en redes sociales",
+      "Destruir el plan después de memorizarlo"
+    ],
+    "correctIndex": 1,
+    "explanationCorrect": "Prácticar escenarios de emergencia y guardar el plan en lugar seguro es fundamental.",
+    "explanationWrong": "Un plan no prácticado puede no funcionar cuando se necesite."
+  }
+]

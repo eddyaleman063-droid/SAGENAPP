@@ -1,0 +1,452 @@
+[
+    {
+        "id": "ac_st8_qB7_001",
+        "question": "Cuales son los pilares fundamentales de la seguridad digital?",
+        "type": "multipleChoice",
+        "options": [
+            "Solo contraseña",
+            "Contraseña fuerte, 2FA, privacidad y disposítivo seguro",
+            "No hay pilares",
+            "Solo el celular"
+        ],
+        "correctIndex": 1,
+        "explanation": "La seguridad digital se basa en múltiples pilares: autenticación, privacidad y protección de dispositivos.",
+        "difficulty": 1,
+        "lessonId": "ac_s8_ses1_l1"
+    },
+    {
+        "id": "ac_st8_qB7_002",
+        "question": "Por qué la contraseña alone no es suficiente?",
+        "type": "multipleChoice",
+        "options": [
+            "Es suficiente",
+            "Porque puede ser hackeada, necesitas capas adicionales de seguridad",
+            "No importa",
+            "Es la única protección necesaria"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las contraseñas pueden ser comprometidas; necesitas 2FA y otras protecciónes.",
+        "difficulty": 2,
+        "lessonId": "ac_s8_ses1_l2"
+    },
+    {
+        "id": "ac_st8_qB7_003",
+        "question": "Que es la defensa en profundidad?",
+        "type": "multipleChoice",
+        "options": [
+            "Un tipo de ataque",
+            "Usar múltiples capas de protección para proteger tus cuentas",
+            "Una app",
+            "No existe"
+        ],
+        "correctIndex": 1,
+        "explanation": "La defensa en profundidad usa varias capas para que si una falla, otras sigan protegiendo.",
+        "difficulty": 3,
+        "lessonId": "ac_s8_ses1_l3"
+    },
+    {
+        "id": "ac_st8_qB7_004",
+        "question": "Cuales son los errores más comunes en seguridad digital?",
+        "type": "multipleChoice",
+        "options": [
+            "Ninguno",
+            "Reusar contraseñas, no usar 2FA, compartir datos personales",
+            "Solo uno",
+            "No hay errores"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los errores comunes incluyen contraseñas débiles, sin 2FA y exceso de información personal.",
+        "difficulty": 2,
+        "lessonId": "ac_s8_ses1_l4"
+    },
+    {
+        "id": "ac_st8_qB7_005",
+        "question": "Que es el phishing y cómo identificarlo?",
+        "type": "multipleChoice",
+        "options": [
+            "Un tipo de juego",
+            "Intentos de engañarte para obtener tus datos mediante correos o mensajes falsos",
+            "Una app de seguridad",
+            "No existe"
+        ],
+        "correctIndex": 1,
+        "explanation": "El phishing usa correos y mensajes falsos para robar tus credenciales.",
+        "difficulty": 1,
+        "lessonId": "ac_s8_ses1_l5"
+    },
+    {
+        "id": "ac_st8_qB7_006",
+        "question": "Como proteger tu correo electrónico?",
+        "type": "multipleChoice",
+        "options": [
+            "No es necesario",
+            "Contraseña fuerte, 2FA, y no hacer clic en enlaces sospechosos",
+            "Compartir la contraseña",
+            "No usar correo"
+        ],
+        "correctIndex": 1,
+        "explanation": "Tu correo es la clave de todo; protégelo con 2FA y buenas prácticas.",
+        "difficulty": 1,
+        "lessonId": "ac_s8_ses1_l6"
+    },
+    {
+        "id": "ac_st8_qB7_007",
+        "question": "Que es la huella digital y por qué importa?",
+        "type": "multipleChoice",
+        "options": [
+            "No existe",
+            "La información que dejas al navegar y que puede ser encontrada por otros",
+            "Tu huella física",
+            "No importa"
+        ],
+        "correctIndex": 1,
+        "explanation": "Tu huella digital puede ser usada para suplantar tu identidad o para phishing.",
+        "difficulty": 2,
+        "lessonId": "ac_s8_ses2_l1"
+    },
+    {
+        "id": "ac_st8_qB7_008",
+        "question": "Cómo minimizar tu huella digital?",
+        "type": "multipleChoice",
+        "options": [
+            "No se puede",
+            "Revisar la configuración de privacidad y limitar la información que compartes",
+            "No usar internet",
+            "No sirve"
+        ],
+        "correctIndex": 1,
+        "explanation": "Configurar la privacidad y ser cuidadoso con lo que publicas reduce tu huella.",
+        "difficulty": 2,
+        "lessonId": "ac_s8_ses2_l2"
+    },
+    {
+        "id": "ac_st8_qB7_009",
+        "question": "Que es la ingeniería social?",
+        "type": "multipleChoice",
+        "options": [
+            "Un tipo de hackeo técnico",
+            "Técnicas psicológicas para engañarte y obtener información",
+            "Una app",
+            "No existe"
+        ],
+        "correctIndex": 1,
+        "explanation": "La ingeniería social explota la confianza humana para obtener datos.",
+        "difficulty": 2,
+        "lessonId": "ac_s8_ses2_l3"
+    },
+    {
+        "id": "ac_st8_qB7_010",
+        "question": "Que es el smishing (phishing por SMS)?",
+        "type": "multipleChoice",
+        "options": [
+            "Un juego",
+            "Mensajes SMS falsos que intentan robar tus datos",
+            "Una app de mensajería",
+            "No existe"
+        ],
+        "correctIndex": 1,
+        "explanation": "El smishing usa SMS con enlaces maliciosos para robar credenciales.",
+        "difficulty": 2,
+        "lessonId": "ac_s8_ses2_l4"
+    },
+    {
+        "id": "ac_st8_qB7_011",
+        "question": "Que es el vishing (phishing por voz)?",
+        "type": "multipleChoice",
+        "options": [
+            "Un tipo de música",
+            "Llamadas telefónicas falsas para obtener información personal",
+            "Una app",
+            "No existe"
+        ],
+        "correctIndex": 1,
+        "explanation": "El vishing usa llamadas telefónicas para engañarte y obtener datos.",
+        "difficulty": 2,
+        "lessonId": "ac_s8_ses2_l5"
+    },
+    {
+        "id": "ac_st8_qB7_012",
+        "question": "Cómo protegerte del ransomware?",
+        "type": "multipleChoice",
+        "options": [
+            "Pagar el rescate",
+            "Tener copias de seguridad y no abrir archivos sospechosos",
+            "No hay protección",
+            "No usar computadora"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las copias de seguridad y la precaución con archivos son clave contra el ransomware.",
+        "difficulty": 3,
+        "lessonId": "ac_s8_ses2_l6"
+    },
+    {
+        "id": "ac_st8_qB7_013",
+        "question": "Qué es la seguridad en la nube?",
+        "type": "multipleChoice",
+        "options": [
+            "No existe",
+            "Proteger tus datos almacenados en servicios en línea como Google Drive o OneDrive",
+            "Guardar datos en el celular",
+            "No sirve"
+        ],
+        "correctIndex": 1,
+        "explanation": "La seguridad en la nube implica proteger tus datos con contraseñas fuertes y 2FA.",
+        "difficulty": 2,
+        "lessonId": "ac_s8_ses3_l1"
+    },
+    {
+        "id": "ac_st8_qB7_014",
+        "question": "Qué es la configuración de privacidad en redes sociales?",
+        "type": "multipleChoice",
+        "options": [
+            "No existe",
+            "Ajustes que controlan quién ve tu perfil y publicaciones",
+            "Tu contraseña",
+            "No sirve"
+        ],
+        "correctIndex": 1,
+        "explanation": "La configuración de privacidad te permite limitar quién ve tu información.",
+        "difficulty": 1,
+        "lessonId": "ac_s8_ses3_l2"
+    },
+    {
+        "id": "ac_st8_qB7_015",
+        "question": "Qué es el doxxing y cómo prevenirlo?",
+        "type": "multipleChoice",
+        "options": [
+            "Un juego",
+            "Publicar información personal de alguien sin su consentimiento; prevención: limitar lo que compartes",
+            "Una app",
+            "No existe"
+        ],
+        "correctIndex": 1,
+        "explanation": "El doxxing expone información privada; la prevención es no compartir datos sensibles.",
+        "difficulty": 3,
+        "lessonId": "ac_s8_ses3_l3"
+    },
+    {
+        "id": "ac_st8_qB7_016",
+        "question": "Qué es la suplantación de identidad?",
+        "type": "multipleChoice",
+        "options": [
+            "Un tipo de juego",
+            "Cuando alguien se hace pasar por ti para cometer fraude",
+            "Una app de seguridad",
+            "No existe"
+        ],
+        "correctIndex": 1,
+        "explanation": "La suplantación de identidad usa tus datos para cometer fraudes en tu nombre.",
+        "difficulty": 2,
+        "lessonId": "ac_s8_ses3_l4"
+    },
+    {
+        "id": "ac_st8_qB7_017",
+        "question": "Qué es la ingeniería inversa de contraseñas?",
+        "type": "multipleChoice",
+        "options": [
+            "Un método seguro",
+            "Técnicas para descifrar contraseñas a partir de hashes o pistas",
+            "Una app",
+            "No existe"
+        ],
+        "correctIndex": 1,
+        "explanation": "La ingeniería inversa usa técnicas avanzadas para intentar descifrar contraseñas.",
+        "difficulty": 3,
+        "lessonId": "ac_s8_ses3_l5"
+    },
+    {
+        "id": "ac_st8_qB7_018",
+        "question": "Qué es la autenticación sin contraseña (passwordless)?",
+        "type": "multipleChoice",
+        "options": [
+            "No existe",
+            "Métodos como biometría o llaveros que reemplazan la contraseña",
+            "Usar contraseñas más largas",
+            "No sirve"
+        ],
+        "correctIndex": 1,
+        "explanation": "La autenticación sin contraseña usa biometría o hardware para mayor seguridad.",
+        "difficulty": 3,
+        "lessonId": "ac_s8_ses3_l6"
+    },
+    {
+        "id": "ac_st8_qB7_019",
+        "question": "Qué es la zero trust (confianza cero)?",
+        "type": "multipleChoice",
+        "options": [
+            "No confiar en nadie y verificar todo siempre",
+            "Un tipo de virus",
+            "Una app",
+            "No existe"
+        ],
+        "correctIndex": 0,
+        "explanation": "Zero trust significa no confiar en ningún dispositivo o usuario por defecto.",
+        "difficulty": 3,
+        "lessonId": "ac_s8_ses4_l1"
+    },
+    {
+        "id": "ac_st8_qB7_020",
+        "question": "Qué es la seguridad por diseño?",
+        "type": "multipleChoice",
+        "options": [
+            "No existe",
+            "Integrar la seguridad desde el inicio del desarrollo de software",
+            "Una app de diseño",
+            "No sirve"
+        ],
+        "correctIndex": 1,
+        "explanation": "La seguridad por diseño incorpora protección desde la concepción del producto.",
+        "difficulty": 3,
+        "lessonId": "ac_s8_ses4_l2"
+    },
+    {
+        "id": "ac_st8_qB7_021",
+        "question": "Qué es la automatización de seguridad?",
+        "type": "multipleChoice",
+        "options": [
+            "No existe",
+            "Usar herramientas para detectar y responder amenazas automáticamente",
+            "Hacer todo manualmente",
+            "No sirve"
+        ],
+        "correctIndex": 1,
+        "explanation": "La automatización ayuda a detectar y responder rápidamente a incidentes.",
+        "difficulty": 3,
+        "lessonId": "ac_s8_ses4_l3"
+    },
+    {
+        "id": "ac_st8_qB7_022",
+        "question": "Qué es el threat intelligence (inteligencia de amenazas)?",
+        "type": "multipleChoice",
+        "options": [
+            "No existe",
+            "Información sobre amenazas actuales para anticiparse a ataques",
+            "Una app de espionaje",
+            "No sirve"
+        ],
+        "correctIndex": 1,
+        "explanation": "La inteligencia de amenazas te ayuda a conocer y prepararte contra ataques actuales.",
+        "difficulty": 3,
+        "lessonId": "ac_s8_ses4_l4"
+    },
+    {
+        "id": "ac_st8_qB7_023",
+        "question": "Qué es la respuesta a incidentes?",
+        "type": "multipleChoice",
+        "options": [
+            "No existe",
+            "El proceso de identificar, contener y recuperarse de un ciberataque",
+            "Un tipo de virus",
+            "No sirve"
+        ],
+        "correctIndex": 1,
+        "explanation": "La respuesta a incidentes es el plan para manejar y recuperarse de ataques.",
+        "difficulty": 3,
+        "lessonId": "ac_s8_ses4_l5"
+    },
+    {
+        "id": "ac_st8_qB7_024",
+        "question": "Qué es la continuidad del negocio en seguridad?",
+        "type": "multipleChoice",
+        "options": [
+            "No existe",
+            "Planificar para seguir operando durante y después de un ciberataque",
+            "Cerrar el negocio",
+            "No sirve"
+        ],
+        "correctIndex": 1,
+        "explanation": "La continuidad asegura que tu negocio pueda funcionar tras un incidente de seguridad.",
+        "difficulty": 3,
+        "lessonId": "ac_s8_ses4_l6"
+    },
+    {
+        "id": "ac_st8_qB7_025",
+        "question": "Cuál es el primer paso ante un ciberataque?",
+        "type": "multipleChoice",
+        "options": [
+            "Pagar el rescate",
+            "Identificar y contener la amenaza, luego alertar a las autoridades",
+            "Ignorarlo",
+            "Borrar todo"
+        ],
+        "correctIndex": 1,
+        "explanation": "El primer paso es contener la amenaza para que no se propague.",
+        "difficulty": 2,
+        "lessonId": "ac_s8_ses5_l1"
+    },
+    {
+        "id": "ac_st8_qB7_026",
+        "question": "Cómo educar a tu familia sobre seguridad digital?",
+        "type": "multipleChoice",
+        "options": [
+            "No es necesario",
+            "Compartir buenas prácticas y ser ejemplo en el uso seguro de tecnología",
+            "No hablar del tema",
+            "Dejar que aprendan solos"
+        ],
+        "correctIndex": 1,
+        "explanation": "Educación y ejemplo son claves para que toda la familia esté protegida.",
+        "difficulty": 2,
+        "lessonId": "ac_s8_ses5_l2"
+    },
+    {
+        "id": "ac_st8_qB7_027",
+        "question": "Qué es la cultura de seguridad?",
+        "type": "multipleChoice",
+        "options": [
+            "No existe",
+            "Adoptar hábitos y conocimientos para protegerte en el mundo digital",
+            "Una clase",
+            "No sirve"
+        ],
+        "correctIndex": 1,
+        "explanation": "La cultura de seguridad es internalizar buenas prácticas en tu vida diaria.",
+        "difficulty": 2,
+        "lessonId": "ac_s8_ses5_l3"
+    },
+    {
+        "id": "ac_st8_qB7_028",
+        "question": "Qué hacer si sospechas que tu cuenta fue hackeada?",
+        "type": "multipleChoice",
+        "options": [
+            "No hacer nada",
+            "Cambiar contraseña, activar 2FA y revisar actividad reciente",
+            "Cerrar la app",
+            "Esperar"
+        ],
+        "correctIndex": 1,
+        "explanation": "Actúa rápido: cambia clave, activa 2FA y revisa toda la actividad sospechosa.",
+        "difficulty": 2,
+        "lessonId": "ac_s8_ses5_l4"
+    },
+    {
+        "id": "ac_st8_qB7_029",
+        "question": "Qué es la resiliencia digital?",
+        "type": "multipleChoice",
+        "options": [
+            "No existe",
+            "La capacidad de recuperarse rápidamente de un ciberataque",
+            "Un tipo de virus",
+            "No sirve"
+        ],
+        "correctIndex": 1,
+        "explanation": "La resiliencia digital es la habilidad de recuperarse y seguir funcionando tras un ataque.",
+        "difficulty": 3,
+        "lessonId": "ac_s8_ses5_l5"
+    },
+    {
+        "id": "ac_st8_qB7_030",
+        "question": "Cuál es el futuro de la seguridad digital?",
+        "type": "multipleChoice",
+        "options": [
+            "No hay futuro",
+            "Autenticación biométrica, IA para detección de amenazas y Zero Trust",
+            "Más contraseñas",
+            "No sirve"
+        ],
+        "correctIndex": 1,
+        "explanation": "El futuro incluye biometría avanzada, IA y modelos de confianza cero.",
+        "difficulty": 3,
+        "lessonId": "ac_s8_ses5_l6"
+    }
+]

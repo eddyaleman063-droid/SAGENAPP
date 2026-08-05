@@ -1,0 +1,450 @@
+[
+  {
+    "id": "ac_st6_qB6_001",
+    "question": "Por que necesitas un plan de recuperación de cuentas",
+    "type": "multipleChoice",
+    "options": [
+      "Porque es divertido planificar",
+      "Para poder recuperar el acceso a tus cuentas si las hackean o pierdes el dispositivo",
+      "Porque lo exige la ley",
+      "No es necesario"
+    ],
+    "correctIndex": 1,
+    "explanation": "Un plan te prepara para recuperar tus cuentas rápido y seguro ante cualquier emergencia.",
+    "difficulty": 1,
+    "lessonId": "ac_s6_ses1_l1"
+  },
+  {
+    "id": "ac_st6_qB6_002",
+    "question": "Que elementos debe incluir un plan de recuperación",
+    "type": "multipleChoice",
+    "options": [
+      "Solo tu nombre",
+      "Correos de recuperación, números de telefono, codigos de respaldo y contactos de confianza",
+      "Todas tus contraseñas escritas en papel",
+      "Solo tu DNI"
+    ],
+    "correctIndex": 1,
+    "explanation": "Un plan completo incluye múltiples formas de recuperar acceso y personas de confianza que pueden ayudarte.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses1_l3"
+  },
+  {
+    "id": "ac_st6_qB6_003",
+    "question": "Que es documentar sin comprometer seguridad",
+    "type": "multipleChoice",
+    "options": [
+      "Escribir todas tus contraseñas en un papel visible",
+      "Guardar información de recuperación de forma cifrada o en un lugar fisico seguro",
+      "Compartir tus datos en redes sociales",
+      "No documentar nada"
+    ],
+    "correctIndex": 1,
+    "explanation": "Documenta la información necesaria pero de forma segura: en bóveda fisica o gestor cifrado.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses1_l2"
+  },
+  {
+    "id": "ac_st6_qB6_004",
+    "question": "Por que es importante compartir tu plan con personas de confianza",
+    "type": "multipleChoice",
+    "options": [
+      "Para que te hackeen mas facil",
+      "Porque si no puedes actuar tu, ellos pueden ayudarte a recuperar tus cuentas",
+      "No es necesario compartirlo",
+      "Para que lo publiquen en internet"
+    ],
+    "correctIndex": 1,
+    "explanation": "Si te pasa algo, tus contactos de confianza pueden ayudar a recuperar tus cuentas importantes.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses1_l4"
+  },
+  {
+    "id": "ac_st6_qB6_005",
+    "question": "Que es actualizar el plan periodicamente",
+    "type": "multipleChoice",
+    "options": [
+      "Borrar el plan cada mes",
+      "Revisar y modificar tu plan cuando cambien tus dispositivos, correos o circunstancias",
+      "Compartir el plan en redes sociales",
+      "No es necesario"
+    ],
+    "correctIndex": 1,
+    "explanation": "Tu plan debe cambiar cuando cambias de celular, correo o situación personal.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses1_l5"
+  },
+  {
+    "id": "ac_st6_qB6_006",
+    "question": "Que es un correo de recuperación",
+    "type": "multipleChoice",
+    "options": [
+      "Un correo basura",
+      "Un correo alternativo que usas para recuperar acceso si pierdes el principal",
+      "Un correo para enviar spam",
+      "Un correo temporal"
+    ],
+    "correctIndex": 1,
+    "explanation": "El correo de recuperación es tu red de seguridad si pierdes acceso a tu correo principal.",
+    "difficulty": 1,
+    "lessonId": "ac_s6_ses2_l1"
+  },
+  {
+    "id": "ac_st6_qB6_007",
+    "question": "Por que debes mantener actualizado tu correo de recuperación",
+    "type": "multipleChoice",
+    "options": [
+      "Para recibir publicidad",
+      "Para que siempre puedas recibir codigos de verificación cuando los necesites",
+      "No es necesario",
+      "Para que tus amigos te encuentren"
+    ],
+    "correctIndex": 1,
+    "explanation": "Si tu correo de recuperación ya no funciona, no podrás recuperar tus cuentas importantes.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses2_l2"
+  },
+  {
+    "id": "ac_st6_qB6_008",
+    "question": "Cual es la diferencia entre correo principal y correo de recuperación",
+    "type": "multipleChoice",
+    "options": [
+      "Son lo mismo",
+      "El principal es el que usas a diario, el de respaldo es para emergencias de seguridad",
+      "El de recuperación es mas importante",
+      "El principal no necesita contraseña"
+    ],
+    "correctIndex": 1,
+    "explanation": "El principal es tu uso diario. El de recuperación es tu plan B si algo sale mal con el principal.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses2_l1"
+  },
+  {
+    "id": "ac_st6_qB6_009",
+    "question": "Que es un número de respaldo de telefono",
+    "type": "multipleChoice",
+    "options": [
+      "Tu número de celular principal",
+      "Un número telefonico alternativo que usas para recibir codigos de verificación",
+      "El número de tu banco",
+      "Un número ficticio"
+    ],
+    "correctIndex": 1,
+    "explanation": "El número de respaldo es otro telefono donde puedes recibir codigos si no tienes acceso al principal.",
+    "difficulty": 1,
+    "lessonId": "ac_s6_ses3_l1"
+  },
+  {
+    "id": "ac_st6_qB6_010",
+    "question": "Por que deberias agregar el número de un familiar de confianza",
+    "type": "multipleChoice",
+    "options": [
+      "Para que te llamen mas seguido",
+      "Para tener una forma alternativa de recuperar cuentas si pierdes tu telefono",
+      "No es necesario",
+      "Para que ellos usen tus cuentas"
+    ],
+    "correctIndex": 1,
+    "explanation": "Un familiar de confianza puede recibir codigos de verificación en tu nombre si lo necesitas.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses3_l3"
+  },
+  {
+    "id": "ac_st6_qB6_011",
+    "question": "Que debes hacer cuando cambias de número de telefono",
+    "type": "multipleChoice",
+    "options": [
+      "Nada, el banco se entera solo",
+      "Actualizar el número en todas tus cuentas importantes inmediatamente",
+      "Esperar a que te lo pidan",
+      "Borrar tus cuentas"
+    ],
+    "correctIndex": 1,
+    "explanation": "Si no actualizas tu número, no podrás recibir codigos de verificación y perderas acceso.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses3_l4"
+  },
+  {
+    "id": "ac_st6_qB6_012",
+    "question": "Que es un codigo de respaldo de 2FA",
+    "type": "multipleChoice",
+    "options": [
+      "Un codigo que te envian por correo",
+      "Codigos de uso único que puedes usar si pierdes acceso a tu metodo 2FA principal",
+      "Una contraseña temporal",
+      "Un tipo de virus"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los codigos de respaldo son tu salvavidas si pierdes tu celular o no puedes usar tu app de autenticación.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses1_l3"
+  },
+  {
+    "id": "ac_st6_qB6_013",
+    "question": "Caso: Te roban el celular y no puedes recibir codigos de verificación. Que haces",
+    "type": "miniCase",
+    "options": [
+      "Esperar a encontrar el celular",
+      "Usar los codigos de respaldo que guardaste en un lugar seguro para recuperar tus cuentas",
+      "Borrar todas tus cuentas",
+      "Pedir ayuda en redes sociales"
+    ],
+    "correctIndex": 1,
+    "explanation": "Con tus codigos de respaldo puedes recuperar acceso sin necesidad del celular robado.",
+    "difficulty": 3,
+    "lessonId": "ac_s6_ses1_l3"
+  },
+  {
+    "id": "ac_st6_qB6_014",
+    "question": "Que es la recuperación de criptowallets",
+    "type": "multipleChoice",
+    "options": [
+      "Un tipo de juego",
+      "El proceso de recuperar acceso a tus criptomonedas usando frases semilla o claves de respaldo",
+      "Una forma de ganar dinero",
+      "Un tipo de fraude"
+    ],
+    "correctIndex": 1,
+    "explanation": "Las criptowallets usan frases semilla de 12 o 24 palabras para recuperar acceso. Guardalas seguro.",
+    "difficulty": 3,
+    "lessonId": "ac_s6_ses1_l6"
+  },
+  {
+    "id": "ac_st6_qB6_015",
+    "question": "Que es un proveedor confiable para correo de respaldo",
+    "type": "multipleChoice",
+    "options": [
+      "Cualquier página random de internet",
+      "Un servicio de correo grande y conocido como Gmail, Outlook o Yahoo con buena seguridad",
+      "Un servicio que nunca escuchaste",
+      "No necesitas proveedor"
+    ],
+    "correctIndex": 1,
+    "explanation": "Usa proveedores grandes y conocidos que tengan buena seguridad y politicas de privacidad.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses2_l3"
+  },
+  {
+    "id": "ac_st6_qB6_016",
+    "question": "Como verificas que tu correo alternativo funciona",
+    "type": "multipleChoice",
+    "options": [
+      "No es necesario verificar",
+      "Enviar un correo de prueba periodicamente para asegurarte de que puedes acceder",
+      "Preguntar a un amigo",
+      "Esperar a tener una emergencia"
+    ],
+    "correctIndex": 1,
+    "explanation": "Verifica periodicamente que tu correo alternativo funcione y puedas acceder a el.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses2_l4"
+  },
+  {
+    "id": "ac_st6_qB6_017",
+    "question": "Por que debes proteger tu correo de recuperación con 2FA",
+    "type": "multipleChoice",
+    "options": [
+      "Para que sea mas lento",
+      "Porque si hackean tu correo de recuperación, pueden hackear todas tus cuentas",
+      "No es necesario",
+      "Para recibir mas publicidad"
+    ],
+    "correctIndex": 1,
+    "explanation": "Tu correo de recuperación es la llave maestra. Si lo proteges con 2AF, proteges todo.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses2_l5"
+  },
+  {
+    "id": "ac_st6_qB6_018",
+    "question": "Que es un simulacro de recuperación",
+    "type": "multipleChoice",
+    "options": [
+      "Un juego de roles",
+      "Prácticar el proceso de recuperar tus cuentas para estar preparado ante una emergencia real",
+      "Un examen de seguridad",
+      "Una conferencia"
+    ],
+    "correctIndex": 1,
+    "explanation": "Prácticar te prepara para saber que hacer exactamente cuando lo necesites de verdad.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses2_l6"
+  },
+  {
+    "id": "ac_st6_qB6_019",
+    "question": "Caso: Tu mama no puede acceder a su correo porque cambio de celular. Que haces",
+    "type": "miniCase",
+    "options": [
+      "Le dices que cree un correo nuevo",
+      "Ayudas a recuperar acceso usando el correo alternativo o número de respaldo configurado",
+      "Ignoras el problema",
+      "Llamas a Google"
+    ],
+    "correctIndex": 1,
+    "explanation": "Con un plan de recuperación, puedes ayudarla a recuperar acceso usando sus métodos de respaldo.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses1_l1"
+  },
+  {
+    "id": "ac_st6_qB6_020",
+    "question": "Que es la importancia de tener múltiples metodos de recuperación",
+    "type": "multipleChoice",
+    "options": [
+      "Es exagerado",
+      "Si un metodo falla, tienes otros respaldos para recuperar acceso",
+      "No es necesario",
+      "Para complicar las cosas"
+    ],
+    "correctIndex": 1,
+    "explanation": "Tener múltiples metodos (correo, telefono, codigos) te da opciónes si uno falla.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses1_l3"
+  },
+  {
+    "id": "ac_st6_qB6_021",
+    "question": "Que es la recuperación de cuenta de Google",
+    "type": "multipleChoice",
+    "options": [
+      "Borrar tu cuenta de Google",
+      "El proceso para recuperar acceso a tu cuenta de Google si pierdes la contraseña o acceso",
+      "Crear una cuenta nueva",
+      "Compartir tu cuenta"
+    ],
+    "correctIndex": 1,
+    "explanation": "Google tiene procesos de recuperación que incluyen verificación por correo, telefono y preguntas.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses2_l1"
+  },
+  {
+    "id": "ac_st6_qB6_022",
+    "question": "Por que no deberias guardar tu plan de recuperación en la misma cuenta que proteges",
+    "type": "detectRisk",
+    "options": [
+      "No hay problema",
+      "Si hackean esa cuenta, tambien tendrian acceso a tu plan de recuperación",
+      "Porque no cabe",
+      "No es recomendado"
+    ],
+    "correctIndex": 1,
+    "explanation": "Guarda tu plan en un lugar diferente a las cuentas que protege. La seguridad requiere diversificacion.",
+    "difficulty": 3,
+    "lessonId": "ac_s6_ses1_l2"
+  },
+  {
+    "id": "ac_st6_qB6_023",
+    "question": "Que es la recuperación de cuenta de Facebook",
+    "type": "multipleChoice",
+    "options": [
+      "Eliminar tu perfil",
+      "El proceso para recuperar acceso usando identificación, amigos de confianza o correo alternativo",
+      "Crear una página de negocio",
+      "Cambiar tu nombre"
+    ],
+    "correctIndex": 1,
+    "explanation": "Facebook ofrece múltiples formas de recuperar cuenta: identificación, amigos de confianza o correo.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses2_l1"
+  },
+  {
+    "id": "ac_st6_qB6_024",
+    "question": "Que debes hacer si crees que fueron hackeados",
+    "type": "whatWouldYouDo",
+    "options": [
+      "No hacer nada",
+      "Cambiar contraseña inmediatamente, activar 2FA y revisar actividad sospechosa",
+      "Borrar la cuenta",
+      "Esperar a ver que pasa"
+    ],
+    "correctIndex": 1,
+    "explanation": "Actua rápido: cambia contraseña, activa 2FA y revisa toda la actividad reciente.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses1_l1"
+  },
+  {
+    "id": "ac_st6_qB6_025",
+    "question": "Que es la importancia de recordar donde guardaste tu plan",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero: si no sabes donde esta tu plan, no podrás usarlo cuando lo necesites",
+      "Falso: no importa donde lo guardes"
+    ],
+    "correctIndex": 0,
+    "explanation": "Debes saber exactamente donde esta tu plan de recuperación para poder acceder a el rápido.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses1_l3"
+  },
+  {
+    "id": "ac_st6_qB6_026",
+    "question": "Cual es el mayor error al crear un plan de recuperación",
+    "type": "detectRisk",
+    "options": [
+      "Tener un plan completo",
+      "No tener ningun plan y esperar a que pase algo",
+      "Tener múltiples respaldos",
+      "Compartir el plan con familiares"
+    ],
+    "correctIndex": 1,
+    "explanation": "No tener plan es el mayor error. Sin plan, perder acceso puede significar perder todo.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses1_l1"
+  },
+  {
+    "id": "ac_st6_qB6_027",
+    "question": "Que es un recovery code o codigo de recuperación",
+    "type": "multipleChoice",
+    "options": [
+      "Un codigo que te envian por SMS",
+      "Un codigo que guardas para usar cuando pierdes acceso a tu metodo 2FA principal",
+      "Una contraseña temporal",
+      "Un tipo de malware"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los recovery codes son codigos de un solo uso que te dan acceso de emergencia.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses1_l3"
+  },
+  {
+    "id": "ac_st6_qB6_028",
+    "question": "Caso: Tu familiar mayor fallecio y necesitas acceder a sus cuentas. Que haces",
+    "type": "miniCase",
+    "options": [
+      "No puedes hacer nada",
+      "Usar el plan de recuperación que dejo, o seguir los procesos oficiales de cada plataforma",
+      "Borrar todas sus cuentas",
+      "Pedir ayuda en redes sociales"
+    ],
+    "correctIndex": 1,
+    "explanation": "Si dejo un plan, usalo. Si no, cada plataforma tiene procesos para situaciónes especiales.",
+    "difficulty": 3,
+    "lessonId": "ac_s6_ses1_l4"
+  },
+  {
+    "id": "ac_st6_qB6_029",
+    "question": "Que es la importancia de tener un lugar fisico seguro para tu plan",
+    "type": "multipleChoice",
+    "options": [
+      "Para que se pierda",
+      "Un lugar como una caja fuerte o bóveda donde nadie pueda encontrar tu plan no autorizado",
+      "No es necesario",
+      "Para exhibirlo"
+    ],
+    "correctIndex": 1,
+    "explanation": "Un lugar fisico seguro como caja fuerte protege tu plan de ser encontrado por personas no autorizadas.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses1_l2"
+  },
+  {
+    "id": "ac_st6_qB6_030",
+    "question": "Que es la primera accion al sospechar que hackearon una cuenta",
+    "type": "multipleChoice",
+    "options": [
+      "Cambiar el nombre de usuario",
+      "Cambiar la contraseña inmediatamente desde un dispositivo seguro",
+      "Borrar la cuenta",
+      "Esperar 24 horas"
+    ],
+    "correctIndex": 1,
+    "explanation": "El primer paso es cambiar la contraseña desde un dispositivo seguro para bloquear al atacante.",
+    "difficulty": 1,
+    "lessonId": "ac_s6_ses1_l1"
+  }
+]

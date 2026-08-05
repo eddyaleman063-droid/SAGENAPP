@@ -3,6 +3,31 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sagen/providers/providers.dart';
 import 'package:sagen/models/daily_mission.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:sagen/services/auth_service.dart';
+import 'package:sagen/services/cloud_sync_service.dart';
+
+class MockCloudSyncService extends Mock implements CloudSyncService {}
+class MockAuthService extends Mock implements AuthService {}
+
+class TestLearningNotifier extends LearningNotifier {
+  @override
+  LearningState build() {
+    return const LearningState(isLoading: false);
+  }
+
+  @override
+  Future<void> addXp(int amount, {String? reason, String? lessonId}) async {
+    final newXp = state.xp + amount;
+    final newTotalXp = state.totalXpEarned + amount;
+    final newLevel = (newTotalXp / 100).floor() + 1;
+    state = state.copyWith(
+      xp: newLevel > state.currentLevel ? 0 : newXp,
+      totalXpEarned: newTotalXp,
+      currentLevel: newLevel > state.currentLevel ? newLevel : state.currentLevel,
+    );
+  }
+}
 
 void main() {
   group('MissionProvider', () {
@@ -13,6 +38,9 @@ void main() {
       container = ProviderContainer(
         overrides: [
           prefsProvider.overrideWithValue(prefs),
+          cloudSyncServiceProvider.overrideWith((ref) => MockCloudSyncService()),
+          authServiceProvider.overrideWith((ref) => MockAuthService()),
+          learningProvider.overrideWith(() => TestLearningNotifier()),
         ],
       );
     });
@@ -33,10 +61,9 @@ void main() {
         expect(m.description, isNotEmpty);
         expect(m.target, greaterThan(0));
         expect(m.xpReward, greaterThan(0));
-        expect(m.gemReward, greaterThan(0));
       }
     });
-    test('advanceMission increments progress', () {
+    test('advanceMission increments progress', () async {
       final notifier = container.read(missionProvider.notifier);
       final state = container.read(missionProvider);
       final mission = state.missions.first;
@@ -44,8 +71,9 @@ void main() {
       final updated = container.read(missionProvider);
       final updatedMission = updated.missions.firstWhere((m) => m.id == mission.id);
       expect(updatedMission.progress, greaterThan(0));
+      await Future.delayed(const Duration(milliseconds: 100));
     });
-    test('advanceMission completes mission when target reached', () {
+    test('advanceMission completes mission when target reached', () async {
       final notifier = container.read(missionProvider.notifier);
       final state = container.read(missionProvider);
       final mission = state.missions.first;
@@ -53,6 +81,7 @@ void main() {
       final updated = container.read(missionProvider);
       final updatedMission = updated.missions.firstWhere((m) => m.id == mission.id);
       expect(updatedMission.completed, true);
+      await Future.delayed(const Duration(milliseconds: 100));
     });
     test('DailyMission serialization roundtrip preserves all fields', () {
       final original = DailyMission(
@@ -61,12 +90,10 @@ void main() {
         description: 'Descripción test',
         type: MissionType.analyzeLink,
         xpReward: 50,
-        gemReward: 20,
         target: 3,
         difficulty: MissionDifficulty.hard,
         rarity: MissionRarity.epic,
         xpBonus: 10,
-        gemBonus: 5,
         streakBonus: 2,
         category: MissionCategory.protection,
         progress: 1,
@@ -79,12 +106,10 @@ void main() {
       expect(restored.description, original.description);
       expect(restored.type, original.type);
       expect(restored.xpReward, original.xpReward);
-      expect(restored.gemReward, original.gemReward);
       expect(restored.target, original.target);
       expect(restored.difficulty, original.difficulty);
       expect(restored.rarity, original.rarity);
       expect(restored.xpBonus, original.xpBonus);
-      expect(restored.gemBonus, original.gemBonus);
       expect(restored.streakBonus, original.streakBonus);
       expect(restored.category, original.category);
       expect(restored.progress, original.progress);

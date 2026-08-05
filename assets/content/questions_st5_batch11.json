@@ -1,0 +1,452 @@
+[
+    {
+        "id": "ac_st5_qB11_001",
+        "question": "Que es Have I Been Pwned y para que sirve?",
+        "type": "multipleChoice",
+        "options": [
+            "Un antivirus para celulares",
+            "Un sitio web que te dice si tu correo o contraseña aparecio en una filtracion de datos",
+            "Un banco digital peruano",
+            "Una app para enviar mensajes seguros"
+        ],
+        "correctIndex": 1,
+        "explanation": "Have I Been Pwned es un servicio gratuito que verifica si tu información personal ha sido comprometida en filtraciones conocidas.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses1_l1"
+    },
+    {
+        "id": "ac_st5_qB11_002",
+        "question": "Que puedes revisar en el Security Checkup de Google?",
+        "type": "multipleChoice",
+        "options": [
+            "Solo tu contraseña de Gmail",
+            "Dispositivos conectados, aplicaciones con acceso, verificación en 2 pasos yactividadreciente",
+            "Solo tu historial de busquedas",
+            "Solo las fotos que subiste"
+        ],
+        "correctIndex": 1,
+        "explanation": "El Security Checkup de Google te muestra dispositivos conectados, apps con acceso, configuración de 2FA y actividad reciente.",
+        "difficulty": 1,
+        "lessonId": "ac_s5_ses1_l1"
+    },
+    {
+        "id": "ac_st5_qB11_003",
+        "question": "Que haces si recibes una alerta de que alguien accedio a tu cuenta desde una ciudad lejana?",
+        "type": "whatWouldYouDo",
+        "options": [
+            "Cambiar tu contraseña de inmediato y cerrar sesión en todos los dispositivos",
+            "Ignorarla porque puede ser error del sistema",
+            "Esperar a que te llegue otra alerta",
+            "Preguntar en redes sociales que hacer"
+        ],
+        "correctIndex": 0,
+        "explanation": "Ante un acceso sospechoso, actua rápido: cambia tu contraseña y cierra sesión en todos los dispositivos.",
+        "difficulty": 1,
+        "lessonId": "ac_s5_ses1_l2"
+    },
+    {
+        "id": "ac_st5_qB11_004",
+        "question": "Que es una regla de reenvio sospechosa en tu correo?",
+        "type": "multipleChoice",
+        "options": [
+            "Una regla que archiva tus correos automáticamente",
+            "Una configuración que envia todos tus correos a otra dirección sin tu permiso",
+            "Un filtro que elimina el spam",
+            "Una aplicación para organizar tu bandeja"
+        ],
+        "correctIndex": 1,
+        "explanation": "Una regla de reenvio sospechosa puede redirigir tus correos a un atacante, permitiendole leer tu información.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses1_l2"
+    },
+    {
+        "id": "ac_st5_qB11_005",
+        "question": "Cada cuanto se recomienda revisar las sesiónes activas de tus cuentas?",
+        "type": "multipleChoice",
+        "options": [
+            "Solo cuando hayas un problema",
+            "Al menos una vez al mes",
+            "Una vez al ano",
+            "No es necesario revisarlas"
+        ],
+        "correctIndex": 1,
+        "explanation": "Revisar tus sesiónes activas al menos una vez al mes te ayuda a detectar accesos no autorizados a tiempo.",
+        "difficulty": 1,
+        "lessonId": "ac_s5_ses1_l3"
+    },
+    {
+        "id": "ac_st5_qB11_006",
+        "question": "Que es el monitoreo de identidad?",
+        "type": "multipleChoice",
+        "options": [
+            "Un servicio para espiar a otras personas",
+            "Un sistema que vigila si tu información personal aparece en filtraciones o sitios fraudulentos",
+            "Una app para hacer selfies",
+            "Un banco que ofrece cuentas seguras"
+        ],
+        "correctIndex": 1,
+        "explanation": "El monitoreo de identidad revisa si tu información personal aparece en filtraciones conocidas o sitios de fraude.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses1_l3"
+    },
+    {
+        "id": "ac_st5_qB11_007",
+        "question": "Cual de estas situaciónes indica un posible acceso no autorizado?",
+        "type": "detectRisk",
+        "options": [
+            "Un inicio de sesión desde tu celular hace 1 hora",
+            "Una sesión desde tu casa a las 8am",
+            "Un acceso desde una ciudad que nunca visitaste a las 3am",
+            "Una sesión desde la oficina a las 10am"
+        ],
+        "correctIndex": 2,
+        "explanation": "Un acceso desde una ubicacion desconocida y a una hora inusual es una señal clara de actividad sospechosa.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses1_l4"
+    },
+    {
+        "id": "ac_st5_qB11_008",
+        "question": "Que hacer si recibes un correo de tu banco pidiendote que hagas clic en un enlace?",
+        "type": "whatWouldYouDo",
+        "options": [
+            "Hacer clic inmediatamente para ver que pasa",
+            "Ignorar el correo y llamar al banco directamente por el número oficial",
+            "Reenviar el correo a todos tus contactos",
+            "Hacer clic y poner tu contraseña para verificar"
+        ],
+        "correctIndex": 1,
+        "explanation": "Nunca hagas clic en enlaces de correos sospechosos. Llama al banco directamente por su número oficial.",
+        "difficulty": 1,
+        "lessonId": "ac_s5_ses1_l4"
+    },
+    {
+        "id": "ac_st5_qB11_009",
+        "question": "Que es Yape y por que debes protegerlo con 2FA?",
+        "type": "multipleChoice",
+        "options": [
+            "Es una red social peruana",
+            "Es una app de pagos del BCP que protege tu dinero, y el 2FA evita que otros accedan a tus pagos",
+            "Es un juego online",
+            "Es un servicio de streaming"
+        ],
+        "correctIndex": 1,
+        "explanation": "Yape es una billetera digital del BCP. Activar 2FA protege tu dinero de accesos no autorizados.",
+        "difficulty": 1,
+        "lessonId": "ac_s5_ses1_l5"
+    },
+    {
+        "id": "ac_st5_qB11_010",
+        "question": "Como configurar alertas en tu banco para detectar movimientos sospechosos?",
+        "type": "multipleChoice",
+        "options": [
+            "No se puede configurar alertas en los bancos",
+            "Pedir al cajero automático que active las alertas",
+            "Ir a la app o web del banco y activar notificaciones de transacciones",
+            "Enviar un mensaje de texto al banco"
+        ],
+        "correctIndex": 2,
+        "explanation": "La mayoria de bancos como BCP e Interbank te permiten activar notificaciones de transacciones en su app o portal web.",
+        "difficulty": 1,
+        "lessonId": "ac_s5_ses1_l5"
+    },
+    {
+        "id": "ac_st5_qB11_011",
+        "question": "Que es el historial de actividad de Google y por que es importante revisarlo?",
+        "type": "multipleChoice",
+        "options": [
+            "Es un diario personal de Google",
+            "Muestra todos los dispositivos, ubicaciones y horarios de inicio de sesión en tu cuenta de Google",
+            "Es una lista de tus correos enviados",
+            "Es un historial de compras en Google Store"
+        ],
+        "correctIndex": 1,
+        "explanation": "El historial de actividad muestra cuando y donde accediste a tu cuenta, ayudandote a detectar accesos sospechosos.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses1_l6"
+    },
+    {
+        "id": "ac_st5_qB11_012",
+        "question": "Que pasos sigues si detectas un acceso no autorizado a tu cuenta de correo?",
+        "type": "whatWouldYouDo",
+        "options": [
+            "Cambiar la contraseña, activar 2FA, revisar la actividad reciente y cerrar sesiónes sospechosas",
+            "Solo cambiar la contraseña",
+            "Esperar a que Google lo arregle solo",
+            "Eliminar la cuenta y crear una nueva"
+        ],
+        "correctIndex": 0,
+        "explanation": "Actua de inmediato: cambia contraseña, activa 2FA, revisa actividad y cierra sesiónes sospechosas.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses1_l6"
+    },
+    {
+        "id": "ac_st5_qB11_013",
+        "question": "Que es una alerta de cambio de configuración en Google?",
+        "type": "multipleChoice",
+        "options": [
+            "Una notificacion de que tu celular se actualizo",
+            "Un aviso de que alguien cambio tu número de telefono, correo de recuperación o configuración de seguridad",
+            "Una alerta de nueva app de Google",
+            "Un recordatorio de cambiar tu contraseña"
+        ],
+        "correctIndex": 1,
+        "explanation": "Si recibes esta alerta, significa que alguien intento o logro cambiar datos importantes de tu cuenta.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses2_l1"
+    },
+    {
+        "id": "ac_st5_qB11_014",
+        "question": "Que hacer si recibes una alerta de dispositivo nuevo en tu cuenta?",
+        "type": "whatWouldYouDo",
+        "options": [
+            "Ignorarla porque puede ser tu propio celular",
+            "Revisar si reconoces el dispositivo y cerrar sesión si no lo reconoces",
+            "Compartir tu contraseña con el dispositivo nuevo",
+            "Eliminar la cuenta inmediatamente"
+        ],
+        "correctIndex": 1,
+        "explanation": "Revisa el nombre y ubicacion del dispositivo. Si no lo reconoces, cierra sesión y cambia tu contraseña.",
+        "difficulty": 1,
+        "lessonId": "ac_s5_ses2_l2"
+    },
+    {
+        "id": "ac_st5_qB11_015",
+        "question": "Que es la verificación en dos pasos (2FA) y por que es importante para el monitoreo?",
+        "type": "multipleChoice",
+        "options": [
+            "Es una forma de doble contraseña",
+            "Es una capa extra de seguridad que requiere dos factores para iniciar sesión, lo que genera alertas si alguien intenta acceder",
+            "Es un tipo de antivirus",
+            "Es una app de mensajeria"
+        ],
+        "correctIndex": 1,
+        "explanation": "La 2FA requiere contraseña mas un segundo factor, y genera alertas cuando alguien intenta acceder desde un dispositivo nuevo.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses2_l3"
+    },
+    {
+        "id": "ac_st5_qB11_016",
+        "question": "Que hacer si alguien cambio tu número de telefono de recuperación sin tu permiso?",
+        "type": "whatWouldYouDo",
+        "options": [
+            "Cambiar el número a tu nombre inmediatamente y activar 2FA",
+            "Esperar a que el hacker se aburra",
+            "Crear una cuenta nueva",
+            "Pedir ayuda en redes sociales"
+        ],
+        "correctIndex": 0,
+        "explanation": "Actua rápido: recuper el control de tu cuenta, cambia el número de recuperación y activa 2FA.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses2_l5"
+    },
+    {
+        "id": "ac_st5_qB11_017",
+        "question": "Que es un dashboard de seguridad y donde encontrarlo?",
+        "type": "multipleChoice",
+        "options": [
+            "Un panel de control del celular para juegos",
+            "Un lugar centralizado donde revisar el estado de seguridad de todas tus cuentas principales",
+            "Una tienda de apps de seguridad",
+            "Un servidor de internet"
+        ],
+        "correctIndex": 1,
+        "explanation": "Google Security Checkup, Microsoft Account Dashboard y Apple ID son ejemplos de dashboards de seguridad centralizados.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses2_l6"
+    },
+    {
+        "id": "ac_st5_qB11_018",
+        "question": "Cual de estas es una buena práctica al revisar tus sesiónes activas?",
+        "type": "detectRisk",
+        "options": [
+            "Cerrar todas las sesiónes incluyendo las tuyas propias",
+            "Cerrar sesión solo en dispositivos que no reconoces o que ya no usas",
+            "No cerrar ninguna sesión para no perder comodidad",
+            "Cerrar sesión solo los domingos"
+        ],
+        "correctIndex": 1,
+        "explanation": "Solo cierra sesión en dispositivos que no reconozcas o que ya no utilices para evitar accesos no deseados.",
+        "difficulty": 1,
+        "lessonId": "ac_s5_ses3_l1"
+    },
+    {
+        "id": "ac_st5_qB11_019",
+        "question": "Que haces si una app tiene acceso a tu cuenta de Google y no la reconoces?",
+        "type": "whatWouldYouDo",
+        "options": [
+            "Revocar el acceso de inmediato desde la configuración de tu cuenta",
+            "No hacer nada porque no importa",
+            "Preguntar en redes sociales que hacer",
+            "Desinstalar Google del celular"
+        ],
+        "correctIndex": 0,
+        "explanation": "Revoca el acceso de apps que no reconozcas para evitar que accedan a tu información.",
+        "difficulty": 1,
+        "lessonId": "ac_s5_ses3_l2"
+    },
+    {
+        "id": "ac_st5_qB11_020",
+        "question": "Que es un dispositivo confiable en la configuración de seguridad de Google?",
+        "type": "multipleChoice",
+        "options": [
+            "Cualquier celular que tengas",
+            "Un dispositivo donde verificaste tu identidad y que Google reconoce como seguro",
+            "Un dispositivo nuevo que compraste",
+            "Un dispositivo prestado de un amigo"
+        ],
+        "correctIndex": 1,
+        "explanation": "Un dispositivo confiable es aquel donde Google te permite acceder sin pedir verificación adicional.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses3_l3"
+    },
+    {
+        "id": "ac_st5_qB11_021",
+        "question": "Que hacer si recibes una alerta de intento de inicio de sesión fallido?",
+        "type": "whatWouldYouDo",
+        "options": [
+            "Cambiar tu contraseña de inmediato y revisar tu actividad reciente",
+            "Ignorar la alerta",
+            "Llamar al hacker para preguntarle que quiere",
+            "Borrar tu cuenta"
+        ],
+        "correctIndex": 0,
+        "explanation": "Un intento fallido puede significar que alguien esta tratando de acceder a tu cuenta. Cambia tu contraseña y revisa actividad.",
+        "difficulty": 1,
+        "lessonId": "ac_s5_ses3_l4"
+    },
+    {
+        "id": "ac_st5_qB11_022",
+        "question": "Que es un reporte semanal de seguridad?",
+        "type": "multipleChoice",
+        "options": [
+            "Un resumen de tus busquedas en Google",
+            "Un informe que muestra el estado de seguridad de tus cuentas y posibles problemas detectados",
+            "Una factura de tu banco",
+            "Un recordatorio para cambiar contraseña"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los reportes de seguridad te dan un resumen periodico del estado de tus cuentas y te alertan sobre problemas.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses5_l6"
+    },
+    {
+        "id": "ac_st5_qB11_023",
+        "question": "Que es Plin y que precauciones debes tener?",
+        "type": "multipleChoice",
+        "options": [
+            "Es una red social para compartir fotos",
+            "Es una app de pagos que debes proteger con contraseña segura y 2FA",
+            "Es un juego de cartas digital",
+            "Es un servicio de streaming"
+        ],
+        "correctIndex": 1,
+        "explanation": "Plin es una app de pagos de Interbank. Protegela con contraseña fuerte, 2FA y no compartas tu clave con nadie.",
+        "difficulty": 1,
+        "lessonId": "ac_s5_ses1_l5"
+    },
+    {
+        "id": "ac_st5_qB11_024",
+        "question": "Cual es el primer paso cuando recibes una alerta de acceso sospechoso?",
+        "type": "multipleChoice",
+        "options": [
+            "Publicar en redes sociales lo que paso",
+            "Cerrar sesión de inmediato y cambiar la contraseña",
+            "Esperar 24 horas a ver si pasa algo",
+            "Llamar a un amigo para que te ayude"
+        ],
+        "correctIndex": 1,
+        "explanation": "Lo primero es cerrar sesión y cambiar la contraseña para bloquear el acceso no autorizado.",
+        "difficulty": 1,
+        "lessonId": "ac_s5_ses1_l2"
+    },
+    {
+        "id": "ac_st5_qB11_025",
+        "question": "Que es el dark web y porque debes monitorear si tu información aparece ahi?",
+        "type": "multipleChoice",
+        "options": [
+            "Es un navegador web normal",
+            "Es una parte de internet donde se venden datos filtrados, y tu información podria estar ahi sin que lo sepas",
+            "Es una tienda online de productos technologicos",
+            "Es una red social privada"
+        ],
+        "correctIndex": 1,
+        "explanation": "El dark web es un espacio de internet donde se compran y venden datos filtrados. Monitorear te permite actuar si tus datos aparecen.",
+        "difficulty": 3,
+        "lessonId": "ac_s5_ses1_l1"
+    },
+    {
+        "id": "ac_st5_qB11_026",
+        "question": "Que es un patron de acceso normal y como lo identificas?",
+        "type": "multipleChoice",
+        "options": [
+            "Es cuando accedes a tus cuentas a horas aleatorias",
+            "Es la rutina habitual de ubicaciones, horarios y dispositivos desde donde accedes a tus cuentas",
+            "Es el patron de contraseña que usas",
+            "Es el tipo de celular que tienes"
+        ],
+        "correctIndex": 1,
+        "explanation": "Tu patron normal incluye horas habituales, ubicaciones conocidas y dispositivos que sueles usar.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses4_l4"
+    },
+    {
+        "id": "ac_st5_qB11_027",
+        "question": "Que hacer si tu hijo accedio a tu cuenta de banco sin tu permiso?",
+        "type": "whatWouldYouDo",
+        "options": [
+            "Cambiar la contraseña y configurar perfiles separados para cada miembro de la familia",
+            "Regañarlo pero no cambiar nada",
+            "Eliminar la cuenta bancaria",
+            "Quitarle el celular como castigo permanente"
+        ],
+        "correctIndex": 0,
+        "explanation": "Cambia la contraseña y configura perfiles o controles parentales para evitar accesos no deseados.",
+        "difficulty": 1,
+        "lessonId": "ac_s5_ses1_l6"
+    },
+    {
+        "id": "ac_st5_qB11_028",
+        "question": "Cual es la diferencia entre una alerta de inicio de sesión y una de cambio de configuración?",
+        "type": "multipleChoice",
+        "options": [
+            "Son lo mismo",
+            "La alerta de inicio de sesión indica que alguien entro a tu cuenta; la de cambio de configuración indica que modificaron datos de seguridad",
+            "La de inicio de sesión es mas importante",
+            "La de configuración solo aparece en Apple"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las alertas de inicio de sesión te avisan de accesos; las de configuración avisan de cambios en datos críticos como correo o telefono.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses2_l1"
+    },
+    {
+        "id": "ac_st5_qB11_029",
+        "question": "Que es una transaccion no reconocida en tu cuenta bancaria?",
+        "type": "multipleChoice",
+        "options": [
+            "Una transferencia que hiciste pero no recuerdas",
+            "Un cobro o transferencia que no autorizaste y que puede indicar fraude",
+            "Una compra que hiciste con tu tarjeta de credito",
+            "Un deposito que recibiste"
+        ],
+        "correctIndex": 1,
+        "explanation": "Si ves una transaccion que no reconoces, podria ser fraude. Contacta a tu banco inmediatamente.",
+        "difficulty": 1,
+        "lessonId": "ac_s5_ses1_l1"
+    },
+    {
+        "id": "ac_st5_qB11_030",
+        "question": "Que es la herencia digital y porque es importante incluirla en tu plan de monitoreo?",
+        "type": "multipleChoice",
+        "options": [
+            "Es un tipo de contrato legal tradicional",
+            "Es la información digital que dejas atras y que debe ser gestionada si algo te sucede",
+            "Es una forma de ganar dinero en internet",
+            "Es un servicio de streaming"
+        ],
+        "correctIndex": 1,
+        "explanation": "La herencia digital incluye tus cuentas y datos importantes que deben ser gestionados por personas de confianza.",
+        "difficulty": 3,
+        "lessonId": "ac_s5_ses5_l5"
+    }
+]

@@ -1,0 +1,302 @@
+[
+    {
+        "id": "ac_st2_qB8_001",
+        "question": "Que es una passphrase y por que es mas segura que una contraseña comun",
+        "type": "multipleChoice",
+        "options": ["Una contraseña de 4 digitos", "Una frase larga facil de recordar pero dificil de adivinar", "Un tipo de PIN bancario", "Una pregunta de seguridad"],
+        "correctIndex": 1,
+        "explanation": "Las passphrases son frases largas que combinan palabras para crear contraseñas mas seguras y memorables.",
+        "difficulty": 2,
+        "lessonId": "ac_s2_ses6_l1"
+    },
+    {
+        "id": "ac_st2_qB8_002",
+        "question": "Por que usar tu fecha de nacimiento como contraseña es peligroso",
+        "type": "detectRisk",
+        "options": ["No es peligroso si la combined con simbolos", "Porque cualquiera que te conozca puede adivinarla facilmente", "Solo es problema si la usas en el celular", "Depende del servicio"],
+        "correctIndex": 1,
+        "explanation": "La fecha de nacimiento es facil de encontrar en redes sociales y documentos, por eso es una contraseña debil.",
+        "difficulty": 1,
+        "lessonId": "ac_s2_ses2_l2"
+    },
+    {
+        "id": "ac_st2_qB8_003",
+        "question": "Que deberias hacer si te enteras que una página web donde tienes cuenta fue hackeada",
+        "type": "whatWouldYouDo",
+        "options": ["Cambiar la contraseña de esa página y de todas las que tengan la misma clave", "Esperar a que te manden un correo", "No hacer nada porque probablemente no te afecta", "Eliminar la cuenta"],
+        "correctIndex": 0,
+        "explanation": "Si una página fue hackeada, cambia inmediatamente la contraseña. Si la reusas en otros sitios, cambialas tambien.",
+        "difficulty": 2,
+        "lessonId": "ac_s2_ses4_l3"
+    },
+    {
+        "id": "ac_st2_qB8_004",
+        "question": "Que es un ataque de fuerza bruta y como te proteges",
+        "type": "multipleChoice",
+        "options": ["Cuando alguien te golpea físicamente", "Un programa que prueba miles de combinaciónes de contraseñas automáticamente", "Cuando olvidas tu contraseña", "Un tipo de correo electrónico"],
+        "correctIndex": 1,
+        "explanation": "Los ataques de fuerza bruta prueban combinaciónes hasta encontrar la correcta. Contraseñas largas los hacen casi imposibles.",
+        "difficulty": 3,
+        "lessonId": "ac_s2_ses5_l5"
+    },
+    {
+        "id": "ac_st2_qB8_005",
+        "question": "Caso: Tu nieto de 8 anos te pide que le ayudes a crear una contraseña para su juego online. Que haces",
+        "type": "miniCase",
+        "options": ["Le pones su nombre y año de nacimiento", "Le ayudas a crear una frase larga que el pueda recordar facilmente", "Le pones tu misma contraseña", "Le dices que no necesita contraseña"],
+        "correctIndex": 1,
+        "explanation": "Ayuda a crear passphrases sencillas. Incluso los niños pueden aprender a usar frases seguras.",
+        "difficulty": 1,
+        "lessonId": "ac_s2_ses18_l1"
+    },
+    {
+        "id": "ac_st2_qB8_006",
+        "question": "Cada cuanto se recomienda cambiar la contraseña de tu correo electrónico",
+        "type": "multipleChoice",
+        "options": ["Cada semana", "Cada 3 a 6 meses o si sospechas que fue comprometida", "Nunca es necesario", "Solo cuando la olvidas"],
+        "correctIndex": 1,
+        "explanation": "Lo ideal es cambiar las contraseñas críticas cada 3 a 6 meses o inmediatamente si hay una filtracion.",
+        "difficulty": 2,
+        "lessonId": "ac_s2_ses8_l1"
+    },
+    {
+        "id": "ac_st2_qB8_007",
+        "question": "Que es el cibercrimen y porque debes preocuparte",
+        "type": "trueFalse",
+        "options": ["Verdadero", "Falso"],
+        "correctIndex": 0,
+        "explanation": "El cibercrimen afecta a millones de personas. Proteger tus contraseñas es la primera linea de defensa.",
+        "difficulty": 1,
+        "lessonId": "ac_s2_ses19_l1"
+    },
+    {
+        "id": "ac_st2_qB8_008",
+        "question": "Por que es mala idea guardar contraseñas en un papelito pegado en tu computadora",
+        "type": "detectRisk",
+        "options": ["Porque el papel se puede borrar", "Porque cualquiera que este cerca puede ver y copiar tus contraseñas", "No es mala idea si lo escondes bien", "Solo es problema si trabajas en oficina"],
+        "correctIndex": 1,
+        "explanation": "Los papelitos son la forma mas insegura de guardar contraseñas. Cualquiera que acceda a tu espacio puede verlas.",
+        "difficulty": 1,
+        "lessonId": "ac_s2_ses19_l1"
+    },
+    {
+        "id": "ac_st2_qB8_009",
+        "question": "Que es la autenticación biometrica y cuales son sus limitaciones",
+        "type": "multipleChoice",
+        "options": ["Es usar huella dactilar o rostro, pero no puede cambiar si es comprometida", "Es un tipo de contraseña numerica", "Es mas insegura que un PIN", "Solo sirve para celulares viejos"],
+        "correctIndex": 0,
+        "explanation": "La biometria es conveniente pero si tus datos biométricos son filtrados, no puedes cambiarlos como una contraseña.",
+        "difficulty": 3,
+        "lessonId": "ac_s2_ses6_l6"
+    },
+    {
+        "id": "ac_st2_qB8_010",
+        "question": "Que debes hacer antes de regalar o vender tu celular viejo",
+        "type": "whatWouldYouDo",
+        "options": ["Borrar todos los datos y restablecer los ajustes de fabrica", "Solo borrar los SMS", "Quitar la tarjeta SIM nada mas", "Dejarlo como esta"],
+        "correctIndex": 0,
+        "explanation": "Restablecer el celular borra tus datos y contraseñas. Siempre hazlo antes de regalarlo o venderlo.",
+        "difficulty": 2,
+        "lessonId": "ac_s2_ses11_l1"
+    },
+    {
+        "id": "ac_st2_qB8_011",
+        "question": "Que es una contraseña de wifi segura y cual es la longitud minima recomendada",
+        "type": "multipleChoice",
+        "options": ["4 carácteres con números", "Al menos 12 carácteres con letras, números y simbolos", "La que viene por defecto en el router", "Tu nombre"],
+        "correctIndex": 1,
+        "explanation": "Una contraseña wifi segura debe tener al menos 12 carácteres con variedad de tipos de carácteres.",
+        "difficulty": 1,
+        "lessonId": "ac_s2_ses12_l1"
+    },
+    {
+        "id": "ac_st2_qB8_012",
+        "question": "Por que deberias cambiar la contraseña por defecto de tu router",
+        "type": "trueFalse",
+        "options": ["Verdadero", "Falso"],
+        "correctIndex": 0,
+        "explanation": "Las contraseñas por defecto son conocidas por los atacantes. Cambiarla es fundamental para tu seguridad.",
+        "difficulty": 1,
+        "lessonId": "ac_s2_ses12_l2"
+    },
+    {
+        "id": "ac_st2_qB8_013",
+        "question": "Que es un PIN de tarjeta seguro y cuales son los PINs que nunca debes usar",
+        "type": "detectRisk",
+        "options": ["Cualquier número de 4 digitos esta bien", "Nunca uses 1234, 0000, tu año de nacimiento o números consecutivos", "Solo evitar 1234", "Los PINs no importan mucho"],
+        "correctIndex": 1,
+        "explanation": "Los PINs faciles de adivinar como 1234 o 0000 son los primeros que prueban los estafadores.",
+        "difficulty": 1,
+        "lessonId": "ac_s2_ses13_l1"
+    },
+    {
+        "id": "ac_st2_qB8_014",
+        "question": "Caso: Te llaman del banco BCP preguntando tus datos para verificar una transaccion. Que haces",
+        "type": "miniCase",
+        "options": ["Les das tus datos porque es el BCP", "Cuelgas y llamas tu al BCP usando el número de la tarjeta", "Les pides que te manden un correo", "Les das solo tu número de cuenta"],
+        "correctIndex": 1,
+        "explanation": "El BCP nunca te llama para pedir datos. Si recibes una llamada sospechosa, cuelga y llama tu usando el número oficial.",
+        "difficulty": 2,
+        "lessonId": "ac_s2_ses13_l2"
+    },
+    {
+        "id": "ac_st2_qB8_015",
+        "question": "Que es un gestor de contraseñas y cual es su principal ventaja",
+        "type": "multipleChoice",
+        "options": ["Un archivo de Excel donde guardas tus claves", "Un programa que guarda, genera y recuerda contraseñas seguras para ti", "Un servicio de correo electrónico", "Un tipo de red social"],
+        "correctIndex": 1,
+        "explanation": "Los gestores como Bitwarden o LastPass guardan todas tus contraseñas de forma cifrada y generan claves seguras.",
+        "difficulty": 2,
+        "lessonId": "ac_s2_ses9_l2"
+    },
+    {
+        "id": "ac_st2_qB8_016",
+        "question": "Que es la contraseña maestra de un gestor de contraseñas",
+        "type": "completePhrase",
+        "options": ["Una contraseña que usas en todas tus cuentas", "La única contraseña que necesitas memorizar para acceder a todas tus demas claves", "Una contraseña que genera el gestor automáticamente", "Una contraseña que caduca cada semana"],
+        "correctIndex": 1,
+        "explanation": "La contraseña maestra es la llave que desbloquea todas tus demas contraseñas guardadas en el gestor.",
+        "difficulty": 2,
+        "lessonId": "ac_s2_ses9_l6"
+    },
+    {
+        "id": "ac_st2_qB8_017",
+        "question": "Por que no deberias guardar contraseñas en el navegador sin protección",
+        "type": "detectRisk",
+        "options": ["Si porque el navegador las cifra automáticamente", "Porque si alguien accede a tu computadora puede ver todas tus claves", "No hay riesgo alguno", "Solo es problema en celulares"],
+        "correctIndex": 1,
+        "explanation": "Si alguien accede a tu dispositivo sin contraseña, puede ver todas las contraseñas guardadas en el navegador.",
+        "difficulty": 2,
+        "lessonId": "ac_s2_ses9_l3"
+    },
+    {
+        "id": "ac_st2_qB8_018",
+        "question": "Que hacer si pierdes el acceso a tu gestor de contraseñas",
+        "type": "whatWouldYouDo",
+        "options": ["Crear cuentas nuevas en todos los servicios", "Usar la función de recuperación del gestor con tu correo alternativo", "Pedir ayuda en redes sociales", "Esperar a que se arregle solo"],
+        "correctIndex": 1,
+        "explanation": "La mayoria de gestores tienen función de recuperación. Usa tu correo alternativo para recuperar el acceso.",
+        "difficulty": 2,
+        "lessonId": "ac_s2_ses15_l3"
+    },
+    {
+        "id": "ac_st2_qB8_019",
+        "question": "Que son los patrones de teclado y porque son inseguros como contraseña",
+        "type": "multipleChoice",
+        "options": ["Son patrones artisticos que hacen tu contraseña bonita", "Secuencias como qwerty o asdf que son faciles de adivinar", "Son tipos de cifrado avanzado", "Son preguntas de seguridad"],
+        "correctIndex": 1,
+        "explanation": "Los patrones de teclado como qwerty son de los primeros que prueban los atacantes. Son muy predecibles.",
+        "difficulty": 2,
+        "lessonId": "ac_s2_ses7_l1"
+    },
+    {
+        "id": "ac_st2_qB8_020",
+        "question": "Por que reemplazar la 'a' por '@' en una contraseña no la hace segura",
+        "type": "trueFalse",
+        "options": ["Verdadero", "Falso"],
+        "correctIndex": 0,
+        "explanation": "Los atacantes conocen las sustituciones comunes. Cambiar 'a' por '@' no aumenta significativamente la seguridad.",
+        "difficulty": 3,
+        "lessonId": "ac_s2_ses7_l5"
+    },
+    {
+        "id": "ac_st2_qB8_021",
+        "question": "Caso: Tu hermano te pregunta si es seguro usar la misma contraseña en Yape y en tu correo. Que le dices",
+        "type": "miniCase",
+        "options": ["Que si porque son de la misma empresa", "Que no, porque si hackean uno tendrian acceso al otro", "Que depende del tipo de celular", "Que solo es problema si usa internet publico"],
+        "correctIndex": 1,
+        "explanation": "Nunca reutilices contraseñas entre servicios diferentes. Si uno es comprometido, el otro queda vulnerable.",
+        "difficulty": 1,
+        "lessonId": "ac_s2_ses4_l1"
+    },
+    {
+        "id": "ac_st2_qB8_022",
+        "question": "Que es un ataque de diccionario en ciberseguridad",
+        "type": "multipleChoice",
+        "options": ["Cuando alguien roba tu diccionario fisico", "Un ataque que prueba palabras comunes del diccionario como contraseñas", "Un tipo de correo spam", "Una forma de crear cuentas falsas"],
+        "correctIndex": 1,
+        "explanation": "Los ataques de diccionario prueban palabras comunes como contraseña, administrador, etc. Por eso debes usar frases únicas.",
+        "difficulty": 3,
+        "lessonId": "ac_s2_ses2_l4"
+    },
+    {
+        "id": "ac_st2_qB8_023",
+        "question": "Que es la eliminación segura de archivos y porque es importante al vender tu computadora",
+        "type": "multipleChoice",
+        "options": ["Borrar archivos de la papelera", "Sobreescribir los datos para que no se puedan recuperar", "Formatear el disco una vez", "Quitar el disco duro"],
+        "correctIndex": 1,
+        "explanation": "Borrar archivos no los elimina realmente. Debes usar herramientas que sobreescriban los datos para que no se recuperen.",
+        "difficulty": 3,
+        "lessonId": "ac_s2_ses11_l3"
+    },
+    {
+        "id": "ac_st2_qB8_024",
+        "question": "Por que es importante que cada miembro de la familia tenga su propia contraseña",
+        "type": "whatWouldYouDo",
+        "options": ["Para que todos puedan ver los mismos archivos", "Porque si alguien accede a la de uno no afecta a los demas", "No es importante", "Solo si trabajan desde casa"],
+        "correctIndex": 1,
+        "explanation": "Cada persona debe tener sus propias credenciales para que una brecha no comprometa a toda la familia.",
+        "difficulty": 1,
+        "lessonId": "ac_s2_ses18_l4"
+    },
+    {
+        "id": "ac_st2_qB8_025",
+        "question": "Que es la sustitucion predecible de carácteres en contraseñas",
+        "type": "detectRisk",
+        "options": ["Usar mayusculas y minusculas", "Cambiar letras por números o simbolos de forma predecible como Pa$$w0rd", "Usar frases largas", "Mezclar idiomas"],
+        "correctIndex": 1,
+        "explanation": "Sustituciones como P@ssw0rd son conocidas por los atacantes. No aumentan la seguridad real de tu contraseña.",
+        "difficulty": 3,
+        "lessonId": "ac_s2_ses7_l2"
+    },
+    {
+        "id": "ac_st2_qB8_026",
+        "question": "Que deberias hacer si un amigo te pide que le des tu contraseña de Netflix",
+        "type": "whatWouldYouDo",
+        "options": ["Darsela porque es tu amigo", "Explicarle que compartir contraseñas es inseguro y ayudarle a crear su propia cuenta", "Cambiar la contraseña y no decile nada", "Decirle que la adivine"],
+        "correctIndex": 1,
+        "explanation": "Compartir contraseñas es inseguro. Ayuda a tu amigo a crear su propia cuenta con credenciales seguras.",
+        "difficulty": 1,
+        "lessonId": "ac_s2_ses10_l5"
+    },
+    {
+        "id": "ac_st2_qB8_027",
+        "question": "Que es un PIN dinamico y porque es mas seguro que un PIN estatico",
+        "type": "multipleChoice",
+        "options": ["Un PIN que cambia cada vez que lo usas", "Un PIN que es siempre el mismo número", "Un PIN que solo funciona los fines de semana", "Un PIN que usas para el Wi-Fi"],
+        "correctIndex": 0,
+        "explanation": "Los PINs dinámicos cambian con cada uso, haciendo que un atacante no pueda reutilizarlo si lo roba.",
+        "difficulty": 3,
+        "lessonId": "ac_s2_ses13_l3"
+    },
+    {
+        "id": "ac_st2_qB8_028",
+        "question": "Por que es importante no escribir tu contraseña maestra en ningun lugar",
+        "type": "trueFalse",
+        "options": ["Verdadero", "Falso"],
+        "correctIndex": 0,
+        "explanation": "Si alguien encuentra tu contraseña maestra escrita, tendrá acceso a todas las demas contraseñas que protege.",
+        "difficulty": 1,
+        "lessonId": "ac_s2_ses19_l3"
+    },
+    {
+        "id": "ac_st2_qB8_029",
+        "question": "Que es una pregunta de seguridad y como deberias responderla",
+        "type": "multipleChoice",
+        "options": ["Con la respuesta real y verdadera", "Con una respuesta falsa que solo tu sepas, escrita en un lugar seguro", "Con la respuesta mas comun", "Dejandola en blanco"],
+        "correctIndex": 1,
+        "explanation": "Responde con información falsa que solo tu conozcas. Si alguien investiga tu perfil podria adivinar respuestas reales.",
+        "difficulty": 2,
+        "lessonId": "ac_s2_ses14_l2"
+    },
+    {
+        "id": "ac_st2_qB8_030",
+        "question": "Que es Have I Been Pwned y como te ayuda a protegerte",
+        "type": "multipleChoice",
+        "options": ["Un juego de palabras", "Un sitio web que te dice si tu correo o contraseña aparecio en filtraciones conocidas", "Una app de mensajeria", "Un tipo de ataque informatico"],
+        "correctIndex": 1,
+        "explanation": "Have I Been Pwned es un servicio gratuito que verifica si tus datos personales fueron parte de filtraciones de seguridad.",
+        "difficulty": 2,
+        "lessonId": "ac_s2_ses16_l2"
+    }
+]

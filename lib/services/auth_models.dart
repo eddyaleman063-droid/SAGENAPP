@@ -1,5 +1,6 @@
 import 'package:sagen/l10n/app_localizations.dart';
 
+/// Represents an authenticated user profile.
 class AppUser {
   final String uid;
   final String displayName;
@@ -16,6 +17,7 @@ class AppUser {
   });
 }
 
+/// Exception for authentication-related errors with localized messages.
 class AuthException implements Exception {
   final String code;
   const AuthException(this.code);
@@ -40,6 +42,10 @@ class AuthException implements Exception {
       case 'verify_error': return l.authVerifyError;
       case 'recovery_error': return l.authRecoveryError;
       case 'resend_error': return l.authResendEmailError;
+      case 'rate_limited': return l.authRateLimited;
+      case 'reauth_error': return l.authReauthError;
+      case 'reauth_required_for_delete': return l.authReauthRequiredForDelete;
+      case 'delete_account_failed': return l.authDeleteAccountFailed;
       default: return l.authDefault;
     }
   }

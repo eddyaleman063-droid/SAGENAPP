@@ -1,0 +1,452 @@
+[
+    {
+        "id": "ac_st4_qB11_001",
+        "question": "Que es un gestor de contraseñas y porque lo necesitas?",
+        "type": "multipleChoice",
+        "options": [
+            "Es un programa que recuerda y guarda todas tus contraseñas de forma segura",
+            "Es un antivirus para el celular",
+            "Es un navegador de internet",
+            "Es una aplicación de mensajeria"
+        ],
+        "correctIndex": 0,
+        "explanation": "Un gestor de contraseñas guarda todas tus contraseñas en un lugar seguro, protegidas por una contraseña maestra.",
+        "difficulty": 1,
+        "lessonId": "ac_s4_ses1_l1"
+    },
+    {
+        "id": "ac_st4_qB11_002",
+        "question": "Cual es el beneficio principal de usar un gestor de contraseñas?",
+        "type": "multipleChoice",
+        "options": [
+            "Que no necesitas internet para usarlo",
+            "Que puedes recordar una sola contraseña maestra en lugar de docenas de contraseñas diferentes",
+            "Que es gratis para siempre",
+            "Que funciona sin celular"
+        ],
+        "correctIndex": 1,
+        "explanation": "El beneficio principal es que solo necesitas recordar una contraseña maestra, y el gestor guarda el resto de forma segura.",
+        "difficulty": 1,
+        "lessonId": "ac_s4_ses1_l2"
+    },
+    {
+        "id": "ac_st4_qB11_003",
+        "question": "Que es la contraseña maestra de un gestor de contraseñas?",
+        "type": "multipleChoice",
+        "options": [
+            "Es la contraseña de tu correo electrónico",
+            "Es la única contraseña que necesitas recordar para acceder a todas las demas",
+            "Es una contraseña que cambia cada dia",
+            "Es la contraseña de tu banco"
+        ],
+        "correctIndex": 1,
+        "explanation": "La contraseña maestra es la clave principal que protege todas las demas contraseñas guardadas en el gestor.",
+        "difficulty": 1,
+        "lessonId": "ac_s4_ses1_l3"
+    },
+    {
+        "id": "ac_st4_qB11_004",
+        "question": "Como funciona el autollenado de contraseñas en un gestor?",
+        "type": "multipleChoice",
+        "options": [
+            "Debes escribir la contraseña manualmente cada vez",
+            "El gestor detecta cuando estas en una página de inicio de sesión y completa tus datos automáticamente",
+            "El gestor envia tu contraseña por correo electrónico",
+            "El gestor llama a tu banco para iniciar sesión"
+        ],
+        "correctIndex": 1,
+        "explanation": "El autollenado detecta las páginas de login y completa tu usuario y contraseña automáticamente.",
+        "difficulty": 2,
+        "lessonId": "ac_s4_ses1_l4"
+    },
+    {
+        "id": "ac_st4_qB11_005",
+        "question": "Que es un gestor de contraseñas local y cual es su ventaja?",
+        "type": "multipleChoice",
+        "options": [
+            "Es un gestor que solo funciona en la nube",
+            "Es un gestor que guarda tus contraseñas solo en tu dispositivo, sin internet",
+            "Es un gestor gratuito con publicidad",
+            "Es un gestor para empresas grandes"
+        ],
+        "correctIndex": 1,
+        "explanation": "Un gestor local guarda todo en tu dispositivo, lo que significa que tus contraseñas nunca salen de tu control.",
+        "difficulty": 2,
+        "lessonId": "ac_s4_ses2_l1"
+    },
+    {
+        "id": "ac_st4_qB11_006",
+        "question": "Cuales son algunos gestores de contraseñas populares que puedes usar?",
+        "type": "multipleChoice",
+        "options": [
+            "Google Chrome, Mozilla Firefox, Safari",
+            "Bitwarden, 1Password, LastPass, Dashlane",
+            "Microsoft Word, Excel, PowerPoint",
+            "WhatsApp, Telegram, Signal"
+        ],
+        "correctIndex": 1,
+        "explanation": "Bitwarden, 1Password, LastPass y Dashlane son gestores de contraseñas populares y confiables.",
+        "difficulty": 2,
+        "lessonId": "ac_s4_ses2_l2"
+    },
+    {
+        "id": "ac_st4_qB11_007",
+        "question": "Que diferencia hay entre un gestor local y uno en la nube?",
+        "type": "multipleChoice",
+        "options": [
+            "El local es mas caro",
+            "El local guarda todo en tu dispositivo; el nube lo sincroniza entre tus dispositivos a traves de internet",
+            "El nube no necesita contraseña maestra",
+            "El local no tiene contraseña maestra"
+        ],
+        "correctIndex": 1,
+        "explanation": "El local es mas privado pero no se sincroniza; el nube permite acceso desde múltiples dispositivos.",
+        "difficulty": 2,
+        "lessonId": "ac_s4_ses2_l3"
+    },
+    {
+        "id": "ac_st4_qB11_008",
+        "question": "Cual es la principal ventaja de un gestor en la nube sobre uno local?",
+        "type": "multipleChoice",
+        "options": [
+            "Es mas barato",
+            "Puedes acceder a tus contraseñas desde cualquier dispositivo con internet",
+            "No necesita contraseña maestra",
+            "No guarda contraseñas"
+        ],
+        "correctIndex": 1,
+        "explanation": "El gestor en la nube te permite sincronizar y acceder a tus contraseñas desde celular, tablet y computadora.",
+        "difficulty": 2,
+        "lessonId": "ac_s4_ses2_l4"
+    },
+    {
+        "id": "ac_st4_qB11_009",
+        "question": "Que debes hacer antes de cambiar de un gestor de contraseñas a otro?",
+        "type": "multipleChoice",
+        "options": [
+            "Eliminar todas tus contraseñas sin exportarlas",
+            "Exportar tus contraseñas del gestor actual antes de cambiar al nuevo",
+            "Cambiar todas tus contraseñas una por una",
+            "No hacer nada, el cambio es automático"
+        ],
+        "correctIndex": 1,
+        "explanation": "Siempre exporta tus contraseñas antes de cambiar de gestor para no perder acceso a ninguna cuenta.",
+        "difficulty": 2,
+        "lessonId": "ac_s4_ses3_l1"
+    },
+    {
+        "id": "ac_st4_qB11_010",
+        "question": "Que es Bitwarden y por que es recomendado para principiantes?",
+        "type": "multipleChoice",
+        "options": [
+            "Es un juego de mesa digital",
+            "Es un gestor de contraseñas gratuito y de codigo abierto, facil de usar y muy seguro",
+            "Es una aplicación de banco peruana",
+            "Es un antivirus pagado"
+        ],
+        "correctIndex": 1,
+        "explanation": "Bitwarden es gratuito, de codigo abierto y facil de usar, lo que lo hace ideal para principiantes.",
+        "difficulty": 1,
+        "lessonId": "ac_s4_ses2_l2"
+    },
+    {
+        "id": "ac_st4_qB11_011",
+        "question": "Como se genera una contraseña segura en un gestor de contraseñas?",
+        "type": "multipleChoice",
+        "options": [
+            "Escribiendo tu fecha de nacimiento",
+            "El gestor genera aleatoriamente una contraseña larga con letras, números y simbolos",
+            "Pidiendole a un amigo que te la cree",
+            "Usando siempre la misma contraseña"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los gestores generan contraseñas aleatorias y fuertes que son muy dificiles de adivinar.",
+        "difficulty": 1,
+        "lessonId": "ac_s4_ses3_l3"
+    },
+    {
+        "id": "ac_st4_qB11_012",
+        "question": "Que es el autofill en un gestor de contraseñas?",
+        "type": "multipleChoice",
+        "options": [
+            "Una función que borra tus contraseñas automáticamente",
+            "Una función que completa automáticamente tus datos de inicio de sesión en páginas web",
+            "Una función que envia tus contraseñas por correo",
+            "Una función que cambia tus contraseñas cada semana"
+        ],
+        "correctIndex": 1,
+        "explanation": "El autofill completa tus datos de login automáticamente cuando visitas una página de inicio de sesión.",
+        "difficulty": 1,
+        "lessonId": "ac_s4_ses3_l4"
+    },
+    {
+        "id": "ac_st4_qB11_013",
+        "question": "Que es la recuperación de cuenta en un gestor de contraseñas?",
+        "type": "multipleChoice",
+        "options": [
+            "Una función para recuperar contraseñas de otros sitios",
+            "Un metodo para recuperar acceso a tu gestor si olvidas la contraseña maestra",
+            "Una forma de recuperar tu celular perdido",
+            "Un servicio técnico del gestor"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los metodos de recuperación te permiten volver a acceder a tu gestor si olvidas la contraseña maestra.",
+        "difficulty": 2,
+        "lessonId": "ac_s4_ses4_l5"
+    },
+    {
+        "id": "ac_st4_qB11_014",
+        "question": "Que haces si olvidas la contraseña maestra de tu gestor?",
+        "type": "whatWouldYouDo",
+        "options": [
+            "Usar el metodo de recuperación que configuraste (correo alternativo, codigo de respaldo, etc.)",
+            "Desinstalar y reinstalar el gestor",
+            "Pedir la contraseña a un amigo",
+            "Crear una cuenta nueva en otro gestor"
+        ],
+        "correctIndex": 0,
+        "explanation": "Utiliza los metodos de recuperación que configuraste al crear la cuenta del gestor.",
+        "difficulty": 2,
+        "lessonId": "ac_s4_ses4_l6"
+    },
+    {
+        "id": "ac_st4_qB11_015",
+        "question": "Por que es importante hacer respaldos de tu gestor de contraseñas?",
+        "type": "multipleChoice",
+        "options": [
+            "Por si quieres vender tus contraseñas",
+            "Para no perder acceso a tus contraseñas si el servicio del gestor falla o cambias de dispositivo",
+            "Para compartir tus contraseñas con todos",
+            "No es necesario hacer respaldos"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los respaldos protegen tus contraseñas en caso de fallos técnicos o si cambias de dispositivo.",
+        "difficulty": 2,
+        "lessonId": "ac_s4_ses4_l7"
+    },
+    {
+        "id": "ac_st4_qB11_016",
+        "question": "Como categorizar las contraseñas en un gestor para encontrarlas facilmente?",
+        "type": "multipleChoice",
+        "options": [
+            "Dejarlas todas en una sola lista sin orden",
+            "Crear carpetas o etiquetas por tipo: bancos, correos, redes sociales, etc.",
+            "Ponerle un número a cada contraseña",
+            "No es necesario categorizar"
+        ],
+        "correctIndex": 1,
+        "explanation": "Organizar por categorias te ayuda a encontrar rápidamente la contraseña que necesitas.",
+        "difficulty": 1,
+        "lessonId": "ac_s4_ses3_l2"
+    },
+    {
+        "id": "ac_st4_qB11_017",
+        "question": "Que es un seguro de identidad y por que algunos gestores lo ofrecen?",
+        "type": "multipleChoice",
+        "options": [
+            "Es un tipo de seguro medico",
+            "Es un servicio que te protege economicamente si tus datos son robados y usados para fraude",
+            "Es un seguro para tu celular",
+            "Es un seguro para tu auto"
+        ],
+        "correctIndex": 1,
+        "explanation": "Algunos gestores ofrecen seguros de identidad que cubren gastos si tus datos son comprometidos.",
+        "difficulty": 3,
+        "lessonId": "ac_s4_ses5_l8"
+    },
+    {
+        "id": "ac_st4_qB11_018",
+        "question": "Cuales son los errores mas comunes al usar un gestor de contraseñas?",
+        "type": "detectRisk",
+        "options": [
+            "Usar una contraseña maestra muy debil y no activar la verificación en dos pasos",
+            "Guardar contraseñas en el gestor",
+            "Usar el autollenado",
+            "Organizar las contraseñas por categorias"
+        ],
+        "correctIndex": 0,
+        "explanation": "Los errores mas comunes son usar contraseña maestra debil y no activar 2FA en el gestor.",
+        "difficulty": 2,
+        "lessonId": "ac_s4_ses5_l9"
+    },
+    {
+        "id": "ac_st4_qB11_019",
+        "question": "Que es el monitoreo de brechas en un gestor de contraseñas?",
+        "type": "multipleChoice",
+        "options": [
+            "Es una función para buscar fotos en internet",
+            "Es un servicio que verifica si tus contraseñas aparecieron en filtraciones conocidas de datos",
+            "Es una forma de monitorear el precio del dolar",
+            "Es un juego de detective digital"
+        ],
+        "correctIndex": 1,
+        "explanation": "El monitoreo de brechas revisa si tus contraseñas o correos aparecieron en filtraciones publicas de datos.",
+        "difficulty": 2,
+        "lessonId": "ac_s4_ses5_l10"
+    },
+    {
+        "id": "ac_st4_qB11_020",
+        "question": "Que haces si el gestor te avisa que una de tus contraseñas fue filtrada?",
+        "type": "whatWouldYouDo",
+        "options": [
+            "Cambiar esa contraseña inmediatamente en el sitio correspondiente",
+            "Ignorar la alerta porque seguro es error",
+            "Eliminar la contraseña del gestor",
+            "Compartir la contraseña en redes sociales"
+        ],
+        "correctIndex": 0,
+        "explanation": "Si una contraseña fue filtrada, cambiala de inmediato en el sitio afectado para proteger tu cuenta.",
+        "difficulty": 1,
+        "lessonId": "ac_s4_ses5_l10"
+    },
+    {
+        "id": "ac_st4_qB11_021",
+        "question": "Que es la sincronizacion en un gestor de contraseñas?",
+        "type": "multipleChoice",
+        "options": [
+            "Es borrar tus contraseñas de todos los dispositivos",
+            "Es mantener tus contraseñas actualizadas y accesibles en todos tus dispositivos conectados a internet",
+            "Es enviar tus contraseñas por correo",
+            "Es cambiar tus contraseñas cada vez"
+        ],
+        "correctIndex": 1,
+        "explanation": "La sincronizacion asegura que tus contraseñas esten actualizadas en celular, tablet y computadora.",
+        "difficulty": 2,
+        "lessonId": "ac_s4_ses1_l5"
+    },
+    {
+        "id": "ac_st4_qB11_022",
+        "question": "Por que no debes guardar contraseñas en el navegador sin un gestor?",
+        "type": "multipleChoice",
+        "options": [
+            "Porque el navegador es mas rápido",
+            "Porque si alguien accede a tu navegador, puede ver todas tus contraseñas sin mucha seguridad",
+            "Porque el navegador no guarda contraseñas",
+            "Porque el navegador es mas seguro"
+        ],
+        "correctIndex": 1,
+        "explanation": "El navegador guarda contraseñas con menor seguridad que un gestor dedicado, y si alguien accede a tu navegador, puede verlas.",
+        "difficulty": 2,
+        "lessonId": "ac_s4_ses5_l11"
+    },
+    {
+        "id": "ac_st4_qB11_023",
+        "question": "Que es el compartido seguro en un gestor de contraseñas?",
+        "type": "multipleChoice",
+        "options": [
+            "Es enviar contraseñas por WhatsApp",
+            "Es una forma de compartir contraseñas de forma encriptada y segura con personas de confianza",
+            "Es publicar contraseñas en redes sociales",
+            "Es escribir contraseñas en un papel"
+        ],
+        "correctIndex": 1,
+        "explanation": "El compartido seguro encripta las contraseñas y solo las persona designadas pueden acceder a ellas.",
+        "difficulty": 2,
+        "lessonId": "ac_s4_ses6_l12"
+    },
+    {
+        "id": "ac_st4_qB11_024",
+        "question": "Cual es el primer paso para configurar un gestor de contraseñas?",
+        "type": "multipleChoice",
+        "options": [
+            "Eliminar todas tus contraseñas antiguas",
+            "Descargar e instalar el gestor elegido y crear una cuenta con una contraseña maestra fuerte",
+            "Comprar un nuevo celular",
+            "Pedir permiso a tu banco"
+        ],
+        "correctIndex": 1,
+        "explanation": "El primer paso es instalar el gestor, crear cuenta y establecer una contraseña maestra fuerte.",
+        "difficulty": 1,
+        "lessonId": "ac_s4_ses1_l1"
+    },
+    {
+        "id": "ac_st4_qB11_025",
+        "question": "Que es un gestor de contraseñas de codigo abierto y porque es confiable?",
+        "type": "multipleChoice",
+        "options": [
+            "Es un gestor que no tiene codigo",
+            "Es un gestor cuyo codigo fuente es publico y puede ser verificado por expertos en seguridad",
+            "Es un gestor gratis con publicidad",
+            "Es un gestor para programadores exclusivamente"
+        ],
+        "correctIndex": 1,
+        "explanation": "El codigo abierto permite que expertos verifiquen que no hay vulnerabilidades ocultas, aumentando la confianza.",
+        "difficulty": 3,
+        "lessonId": "ac_s4_ses2_l2"
+    },
+    {
+        "id": "ac_st4_qB11_026",
+        "question": "Que debes hacer si pierdes tu celular donde tenias tu gestor de contraseñas?",
+        "type": "whatWouldYouDo",
+        "options": [
+            "No hacer nada, las contraseñas se recuperan solas",
+            "Cerrar sesión remotamente en el gestor, cambiar la contraseña maestra y usar el metodo de recuperación",
+            "Comprar un nuevo celular y empezar de cero",
+            "Publicar en redes sociales que perdiste el celular"
+        ],
+        "correctIndex": 1,
+        "explanation": "Actua rápido: cierra sesión remotamente, cambia la contraseña maestra y usa los metodos de recuperación.",
+        "difficulty": 2,
+        "lessonId": "ac_s4_ses4_l6"
+    },
+    {
+        "id": "ac_st4_qB11_027",
+        "question": "Que es la verificación en dos pasos en un gestor de contraseñas?",
+        "type": "multipleChoice",
+        "options": [
+            "Es pedir dos contraseñas diferentes para iniciar sesión",
+            "Es una capa extra de seguridad que requiere un segundo factor ademas de la contraseña maestra",
+            "Es cambiar la contraseña cada dos semanas",
+            "Es usar dos gestores al mismo tiempo"
+        ],
+        "correctIndex": 1,
+        "explanation": "La 2FA en el gestor agrega una capa extra de seguridad, requiriendo algo mas que solo la contraseña.",
+        "difficulty": 2,
+        "lessonId": "ac_s4_ses1_l3"
+    },
+    {
+        "id": "ac_st4_qB11_028",
+        "question": "Que debes hacer con tus contraseñas antiguas despues de configurar un gestor?",
+        "type": "whatWouldYouDo",
+        "options": [
+            "Dejarlas como estan en el navegador o en papel",
+            "Importarlas al gestor y eliminarlas de otros lugares donde estaban guardadas",
+            "Borrarlas todas sin importarlas",
+            "Compartirlas con familiares"
+        ],
+        "correctIndex": 1,
+        "explanation": "Importa todas tus contraseñas al gestor y elimina las copias en otros lugares para mayor seguridad.",
+        "difficulty": 2,
+        "lessonId": "ac_s4_ses3_l1"
+    },
+    {
+        "id": "ac_st4_qB11_029",
+        "question": "Cada cuanto se recomienda cambiar la contraseña maestra del gestor?",
+        "type": "multipleChoice",
+        "options": [
+            "Nunca hay que cambiarla",
+            "Al menos una vez al ano o si sospechas que fue comprometida",
+            "Cada semana",
+            "Cada dia"
+        ],
+        "correctIndex": 1,
+        "explanation": "Cambiar la contraseña maestra periodicamente o ante sospechas de compromiso es buena práctica de seguridad.",
+        "difficulty": 2,
+        "lessonId": "ac_s4_ses5_l9"
+    },
+    {
+        "id": "ac_st4_qB11_030",
+        "question": "Cual es el beneficio de tener un gestor de contraseñas en una familia?",
+        "type": "multipleChoice",
+        "options": [
+            "Que todos usan la misma contraseña",
+            "Que puedes compartir contraseñas seguras con familiares y administrar cuentas compartidas como Netflix",
+            "Que no necesitas contraseña maestra",
+            "Que es mas caro pero mejor"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los planes familiares permiten compartir contraseñas de forma segura y administrar cuentas compartidas.",
+        "difficulty": 2,
+        "lessonId": "ac_s4_ses6_l12"
+    }
+]

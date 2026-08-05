@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../services/app_logger.dart';
 import '../services/storage_service.dart';
 import '../models/quick_challenge.dart';
 import 'prefs_provider.dart';
@@ -89,6 +90,7 @@ class LearningMemoryState {
 class LearningMemoryNotifier extends Notifier<LearningMemoryState> {
   late final StorageService _storage;
   bool _saveInProgress = false;
+  bool _savePending = false;
 
   static const _keyWeakTopics = 'learning_memory_weak_topics';
   static const _keyCompletedChallenges = 'learning_memory_completed_challenges';
@@ -99,7 +101,7 @@ class LearningMemoryNotifier extends Notifier<LearningMemoryState> {
 
   @override
   LearningMemoryState build() {
-    final prefs = ref.watch(prefsProvider);
+    final prefs = ref.read(prefsProvider);
     _storage = StorageService(prefs);
     _load();
     return state;
@@ -122,13 +124,19 @@ class LearningMemoryNotifier extends Notifier<LearningMemoryState> {
       try {
         final list = jsonDecode(raw) as List;
         weakTopics = list.map((e) => WeakTopic.fromJson(e as Map<String, dynamic>)).toList();
-      } catch (_) {}
+      } catch (e) {
+        AppLogger().warning('LearningMemory: failed to decode weak topics: $e');
+      }
     }
 
     List<String> completedChallenges = [];
     final completed = _storage.getString(_keyCompletedChallenges);
     if (completed.isNotEmpty) {
-      completedChallenges = (jsonDecode(completed) as List).cast<String>();
+      try {
+        completedChallenges = (jsonDecode(completed) as List).cast<String>();
+      } catch (e) {
+        AppLogger().warning('LearningMemory: failed to decode completed challenges: $e');
+      }
     }
 
     final totalLessonsFailed = _storage.getInt(_keyFailed);
@@ -151,7 +159,10 @@ class LearningMemoryNotifier extends Notifier<LearningMemoryState> {
   }
 
   Future<void> _save() async {
-    if (_saveInProgress) return;
+    if (_saveInProgress) {
+      _savePending = true;
+      return;
+    }
     _saveInProgress = true;
     try {
       await _storage.setString(_keyWeakTopics, jsonEncode(state.weakTopics.map((t) => t.toJson()).toList()));
@@ -164,6 +175,10 @@ class LearningMemoryNotifier extends Notifier<LearningMemoryState> {
       }
     } finally {
       _saveInProgress = false;
+      if (_savePending) {
+        _savePending = false;
+        await _save();
+      }
     }
   }
 
@@ -202,10 +217,14 @@ class LearningMemoryNotifier extends Notifier<LearningMemoryState> {
   }
 
   void recordChallengeAttempt({required String challengeId, required bool passed, required QuickChallengeType type}) {
+    const maxCompletedChallenges = 500;
     final topic = _topicForType(type);
     final completedChallenges = List<String>.from(state.completedChallenges);
     if (!completedChallenges.contains(challengeId)) {
       completedChallenges.add(challengeId);
+      if (completedChallenges.length > maxCompletedChallenges) {
+        completedChallenges.removeRange(0, completedChallenges.length - maxCompletedChallenges);
+      }
     }
 
     final weakTopics = List<WeakTopic>.from(state.weakTopics);
@@ -240,7 +259,7 @@ class LearningMemoryNotifier extends Notifier<LearningMemoryState> {
     if (lastDate == null || !_isSameDay(lastDate, now)) {
       if (lastDate != null && now.difference(lastDate).inDays <= 7) {
         sessionsThisWeek++;
-      } else if (state.lastSessionDate == null) {
+      } else {
         sessionsThisWeek = 1;
       }
       lastSessionDate = now;

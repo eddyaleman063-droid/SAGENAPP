@@ -1,7 +1,7 @@
-import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/sagen_pass.dart';
-import '../services/storage_service.dart';
+import '../repositories/sagen_pass_repository.dart';
+import '../services/app_logger.dart';
 import 'service_providers.dart';
 
 final sagenPassProvider = NotifierProvider<SagenPassNotifier, SagenPass>(
@@ -9,75 +9,156 @@ final sagenPassProvider = NotifierProvider<SagenPassNotifier, SagenPass>(
 );
 
 class SagenPassNotifier extends Notifier<SagenPass> {
-  late final StorageService _storage;
-
-  static const _keyPass = 'sagen_pass_v1';
+  late final SagenPassRepository _repo;
 
   @override
   SagenPass build() {
-    _storage = ref.watch(storageServiceProvider);
-    return _load();
+    _repo = ref.watch(sagenPassRepositoryProvider);
+    final local = _load();
+    _checkSeasonReset(local);
+    _reconcileWithServer();
+    return local;
+  }
+
+  void _checkSeasonReset(SagenPass pass) {
+    final now = DateTime.now();
+    final seasonEnd = pass.seasonStart.add(Duration(days: pass.seasonDurationDays));
+    if (now.isAfter(seasonEnd)) {
+      // Season expired - reset to level 1 with fresh state
+      state = SagenPass(
+        currentLevel: 1,
+        currentSP: 0,
+        claimedLevels: [],
+        seasonStart: now,
+        seasonDurationDays: pass.seasonDurationDays,
+      );
+      _save();
+    }
   }
 
   SagenPass _load() {
-    final raw = _storage.getString(_keyPass);
-    if (raw.isNotEmpty) {
-      try {
-        final data = jsonDecode(raw) as Map<String, dynamic>;
-        return SagenPass(
-          currentLevel: data['level'] as int? ?? 1,
-          currentSP: data['sp'] as int? ?? 0,
-          claimedLevels: (data['claimed'] as List?)?.cast<int>() ?? [],
-          seasonStart: DateTime.tryParse(data['seasonStart'] as String? ?? '') ?? DateTime(2026),
-        );
-      } catch (_) {}
-    }
     return SagenPass(
-      seasonStart: DateTime.now(),
+      currentLevel: _repo.currentLevel,
+      currentSP: _repo.currentSP,
+      claimedLevels: _repo.claimedLevels,
+      seasonStart: _repo.seasonStart,
     );
+  }
+
+  /// Reconcile local state with server-side authoritative season data.
+  Future<void> _reconcileWithServer() async {
+    try {
+      final serverData = await ref.read(gamificationCloudServiceProvider).getSagenPassSeason();
+      if (serverData == null) return;
+
+      final serverSeasonStart = serverData['seasonStart'];
+      final serverLevel = serverData['level'] as int? ?? state.currentLevel;
+      final serverSP = serverData['sp'] as int? ?? state.currentSP;
+      final serverClaimed = serverData['claimed'];
+
+      List<int> claimed;
+      if (serverClaimed is List) {
+        claimed = serverClaimed.whereType<int>().toList();
+      } else {
+        claimed = state.claimedLevels;
+      }
+
+      // Reconcile seasonStart from server (authoritative)
+      DateTime? seasonStart;
+      if (serverSeasonStart != null) {
+        if (serverSeasonStart is String) {
+          seasonStart = DateTime.tryParse(serverSeasonStart);
+        }
+      }
+
+      // Apply server values (server is source of truth)
+      state = state.copyWith(
+        currentLevel: serverLevel,
+        currentSP: serverSP,
+        claimedLevels: claimed,
+        seasonStart: seasonStart,
+      );
+      _save();
+    } catch (e) {
+      AppLogger().warning('SagenPass: server reconciliation failed, using local: $e');
+    }
   }
 
   void _save() {
-    _storage.setString(_keyPass, jsonEncode({
-      'level': state.currentLevel,
-      'sp': state.currentSP,
-      'claimed': state.claimedLevels,
-      'seasonStart': state.seasonStart.toIso8601String(),
-      'duration': state.seasonDurationDays,
-    }));
+    _repo.save(
+      state.currentLevel,
+      state.currentSP,
+      state.claimedLevels,
+      state.seasonStart,
+    );
   }
 
-  void addSP(int amount) {
+  /// Earns SP via server-side Cloud Function, then updates local state.
+  /// Server response is validated to prevent crashes from malformed data.
+  Future<void> addSP(int amount, {String? reason}) async {
     if (state.isMaxLevel) return;
-    final newSP = state.currentSP + amount;
-    int newLevel = state.currentLevel;
-    int remainingSP = newSP;
-    while (remainingSP >= _spForLevel(newLevel) && newLevel < SagenPass.maxLevel) {
-      remainingSP -= _spForLevel(newLevel);
-      newLevel++;
+    final result = await ref.read(gamificationCloudServiceProvider).earnSP(amount, reason: reason);
+    if (result == null) return;
+
+    // Validate server response types before applying
+    final serverSP = result['sp'];
+    final serverLevel = result['level'];
+
+    final safeSP = (serverSP is int) ? serverSP : state.currentSP;
+    final safeLevel = (serverLevel is int) ? serverLevel : state.currentLevel;
+
+    // Sanity check: server values should not be negative
+    if (safeSP < 0 || safeLevel < 1) {
+      AppLogger().warning('SagenPass: invalid server response — sp=$safeSP, level=$safeLevel');
+      return;
     }
+
     state = state.copyWith(
-      currentSP: remainingSP,
-      currentLevel: newLevel,
+      currentSP: safeSP,
+      currentLevel: safeLevel,
     );
     _save();
   }
 
-  int _spForLevel(int level) => 50 + (level - 1) * 10;
+  /// Claims a level reward via server-side Cloud Function.
+  /// Server response is validated to prevent crashes from malformed data.
+  Future<PassLevel?> claimLevel(int level) async {
+    if (state.isLevelClaimed(level)) return null;
+    if (level > state.currentLevel) return null;
 
-  bool claimLevel(int level) {
-    if (state.isLevelClaimed(level)) return false;
-    if (level > state.currentLevel) return false;
-    final claimed = [...state.claimedLevels, level];
-    state = state.copyWith(claimedLevels: claimed);
+    final result = await ref.read(gamificationCloudServiceProvider).claimPassReward(level);
+    if (result == null) return null;
+
+    // Validate claimedLevels from server response
+    final rawClaimed = result['claimedLevels'];
+    List<int> claimed;
+    if (rawClaimed is List) {
+      claimed = rawClaimed.whereType<int>().toList();
+    } else {
+      // Fallback: add the level locally
+      claimed = [...state.claimedLevels, level];
+    }
+
+    // Reconcile seasonStart from server if returned
+    DateTime? seasonStart;
+    final rawSeasonStart = result['seasonStart'];
+    if (rawSeasonStart is String) {
+      seasonStart = DateTime.tryParse(rawSeasonStart);
+    }
+
+    state = state.copyWith(
+      claimedLevels: claimed,
+      seasonStart: seasonStart ?? state.seasonStart,
+    );
     _save();
-    return true;
+    return getLevel(level);
   }
 
   PassLevel? getLevel(int level) {
     try {
       return SagenPass.allLevels.firstWhere((l) => l.level == level);
     } catch (_) {
+      AppLogger().warning('SagenPass: getLevel failed for level $level');
       return null;
     }
   }

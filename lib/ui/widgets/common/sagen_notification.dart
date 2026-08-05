@@ -37,13 +37,16 @@ class SagenNotification {
         icon = Icons.info_rounded;
     }
 
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Row(
           children: [
-            Icon(icon, color: textColor, size: 18),
+            ExcludeSemantics(
+              child: Icon(icon, color: textColor, size: 18),
+            ),
             const SizedBox(width: AppSpacing.sm),
-            Expanded(child: Text(message, style: TextStyle(color: textColor))),
+            Expanded(child: Text(message, style: AppTextStyle.subtitle.copyWith(color: textColor))),
           ],
         ),
         backgroundColor: backgroundColor,

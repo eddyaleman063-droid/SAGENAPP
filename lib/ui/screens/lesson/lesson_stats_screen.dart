@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/theme_constants.dart';
 import 'package:sagen/providers/providers.dart';
 import 'package:sagen/l10n/app_localizations.dart';
@@ -27,7 +29,7 @@ class LessonStatsScreen extends ConsumerWidget {
 
   Color _color(double accuracy) {
     if (accuracy >= 1.0) return PremiumColors.streakOrange;
-    if (accuracy >= 0.9) return const Color(0xFF7C3AED);
+    if (accuracy >= 0.9) return PremiumColors.xpColor;
     if (accuracy >= 0.8) return PremiumColors.success;
     if (accuracy >= 0.3) return PremiumColors.primary;
     return PremiumColors.warning;
@@ -74,15 +76,15 @@ class LessonStatsScreen extends ConsumerWidget {
                   shape: BoxShape.circle,
                   color: color.withValues(alpha: 0.1),
                 ),
-                child: Icon(icon, size: 40, color: color),
+                child: ExcludeSemantics(
+                  child: Icon(icon, size: 40, color: color),
+                ),
               ),
               const SizedBox(height: AppSpacing.xxl),
               Text(
                 title,
-                style: TextStyle(
-                  fontSize: 26,
-                  fontWeight: FontWeight.bold,
-                  color: dark ? Colors.white.withValues(alpha: 0.95) : Colors.black87,
+                style: AppTextStyle.headlineLarge.copyWith(
+                  color: context.textPrimary,
                 ),
               ),
               const SizedBox(height: AppSpacing.xl),
@@ -94,7 +96,6 @@ class LessonStatsScreen extends ConsumerWidget {
                     value: '+${lesson.earnedXp}',
                     label: l.profileXpLabel,
                     color: PremiumColors.xpColor,
-                    dark: dark,
                   ),
                   const SizedBox(width: AppSpacing.lg),
                   _StatBadge(
@@ -102,7 +103,6 @@ class LessonStatsScreen extends ConsumerWidget {
                     value: '${(acc * 100).toInt()}%',
                     label: l.resultAccuracy,
                     color: PremiumColors.success,
-                    dark: dark,
                   ),
                   const SizedBox(width: AppSpacing.lg),
                   _StatBadge(
@@ -110,28 +110,67 @@ class LessonStatsScreen extends ConsumerWidget {
                     value: _formatDuration(lesson.elapsedTime),
                     label: l.statsSpeed,
                     color: PremiumColors.splashBlue,
-                    dark: dark,
                   ),
                 ],
               ),
               const Spacer(flex: 3),
-              SizedBox(
-                width: double.infinity,
-                height: 54,
-                child: ElevatedButton(
-                  onPressed: onRecibirXp,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: PremiumColors.primary,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
-                    elevation: 4,
+              if (lesson.path != null) ...[
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(AppSpacing.lg),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(AppRadius.xl),
+                    color: PremiumColors.primary.withValues(alpha: 0.08),
+                    border: Border.all(color: PremiumColors.primary.withValues(alpha: 0.2)),
                   ),
-                  child: Text(l.statsReceiveXp, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  child: Column(
+                    children: [
+                      ExcludeSemantics(
+                        child: Icon(
+                          lesson.recommendedStage == 1
+                              ? Icons.school_rounded
+                              : Icons.rocket_launch_rounded,
+                          size: 28,
+                          color: PremiumColors.primary,
+                        ),
+                      ),
+                      const SizedBox(height: AppSpacing.sm),
+                      Text(
+                        lesson.recommendedStage == 1
+                            ? l.statsStartStage1
+                            : l.statsStartStage2,
+                        textAlign: TextAlign.center,
+                        style: AppTextStyle.bodyMd.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: context.textPrimary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.lg),
+              ],
+              Semantics(
+                button: true,
+                label: l.statsReceiveXp,
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 54,
+                  child: ElevatedButton(
+                    onPressed: onRecibirXp,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: PremiumColors.primary,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
+                      elevation: 4,
+                    ),
+                    child: Text(l.statsReceiveXp, style: AppTextStyle.titleSmall.copyWith(fontWeight: FontWeight.bold)),
+                  ),
                 ),
               ),
               const SizedBox(height: AppSpacing.md),
             ],
-          ),
+          ).animate().fadeIn(),
         ),
       ),
     );
@@ -143,14 +182,12 @@ class _StatBadge extends StatelessWidget {
   final String value;
   final String label;
   final Color color;
-  final bool dark;
 
   const _StatBadge({
     required this.icon,
     required this.value,
     required this.label,
     required this.color,
-    required this.dark,
   });
 
   @override
@@ -165,19 +202,20 @@ class _StatBadge extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 22, color: color),
+          ExcludeSemantics(
+            child: Icon(icon, size: 22, color: color),
+          ),
           const SizedBox(height: AppSpacing.xs),
           Text(
             value,
-            style: TextStyle(
-              fontSize: 18,
+            style: AppTextStyle.title.copyWith(
               fontWeight: FontWeight.bold,
-              color: dark ? Colors.white.withValues(alpha: 0.9) : Colors.black87,
+              color: context.textPrimary,
             ),
           ),
           Text(
             label,
-            style: TextStyle(fontSize: 11, color: dark ? Colors.white38 : Colors.black45),
+            style: AppTextStyle.label.copyWith(color: context.textTertiary),
           ),
         ],
       ),

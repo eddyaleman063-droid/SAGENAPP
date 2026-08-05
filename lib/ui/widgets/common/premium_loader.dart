@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/theme_constants.dart';
+import '../../../providers/service_providers.dart';
 import '../../../services/sage_emotion_service.dart';
-import '../../../services/motivational_quotes_service.dart';
 import 'sage_emotion_widget.dart';
 
-class PremiumLoader extends StatefulWidget {
+class PremiumLoader extends ConsumerStatefulWidget {
   final Widget child;
   final bool loading;
   final String? message;
@@ -17,11 +19,11 @@ class PremiumLoader extends StatefulWidget {
   });
 
   @override
-  State<PremiumLoader> createState() => _PremiumLoaderState();
+  ConsumerState<PremiumLoader> createState() => _PremiumLoaderState();
 }
 
-class _PremiumLoaderState extends State<PremiumLoader>
-    with SingleTickerProviderStateMixin {
+class _PremiumLoaderState extends ConsumerState<PremiumLoader>
+    with TickerProviderStateMixin {
   late AnimationController _pulseCtrl;
   late AnimationController _fadeCtrl;
   String _currentQuote = '';
@@ -30,14 +32,14 @@ class _PremiumLoaderState extends State<PremiumLoader>
   @override
   void initState() {
     super.initState();
-    _currentQuote = MotivationalQuotesService.instance.random();
+    _currentQuote = ref.read(motivationalQuotesServiceProvider).random();
     _pulseCtrl = AnimationController(vsync: this, duration: const Duration(seconds: 3));
     _pulseCtrl.repeat(reverse: true);
     _fadeCtrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 300));
     if (widget.loading) _fadeCtrl.forward();
     _quoteTimer = Timer.periodic(const Duration(seconds: 6), (_) {
       if (!mounted) return;
-      setState(() => _currentQuote = MotivationalQuotesService.instance.random());
+      setState(() => _currentQuote = ref.read(motivationalQuotesServiceProvider).random());
     });
   }
 
@@ -65,75 +67,77 @@ class _PremiumLoaderState extends State<PremiumLoader>
   Widget build(BuildContext context) {
     final dark = Theme.of(context).brightness == Brightness.dark;
 
-    return Stack(
-      children: [
-        widget.child,
-        if (widget.loading)
-          FadeTransition(
-            opacity: _fadeCtrl,
-            child: Container(
-              color: (dark ? const Color(0xFF0A0E1A) : Colors.white).withValues(alpha: 0.92),
-              child: Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    AnimatedBuilder(
-                      animation: _pulseCtrl,
-                      builder: (_, child) => Transform.scale(
-                        scale: 0.85 + 0.15 * _pulseCtrl.value,
-                        child: child,
-                      ),
-                      child: Container(
-                        width: 96,
-                        height: 96,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: dark ? PremiumColors.darkCard : Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: PremiumColors.primary.withValues(
-                                alpha: 0.1 + 0.15 * (_pulseCtrl.value),
+    return RepaintBoundary(
+      child: Stack(
+        children: [
+          widget.child,
+          if (widget.loading)
+            FadeTransition(
+              opacity: _fadeCtrl,
+              child: Container(
+                color: (dark ? PremiumColors.darkBg : Colors.white).withValues(alpha: 0.92),
+                child: Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      AnimatedBuilder(
+                        animation: _pulseCtrl,
+                        builder: (_, child) => Transform.scale(
+                          scale: 0.85 + 0.15 * _pulseCtrl.value,
+                          child: child,
+                        ),
+                        child: Container(
+                          width: 96,
+                          height: 96,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: dark ? PremiumColors.darkCard : Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: PremiumColors.primary.withValues(
+                                  alpha: 0.1 + 0.15 * (_pulseCtrl.value),
+                                ),
+                                blurRadius: 20 + 15 * (_pulseCtrl.value),
+                                spreadRadius: 1,
                               ),
-                              blurRadius: 20 + 15 * (_pulseCtrl.value),
-                              spreadRadius: 1,
+                            ],
+                          ),
+                          child: const SageEmotionWidget(emotion: SageEmotion.thinking, size: 76, animated: false),
+                        ),
+                      ),
+                      if (widget.message != null) ...[
+                        const SizedBox(height: AppSpacing.xxl),
+                        Text(
+                          widget.message!,
+                          style: AppTextStyle.subtitle.copyWith(
+                            color: context.textTertiary,
+                          ),
+                        ),
+                      ],
+                      const SizedBox(height: AppSpacing.huge),
+                      SizedBox(
+                        width: 260,
+                        child: AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 600),
+                          child: Text(
+                            _currentQuote,
+                            key: ValueKey(_currentQuote),
+                            textAlign: TextAlign.center,
+                            style: AppTextStyle.caption.copyWith(
+                              color: context.textTertiary,
+                              fontStyle: FontStyle.italic,
+                              height: 1.4,
                             ),
-                          ],
-                        ),
-                        child: const SageEmotionWidget(emotion: SageEmotion.thinking, size: 76, animated: false),
-                      ),
-                    ),
-                    if (widget.message != null) ...[
-                      const SizedBox(height: 24),
-                      Text(
-                        widget.message!,
-                        style: AppTextStyle.subtitle.copyWith(
-                          color: dark ? Colors.white54 : Colors.grey.shade600,
-                        ),
-                      ),
-                    ],
-                    const SizedBox(height: 40),
-                    SizedBox(
-                      width: 260,
-                      child: AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 600),
-                        child: Text(
-                          _currentQuote,
-                          key: ValueKey(_currentQuote),
-                          textAlign: TextAlign.center,
-                          style: AppTextStyle.caption.copyWith(
-                            color: dark ? Colors.white38 : Colors.grey.shade500,
-                            fontStyle: FontStyle.italic,
-                            height: 1.4,
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-      ],
+        ],
+      ),
     );
   }
 }

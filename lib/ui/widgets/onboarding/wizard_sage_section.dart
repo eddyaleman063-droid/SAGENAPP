@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../../ui/widgets/common/sage_emotion_widget.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import '../common/sage_emotion_widget.dart';
 import '../../../core/theme/theme_constants.dart';
 import '../../../services/sage_emotion_service.dart';
 
@@ -31,16 +32,13 @@ class WizardSageSection extends StatelessWidget {
           Flexible(
             child: Text(
               message,
-              style: TextStyle(
-                fontSize: 14,
-                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.9),
-                height: 1.3,
-              ),
+              style: AppTextStyle.bodyMd.copyWith(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.9),
+                height: 1.3),
             ),
           ),
         ],
       ),
-    );
+    ).animate().fadeIn().slideY(begin: 0.05);
   }
 }
 
@@ -54,34 +52,33 @@ class WizardSageBubble extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
-        color: const Color(0xFFFF6D00).withValues(alpha: 0.08),
+        color: PremiumColors.wizardOrange.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(AppRadius.xl),
         border: Border.all(
-          color: const Color(0xFFFF6D00).withValues(alpha: 0.15),
+          color: PremiumColors.wizardOrange.withValues(alpha: 0.15),
         ),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(
-            Icons.local_fire_department_rounded,
-            size: 20,
-            color: const Color(0xFFFF6D00).withValues(alpha: 0.8),
+          ExcludeSemantics(
+            child: Icon(
+              Icons.local_fire_department_rounded,
+              size: 20,
+              color: PremiumColors.wizardOrange.withValues(alpha: 0.8),
+            ),
           ),
           const SizedBox(width: AppSpacing.md),
           Expanded(
             child: Text(
               message,
-              style: TextStyle(
-                fontSize: 14,
-                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.9),
+              style: AppTextStyle.bodyMd.copyWith(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.9),
                 height: 1.4,
-                fontStyle: FontStyle.italic,
-              ),
+                fontStyle: FontStyle.italic),
             ),
           ),
         ],
       ),
-    );
+    ).animate().fadeIn().slideY(begin: 0.05);
   }
 }

@@ -50,11 +50,8 @@ class SageBubble extends StatelessWidget {
             ),
             child: Text(
               text,
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.white.withValues(alpha: 0.9),
-                height: 1.4,
-              ),
+              style: AppTextStyle.bodyMd.copyWith(color: Colors.white.withValues(alpha: 0.9),
+                height: 1.4),
             ),
           ),
         ),

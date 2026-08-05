@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:sagen/core/theme/app_colors.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/models/chat_message.dart';
 
 class MessageBubble extends StatelessWidget {
   final ChatMessage message;
   final bool isUser;
-  final bool dark;
   const MessageBubble({
     super.key,
     required this.message,
     required this.isUser,
-    required this.dark,
   });
 
   @override
@@ -22,14 +23,16 @@ class MessageBubble extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           if (!isUser) ...[
-            Container(
-              width: 28,
-              height: 28,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: LinearGradient(colors: PremiumColors.gradientSage),
+            ExcludeSemantics(
+              child: Container(
+                width: 28,
+                height: 28,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: LinearGradient(colors: PremiumColors.gradientSage),
+                ),
+                child: const Icon(Icons.auto_awesome_rounded, size: 14, color: Colors.white),
               ),
-              child: const Icon(Icons.auto_awesome_rounded, size: 14, color: Colors.white),
             ),
             const SizedBox(width: AppSpacing.sm),
           ],
@@ -48,15 +51,36 @@ class MessageBubble extends StatelessWidget {
                     : null,
                 color: isUser
                     ? null
-                    : (dark ? Colors.white.withValues(alpha: 0.06) : Colors.grey.shade100),
+                    : context.surfaceCard,
               ),
-              child: Text(
-                message.text,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: isUser ? Colors.white : (dark ? Colors.white.withValues(alpha: 0.85) : Colors.black87),
-                ),
-              ),
+              child: isUser
+                  ? Text(
+                      message.text,
+                      style: AppTextStyle.body.copyWith(color: Colors.white),
+                    )
+                  : MarkdownBody(
+                      data: message.text,
+                      styleSheet: MarkdownStyleSheet(
+                        p: AppTextStyle.body.copyWith(color: context.textPrimary),
+                        strong: AppTextStyle.body.copyWith(fontWeight: FontWeight.bold,
+                          color: context.textPrimary),
+                        em: AppTextStyle.body.copyWith(fontStyle: FontStyle.italic,
+                          color: context.textPrimary),
+                        code: AppTextStyle.subtitle.copyWith(fontFamily: 'monospace',
+                          color: context.isDark ? PremiumColors.codeTextDark : PremiumColors.codeTextLight,
+                          backgroundColor: context.subtle),
+                        codeblockDecoration: BoxDecoration(
+                          color: context.surfaceTinted,
+                          borderRadius: BorderRadius.circular(AppRadius.sm),
+                        ),
+                        listBullet: AppTextStyle.body.copyWith(color: context.textPrimary),
+                      ),
+                      onTapLink: (text, href, title) {
+                        if (href != null) {
+                          launchUrl(Uri.parse(href), mode: LaunchMode.externalApplication);
+                        }
+                      },
+                    ),
             ),
           ),
           if (isUser) const SizedBox(width: AppSpacing.xs),

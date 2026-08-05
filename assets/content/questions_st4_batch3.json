@@ -1,0 +1,817 @@
+[
+  {
+    "id": "ac_st4_qB3_001",
+    "question": "Que es la función de compartir en un gestor de contraseñas",
+    "type": "multipleChoice",
+    "options": [
+      "Permite dar acceso a contraseñas específicas a otras personas de forma segura",
+      "Enviar contraseñas por correo electrónico",
+      "Publicar contraseñas en redes sociales",
+      "No existe tal función"
+    ],
+    "correctIndex": 0,
+    "explanation": "La función de compartir del gestor envia contraseñas cifradas que solo el destinatario puede ver.",
+    "difficulty": 1,
+    "lessonId": "ac_s4_ses3_l6"
+  },
+  {
+    "id": "ac_st4_qB3_002",
+    "question": "Cuando debes compartir una contraseña usando el gestor y no por WhatsApp",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Siempre, porque el gestor cifra la contraseña y WhatsApp no",
+      "Solo cuando no tienes internet",
+      "Cuando es una contraseña poco importante",
+      "Nunca, WhatsApp es seguro"
+    ],
+    "correctIndex": 0,
+    "explanation": "El gestor mantiene la contraseña cifrada, mientras que WhatsApp puede ser interceptado.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses3_l6"
+  },
+  {
+    "id": "ac_st4_qB3_003",
+    "question": "Que ventaja tiene compartir contraseñas desde un gestor",
+    "type": "multipleChoice",
+    "options": [
+      "Puedes revocar el acceso en cualquier momento sin cambiar la contraseña",
+      "Es mas rápido que copiar y pegar",
+      "No necesita internet",
+      "Es gratis en todos los gestores"
+    ],
+    "correctIndex": 0,
+    "explanation": "El control de acceso te permite quitar permisos sin afectar a otros usuarios.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses3_l6"
+  },
+  {
+    "id": "ac_st4_qB3_004",
+    "question": "Que es un gestor de contraseñas para equipos remotos",
+    "type": "multipleChoice",
+    "options": [
+      "Un plan que permite a equipos distribuidos compartir credenciales de forma segura",
+      "Un tipo de VPN",
+      "Un servidor local",
+      "Un programa de videollamadas"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los gestores para equipos remotos facilitan el acceso seguro a credenciales compartidas sin importar la ubicacion.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses6_l6"
+  },
+  {
+    "id": "ac_st4_qB3_005",
+    "question": "En un equipo remoto, todos los miembros deben usar la misma contraseña maestra",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 1,
+    "explanation": "Cada miembro debe tener su propia cuenta y contraseña maestra en el gestor.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses6_l6"
+  },
+  {
+    "id": "ac_st4_qB3_006",
+    "question": "Que permite hacer un gestor de contraseñas para equipos",
+    "type": "multipleChoice",
+    "options": [
+      "Compartir credenciales de forma segura y controlar quien tiene acceso",
+      "Sustituir al gerente de proyectos",
+      "Gestionar tareas pendientes",
+      "Enviar correos electrónicos"
+    ],
+    "correctIndex": 0,
+    "explanation": "El gestor permite compartir credenciales de forma segura y auditar quien accede a que.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses6_l6"
+  },
+  {
+    "id": "ac_st4_qB3_007",
+    "question": "Que tipo de carpeta puedes crear para organizar contraseñas de finanzas",
+    "type": "multipleChoice",
+    "options": [
+      "Una carpeta llamada Finanzas o Bancos",
+      "Una carpeta llamada Juegos",
+      "Una carpeta llamada Musica",
+      "No se pueden crear carpetas"
+    ],
+    "correctIndex": 0,
+    "explanation": "Las carpetas tematicas te ayudan a encontrar rápidamente las contraseñas que necesitas.",
+    "difficulty": 1,
+    "lessonId": "ac_s4_ses10_l1"
+  },
+  {
+    "id": "ac_st4_qB3_008",
+    "question": "Organizar tus contraseñas en categorias facilita encontrarlas despues",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Una buena organizacion ahorra tiempo y evita buscar contraseñas una por una.",
+    "difficulty": 1,
+    "lessonId": "ac_s4_ses10_l1"
+  },
+  {
+    "id": "ac_st4_qB3_009",
+    "question": "Cuales son buenas categorias para organizar contraseñas",
+    "type": "multipleChoice",
+    "options": [
+      "Personales, trabajo, finanzas, entretenimiento",
+      "Números del 1 al 10",
+      "Colores favoritos",
+      "No es necesario organizar"
+    ],
+    "correctIndex": 0,
+    "explanation": "Categorias logicas como personales, trabajo y finanzas te ayudan a mantener todo ordenado.",
+    "difficulty": 1,
+    "lessonId": "ac_s4_ses10_l1"
+  },
+  {
+    "id": "ac_st4_qB3_010",
+    "question": "Que son las etiquetas en un gestor de contraseñas",
+    "type": "multipleChoice",
+    "options": [
+      "Marcadores que permiten filtrar y buscar contraseñas rápidamente",
+      "Nombres de usuario",
+      "Contraseñas temporales",
+      "Codigos de verificación"
+    ],
+    "correctIndex": 0,
+    "explanation": "Las etiquetas te permiten clasificar contraseñas de múltiples maneras para encontrarlas facilmente.",
+    "difficulty": 1,
+    "lessonId": "ac_s4_ses10_l2"
+  },
+  {
+    "id": "ac_st4_qB3_011",
+    "question": "Puedes asignar varias etiquetas a una misma contraseña",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Las etiquetas son flexibles y una contraseña puede pertenecer a múltiples categorias.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses10_l2"
+  },
+  {
+    "id": "ac_st4_qB3_012",
+    "question": "Para que sirven los favoritos en un gestor de contraseñas",
+    "type": "multipleChoice",
+    "options": [
+      "Acceder rápidamente a las contraseñas que mas usas",
+      "Eliminar contraseñas antiguas",
+      "Generar nuevas contraseñas",
+      "Compartir contraseñas"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los favoritos te dan acceso rápido a tus contraseñas mas frecuentes.",
+    "difficulty": 1,
+    "lessonId": "ac_s4_ses10_l2"
+  },
+  {
+    "id": "ac_st4_qB3_013",
+    "question": "Que es una estructura de carpetas logica",
+    "type": "multipleChoice",
+    "options": [
+      "Un sistema de organizacion donde cada contraseña esta en su lugar correcto",
+      "Un tipo de cifrado",
+      "Una forma de contraseña",
+      "Un backup automático"
+    ],
+    "correctIndex": 0,
+    "explanation": "Una estructura logica te permite encontrar lo que buscas de forma intuitiva.",
+    "difficulty": 1,
+    "lessonId": "ac_s4_ses10_l3"
+  },
+  {
+    "id": "ac_st4_qB3_014",
+    "question": "Es mejor tener pocas carpetas generales que muchas carpetas específicas",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Pocas carpetas generales son mas faciles de manejar que un sistema excesivamente complejo.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses10_l3"
+  },
+  {
+    "id": "ac_st4_qB3_015",
+    "question": "Que tipo de información puedes guardar en campos personalizados",
+    "type": "multipleChoice",
+    "options": [
+      "Números de cuenta, PINs, preguntas de seguridad y notas",
+      "Solo contraseñas",
+      "Solo correos electrónicos",
+      "Nada mas que el usuario y contraseña"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los campos personalizados te permiten guardar cualquier información adicional relevante.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses10_l4"
+  },
+  {
+    "id": "ac_st4_qB3_016",
+    "question": "Debes usar campos personalizados para guardar información sensible como PINs",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Guardar PINs en el gestor es mas seguro que en el notas del celular.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses10_l4"
+  },
+  {
+    "id": "ac_st4_qB3_017",
+    "question": "Que es la busqueda en un gestor de contraseñas",
+    "type": "multipleChoice",
+    "options": [
+      "Una herramienta que encuentra contraseñas rápidamente escribiendo el nombre del sitio",
+      "Un tipo de cifrado",
+      "Una forma de compartir contraseñas",
+      "Un generador de contraseñas"
+    ],
+    "correctIndex": 0,
+    "explanation": "La busqueda te permite encontrar contraseñas sin navegar por carpetas.",
+    "difficulty": 1,
+    "lessonId": "ac_s4_ses10_l5"
+  },
+  {
+    "id": "ac_st4_qB3_018",
+    "question": "Filtrar por favoritos te muestra solo las contraseñas mas usadas",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "El filtro de favoritos es util para acceder rápidamente a tus credenciales frecuentes.",
+    "difficulty": 1,
+    "lessonId": "ac_s4_ses10_l5"
+  },
+  {
+    "id": "ac_st4_qB3_019",
+    "question": "Que debes hacer si encuentras contraseñas duplicadas en tu gestor",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Eliminar los duplicados y quedarte con la version mas reciente",
+      "No hacer nada, no importa",
+      "Crear mas copias",
+      "Compartir una con un amigo"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los duplicados generan confusion, es mejor mantener una sola entrada actualizada.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses10_l5"
+  },
+  {
+    "id": "ac_st4_qB3_020",
+    "question": "Que es una identidad digital en un gestor de contraseñas",
+    "type": "multipleChoice",
+    "options": [
+      "Un perfil con datos personales que se usa para autocompletar formularios",
+      "Un tipo de contraseña",
+      "Un usuario falso",
+      "Un tipo de cifrado"
+    ],
+    "correctIndex": 0,
+    "explanation": "Las identidades almacenan tu nombre, dirección y otros datos para llenar formularios automáticamente.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses10_l6"
+  },
+  {
+    "id": "ac_st4_qB3_021",
+    "question": "Puedes crear varias identidades en tu gestor para diferentes propósitos",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Puedes tener una identidad personal, otra laboral y otra para compras en linea.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses10_l6"
+  },
+  {
+    "id": "ac_st4_qB3_022",
+    "question": "Para que sirve guardar documentos de identidad en el gestor",
+    "type": "multipleChoice",
+    "options": [
+      "Tener acceso seguro a copias digitales de tus documentos importantes",
+      "No sirve para nada",
+      "Para que otros vean tus documentos",
+      "Para eliminar tus documentos"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los gestores permiten adjuntar archivos cifrados como copias de DNI o pasaporte.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses12_l2"
+  },
+  {
+    "id": "ac_st4_qB3_023",
+    "question": "Los documentos guardados en un gestor estan protegidos con cifrado",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "El gestor cifra todos los archivos adjuntos para mantenerlos seguros.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses12_l2"
+  },
+  {
+    "id": "ac_st4_qB3_024",
+    "question": "Que tipo de documentos puedes guardar en un gestor de forma segura",
+    "type": "multipleChoice",
+    "options": [
+      "DNI, pasaporte, tarjetas de credito y otros documentos importantes",
+      "Solo archivos de musica",
+      "Solo fotos",
+      "Solo documentos de texto"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los gestores pueden almacenar cualquier tipo de archivo cifrado de forma segura.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses12_l2"
+  },
+  {
+    "id": "ac_st4_qB3_025",
+    "question": "Que es el modo offline en un gestor de contraseñas",
+    "type": "multipleChoice",
+    "options": [
+      "Acceder a tus contraseñas guardadas sin conexión a internet",
+      "Eliminar todas tus contraseñas",
+      "No guardar contraseñas",
+      "Compartir contraseñas sin internet"
+    ],
+    "correctIndex": 0,
+    "explanation": "El modo offline te permite acceder a tus contraseñas aunque no tengas conexión.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses12_l6"
+  },
+  {
+    "id": "ac_st4_qB3_026",
+    "question": "En el modo offline, tus contraseñas se mantienen cifradas en tu dispositivo",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "El cifrado se mantiene incluso sin conexión para proteger tus datos.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses12_l6"
+  },
+  {
+    "id": "ac_st4_qB3_027",
+    "question": "Que debes hacer si usas tu gestor sin internet y luego te conectas",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Esperar a que se sincronicen los cambios automáticamente",
+      "Borrar todo y empezar de nuevo",
+      "No volver a conectarte",
+      "Reiniciar el celular"
+    ],
+    "correctIndex": 0,
+    "explanation": "El gestor sincroniza automáticamente los cambios cuando recuperas la conexión.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses12_l6"
+  },
+  {
+    "id": "ac_st4_qB3_028",
+    "question": "Que es una bóveda compartida en un gestor familiar",
+    "type": "multipleChoice",
+    "options": [
+      "Un espacio donde los miembros de la familia comparten contraseñas de forma segura",
+      "Una cuenta bancaria familiar",
+      "Un tipo de cifrado",
+      "Una carpeta en el celular"
+    ],
+    "correctIndex": 0,
+    "explanation": "La boveda compartida permite a toda la familia acceder a contraseñas comunes como WiFi o cuentas de streaming.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses13_l3"
+  },
+  {
+    "id": "ac_st4_qB3_029",
+    "question": "Cuando es util tener una boveda compartida familiar",
+    "type": "multipleChoice",
+    "options": [
+      "Para contraseñas de servicios que usan todos como Netflix o WiFi",
+      "Para tus contraseñas personales",
+      "Para guardar fotos",
+      "No es necesaria"
+    ],
+    "correctIndex": 0,
+    "explanation": "Las bovedas compartidas son ideales para credenciales que toda la familia necesita.",
+    "difficulty": 1,
+    "lessonId": "ac_s4_ses13_l3"
+  },
+  {
+    "id": "ac_st4_qB3_030",
+    "question": "En una boveda familiar, todos los miembros pueden ver todas las contraseñas",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Los miembros de la boveda compartida pueden ver y usar las contraseñas que estan ahi.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses13_l3"
+  },
+  {
+    "id": "ac_st4_qB3_031",
+    "question": "Que son los permisos en un gestor de equipos",
+    "type": "multipleChoice",
+    "options": [
+      "Reglas que determinan que puede ver y hacer cada miembro del equipo",
+      "Contraseñas temporales",
+      "Tipos de cifrado",
+      "Formas de compartir archivos"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los permisos permiten controlar el acceso de cada miembro a diferentes contraseñas y carpetas.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses13_l4"
+  },
+  {
+    "id": "ac_st4_qB3_032",
+    "question": "En un equipo, no todos los miembros deberian tener acceso a todas las contraseñas",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Los permisos granulares protegen la información sensible limitando el acceso solo a quien lo necesita.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses13_l4"
+  },
+  {
+    "id": "ac_st4_qB3_033",
+    "question": "Que tipo de cuentas son ideales para un gestor de pequenas empresas",
+    "type": "multipleChoice",
+    "options": [
+      "Cuentas de redes sociales, correos corporativos y herramientas de trabajo",
+      "Solo cuentas personales",
+      "Cuentas de juegos",
+      "Cuentas de streaming"
+    ],
+    "correctIndex": 0,
+    "explanation": "Un gestor empresarial gestiona credenciales compartidas del negocio de forma segura.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses13_l5"
+  },
+  {
+    "id": "ac_st4_qB3_034",
+    "question": "Un gestor de pequenas empresas ahorra tiempo al compartir credenciales de forma segura",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Compartir desde el gestor es mas rápido y seguro que enviar contraseñas por correo o mensaje.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses13_l5"
+  },
+  {
+    "id": "ac_st4_qB3_035",
+    "question": "Que es un reporte de uso en un gestor de equipos",
+    "type": "multipleChoice",
+    "options": [
+      "Un informe que muestra quien accedio a que credenciales y cuando",
+      "Una factura del servicio",
+      "Un tipo de contraseña",
+      "Un manual de usuario"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los reportes de uso permiten auditar el acceso a las credenciales compartidas.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses13_l5"
+  },
+  {
+    "id": "ac_st4_qB3_036",
+    "question": "Que debes hacer antes de compartir una contraseña con un nuevo empleado",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Verificar que tenga permisos y crear una entrada separada para el",
+      "Darle tu contraseña maestra",
+      "No hacer nada, que se las arregle",
+      "Compartir por WhatsApp"
+    ],
+    "correctIndex": 0,
+    "explanation": "Cada empleado debe tener su propio acceso con permisos adecuados.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses13_l5"
+  },
+  {
+    "id": "ac_st4_qB3_037",
+    "question": "Que es sincronizar en tiempo real en un gestor de contraseñas",
+    "type": "multipleChoice",
+    "options": [
+      "Que los cambios se reflejen inmediatamente en todos tus dispositivos",
+      "Que se actualice una vez al dia",
+      "Que solo funcione en computadora",
+      "Que no se actualiza nunca"
+    ],
+    "correctIndex": 0,
+    "explanation": "La sincronizacion en tiempo real asegura que siempre tengas la información mas reciente.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses14_l3"
+  },
+  {
+    "id": "ac_st4_qB3_038",
+    "question": "Si cambias una contraseña en tu celular, se actualiza automáticamente en tu computadora",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "La sincronizacion propaga los cambios a todos los dispositivos conectados.",
+    "difficulty": 1,
+    "lessonId": "ac_s4_ses14_l3"
+  },
+  {
+    "id": "ac_st4_qB3_039",
+    "question": "Que problema puedes tener si no tienes sincronizacion en tiempo real",
+    "type": "detectRisk",
+    "options": [
+      "Usar una contraseña antigua en un dispositivo que no se actualizo",
+      "Ningun problema",
+      "Perder tus fotos",
+      "Que se borre tu gestor"
+    ],
+    "correctIndex": 0,
+    "explanation": "Sin sincronizacion en tiempo real, podrías usar versiones antiguas de contraseñas.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses14_l3"
+  },
+  {
+    "id": "ac_st4_qB3_040",
+    "question": "Que es la sincronizacion offline en un gestor",
+    "type": "multipleChoice",
+    "options": [
+      "Guardar cambios localmente y sincronizarlos cuando haya internet",
+      "Nunca sincronizar",
+      "Eliminar contraseñas sin internet",
+      "Compartir sin internet"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los cambios se guardan localmente y se sincronizan cuando recuperas la conexión.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses14_l4"
+  },
+  {
+    "id": "ac_st4_qB3_041",
+    "question": "En la sincronizacion offline, los cambios se pierden si no hay internet",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 1,
+    "explanation": "Los cambios se guardan localmente y se sincronizan cuando vuelva la conexión, no se pierden.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses14_l4"
+  },
+  {
+    "id": "ac_st4_qB3_042",
+    "question": "Que debes verificar despues de sincronizar entre dispositivos",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Que todas las contraseñas aparezcan actualizadas en todos los dispositivos",
+      "Nada, se hace solo",
+      "Borrar el historial",
+      "Reiniciar todos los dispositivos"
+    ],
+    "correctIndex": 0,
+    "explanation": "Verificar que la sincronizacion funciono correctamente evita problemas futuros.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses14_l5"
+  },
+  {
+    "id": "ac_st4_qB3_043",
+    "question": "Que es migrar de un gestor a otro",
+    "type": "multipleChoice",
+    "options": [
+      "Transferir todas tus contraseñas de un servicio a otro",
+      "Eliminar todas tus contraseñas",
+      "Crear una cuenta nueva",
+      "Cambiar tu contraseña maestra"
+    ],
+    "correctIndex": 0,
+    "explanation": "Migrar implica exportar tus datos del gestor anterior e importarlos en el nuevo.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses19_l1"
+  },
+  {
+    "id": "ac_st4_qB3_044",
+    "question": "Cual es el primer paso para migrar de un gestor a otro",
+    "type": "multipleChoice",
+    "options": [
+      "Exportar todas tus contraseñas del gestor actual",
+      "Eliminar la cuenta anterior",
+      "Crear una cuenta nueva",
+      "Cambiar todas las contraseñas"
+    ],
+    "correctIndex": 0,
+    "explanation": "Lo primero es exportar tus datos para no perder nada durante la transicion.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses19_l1"
+  },
+  {
+    "id": "ac_st4_qB3_045",
+    "question": "Despues de migrar, debes verificar que todas las contraseñas se importaron correctamente",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Una verificación completa asegura que no falta ninguna credencial crítica.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses19_l1"
+  },
+  {
+    "id": "ac_st4_qB3_046",
+    "question": "Que debes hacer despues de importar tus contraseñas en el nuevo gestor",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Probar el inicio de sesión en tus cuentas mas importantes",
+      "Borrar el gestor anterior inmediatamente",
+      "No hacer nada",
+      "Compartir tu contraseña maestra"
+    ],
+    "correctIndex": 0,
+    "explanation": "Probar cada cuenta importante asegura que la importacion fue exitosa.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses19_l1"
+  },
+  {
+    "id": "ac_st4_qB3_047",
+    "question": "Que es un plan de verificación post-migracion",
+    "type": "multipleChoice",
+    "options": [
+      "Una lista de cuentas importantes para probar despues de cambiar de gestor",
+      "Un tipo de cifrado",
+      "Un backup automático",
+      "Una actualización del gestor"
+    ],
+    "correctIndex": 0,
+    "explanation": "Un plan de verificación te ayuda a asegurar que todo funcione correctamente despues de migrar.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses19_l2"
+  },
+  {
+    "id": "ac_st4_qB3_048",
+    "question": "Cuando debes eliminar el gestor anterior despues de migrar",
+    "type": "multipleChoice",
+    "options": [
+      "Solo despues de verificar que todo funcione correctamente en el nuevo",
+      "Inmediatamente despues de importar",
+      "Nunca, mejor guardar las dos cuentas",
+      "Al mismo tiempo que importas"
+    ],
+    "correctIndex": 0,
+    "explanation": "Esperar a verificar evita perder acceso si algo salio mal durante la migracion.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses19_l2"
+  },
+  {
+    "id": "ac_st4_qB3_049",
+    "question": "Que formatos de exportacion son comunes en los gestores de contraseñas",
+    "type": "multipleChoice",
+    "options": [
+      "CSV y JSON son los formatos mas utilizados",
+      "Solo PDF",
+      "Solo XML",
+      "No se pueden exportar"
+    ],
+    "correctIndex": 0,
+    "explanation": "CSV y JSON son estandares que permiten importar datos entre diferentes gestores.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses19_l3"
+  },
+  {
+    "id": "ac_st4_qB3_050",
+    "question": "Un archivo CSV de exportacion contiene tus contraseñas en texto plano",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "El CSV no esta cifrado, por eso debes eliminarlo despues de importar.",
+    "difficulty": 3,
+    "lessonId": "ac_s4_ses19_l3"
+  },
+  {
+    "id": "ac_st4_qB3_051",
+    "question": "Que debes hacer con el archivo de exportacion despues de importar",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Eliminarlo de forma segura porque contiene tus contraseñas sin cifrar",
+      "Guardarlo para siempre",
+      "Compartirlo con amigos",
+      "Publicarlo en internet"
+    ],
+    "correctIndex": 0,
+    "explanation": "Un archivo CSV con contraseñas es un riesgo de seguridad si alguien lo encuentra.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses19_l3"
+  },
+  {
+    "id": "ac_st4_qB3_052",
+    "question": "Que tipos de cuentas debes probar primero despues de migrar",
+    "type": "multipleChoice",
+    "options": [
+      "Correo electrónico, bancos y redes sociales principales",
+      "Cuentas de juegos",
+      "Cuentas que no usas",
+      "Todas a la vez"
+    ],
+    "correctIndex": 0,
+    "explanation": "Priorizar las cuentas críticas asegura que puedas acceder a lo mas importante.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses19_l5"
+  },
+  {
+    "id": "ac_st4_qB3_053",
+    "question": "Si una contraseña no funciona despues de migrar, que debes hacer",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Verificar si se guardo correctamente y re-importar si es necesario",
+      "Culpar al nuevo gestor",
+      "No usar mas el gestor",
+      "Cambiar todas las contraseñas"
+    ],
+    "correctIndex": 0,
+    "explanation": "Lo mas probable es que haya un problema con la importacion que se puede corregir.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses19_l5"
+  },
+  {
+    "id": "ac_st4_qB3_054",
+    "question": "Que es una revision completa post-migracion",
+    "type": "multipleChoice",
+    "options": [
+      "Probar cada cuenta importante y verificar que el autocompletado funcione",
+      "Solo cambiar la contraseña maestra",
+      "Eliminar el gestor anterior",
+      "No es necesario revisar nada"
+    ],
+    "correctIndex": 0,
+    "explanation": "Una revision completa asegura que toda tu información se transfirio correctamente.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses19_l5"
+  },
+  {
+    "id": "ac_st4_qB3_055",
+    "question": "Cuantas cuentas importantes deberías probar despues de una migracion",
+    "type": "multipleChoice",
+    "options": [
+      "Todas las cuentas críticas como correo, bancos y redes sociales",
+      "Solo una para probar",
+      "Ninguna, confiar en la importacion",
+      "Solo las de entretenimiento"
+    ],
+    "correctIndex": 0,
+    "explanation": "Probar todas las cuentas críticas te da confianza de que la migracion fue exitosa.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses19_l5"
+  },
+  {
+    "id": "ac_st4_qB3_056",
+    "question": "Que es un gestor de contraseñas básico",
+    "type": "multipleChoice",
+    "options": [
+      "Un servicio que guarda contraseñas sin funciones avanzadas como autofill o sincronizacion",
+      "Un gestor con todas las funciones premium",
+      "Un tipo de antivirus",
+      "Un navegador de internet"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los gestores básicos ofrecen almacenamiento simple sin funciones avanzadas.",
+    "difficulty": 1,
+    "lessonId": "ac_s4_ses21_l1"
+  },
+  {
+    "id": "ac_st4_qB3_057",
+    "question": "El gestor de contraseñas de Chrome es un ejemplo de gestor básico",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Chrome guarda contraseñas pero no tiene funciones avanzadas de seguridad como gestores dedicados.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses21_l1"
+  },
+  {
+    "id": "ac_st4_qB3_058",
+    "question": "Que ventaja tiene un gestor dedicado sobre uno básico",
+    "type": "multipleChoice",
+    "options": [
+      "Mayor seguridad, sincronizacion y funciones como monitoreo de filtraciones",
+      "Es mas barato",
+      "Es mas facil de encontrar",
+      "No tiene diferencia"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los gestores dedicados ofrecen cifrado superior, sincronizacion y herramientas avanzadas.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses21_l1"
+  },
+  {
+    "id": "ac_st4_qB3_059",
+    "question": "Que tipo de usuario se beneficia mas de un gestor básico",
+    "type": "multipleChoice",
+    "options": [
+      "Alguien con pocas cuentas que no necesita funciones avanzadas",
+      "Una empresa grande",
+      "Alguien con muchas cuentas críticas",
+      "Un experto en seguridad"
+    ],
+    "correctIndex": 0,
+    "explanation": "Para uso básico con pocas cuentas, un gestor simple puede ser suficiente.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses21_l1"
+  },
+  {
+    "id": "ac_st4_qB3_060",
+    "question": "Cuales son las diferencias principales entre gestor básico y dedicado",
+    "type": "multipleChoice",
+    "options": [
+      "Seguridad, funciones, precio y nivel de protección",
+      "No hay diferencias",
+      "Solo el nombre",
+      "El básico es mejor"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los gestores dedicados ofrecen significativamente mas seguridad y funciones que los básicos.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses21_l1"
+  }
+]

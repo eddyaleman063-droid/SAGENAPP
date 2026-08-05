@@ -1,0 +1,137 @@
+﻿[
+  {
+    "id": "ac_st7_ses11_l1_q01",
+    "question": "\u00bfQu\u00e9 dice la Organizaci\u00f3n Mundial de la Salud sobre el uso de pantallas en ni\u00f1os menores de 2 a\u00f1os?",
+    "type": "multipleChoice",
+    "options": ["No deben usar pantallas de ning\u00fan tipo", "Pueden usar pantallas 2 horas al d\u00eda", "Solo deben ver videos educativos", "Depende del tipo de dispositivo"],
+    "correctIndex": 0,
+    "explanationCorrect": "La OMS recomienda que ni\u00f1os menores de 2 a\u00f1os no tengan exposici\u00f3n a pantallas digitales, ya que su cerebro est\u00e1 en desarrollo cr\u00edtico.",
+    "explanationWrong": "No existen excepciones: la recomendaci\u00f3n de la OMS es clara sobre evitar pantallas en esta etapa del desarrollo."
+  },
+  {
+    "id": "ac_st7_ses11_l1_q02",
+    "question": "\u00bfCu\u00e1l es el tiempo m\u00e1ximo recomendado de uso de pantallas para ni\u00f1os de 2 a 5 a\u00f1os?",
+    "type": "multipleChoice",
+    "options": ["3 horas al d\u00eda", "1 hora al d\u00eda con supervisi\u00f3n", "No hay l\u00edmite si es contenido educativo", "Solo fines de semana"],
+    "correctIndex": 1,
+    "explanationCorrect": "Los expertos recomiendan m\u00e1ximo 1 hora al d\u00eda de contenido de calidad para ni\u00f1os de 2 a 5 a\u00f1os, siempre supervisado por un adulto.",
+    "explanationWrong": "El l\u00edmite es estricto: 1 hora al d\u00eda. No importa si el contenido es educativo, el tiempo frente a pantalla debe ser limitado."
+  },
+  {
+    "id": "ac_st7_ses11_l1_q03",
+    "question": "\u00bfQu\u00e9 dispositivo es m\u00e1s apropiado para que un ni\u00f1o de 4 a\u00f1os acceda a contenido digital?",
+    "type": "multipleChoice",
+    "options": ["Smartphone propio con roaming de datos", "Tablet familiar compartida con control parental", "Computadora personal en su cuarto", "Smart TV con acceso a internet abierto"],
+    "correctIndex": 1,
+    "explanationCorrect": "La tablet familiar compartida permite a los padres supervisar el uso y controlar el contenido que accede el ni\u00f1o.",
+    "explanationWrong": "Un dispositivo propio o sin supervisi\u00f3n puede exponer al ni\u00f1o a contenido inapropiado o gastos no autorizados."
+  },
+  {
+    "id": "ac_st7_ses11_l1_q04",
+    "question": "\u00bfPor qu\u00e9 es importante que los ni\u00f1os no tengan su propio smartphone antes de los 12 a\u00f1os?",
+    "type": "multipleChoice",
+    "options": ["Porque son demasiado caros", "Porque pueden acceder a contenido inapropiado sin supervisi\u00f3n", "Porque no existen smartphones para ni\u00f1os", "Porque los ni\u00f1os no saben leer"],
+    "correctIndex": 1,
+    "explanationCorrect": "Antes de los 12 a\u00f1os, los ni\u00f1os a\u00fan no tienen la madurez para navegar internet de forma segura y pueden encontrarse con contenido peligroso.",
+    "explanationWrong": "El costo no es el problema; el riesgo real es la exposici\u00f3n a contenido inapropiado y la falta de capacidad para tomar decisiones seguras en l\u00ednea."
+  },
+  {
+    "id": "ac_st7_ses11_l1_q05",
+    "question": "\u00bfCu\u00e1l es una buena alternativa antes de regalar un smartphone propio a un ni\u00f1o?",
+    "type": "multipleChoice",
+    "options": ["Darle un tel\u00e9fono viejo sin configurar", "Usar una tablet familiar con controles parentales activados", "No darle ning\u00fan dispositivo electr\u00f3nico", "Permitir que use el tel\u00e9fono de los padres sin supervisi\u00f3n"],
+    "correctIndex": 1,
+    "explanationCorrect": "Una tablet familiar compartida con controles parentales es la opci\u00f3n m\u00e1s segura para introducir a un ni\u00f1o en el mundo digital.",
+    "explanationWrong": "No dar ning\u00fan dispositivo puede ser excesivo, pero usar dispositivos sin supervisi\u00f3n es peligroso. La tablet compartida es el punto medio seguro."
+  },
+  {
+    "id": "ac_st7_ses11_l1_q06",
+    "question": "\u00bfQu\u00e9 tipo de contenido es m\u00e1s apropiado para ni\u00f1os peque\u00f1os en dispositivos digitales?",
+    "type": "multipleChoice",
+    "options": ["Redes sociales como TikTok o Instagram", "Videos educativos en plataformas como YouTube Kids", "Juegos en l\u00ednea con compras integradas", "Plataformas de streaming sin filtros"],
+    "correctIndex": 1,
+    "explanationCorrect": "Plataformas como YouTube Kids est\u00e1n dise\u00f1adas con contenido apropiado para la edad y filtros de seguridad para ni\u00f1os peque\u00f1os.",
+    "explanationWrong": "Las redes sociales y plataformas sin filtros pueden exponer a ni\u00f1os a contenido inapropiado y riesgos de privacidad."
+  },
+  {
+    "id": "ac_st7_ses11_l1_q07",
+    "question": "\u00bfCu\u00e1nta supervisi\u00f3n adulta necesita un ni\u00f1o de 3 a\u00f1os usando una tablet?",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanationCorrect": "Un ni\u00f1o de 3 a\u00f1os siempre debe estar supervisado por un adulto mientras usa cualquier dispositivo digital.",
+    "explanationWrong": "No existe ning\u00fan caso en el que un ni\u00f1o tan peque\u00f1o pueda usar tecnolog\u00eda de forma segura sin supervisi\u00f3n adulta."
+  },
+  {
+    "id": "ac_st7_ses11_l1_q08",
+    "question": "Las plataformas como Netflix o YouTube Kids son m\u00e1s seguras para ni\u00f1os que YouTube regular.",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanationCorrect": "Estas plataformas tienen filtros y contenido selecciónado espec\u00edficamente para ser apropiado para ni\u00f1os.",
+    "explanationWrong": "YouTube regular contiene todo tipo de contenido, incluido material no apto para menores. Las versiones para ni\u00f1os son m\u00e1s seguras."
+  },
+  {
+    "id": "ac_st7_ses11_l1_q09",
+    "question": "Un ni\u00f1o de 5 a\u00f1os puede usar una tablet sin supervisi\u00f3n si solo ve videos educativos.",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 1,
+    "explanationCorrect": "Incluso con contenido educativo, un ni\u00f1o de 5 a\u00f1os necesita supervisi\u00f3n adulta para asegurar que no acceda a contenido inapropiado.",
+    "explanationWrong": "La supervisi\u00f3n es necesaria siempre, sin importar el tipo de contenido. Los algoritmos pueden mostrar contenido no deseado."
+  },
+  {
+    "id": "ac_st7_ses11_l1_q10",
+    "question": "\u00bfCu\u00e1l es la edad recomendada por los expertos para dar un smartphone propio a un ni\u00f1o?",
+    "type": "multipleChoice",
+    "options": ["6 a\u00f1os", "12 a\u00f1os", "8 a\u00f1os", "3 a\u00f1os"],
+    "correctIndex": 1,
+    "explanationCorrect": "Los expertos recomiendan esperar hasta los 12 a\u00f1os para dar un smartphone propio, cuando el ni\u00f1o tiene m\u00e1s capacidad de entender los riesgos.",
+    "explanationWrong": "A edades m\u00e1s tempranas, los ni\u00f1os no tienen la madurez necesaria para manejar un smartphone de forma responsable."
+  },
+  {
+    "id": "ac_st7_ses11_l1_q11",
+    "question": "\u00bfQu\u00e9 beneficio tiene usar una tablet familiar compartida en lugar de un smartphone propio para un ni\u00f1o?",
+    "type": "multipleChoice",
+    "options": ["El ni\u00f1o aprende a competir por el uso del dispositivo", "Los padres pueden controlar el contenido y el tiempo de uso", "El ni\u00f1o puede usar cualquier aplicaci\u00f3n sin restricciones", "No hay ning\u00fan beneficio"],
+    "correctIndex": 1,
+    "explanationCorrect": "La tablet compartida permite a los padres establecer controles parentales y supervisar todo lo que el ni\u00f1o hace en ella.",
+    "explanationWrong": "Un smartphone propio sin controles puede llevar a gastos no autorizados y exposici\u00f3n a contenido inapropiado."
+  },
+  {
+    "id": "ac_st7_ses11_l1_q12",
+    "question": "\u00bfPor qu\u00e9 los expertos recomiendan no dar smartphones a ni\u00f1os peque\u00f1os?",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanationCorrect": "Los smartphones permiten acceso a internet, redes sociales y compras, cosas que los ni\u00f1os peque\u00f1os no est\u00e1n preparados para manejar.",
+    "explanationWrong": "Los smartphones representan riesgos significativos para ni\u00f1os peque\u00f1os debido a la facilidad de acceso a contenido y servicios sin supervisi\u00f3n."
+  },
+  {
+    "id": "ac_st7_ses11_l1_q13",
+    "question": "\u00bfQu\u00e9 es lo m\u00e1s importante considerar antes de que un ni\u00f1o use tecnolog\u00eda?",
+    "type": "multipleChoice",
+    "options": ["Que tenga el dispositivo m\u00e1s nuevo del mercado", "Que los padres configuren controles parentales y supervisen el uso", "Que pueda acceder a internet libremente", "Que use el dispositivo todo el d\u00eda sin l\u00edmites"],
+    "correctIndex": 1,
+    "explanationCorrect": "La configuraci\u00f3n de controles parentales y la supervisi\u00f3n constante son fundamentales para la seguridad digital de los ni\u00f1os.",
+    "explanationWrong": "El costo del dispositivo o el acceso libre a internet no son importantes; lo crucial es la seguridad y la supervisi\u00f3n."
+  },
+  {
+    "id": "ac_st7_ses11_l1_q14",
+    "question": "\u00bfQu\u00e9 puede pasar si un ni\u00f1o de 6 a\u00f1os usa tecnolog\u00eda sin supervisi\u00f3n?",
+    "type": "multipleChoice",
+    "options": ["Nada malo, los ni\u00f1os son responsables", "Puede acceder a contenido inapropiado o realizar compras sin autorizaci\u00f3n", "Aprender\u00e1 m\u00e1s r\u00e1pido que sus compa\u00f1eros", "Se volver\u00e1 m\u00e1s independiente y responsable"],
+    "correctIndex": 1,
+    "explanationCorrect": "Sin supervisi\u00f3n, los ni\u00f1os pueden encontrar contenido peligroso, interactuar con desconocidos o hacer compras accidentales.",
+    "explanationWrong": "Los ni\u00f1os no tienen la capacidad de evaluar riesgos digitales; la supervisi\u00f3n adulta es indispensable para su protecci\u00f3n."
+  },
+  {
+    "id": "ac_st7_ses11_l1_q15",
+    "question": "Carlos tiene 4 a\u00f1os y quiere usar la tablet de su mam\u00e1 para ver videos. Su mam\u00e1 le pone YouTube sin supervisi\u00f3n. \u00bfQu\u00e9 deber\u00eda hacer la mam\u00e1 de Carlos?",
+    "type": "miniCase",
+    "options": ["Dejar que Carlos use la tablet libremente porque es solo ver videos", "Configurar YouTube Kids y supervisar el uso junto a \u00e9l", "No permitir que Carlos use ning\u00fan dispositivo electr\u00f3nico", "Darle un smartphone propio para que se entretenga solo"],
+    "correctIndex": 1,
+    "explanationCorrect": "YouTube Kids filtra contenido inapropiado y la supervisi\u00f3n del adulto asegura que el ni\u00f1o est\u00e1 a salvo mientras aprende.",
+    "explanationWrong": "YouTube regular puede mostrar contenido violento o inapropiado. La supervisi\u00f3n y las plataformas seguras son esenciales."
+  }
+]

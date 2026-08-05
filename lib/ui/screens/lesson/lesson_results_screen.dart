@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sagen/providers/providers.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/theme_constants.dart';
-import '../../../services/experience_service.dart';
+
 import 'package:sagen/l10n/app_localizations.dart';
-import '../../widgets/streak/flame_animation_widget.dart';
+import '../../widgets/common/premium_loader.dart';
+import '../../widgets/rive_flame_widget.dart';
 
 class LessonResultsScreen extends ConsumerWidget {
   final String stageId;
@@ -16,53 +20,45 @@ class LessonResultsScreen extends ConsumerWidget {
   });
 
   void _finishLesson(BuildContext context, WidgetRef ref, SessionState session) {
-    final exp = ExperienceService.instance;
+    final exp = ref.read(experienceServiceProvider);
     exp.successHaptic();
     ref.read(streakProvider.notifier).checkIn();
     ref.read(learningProvider.notifier).completeLesson(
       stageId,
       lessonId,
       perfectLesson: session.isPerfect,
+      correctAnswers: session.correctCount,
+      totalQuestions: session.totalQuestions,
     );
     if (context.mounted) {
-      Navigator.pop(context);
+      context.pop();
     }
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final dark = Theme.of(context).brightness == Brightness.dark;
     final l = AppLocalizations.of(context)!;
     final session = ref.watch(sessionProvider);
 
     if (session.phase == SessionPhase.intro) {
-      return Scaffold(
-        backgroundColor: dark ? PremiumColors.darkBg : PremiumColors.lightBg,
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const CircularProgressIndicator(),
-              const SizedBox(height: AppSpacing.lg),
-              Text(
-                'Preparando resultados...',
-                style: TextStyle(fontSize: 15, color: dark ? Colors.white54 : Colors.black54),
-              ),
-            ],
-          ),
+      return PremiumLoader(
+        loading: true,
+        message: l.lessonResultsPreparing,
+        child: Scaffold(
+          backgroundColor: context.surfaceBackground,
         ),
       );
     }
 
     return Scaffold(
-      backgroundColor: dark ? PremiumColors.darkBg : PremiumColors.lightBg,
+      backgroundColor: context.surfaceBackground,
       body: SafeArea(
         child: Stack(
           children: [
             const Positioned.fill(
               child: Padding(
                 padding: EdgeInsets.only(bottom: 60),
-                child: FlameAnimationWidget(phase: null),
+                child: RiveFlameWidget(phase: null),
               ),
             ),
             Padding(
@@ -89,8 +85,7 @@ class LessonResultsScreen extends ConsumerWidget {
                       const SizedBox(width: AppSpacing.xs),
                       Text(
                         l.resultPerfectBadge,
-                        style: const TextStyle(
-                          fontSize: 12,
+                        style: AppTextStyle.caption.copyWith(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                           letterSpacing: 1.5,
@@ -101,27 +96,28 @@ class LessonResultsScreen extends ConsumerWidget {
                 ),
                 const SizedBox(height: AppSpacing.lg),
               ],
-              Icon(
-                session.isPerfect ? Icons.emoji_events_rounded : Icons.check_circle_rounded,
-                size: 72,
-                color: session.isPerfect
-                    ? PremiumColors.streakOrange
-                    : PremiumColors.success,
-              ),
+              ExcludeSemantics(
+                child: Icon(
+                  session.isPerfect ? Icons.emoji_events_rounded : Icons.check_circle_rounded,
+                  size: 72,
+                  color: session.isPerfect
+                      ? PremiumColors.streakOrange
+                      : PremiumColors.success,
+                ),
+              ).animate().fadeIn().scale(begin: const Offset(0.8, 0.8)),
               const SizedBox(height: AppSpacing.xxl),
               Text(
                 session.isPerfect ? l.resultPerfectTitle : l.resultCompleteTitle,
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: dark ? Colors.white.withValues(alpha: 0.95) : Colors.black87,
-                ),
+                  style: AppTextStyle.headline.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: context.textPrimary,
+                  ),
               ),
               const SizedBox(height: AppSpacing.sm),
               Text(
                 session.isPerfect ? l.resultPerfectDesc : l.resultNotPerfectDesc,
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 14, color: dark ? Colors.white38 : Colors.black45),
+                style: AppTextStyle.bodyMd.copyWith(color: context.textTertiary),
               ),
               const SizedBox(height: AppSpacing.xxl),
               Row(
@@ -132,7 +128,7 @@ class LessonResultsScreen extends ConsumerWidget {
                     value: '+${session.earnedXp}',
                     label: l.profileXpLabel,
                     color: PremiumColors.xpColor,
-                    dark: dark,
+                    semanticsLabel: l.resultXpGained('${session.earnedXp}'),
                   ),
                   const SizedBox(width: AppSpacing.lg),
                   _ResultBadge(
@@ -140,36 +136,40 @@ class LessonResultsScreen extends ConsumerWidget {
                     value: '${(session.accuracy * 100).toInt()}%',
                     label: l.resultAccuracy,
                     color: PremiumColors.success,
-                    dark: dark,
+                    semanticsLabel: l.resultAccuracyLabel('${(session.accuracy * 100).toInt()}'),
                   ),
                   const SizedBox(width: AppSpacing.lg),
                   _ResultBadge(
                     icon: Icons.favorite_rounded,
                     value: '${session.lives}',
                     label: l.resultLives,
-                    color: Colors.red.shade400,
-                    dark: dark,
+                    color: PremiumColors.error,
+                    semanticsLabel: l.resultLivesLabel('${session.lives}'),
                   ),
                 ],
               ),
               const Spacer(flex: 3),
-              SizedBox(
-                width: double.infinity,
-                height: 52,
-                child: ElevatedButton(
-                  onPressed: () => _finishLesson(context, ref, session),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: PremiumColors.primary,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
-                    elevation: 4,
+              Semantics(
+                button: true,
+                label: l.continueText,
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 52,
+                  child: ElevatedButton(
+                    onPressed: () => _finishLesson(context, ref, session),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: PremiumColors.primary,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
+                      elevation: 4,
+                    ),
+                    child: Text(l.continueText, style: AppTextStyle.titleSmall.copyWith(fontWeight: FontWeight.bold)),
                   ),
-                  child: Text(l.continueText, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                 ),
               ),
               const SizedBox(height: AppSpacing.md),
             ],
-              ),
+          ).animate().fadeIn(delay: 200.ms),
             ),
           ],
         ),
@@ -183,42 +183,47 @@ class _ResultBadge extends StatelessWidget {
   final String value;
   final String label;
   final Color color;
-  final bool dark;
+  final String? semanticsLabel;
   const _ResultBadge({
     required this.icon,
     required this.value,
     required this.label,
     required this.color,
-    required this.dark,
+    this.semanticsLabel,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppRadius.xl),
-        color: color.withValues(alpha: 0.08),
-        border: Border.all(color: color.withValues(alpha: 0.15)),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 22, color: color),
-          const SizedBox(height: AppSpacing.xs),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: dark ? Colors.white.withValues(alpha: 0.9) : Colors.black87,
+    return Semantics(
+      label: semanticsLabel ?? '$label $value',
+      container: true,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(AppRadius.xl),
+          color: color.withValues(alpha: 0.08),
+          border: Border.all(color: color.withValues(alpha: 0.15)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ExcludeSemantics(
+              child: Icon(icon, size: 22, color: color),
             ),
-          ),
-          Text(
-            label,
-            style: TextStyle(fontSize: 11, color: dark ? Colors.white38 : Colors.black45),
-          ),
-        ],
+            const SizedBox(height: AppSpacing.xs),
+            Text(
+              value,
+              style: AppTextStyle.title.copyWith(
+                fontWeight: FontWeight.bold,
+                color: context.textPrimary,
+              ),
+            ),
+            Text(
+              label,
+              style: AppTextStyle.label.copyWith(color: context.textTertiary),
+            ),
+          ],
+        ),
       ),
     );
   }

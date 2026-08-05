@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/theme/theme_constants.dart';
+import '../../../providers/service_providers.dart';
+import '../../../services/experience_service.dart';
 import '../../../services/sage_emotion_service.dart';
 
 class SageEmotionWidget extends StatelessWidget {
@@ -39,7 +41,8 @@ class _StaticSageImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dpr = MediaQuery.of(context).devicePixelRatio;
+    ProviderScope.containerOf(context).read(sageEmotionServiceProvider).ensurePrecached(emotion);
+    final dpr = MediaQuery.devicePixelRatioOf(context);
     final decodeSize = (size * dpr).round().clamp(0, 600);
     return Image.asset(
       emotion.assetPath,
@@ -51,31 +54,42 @@ class _StaticSageImage extends StatelessWidget {
       filterQuality: FilterQuality.high,
       fit: BoxFit.contain,
       isAntiAlias: true,
+      errorBuilder: (ctx, _, _) => _buildPlaceholder(),
+    );
+  }
+
+  Widget _buildPlaceholder() {
+    return Container(
+      width: size,
+      height: size,
+      decoration: const BoxDecoration(
+        color: PremiumColors.sagePlaceholder,
+        shape: BoxShape.circle,
+      ),
+      child: Icon(
+        Icons.pets,
+        color: Colors.white54,
+        size: size * 0.5,
+      ),
     );
   }
 }
 
-class _LiveSageImage extends StatefulWidget {
+class _LiveSageImage extends ConsumerStatefulWidget {
   final SageEmotion emotion;
   final double size;
   const _LiveSageImage({required this.emotion, required this.size});
 
   @override
-  State<_LiveSageImage> createState() => _LiveSageImageState();
+  ConsumerState<_LiveSageImage> createState() => _LiveSageImageState();
 }
 
-class _LiveSageImageState extends State<_LiveSageImage>
+class _LiveSageImageState extends ConsumerState<_LiveSageImage>
     with TickerProviderStateMixin {
-  static const _transitionMs = 280;
-
   late AnimationController _transCtrl;
-  late Animation<double> _fadeIn;
-  late Animation<double> _fadeOut;
-  late Animation<double> _scaleUp;
 
   AnimationController? _breatheCtrl;
   SageEmotion _displayed = SageEmotion.calm;
-  SageEmotion _previous = SageEmotion.calm;
   bool _idleBreathe = false;
   int _decodeSize = 0;
 
@@ -83,17 +97,10 @@ class _LiveSageImageState extends State<_LiveSageImage>
   void initState() {
     super.initState();
     _displayed = widget.emotion;
-    _previous = widget.emotion;
+    ref.read(sageEmotionServiceProvider).ensurePrecached(widget.emotion);
     _transCtrl = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: _transitionMs),
-    );
-    _fadeIn = CurvedAnimation(parent: _transCtrl, curve: AppEasing.entrance);
-    _fadeOut = Tween<double>(begin: 1.0, end: 0.0).animate(
-      CurvedAnimation(parent: _transCtrl, curve: const Cubic(0.4, 0.0, 0.2, 1.0)),
-    );
-    _scaleUp = Tween<double>(begin: 0.92, end: 1.0).animate(
-      CurvedAnimation(parent: _transCtrl, curve: AppEasing.entrance),
+      duration: const Duration(milliseconds: 300),
     );
     _transCtrl.forward();
     _updateBreathing();
@@ -103,18 +110,16 @@ class _LiveSageImageState extends State<_LiveSageImage>
   void didUpdateWidget(_LiveSageImage old) {
     super.didUpdateWidget(old);
     if (old.emotion == widget.emotion) return;
-    final service = SageEmotionService.instance;
+    final service = ref.read(sageEmotionServiceProvider);
     if (!service.shouldAnimateEmotionChange(old.emotion, widget.emotion)) {
-      _previous = widget.emotion;
       _displayed = widget.emotion;
       _updateBreathing();
       if (mounted) setState(() {});
       return;
     }
     if (service.isSignificantMoodShift(old.emotion, widget.emotion)) {
-      HapticFeedback.selectionClick();
+      ExperienceService.instance.lightHaptic();
     }
-    _previous = _displayed;
     _displayed = widget.emotion;
     _transCtrl.reset();
     _transCtrl.forward();
@@ -122,7 +127,7 @@ class _LiveSageImageState extends State<_LiveSageImage>
   }
 
   void _updateBreathing() {
-    final shouldBreathe = SageEmotionService.instance.canIdleBreathe(_displayed);
+    final shouldBreathe = ref.read(sageEmotionServiceProvider).canIdleBreathe(_displayed);
     if (shouldBreathe == _idleBreathe) return;
     _idleBreathe = shouldBreathe;
     _breatheCtrl?.dispose();
@@ -144,7 +149,7 @@ class _LiveSageImageState extends State<_LiveSageImage>
   }
 
   double _computeScale() {
-    double s = _scaleUp.value;
+    double s = 1.0;
     if (_idleBreathe && _breatheCtrl != null) {
       s += 0.012 * _breatheCtrl!.value;
     }
@@ -158,46 +163,59 @@ class _LiveSageImageState extends State<_LiveSageImage>
 
   @override
   Widget build(BuildContext context) {
-    final dpr = MediaQuery.of(context).devicePixelRatio;
+    final dpr = MediaQuery.devicePixelRatioOf(context);
     _decodeSize = (widget.size * dpr).round().clamp(0, 600);
 
     return AnimatedBuilder(
       animation: _listenable,
       builder: (context, child) {
-        final isAnimating = _transCtrl.isAnimating || _transCtrl.value < 1.0;
-        final sameEmotion = _previous == _displayed;
-
         return Transform.scale(
           scale: _computeScale(),
-          child: Stack(
-            children: [
-              if (!sameEmotion && isAnimating)
-                Opacity(
-                  opacity: _fadeOut.value,
-                  child: _buildImage(_previous),
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
+            transitionBuilder: (child, animation) {
+              return ScaleTransition(
+                scale: animation,
+                child: FadeTransition(
+                  opacity: animation,
+                  child: child,
                 ),
-              Opacity(
-                opacity: isAnimating ? _fadeIn.value : 1.0,
-                child: _buildImage(_displayed),
-              ),
-            ],
+              );
+            },
+            child: Image.asset(
+              _displayed.assetPath,
+              key: ValueKey(_displayed.assetPath),
+              width: widget.size,
+              height: widget.size,
+              cacheWidth: _decodeSize,
+              cacheHeight: _decodeSize,
+              gaplessPlayback: true,
+              filterQuality: FilterQuality.high,
+              fit: BoxFit.contain,
+              isAntiAlias: true,
+              errorBuilder: (context, error, stackTrace) {
+                return _buildPlaceholder();
+              },
+            ),
           ),
         );
       },
     );
   }
 
-  Widget _buildImage(SageEmotion emotion) {
-    return Image.asset(
-      emotion.assetPath,
+  Widget _buildPlaceholder() {
+    return Container(
       width: widget.size,
       height: widget.size,
-      cacheWidth: _decodeSize,
-      cacheHeight: _decodeSize,
-      gaplessPlayback: true,
-      filterQuality: FilterQuality.high,
-      fit: BoxFit.contain,
-      isAntiAlias: true,
+      decoration: const BoxDecoration(
+        color: PremiumColors.sagePlaceholder,
+        shape: BoxShape.circle,
+      ),
+      child: Icon(
+        Icons.pets,
+        color: Colors.white54,
+        size: widget.size * 0.5,
+      ),
     );
   }
 }

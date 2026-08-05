@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/ui/widgets/profile/theme_selector.dart';
+import 'package:sagen/core/theme/app_colors.dart';
 
 class SettingsSheet extends StatelessWidget {
   const SettingsSheet({super.key});
@@ -16,8 +17,8 @@ class SettingsSheet extends StatelessWidget {
       padding: const EdgeInsets.all(AppSpacing.xl),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppRadius.xxl),
-        color: dark ? PremiumColors.darkSurface : Colors.white,
-        boxShadow: AppShadows.card(color: dark ? Colors.white12 : Colors.black12),
+        color: context.surfaceCard,
+        boxShadow: AppShadows.card(color: context.subtle),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -28,7 +29,7 @@ class SettingsSheet extends StatelessWidget {
             margin: const EdgeInsets.only(bottom: AppSpacing.xl),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(AppRadius.pill),
-              color: dark ? Colors.white12 : Colors.black12,
+              color: context.subtle,
             ),
           ),
           Row(
@@ -37,7 +38,7 @@ class SettingsSheet extends StatelessWidget {
               const SizedBox(width: AppSpacing.sm),
               Text(
                 l.settingsTitle,
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style: AppTextStyle.titleSmall.copyWith(fontWeight: FontWeight.bold),
               ),
             ],
           ),

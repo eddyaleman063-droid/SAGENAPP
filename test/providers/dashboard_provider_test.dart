@@ -1,13 +1,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sagen/providers/providers.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   group('DashboardState', () {
     test('initial state has correct defaults', () {
       const state = DashboardState();
       expect(state.displayName, '');
-      expect(state.gems, 0);
+      expect(state.totalDonated, 0.0);
       expect(state.xp, 0);
       expect(state.level, 1);
       expect(state.nextLevelXp, 100);
@@ -33,25 +34,24 @@ void main() {
 
     test('copyWith updates only specified fields', () {
       const state = DashboardState();
-      final updated = state.copyWith(displayName: 'Test', gems: 50, level: 3);
+      final updated = state.copyWith(displayName: 'Test', totalDonated: 50.0, level: 3);
       expect(updated.displayName, 'Test');
-      expect(updated.gems, 50);
+      expect(updated.totalDonated, 50.0);
       expect(updated.level, 3);
       expect(updated.xp, 0);
       expect(updated.isLoading, true);
-    });
-
-    test('greeting returns a non-empty string', () {
-      const state = DashboardState();
-      expect(state.greeting, isNotEmpty);
     });
   });
 
   group('DashboardNotifier', () {
     late ProviderContainer container;
 
-    setUp(() {
-      container = ProviderContainer();
+    setUp(() async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      container = ProviderContainer(overrides: [
+        prefsProvider.overrideWithValue(prefs),
+      ]);
     });
 
     tearDown(() => container.dispose());
@@ -59,7 +59,7 @@ void main() {
     test('build returns default state', () {
       final state = container.read(dashboardProvider);
       expect(state.isLoading, true);
-      expect(state.gems, 0);
+      expect(state.totalDonated, 0.0);
     });
 
     test('setActiveTab changes the active tab', () {
@@ -84,7 +84,7 @@ void main() {
       final notifier = container.read(dashboardProvider.notifier);
       notifier.updateFrom(
         displayName: 'Test User',
-        gems: 100,
+        totalDonated: 100.0,
         xp: 50,
         level: 2,
         nextLevelXp: 200,
@@ -97,7 +97,7 @@ void main() {
       );
       final state = container.read(dashboardProvider);
       expect(state.displayName, 'Test User');
-      expect(state.gems, 100);
+      expect(state.totalDonated, 100.0);
       expect(state.xp, 50);
       expect(state.level, 2);
       expect(state.currentStreak, 5);
@@ -108,10 +108,11 @@ void main() {
     test('getters return state values', () {
       final notifier = container.read(dashboardProvider.notifier);
       notifier.setActiveTab(1);
-      expect(notifier.activeTab, 1);
-      expect(notifier.displayName, '');
-      expect(notifier.gems, 0);
-      expect(notifier.isLoading, true);
+      final state = container.read(dashboardProvider);
+      expect(state.activeTab, 1);
+      expect(state.displayName, '');
+      expect(state.totalDonated, 0.0);
+      expect(state.isLoading, true);
     });
   });
 }

@@ -27,6 +27,8 @@ mixin _$Challenge {
   List<String> get options => throw _privateConstructorUsedError;
   int get correctIndex => throw _privateConstructorUsedError;
   String get explanation => throw _privateConstructorUsedError;
+  String get lessonId => throw _privateConstructorUsedError;
+  int get difficulty => throw _privateConstructorUsedError;
 
   /// Serializes this Challenge to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -50,6 +52,8 @@ abstract class $ChallengeCopyWith<$Res> {
     List<String> options,
     int correctIndex,
     String explanation,
+    String lessonId,
+    int difficulty,
   });
 }
 
@@ -74,6 +78,8 @@ class _$ChallengeCopyWithImpl<$Res, $Val extends Challenge>
     Object? options = null,
     Object? correctIndex = null,
     Object? explanation = null,
+    Object? lessonId = null,
+    Object? difficulty = null,
   }) {
     return _then(
       _value.copyWith(
@@ -101,6 +107,14 @@ class _$ChallengeCopyWithImpl<$Res, $Val extends Challenge>
                 ? _value.explanation
                 : explanation // ignore: cast_nullable_to_non_nullable
                       as String,
+            lessonId: null == lessonId
+                ? _value.lessonId
+                : lessonId // ignore: cast_nullable_to_non_nullable
+                      as String,
+            difficulty: null == difficulty
+                ? _value.difficulty
+                : difficulty // ignore: cast_nullable_to_non_nullable
+                      as int,
           )
           as $Val,
     );
@@ -123,6 +137,8 @@ abstract class _$$ChallengeImplCopyWith<$Res>
     List<String> options,
     int correctIndex,
     String explanation,
+    String lessonId,
+    int difficulty,
   });
 }
 
@@ -146,6 +162,8 @@ class __$$ChallengeImplCopyWithImpl<$Res>
     Object? options = null,
     Object? correctIndex = null,
     Object? explanation = null,
+    Object? lessonId = null,
+    Object? difficulty = null,
   }) {
     return _then(
       _$ChallengeImpl(
@@ -173,6 +191,14 @@ class __$$ChallengeImplCopyWithImpl<$Res>
             ? _value.explanation
             : explanation // ignore: cast_nullable_to_non_nullable
                   as String,
+        lessonId: null == lessonId
+            ? _value.lessonId
+            : lessonId // ignore: cast_nullable_to_non_nullable
+                  as String,
+        difficulty: null == difficulty
+            ? _value.difficulty
+            : difficulty // ignore: cast_nullable_to_non_nullable
+                  as int,
       ),
     );
   }
@@ -188,6 +214,8 @@ class _$ChallengeImpl extends _Challenge {
     required final List<String> options,
     required this.correctIndex,
     required this.explanation,
+    this.lessonId = '',
+    this.difficulty = 1,
   }) : _options = options,
        super._();
 
@@ -212,10 +240,16 @@ class _$ChallengeImpl extends _Challenge {
   final int correctIndex;
   @override
   final String explanation;
+  @override
+  @JsonKey()
+  final String lessonId;
+  @override
+  @JsonKey()
+  final int difficulty;
 
   @override
   String toString() {
-    return 'Challenge(id: $id, question: $question, type: $type, options: $options, correctIndex: $correctIndex, explanation: $explanation)';
+    return 'Challenge(id: $id, question: $question, type: $type, options: $options, correctIndex: $correctIndex, explanation: $explanation, lessonId: $lessonId, difficulty: $difficulty)';
   }
 
   @override
@@ -231,7 +265,11 @@ class _$ChallengeImpl extends _Challenge {
             (identical(other.correctIndex, correctIndex) ||
                 other.correctIndex == correctIndex) &&
             (identical(other.explanation, explanation) ||
-                other.explanation == explanation));
+                other.explanation == explanation) &&
+            (identical(other.lessonId, lessonId) ||
+                other.lessonId == lessonId) &&
+            (identical(other.difficulty, difficulty) ||
+                other.difficulty == difficulty));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -244,6 +282,8 @@ class _$ChallengeImpl extends _Challenge {
     const DeepCollectionEquality().hash(_options),
     correctIndex,
     explanation,
+    lessonId,
+    difficulty,
   );
 
   /// Create a copy of Challenge
@@ -268,6 +308,8 @@ abstract class _Challenge extends Challenge {
     required final List<String> options,
     required final int correctIndex,
     required final String explanation,
+    final String lessonId,
+    final int difficulty,
   }) = _$ChallengeImpl;
   const _Challenge._() : super._();
 
@@ -286,6 +328,10 @@ abstract class _Challenge extends Challenge {
   int get correctIndex;
   @override
   String get explanation;
+  @override
+  String get lessonId;
+  @override
+  int get difficulty;
 
   /// Create a copy of Challenge
   /// with the given fields replaced by the non-null parameter values.

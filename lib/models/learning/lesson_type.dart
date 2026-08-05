@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
+/// Types of lesson activities (true/false, multiple choice, etc).
 @JsonEnum()
 enum LessonType {
   trueFalse,
@@ -15,19 +16,19 @@ extension LessonTypeExtension on LessonType {
   String get label {
     switch (this) {
       case LessonType.trueFalse:
-        return 'Verdadero / Falso';
+        return 'True / False';
       case LessonType.multipleChoice:
-        return 'Opción múltiple';
+        return 'Multiple Choice';
       case LessonType.completePhrase:
-        return 'Completa la frase';
+        return 'Complete the phrase';
       case LessonType.detectRisk:
-        return 'Detectar riesgo';
+        return 'Detect risk';
       case LessonType.createPassword:
-        return 'Crear contraseña';
+        return 'Create password';
       case LessonType.whatWouldYouDo:
-        return '¿Qué harías aquí?';
+        return 'What would you do?';
       case LessonType.miniCase:
-        return 'Caso real';
+        return 'Real case';
     }
   }
 }

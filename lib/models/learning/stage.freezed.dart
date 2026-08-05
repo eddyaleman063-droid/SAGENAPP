@@ -22,23 +22,15 @@ Stage _$StageFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Stage {
   String get id => throw _privateConstructorUsedError;
-  set id(String value) => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
-  set title(String value) => throw _privateConstructorUsedError;
   String get subtitle => throw _privateConstructorUsedError;
-  set subtitle(String value) => throw _privateConstructorUsedError;
   @_ColorConverter()
   Color get accent => throw _privateConstructorUsedError;
-  @_ColorConverter()
-  set accent(Color value) => throw _privateConstructorUsedError;
   @_IconConverter()
   IconData get icon => throw _privateConstructorUsedError;
-  @_IconConverter()
-  set icon(IconData value) => throw _privateConstructorUsedError;
   List<Lesson> get lessons => throw _privateConstructorUsedError;
-  set lessons(List<Lesson> value) => throw _privateConstructorUsedError;
   bool get unlocked => throw _privateConstructorUsedError;
-  set unlocked(bool value) => throw _privateConstructorUsedError;
+  List<Session> get sessions => throw _privateConstructorUsedError;
 
   /// Serializes this Stage to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -62,6 +54,7 @@ abstract class $StageCopyWith<$Res> {
     @_IconConverter() IconData icon,
     List<Lesson> lessons,
     bool unlocked,
+    List<Session> sessions,
   });
 }
 
@@ -87,6 +80,7 @@ class _$StageCopyWithImpl<$Res, $Val extends Stage>
     Object? icon = null,
     Object? lessons = null,
     Object? unlocked = null,
+    Object? sessions = null,
   }) {
     return _then(
       _value.copyWith(
@@ -118,6 +112,10 @@ class _$StageCopyWithImpl<$Res, $Val extends Stage>
                 ? _value.unlocked
                 : unlocked // ignore: cast_nullable_to_non_nullable
                       as bool,
+            sessions: null == sessions
+                ? _value.sessions
+                : sessions // ignore: cast_nullable_to_non_nullable
+                      as List<Session>,
           )
           as $Val,
     );
@@ -140,6 +138,7 @@ abstract class _$$StageImplCopyWith<$Res> implements $StageCopyWith<$Res> {
     @_IconConverter() IconData icon,
     List<Lesson> lessons,
     bool unlocked,
+    List<Session> sessions,
   });
 }
 
@@ -164,6 +163,7 @@ class __$$StageImplCopyWithImpl<$Res>
     Object? icon = null,
     Object? lessons = null,
     Object? unlocked = null,
+    Object? sessions = null,
   }) {
     return _then(
       _$StageImpl(
@@ -188,13 +188,17 @@ class __$$StageImplCopyWithImpl<$Res>
             : icon // ignore: cast_nullable_to_non_nullable
                   as IconData,
         lessons: null == lessons
-            ? _value.lessons
+            ? _value._lessons
             : lessons // ignore: cast_nullable_to_non_nullable
                   as List<Lesson>,
         unlocked: null == unlocked
             ? _value.unlocked
             : unlocked // ignore: cast_nullable_to_non_nullable
                   as bool,
+        sessions: null == sessions
+            ? _value._sessions
+            : sessions // ignore: cast_nullable_to_non_nullable
+                  as List<Session>,
       ),
     );
   }
@@ -209,35 +213,84 @@ class _$StageImpl extends _Stage {
     required this.subtitle,
     @_ColorConverter() required this.accent,
     @_IconConverter() required this.icon,
-    required this.lessons,
+    final List<Lesson> lessons = const [],
     this.unlocked = false,
-  }) : super._();
+    final List<Session> sessions = const [],
+  }) : _lessons = lessons,
+       _sessions = sessions,
+       super._();
 
   factory _$StageImpl.fromJson(Map<String, dynamic> json) =>
       _$$StageImplFromJson(json);
 
   @override
-  String id;
+  final String id;
   @override
-  String title;
+  final String title;
   @override
-  String subtitle;
+  final String subtitle;
   @override
   @_ColorConverter()
-  Color accent;
+  final Color accent;
   @override
   @_IconConverter()
-  IconData icon;
-  @override
-  List<Lesson> lessons;
+  final IconData icon;
+  final List<Lesson> _lessons;
   @override
   @JsonKey()
-  bool unlocked;
+  List<Lesson> get lessons {
+    if (_lessons is EqualUnmodifiableListView) return _lessons;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_lessons);
+  }
+
+  @override
+  @JsonKey()
+  final bool unlocked;
+  final List<Session> _sessions;
+  @override
+  @JsonKey()
+  List<Session> get sessions {
+    if (_sessions is EqualUnmodifiableListView) return _sessions;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_sessions);
+  }
 
   @override
   String toString() {
-    return 'Stage(id: $id, title: $title, subtitle: $subtitle, accent: $accent, icon: $icon, lessons: $lessons, unlocked: $unlocked)';
+    return 'Stage(id: $id, title: $title, subtitle: $subtitle, accent: $accent, icon: $icon, lessons: $lessons, unlocked: $unlocked, sessions: $sessions)';
   }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$StageImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.subtitle, subtitle) ||
+                other.subtitle == subtitle) &&
+            (identical(other.accent, accent) || other.accent == accent) &&
+            (identical(other.icon, icon) || other.icon == icon) &&
+            const DeepCollectionEquality().equals(other._lessons, _lessons) &&
+            (identical(other.unlocked, unlocked) ||
+                other.unlocked == unlocked) &&
+            const DeepCollectionEquality().equals(other._sessions, _sessions));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+    runtimeType,
+    id,
+    title,
+    subtitle,
+    accent,
+    icon,
+    const DeepCollectionEquality().hash(_lessons),
+    unlocked,
+    const DeepCollectionEquality().hash(_sessions),
+  );
 
   /// Create a copy of Stage
   /// with the given fields replaced by the non-null parameter values.
@@ -255,13 +308,14 @@ class _$StageImpl extends _Stage {
 
 abstract class _Stage extends Stage {
   factory _Stage({
-    required String id,
-    required String title,
-    required String subtitle,
-    @_ColorConverter() required Color accent,
-    @_IconConverter() required IconData icon,
-    required List<Lesson> lessons,
-    bool unlocked,
+    required final String id,
+    required final String title,
+    required final String subtitle,
+    @_ColorConverter() required final Color accent,
+    @_IconConverter() required final IconData icon,
+    final List<Lesson> lessons,
+    final bool unlocked,
+    final List<Session> sessions,
   }) = _$StageImpl;
   _Stage._() : super._();
 
@@ -269,29 +323,22 @@ abstract class _Stage extends Stage {
 
   @override
   String get id;
-  set id(String value);
   @override
   String get title;
-  set title(String value);
   @override
   String get subtitle;
-  set subtitle(String value);
   @override
   @_ColorConverter()
   Color get accent;
-  @_ColorConverter()
-  set accent(Color value);
   @override
   @_IconConverter()
   IconData get icon;
-  @_IconConverter()
-  set icon(IconData value);
   @override
   List<Lesson> get lessons;
-  set lessons(List<Lesson> value);
   @override
   bool get unlocked;
-  set unlocked(bool value);
+  @override
+  List<Session> get sessions;
 
   /// Create a copy of Stage
   /// with the given fields replaced by the non-null parameter values.

@@ -19,16 +19,13 @@ class LegalTextBlock extends StatelessWidget {
     return RichText(
       textAlign: TextAlign.center,
       text: TextSpan(
-        style: TextStyle(
-          color: Colors.white.withValues(alpha: 0.35),
-          fontSize: 11,
-          height: 1.5,
-        ),
+        style: AppTextStyle.label.copyWith(color: Colors.white.withValues(alpha: 0.55),
+          height: 1.5),
         children: [
           TextSpan(text: l.legalRegisterAgree),
           TextSpan(
             text: l.legalTerms,
-            style: TextStyle(
+            style: AppTextStyle.tiny.copyWith(
               color: PremiumColors.primaryAccent.withValues(alpha: 0.8),
             ),
             recognizer: TapGestureRecognizer()
@@ -37,7 +34,7 @@ class LegalTextBlock extends StatelessWidget {
           TextSpan(text: l.legalAnd),
           TextSpan(
             text: l.privacyPolicy,
-            style: TextStyle(
+            style: AppTextStyle.tiny.copyWith(
               color: PremiumColors.primaryAccent.withValues(alpha: 0.8),
             ),
             recognizer: TapGestureRecognizer()

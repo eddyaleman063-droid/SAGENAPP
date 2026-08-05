@@ -1,17 +1,21 @@
-// ignore_for_file: prefer_const_constructors
-
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/providers/providers.dart';
 import '../../../core/theme/theme_constants.dart';
 import '../../../services/auth_models.dart';
 import '../../../services/auth_service.dart';
-import '../../../services/experience_service.dart';
+import '../../../services/analytics_service.dart';
+
 import 'package:sagen/ui/widgets/common/sagen_notification.dart';
+import 'package:sagen/core/theme/app_colors.dart';
 import '../../../ui/widgets/onboarding/legal_text_block.dart';
+import '../../../ui/widgets/auth/auth_social_buttons.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   final bool isOnboarding;
@@ -31,6 +35,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   bool _obscurePassword = true;
   bool _isLoading = false;
   bool _fieldsValid = false;
+  Timer? _validateDebounce;
 
   static const String _termsUrl = 'https://sagen.app/terms';
   static const String _privacyUrl = 'https://sagen.app/privacy';
@@ -44,6 +49,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   void dispose() {
+    _validateDebounce?.cancel();
     _emailCtrl.removeListener(_validateFields);
     _passwordCtrl.removeListener(_validateFields);
     _emailCtrl.dispose();
@@ -54,10 +60,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 
   void _validateFields() {
-    final valid = _emailCtrl.text.trim().isNotEmpty && _passwordCtrl.text.isNotEmpty;
-    if (valid != _fieldsValid) {
-      setState(() => _fieldsValid = valid);
-    }
+    _validateDebounce?.cancel();
+    _validateDebounce = Timer(const Duration(milliseconds: 150), () {
+      final email = _emailCtrl.text.trim();
+      final emailValid = email.isNotEmpty && RegExp(r'^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$').hasMatch(email);
+      final valid = emailValid && _passwordCtrl.text.isNotEmpty;
+      if (valid != _fieldsValid && mounted) {
+        setState(() => _fieldsValid = valid);
+      }
+    });
   }
 
   Future<void> _handleLogin() async {
@@ -73,7 +84,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       if (!mounted) return;
       final auth = ref.read(authProvider);
       if (auth.isAuthenticated) {
-        ExperienceService.instance.successHaptic();
+        ref.read(experienceServiceProvider).successHaptic();
+        AnalyticsService.instance.track(AnalyticEvent.signIn);
       } else if (auth.errorMessage != null) {
         SagenNotification.show(context, message: AuthException(auth.errorMessage!).localizedMessage(AppLocalizations.of(context)!), type: NotificationType.error);
       }
@@ -94,7 +106,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       if (!mounted) return;
       final auth = ref.read(authProvider);
       if (auth.isAuthenticated) {
-        ExperienceService.instance.successHaptic();
+        ref.read(experienceServiceProvider).successHaptic();
+        AnalyticsService.instance.track(AnalyticEvent.signIn);
       } else if (auth.errorMessage != null) {
         SagenNotification.show(context, message: AuthException(auth.errorMessage!).localizedMessage(AppLocalizations.of(context)!), type: NotificationType.error);
       }
@@ -109,15 +122,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Future<void> _handleFacebookLogin() async {
     if (_isLoading) return;
     setState(() => _isLoading = true);
+    final authNotifier = ref.read(authProvider.notifier);
     try {
-      await ref.read(authServiceProvider).signInWithFacebook();
-      if (!mounted) return;
-      final authNotifier = ref.read(authProvider.notifier);
-      await authNotifier.refreshCurrentUser();
+      await authNotifier.signInWithFacebook();
       if (!mounted) return;
       final auth = ref.read(authProvider);
       if (auth.isAuthenticated) {
-        ExperienceService.instance.successHaptic();
+        ref.read(experienceServiceProvider).successHaptic();
+        AnalyticsService.instance.track(AnalyticEvent.signIn);
+      } else if (auth.errorMessage != null) {
+        SagenNotification.show(context, message: AuthException(auth.errorMessage!).localizedMessage(AppLocalizations.of(context)!), type: NotificationType.error);
       }
     } on AuthException catch (e) {
       if (!mounted) return;
@@ -132,11 +146,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     }
   }
 
-  void _onClose() => Navigator.pop(context);
+  void _onClose() => context.pop();
 
   @override
   Widget build(BuildContext context) {
-    final dark = Theme.of(context).brightness == Brightness.dark;
     final l = AppLocalizations.of(context)!;
 
     return PopScope(
@@ -145,7 +158,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         if (!didPop) _onClose();
       },
       child: Scaffold(
-        backgroundColor: dark ? PremiumColors.deepBackground : PremiumColors.lightBg,
+        backgroundColor: context.surfaceDeep,
         resizeToAvoidBottomInset: true,
         body: SafeArea(
           child: GestureDetector(
@@ -154,160 +167,187 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               children: [
                 // ── Header ──
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxs, vertical: AppSpacing.sm),
                   child: Row(
                     children: [
-                      IconButton(
-                        icon: Icon(Icons.close, color: dark ? Colors.white.withValues(alpha: 0.6) : Colors.black54),
-                        onPressed: _onClose,
+                      Semantics(
+                        button: true,
+                        label: l.closeButton,
+                        child: IconButton(
+                          icon: Icon(Icons.close, color: context.textSecondary),
+                          onPressed: _onClose,
+                          tooltip: l.closeButton,
+                        ),
                       ),
                       const Spacer(),
                       Text(
                         l.authLoginTitle,
-                        style: TextStyle(
-                          fontSize: 18,
+                        style: AppTextStyle.title.copyWith(
                           fontWeight: FontWeight.w600,
-                          color: dark ? Colors.white.withValues(alpha: 0.80) : Colors.black87,
+                          color: context.textPrimary,
                         ),
-                      ),
+                      ).animate().fadeIn(duration: 400.ms).slideY(begin: 0.1),
                       const Spacer(),
                       const SizedBox(width: 48),
                     ],
                   ),
                 ),
-                const SizedBox(height: 20),
-                // ── Unified form container ──
+                const SizedBox(height: AppSpacing.xl),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
                   child: Form(
                     key: _formKey,
                     child: Container(
                       decoration: BoxDecoration(
-                        color: dark ? Colors.white.withValues(alpha: 0.04) : Colors.grey.withValues(alpha: 0.10),
-                        borderRadius: BorderRadius.circular(12),
+                        color: context.subtleBorder,
+                            borderRadius: BorderRadius.circular(AppRadius.md),
                         border: Border.all(
-                          color: dark ? Colors.white.withValues(alpha: 0.10) : Colors.grey.withValues(alpha: 0.30),
+                          color: context.borderSubtle,
                         ),
                       ),
                       child: Column(
                         children: [
-                          TextFormField(
-                            controller: _emailCtrl,
-                            focusNode: _emailFocus,
-                            keyboardType: TextInputType.emailAddress,
-                            textInputAction: TextInputAction.next,
-                            onFieldSubmitted: (_) => _passwordFocus.requestFocus(),
-                            style: TextStyle(color: dark ? Colors.white.withValues(alpha: 0.9) : Colors.black87, fontSize: 15),
-                            decoration: InputDecoration(
-                              hintText: l.authEmailLabel,
-                              hintStyle: TextStyle(color: dark ? Colors.white.withValues(alpha: 0.30) : Colors.black.withValues(alpha: 0.30), fontSize: 15),
-                              prefixIcon: Icon(Icons.person_outline, size: 20, color: dark ? Colors.white.withValues(alpha: 0.35) : Colors.black.withValues(alpha: 0.35)),
-                              border: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              errorBorder: InputBorder.none,
-                              focusedErrorBorder: InputBorder.none,
-                              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+                          Semantics(
+                            label: l.authEmailLabel,
+                            child: TextFormField(
+                              controller: _emailCtrl,
+                              focusNode: _emailFocus,
+                              maxLength: 254,
+                              keyboardType: TextInputType.emailAddress,
+                              textInputAction: TextInputAction.next,
+                              onFieldSubmitted: (_) => _passwordFocus.requestFocus(),
+                              style: AppTextStyle.body.copyWith(color: context.textPrimary),
+                              decoration: InputDecoration(
+                                hintText: l.authEmailLabel,
+                                hintStyle: AppTextStyle.body.copyWith(color: context.textSecondary),
+                                prefixIcon: Icon(Icons.person_outline, size: 20, color: context.textSecondary),
+                                border: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                errorBorder: InputBorder.none,
+                                focusedErrorBorder: InputBorder.none,
+                                contentPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: 18),
+                              ),
+                              validator: (v) {
+                                if (v == null || v.trim().isEmpty) return l.authEmailError;
+                                if (!RegExp(r'^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$').hasMatch(v.trim())) {
+                                  return l.authEmailInvalid;
+                                }
+                                return null;
+                              },
                             ),
-                            validator: (v) {
-                              if (v == null || v.trim().isEmpty) return l.authEmailError;
-                              return null;
-                            },
                           ),
                           Divider(
                             height: 0,
-                            color: dark ? Colors.white.withValues(alpha: 0.06) : Colors.grey.withValues(alpha: 0.30),
+                            color: context.borderSubtle,
                             indent: 16,
                             endIndent: 16,
                           ),
-                          TextFormField(
-                            controller: _passwordCtrl,
-                            focusNode: _passwordFocus,
-                            obscureText: _obscurePassword,
-                            textInputAction: TextInputAction.done,
-                            onFieldSubmitted: (_) => _handleLogin(),
-                            style: TextStyle(color: dark ? Colors.white.withValues(alpha: 0.9) : Colors.black87, fontSize: 15),
-                            decoration: InputDecoration(
-                              hintText: l.authPasswordLabel,
-                              hintStyle: TextStyle(color: dark ? Colors.white.withValues(alpha: 0.30) : Colors.black.withValues(alpha: 0.30), fontSize: 15),
-                              prefixIcon: Icon(Icons.lock_outline, size: 20, color: dark ? Colors.white.withValues(alpha: 0.35) : Colors.black.withValues(alpha: 0.35)),
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  _obscurePassword ? Icons.visibility_off : Icons.visibility,
-                                  size: 20,
-                                  color: PremiumColors.primaryAccent,
+                          Semantics(
+                            label: l.authPasswordLabel,
+                            child: TextFormField(
+                              controller: _passwordCtrl,
+                              focusNode: _passwordFocus,
+                              maxLength: 128,
+                              obscureText: _obscurePassword,
+                              textInputAction: TextInputAction.done,
+                              onFieldSubmitted: (_) => _handleLogin(),
+                              style: AppTextStyle.body.copyWith(color: context.textPrimary),
+                              decoration: InputDecoration(
+                                hintText: l.authPasswordLabel,
+                                hintStyle: AppTextStyle.body.copyWith(color: context.textSecondary),
+                                prefixIcon: Icon(Icons.lock_outline, size: 20, color: context.textSecondary),
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                                    size: 20,
+                                    color: PremiumColors.primaryAccent,
+                                  ),
+                                  tooltip: _obscurePassword ? l.showPassword : l.hidePassword,
+                                  onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
                                 ),
-                                onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
+                                border: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                errorBorder: InputBorder.none,
+                                focusedErrorBorder: InputBorder.none,
+                                contentPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: 18),
                               ),
-                              border: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              errorBorder: InputBorder.none,
-                              focusedErrorBorder: InputBorder.none,
-                              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+                              validator: (v) {
+                                if (v == null || v.isEmpty) return l.authPasswordError;
+                                return null;
+                              },
                             ),
-                            validator: (v) {
-                              if (v == null || v.isEmpty) return l.authPasswordError;
-                              return null;
-                            },
                           ),
                         ],
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: AppSpacing.xl),
                 // ── Login button ──
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
                   child: SizedBox(
                     width: double.infinity,
                     height: 52,
-                    child: ElevatedButton(
-                      onPressed: _fieldsValid && !_isLoading ? _handleLogin : null,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: _fieldsValid && !_isLoading
-                            ? PremiumColors.primaryAccent
-                            : (dark ? Colors.white.withValues(alpha: 0.08) : Colors.grey.withValues(alpha: 0.15)),
-                        foregroundColor: dark ? Colors.white : Colors.black87,
-                        disabledBackgroundColor: dark ? Colors.white.withValues(alpha: 0.08) : Colors.grey.withValues(alpha: 0.15),
-                        disabledForegroundColor: dark ? Colors.white.withValues(alpha: 0.30) : Colors.black.withValues(alpha: 0.30),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                    child: Semantics(
+                      button: true,
+                      label: l.authLoginButton,
+                      child: ElevatedButton(
+                        onPressed: _fieldsValid && !_isLoading
+                            ? () {
+                                HapticFeedback.lightImpact();
+                                _handleLogin();
+                              }
+                            : null,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: _fieldsValid && !_isLoading
+                              ? PremiumColors.primaryAccent
+                              : context.subtleBorder,
+                          foregroundColor: context.textPrimary,
+                          disabledBackgroundColor: context.subtleBorder,
+                          disabledForegroundColor: context.textSecondary,
+                          shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(AppRadius.md),
+                          ),
+                          elevation: 0,
                         ),
-                        elevation: 0,
-                      ),
-                      child: _isLoading
-                          ? SizedBox(
-                              width: 22, height: 22,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2.5,
-                                valueColor: AlwaysStoppedAnimation<Color>(dark ? Colors.white.withValues(alpha: 0.9) : Colors.black87),
+                        child: _isLoading
+                            ? SizedBox(
+                                width: 22, height: 22,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2.5,
+                                  valueColor: AlwaysStoppedAnimation<Color>(context.textPrimary),
+                                ),
+                              )
+                            : Text(
+                                l.authLoginButton,
+                                style: AppTextStyle.body.copyWith(fontWeight: FontWeight.w700, letterSpacing: 1),
                               ),
-                            )
-                          : Text(
-                              l.authLoginButton,
-                              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15, letterSpacing: 1),
-                            ),
+                      ),
                     ),
                   ),
                 ),
                 const SizedBox(height: 14),
                 // ── Reset password ──
                 Center(
-                  child: TextButton(
-                    onPressed: _isLoading
-                        ? null
-                        : () {
-                            context.pushNamed('forgot-password');
-                          },
-                    child: Text(
-                      l.authForgotPasswordButton,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 13,
-                        letterSpacing: 1.5,
-                        color: PremiumColors.primaryAccent,
+                  child: Semantics(
+                    button: true,
+                    label: l.authForgotPasswordButton,
+                    child: TextButton(
+                      onPressed: _isLoading
+                          ? null
+                          : () {
+                              context.pushNamed('forgot-password');
+                            },
+                      child: Text(
+                        l.authForgotPasswordButton,
+                        style: AppTextStyle.subtitle.copyWith(
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 1.5,
+                          color: PremiumColors.primaryAccent,
+                        ),
                       ),
                     ),
                   ),
@@ -315,46 +355,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 // ── Spacer: pushes bottom block down ──
                 const Spacer(),
                 // ── Social buttons ──
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: SizedBox(
-                          height: 48,
-                          child: OutlinedButton.icon(
-                            onPressed: _isLoading ? null : _handleGoogleLogin,
-                            icon: Image.asset('assets/ui/google_logo.png', width: 20, height: 20),
-                            label: Text('GOOGLE', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: dark ? Colors.white : Colors.black87)),
-                            style: OutlinedButton.styleFrom(
-                              backgroundColor: dark ? Colors.white.withValues(alpha: 0.04) : Colors.grey.withValues(alpha: 0.10),
-                              side: BorderSide(color: dark ? Colors.white.withValues(alpha: 0.12) : Colors.grey.withValues(alpha: 0.30)),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: SizedBox(
-                          height: 48,
-                          child: OutlinedButton.icon(
-                            onPressed: _isLoading ? null : _handleFacebookLogin,
-                            icon: const Icon(Icons.facebook_rounded, size: 20, color: Color(0xFF1877F2)),
-                            label: Text('FACEBOOK', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: dark ? Colors.white : Colors.black87)),
-                            style: OutlinedButton.styleFrom(
-                              backgroundColor: dark ? Colors.white.withValues(alpha: 0.04) : Colors.grey.withValues(alpha: 0.10),
-                              side: BorderSide(color: dark ? Colors.white.withValues(alpha: 0.12) : Colors.grey.withValues(alpha: 0.30)),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                AuthSocialButtons(
+                  onGooglePressed: _handleGoogleLogin,
+                  onFacebookPressed: _handleFacebookLogin,
+                  isLoading: _isLoading,
                 ),
-                const SizedBox(height: 20),
-                // ── Legal text ──
+                const SizedBox(height: AppSpacing.xl),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
                   child: Center(
@@ -367,36 +373,43 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 // ── Conditional link ──
                 if (widget.isOnboarding)
                   Padding(
-                    padding: const EdgeInsets.only(top: 12, bottom: 8),
+                    padding: const EdgeInsets.only(top: AppSpacing.md, bottom: AppSpacing.sm),
                     child: Center(
-                      child: TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: Text(
-                          l.authBack,
-                          style: TextStyle(color: dark ? Colors.white.withValues(alpha: 0.5) : Colors.black54, fontSize: 13),
+                      child: Semantics(
+                        button: true,
+                        label: l.authBack,
+                        child: TextButton(
+                          onPressed: () => context.pop(),
+                          child: Text(
+                            l.authBack,
+                              style: AppTextStyle.subtitle.copyWith(color: context.textTertiary),
+                          ),
                         ),
                       ),
                     ),
                   )
                 else if (widget.onSwitchToRegister != null)
                   Padding(
-                    padding: const EdgeInsets.only(top: 12, bottom: 8),
+                    padding: const EdgeInsets.only(top: AppSpacing.md, bottom: AppSpacing.sm),
                     child: Center(
-                      child: TextButton(
-                        onPressed: widget.onSwitchToRegister,
-                        child: RichText(
-                          text: TextSpan(
-                            text: l.authNoAccount,
-                            style: TextStyle(color: dark ? Colors.white.withValues(alpha: 0.5) : Colors.black54, fontSize: 13),
-                            children: [
-                              TextSpan(
-                                text: l.authCreateAccount,
-                                style: TextStyle(
-                                  color: PremiumColors.primaryAccent,
-                                  fontWeight: FontWeight.bold,
+                      child: Semantics(
+                        button: true,
+                        label: l.authCreateAccount,
+                        child: TextButton(
+                          onPressed: widget.onSwitchToRegister,
+                          child: RichText(
+                            text: TextSpan(
+                              text: l.authNoAccount,
+                            style: AppTextStyle.subtitle.copyWith(color: context.textTertiary),
+                              children: [
+                                TextSpan(
+                                  text: l.authCreateAccount,
+                                  style: AppTextStyle.bodyBold.copyWith(
+                                    color: PremiumColors.primaryAccent,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),

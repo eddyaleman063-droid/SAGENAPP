@@ -12,7 +12,7 @@ dependencies:
 
   # Networking
   http: ^1.6.0
-  google_generative_ai: ^0.4.6
+  cached_network_image: ^3.4.1
 
   # Sharing
   share_plus: ^12.0.0
@@ -20,6 +20,8 @@ dependencies:
   # Storage
   shared_preferences: ^2.5.5
   flutter_secure_storage: ^10.2.0
+  sqflite: ^2.3.0
+  path: ^1.8.0
 
   # Firebase
   firebase_core: ^3.15.2
@@ -27,6 +29,8 @@ dependencies:
   cloud_firestore: ^5.6.0
   firebase_crashlytics: ^4.3.10
   firebase_analytics: ^11.4.4
+  firebase_performance: ^0.10.0+11
+  firebase_remote_config: ^5.5.0
   google_sign_in: ^6.3.0
   flutter_facebook_auth: ^7.1.1
 
@@ -45,8 +49,8 @@ dependencies:
   crypto: ^3.0.6
   speech_to_text: ^7.3.0
   connectivity_plus: ^6.1.4
-  google_mobile_ads: ^5.2.0
   url_launcher: ^6.3.1
+  flutter_markdown: ^0.7.6
   lottie: ^3.1.3
   flutter_animate: ^4.5.2
   flutter_dynamic_icon_plus: ^1.4.1
@@ -54,20 +58,36 @@ dependencies:
   timezone: ^0.10.1
   app_links: ^6.3.2
   firebase_app_check: ^0.3.2+10
+  cloud_functions: ^5.5.0
   local_auth: ^3.0.1
   go_router: ^17.3.0
+  audioplayers: ^6.1.0
+  safe_device: ^1.4.1
+  in_app_review: ^2.0.0
+  sensors_plus: ^5.0.0
+  rive: ^0.13.0
+  confetti: ^0.7.0
+  package_info_plus: ^8.0.0
+  workmanager: ^0.5.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  integration_test:
+    sdk: flutter
   flutter_lints: ^6.0.0
   mocktail: ^1.0.4
+  fake_async: ^1.3.2
+  sqflite_common_ffi: ^2.3.0
 
   # Code Generation
   build_runner: ^2.4.13
   freezed: ^2.5.7
   json_serializable: ^6.8.0
   flutter_launcher_icons: ^0.14.3
+
+  # Testing
+  patrol: ^3.13.0
 
 flutter_launcher_icons:
   android: true
@@ -82,6 +102,9 @@ flutter:
   uses-material-design: true
   assets:
     - assets/mascot/emotions/
-    - assets/streak/
     - assets/ui/google_logo.png
     - assets/animations/
+    - assets/audio/
+    - assets/questions.json
+    - assets/content/
+    - assets/quotes/

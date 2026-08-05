@@ -1,0 +1,612 @@
+[
+  {
+    "id": "ac_st6_qNEW001",
+    "question": "Que es un plan de recuperación de cuentas?",
+    "type": "multipleChoice",
+    "options": ["Un seguro contra hackers", "Un documento con los pasos a seguir si pierdes el acceso a tus cuentas", "Una app de seguridad", "Un servicio bancario"],
+    "correctIndex": 1,
+    "explanation": "Un plan de recuperación es un conjunto de pasos preparados para actuar rápido si pierdes acceso.",
+    "difficulty": 1,
+    "lessonId": "ac_s6_ses1_l1"
+  },
+  {
+    "id": "ac_st6_qNEW002",
+    "question": "Por que necesitas un plan de recuperación antes de que pierdas el acceso?",
+    "type": "multipleChoice",
+    "options": ["Para venderlo a otros usuarios", "Porque cuando ocurre un incidente no tienes tiempo de improvisar", "Solo es necesario para empresas", "No es necesario si tienes buena contraseña"],
+    "correctIndex": 1,
+    "explanation": "Tener un plan listo te permite actuar rápido cuando pierdes acceso, sin pérdida de tiempo.",
+    "difficulty": 1,
+    "lessonId": "ac_s6_ses1_l1"
+  },
+  {
+    "id": "ac_st6_qNEW003",
+    "question": "Que información debes documentar en tu plan de recuperación?",
+    "type": "multipleChoice",
+    "options": ["Solo tus contraseñas", "Cuentas importantes, correos de recuperación, números de telefono y pasos de recuperación", "Solo tu número de DNI", "Solo tu dirección de casa"],
+    "correctIndex": 1,
+    "explanation": "Documenta toda la información clave: cuentas, datos de recuperación y pasos para cada servicio.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses1_l1"
+  },
+  {
+    "id": "ac_st6_qNEW004",
+    "question": "Que es documentar sin comprometer la seguridad de tu plan?",
+    "type": "multipleChoice",
+    "options": ["Publicar tu plan en internet", "Guardar la información en un lugar cifrado y accesible solo para ti", "Escribir todo en un papelito pegado al refrigerador", "Compartir tu plan por WhatsApp"],
+    "correctIndex": 1,
+    "explanation": "Documenta de forma segura: usa cifrado, guarda en lugar seguro y limita el acceso.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses1_l2"
+  },
+  {
+    "id": "ac_st6_qNEW005",
+    "question": "Cual es la mejor forma de guardar las respuestas a preguntas de seguridad?",
+    "type": "multipleChoice",
+    "options": ["En una nota del celular sin protección", "En un archivo cifrado o gestor de contraseñas seguro", "En un correo a ti mismo", "En tu perfil de Facebook"],
+    "correctIndex": 1,
+    "explanation": "Las respuestas de seguridad son tan sensibles como las contraseñas. Guardalas de forma protegida.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses1_l2"
+  },
+  {
+    "id": "ac_st6_qNEW006",
+    "question": "Que son los codigos de recuperación de Google?",
+    "type": "multipleChoice",
+    "options": ["Codigos para desbloquear tu celular", "Codigos de un solo uso para acceder a tu cuenta si pierdes el dispositivo de verificación", "Codigos de descuento de Google", "Números de telefono de soporte"],
+    "correctIndex": 1,
+    "explanation": "Son codigos de un solo uso que Google te da para acceder a tu cuenta si pierdes el 2FA.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses1_l1"
+  },
+  {
+    "id": "ac_st6_qNEW007",
+    "question": "Donde debes guardar los codigos de recuperación offline?",
+    "type": "multipleChoice",
+    "options": ["En el navegador sin protección", "En una caja de seguridad o cajon cerrado con llave", "En tu perfil de redes sociales", "En un correo electrónico"],
+    "correctIndex": 1,
+    "explanation": "Los codigos offline deben estar en un lugar fisico seguro, fuera del alcance de terceros.",
+    "difficulty": 1,
+    "lessonId": "ac_s6_ses1_l1"
+  },
+  {
+    "id": "ac_st6_qNEW008",
+    "question": "Que es un número de respaldo para recuperación?",
+    "type": "multipleChoice",
+    "options": ["Un número de loteria", "Un telefono alternativo registrado para recibir codigos de verificación", "Un codigo de descuento", "Un número de cuenta bancaria"],
+    "correctIndex": 1,
+    "explanation": "Es un número telefonico alterno que te permite recibir codigos si tu número principal no funciona.",
+    "difficulty": 1,
+    "lessonId": "ac_s6_ses1_l1"
+  },
+  {
+    "id": "ac_st6_qNEW009",
+    "question": "Que es la herencia digital?",
+    "type": "multipleChoice",
+    "options": ["Un tipo de moneda virtual", "Lo que sucede con tus cuentas y datos digitales si falleces", "Una forma de ganar dinero en internet", "Un servicio de almacenamiento"],
+    "correctIndex": 1,
+    "explanation": "La herencia digital determina quien accede a tus cuentas y datos en caso de tu fallecimiento.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses1_l1"
+  },
+  {
+    "id": "ac_st6_qNEW010",
+    "question": "Cual es la mejor forma de compartir tu plan de recuperación con un familiar de confianza?",
+    "type": "detectRisk",
+    "options": [
+      "Enviarlo por WhatsApp sin protección",
+      "Darle acceso a un archivo cifrado o sobre cerrado en caja de seguridad",
+      "Publicarlo en Facebook para que todos lo sepan",
+      "No compartirlo con nadie bajo ninguna circunstancia"
+    ],
+    "correctIndex": 1,
+    "explanation": "Comparte de forma segura: sobre cerrado en caja o acceso a archivo cifrado con persona de confianza.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses1_l4"
+  },
+  {
+    "id": "ac_st6_qNEW011",
+    "question": "Cada cuanto debes actualizar tu plan de recuperación?",
+    "type": "multipleChoice",
+    "options": ["Nunca, una vez esta listo", "Cada vez que cambies de número, correo o contraseña importante", "Solo una vez al ano", "Solo si cambias de celular"],
+    "correctIndex": 1,
+    "explanation": "Actualiza tu plan siempre que cambien tus datos de contacto o contraseñas importantes.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses1_l5"
+  },
+  {
+    "id": "ac_st6_qNEW012",
+    "question": "Que incluye un checklist mensual de verificación de recuperación?",
+    "type": "multipleChoice",
+    "options": ["Solo revisar el correo", "Verificar que los metodos de recuperación sigan funcionando y actualizados", "Solo cambiar contraseñas", "Solo revisar el saldo bancario"],
+    "correctIndex": 1,
+    "explanation": "El checklist incluye probar que tus metodos de recuperación (correo, telefono, codigos) sigan activos.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses1_l3"
+  },
+  {
+    "id": "ac_st6_qNEW013",
+    "question": "Que información tener lista para contactar soporte técnico de un banco peruano?",
+    "type": "multipleChoice",
+    "options": ["Solo tu nombre", "DNI, número de cuenta, ultimas transacciones y datos de contacto registrados", "Solo tu número de celular", "Solo tu dirección"],
+    "correctIndex": 1,
+    "explanation": "Ten preparados DNI, número de cuenta, ultimas transacciones y datos registrados para agilizar el proceso.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses1_l3"
+  },
+  {
+    "id": "ac_st6_qNEW014",
+    "question": "Que es respaldar datos importantes en un plan de recuperación?",
+    "type": "multipleChoice",
+    "options": ["Borrar todo para empezar de cero", "Guardar copias de información crítica en un lugar seguro y accesible", "Enviar todo por correo a tus amigos", "No es necesario respaldar nada"],
+    "correctIndex": 1,
+    "explanation": "Respaldar significa guardar copias de tu información importante fuera de linea o en la nube cifrada.",
+    "difficulty": 1,
+    "lessonId": "ac_s6_ses1_l2"
+  },
+  {
+    "id": "ac_st6_qNEW015",
+    "question": "Que es configurar un correo alternativo de recuperación?",
+    "type": "multipleChoice",
+    "options": ["Crear un segundo correo para usarlo en redes sociales", "Registrar un correo de confianza donde recibir links de recuperación", "Cambiar tu correo principal por uno nuevo", "Eliminar tu correo antiguo"],
+    "correctIndex": 1,
+    "explanation": "El correo alternativo es donde recibes los links para recuperar tu cuenta si pierdes el acceso.",
+    "difficulty": 1,
+    "lessonId": "ac_s6_ses2_l1"
+  },
+  {
+    "id": "ac_st6_qNEW016",
+    "question": "Por que es importante mantener actualizado el correo alternativo de recuperación?",
+    "type": "multipleChoice",
+    "options": ["No es importante, se queda igual", "Porque si ese correo tambien es hackeado o cambias de el, pierdes la recuperación", "Solo es necesario una vez al ano", "Para recibir publicidad de nuevos servicios"],
+    "correctIndex": 1,
+    "explanation": "Si tu correo de recuperación cambia o es comprometido, no podrás recuperar tu cuenta principal.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses2_l2"
+  },
+  {
+    "id": "ac_st6_qNEW017",
+    "question": "Que es elegir un proveedor confiable para el correo de respaldo?",
+    "type": "multipleChoice",
+    "options": ["Cualquier proveedor sirve", "Elegir un servicio con buena seguridad como Gmail, Outlook o ProtonMail", "Usar el correo del trabajo como respaldo", "Crear un correo en un sitio desconocido"],
+    "correctIndex": 1,
+    "explanation": "Usa un proveedor reconocido con buenas medidas de seguridad para tu correo de respaldo.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses2_l3"
+  },
+  {
+    "id": "ac_st6_qNEW018",
+    "question": "Como verificar que el correo alternativo funciona correctamente?",
+    "type": "whatWouldYouDo",
+    "options": ["Esperar a que lo necesites para probar", "Enviar un correo de prueba y confirmar que lo recibes", "No es necesario verificar nada", "Preguntarle a un amigo si funciona"],
+    "correctIndex": 1,
+    "explanation": "Prueba periodicamente enviando un correo de prueba para confirmar que el servicio funciona.",
+    "difficulty": 1,
+    "lessonId": "ac_s6_ses2_l4"
+  },
+  {
+    "id": "ac_st6_qNEW019",
+    "question": "Que es proteger el correo de recuperación con 2FA?",
+    "type": "multipleChoice",
+    "options": ["Poner dos contraseñas diferentes", "Activar la verificación en dos pasos en el correo donde recibes recuperaciónes", "Compartir el correo con un familiar", "No es necesario proteger el correo de recuperación"],
+    "correctIndex": 1,
+    "explanation": "Si tu correo de recuperación no tiene 2FA, el atacante puede comprometerlo y bloquearte.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses2_l5"
+  },
+  {
+    "id": "ac_st6_qNEW020",
+    "question": "Que es un simulacro de recuperación?",
+    "type": "multipleChoice",
+    "options": ["Un examen de seguridad online", "Prácticar el proceso de recuperación de una cuenta sin que haya un incidente real", "Una prueba de velocidad de internet", "Un juego de simulacion"],
+    "correctIndex": 1,
+    "explanation": "El simulacro te permite prácticar los pasos de recuperación para estar preparado cuando lo necesites.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses2_l6"
+  },
+  {
+    "id": "ac_st6_qNEW021",
+    "question": "Que es un número de respaldo para recuperación telefonica?",
+    "type": "multipleChoice",
+    "options": ["Un segundo número para usarlo en WhatsApp", "Un telefono alternativo registrado para recibir codigos de verificación SMS", "Un número ficticio para completar formularios", "Un número de emergencia de la policia"],
+    "correctIndex": 1,
+    "explanation": "Es un número alternativo donde recibes SMS de verificación si tu número principal falla.",
+    "difficulty": 1,
+    "lessonId": "ac_s6_ses3_l1"
+  },
+  {
+    "id": "ac_st6_qNEW022",
+    "question": "Que hacer si tu número de telefono principal no recibe SMS de verificación?",
+    "type": "whatWouldYouDo",
+    "options": ["Esperar a que llegue el SMS", "Intentar con tu número de respaldo o usar otra forma de recuperación", "Llamar al operador y gritarle", "Cambiar de celular y comprar uno nuevo"],
+    "correctIndex": 1,
+    "explanation": "Usa tu número de respaldo o los metodos alternativos de recuperación que configuraste.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses3_l1"
+  },
+  {
+    "id": "ac_st6_qNEW023",
+    "question": "Cada cuanto debes verificar que tu número de respaldo recibe SMS correctamente?",
+    "type": "multipleChoice",
+    "options": ["Nunca, funciona siempre", "Al menos una vez al mes enviando un SMS de prueba", "Solo cuando cambias de celular", "Solo si tuviste un problema"],
+    "correctIndex": 1,
+    "explanation": "Verifica periodicamente que tu número de respaldo funcione recibiendo y enviando SMS.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses3_l2"
+  },
+  {
+    "id": "ac_st6_qNEW024",
+    "question": "Por que es recomendable agregar el número de un familiar de confianza?",
+    "type": "multipleChoice",
+    "options": ["Para llamarlo cuando estas aburrido", "Como respaldo adicional si tu número principal no funciona", "Para que el tambien reciba tus SMS", "No es recomendable"],
+    "correctIndex": 1,
+    "explanation": "Un familiar de confianza puede recibir codigos de verificación si tu número no esta disponible.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses3_l3"
+  },
+  {
+    "id": "ac_st6_qNEW025",
+    "question": "Que debes hacer si cambias de número de celular?",
+    "type": "whatWouldYouDo",
+    "options": ["No hacer nada, el número nuevo funciona igual", "Actualizar el número de recuperación en todas tus cuentas importantes", "Esperar a que te lo soliciten", "Eliminar las cuentas antiguas"],
+    "correctIndex": 1,
+    "explanation": "Actualiza tu nuevo número en todas tus cuentas para no perder la capacidad de recuperarlas.",
+    "difficulty": 1,
+    "lessonId": "ac_s6_ses3_l4"
+  },
+  {
+    "id": "ac_st6_qNEW026",
+    "question": "Que es Herencia digital en Google?",
+    "type": "multipleChoice",
+    "options": ["Una función para heredar dinero de Google", "Una configuración que determina que pasa con tu cuenta de Google si falleces", "Un juego dentro de Google", "Un servicio de almacenamiento"],
+    "correctIndex": 1,
+    "explanation": "Google Inactive Account Manager permite configurar que pasa con tu cuenta si no la usas por un tiempo.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses3_l6"
+  },
+  {
+    "id": "ac_st6_qNEW027",
+    "question": "Donde debes almacenar los codigos de recuperación de forma segura?",
+    "type": "multipleChoice",
+    "options": ["En el navegador web sin protección", "En una caja de seguridad, cajon cerrado o archivo cifrado", "En tu perfil de Facebook", "En un correo electrónico sin cifrar"],
+    "correctIndex": 1,
+    "explanation": "Los codigos deben estar en un lugar fisico seguro o en un archivo digital cifrado.",
+    "difficulty": 1,
+    "lessonId": "ac_s6_ses4_l1"
+  },
+  {
+    "id": "ac_st6_qNEW028",
+    "question": "Que es generar nuevos codigos de recuperación cuando los usaste?",
+    "type": "multipleChoice",
+    "options": ["Pedir los mismos codigos otra vez", "Crear codigos nuevos porque los anteriores ya no sirven despues de usarlos", "Copiar los codigos en otro lugar", "No es necesario generar nuevos"],
+    "correctIndex": 1,
+    "explanation": "Los codigos de un solo uso ya no funcionan despues de usarlos. Debes generar otros nuevos.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses4_l3"
+  },
+  {
+    "id": "ac_st6_qNEW029",
+    "question": "Para que sirve organizar los codigos de recuperación por servicio?",
+    "type": "multipleChoice",
+    "options": ["Para que se vean bonitos", "Para encontrar rápidamente el codigo correcto cuando lo necesites", "No tiene ningun proposito", "Para que otros los vean"],
+    "correctIndex": 1,
+    "explanation": "Organizar por servicio te permite localizar el codigo correcto rápidamente en una emergencia.",
+    "difficulty": 1,
+    "lessonId": "ac_s6_ses4_l4"
+  },
+  {
+    "id": "ac_st6_qNEW030",
+    "question": "Que es cifrar el archivo de codigos de recuperación?",
+    "type": "multipleChoice",
+    "options": ["Borrar los codigos despues de usarlos", "Proteger el archivo con contraseña para que solo tu puedas leerlo", "Enviar los codigos por correo", "Copiar los codigos en papel"],
+    "correctIndex": 1,
+    "explanation": "Cifrar significa proteger el archivo con una contraseña fuerte para evitar acceso no autorizado.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses4_l5"
+  },
+  {
+    "id": "ac_st6_qNEW031",
+    "question": "Que es un plan de recuperación familiar?",
+    "type": "multipleChoice",
+    "options": ["Un seguro familiar contra robos", "Un plan preparado para que toda la familia sepa que hacer si alguien pierde acceso a sus cuentas", "Una póliza de seguro de vida", "Un servicio bancario familiar"],
+    "correctIndex": 1,
+    "explanation": "El plan familiar asegura que todos sepan actuar si alguien de la familia tiene un incidente de seguridad.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses4_l6"
+  },
+  {
+    "id": "ac_st6_qNEW032",
+    "question": "Que es elegir preguntas de seguridad que solo tu sepas?",
+    "type": "multipleChoice",
+    "options": ["Usar preguntas con respuestas publicas en redes sociales", "Crear respuestas personales que nadie mas pueda adivinar", "Usar preguntas generales que todos conocen", "No es necesario ser creativo"],
+    "correctIndex": 1,
+    "explanation": "Las respuestas deben ser personales y no encontrarse en redes sociales o busquedas publicas.",
+    "difficulty": 1,
+    "lessonId": "ac_s6_ses5_l1"
+  },
+  {
+    "id": "ac_st6_qNEW033",
+    "question": "Que es una respuesta a pregunta de seguridad que no cambie con el tiempo?",
+    "type": "multipleChoice",
+    "options": ["Una respuesta que cambias cada mes", "Una respuesta basada en hechos permanentes, no en situaciónes temporales", "Una respuesta que pones en blanco", "Una respuesta que compartes con amigos"],
+    "correctIndex": 1,
+    "explanation": "Evita respuestas que puedan cambiar como color de pelo o ciudad de residencia actual.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses5_l2"
+  },
+  {
+    "id": "ac_st6_qNEW034",
+    "question": "Cual de estas es una buena respuesta a una pregunta de seguridad?",
+    "type": "multipleChoice",
+    "options": ["El nombre de tu mascota", "Una frase inventada que solo tu conoces y no tiene relación con la pregunta", "Tu número de celular", "Tu fecha de nacimiento"],
+    "correctIndex": 1,
+    "explanation": "Una respuesta inventada y única es mas segura que datos personales que alguien podria averiguar.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses5_l1"
+  },
+  {
+    "id": "ac_st6_qNEW035",
+    "question": "Que es evaluar la seguridad de tus respuestas actuales a preguntas de seguridad?",
+    "type": "multipleChoice",
+    "options": ["Preguntarle a tus amigos si son seguras", "Revisar si tus respuestas pueden ser encontradas o adivinadas facilmente", "Cambiar todas las respuestas cada semana", "No es necesario evaluar nada"],
+    "correctIndex": 1,
+    "explanation": "Evalua si tus respuestas son faciles de deducir y cambialas si no son seguras.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses5_l3"
+  },
+  {
+    "id": "ac_st6_qNEW036",
+    "question": "Que es una respuesta falsa pero memorable?",
+    "type": "multipleChoice",
+    "options": ["Una respuesta que olvidas facilmente", "Una respuesta inventada que es facil de recordar pero que nadie mas puede saber", "Una respuesta que compartes con tu familia", "Una respuesta en blanco"],
+    "correctIndex": 1,
+    "explanation": "Crea respuestas inventadas pero faciles de recordar para ti, como frases personales.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses5_l4"
+  },
+  {
+    "id": "ac_st6_qNEW037",
+    "question": "Como documentar las respuestas de seguridad sin comprometer la seguridad?",
+    "type": "whatWouldYouDo",
+    "options": ["Escribirlas en tu perfil de Facebook", "Guardarlas en un archivo cifrado o gestor de contraseñas seguro", "Enviarlas por correo a ti mismo", "Decirlas a todos tus amigos"],
+    "correctIndex": 1,
+    "explanation": "Guarda las respuestas en un lugar cifrado y seguro, como un gestor de contraseñas.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses5_l5"
+  },
+  {
+    "id": "ac_st6_qNEW038",
+    "question": "Que son los documentos de respaldo fisico para recuperación?",
+    "type": "multipleChoice",
+    "options": ["Archivos digitales en la nube", "Documentos en papel con información clave guardados en lugar seguro", "Fotos en tu celular", "Correos guardados en la bandeja"],
+    "correctIndex": 1,
+    "explanation": "Son copias impresas de información importante guardadas en una caja de seguridad o cajon con llave.",
+    "difficulty": 1,
+    "lessonId": "ac_s6_ses5_l6"
+  },
+  {
+    "id": "ac_st6_qNEW039",
+    "question": "Cuales son los pasos para recuperar una cuenta de Google si perdiste el acceso?",
+    "type": "multipleChoice",
+    "options": ["Llamar a Google por telefono", "Usar la página accounts.google.com/signin/recovery y seguir las instrucciones", "Crear una cuenta nueva", "Esperar a que Google te contacte"],
+    "correctIndex": 1,
+    "explanation": "Ve a la página oficial de recuperación de Google y sigue los pasos con tu correo y datos de recuperación.",
+    "difficulty": 1,
+    "lessonId": "ac_s6_ses6_l1"
+  },
+  {
+    "id": "ac_st6_qNEW040",
+    "question": "Que información necesitas para recuperar una cuenta de Google?",
+    "type": "multipleChoice",
+    "options": ["Solo tu nombre", "Correo, contraseña anterior, codigo de verificación o respuesta de seguridad", "Solo tu número de celular", "Solo tu dirección"],
+    "correctIndex": 1,
+    "explanation": "Necesitas tu correo, contraseña anterior o codigos de verificación para demostrar que eres tu.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses6_l1"
+  },
+  {
+    "id": "ac_st6_qNEW041",
+    "question": "Que hacer si perdiste acceso a tu celular y no puedes recibir codigos de verificación?",
+    "type": "whatWouldYouDo",
+    "options": ["Esperar a encontrar el celular", "Usar tus codigos de recuperación impresos o tu número de respaldo", "Crear un correo nuevo", "Llamar a la policia"],
+    "correctIndex": 1,
+    "explanation": "Usa los codigos de recuperación que guardaste offline o tu número de respaldo registrado.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses6_l4"
+  },
+  {
+    "id": "ac_st6_qNEW042",
+    "question": "Que es la verificación de identidad en Google?",
+    "type": "multipleChoice",
+    "options": ["Tomarte una selfie para Google", "Un proceso donde Google verifica que eres el dueño legítimo de la cuenta", "Una pregunta de trivia", "Un pago para verificar tu identidad"],
+    "correctIndex": 1,
+    "explanation": "Google puede pedirte que respondas preguntas o envies un documento para verificar tu identidad.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses6_l5"
+  },
+  {
+    "id": "ac_st6_qNEW043",
+    "question": "Que es el checklist mensual de recuperación?",
+    "type": "multipleChoice",
+    "options": ["Una lista de compras", "Una lista de verificación mensual para confirmar que tus metodos de recuperación funcionan", "Un calendario de citas medicas", "Una lista de tareas del trabajo"],
+    "correctIndex": 1,
+    "explanation": "El checklist mensual te recuerda verificar que correo, telefono y codigos de recuperación esten activos.",
+    "difficulty": 1,
+    "lessonId": "ac_s6_ses6_l6"
+  },
+  {
+    "id": "ac_st6_qNEW044",
+    "question": "Que es el proceso de verificación de Meta para recuperar Facebook o Instagram?",
+    "type": "multipleChoice",
+    "options": ["Enviar un correo a Mark Zuckerberg", "Un proceso donde Meta verifica tu identidad con documentos o reconocimiento facial", "Una encuesta online", "Un pago para recuperar la cuenta"],
+    "correctIndex": 1,
+    "explanation": "Meta puede pedirte que subas una foto con tu DNI o hagas un reconocimiento facial para verificarte.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses7_l1"
+  },
+  {
+    "id": "ac_st6_qNEW045",
+    "question": "Como puedes recuperar Facebook usando amigos de confianza?",
+    "type": "multipleChoice",
+    "options": ["Pedirles que se conecten a tu cuenta", "Selecciónar amigos de confianza que te ayuden a confirmar tu identidad ante Meta", "Pedirles que cambien tu contraseña", "No es posible"],
+    "correctIndex": 1,
+    "explanation": "Meta te permite selecciónar amigos que confirmen tu identidad para recuperar el acceso.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses7_l2"
+  },
+  {
+    "id": "ac_st6_qNEW046",
+    "question": "Que documentos necesitas para verificar tu identidad ante Meta?",
+    "type": "multipleChoice",
+    "options": ["Solo tu nombre", "DNI, pasaporte o carnet de extranjeria con tu nombre y foto", "Una factura de luz", "Tu carnet de votar viejo"],
+    "correctIndex": 1,
+    "explanation": "Meta acepta documentos oficiales con foto y nombre para verificar tu identidad.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses7_l4"
+  },
+  {
+    "id": "ac_st6_qNEW047",
+    "question": "Que es recuperar cuentas vinculadas en Meta?",
+    "type": "multipleChoice",
+    "options": ["Conectar Facebook con Instagram", "Si una cuenta fue hackeada, verificar y recuperar todas las cuentas relaciónadas", "Crear cuentas nuevas vinculadas entre si", "Eliminar cuentas viejas"],
+    "correctIndex": 1,
+    "explanation": "Cuando recuperas una cuenta, puedes verificar y recuperar todas las cuentas de Meta vinculadas.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses7_l5"
+  },
+  {
+    "id": "ac_st6_qNEW048",
+    "question": "Que es el proceso de recuperación con un banco peruano?",
+    "type": "multipleChoice",
+    "options": ["Enviar un correo al banco y esperar", "Llamar a la banca telefónica, ir a una agencia o usar la app con verificación", "Llamar a la policia", "Esperar a que el banco te contacte"],
+    "correctIndex": 1,
+    "explanation": "Puedes llamar a la banca telefonica, ir a una agencia o usar la app con verificación de identidad.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses8_l1"
+  },
+  {
+    "id": "ac_st6_qNEW049",
+    "question": "Que documents necesitas para recuperar una cuenta bancaria en Peru?",
+    "type": "multipleChoice",
+    "options": ["Solo tu nombre", "DNI vigente, número de cuenta y datos de contacto registrados", "Solo tu número de celular", "Una factura de servicio"],
+    "correctIndex": 1,
+    "explanation": "Necesitas DNI vigente, número de cuenta y los datos que registraste en el banco.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses8_l3"
+  },
+  {
+    "id": "ac_st6_qNEW050",
+    "question": "Que es la banca telefonica en Peru?",
+    "type": "multipleChoice",
+    "options": ["Un banco por internet", "Un servicio donde llamas a un número para realizar operaciónes bancarias", "Una tienda de celulares", "Una red social para bancos"],
+    "correctIndex": 1,
+    "explanation": "La banca telefonica te permite realizar operaciónes y reportar incidentes llamando a un número especial.",
+    "difficulty": 1,
+    "lessonId": "ac_s6_ses8_l4"
+  },
+  {
+    "id": "ac_st6_qNEW051",
+    "question": "Que debes hacer para recuperar acceso a tu app bancaria si olvidaste el PIN?",
+    "type": "whatWouldYouDo",
+    "options": ["Desinstalar y reinstalar la app", "Usar la opción de recuperar PIN en la app o llamar al banco", "Probar todos los números posibles", "Esperar a que se bloquee"],
+    "correctIndex": 1,
+    "explanation": "Usa la función de recuperar PIN en la app o contacta al banco para restablecerlo.",
+    "difficulty": 1,
+    "lessonId": "ac_s6_ses8_l5"
+  },
+  {
+    "id": "ac_st6_qNEW052",
+    "question": "Que es el plan de recuperación familiar para cuentas bancarias?",
+    "type": "multipleChoice",
+    "options": ["Una cuenta conjunta", "Un plan que incluye los pasos y contactos de emergencia para cada miembro de la familia", "Un seguro bancario familiar", "Una tarjeta de credito familiar"],
+    "correctIndex": 1,
+    "explanation": "El plan familiar bancario incluye datos de cada miembro y pasos a seguir ante incidentes.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses8_l6"
+  },
+  {
+    "id": "ac_st6_qNEW053",
+    "question": "Que es contactar al departamento de TI de tu empresa para recuperar una cuenta laboral?",
+    "type": "multipleChoice",
+    "options": ["Llamar al administrador del sistema", "Reportar el incidente al equipo de tecnología de la información de tu empresa", "Enviar un correo al gerente general", "Pedir ayuda a un compañero"],
+    "correctIndex": 1,
+    "explanation": "El departamento de TI es el responsable de gestionar la seguridad y recuperación de cuentas laborales.",
+    "difficulty": 1,
+    "lessonId": "ac_s6_ses9_l1"
+  },
+  {
+    "id": "ac_st6_qNEW054",
+    "question": "Que información debes dar al departamento de TI al reportar un incidente?",
+    "type": "multipleChoice",
+    "options": ["Solo tu nombre", "Tu usuario, tipo de incidente, fecha, hora y descripcion detallada", "Solo el nombre del atacante", "No es necesario dar información"],
+    "correctIndex": 1,
+    "explanation": "Proporciona todos los detalles disponibles para que TI pueda investigar y actuar rápidamente.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses9_l1"
+  },
+  {
+    "id": "ac_st6_qNEW055",
+    "question": "Que es un número de respaldo para recuperación en servicios financieros?",
+    "type": "multipleChoice",
+    "options": ["Un segundo celular para hacer llamadas", "Un telefono alternativo registrado ante tu banco o billetera digital para emergencias", "Un número de loteria", "Un codigo de descuento"],
+    "correctIndex": 1,
+    "explanation": "Es un telefono alternativo registrado en tu banco o app financiera para recibir codigos de emergencia.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses3_l1"
+  },
+  {
+    "id": "ac_st6_qNEW056",
+    "question": "Que debes hacer si tuviste que usar tus codigos de recuperación de Google?",
+    "type": "whatWouldYouDo",
+    "options": ["No hacer nada, ya esta resuelto", "Generar nuevos codigos de inmediato y guardarlos de forma segura", "Eliminar tu cuenta de Google", "Compartir los codigos usados en redes sociales"],
+    "correctIndex": 1,
+    "explanation": "Los codigos de un solo uso ya no sirven despues de usarlos. Genera y guarda otros nuevos.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses4_l3"
+  },
+  {
+    "id": "ac_st6_qNEW057",
+    "question": "Que es la verificación de identidad en Google con un documento?",
+    "type": "multipleChoice",
+    "options": ["Enviar una selfie sin documento", "Subir una foto de tu DNI o pasaporte para demostrar que eres el dueño de la cuenta", "Enviar un correo con tu nombre", "No es posible verificar con documentos"],
+    "correctIndex": 1,
+    "explanation": "Google puede pedirte que subas un documento oficial con foto para verificar tu identidad.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses6_l5"
+  },
+  {
+    "id": "ac_st6_qNEW058",
+    "question": "Que es el proceso de verificación con amigos de confianza en Facebook?",
+    "type": "multipleChoice",
+    "options": ["Pedir a amigos que accedan a tu cuenta", "Selecciónar amigos que confirmen tu identidad ante Meta para recuperar el acceso", "Enviar tu contraseña a amigos", "No existe este proceso"],
+    "correctIndex": 1,
+    "explanation": "Meta te permite elegir amigos que puedan verificar que tu identidad es legitima.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses7_l2"
+  },
+  {
+    "id": "ac_st6_qNEW059",
+    "question": "Que debes hacer despues de recuperar una cuenta hackeada?",
+    "type": "whatWouldYouDo",
+    "options": ["Nada, ya esta recuperada", "Cambiar contraseña, activar 2FA, revisar actividad y actualizar datos de recuperación", "Eliminar la cuenta y crear una nueva", "Esperar una semana para ver si funciona"],
+    "correctIndex": 1,
+    "explanation": "Despues de recuperar, cambia la contraseña, activa 2FA, revisa la actividad y actualiza los datos.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses7_l5"
+  },
+  {
+    "id": "ac_st6_qNEW060",
+    "question": "Cual situación presenta el MAYOR riesgo para tu recuperación de cuentas?",
+    "type": "detectRisk",
+    "options": [
+      "No tener ningun metodo de recuperación configurado en tus cuentas importantes",
+      "Tener contraseña larga y compleja",
+      "Usar verificación en dos pasos",
+      "Tener el correo actualizado"
+    ],
+    "correctIndex": 0,
+    "explanation": "Sin metodos de recuperación, si pierdes el acceso no habra forma de recuperar tu cuenta.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses1_l1"
+  }
+]

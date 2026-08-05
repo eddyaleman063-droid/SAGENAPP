@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sagen/providers/providers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../helpers/mock_learning_provider.dart';
 
 void main() {
   group('AchievementState', () {
@@ -37,6 +38,7 @@ void main() {
       final prefs = await SharedPreferences.getInstance();
       container = ProviderContainer(overrides: [
         prefsProvider.overrideWithValue(prefs),
+        learningProvider.overrideWith(() => MockLearningNotifier()),
       ]);
     });
 

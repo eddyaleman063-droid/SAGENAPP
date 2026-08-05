@@ -1,0 +1,450 @@
+[
+    {
+        "id": "ac_st3_qB5_001",
+        "question": "Verdadero o Falso: La autenticación en dos pasos (2FA) requiere solo una contraseña para acceder a tu cuenta.",
+        "type": "trueFalse",
+        "options": [
+            "Verdadero",
+            "Falso"
+        ],
+        "correctIndex": 1,
+        "explanation": "Falso. La 2FA requiere dos factores: algo que sabes (contraseña) y algo que tienes (celular, token, etc.).",
+        "difficulty": 1,
+        "lessonId": "ac_s3_ses1_l1"
+    },
+    {
+        "id": "ac_st3_qB5_002",
+        "question": "Completa la frase: La autenticación en dos pasos (2FA) es más segura que solo usar una contraseña porque añade una capa ___.",
+        "type": "completePhrase",
+        "options": [
+            "extra de verificación",
+            "de complejidad",
+            "de dificultad",
+            "de tiempo"
+        ],
+        "correctIndex": 0,
+        "explanation": "La 2FA añade una capa extra de verificación, haciendo que los atacantes necesiten algo más que tu contraseña.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses1_l2"
+    },
+    {
+        "id": "ac_st3_qB5_003",
+        "question": "Que es la autenticación por SMS y cuál es su principal vulnerabilidad?",
+        "type": "multipleChoice",
+        "options": [
+            "Es cuando te envían un correo con código",
+            "Es cuando recibes un código por mensaje de texto, que puede ser interceptado por SIM swapping",
+            "Es cuando usas huella dactilar",
+            "Es una actualización de seguridad"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los SMS pueden ser interceptados mediante SIM swapping o malware. Es más seguro usar apps de autenticación o tokens físicos.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses1_l3"
+    },
+    {
+        "id": "ac_st3_qB5_004",
+        "question": "Que es Google Authenticator y cómo protege tus cuentas?",
+        "type": "multipleChoice",
+        "options": [
+            "Es un servicio de correo electrónico",
+            "Es una app que genera códigos de verificación temporales sin necesidad de internet",
+            "Es un gestor de contraseñas",
+            "Es una red social"
+        ],
+        "correctIndex": 1,
+        "explanation": "Google Authenticator genera códigos de 6 dígitos que cambian cada 30 segundos, funcionando sin conexión a internet.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses1_l4"
+    },
+    {
+        "id": "ac_st3_qB5_005",
+        "question": "Por qué es más seguro un token físico (YubiKey) que el SMS para 2FA?",
+        "type": "multipleChoice",
+        "options": [
+            "Es más barato",
+            "Es un dispositivo físico que no puede ser interceptado remotamente como los SMS",
+            "Es más fácil de usar",
+            "No requiere configuración"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los tokens físicos generan códigos únicos que no pueden ser interceptados por atacantes remotos, a diferencia de los SMS.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses1_l5"
+    },
+    {
+        "id": "ac_st3_qB5_006",
+        "question": "Que es la biometría y cómo se usa en autenticación?",
+        "type": "multipleChoice",
+        "options": [
+            "Es un tipo de contraseña débil",
+            "Es usar carácterísticas físicas únicas (huella, iris, rostro) para verificar tu identidad",
+            "Es una forma de hackear cuentas",
+            "Es una actualización de sistema"
+        ],
+        "correctIndex": 1,
+        "explanation": "La biometría usa tu cuerpo como contraseña. Es difícil de replicar y rápida de usar, pero debe combinarse con otros métodos.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses2_l1"
+    },
+    {
+        "id": "ac_st3_qB5_007",
+        "question": "Cual es el riesgo de usar solo autenticación biométrica (sin contraseña)?",
+        "type": "detectRisk",
+        "options": [
+            "No hay riesgo, es muy segura",
+            "Si hackean tus datos biométricos, no puedes cambiar tu huella dactilar",
+            "Solo es riesgoso en climas húmedos",
+            "Único riesgo es que no funcione siempre"
+        ],
+        "correctIndex": 1,
+        "explanation": "A diferencia de las contraseñas, no puedes cambiar tu huella o rostro si son comprometidos. Usa biometría con otros factores.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses2_l2"
+    },
+    {
+        "id": "ac_st3_qB5_008",
+        "question": "Que es la autenticación adaptativa y cómo funciona?",
+        "type": "multipleChoice",
+        "options": [
+            "Es cuando la contraseña cambia automáticamente",
+            "Es cuando el sistema ajusta los requisitos de seguridad según el riesgo detectado",
+            "Es una forma de hackear cuentas",
+            "Es una actualización de seguridad"
+        ],
+        "correctIndex": 1,
+        "explanation": "Si detecta actividad sospechosa o una ubicación desconocida, puede pedir verificación adicional. Si es tu dispositivo habitual, puede simplificar.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses2_l3"
+    },
+    {
+        "id": "ac_st3_qB5_009",
+        "question": "Por qué no debes compartir códigos de verificación con nadie?",
+        "type": "detectRisk",
+        "options": [
+            "No hay riesgo, son temporales",
+            "Los atacantes pueden usarlos para acceder a tu cuenta antes de que expiren",
+            "Solo es riesgoso si los compartes por correo",
+            "Único riesgo es que se borren"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los códigos de verificación son como contraseñas temporales. Si alguien los obtiene, puede acceder a tu cuenta en esos minutos.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses2_l4"
+    },
+    {
+        "id": "ac_st3_qB5_010",
+        "question": "Que es la autenticación por push notification y cómo funciona?",
+        "type": "multipleChoice",
+        "options": [
+            "Es cuando te envían un correo electrónico",
+            "Es cuando recibes una notificación en tu celular para aprobar o rechazar el inicio de sesión",
+            "Es cuando pones tu contraseña",
+            "Es una actualización de sistema"
+        ],
+        "correctIndex": 1,
+        "explanation": "Recibes una notificación en tu dispositivo registrado. Solo necesitas tocar 'Aprobar' si reconoces el intento de acceso.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses2_l5"
+    },
+    {
+        "id": "ac_st3_qB5_011",
+        "question": "Cual es la diferencia entre autenticación y autorización?",
+        "type": "multipleChoice",
+        "options": [
+            "Son lo mismo",
+            "Autenticación es verificar quién eres; autorización es qué puedes hacer",
+            "Autenticación es entrar; autorización es salir",
+            "Son tipos de contraseñas"
+        ],
+        "correctIndex": 1,
+        "explanation": "Primero te autenticas (pruebas quién eres), luego el sistema te autoriza (decide a qué puedes acceder).",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses2_l6"
+    },
+    {
+        "id": "ac_st3_qB5_012",
+        "question": "Que es un authenticator app y por qué es mejor que SMS?",
+        "type": "multipleChoice",
+        "options": [
+            "Es una app para enviar mensajes",
+            "Es una app que genera códigos localmente en tu dispositivo, sin depender de la red telefónica",
+            "Es una app de correo electrónico",
+            "Es una red social"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las apps como Google Authenticator o Authy generan códigos en tu dispositivo, sin riesgo de interceptación por SMS.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses3_l1"
+    },
+    {
+        "id": "ac_st3_qB5_013",
+        "question": "Por qué es importante tener un método de respaldo para 2FA?",
+        "type": "whatWouldYouDo",
+        "options": [
+            "No es importante, nunca perderás tu dispositivo",
+            "Si pierdes tu celular o se daña, podrás seguir accediendo a tus cuentas",
+            "Para compartir con amigos",
+            "No hay razón"
+        ],
+        "correctIndex": 1,
+        "explanation": "Si pierdes tu dispositivo, los códigos de respaldo o métodos alternativos te salvaron de perder acceso a tus cuentas importantes.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses3_l2"
+    },
+    {
+        "id": "ac_st3_qB5_014",
+        "question": "Que es FIDO2 y cómo mejora la seguridad de autenticación?",
+        "type": "multipleChoice",
+        "options": [
+            "Es un tipo de contraseña débil",
+            "Es un estándar que permite autenticación sin contraseñas usando dispositivos físicos",
+            "Es una red social",
+            "Es una actualización de sistema"
+        ],
+        "correctIndex": 1,
+        "explanation": "FIDO2 permite autenticación sin contraseñas usando keys físicos o biométricos, eliminando riesgos de phishing y robo de credenciales.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses3_l3"
+    },
+    {
+        "id": "ac_st3_qB5_015",
+        "question": "Cual es el riesgo de usar la misma aplicación de autenticación en todos tus dispositivos?",
+        "type": "detectRisk",
+        "options": [
+            "No hay riesgo, es conveniente",
+            "Si pierdes un dispositivo, pierdes acceso a todos tus códigos 2FA",
+            "Solo es riesgoso si usas iOS",
+            "Único riesgo es que sea lenta"
+        ],
+        "correctIndex": 1,
+        "explanation": "Si todos tus códigos están en un solo dispositivo y lo pierdes, quedas bloqueado. Usa respaldos o múltiples dispositivos.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses3_l4"
+    },
+    {
+        "id": "ac_st3_qB5_016",
+        "question": "Que es la autenticación basada en riesgo y cómo funciona?",
+        "type": "multipleChoice",
+        "options": [
+            "Es cuando el sistema evalúa factores como ubicación, dispositivo y comportamiento",
+            "Es cuando pones tu contraseña tres veces",
+            "Es una forma de hackear cuentas",
+            "Es una actualización de seguridad"
+        ],
+        "correctIndex": 0,
+        "explanation": "El sistema analiza múltiples factores para decidir si necesita verificación adicional, mejorando seguridad sin molestar al usuario legítimo.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses3_l5"
+    },
+    {
+        "id": "ac_st3_qB5_017",
+        "question": "Por qué no debes usar códigos de verificación que te envían por correo electrónico como único método 2FA?",
+        "type": "detectRisk",
+        "options": [
+            "No hay riesgo, el correo es seguro",
+            "Si hackean tu correo, pueden obtener tus códigos 2FA",
+            "Solo es riesgoso si envías muchos correos",
+            "Único riesgo es que no llegue"
+        ],
+        "correctIndex": 1,
+        "explanation": "Si un atacante accede a tu correo, puede ver todos tus códigos 2FA. Usa métodos más seguros como apps o tokens físicos.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses3_l6"
+    },
+    {
+        "id": "ac_st3_qB5_018",
+        "question": "Que es WebAuthn y cómo se relacióna con FIDO2?",
+        "type": "multipleChoice",
+        "options": [
+            "Es un tipo de contraseña",
+            "Es una API que permite a los sitios web usar autenticación sin contraseñas con keys físicos o biométricos",
+            "Es una red social",
+            "Es una actualización de navegador"
+        ],
+        "correctIndex": 1,
+        "explanation": "WebAuthn es la implementación web de FIDO2, permitiendo autenticación segura sin contraseñas en navegadores modernos.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses4_l1"
+    },
+    {
+        "id": "ac_st3_qB5_019",
+        "question": "Cual es la mejor práctica al configurar 2FA en tu cuenta de correo principal?",
+        "type": "multipleChoice",
+        "options": [
+            "No activar 2FA porque es molesto",
+            "Usar al menos dos métodos: app de autenticación y código de respaldo guardado en lugar seguro",
+            "Solo usar SMS porque es fácil",
+            "Usar la misma app en todos los dispositivos"
+        ],
+        "correctIndex": 1,
+        "explanation": "Para cuentas críticas como tu correo, usa múltiples métodos 2FA y guarda códigos de respaldo en lugar físico seguro.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses4_l2"
+    },
+    {
+        "id": "ac_st3_qB5_020",
+        "question": "Que es la autenticación por certificados digitales y cómo funciona?",
+        "type": "multipleChoice",
+        "options": [
+            "Es cuando usas tu DNI físico",
+            "Es cuando tu dispositivo tiene un certificado digital que prueba tu identidad automáticamente",
+            "Es una contraseña escrita en papel",
+            "Es una actualización de sistema"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los certificados digitales son archivos criptográficos que autentican tu dispositivo automáticamente, usado en empresas y gobierno.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses4_l3"
+    },
+    {
+        "id": "ac_st3_qB5_021",
+        "question": "Por qué es importante registrar tus dispositivos de confianza para 2FA?",
+        "type": "multipleChoice",
+        "options": [
+            "No es importante",
+            "Para no tener que usar 2FA cada vez en dispositivos que usas frecuentemente",
+            "Para que otros puedan acceder a tu cuenta",
+            "No hay razón"
+        ],
+        "correctIndex": 1,
+        "explanation": "Registrar dispositivos confiables reduce la fricción mientras mantiene seguridad. En dispositivos nuevos sí pedirá verificación.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses4_l4"
+    },
+    {
+        "id": "ac_st3_qB5_022",
+        "question": "Que es un ataque de replay en autenticación y cómo prevenirlo?",
+        "type": "multipleChoice",
+        "options": [
+            "Es cuando repites tu contraseña varias veces",
+            "Es cuando un atacante captura y reutiliza un código de autenticación válido",
+            "Es una actualización de seguridad",
+            "Es un tipo de virus"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los códigos temporales (TOTP) y los nonces previenen ataques de replay, haciendo que cada intento sea único.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses4_l5"
+    },
+    {
+        "id": "ac_st3_qB5_023",
+        "question": "Cual es la diferencia entre 2FA y MFA (autenticación multifactor)?",
+        "type": "multipleChoice",
+        "options": [
+            "Son lo mismo",
+            "2FA usa dos factores; MFA puede usar dos o más factores",
+            "MFA es solo para empresas",
+            "2FA es más seguro que MFA"
+        ],
+        "correctIndex": 1,
+        "explanation": "2FA es un tipo de MFA que usa exactamente dos factores. MFA es el término general para cualquier combinación de dos o más factores.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses4_l6"
+    },
+    {
+        "id": "ac_st3_qB5_024",
+        "question": "Que es la autenticación sin contraseñas (passwordless) y cómo funciona?",
+        "type": "multipleChoice",
+        "options": [
+            "Es cuando no pones ninguna contraseña",
+            "Es cuando usas biométricos, keys físicos o códigos mágicos en lugar de contraseñas",
+            "Es cuando compartes tu contraseña",
+            "Es una actualización de sistema"
+        ],
+        "correctIndex": 1,
+        "explanation": "Elimina las contraseñas usando métodos más seguros como huella dactilar, keys físicos o enlaces mágicos por correo.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses5_l1"
+    },
+    {
+        "id": "ac_st3_qB5_025",
+        "question": "Por qué es importante no saltar la verificación 2FA en dispositivos públicos?",
+        "type": "detectRisk",
+        "options": [
+            "No hay riesgo, el dispositivo es seguro",
+            "El dispositivo podría tener keyloggers o malware que capturen tus códigos",
+            "Solo es riesgoso si es tu primera vez",
+            "Único riesgo es que sea lento"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los dispositivos públicos pueden tener software malicioso. Si usas 2FA en ellos, el atacante podría capturar tanto tu contraseña como el código.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses5_l2"
+    },
+    {
+        "id": "ac_st3_qB5_026",
+        "question": "Que es la verificación en múltiples factores adaptativa y su ventaja?",
+        "type": "multipleChoice",
+        "options": [
+            "Es cuando pones tres contraseñas diferentes",
+            "Es cuando el sistema decide qué factores pedir según el nivel de riesgo detectado",
+            "Es una forma de hackear cuentas",
+            "Es una actualización de seguridad"
+        ],
+        "correctIndex": 1,
+        "explanation": "Ajusta la seguridad según el contexto: actividad normal puede requerir solo biométrico; actividad sospechosa, múltiples factores.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses5_l3"
+    },
+    {
+        "id": "ac_st3_qB5_027",
+        "question": "Cual es el riesgo de guardar códigos de respaldo 2FA en el mismo dispositivo que usas para autenticarte?",
+        "type": "detectRisk",
+        "options": [
+            "No hay riesgo, es conveniente",
+            "Si pierdes el dispositivo, pierdes tanto los códigos como el acceso a tus cuentas",
+            "Solo es riesgoso si tienes muchos dispositivos",
+            "Único riesgo es que se llene la memoria"
+        ],
+        "correctIndex": 1,
+        "explanation": "Guarda los códigos de respaldo en un lugar físico seguro, no en el mismo dispositivo. Así podrás recuperar acceso si lo pierdes.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses5_l4"
+    },
+    {
+        "id": "ac_st3_qB5_028",
+        "question": "Por qué no debes usar códigos de verificación de SMS como método principal de 2FA para cuentas bancarias?",
+        "type": "detectRisk",
+        "options": [
+            "No hay riesgo, es el método más común",
+            "Los SMS pueden ser interceptados mediante SIM swapping o malware en tu celular",
+            "Solo es riesgoso si tu banco no lo soporta",
+            "Único riesgo es que no llegue el SMS"
+        ],
+        "correctIndex": 1,
+        "explanation": "Para cuentas bancarias, usa autenticación más segura como apps o tokens físicos. Los SMS son vulnerables a ataques específicos.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses5_l5"
+    },
+    {
+        "id": "ac_st3_qB5_029",
+        "question": "Que es la autenticación porKnowledge-Based y por qué es menos segura?",
+        "type": "multipleChoice",
+        "options": [
+            "Es cuando usas tu conocimiento general",
+            "Es cuando el sistema te pregunta información que podrías haber compartido públicamente (nombre mascota, ciudad)",
+            "Es una forma de autenticación biométrica",
+            "Es una actualización de seguridad"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las preguntas basadas en conocimiento son débiles porque la información puede encontrarse en redes sociales o ser adivinada.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses5_l6"
+    },
+    {
+        "id": "ac_st3_qB5_030",
+        "question": "Qué debes hacer si recibes un código de verificación que no solicitaste?",
+        "type": "whatWouldYouDo",
+        "options": [
+            "Ignorarlo porque es un error",
+            "No compartirlo nunca y cambiar tu contraseña inmediatamente si es recurrente",
+            "Reenviarlo a tus contactos",
+            "Responder al mensaje que lo envió"
+        ],
+        "correctIndex": 1,
+        "explanation": "Si recibes códigos no solicitados, alguien está intentando acceder a tu cuenta. Nunca los compartas y considera cambiar tu contraseña.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses1_l6"
+    }
+]

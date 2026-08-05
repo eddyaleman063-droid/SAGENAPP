@@ -2,13 +2,21 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:http/io_client.dart';
 import '../config/app_config.dart';
 import '../utils/retry.dart';
+import 'app_logger.dart';
+import 'certificate_pinning.dart';
 
 export 'package:http/http.dart' show Client;
 
 enum ApiErrorType { timeout, network, auth, rateLimit, server, validation, unknown }
 
+abstract class ApiSender {
+  Future<ApiResponse> send(ApiRequest request);
+}
+
+/// Exception for API call failures with type classification.
 class ApiException implements Exception {
   final ApiErrorType type;
   final String message;
@@ -21,11 +29,12 @@ class ApiException implements Exception {
   String toString() => 'ApiException($type): $message';
 }
 
+/// Encapsulates an HTTP API request with metadata.
 class ApiRequest {
   final String method;
   final Uri uri;
   final Map<String, String>? headers;
-  final dynamic body;
+  final Object? body;
   final Duration? timeout;
 
   const ApiRequest({
@@ -36,11 +45,10 @@ class ApiRequest {
     this.timeout,
   });
 
-  bool get isStreaming => method == 'GET' || method == 'POST';
-
   String get host => uri.host;
 }
 
+/// Wraps an HTTP API response with status and body.
 class ApiResponse {
   final int statusCode;
   final String body;
@@ -57,7 +65,8 @@ class ApiResponse {
       final decoded = jsonDecode(body);
       if (decoded is Map) return Map<String, dynamic>.from(decoded);
       return null;
-    } catch (_) {
+    } catch (e) {
+      AppLogger().warning('[ApiClient] jsonMap error: $e');
       return null;
     }
   }
@@ -67,16 +76,18 @@ class ApiResponse {
       final decoded = jsonDecode(body);
       if (decoded is List) return List<dynamic>.from(decoded);
       return null;
-    } catch (_) {
+    } catch (e) {
+      AppLogger().warning('[ApiClient] jsonList error: $e');
       return null;
     }
   }
 }
 
-class ApiClient {
+/// HTTP client with certificate pinning and retry logic.
+class ApiClient implements ApiSender {
   static ApiClient? _instance;
 
-  final http.Client _client = http.Client();
+  late final http.Client _client;
 
   final RetryConfig _defaultRetryConfig;
 
@@ -91,7 +102,47 @@ class ApiClient {
   static Future<ApiClient> init({
     RetryConfig? retryConfig,
   }) async {
+    final pinning = CertificatePinning.instance;
+
+    // Certificate pins for critical hosts.
+    // SHA-256 fingerprints of DER-encoded leaf certificates.
+    // Generated 2026-07-14 via PowerShell SslStream.
+    final hostPins = {
+      Uri.parse(AppConfig.mercadopagoFunctionsUrl).host: [
+        'sha256/ee54cb11f16cc311b3acbae57f8fbb03f338c1b2a20de72722c3eafd0dae0140',
+      ],
+      'firestore.googleapis.com': [
+        'sha256/928d3c95954ad4eeaf2a683a0e9b7088f33e0f16b5eb5c95b26021fa3f470595',
+      ],
+      'firebaseinstallations.googleapis.com': [
+        'sha256/2b6f09d23f626db060922e8a0c6b48e54361eb5a0725f0aeef8a2e4555ae99a8',
+      ],
+      'fcmregistrations.googleapis.com': [
+        'sha256/2b6f09d23f626db060922e8a0c6b48e54361eb5a0725f0aeef8a2e4555ae99a8',
+      ],
+      'generativelanguage.googleapis.com': [
+        'sha256/2b6f09d23f626db060922e8a0c6b48e54361eb5a0725f0aeef8a2e4555ae99a8',
+      ],
+    };
+    for (final entry in hostPins.entries) {
+      pinning.addPins(entry.key, entry.value);
+    }
+
+    if (!pinning.validateConfiguration()) {
+      AppLogger().error(
+        'ApiClient: certificate pinning has placeholder pins. '
+        'Real certificates must be configured before production. '
+        'See: https://github.com/nicklockwood/iVersion/wiki/Firebase-Certificate-Pins',
+      );
+      assert(
+        pinning.validateConfiguration(),
+        'Certificate pinning has placeholder pins. Configure real pins before production release.',
+      );
+    }
+
+    final ioClient = pinning.createHttpClient();
     final client = ApiClient._(retryConfig: retryConfig);
+    client._client = IOClient(ioClient);
     _instance = client;
     return client;
   }
@@ -103,6 +154,7 @@ class ApiClient {
     return _instance!;
   }
 
+  @override
   Future<ApiResponse> send(ApiRequest request) async {
     _validateRequest(request);
 
@@ -136,9 +188,9 @@ class ApiClient {
     try {
       response = await _client.send(httpReq).timeout(effectiveTimeout);
     } on TimeoutException {
-      throw const ApiException(ApiErrorType.timeout, 'La respuesta tardó demasiado.');
+      throw const ApiException(ApiErrorType.timeout, 'Request timed out.');
     } on SocketException {
-      throw const ApiException(ApiErrorType.network, 'Sin conexión a internet.');
+      throw const ApiException(ApiErrorType.network, 'No internet connection.');
     } on Exception catch (e) {
       throw ApiException(ApiErrorType.network, e.toString());
     }
@@ -150,7 +202,7 @@ class ApiClient {
         yield chunk;
       }
     } on Exception catch (e) {
-      throw ApiException(ApiErrorType.network, 'Error en streaming: $e');
+      throw ApiException(ApiErrorType.network, 'Stream error: $e');
     }
   }
 
@@ -174,7 +226,7 @@ class ApiClient {
           response = await _client.post(uri, headers: headers, body: body).timeout(effectiveTimeout);
           break;
         default:
-          throw ApiException(ApiErrorType.validation, 'Método no soportado: ${request.method}');
+          throw ApiException(ApiErrorType.validation, 'Unsupported method: ${request.method}');
       }
 
       return ApiResponse(
@@ -183,9 +235,9 @@ class ApiClient {
         headers: response.headers,
       );
     } on TimeoutException {
-      throw ApiException(ApiErrorType.timeout, 'La respuesta tardó demasiado.', host: request.host);
+      throw ApiException(ApiErrorType.timeout, 'Request timed out.', host: request.host);
     } on SocketException {
-      throw ApiException(ApiErrorType.network, 'Sin conexión a internet.', host: request.host);
+      throw ApiException(ApiErrorType.network, 'No internet connection.', host: request.host);
     } on http.ClientException catch (e) {
       throw ApiException(ApiErrorType.network, e.message, host: request.host);
     }
@@ -193,10 +245,10 @@ class ApiClient {
 
   void _validateRequest(ApiRequest request) {
     if (request.uri.scheme != 'https') {
-      throw const ApiException(ApiErrorType.validation, 'Solo se permiten conexiones HTTPS.');
+      throw const ApiException(ApiErrorType.validation, 'Only HTTPS connections are allowed.');
     }
     if (request.uri.host.isEmpty) {
-      throw const ApiException(ApiErrorType.validation, 'URL inválida.');
+      throw const ApiException(ApiErrorType.validation, 'Invalid URL.');
     }
   }
 
@@ -216,19 +268,19 @@ class ApiClient {
 
   static void _checkHttpStatus(int statusCode) {
     if (statusCode == 401) {
-      throw const ApiException(ApiErrorType.auth, 'Error de autenticación.');
+      throw const ApiException(ApiErrorType.auth, 'Authentication error.');
     }
     if (statusCode == 403) {
-      throw const ApiException(ApiErrorType.auth, 'Acceso denegado.');
+      throw const ApiException(ApiErrorType.auth, 'Access denied.');
     }
     if (statusCode == 429) {
-      throw const ApiException(ApiErrorType.rateLimit, 'Demasiadas solicitudes. Espera unos segundos.');
+      throw const ApiException(ApiErrorType.rateLimit, 'Too many requests. Wait a few seconds.');
     }
     if (statusCode >= 500) {
-      throw ApiException(ApiErrorType.server, 'Error del servidor ($statusCode).', statusCode: statusCode);
+      throw ApiException(ApiErrorType.server, 'Server error ($statusCode).', statusCode: statusCode);
     }
-    if (statusCode != 200) {
-      throw ApiException(ApiErrorType.unknown, 'Error inesperado ($statusCode).', statusCode: statusCode);
+    if (statusCode < 200 || statusCode >= 300) {
+      throw ApiException(ApiErrorType.unknown, 'Unexpected error ($statusCode).', statusCode: statusCode);
     }
   }
 

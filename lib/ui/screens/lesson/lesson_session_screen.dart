@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sagen/providers/providers.dart';
 import '../../../core/theme/theme_constants.dart';
+import '../../../core/theme/app_colors.dart';
 import 'package:sagen/l10n/app_localizations.dart';
+import 'package:sagen/services/experience_service.dart';
 
 class LessonSessionScreen extends ConsumerStatefulWidget {
   final String stageId;
@@ -55,7 +58,6 @@ class _LessonSessionScreenState extends ConsumerState<LessonSessionScreen>
 
   @override
   Widget build(BuildContext context) {
-    final dark = Theme.of(context).brightness == Brightness.dark;
     final session = ref.watch(sessionProvider);
 
     if (session.phase == SessionPhase.completed && !_navigatedToResults) {
@@ -74,21 +76,46 @@ class _LessonSessionScreenState extends ConsumerState<LessonSessionScreen>
     }
 
     if (session.phase == SessionPhase.gameOver) {
-      return _GameOverOverlay(dark: dark, session: session);
+      return _GameOverOverlay(session: session);
     }
 
-    return Scaffold(
-      backgroundColor: dark ? PremiumColors.darkBg : PremiumColors.lightBg,
-      body: SafeArea(
-        child: Column(
-          children: [
-            _HudBar(session: session, dark: dark, title: widget.lessonTitle),
-            if (session.phase == SessionPhase.feedback)
-              Expanded(child: _FeedbackBody(session: session, dark: dark, onContinue: _triggerSlide))
-            else
-              Expanded(child: _QuestionBody(session: session, dark: dark, animController: _slideCtrl, slideAnim: _slideAnim)),
-            _BottomBar(session: session, dark: dark),
-          ],
+    final l = AppLocalizations.of(context)!;
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: Text(l.exitText),
+            content: Text(l.exitQuizContent),
+            actions: [
+              TextButton(onPressed: () { HapticFeedback.lightImpact(); Navigator.pop(ctx); }, child: Text(l.cancel)),
+              TextButton(
+                onPressed: () {
+                  HapticFeedback.lightImpact();
+                  Navigator.pop(ctx);
+                  Navigator.pop(context);
+                },
+                child: Text(l.exitText),
+              ),
+            ],
+          ),
+        );
+      },
+      child: Scaffold(
+        backgroundColor: context.surfaceBackground,
+        body: SafeArea(
+          child: Column(
+            children: [
+              _HudBar(session: session, title: widget.lessonTitle),
+              if (session.phase == SessionPhase.feedback)
+                Expanded(child: _FeedbackBody(session: session, onContinue: _triggerSlide))
+              else
+                Expanded(child: _QuestionBody(session: session, animController: _slideCtrl, slideAnim: _slideAnim)),
+              _BottomBar(session: session),
+            ],
+          ),
         ),
       ),
     );
@@ -97,65 +124,78 @@ class _LessonSessionScreenState extends ConsumerState<LessonSessionScreen>
 
 class _HudBar extends StatelessWidget {
   final SessionState session;
-  final bool dark;
   final String title;
-  const _HudBar({required this.session, required this.dark, required this.title});
+  const _HudBar({required this.session, required this.title});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.fromLTRB(AppSpacing.lg, AppSpacing.md, AppSpacing.lg, AppSpacing.md),
       decoration: BoxDecoration(
-        color: dark ? PremiumColors.darkCard : Colors.white,
-        boxShadow: AppShadows.card(color: dark ? Colors.white12 : Colors.black12),
+        color: context.surfaceCard,
+        boxShadow: AppShadows.card(color: context.subtle),
       ),
       child: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              IconButton(
-                icon: Icon(Icons.close_rounded, color: dark ? Colors.white54 : Colors.black54),
-                onPressed: () => Navigator.pop(context),
-                padding: EdgeInsets.zero,
-                constraints: const BoxConstraints(),
+              Semantics(
+                button: true,
+                label: AppLocalizations.of(context)!.closeButton,
+                child: IconButton(
+                  icon: Icon(Icons.close_rounded, color: context.textTertiary),
+                  onPressed: () {
+                    ExperienceService.instance.lightHaptic();
+                    context.pop();
+                  },
+                  padding: const EdgeInsets.all(AppSpacing.sm),
+                  constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
+                  tooltip: AppLocalizations.of(context)!.closeButton,
+                ),
               ),
               Text(
                 title,
-                style: TextStyle(
-                  fontSize: 14,
+                style: AppTextStyle.bodyMd.copyWith(
                   fontWeight: FontWeight.w600,
-                  color: dark ? Colors.white.withValues(alpha: 0.8) : Colors.black87,
+                  color: context.textPrimary,
                 ),
               ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: List.generate(3, (i) {
-                  final filled = i < session.lives;
-                  return Padding(
-                    padding: const EdgeInsets.only(left: 2),
-                    child: Icon(
-                      filled ? Icons.favorite_rounded : Icons.favorite_border_rounded,
-                      size: 18,
-                      color: filled
-                          ? Colors.red.shade400
-                          : (dark ? Colors.white24 : Colors.black12),
-                    ),
-                  );
-                }),
+              Semantics(
+                label: AppLocalizations.of(context)!.livesRemainingLabel(session.lives),
+                container: true,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: List.generate(3, (i) {
+                    final filled = i < session.lives;
+                    return Padding(
+                      padding: const EdgeInsets.only(left: 2),
+                      child: Icon(
+                        filled ? Icons.favorite_rounded : Icons.favorite_border_rounded,
+                        size: 18,
+                        color: filled
+                            ? PremiumColors.error
+                            : context.subtle,
+                      ),
+                    );
+                  }),
+                ),
               ),
             ],
           ),
           const SizedBox(height: AppSpacing.sm),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(AppRadius.pill),
-            child: LinearProgressIndicator(
-              value: session.progress,
-              backgroundColor: dark ? Colors.white.withValues(alpha: 0.06) : Colors.black.withValues(alpha: 0.06),
-              valueColor: AlwaysStoppedAnimation<Color>(
-                session.lives <= 1 ? Colors.red.shade400 : PremiumColors.primaryAccent,
+          Semantics(
+            label: AppLocalizations.of(context)!.lessonProgress((session.progress * 100).toInt()),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(AppRadius.pill),
+              child: LinearProgressIndicator(
+                value: session.progress,
+                backgroundColor: context.surfaceTinted,
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  session.lives <= 1 ? PremiumColors.error : PremiumColors.primaryAccent,
+                ),
+                minHeight: 4,
               ),
-              minHeight: 4,
             ),
           ),
         ],
@@ -166,12 +206,10 @@ class _HudBar extends StatelessWidget {
 
 class _QuestionBody extends ConsumerWidget {
   final SessionState session;
-  final bool dark;
   final AnimationController animController;
   final Animation<Offset> slideAnim;
   const _QuestionBody({
     required this.session,
-    required this.dark,
     required this.animController,
     required this.slideAnim,
   });
@@ -184,9 +222,13 @@ class _QuestionBody extends ConsumerWidget {
       return Center(child: Text(l.sessionLoading));
     }
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (animController.value == 0) animController.forward();
-    });
+    if (animController.value == 0 && !animController.isAnimating) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (animController.value == 0 && !animController.isAnimating) {
+          animController.forward();
+        }
+      });
+    }
 
     return SlideTransition(
       position: slideAnim,
@@ -198,11 +240,10 @@ class _QuestionBody extends ConsumerWidget {
             const SizedBox(height: AppSpacing.lg),
             Text(
               challenge.question,
-              style: TextStyle(
-                fontSize: 18,
+              style: AppTextStyle.title.copyWith(
                 fontWeight: FontWeight.w600,
                 height: 1.4,
-                color: dark ? Colors.white.withValues(alpha: 0.95) : Colors.black87,
+                color: context.textPrimary,
               ),
             ),
             const SizedBox(height: AppSpacing.xxl),
@@ -210,14 +251,16 @@ class _QuestionBody extends ConsumerWidget {
               final i = entry.key;
               final opt = entry.value;
               final selected = session.feedbackSelected == i;
-              return Padding(
-                padding: const EdgeInsets.only(bottom: AppSpacing.md),
-                child: _OptionTile(
-                  index: i,
-                  text: opt,
-                  selected: selected,
-                  dark: dark,
-                  onTap: () => ref.read(sessionProvider.notifier).submitAnswer(i),
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: AppSpacing.md),
+                  child: _OptionTile(
+                    index: i,
+                    text: opt,
+                    selected: selected,
+                    onTap: () {
+                  ExperienceService.instance.lightHaptic();
+                  ref.read(sessionProvider.notifier).submitAnswer(i);
+                },
                 ),
               );
             }),
@@ -232,33 +275,35 @@ class _OptionTile extends StatelessWidget {
   final int index;
   final String text;
   final bool selected;
-  final bool dark;
   final VoidCallback onTap;
   const _OptionTile({
     required this.index,
     required this.text,
     required this.selected,
-    required this.dark,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     final letters = ['A', 'B', 'C', 'D'];
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
+    return Semantics(
+      button: true,
+      selected: selected,
+      label: text,
+      child: GestureDetector(
+        onTap: onTap,
+        child: AnimatedContainer(
         duration: const Duration(milliseconds: 150),
         padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppRadius.xl),
           color: selected
               ? PremiumColors.primaryAccent.withValues(alpha: 0.12)
-              : (dark ? PremiumColors.darkCard : Colors.white),
+               : context.surfaceCard,
           border: Border.all(
             color: selected
                 ? PremiumColors.primaryAccent.withValues(alpha: 0.4)
-                : (dark ? Colors.white12 : Colors.black.withValues(alpha: 0.06)),
+                : context.subtleBorder,
           ),
         ),
         child: Row(
@@ -270,18 +315,17 @@ class _OptionTile extends StatelessWidget {
                 shape: BoxShape.circle,
                 color: selected
                     ? PremiumColors.primaryAccent
-                    : (dark ? Colors.white12 : Colors.black.withValues(alpha: 0.04)),
+                    : context.surfaceTinted,
               ),
               child: Center(
                 child: Text(
-                  letters[index],
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                    color: selected
-                        ? Colors.white
-                        : (dark ? Colors.white54 : Colors.black54),
-                  ),
+                  letters[index % letters.length],
+                    style: AppTextStyle.subtitle.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: selected
+                          ? Colors.white
+                          : context.textTertiary,
+                    ),
                 ),
               ),
             ),
@@ -289,9 +333,8 @@ class _OptionTile extends StatelessWidget {
             Expanded(
               child: Text(
                 text,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: dark ? Colors.white.withValues(alpha: 0.85) : Colors.black87,
+                style: AppTextStyle.bodyMd.copyWith(
+                  color: context.textPrimary,
                   height: 1.3,
                 ),
               ),
@@ -299,14 +342,14 @@ class _OptionTile extends StatelessWidget {
           ],
         ),
       ),
+    ),
     );
   }
 }
 
 class _BottomBar extends ConsumerWidget {
   final SessionState session;
-  final bool dark;
-  const _BottomBar({required this.session, required this.dark});
+  const _BottomBar({required this.session});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -315,24 +358,32 @@ class _BottomBar extends ConsumerWidget {
 
     return Container(
       padding: const EdgeInsets.fromLTRB(AppSpacing.xxl, AppSpacing.md, AppSpacing.xxl, AppSpacing.xxl),
-      child: SizedBox(
-        width: double.infinity,
-        height: 52,
-        child: ElevatedButton(
-          onPressed: isFeedback
-              ? () => ref.read(sessionProvider.notifier).nextQuestion()
-              : null,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: isFeedback ? PremiumColors.primary : (dark ? Colors.white12 : Colors.black.withValues(alpha: 0.04)),
-            disabledBackgroundColor: dark ? Colors.white12 : Colors.black.withValues(alpha: 0.04),
-            foregroundColor: Colors.white,
-            disabledForegroundColor: dark ? Colors.white24 : Colors.black26,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
-            elevation: 0,
-          ),
-          child: Text(
-            isFeedback ? l.nextText : l.sessionSelectAnswer,
-            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+      child: Semantics(
+        button: true,
+        label: isFeedback ? l.nextText : l.sessionSelectAnswer,
+        child: SizedBox(
+          width: double.infinity,
+          height: 52,
+          child: ElevatedButton(
+            onPressed: isFeedback
+                ? () {
+                    HapticFeedback.lightImpact();
+                    ref.read(sessionProvider.notifier).onFeedbackDismissed();
+                    ref.read(sessionProvider.notifier).nextQuestion();
+                  }
+                : null,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: isFeedback ? PremiumColors.primary : context.surfaceTinted,
+              disabledBackgroundColor: context.surfaceTinted,
+              foregroundColor: Colors.white,
+              disabledForegroundColor: context.textDisabled,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
+              elevation: 0,
+            ),
+            child: Text(
+              isFeedback ? l.nextText : l.sessionSelectAnswer,
+              style: AppTextStyle.body.copyWith(fontWeight: FontWeight.bold),
+            ),
           ),
         ),
       ),
@@ -342,15 +393,15 @@ class _BottomBar extends ConsumerWidget {
 
 class _FeedbackBody extends StatelessWidget {
   final SessionState session;
-  final bool dark;
   final VoidCallback onContinue;
-  const _FeedbackBody({required this.session, required this.dark, required this.onContinue});
+  const _FeedbackBody({required this.session, required this.onContinue});
 
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
     final correct = session.feedbackCorrect;
-    final challenge = session.currentChallenge!;
+    final challenge = session.currentChallenge;
+    if (challenge == null) return const SizedBox.shrink();
     final correctOption = challenge.options[challenge.correctIndex];
 
     return SingleChildScrollView(
@@ -363,25 +414,24 @@ class _FeedbackBody extends StatelessWidget {
             padding: const EdgeInsets.all(AppSpacing.xl),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(AppRadius.xl),
-              color: (correct ? PremiumColors.success : Colors.red.shade400).withValues(alpha: 0.08),
+              color: (correct ? PremiumColors.success : PremiumColors.error).withValues(alpha: 0.08),
               border: Border.all(
-                color: (correct ? PremiumColors.success : Colors.red.shade400).withValues(alpha: 0.2),
+                color: (correct ? PremiumColors.success : PremiumColors.error).withValues(alpha: 0.2),
               ),
             ),
             child: Column(
               children: [
-                Icon(
+                ExcludeSemantics(child: Icon(
                   correct ? Icons.check_circle_rounded : Icons.cancel_rounded,
                   size: 48,
-                  color: correct ? PremiumColors.success : Colors.red.shade400,
-                ),
+                  color: correct ? PremiumColors.success : PremiumColors.error,
+                ),),
                 const SizedBox(height: AppSpacing.md),
                 Text(
                   correct ? l.sessionCorrect : l.sessionIncorrect,
-                  style: TextStyle(
-                    fontSize: 20,
+                  style: AppTextStyle.titleLg.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: correct ? PremiumColors.success : Colors.red.shade400,
+                    color: correct ? PremiumColors.success : PremiumColors.error,
                   ),
                 ),
                 const SizedBox(height: AppSpacing.sm),
@@ -394,7 +444,7 @@ class _FeedbackBody extends StatelessWidget {
                     ),
                     child: Text(
                       l.sessionCorrectAnswer(correctOption),
-                      style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: PremiumColors.success),
+                      style: AppTextStyle.subtitle.copyWith(fontWeight: FontWeight.w500, color: PremiumColors.success),
                     ),
                   ),
                   const SizedBox(height: AppSpacing.md),
@@ -402,10 +452,9 @@ class _FeedbackBody extends StatelessWidget {
                 Text(
                   challenge.explanation,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 13,
+                  style: AppTextStyle.subtitle.copyWith(
                     height: 1.4,
-                    color: dark ? Colors.white.withValues(alpha: 0.7) : Colors.black54,
+                    color: context.textSecondary,
                   ),
                 ),
               ],
@@ -418,68 +467,76 @@ class _FeedbackBody extends StatelessWidget {
 }
 
 class _GameOverOverlay extends ConsumerWidget {
-  final bool dark;
   final SessionState session;
-  const _GameOverOverlay({required this.dark, required this.session});
+  const _GameOverOverlay({required this.session});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l = AppLocalizations.of(context)!;
     return Scaffold(
-      backgroundColor: dark ? PremiumColors.darkBg : PremiumColors.lightBg,
+      backgroundColor: context.surfaceBackground,
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(AppSpacing.xxl),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.hourglass_empty_rounded, size: 64, color: Colors.red.shade400.withValues(alpha: 0.6)),
+              ExcludeSemantics(
+                child: Icon(Icons.hourglass_empty_rounded, size: 64, color: PremiumColors.error.withValues(alpha: 0.6)),
+              ),
               const SizedBox(height: AppSpacing.xxl),
               Text(
                 l.sessionLivesExhausted,
-                style: TextStyle(
-                  fontSize: 22,
+                style: AppTextStyle.headlineMedium.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: dark ? Colors.white.withValues(alpha: 0.9) : Colors.black87,
+                  color: context.textPrimary,
                 ),
               ),
               const SizedBox(height: AppSpacing.sm),
               Text(
                 l.sessionLivesExhaustedDesc,
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 14, color: dark ? Colors.white38 : Colors.black45),
+                style: AppTextStyle.bodyMd.copyWith(color: context.textTertiary),
               ),
               const SizedBox(height: AppSpacing.xxl),
               Text(
                 l.sessionScore(session.correctCount, session.totalQuestions),
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: PremiumColors.primaryAccent,
-                ),
+                  style: AppTextStyle.titleSmall.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: PremiumColors.primaryAccent,
+                  ),
               ),
               const SizedBox(height: AppSpacing.xxl),
-              SizedBox(
-                width: double.infinity,
-                height: 52,
-                child: ElevatedButton(
-                  onPressed: () {
-                    ref.read(sessionProvider.notifier).retry();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: PremiumColors.primary,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
+
+              Semantics(
+                button: true,
+                label: l.sessionRetry,
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 52,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      ref.read(sessionProvider.notifier).retry();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: PremiumColors.primary,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
+                    ),
+                    child: Text(l.sessionRetry, style: AppTextStyle.titleSmall.copyWith(fontWeight: FontWeight.bold)),
                   ),
-                  child: Text(l.sessionRetry, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                 ),
               ),
               const SizedBox(height: AppSpacing.md),
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text(
-                  l.sessionBackToMap,
-                  style: TextStyle(color: dark ? Colors.white38 : Colors.black38, fontSize: 14),
+              Semantics(
+                button: true,
+                label: l.sessionBackToMap,
+                child: TextButton(
+                  onPressed: () => context.pop(),
+                  child: Text(
+                    l.sessionBackToMap,
+                    style: AppTextStyle.bodyMd.copyWith(color: context.textSecondary),
+                  ),
                 ),
               ),
             ],

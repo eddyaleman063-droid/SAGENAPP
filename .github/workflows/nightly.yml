@@ -1,0 +1,50 @@
+name: Nightly Build
+
+on:
+  schedule:
+    - cron: '0 2 * * *'  # 2 AM UTC daily
+  workflow_dispatch:
+
+env:
+  FLUTTER_VERSION: '3.41.9'
+  JAVA_VERSION: '17'
+
+jobs:
+  nightly:
+    name: Nightly Build & Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+      - run: flutter pub get
+
+      - name: Analyze
+        run: flutter analyze --no-fatal-infos
+
+      - name: Run all tests
+        run: flutter test --timeout 120s --coverage
+        continue-on-error: true
+
+      - name: Upload coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/lcov.info
+          retention-days: 3
+
+      - name: Build Android APK
+        run: flutter build apk --debug
+        continue-on-error: true
+
+      - name: Upload debug APK
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-android-debug
+          path: build/app/outputs/flutter-apk/app-debug.apk
+          retention-days: 3

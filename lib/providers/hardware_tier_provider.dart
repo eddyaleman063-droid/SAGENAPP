@@ -1,9 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../services/device_tier.dart';
+import 'service_providers.dart';
 
 final hardwareTierProvider = Provider<DeviceTier>((ref) {
-  LowEndDeviceDetector.instance.init();
-  return LowEndDeviceDetector.instance.tier;
+  final detector = ref.read(lowEndDeviceDetectorProvider);
+  detector.init();
+  return detector.tier;
 });
 
 final isLowEndDeviceProvider = Provider<bool>((ref) {
@@ -11,17 +13,17 @@ final isLowEndDeviceProvider = Provider<bool>((ref) {
 });
 
 final reduceAnimationsProvider = Provider<bool>((ref) {
-  return LowEndDeviceDetector.instance.reduceAnimations;
+  return ref.read(lowEndDeviceDetectorProvider).reduceAnimations;
 });
 
 final reduceBlurProvider = Provider<bool>((ref) {
-  return LowEndDeviceDetector.instance.reduceBlur;
+  return ref.read(lowEndDeviceDetectorProvider).reduceBlur;
 });
 
 final reduceShadowsProvider = Provider<bool>((ref) {
-  return LowEndDeviceDetector.instance.reduceShadows;
+  return ref.read(lowEndDeviceDetectorProvider).reduceShadows;
 });
 
 final reduceParticlesProvider = Provider<bool>((ref) {
-  return LowEndDeviceDetector.instance.reduceParticles;
+  return ref.read(lowEndDeviceDetectorProvider).reduceParticles;
 });

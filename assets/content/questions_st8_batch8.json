@@ -1,0 +1,302 @@
+[
+    {
+        "id": "ac_st8_qB8_001",
+        "question": "Que es la configuración de privacidad en redes sociales y porque es fundamental",
+        "type": "multipleChoice",
+        "options": ["Es opciónal y no importa", "Ajustes que controlan quien puede ver tu perfil, publicaciones y datos personales", "Un tipo de contraseña", "Un servicio de internet"],
+        "correctIndex": 1,
+        "explanation": "Sin configurar la privacidad, tu perfil puede ser visible para cualquier persona en internet, exponiendo tus datos.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses11_l3"
+    },
+    {
+        "id": "ac_st8_qB8_002",
+        "question": "Que es el bloqueo de contactos y cuando deberias usarlo",
+        "type": "multipleChoice",
+        "options": ["Nunca es necesario", "Cuando alguien te molesta, te amenaza o accede a tu información sin permiso", "Solo para bloquear a ex novios", "Una función decorativa"],
+        "correctIndex": 1,
+        "explanation": "Bloquear evita que personas no deseadas vean tu perfil o te contacten. Usa esta función sin miedo.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses11_l3"
+    },
+    {
+        "id": "ac_st8_qB8_003",
+        "question": "Que es la verificación en dos pasos y como activarla en Facebook",
+        "type": "multipleChoice",
+        "options": ["No se puede activar en Facebook", "Una segunda capa de seguridad que requiere un codigo ademas de tu contraseña para iniciar sesión", "Un tipo de pregunta de seguridad", "Un servicio de backup"],
+        "correctIndex": 1,
+        "explanation": "Facebook ofrece 2FA que envia un codigo a tu celular o app de autenticación cada vez que inicias sesión desde un dispositivo nuevo.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses1_l6"
+    },
+    {
+        "id": "ac_st8_qB8_004",
+        "question": "Caso: Tu hermano publica una foto con su dirección visible en Facebook. Que le dices",
+        "type": "miniCase",
+        "options": ["Que esta bien porque es solo para amigos", "Que borre la foto inmediatamente porque su dirección es información sensible", "Que le ponga un filtro", "Que la deje asi"],
+        "correctIndex": 1,
+        "explanation": "Nunca publiques tu dirección. Aunque sea solo para amigos, pueden compartirla sin tu permiso.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses4_l4"
+    },
+    {
+        "id": "ac_st8_qB8_005",
+        "question": "Que es la configuración de privacidad en Instagram y que opciónes ofrece",
+        "type": "multipleChoice",
+        "options": ["Solo hay opción publico", "Puedes elegir entre cuenta publica o privada, controlar comentarios y mensajes directos", "No hay configuración", "Solo funciona con 2FA"],
+        "correctIndex": 1,
+        "explanation": "Instagram permite hacer tu cuenta privada, filtrar comentarios, restringir usuarios y controlar quien te puede mencionar.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses11_l3"
+    },
+    {
+        "id": "ac_st8_qB8_006",
+        "question": "Que es el historial de actividad en Facebook y como revisarlo",
+        "type": "multipleChoice",
+        "options": ["No existe", "Una seccion donde puedes ver y borrar toda tu actividad: likes, comentarios, busquedas y mas", "Un tipo de virus", "Un servicio de pago"],
+        "correctIndex": 1,
+        "explanation": "El historial de actividad te permite ver todo lo que has hecho en Facebook y borrar lo que no quieras que sea visible.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses11_l3"
+    },
+    {
+        "id": "ac_st8_qB8_007",
+        "question": "Que es la verificación de identidad en redes sociales y porque es importante",
+        "type": "trueFalse",
+        "options": ["Verdadero", "Falso"],
+        "correctIndex": 0,
+        "explanation": "La verificación te ayuda a demostrar que tu perfil es autentico y protege contra suplantaciones de identidad.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses11_l3"
+    },
+    {
+        "id": "ac_st8_qB8_008",
+        "question": "Que es el modo vanidad en redes sociales y como activarlo",
+        "type": "detectRisk",
+        "options": ["No existe", "Una función que te permite ver las publicaciones de otros sin que ellos lo sepan", "Un tipo de contraseña", "Una función de seguridad"],
+        "correctIndex": 1,
+        "explanation": "Algunas redes tienen funciones que te permiten ver contenido sin que el autor sepa que lo viste, protegiendo tu privacidad.",
+        "difficulty": 3,
+        "lessonId": "ac_s1_ses11_l3"
+    },
+    {
+        "id": "ac_st8_qB8_009",
+        "question": "Caso: Tu madre recibe una solicitud de amistad de alguien que no conoce pero dice ser de su colegio. Que haces",
+        "type": "miniCase",
+        "options": ["Decirle que la acepte porque es de su colegio", "Verificar con su colegio antes de aceptar la solicitud", "Decirle que la rechace siempre", "Aceptarsela tu"],
+        "correctIndex": 1,
+        "explanation": "Nunca aceptes solicitudes de desconocidos. Verifica la identidad antes de conectar con alguien en redes sociales.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses11_l3"
+    },
+    {
+        "id": "ac_st8_qB8_010",
+        "question": "Que es la configuración de mensajes directos en Twitter/X y que opciónes de privacidad tiene",
+        "type": "multipleChoice",
+        "options": ["No hay configuración", "Puedes controlar quien te puede enviar mensajes: todos, solo amigos o nadie", "Solo pueden enviarte mensajes amigos", "Un tipo de backup"],
+        "correctIndex": 1,
+        "explanation": "Twitter/X permite configurar quien puede enviarte mensajes directos para evitar acoso o spam.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses11_l3"
+    },
+    {
+        "id": "ac_st8_qB8_011",
+        "question": "Que es el etiquetado automático en redes sociales y porque puede ser un riesgo",
+        "type": "detectRisk",
+        "options": ["No es un riesgo", "Otros pueden etiquetarte en fotos o publicaciones sin tu permiso, exponiendo tu información", "Una función de seguridad", "Un tipo de notificacion"],
+        "correctIndex": 1,
+        "explanation": "El etiquetado automático puede revelar tu ubicacion y actividad sin tu consentimiento. Configura aprobacion manual.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses4_l5"
+    },
+    {
+        "id": "ac_st8_qB8_012",
+        "question": "Que es la privacidad en TikTok y que ajustes puedes hacer",
+        "type": "multipleChoice",
+        "options": ["TikTok no tiene privacidad", "Hacer tu cuenta privada, controlar quien comenta, envia mensajes y ve tus videos", "Solo existe cuenta publica", "Un tipo de contraseña"],
+        "correctIndex": 1,
+        "explanation": "TikTok permite cuentas privadas, filtrar comentarios y controlar quien puede interactuar con tu contenido.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses11_l3"
+    },
+    {
+        "id": "ac_st8_qB8_013",
+        "question": "Caso: Tu hijo quiere hacer una transmision en vivo en Instagram pero tu no quieres que desconocidos lo vean. Que haces",
+        "type": "miniCase",
+        "options": ["Decirle que lo haga porque es divertido", "Configurar su cuenta como privada y explicarle los riesgos de transmitir a desconocidos", "No dejarlo usar Instagram", "Hacer la transmision tu"],
+        "correctIndex": 1,
+        "explanation": "Configura la privacidad de su cuenta y enseñale sobre los peligros de interactuar con desconocidos en transmisiones en vivo.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses11_l3"
+    },
+    {
+        "id": "ac_st8_qB8_014",
+        "question": "Que es la ubicacion en tiempo real en redes sociales y porque debes desactivarla",
+        "type": "detectRisk",
+        "options": ["Es muy segura", "Permite que cualquiera vea donde estas en todo momento, poniendote en peligro", "Una función de seguridad", "Un tipo de backup"],
+        "correctIndex": 1,
+        "explanation": "Compartir ubicacion en tiempo real expone tu paradero a desconocidos. Desactiva esta función por seguridad.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses4_l4"
+    },
+    {
+        "id": "ac_st8_qB8_015",
+        "question": "Que es el historial de busquedas en redes sociales y como borrarlo",
+        "type": "whatWouldYouDo",
+        "options": ["No se puede borrar", "Ir a configuración, historial y borrar todas las busquedas realizadas", "Desinstalar la app", "Crear una cuenta nueva"],
+        "correctIndex": 1,
+        "explanation": "Las redes sociales guardan tu historial de busquedas. Borralo periodicamente para proteger tu privacidad.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses11_l3"
+    },
+    {
+        "id": "ac_st8_qB8_016",
+        "question": "Que es la cuenta profesiónal en Instagram y como afecta tu privacidad",
+        "type": "multipleChoice",
+        "options": ["No afecta la privacidad", "Muestra estadisticas publicas y puede reducir algunas opciónes de privacidad", "Es mas segura que la cuenta personal", "Un tipo de contraseña"],
+        "correctIndex": 1,
+        "explanation": "Las cuentas profesiónales muestran información publica sobre tu actividad. Considera si realmente la necesitas.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses11_l3"
+    },
+    {
+        "id": "ac_st8_qB8_017",
+        "question": "Caso: Tu padre publica fotos de sus nietos en Facebook sin pedir permiso. Que le dices",
+        "type": "miniCase",
+        "options": ["Que esta bien porque son sus nietos", "Que siempre pida permiso antes de publicar fotos de menores, incluso familiares", "Que publique mas fotos", "No es tu asunto"],
+        "correctIndex": 1,
+        "explanation": "Publicar fotos de menores sin consentimiento de sus padres puede ser un riesgo para su privacidad y seguridad.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses7_l5"
+    },
+    {
+        "id": "ac_st8_qB8_018",
+        "question": "Que es el modo de restriccion en Instagram y como usarlo",
+        "type": "multipleChoice",
+        "options": ["No existe", "Una función que limita la interaccion de usuarios específicos sin bloquearlos", "Un tipo de bloqueo total", "Una función de backup"],
+        "correctIndex": 1,
+        "explanation": "El modo restriccion oculta comentarios y mensajes de usuarios específicos sin que ellos lo sepan, ideal para acoso leve.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses11_l3"
+    },
+    {
+        "id": "ac_st8_qB8_019",
+        "question": "Que es la sincronizacion de contactos en redes sociales y porque debes tener cuidado",
+        "type": "detectRisk",
+        "options": ["No tiene riesgos", "Permite que la red social acceda a tus contactos y sugiera conexiones, exponiendo datos de terceros", "Una función segura", "Un tipo de backup"],
+        "correctIndex": 1,
+        "explanation": "Al sincronizar contactos, la red social obtiene datos de personas que quizas no querian estar en esa plataforma.",
+        "difficulty": 3,
+        "lessonId": "ac_s1_ses11_l3"
+    },
+    {
+        "id": "ac_st8_qB8_020",
+        "question": "Que es la verificación de dos factores en Twitter/X y como activarla",
+        "type": "multipleChoice",
+        "options": ["Twitter no ofrece 2FA", "Una configuración de seguridad que envia un codigo a tu celular cada vez que inicias sesión desde un dispositivo nuevo", "Un tipo de pregunta", "Un servicio de pago"],
+        "correctIndex": 1,
+        "explanation": "Twitter/X ofrece 2FA que protege tu cuenta incluso si tu contraseña es comprometida.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses1_l6"
+    },
+    {
+        "id": "ac_st8_qB8_021",
+        "question": "Caso: Tu hermana pequeña quiere crear una cuenta en TikTok pero tiene 10 anos. Que haces",
+        "type": "miniCase",
+        "options": ["Decirle que la cree porque es comun", "Explicarle que la edad minima es 13 anos y supervisar su uso cuando sea mayor", "Decirle que no necesita redes sociales", "Crearle la cuenta tu"],
+        "correctIndex": 1,
+        "explanation": "La mayoria de redes sociales requieren tener al menos 13 anos. Espera y supervisa su uso cuando sea apropiado.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses11_l3"
+    },
+    {
+        "id": "ac_st8_qB8_022",
+        "question": "Que es el perfil privado en WhatsApp y que opciónes ofrece",
+        "type": "multipleChoice",
+        "options": ["No hay perfil en WhatsApp", "Controlar quien puede ver tu foto, información y estados", "Solo puedes ocultar tu número", "Un tipo de backup"],
+        "correctIndex": 1,
+        "explanation": "WhatsApp te permite controlar quien ve tu foto de perfil, información personal y estados temporales.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses11_l3"
+    },
+    {
+        "id": "ac_st8_qB8_023",
+        "question": "Que es la actividad en linea en redes sociales y porque deberias ocultarla",
+        "type": "detectRisk",
+        "options": ["No es necesario ocultarla", "Muestra cuando estuviste activo por ultima vez, lo que puede ser usado para rastrearte", "Una función de seguridad", "Un tipo de notificacion"],
+        "correctIndex": 1,
+        "explanation": "Mostrar tu actividad en linea puede revelar tus rutinas. Ocultarlaaumentó tu seguridad.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses11_l3"
+    },
+    {
+        "id": "ac_st8_qB8_024",
+        "question": "Caso: Un desconocido le envia un mensaje a tu hijo por Instagram ofreciendole un regalo. Que haces",
+        "type": "miniCase",
+        "options": ["Decirle que acepte el regalo", "Ensensarle que nunca acepte regalos oinformación de desconocidos y bloquear al usuario", "Ignorar la situación", "Responder tu el mensaje"],
+        "correctIndex": 1,
+        "explanation": "Los mensajes de desconocidos ofreciendo cosas suelen ser intentos de phishing o abuso. Ensena a tus hijos a no confiar.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses17_l3"
+    },
+    {
+        "id": "ac_st8_qB8_025",
+        "question": "Que es la lista de amigos cercanos en Instagram y porque es una buena opción de privacidad",
+        "type": "multipleChoice",
+        "options": ["No existe", "Una lista privada donde solo las personas que elijas ven tus historias", "Una lista publica", "Un tipo de bloqueo"],
+        "correctIndex": 1,
+        "explanation": "Los amigos cercanos te permiten compartir historias solo con personas de confianza, aumentando tu privacidad.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses11_l3"
+    },
+    {
+        "id": "ac_st8_qB8_026",
+        "question": "Que es la configuración de privacidad en LinkedIn y porque es importante para profesiónales",
+        "type": "multipleChoice",
+        "options": ["No es importante", "Controla quien puede ver tu perfil, contacto y actividad profesiónal", "Solo sirve para buscar trabajo", "Un tipo de backup"],
+        "correctIndex": 1,
+        "explanation": "LinkedIn permite controlar tu visibilidad profesiónal y quien puede contactarte para oportunidades laborales.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses11_l3"
+    },
+    {
+        "id": "ac_st8_qB8_027",
+        "question": "Que es el historial de busquedas en YouTube y como borrarlo",
+        "type": "whatWouldYouDo",
+        "options": ["No se puede borrar", "Ir a configuración de YouTube, historial y borrar todo el historial de busquedas y reproducción", "Desinstalar YouTube", "Crear una cuenta nueva"],
+        "correctIndex": 1,
+        "explanation": "YouTube guarda todo tu historial. Borralo regularmente desde la configuración de tu cuenta de Google.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses11_l3"
+    },
+    {
+        "id": "ac_st8_qB8_028",
+        "question": "Que es el modo oscuro en redes sociales y porque no tiene relación con la privacidad",
+        "type": "trueFalse",
+        "options": ["Verdadero", "Falso"],
+        "correctIndex": 0,
+        "explanation": "El modo oscuro solo cambia la apariencia visual. No afecta tu privacidad ni protege tus datos personales.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses11_l3"
+    },
+    {
+        "id": "ac_st8_qB8_029",
+        "question": "Caso: Tu vecina quiere hacer un sorteo en Facebook pidiendo que compartan sus datos personales. Que le dices",
+        "type": "miniCase",
+        "options": ["Que esta bien porque es un sorteo", "Que los sorteos que piden datos personales suelen ser estafas para robar información", "Que le ayudes con el sorteo", "Que no es tu problema"],
+        "correctIndex": 1,
+        "explanation": "Los sorteos que piden datos personales son tacticas comunes para robar información. Evita participar en estos.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses17_l4"
+    },
+    {
+        "id": "ac_st8_qB8_030",
+        "question": "Por que es importante revisar periodicamente la configuración de privacidad de todas tus redes sociales",
+        "type": "trueFalse",
+        "options": ["Verdadero", "Falso"],
+        "correctIndex": 0,
+        "explanation": "Las plataformas cambian sus configuraciónes con actualizaciones. Revisarlas periodicamente asegura que tu privacidad este protegida.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses11_l3"
+    }
+]

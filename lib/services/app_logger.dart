@@ -4,10 +4,10 @@ enum LogLevel { debug, info, warning, error }
 
 class _AppLoggerState {
   bool productionMode = false;
-  void Function(Object, StackTrace)? crashReporter;
   final List<_LogEntry> recentErrors = [];
 }
 
+/// Centralized logging service with recent error tracking.
 class AppLogger {
   static final _AppLoggerState _state = _AppLoggerState();
   static const int _maxRecentErrors = 50;
@@ -16,10 +16,6 @@ class AppLogger {
 
   void setProductionMode(bool enabled) {
     _state.productionMode = enabled;
-  }
-
-  void setCrashReporter(void Function(Object, StackTrace) reporter) {
-    _state.crashReporter = reporter;
   }
 
   List<Map<String, dynamic>> get recentErrors =>
@@ -41,11 +37,10 @@ class AppLogger {
     _state.recentErrors.add(_LogEntry(message, DateTime.now()));
     if (_state.recentErrors.length > _maxRecentErrors) _state.recentErrors.removeAt(0);
 
-    debugPrint('[SAGEN] [ERROR] $message');
-    if (exception != null) debugPrint('  Exception: $exception');
-    if (stack != null) debugPrint('  Stack: $stack');
-    if (exception != null && stack != null && _state.crashReporter != null) {
-      _state.crashReporter!(exception, stack);
+    if (!_state.productionMode) {
+      debugPrint('[SAGEN] [ERROR] $message');
+      if (exception != null) debugPrint('  Exception: $exception');
+      if (stack != null) debugPrint('  Stack: $stack');
     }
   }
 

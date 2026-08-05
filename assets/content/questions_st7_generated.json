@@ -1,0 +1,602 @@
+[
+  {
+    "id": "ac_st7_qNEW001",
+    "question": "Que es OAuth y para que sirve?",
+    "type": "multipleChoice",
+    "options": ["Un tipo de contraseña", "Un protocolo que permite a apps acceder a tu cuenta sin dar tu contraseña", "Un antivirus", "Un navegador web"],
+    "correctIndex": 1,
+    "explanation": "OAuth es un protocolo que permite a aplicaciones de terceros acceder a tu cuenta de forma segura sin compartir tu contraseña.",
+    "difficulty": 1,
+    "lessonId": "ac_s7_ses7_l1"
+  },
+  {
+    "id": "ac_st7_qNEW002",
+    "question": "Cuando usas 'Iniciar sesión con Google' en una app, ¿qué está pasando?",
+    "type": "whatWouldYouDo",
+    "options": ["Le das tu contraseña a la app", "La app usa OAuth para acceder a tu cuenta sin ver tu contraseña", "Google comparte todos tus datos con la app", "La app se instala en tu celular"],
+    "correctIndex": 1,
+    "explanation": "Cuando usas 'Iniciar sesión con Google', la app usa el protocolo OAuth para acceder a tu cuenta sin necesidad de ver tu contraseña.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses7_l1"
+  },
+  {
+    "id": "ac_st7_qNEW003",
+    "question": "Verdadero o falso: Las apps que usas con 'Iniciar sesión con Facebook' pueden ver tu contraseña.",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 1,
+    "explanation": "Falso. Las apps que usan OAuth no ven tu contraseña. Solo reciben un token de acceso limitado.",
+    "difficulty": 1,
+    "lessonId": "ac_s7_ses7_l1"
+  },
+  {
+    "id": "ac_st7_qNEW004",
+    "question": "Cual situación presenta el MAYOR riesgo al autorizar una app con tu cuenta de Google?",
+    "type": "detectRisk",
+    "options": ["Autorizar una app que pide acceso a tu correo y contactos", "Usar 'Iniciar sesión con Google' en sitios oficiales", "No autorizar ninguna app", "Revisar los permisos antes de autorizar"],
+    "correctIndex": 0,
+    "explanation": "Autorizar apps que piden acceso amplio a tu correo y contactos es riesgoso porque pueden leer información privada.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses7_l1"
+  },
+  {
+    "id": "ac_st7_qNEW005",
+    "question": "Cuales apps pueden estar vinculadas a tu cuenta de Google?",
+    "type": "multipleChoice",
+    "options": ["Solo apps de Google", "Apps de terceros que usaste para iniciar sesión", "Ninguna app", "Solo bancos"],
+    "correctIndex": 1,
+    "explanation": "Todas las apps de terceros que usaste para iniciar sesión con Google aparecen vinculadas a tu cuenta.",
+    "difficulty": 1,
+    "lessonId": "ac_s7_ses7_l2"
+  },
+  {
+    "id": "ac_st7_qNEW006",
+    "question": "Que harías si ves una app que no reconoces vinculada a tu Facebook?",
+    "type": "whatWouldYouDo",
+    "options": ["Ignorarla porque no importa", "Revocar el acceso de inmediato", "Preguntar en redes sociales", "Esperar a que se desvincule sola"],
+    "correctIndex": 1,
+    "explanation": "Si ves una app que no reconoces, revoca su acceso de inmediato para proteger tu cuenta.",
+    "difficulty": 1,
+    "lessonId": "ac_s7_ses7_l2"
+  },
+  {
+    "id": "ac_st7_qNEW007",
+    "question": "Caso: Tu hijo descargó un juego y usó 'Iniciar sesión con Facebook'. Cual es la mejor accion?",
+    "type": "miniCase",
+    "options": ["No hacer nada, es solo un juego", "Revisar los permisos del juego y revocar si pide acceso a contactos o cámara", "Eliminar Facebook del celular", "Cambiar la contraseña de Facebook"],
+    "correctIndex": 1,
+    "explanation": "Siempre revisa los permisos que pide una app después de iniciar sesión. Si pide acceso a datos innecesarios, revócalo.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses7_l2"
+  },
+  {
+    "id": "ac_st7_qNEW008",
+    "question": "Que tipo de permisos puede pedir una app al vincularse a tu cuenta?",
+    "type": "multipleChoice",
+    "options": ["Solo nombre", "Acceso a perfil, correo, contactos, cámara, ubicación", "Ninguno", "Solo contraseña"],
+    "correctIndex": 1,
+    "explanation": "Las apps pueden pedir permisos variados como acceso a perfil, correo, contactos, cámara y ubicación.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses7_l2"
+  },
+  {
+    "id": "ac_st7_qNEW009",
+    "question": "Verdadero o falso: Revisar periodicamente las apps con acceso a tus cuentas es una buena práctica.",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Verdadero. Revisar periódicamente qué apps tienen acceso a tus cuentas te ayuda a mantener tu seguridad.",
+    "difficulty": 1,
+    "lessonId": "ac_s7_ses7_l3"
+  },
+  {
+    "id": "ac_st7_qNEW010",
+    "question": "Donde puedes revisar las apps que tienen acceso a tu cuenta de Google?",
+    "type": "multipleChoice",
+    "options": ["En la Play Store", "En la configuración de tu cuenta de Google, sección 'Apps y servicios'", "En tu correo", "En WhatsApp"],
+    "correctIndex": 1,
+    "explanation": "Puedes revisar las apps con acceso en la configuración de tu cuenta de Google, en la sección de seguridad o apps vinculadas.",
+    "difficulty": 1,
+    "lessonId": "ac_s7_ses7_l3"
+  },
+  {
+    "id": "ac_st7_qNEW011",
+    "question": "Cual situación presenta el MAYOR riesgo?",
+    "type": "detectRisk",
+    "options": ["Una app que solo pide acceso a tu nombre", "Una app que pide acceso a tu cámara, micrófono y ubicación", "Una app que no pide ningún permiso", "Una app oficial del banco"],
+    "correctIndex": 1,
+    "explanation": "Una app que pide acceso a cámara, micrófono y ubicación tiene acceso a información muy sensible y puede ser riesgosa.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses7_l3"
+  },
+  {
+    "id": "ac_st7_qNEW012",
+    "question": "Que hacer si una app pide permisos excesivos?",
+    "type": "whatWouldYouDo",
+    "options": ["Dar todos los permisos porque la app lo necesita", "No autorizar la app o buscar una alternativa con menos permisos", "Preguntar a un amigo", "Reiniciar el celular"],
+    "correctIndex": 1,
+    "explanation": "Si una app pide permisos excesivos, no la autorices o busca una alternativa que pida menos permisos.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses7_l4"
+  },
+  {
+    "id": "ac_st7_qNEW013",
+    "question": "Que es un permiso de nivel alto en una app?",
+    "type": "multipleChoice",
+    "options": ["Un permiso que la app necesita para funcionar", "Un permiso que da acceso a datos sensibles como cámara, micrófono o ubicación", "Un permiso que solo piden los bancos", "Un permiso que se puede ignorar"],
+    "correctIndex": 1,
+    "explanation": "Los permisos de nivel alto dan acceso a datos sensibles como cámara, micrófono, ubicación o contactos.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses7_l4"
+  },
+  {
+    "id": "ac_st7_qNEW014",
+    "question": "Cual es la diferencia entre permisos de nivel normal y alto?",
+    "type": "multipleChoice",
+    "options": ["No hay diferencia", "Los de nivel alto acceden a datos sensibles, los normales no", "Los normales son más peligrosos", "Solo los bancos usan permisos altos"],
+    "correctIndex": 1,
+    "explanation": "Los permisos de nivel alto acceden a datos sensibles como cámara y ubicación, mientras que los normales son menos invasivos.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses7_l4"
+  },
+  {
+    "id": "ac_st7_qNEW015",
+    "question": "Que harías si una app de recetas pide acceso a tu cámara y contactos?",
+    "type": "whatWouldYouDo",
+    "options": ["Dar los permisos porque es una app de recetas", "No autorizar y buscar otra app que solo pida permisos necesarios", "Preguntar en Facebook", "Esperar a que la app cambie"],
+    "correctIndex": 1,
+    "explanation": "Una app de recetas no debería necesitar cámara ni contactos. Busca una alternativa con permisos más limitados.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses7_l4"
+  },
+  {
+    "id": "ac_st7_qNEW016",
+    "question": "Como revocar permisos de una app sospechosa en tu celular?",
+    "type": "multipleChoice",
+    "options": ["Eliminando la app solamente", "Desde la configuración del celular, en la sección de apps y permisos", "Desactivando el internet", "Reiniciando el celular"],
+    "correctIndex": 1,
+    "explanation": "Puedes revocar permisos desde la configuración del celular, en la sección de apps y permisos de cada aplicación.",
+    "difficulty": 1,
+    "lessonId": "ac_s7_ses7_l5"
+  },
+  {
+    "id": "ac_st7_qNEW017",
+    "question": "Caso: Descubres que una app antigua tiene acceso a tu cámara. Cual es la mejor accion?",
+    "type": "miniCase",
+    "options": ["Dejarla porque ya la tienes hace tiempo", "Revocar el permiso de cámara inmediatamente", "Desinstalar solo la app", "Cambiar tu contraseña"],
+    "correctIndex": 1,
+    "explanation": "Si una app antigua tiene acceso a tu cámara, revoca ese permiso de inmediato para proteger tu privacidad.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses7_l5"
+  },
+  {
+    "id": "ac_st7_qNEW018",
+    "question": "Que es un token de acceso en el contexto de OAuth?",
+    "type": "multipleChoice",
+    "options": ["Tu contraseña", "Una clave temporal que permite a la app acceder a tu cuenta sin ver tu contraseña", "Un código de verificación por SMS", "Un número de tarjeta"],
+    "correctIndex": 1,
+    "explanation": "Un token de acceso es una clave temporal que permite a una app acceder a tu cuenta sin necesidad de conocer tu contraseña.",
+    "difficulty": 3,
+    "lessonId": "ac_s7_ses7_l5"
+  },
+  {
+    "id": "ac_st7_qNEW019",
+    "question": "Cuales son las ventajas de usar el bloqueo biometrico avanzado?",
+    "type": "multipleChoice",
+    "options": ["Es más rápido y no necesitas recordar contraseñas", "Solo funciona en celulares caros", "No es seguro", "Requiere conexión a internet"],
+    "correctIndex": 0,
+    "explanation": "El bloqueo biometrico avanzado es más rápido, cómodo y no necesitas recordar contraseñas.",
+    "difficulty": 1,
+    "lessonId": "ac_s7_ses7_l6"
+  },
+  {
+    "id": "ac_st7_qNEW020",
+    "question": "Verdadero o falso: Puedes configurar múltiples huellas o rostros en tu celular para mayor seguridad.",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Verdadero. Puedes configurar múltiples huellas o rostros para que más personas de confianza puedan desbloquear el celular.",
+    "difficulty": 1,
+    "lessonId": "ac_s7_ses7_l6"
+  },
+  {
+    "id": "ac_st7_qNEW021",
+    "question": "Que tipo de permisos puede pedir una app de redes sociales como Facebook?",
+    "type": "detectRisk",
+    "options": ["Solo acceso a nombre y foto", "Acceso a cámara, micrófono, contactos, ubicación y almacenamiento", "Solo acceso a internet", "Ningún permiso"],
+    "correctIndex": 1,
+    "explanation": "Las apps de redes sociales pueden pedir permisos amplios como cámara, micrófono, contactos, ubicación y almacenamiento.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses8_l1"
+  },
+  {
+    "id": "ac_st7_qNEW022",
+    "question": "Que riesgos tiene una app que puede publicar contenido por ti en redes sociales?",
+    "type": "multipleChoice",
+    "options": ["Ninguno, es conveniente", "Puede publicar contenido que no autorizaste o spam", "Solo es un mito", "Solo afecta a empresas"],
+    "correctIndex": 1,
+    "explanation": "Una app con permiso de publicación puede publicar contenido no autorizado o spam en tu nombre.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses8_l1"
+  },
+  {
+    "id": "ac_st7_qNEW023",
+    "question": "Caso: Una app de filtros para fotos pide acceso a tus contactos. Cual es la mejor accion?",
+    "type": "miniCase",
+    "options": ["Dar los permisos porque es divertida", "No autorizar el acceso a contactos, una app de fotos no lo necesita", "Compartir la app con todos tus contactos", "Instalar la app en otro celular"],
+    "correctIndex": 1,
+    "explanation": "Una app de filtros para fotos no necesita acceso a tus contactos. No autorices permisos innecesarios.",
+    "difficulty": 1,
+    "lessonId": "ac_s7_ses8_l1"
+  },
+  {
+    "id": "ac_st7_qNEW024",
+    "question": "Que datos puede acceder una app que pide permiso de cámara y micrófono?",
+    "type": "multipleChoice",
+    "options": ["Solo fotos que tomes tú", "Puede grabar audio y video sin que lo sepas", "Solo funciona con luz", "No puede acceder a nada"],
+    "correctIndex": 1,
+    "explanation": "Una app con permiso de cámara y micrófono puede grabar audio y video, incluso sin que estés usando la app.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses8_l2"
+  },
+  {
+    "id": "ac_st7_qNEW025",
+    "question": "Cual situación presenta el MAYOR riesgo?",
+    "type": "detectRisk",
+    "options": ["Una app que solo pide acceso a internet", "Una app que pide acceso a cámara, micrófono, ubicación y contactos", "Una app que pide acceso a la galería", "Una app del gobierno"],
+    "correctIndex": 1,
+    "explanation": "Una app que pide acceso a cámara, micrófono, ubicación y contactos tiene acceso a información muy sensible.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses8_l2"
+  },
+  {
+    "id": "ac_st7_qNEW026",
+    "question": "Que harías si una app de juegos pide acceso a tu ubicación?",
+    "type": "whatWouldYouDo",
+    "options": ["Dar el permiso porque es un juego", "No autorizar ubicación, un juego no la necesita", "Preguntar a un familiar", "Reiniciar el celular"],
+    "correctIndex": 1,
+    "explanation": "Un juego normalmente no necesita tu ubicación. No autorices permisos innecesarios.",
+    "difficulty": 1,
+    "lessonId": "ac_s7_ses8_l2"
+  },
+  {
+    "id": "ac_st7_qNEW027",
+    "question": "Que permisos puede pedir una app de calendario?",
+    "type": "multipleChoice",
+    "options": ["Solo acceder a eventos", "Acceso a eventos, contactos y notificaciones", "Acceso a cámara y micrófono", "Ningún permiso"],
+    "correctIndex": 1,
+    "explanation": "Una app de calendario puede pedir acceso a eventos, contactos y notificaciones para funcionar correctamente.",
+    "difficulty": 1,
+    "lessonId": "ac_s7_ses8_l3"
+  },
+  {
+    "id": "ac_st7_qNEW028",
+    "question": "Verdadero o falso: Una app que pide acceso a tus contactos puede enviar mensajes en tu nombre.",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Verdadero. Si una app tiene acceso a tus contactos, podría enviar mensajes o correos no autorizados.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses8_l3"
+  },
+  {
+    "id": "ac_st7_qNEW029",
+    "question": "Cuales apps de Google pueden tener acceso a tu cuenta?",
+    "type": "multipleChoice",
+    "options": ["Solo Gmail", "Apps de Google y apps de terceros que usaste para iniciar sesión", "Ninguna", "Solo YouTube"],
+    "correctIndex": 1,
+    "explanation": "Tanto apps de Google como apps de terceros que usaste con 'Iniciar sesión con Google' pueden tener acceso.",
+    "difficulty": 1,
+    "lessonId": "ac_s7_ses8_l4"
+  },
+  {
+    "id": "ac_st7_qNEW030",
+    "question": "Que harías si ves una app desconocida con acceso a tu cuenta de Google?",
+    "type": "whatWouldYouDo",
+    "options": ["Ignorarla", "Revocar el acceso inmediatamente y cambiar tu contraseña", "Preguntar en redes sociales", "Desactivar tu cuenta"],
+    "correctIndex": 1,
+    "explanation": "Si ves una app desconocida con acceso a tu cuenta, revoca el acceso y cambia tu contraseña de inmediato.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses8_l4"
+  },
+  {
+    "id": "ac_st7_qNEW031",
+    "question": "Cada cuanto tiempo deberías auditar los accesos de terceros a tus cuentas?",
+    "type": "multipleChoice",
+    "options": ["Nunca", "Cada trimestre", "Solo cuando haya un problema", "Cada 5 años"],
+    "correctIndex": 1,
+    "explanation": "Se recomienda auditar los accesos de terceros al menos cada trimestre para mantener tu seguridad.",
+    "difficulty": 1,
+    "lessonId": "ac_s7_ses8_l5"
+  },
+  {
+    "id": "ac_st7_qNEW032",
+    "question": "Caso: No has revisado las apps vinculadas a tu cuenta en 2 años. Cual es la mejor accion?",
+    "type": "miniCase",
+    "options": ["No importa, no ha pasado nada", "Hacer una auditoría completa y eliminar apps que no reconoces", "Cambiar de celular", "Crear una cuenta nueva"],
+    "correctIndex": 1,
+    "explanation": "Si no has revisado tus apps vinculadas en mucho tiempo, haz una auditoría completa y elimina las que no reconozcas.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses8_l5"
+  },
+  {
+    "id": "ac_st7_qNEW033",
+    "question": "Que es la auditoría trimestral de accesos?",
+    "type": "multipleChoice",
+    "options": ["Un examen en la escuela", "Revisar cada 3 meses qué apps y servicios tienen acceso a tus cuentas", "Una actualización del celular", "Un tipo de contraseña"],
+    "correctIndex": 1,
+    "explanation": "La auditoría trimestral es revisar cada 3 meses qué apps y servicios tienen acceso a tus cuentas para mantener la seguridad.",
+    "difficulty": 1,
+    "lessonId": "ac_s7_ses8_l5"
+  },
+  {
+    "id": "ac_st7_qNEW034",
+    "question": "Que riesgos tienen los asistentes virtuales como Alexa o Google Assistant?",
+    "type": "multipleChoice",
+    "options": ["Ninguno", "Pueden escuchar conversaciones y guardar datos personales", "Solo gastan batería", "Solo funcionan con WiFi"],
+    "correctIndex": 1,
+    "explanation": "Los asistentes virtuales pueden escuchar conversaciones y guardar datos personales, lo que representa un riesgo de privacidad.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses8_l6"
+  },
+  {
+    "id": "ac_st7_qNEW035",
+    "question": "Verdadero o falso: Siri y Google Assistant pueden activarse sin que lo pidas.",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Verdadero. Estos asistentes pueden activarse por error con frases similares a sus palabras de activación.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses8_l6"
+  },
+  {
+    "id": "ac_st7_qNEW036",
+    "question": "Que datos pueden recopilar los asistentes virtuales?",
+    "type": "detectRisk",
+    "options": ["Solo la hora", "Comandos de voz, ubicación, contactos, calendario y historial de búsquedas", "Solo música que escuchas", "Ningún dato"],
+    "correctIndex": 1,
+    "explanation": "Los asistentes virtuales pueden recopilar comandos de voz, ubicación, contactos, calendario e historial de búsquedas.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses8_l6"
+  },
+  {
+    "id": "ac_st7_qNEW037",
+    "question": "Que harías si un asistente virtual respondió una pregunta que no le hiciste?",
+    "type": "whatWouldYouDo",
+    "options": ["Ignorarlo", "Revisar la configuración de privacidad y ajustar la sensibilidad de activación", "Apagarlo para siempre", "No importa"],
+    "correctIndex": 1,
+    "explanation": "Revisa la configuración de privacidad del asistente y ajusta la sensibilidad de activación para evitar activaciones no deseadas.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses8_l6"
+  },
+  {
+    "id": "ac_st7_qNEW038",
+    "question": "Cada cuanto deberías revisar qué apps tienen acceso a tus cuentas?",
+    "type": "multipleChoice",
+    "options": ["Nunca", "Al menos una vez al trimestre", "Solo cuando cambias de celular", "Una vez al año"],
+    "correctIndex": 1,
+    "explanation": "Se recomienda revisar las apps con acceso al menos una vez al trimestre para mantener tu seguridad.",
+    "difficulty": 1,
+    "lessonId": "ac_s7_ses9_l1"
+  },
+  {
+    "id": "ac_st7_qNEW039",
+    "question": "Que beneficio tiene hacer una revisión trimestral de apps?",
+    "type": "multipleChoice",
+    "options": ["Ninguno", "Detectar y eliminar apps que ya no usas o que son sospechosas", "Ganar dinero", "Mejorar la velocidad del celular"],
+    "correctIndex": 1,
+    "explanation": "La revisión trimestral te permite detectar y eliminar apps que ya no usas o que podrían ser riesgosas.",
+    "difficulty": 1,
+    "lessonId": "ac_s7_ses9_l1"
+  },
+  {
+    "id": "ac_st7_qNEW040",
+    "question": "Caso: Tienes 50 apps instaladas pero solo usas 10. Cual es la mejor accion?",
+    "type": "miniCase",
+    "options": ["Dejarlas todas por si las necesitas", "Eliminar las apps que no usas y revisar permisos de las que mantienes", "Comprar otro celular", "Actualizar todas las apps"],
+    "correctIndex": 1,
+    "explanation": "Elimina las apps que no usas y revisa los permisos de las que mantienes para reducir riesgos.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses9_l2"
+  },
+  {
+    "id": "ac_st7_qNEW041",
+    "question": "Que riesgo tiene mantener apps instaladas que no usas?",
+    "type": "multipleChoice",
+    "options": ["Ninguno", "Pueden tener vulnerabilidades de seguridad que no se actualizan", "Ocupan espacio nomás", "Solo gastan batería"],
+    "correctIndex": 1,
+    "explanation": "Las apps que no usas pueden tener vulnerabilidades que no se actualizan, representando un riesgo de seguridad.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses9_l2"
+  },
+  {
+    "id": "ac_st7_qNEW042",
+    "question": "Verdadero o falso: Desinstalar una app elimina todos sus permisos de tu cuenta.",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 1,
+    "explanation": "Falso. Desinstalar una app no siempre elimina sus permisos. Debes revocarlos manualmente en la configuración de tu cuenta.",
+    "difficulty": 3,
+    "lessonId": "ac_s7_ses9_l2"
+  },
+  {
+    "id": "ac_st7_qNEW043",
+    "question": "Como identificar apps con acceso antiguo a tu cuenta?",
+    "type": "multipleChoice",
+    "options": ["No se puede", "Revisar la sección de seguridad de tu cuenta y buscar apps con fecha de autorización antigua", "Preguntar al soporte técnico", "Revisar el correo"],
+    "correctIndex": 1,
+    "explanation": "En la configuración de seguridad de tu cuenta puedes ver las apps autorizadas y su fecha de autorización.",
+    "difficulty": 1,
+    "lessonId": "ac_s7_ses9_l3"
+  },
+  {
+    "id": "ac_st7_qNEW044",
+    "question": "Que harías si encuentras una app con acceso que autorizaste hace 3 años?",
+    "type": "whatWouldYouDo",
+    "options": ["Dejarla porque siempre ha estado ahí", "Revocar el acceso si ya no la usas o no la reconoces", "Actualizar la app", "Reiniciar el celular"],
+    "correctIndex": 1,
+    "explanation": "Si encuentras una app antigua que ya no usas o no reconoces, revoca su acceso.",
+    "difficulty": 1,
+    "lessonId": "ac_s7_ses9_l3"
+  },
+  {
+    "id": "ac_st7_qNEW045",
+    "question": "Cual situación presenta el MAYOR riesgo?",
+    "type": "detectRisk",
+    "options": ["Una app que autorizaste hoy y reconoces", "Una app con acceso de hace 5 años que no reconoces", "Una app oficial de tu banco", "Una app que acabas de desinstalar"],
+    "correctIndex": 1,
+    "explanation": "Una app con acceso antiguo que no reconoces puede ser riesgosa porque puede haber sido comprometida.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses9_l3"
+  },
+  {
+    "id": "ac_st7_qNEW046",
+    "question": "Que tipo de apps suelen mantener acceso antiguo a tus cuentas?",
+    "type": "multipleChoice",
+    "options": ["Solo bancos", "Apps de juegos, encuestas, promociones y servicios que ya no usas", "Solo redes sociales", "Ninguna"],
+    "correctIndex": 1,
+    "explanation": "Apps de juegos, encuestas, promociones y servicios que ya no usas suelen mantener acceso antiguo.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses9_l4"
+  },
+  {
+    "id": "ac_st7_qNEW047",
+    "question": "Que harías si encuentras una app de un servicio que ya no existe con acceso a tu cuenta?",
+    "type": "whatWouldYouDo",
+    "options": ["Ignorarla", "Revocar su acceso inmediatamente", "Reinstalar el servicio", "Cambiar tu contraseña nomás"],
+    "correctIndex": 1,
+    "explanation": "Si un servicio ya no existe pero tiene acceso a tu cuenta, revoca ese acceso de inmediato.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses9_l4"
+  },
+  {
+    "id": "ac_st7_qNEW048",
+    "question": "Verdadero o falso: Las apps de juegos gratuitos son completamente seguras.",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 1,
+    "explanation": "Falso. Algunas apps de juegos gratuitos pueden pedir permisos excesivos o contener malware.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses9_l5"
+  },
+  {
+    "id": "ac_st7_qNEW049",
+    "question": "Por que revocar acceso de apps de juegos y pruebas?",
+    "type": "multipleChoice",
+    "options": ["Porque son caras", "Porque pueden tener permisos excesivos y acceso a datos innecesarios", "Porque ocupan mucho espacio", "Porque no son divertidas"],
+    "correctIndex": 1,
+    "explanation": "Las apps de juegos y pruebas pueden pedir permisos excesivos y tener acceso a datos que no necesitas compartir.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses9_l5"
+  },
+  {
+    "id": "ac_st7_qNEW050",
+    "question": "Cuales son los pasos inmediatos si pierdes tu celular?",
+    "type": "multipleChoice",
+    "options": ["Esperar a encontrarlo", "Cambiar contraseñas, cerrar sesiónes y bloquear el dispositivo remotamente", "Comprar uno nuevo", "No hacer nada"],
+    "correctIndex": 1,
+    "explanation": "Los pasos inmediatos son: cambiar contraseñas, cerrar sesiónes activas y bloquear el dispositivo remotamente.",
+    "difficulty": 1,
+    "lessonId": "ac_s7_ses10_l1"
+  },
+  {
+    "id": "ac_st7_qNEW051",
+    "question": "Que harías si pierdes tu celular con acceso a tu cuenta bancaria?",
+    "type": "whatWouldYouDo",
+    "options": ["Esperar a ver si alguien lo encuentra", "Llamar al banco de inmediato para bloquear la cuenta y cambiar contraseñas", "Publicar en redes sociales", "Reiniciar la contraseña del correo"],
+    "correctIndex": 1,
+    "explanation": "Si pierdes tu celular con acceso bancario, llama al banco de inmediato para bloquear la cuenta.",
+    "difficulty": 1,
+    "lessonId": "ac_s7_ses10_l1"
+  },
+  {
+    "id": "ac_st7_qNEW052",
+    "question": "Caso: Perdiste tu celular en el bus. Cual es la mejor accion inmediata?",
+    "type": "miniCase",
+    "options": ["Ir a buscar al bus", "Desde otro dispositivo, cambia tus contraseñas y bloquea el celular remotamente", "Esperar un día", "Comprar un nuevo celular"],
+    "correctIndex": 1,
+    "explanation": "Desde otro dispositivo, cambia tus contraseñas y usa 'Find My Device' para bloquear el celular remotamente.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses10_l1"
+  },
+  {
+    "id": "ac_st7_qNEW053",
+    "question": "Que contraseñas debes cambiar si pierdes tu celular?",
+    "type": "multipleChoice",
+    "options": ["Ninguna", "Correo, redes sociales, banca y cualquier cuenta importante", "Solo la del celular", "Solo la del correo"],
+    "correctIndex": 1,
+    "explanation": "Debes cambiar contraseñas de correo, redes sociales, banca y cualquier cuenta importante a la que tengas acceso desde el celular.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses10_l2"
+  },
+  {
+    "id": "ac_st7_qNEW054",
+    "question": "Verdadero o falso: Si pierdes tu celular, cambiar solo la contraseña del correo es suficiente.",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 1,
+    "explanation": "Falso. Debes cambiar contraseñas de todas las cuentas importantes, no solo del correo.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses10_l2"
+  },
+  {
+    "id": "ac_st7_qNEW055",
+    "question": "Que significa cerrar sesiónes remotamente?",
+    "type": "multipleChoice",
+    "options": ["Apagar el celular", "Cerrar la sesión de tus cuentas desde otro dispositivo o desde la configuración de seguridad", "Eliminar las apps", "Desactivar el WiFi"],
+    "correctIndex": 1,
+    "explanation": "Cerrar sesiónes remotamente significa cerrar la sesión de tus cuentas desde otro dispositivo para que el celular perdido no tenga acceso.",
+    "difficulty": 1,
+    "lessonId": "ac_s7_ses10_l3"
+  },
+  {
+    "id": "ac_st7_qNEW056",
+    "question": "Que harías si sospechas que alguien está usando tu celular robado?",
+    "type": "whatWouldYouDo",
+    "options": ["Esperar a ver qué pasa", "Cerrar todas las sesiónes remotamente y cambiar contraseñas de inmediato", "Publicar en Facebook", "Ir a la policía nomás"],
+    "correctIndex": 1,
+    "explanation": "Cierra todas las sesiónes remotamente y cambia tus contraseñas de inmediato para proteger tus cuentas.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses10_l3"
+  },
+  {
+    "id": "ac_st7_qNEW057",
+    "question": "Cuales son las autoridades a las que debes reportar el robo de tu celular en Peru?",
+    "type": "multipleChoice",
+    "options": ["Solo la policía", "Policía Naciónal y Defensoría del Pueblo", "Solo SUNAT", "Ninguna"],
+    "correctIndex": 1,
+    "explanation": "En Perú puedes reportar el robo a la Policía Naciónal y también a la Defensoría del Pueblo.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses10_l4"
+  },
+  {
+    "id": "ac_st7_qNEW058",
+    "question": "Por que es importante reportar el robo a las autoridades?",
+    "type": "multipleChoice",
+    "options": ["No es importante", "Para tener un registro legal y evitar que usen tu DNI para estafas", "Solo para que te devuelvan el celular", "No sirve de nada"],
+    "correctIndex": 1,
+    "explanation": "Reportar el robo crea un registro legal y ayuda a prevenir que usen tu DNI para estafas o actividades ilícitas.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses10_l4"
+  },
+  {
+    "id": "ac_st7_qNEW059",
+    "question": "Que debes hacer con tu operador móvil si pierdes tu celular?",
+    "type": "multipleChoice",
+    "options": ["Nada", "Bloquear la SIM para evitar que hagan llamadas a tu nombre", "Pedir un nuevo número", "Cambiar de operador"],
+    "correctIndex": 1,
+    "explanation": "Debes llamar a tu operador para bloquear la SIM y evitar que hagan llamadas o compren datos a tu nombre.",
+    "difficulty": 1,
+    "lessonId": "ac_s7_ses10_l5"
+  },
+  {
+    "id": "ac_st7_qNEW060",
+    "question": "Cual situación presenta el MAYOR riesgo después de perder tu celular?",
+    "type": "detectRisk",
+    "options": ["No tener celular por unos días", "Que accedan a tu cuenta bancaria y saquen tu dinero", "Perder las fotos", "Tener que comprar un nuevo celular"],
+    "correctIndex": 1,
+    "explanation": "El mayor riesgo es que accedan a tu cuenta bancaria y roben tu dinero. Por eso debes actuar rápido.",
+    "difficulty": 2,
+    "lessonId": "ac_s7_ses10_l5"
+  }
+]

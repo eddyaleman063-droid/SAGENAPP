@@ -2,9 +2,14 @@ include: package:flutter_lints/flutter.yaml
 
 linter:
   rules:
-    - prefer_const_constructors
-    - prefer_const_declarations
-    - prefer_final_fields
-    - sort_child_properties_last
-    - require_trailing_commas
-    - unnecessary_string_escapes
+    prefer_const_constructors: true
+    prefer_const_declarations: true
+    avoid_print: true
+
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - "**/generated/**"
+    - "**/build/**"
+    - "**/coverage/**"

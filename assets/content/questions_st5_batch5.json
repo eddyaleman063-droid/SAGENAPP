@@ -1,0 +1,450 @@
+[
+    {
+        "id": "ac_st5_qB5_001",
+        "question": "Verdadero o Falso: Las alertas de seguridad son innecesarias si usas contraseñas fuertes.",
+        "type": "trueFalse",
+        "options": [
+            "Verdadero",
+            "Falso"
+        ],
+        "correctIndex": 1,
+        "explanation": "Falso. Las alertas son cruciales para detectar actividad no autorizada, incluso si tienes contraseñas fuertes.",
+        "difficulty": 1,
+        "lessonId": "ac_s5_ses1_l1"
+    },
+    {
+        "id": "ac_st5_qB5_002",
+        "question": "Completa la frase: Si recibes una alerta de inicio de sesión desde un país que no visitas, debes ___ inmediatamente.",
+        "type": "completePhrase",
+        "options": [
+            "ignorar la alerta",
+            "cambiar tu contraseña y revisar actividad",
+            "compartir la alerta en redes sociales",
+            "esperar a que pase"
+        ],
+        "correctIndex": 1,
+        "explanation": "Actúa rápido: cambia tu contraseña y revisa la actividad reciente para asegurarte de que no hay acceso no autorizado.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses1_l2"
+    },
+    {
+        "id": "ac_st5_qB5_003",
+        "question": "Por qué es importante configurar alertas de transacciones bancarias?",
+        "type": "multipleChoice",
+        "options": [
+            "No es importante, el banco ya las tiene",
+            "Para detectar cargos no autorizados inmediatamente y actuar rápido",
+            "Para recibir publicidad del banco",
+            "No hay razón"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las alertas te notifican al instante de cada transacción, permitiéndote detectar fraudes antes de que sea tarde.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses1_l3"
+    },
+    {
+        "id": "ac_st5_qB5_004",
+        "question": "Que es el monitoreo de la dark web y por qué es útil?",
+        "type": "multipleChoice",
+        "options": [
+            "Es un tipo de virus",
+            "Es un servicio que revisa si tus datos aparecen en filtraciones de la dark web",
+            "Es una forma de navegar la dark web",
+            "Es una actualización de seguridad"
+        ],
+        "correctIndex": 1,
+        "explanation": "Algunos servicios escanean la dark web para alertarte si tus correos, contraseñas o datos personales aparecen en filtraciones.",
+        "difficulty": 3,
+        "lessonId": "ac_s5_ses1_l4"
+    },
+    {
+        "id": "ac_st5_qB5_005",
+        "question": "Cual es la diferencia entre una alerta de seguridad y una notificación de la app?",
+        "type": "multipleChoice",
+        "options": [
+            "Son lo mismo",
+            "Las alertas de seguridad son críticas; las notificaciones son informativas",
+            "Las alertas son siempre por correo",
+            "No hay diferencia"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las alertas de seguridad requieren acción inmediata; las notificaciones son solo informativas sobre actividad normal.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses1_l5"
+    },
+    {
+        "id": "ac_st5_qB5_006",
+        "question": "Por qué no debes ignorar las alertas de actualizaciones de seguridad?",
+        "type": "detectRisk",
+        "options": [
+            "No hay riesgo, son molestas",
+            "Las actualizaciones corrigen vulnerabilidades que los atacantes ya conocen",
+            "Solo son importantes para empresas",
+            "Único riesgo es que sea lento"
+        ],
+        "correctIndex": 1,
+        "explanation": "Ignorar actualizaciones deja tu dispositivo expuesto a ataques conocidos. Instálalas lo antes posible.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses1_l6"
+    },
+    {
+        "id": "ac_st5_qB5_007",
+        "question": "Que es un dashboard de seguridad y cómo te ayuda?",
+        "type": "multipleChoice",
+        "options": [
+            "Es un panel de control del coche",
+            "Es una vista central que muestra el estado de seguridad de todas tus cuentas y dispositivos",
+            "Es una red social",
+            "Es una tienda en línea"
+        ],
+        "correctIndex": 1,
+        "explanation": "Un dashboard de seguridad te da una visión completa de tus cuentas, alertas pendientes y recomendaciones para mejorar.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses2_l1"
+    },
+    {
+        "id": "ac_st5_qB5_008",
+        "question": "Que es la verificación de actividad sospechosa en cuentas bancarias?",
+        "type": "multipleChoice",
+        "options": [
+            "Es cuando el banco te llama para preguntar cosas",
+            "Es cuando el sistema detecta transacciones inusuales y te pide confirmación",
+            "Es una forma de hackear cuentas",
+            "Es una actualización de seguridad"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los bancos usan sistemas que detectan patrones anómalos y te contactan para verificar si la transacción es tuya.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses2_l2"
+    },
+    {
+        "id": "ac_st5_qB5_009",
+        "question": "Por qué es importante revisar periódicamente los permisos de apps en tu celular?",
+        "type": "whatWouldYouDo",
+        "options": [
+            "No es importante, una vez dados no cambian",
+            "Para asegurarte de que las apps no tengan acceso innecesario a tus datos",
+            "Para que las apps funcionen mejor",
+            "No hay razón"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las apps pueden actualizar sus permisos. Revisa regularmente que no accedan a datos que no necesitan.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses2_l3"
+    },
+    {
+        "id": "ac_st5_qB5_010",
+        "question": "Que es el historial de actividad en tus cuentas y qué información muestra?",
+        "type": "multipleChoice",
+        "options": [
+            "Es una lista de tus contraseñas",
+            "Es un registro de inicios de sesión, cambios y acciones realizadas en tu cuenta",
+            "Es tu perfil público",
+            "Es una lista de amigos"
+        ],
+        "correctIndex": 1,
+        "explanation": "El historial muestra fechas, horas, ubicaciones y dispositivos de cada acción, ayudándote a detectar actividad no autorizada.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses2_l4"
+    },
+    {
+        "id": "ac_st5_qB5_011",
+        "question": "Cual es el riesgo de desactivar todas las notificaciones de seguridad?",
+        "type": "detectRisk",
+        "options": [
+            "No hay riesgo, es más tranquilo",
+            "No te enterarás de actividad sospechosa hasta que sea tarde",
+            "Solo es riesgoso si tienes muchas cuentas",
+            "Único riesgo es que sea molesto"
+        ],
+        "correctIndex": 1,
+        "explanation": "Desactivar alertas te deja ciego ante intrusiones. Mantén al menos las alertas críticas activadas.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses2_l5"
+    },
+    {
+        "id": "ac_st5_qB5_012",
+        "question": "Que es el monitoreo de dominios y cómo protege tu identidad?",
+        "type": "multipleChoice",
+        "options": [
+            "Es cuando buscas tu nombre en Google",
+            "Es cuando un servicio vigila si alguien registra dominios similares al tuyo para phishing",
+            "Es una red social",
+            "Es una tienda en línea"
+        ],
+        "correctIndex": 1,
+        "explanation": "Si alguien registra 'banco-de-tu-nombre.com', podrían usarlo para phishing. El monitoreo te alerta de estos registros.",
+        "difficulty": 3,
+        "lessonId": "ac_s5_ses2_l6"
+    },
+    {
+        "id": "ac_st5_qB5_013",
+        "question": "Por qué es importante configurar alertas de cambio de contraseña en tus cuentas principales?",
+        "type": "multipleChoice",
+        "options": [
+            "No es importante",
+            "Para enterarte inmediatamente si alguien más cambia tu contraseña",
+            "Para recordar tu contraseña",
+            "No hay razón"
+        ],
+        "correctIndex": 1,
+        "explanation": "Si recibes una alerta de cambio de contraseña que no realizaste, alguien está intentando tomar control de tu cuenta.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses3_l1"
+    },
+    {
+        "id": "ac_st5_qB5_014",
+        "question": "Que es el sistema de alertas tempranas y cómo funciona?",
+        "type": "multipleChoice",
+        "options": [
+            "Es un tipo de virus",
+            "Es un sistema que detecta amenazas emergentes y te avisa antes de que te afecten",
+            "Es una red social",
+            "Es una actualización de seguridad"
+        ],
+        "correctIndex": 1,
+        "explanation": "Estos sistemas analizan tendencias de amenazas y te alertan sobre nuevos tipos de ataques que podrían afectarte.",
+        "difficulty": 3,
+        "lessonId": "ac_s5_ses3_l2"
+    },
+    {
+        "id": "ac_st5_qB5_015",
+        "question": "Que es el reporte de integridad de cuentas y qué muestra?",
+        "type": "multipleChoice",
+        "options": [
+            "Es una lista de tus amigos",
+            "Es un análisis que muestra el estado de seguridad de todas tus cuentas en un lugar",
+            "Es tu perfil público",
+            "Es una tienda en línea"
+        ],
+        "correctIndex": 1,
+        "explanation": "Este reporte consolida información de múltiples cuentas para mostrarte qué cuentas necesitan atención de seguridad.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses3_l3"
+    },
+    {
+        "id": "ac_st5_qB5_016",
+        "question": "Por qué no debes compartir códigos de verificación que recibes por SMS?",
+        "type": "detectRisk",
+        "options": [
+            "No hay riesgo, son temporales",
+            "Los atacantes pueden usarlos para acceder a tu cuenta antes de que expiren",
+            "Solo es riesgoso si los compartes por correo",
+            "Único riesgo es que se borren"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los códigos de verificación son como contraseñas temporales. Si alguien los obtiene, puede acceder a tu cuenta en esos minutos.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses3_l4"
+    },
+    {
+        "id": "ac_st5_qB5_017",
+        "question": "Que es el monitoreo de credenciales filtradas y por qué es esencial?",
+        "type": "multipleChoice",
+        "options": [
+            "Es un tipo de virus",
+            "Es un servicio que revisa si tus credenciales aparecen en filtraciones conocidas de la dark web",
+            "Es una forma de navegar la dark web",
+            "Es una actualización de sistema"
+        ],
+        "correctIndex": 1,
+        "explanation": "Si tus credenciales aparecen en una filtración, debes cambiarlas inmediatamente. Este servicio te avisa automáticamente.",
+        "difficulty": 3,
+        "lessonId": "ac_s5_ses3_l5"
+    },
+    {
+        "id": "ac_st5_qB5_018",
+        "question": "Cual es la mejor práctica para configurar alertas en tus cuentas bancarias?",
+        "type": "multipleChoice",
+        "options": [
+            "No activar alertas porque son molestas",
+            "Activar alertas para transacciones, cambios de contraseña y inicios de sesión desde ubicaciones nuevas",
+            "Solo activar alertas por correo",
+            "Activar todas las notificaciones, incluso las de marketing"
+        ],
+        "correctIndex": 1,
+        "explanation": "Configura alertas para actividades críticas: transacciones grandes, cambios de seguridad y accesos desde dispositivos o ubicaciones nuevos.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses3_l6"
+    },
+    {
+        "id": "ac_st5_qB5_019",
+        "question": "Que es la vigilancia de redes sociales y cómo protege tu identidad?",
+        "type": "multipleChoice",
+        "options": [
+            "Es cuando te vigilan tus amigos",
+            "Es cuando un servicio monitorea si alguien usa tu nombre o fotos en redes sociales de forma fraudulenta",
+            "Es una red social",
+            "Es una actualización de seguridad"
+        ],
+        "correctIndex": 1,
+        "explanation": "Si alguien crea un perfil falso con tus datos, este servicio te alerta para que puedas reportarlo.",
+        "difficulty": 3,
+        "lessonId": "ac_s5_ses4_l1"
+    },
+    {
+        "id": "ac_st5_qB5_020",
+        "question": "Por qué es importante revisar los dispositivos conectados a tus cuentas?",
+        "type": "whatWouldYouDo",
+        "options": [
+            "No es importante, son todos tuyos",
+            "Para detectar dispositivos que no reconoces y cerrar sesión en ellos",
+            "Para ver cuántos dispositivos tienes",
+            "No hay razón"
+        ],
+        "correctIndex": 1,
+        "explanation": "Si ves un dispositivo que no reconoces, alguien podría estar accediendo a tu cuenta. Cierra sesión y cambia tu contraseña.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses4_l2"
+    },
+    {
+        "id": "ac_st5_qB5_021",
+        "question": "Que es un sistema de prevención de fraude y cómo te protege?",
+        "type": "multipleChoice",
+        "options": [
+            "Es un tipo de virus",
+            "Es un sistema que analiza transacciones en tiempo real para detectar y bloquear fraudes",
+            "Es una red social",
+            "Es una actualización de seguridad"
+        ],
+        "correctIndex": 1,
+        "explanation": "Estos sistemas usan inteligencia artificial para detectar patrones de fraude y bloquear transacciones sospechosas automáticamente.",
+        "difficulty": 3,
+        "lessonId": "ac_s5_ses4_l3"
+    },
+    {
+        "id": "ac_st5_qB5_022",
+        "question": "Por qué no debes usar el mismo correo para alertas de seguridad y para newsletters?",
+        "type": "detectRisk",
+        "options": [
+            "No hay riesgo, es conveniente",
+            "Las alertas de seguridad pueden perderse entre muchos correos de marketing",
+            "Solo es riesgoso si recibes muchos correos",
+            "Único riesgo es que se llene el buzón"
+        ],
+        "correctIndex": 1,
+        "explanation": "Un correo dedicado para seguridad ensures que no te pierdas alertas importantes entre cientos de newsletters.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses4_l4"
+    },
+    {
+        "id": "ac_st5_qB5_023",
+        "question": "Que es el monitoreo de cambios en configuración de privacidad?",
+        "type": "multipleChoice",
+        "options": [
+            "Es cuando cambias tu contraseña",
+            "Es cuando un servicio detecta si alguien modifica la configuración de privacidad de tus cuentas",
+            "Es una red social",
+            "Es una actualización de sistema"
+        ],
+        "correctIndex": 1,
+        "explanation": "Si alguien cambia tu configuración de privacidad a 'público', podría exponer tus datos. Este monitoreo te alerta.",
+        "difficulty": 3,
+        "lessonId": "ac_s5_ses4_l5"
+    },
+    {
+        "id": "ac_st5_qB5_024",
+        "question": "Cual es la importancia de las alertas de expiración de certificados en sitios web?",
+        "type": "multipleChoice",
+        "options": [
+            "No importa, son solo para programadores",
+            "Si un certificado expira, el sitio podría ser inseguro o no funcionar correctamente",
+            "Solo son importantes para empresas",
+            "No hay diferencia"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los certificados SSL/TLS caducados pueden dejar de cifrar correctamente la conexión, exponiendo tus datos.",
+        "difficulty": 3,
+        "lessonId": "ac_s5_ses4_l6"
+    },
+    {
+        "id": "ac_st5_qB5_025",
+        "question": "Por qué es importante configurar alertas de inicio de sesión en cuentas de redes sociales?",
+        "type": "multipleChoice",
+        "options": [
+            "No es importante",
+            "Para detectar accesos no autorizados y proteger tu identidad digital",
+            "Para recibir más notificaciones",
+            "No hay razón"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las redes sociales son objetivos comunes. Las alertas te ayudan a mantener control sobre tu identidad online.",
+        "difficulty": 1,
+        "lessonId": "ac_s5_ses5_l1"
+    },
+    {
+        "id": "ac_st5_qB5_026",
+        "question": "Que es el análisis de comportamiento y cómo detecta fraudes?",
+        "type": "multipleChoice",
+        "options": [
+            "Es cuando analizan tu personalidad",
+            "Es cuando el sistema aprende tu patrón de uso y detecta actividades que no son típicas de ti",
+            "Es una forma de hackear cuentas",
+            "Es una actualización de seguridad"
+        ],
+        "correctIndex": 1,
+        "explanation": "El sistema aprende tus horarios, dispositivos y ubicaciones típicas. Si detecta algo anómalo, te alerta o bloquea la actividad.",
+        "difficulty": 3,
+        "lessonId": "ac_s5_ses5_l2"
+    },
+    {
+        "id": "ac_st5_qB5_027",
+        "question": "Que debes hacer si recibes una alerta de que tu correo apareció en una filtración?",
+        "type": "whatWouldYouDo",
+        "options": [
+            "Ignorarla porque probablemente sea vieja",
+            "Cambiar inmediatamente la contraseña de ese correo y de todas las cuentas que usen ese correo",
+            "Compartir la alerta en redes sociales",
+            "Borrar el correo"
+        ],
+        "correctIndex": 1,
+        "explanation": "Si tu correo fue filtrado, cambia esa contraseña y todas las que sean iguales. Los atacantes probarán esas credenciales.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses5_l3"
+    },
+    {
+        "id": "ac_st5_qB5_028",
+        "question": "Por qué es importante tener un plan de respuesta ante incidentes de seguridad?",
+        "type": "multipleChoice",
+        "options": [
+            "No es importante, nunca te hackearán",
+            "Para actuar rápido y con calma si te hackean, minimizando el daño",
+            "Solo es importante para empresas",
+            "No hay razón"
+        ],
+        "correctIndex": 1,
+        "explanation": "Un plan predefinido te ayuda a saber exactamente qué hacer: a quién contactar, qué contraseñas cambiar, cómo reportar.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses5_l4"
+    },
+    {
+        "id": "ac_st5_qB5_029",
+        "question": "Que es el monitoreo de direcciónes IP maliciosas y cómo te protege?",
+        "type": "multipleChoice",
+        "options": [
+            "Es cuando buscas tu IP en Google",
+            "Es cuando tu firewall o antivirus bloquea conexiones desde IP conocidas por ser maliciosas",
+            "Es una red social",
+            "Es una actualización de seguridad"
+        ],
+        "correctIndex": 1,
+        "explanation": "Mantener actualizada la base de datos de IP maliciosas bloquea automáticamente intentos de acceso desde fuentes peligrosas.",
+        "difficulty": 3,
+        "lessonId": "ac_s5_ses5_l5"
+    },
+    {
+        "id": "ac_st5_qB5_030",
+        "question": "Por qué es crucial no subestimar las alertas de seguridad, aunque parezcan falsas alarmas?",
+        "type": "detectRisk",
+        "options": [
+            "Porque siempre son falsas alarmas",
+            "Porque los atacantes a veces prueban con ataques pequeños antes de uno grande",
+            "Solo es importante si tienes mucho dinero",
+            "No hay razón"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los atacantes a veces usan 'pruebas' para ver si estás atento. Una alerta que ignoras podría ser el inicio de un ataque mayor.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses5_l6"
+    }
+]

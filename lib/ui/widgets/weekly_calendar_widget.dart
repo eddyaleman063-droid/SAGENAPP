@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
+import 'package:sagen/core/theme/app_colors.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 
 class WeeklyCalendarWidget extends StatelessWidget {
@@ -25,7 +26,8 @@ class WeeklyCalendarWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
     final now = DateTime.now();
-    final startOfWeek = now.subtract(Duration(days: now.weekday - 1));
+    final today = DateTime(now.year, now.month, now.day);
+    final startOfWeek = today.subtract(Duration(days: today.weekday - 1));
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -34,9 +36,9 @@ class WeeklyCalendarWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: List.generate(7, (i) {
             final date = startOfWeek.add(Duration(days: i));
-            final key = date.toIso8601String().substring(0, 10);
+            final key = '${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
             final isCompleted = weekDays[key] ?? false;
-            final isToday = date.day == now.day && date.month == now.month && date.year == now.year;
+            final isToday = date.year == today.year && date.month == today.month && date.day == today.day;
 
             return _DayCircle(
               label: dayLabels(l)[i],
@@ -50,11 +52,8 @@ class WeeklyCalendarWidget extends StatelessWidget {
         const SizedBox(height: AppSpacing.md),
         Text(
           l.streakCurrentProgress(currentStreak, streakGoal),
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-            color: isDark ? Colors.white.withValues(alpha: 0.7) : Colors.black87,
-          ),
+          style: AppTextStyle.bodyMd.copyWith(fontWeight: FontWeight.w600,
+            color: context.textSecondary),
         ),
       ],
     );
@@ -96,29 +95,23 @@ class _DayCircle extends StatelessWidget {
                 : null,
           ),
           child: isCompleted
-              ? const Icon(Icons.check, size: 18, color: Colors.white)
+              ? const ExcludeSemantics(
+                  child: Icon(Icons.check, size: 18, color: Colors.white),
+                )
               : Center(
                   child: Text(
                     label,
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: isToday ? FontWeight.bold : FontWeight.normal,
+                    style: AppTextStyle.caption.copyWith(fontWeight: isToday ? FontWeight.bold : FontWeight.normal,
                       color: isToday
                           ? PremiumColors.splashBlue
-                          : isDark
-                              ? Colors.white.withValues(alpha: 0.4)
-                              : Colors.black.withValues(alpha: 0.3),
-                    ),
+                          : context.textTertiary),
                   ),
                 ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: AppSpacing.xxs),
         Text(
           '$dayNumber',
-          style: TextStyle(
-            fontSize: 10,
-            color: isDark ? Colors.white.withValues(alpha: 0.3) : Colors.black.withValues(alpha: 0.25),
-          ),
+          style: AppTextStyle.tiny.copyWith(color: context.textTertiary),
         ),
       ],
     );

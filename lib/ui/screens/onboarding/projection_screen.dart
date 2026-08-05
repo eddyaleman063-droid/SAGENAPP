@@ -1,10 +1,13 @@
-// ignore_for_file: prefer_const_constructors
-
-import 'dart:math' as math;
+﻿import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
+import 'package:sagen/services/experience_service.dart';
+import 'package:sagen/core/theme/app_colors.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
+import 'package:sagen/l10n/app_localizations.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 class ProjectionScreen extends StatefulWidget {
   final VoidCallback? onContinue;
@@ -29,17 +32,18 @@ class _ProjectionScreenState extends State<ProjectionScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      HapticFeedback.lightImpact();
+      ExperienceService.instance.lightHaptic();
     });
   }
 
   void _onTapDown(TapDownDetails _) {
     setState(() => _isPressed = true);
-    HapticFeedback.mediumImpact();
+    ExperienceService.instance.mediumHaptic();
   }
 
   void _onTapUp(TapUpDetails _) {
     setState(() => _isPressed = false);
+    HapticFeedback.lightImpact();
     widget.onContinue?.call();
   }
 
@@ -50,6 +54,7 @@ class _ProjectionScreenState extends State<ProjectionScreen> {
   @override
   Widget build(BuildContext context) {
     final dark = Theme.of(context).brightness == Brightness.dark;
+    final l = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: dark ? PremiumColors.deepBackground : PremiumColors.lightBg,
       body: SafeArea(
@@ -59,24 +64,31 @@ class _ProjectionScreenState extends State<ProjectionScreen> {
             children: [
               // ── Header ──
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxs, vertical: AppSpacing.sm),
                 child: Row(
                   children: [
-                    IconButton(
-                      icon: Icon(
-                        Icons.arrow_back,
-                        color: dark ? Colors.white.withValues(alpha: 0.6) : Colors.black54,
+                    Semantics(
+                      button: true,
+                      label: l.backButton,
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.arrow_back,
+                          color: context.textSecondary,
+                        ),
+                        onPressed: () {
+                          ExperienceService.instance.lightHaptic();
+                          (widget.onBack ?? () => context.pop())();
+                        },
+                        tooltip: AppLocalizations.of(context)!.backButton,
                       ),
-                      onPressed:
-                          widget.onBack ?? () => Navigator.pop(context),
                     ),
                     const SizedBox(width: AppSpacing.sm),
                     Expanded(
                       child: Container(
                         height: 12,
                         decoration: BoxDecoration(
-                          color: dark ? Colors.grey[850] : Colors.grey.shade200,
-                          borderRadius: BorderRadius.circular(6),
+                          color: context.surfaceCard,
+                          borderRadius: BorderRadius.circular(AppRadius.xs),
                         ),
                         child: FractionallySizedBox(
                           alignment: Alignment.centerLeft,
@@ -84,7 +96,7 @@ class _ProjectionScreenState extends State<ProjectionScreen> {
                           child: Container(
                             decoration: BoxDecoration(
                               color: PremiumColors.primaryAccent,
-                              borderRadius: BorderRadius.circular(6),
+                              borderRadius: BorderRadius.circular(AppRadius.xs),
                             ),
                           ),
                         ),
@@ -105,33 +117,37 @@ class _ProjectionScreenState extends State<ProjectionScreen> {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Image.asset(
-                        'assets/mascot/emotions/sage_happy_wings.png',
-                        width: 80,
-                        height: 80,
+                      ExcludeSemantics(
+                        child: Image.asset(
+                          'assets/mascot/emotions/sage_happy_wings.png',
+                          width: 80,
+                          height: 80,
+                          cacheWidth: 160,
+                          cacheHeight: 160,
+                          errorBuilder: (_, _, _) => const Icon(Icons.pets, size: 48),
+                        ),
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppSpacing.sm),
                       Expanded(
                         child: Stack(
                           clipBehavior: Clip.none,
                           children: [
                             Container(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 16),
+                                  horizontal: AppSpacing.xl, vertical: AppSpacing.lg),
                               decoration: BoxDecoration(
-                                color: dark ? const Color(0xFF2A3448) : Colors.white,
-                                borderRadius: BorderRadius.circular(16),
+                                color: dark ? PremiumColors.onboardingBubbleDark : Colors.white,
+                                borderRadius: BorderRadius.circular(AppRadius.xl),
                                 border: Border.all(
                                   color: dark
                                       ? Colors.white.withValues(alpha: 0.10)
-                                      : Colors.grey.withValues(alpha: 0.30),
+                                      : context.borderSubtle,
                                 ),
                               ),
                               child: Text(
-                                "¡Esto es lo que dominarás en 3 meses!",
-                                style: TextStyle(
-                                  color: dark ? Colors.white : Colors.black87,
-                                  fontSize: 15,
+                                l.onbProjectionTitle,
+                                style: AppTextStyle.body.copyWith(
+                                  color: context.textPrimary,
                                   height: 1.4,
                                 ),
                               ),
@@ -146,11 +162,11 @@ class _ProjectionScreenState extends State<ProjectionScreen> {
                                     width: 12,
                                     height: 12,
                                     decoration: BoxDecoration(
-                                      color: dark ? const Color(0xFF2A3448) : Colors.white,
+                                      color: dark ? PremiumColors.onboardingBubbleDark : Colors.white,
                                       border: Border.all(
                                         color: dark
                                             ? Colors.white.withValues(alpha: 0.10)
-                                            : Colors.grey.withValues(alpha: 0.30),
+                                            : context.borderSubtle,
                                       ),
                                     ),
                                   ),
@@ -175,26 +191,23 @@ class _ProjectionScreenState extends State<ProjectionScreen> {
                   children: [
                     _BenefitItem(
                       icon: Icons.shield,
-                      iconColor: const Color(0xFF9B59B6),
-                      title: "Navega con inmunidad",
-                      subtitle:
-                          "Detecta estafas, links maliciosos y phishing antes de dar un solo clic.",
+                      iconColor: PremiumColors.onboardingPurple,
+                      title: l.projectionBenefit1Title,
+                      subtitle: l.projectionBenefit1Subtitle,
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: AppSpacing.xxl),
                     _BenefitItem(
                       icon: Icons.fingerprint,
-                      iconColor: const Color(0xFF00BCD4),
-                      title: "Blinda tus cuentas",
-                      subtitle:
-                          "Protege tus redes y cuentas de videojuegos contra hackeos y robos.",
+                      iconColor: PremiumColors.onboardingAccentCyan,
+                      title: l.projectionBenefit2Title,
+                      subtitle: l.projectionBenefit2Subtitle,
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: AppSpacing.xxl),
                     _BenefitItem(
                       icon: Icons.bolt,
-                      iconColor: const Color(0xFFFFA726),
-                      title: "Forja una mentalidad hacker",
-                      subtitle:
-                          "Recordatorios estratégicos, retos diarios y tácticas de defensa digital.",
+                      iconColor: PremiumColors.onboardingAccentOrange,
+                      title: l.projectionBenefit3Title,
+                      subtitle: l.projectionBenefit3Subtitle,
                     ),
                   ],
                 ),
@@ -206,38 +219,41 @@ class _ProjectionScreenState extends State<ProjectionScreen> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(
                     AppSpacing.xxl, 0, AppSpacing.xxl, AppSpacing.xxl),
-                child: GestureDetector(
-                  onTapDown: _onTapDown,
-                  onTapUp: _onTapUp,
-                  onTapCancel: _onTapCancel,
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 80),
-                    transform: _isPressed
-                        ? Matrix4.translationValues(0, 4, 0)
-                        : Matrix4.identity(),
-                    height: 54,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: PremiumColors.primaryAccent,
-                      borderRadius: BorderRadius.circular(16),
+                child: Semantics(
+                  button: true,
+                  label: l.continueText,
+                  child: GestureDetector(
+                    onTapDown: _onTapDown,
+                    onTapUp: _onTapUp,
+                    onTapCancel: _onTapCancel,
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 80),
+                      transform: _isPressed
+                          ? Matrix4.translationValues(0, 4, 0)
+                          : Matrix4.identity(),
+                      height: 54,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: PremiumColors.primaryAccent,
+                      borderRadius: BorderRadius.circular(AppRadius.xl),
                       boxShadow: _isPressed
-                          ? []
-                          : [
-                              BoxShadow(
-                                color: PremiumColors.primaryDark,
-                                offset: const Offset(0, 4),
-                                blurRadius: 0,
-                              ),
-                            ],
-                    ),
-                    child: Center(
-                      child: Text(
-                        'CONTINUAR',
-                        style: TextStyle(
-                          color: dark ? Colors.white : Colors.black87,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 1.5,
+                            ? []
+                            : [
+                                const BoxShadow(
+                                  color: PremiumColors.primaryDark,
+                                  offset: Offset(0, 4),
+                                  blurRadius: 0,
+                                ),
+                              ],
+                      ),
+                      child: Center(
+                        child: Text(
+                          AppLocalizations.of(context)!.continueText,
+                          style: AppTextStyle.titleSmall.copyWith(
+                            color: context.textPrimary,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 1.5,
+                          ),
                         ),
                       ),
                     ),
@@ -245,7 +261,7 @@ class _ProjectionScreenState extends State<ProjectionScreen> {
                 ),
               ),
             ],
-          ),
+          ).animate().fadeIn().slideY(begin: 0.05),
         ),
       ),
     );
@@ -267,7 +283,6 @@ class _BenefitItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dark = Theme.of(context).brightness == Brightness.dark;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -276,30 +291,28 @@ class _BenefitItem extends StatelessWidget {
           height: 40,
           decoration: BoxDecoration(
             color: iconColor.withValues(alpha: 0.15),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppRadius.md),
           ),
           child: Icon(icon, color: iconColor, size: 28),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: AppSpacing.lg),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 title,
-                style: TextStyle(
-                  color: dark ? Colors.white : Colors.black87,
-                  fontSize: 16,
+                style: AppTextStyle.titleSmall.copyWith(
+                  color: context.textPrimary,
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: AppSpacing.xxs),
               Text(
                 subtitle,
                 softWrap: true,
-                style: TextStyle(
-                  color: dark ? Colors.white.withValues(alpha: 0.60) : Colors.black54,
-                  fontSize: 14,
+                style: AppTextStyle.bodyMd.copyWith(
+                  color: context.textSecondary,
                   fontWeight: FontWeight.w400,
                 ),
               ),

@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:sagen/models/chat_message.dart';
 import 'package:sagen/services/sage_prompt_builder.dart';
 
@@ -17,9 +16,9 @@ void main() {
       ];
       final contents = builder.buildContents(messages);
       expect(contents.length, 1);
-      expect(contents[0].role, 'user');
-      expect(contents[0].parts, hasLength(1));
-      expect((contents[0].parts[0] as TextPart).text, 'Hello');
+      expect(contents[0]['role'], 'user');
+      expect(contents[0]['parts'], hasLength(1));
+      expect(contents[0]['parts'][0]['text'], 'Hello');
     });
 
     test('buildContents maps assistant message to model role', () {
@@ -27,8 +26,8 @@ void main() {
         ChatMessage(role: ChatRole.assistant, text: 'Hi there', time: DateTime.now()),
       ];
       final contents = builder.buildContents(messages);
-      expect(contents[0].role, 'model');
-      expect((contents[0].parts[0] as TextPart).text, 'Hi there');
+      expect(contents[0]['role'], 'model');
+      expect(contents[0]['parts'][0]['text'], 'Hi there');
     });
 
     test('buildContents preserves message order', () {
@@ -39,10 +38,10 @@ void main() {
       ];
       final contents = builder.buildContents(messages);
       expect(contents.length, 3);
-      expect(contents[0].role, 'user');
-      expect((contents[0].parts[0] as TextPart).text, 'Q1');
-      expect(contents[1].role, 'model');
-      expect(contents[2].role, 'user');
+      expect(contents[0]['role'], 'user');
+      expect(contents[0]['parts'][0]['text'], 'Q1');
+      expect(contents[1]['role'], 'model');
+      expect(contents[2]['role'], 'user');
     });
 
     test('buildContents handles empty list', () {
@@ -50,13 +49,11 @@ void main() {
       expect(contents, isEmpty);
     });
 
-    test('buildSystemInstruction returns Content with Sage system prompt', () {
+    test('buildSystemInstruction returns string with Sage system prompt', () {
       final instruction = builder.buildSystemInstruction();
-      expect(instruction.role, 'system');
-      expect(instruction.parts, hasLength(1));
-      final text = (instruction.parts[0] as TextPart).text;
-      expect(text, contains('Eres Sage'));
-      expect(text, contains('SAGEN'));
+      expect(instruction, isA<String>());
+      expect(instruction, contains('Sage'));
+      expect(instruction, contains('SAGEN'));
     });
   });
 }

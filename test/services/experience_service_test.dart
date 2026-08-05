@@ -21,7 +21,7 @@ void main() {
       SharedPreferences.setMockInitialValues({'reduce_animations': true});
       await ExperienceService.instance.init();
       final duration = ExperienceService.instance.normal;
-      expect(duration.inMilliseconds, 0);
+      expect(duration, Duration.zero);
     });
     test('provides all animation duration getters', () {
       expect(ExperienceService.instance.fast, isNotNull);

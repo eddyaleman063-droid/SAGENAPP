@@ -1,0 +1,442 @@
+[
+    {
+        "id": "ac_st1_qB7_001",
+        "question": "Que es una cuenta digital?",
+        "type": "trueFalse",
+        "options": [
+            "Verdadero",
+            "Falso"
+        ],
+        "correctIndex": 0,
+        "explanation": "Una cuenta digital es un acceso online a servicios o plataformas.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses1_l1"
+    },
+    {
+        "id": "ac_st1_qB7_002",
+        "question": "Cual es una carácteristica de una cuenta segura?",
+        "type": "multipleChoice",
+        "options": [
+            "Usar la misma contraseña para todo",
+            "Tener una contraseña fuerte y única",
+            "No usar verificación en dos pasos",
+            "Compartir la contraseña con amigos"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las cuentas seguras usan contraseñas fuertes y únicas.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses1_l2"
+    },
+    {
+        "id": "ac_st1_qB7_003",
+        "question": "Completa: Una cuenta en linea se accede desde...",
+        "type": "completePhrase",
+        "options": [
+            "Internet",
+            "Solo desde una computadora",
+            "Sin conexión",
+            "Solo en la tienda"
+        ],
+        "correctIndex": 0,
+        "explanation": "Las cuentas en linea se acceden a traves de internet.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses1_l3"
+    },
+    {
+        "id": "ac_st1_qB7_004",
+        "question": "Que servicio digital usas para enviar correos electrónicos?",
+        "type": "multipleChoice",
+        "options": [
+            "Banco",
+            "Correo electrónico (Gmail, Outlook)",
+            "Tienda",
+            "Red social"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los servicios de correo electrónico permiten enviar y recibir mensajes.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses1_l4"
+    },
+    {
+        "id": "ac_st1_qB7_005",
+        "question": "Cuales son elementos básicos de una cuenta segura?",
+        "type": "multipleChoice",
+        "options": [
+            "Contraseña debil y sin verificación",
+            "Contraseña fuerte, verificación en dos pasos y pregunta de seguridad",
+            "Solo el nombre de usuario",
+            "Compartir la clave con familiares"
+        ],
+        "correctIndex": 1,
+        "explanation": "Una cuenta segura necesita contraseña fuerte, 2FA y pregunta de seguridad.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses1_l5"
+    },
+    {
+        "id": "ac_st1_qB7_006",
+        "question": "Que es la verificación en dos pasos básica?",
+        "type": "trueFalse",
+        "options": [
+            "Verdadero",
+            "Falso"
+        ],
+        "correctIndex": 0,
+        "explanation": "La verificación en dos pasos agrega una capa extra de seguridad.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses1_l6"
+    },
+    {
+        "id": "ac_st1_qB7_007",
+        "question": "Cual es un ejemplo de cuenta de correo electrónico?",
+        "type": "multipleChoice",
+        "options": [
+            "Facebook",
+            "Gmail",
+            "Netflix",
+            "WhatsApp"
+        ],
+        "correctIndex": 1,
+        "explanation": "Gmail es un servicio de correo electrónico de Google.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses2_l1"
+    },
+    {
+        "id": "ac_st1_qB7_008",
+        "question": "Que es una red social?",
+        "type": "multipleChoice",
+        "options": [
+            "Un banco en linea",
+            "Una plataforma para conectar con personas",
+            "Una tienda online",
+            "Un servicio de correo"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las redes sociales permiten conectar y compartir con otros usuarios.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses2_l2"
+    },
+    {
+        "id": "ac_st1_qB7_009",
+        "question": "Cual es un servicio bancario digital en Peru?",
+        "type": "multipleChoice",
+        "options": [
+            "Netflix",
+            "BCP Banca por Internet",
+            "YouTube",
+            "Instagram"
+        ],
+        "correctIndex": 1,
+        "explanation": "BCP ofrece servicios bancarios a traves de su plataforma digital.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses2_l3"
+    },
+    {
+        "id": "ac_st1_qB7_010",
+        "question": "Que app de streaming es popular en Peru?",
+        "type": "multipleChoice",
+        "options": [
+            "Banco de la Nación",
+            "Netflix",
+            " SUNAT",
+            "DNI electrónico"
+        ],
+        "correctIndex": 1,
+        "explanation": "Netflix es una de las plataformas de streaming mas usadas en el pais.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses2_l4"
+    },
+    {
+        "id": "ac_st1_qB7_011",
+        "question": "Como puedes identificar todas tus cuentas activas?",
+        "type": "multipleChoice",
+        "options": [
+            "No es necesario",
+            "Revisar tu correo para buscar registros de creacion",
+            "Preguntar a amigos",
+            "Adivinar"
+        ],
+        "correctIndex": 1,
+        "explanation": "Tu correo tiene registros de creacion de cuentas en diferentes servicios.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses2_l5"
+    },
+    {
+        "id": "ac_st1_qB7_012",
+        "question": "Que significa navegar de forma segura en internet?",
+        "type": "trueFalse",
+        "options": [
+            "Verdadero",
+            "Falso"
+        ],
+        "correctIndex": 0,
+        "explanation": "Navegar seguro implica verificar sitios y no hacer clic en enlaces sospechosos.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses2_l6"
+    },
+    {
+        "id": "ac_st1_qB7_013",
+        "question": "Por que es peligroso usar contraseñas debiles?",
+        "type": "multipleChoice",
+        "options": [
+            "Son faciles de recordar",
+            "Son faciles de adivinar por atacantes",
+            "No tienen ningun problema",
+            "Son obligatorias"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las contraseñas debiles son faciles de descifrar con ataques automatizados.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses3_l1"
+    },
+    {
+        "id": "ac_st1_qB7_014",
+        "question": "Que problema tiene reusar la misma contraseña?",
+        "type": "multipleChoice",
+        "options": [
+            "Ninguno",
+            "Si una cuenta es hackeada, todas estan en riesgo",
+            "Es mas facil de recordar",
+            "No hay diferencia"
+        ],
+        "correctIndex": 1,
+        "explanation": "Reusar contraseñas pone en riesgo todas las cuentas si una es filtrada.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses3_l2"
+    },
+    {
+        "id": "ac_st1_qB7_015",
+        "question": "Que es la falta de verificación en dos pasos (2FA)?",
+        "type": "multipleChoice",
+        "options": [
+            "Una buena práctica",
+            "Un riesgo de seguridad que deja tu cuenta mas vulnerable",
+            "Una opción obligatoria",
+            "Nada importante"
+        ],
+        "correctIndex": 1,
+        "explanation": "Sin 2FA, tu cuenta depende solo de la contraseña, lo que es mas inseguro.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses3_l3"
+    },
+    {
+        "id": "ac_st1_qB7_016",
+        "question": "Por que no debes compartir tu DNI en redes sociales?",
+        "type": "multipleChoice",
+        "options": [
+            "No importa",
+            "Puede ser usado para robo de identidad",
+            "Es información publica",
+            "Solo si es en privado"
+        ],
+        "correctIndex": 1,
+        "explanation": "Tu DNI es información sensible que puede ser usada para suplantar tu identidad.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses3_l4"
+    },
+    {
+        "id": "ac_st1_qB7_017",
+        "question": "Por que es importante leer los terminos y condiciones?",
+        "type": "multipleChoice",
+        "options": [
+            "No es necesario",
+            "Para entender que datos recopila el servicio",
+            "Porque es obligatorio",
+            "Nunca cambian"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los terminos explican como se usan y protegen tus datos personales.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses3_l5"
+    },
+    {
+        "id": "ac_st1_qB7_018",
+        "question": "Que es la privacidad en buscadores?",
+        "type": "trueFalse",
+        "options": [
+            "Verdadero",
+            "Falso"
+        ],
+        "correctIndex": 0,
+        "explanation": "Configurar la privacidad en buscadores reduce el rastreo de tu actividad.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses3_l6"
+    },
+    {
+        "id": "ac_st1_qB7_019",
+        "question": "Que información no debes compartir en internet?",
+        "type": "multipleChoice",
+        "options": [
+            "Tu nombre",
+            "Tu número de tarjeta de credito y DNI",
+            "Tu color favorito",
+            "El nombre de tu mascota"
+        ],
+        "correctIndex": 1,
+        "explanation": "Datos financieros y de identificación nunca deben compartirse publicamente.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses4_l1"
+    },
+    {
+        "id": "ac_st1_qB7_020",
+        "question": "Como puedes configurar quien ve tu perfil en redes sociales?",
+        "type": "multipleChoice",
+        "options": [
+            "No se puede",
+            "Ajustar la configuración de privacidad de la plataforma",
+            "Compartir con todos",
+            "No hay opciónes"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las redes sociales tienen ajustes de privacidad para controlar la visibilidad.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses4_l2"
+    },
+    {
+        "id": "ac_st1_qB7_021",
+        "question": "Cuales son ajustes de privacidad esenciales?",
+        "type": "multipleChoice",
+        "options": [
+            "Perfil publico por defecto",
+            "Configurar quién puede ver tus publicaciones y datos personales",
+            "No usar contraseña",
+            "Compartir ubicacion en tiempo real"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los ajustes esenciales incluyen controlar la visibilidad de tu perfil y publicaciones.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses4_l3"
+    },
+    {
+        "id": "ac_st1_qB7_022",
+        "question": "Que información nunca debes publicar en redes?",
+        "type": "multipleChoice",
+        "options": [
+            "Fotos de paisajes",
+            "Tu dirección exacta, número de telefono y documentos",
+            "Recetas de cocina",
+            "Opinion sobre peliculas"
+        ],
+        "correctIndex": 1,
+        "explanation": "Información personal sensible como dirección y documentos puede ser usada mal.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses4_l4"
+    },
+    {
+        "id": "ac_st1_qB7_023",
+        "question": "Que son las fotos y etiquetas en redes sociales?",
+        "type": "multipleChoice",
+        "options": [
+            "No son importantes",
+            "Pueden revelar tu ubicacion e información personal",
+            "Solo son para diversión",
+            "No tienen riesgo"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las fotos y etiquetas pueden mostrar tu ubicacion y rutinas a desconocidos.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses4_l5"
+    },
+    {
+        "id": "ac_st1_qB7_024",
+        "question": "Que son las apps de seguridad recomendadas?",
+        "type": "multipleChoice",
+        "options": [
+            "Apps de juegos",
+            "Herramientas que protegen tus cuentas y dispositivos",
+            "Apps de compras",
+            "Redes sociales"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las apps de seguridad incluyen gestores de contraseñas y autenticadores.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses4_l6"
+    },
+    {
+        "id": "ac_st1_qB7_025",
+        "question": "Que es la identidad digital?",
+        "type": "multipleChoice",
+        "options": [
+            "Tu apariencia fisica",
+            "La información que publicas de ti en internet",
+            "Tu documento de identidad",
+            "Tu nombre real"
+        ],
+        "correctIndex": 1,
+        "explanation": "Tu identidad digital es como te perciben en el mundo virtual.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses5_l1"
+    },
+    {
+        "id": "ac_st1_qB7_026",
+        "question": "Como se construye tu identidad digital con tus cuentas?",
+        "type": "multipleChoice",
+        "options": [
+            "No tiene relación",
+            "A traves de tus publicaciones, interacciones y perfil en cada cuenta",
+            "Solo con tu nombre",
+            "Con tu dirección"
+        ],
+        "correctIndex": 1,
+        "explanation": "Cada interaccion en tus cuentas contribuye a tu reputacion digital.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses5_l2"
+    },
+    {
+        "id": "ac_st1_qB7_027",
+        "question": "Que es la reputacion en linea?",
+        "type": "multipleChoice",
+        "options": [
+            "Tu puntaje en un juego",
+            "Como te perciben otros usuarios en internet",
+            "Tu número de seguidores",
+            "Tu dirección de correo"
+        ],
+        "correctIndex": 1,
+        "explanation": "La reputacion en linea es la imagen que proyectas ante los demas en la red.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses5_l3"
+    },
+    {
+        "id": "ac_st1_qB7_028",
+        "question": "Cual es la diferencia entre identidad digital e identidad real?",
+        "type": "multipleChoice",
+        "options": [
+            "Son lo mismo",
+            "La digital es como te ven en internet, la real es tu persona fisica",
+            "La digital es mas importante",
+            "La real no importa"
+        ],
+        "correctIndex": 1,
+        "explanation": "Tu identidad digital puede ser diferente a tu persona real en el mundo fisico.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses5_l4"
+    },
+    {
+        "id": "ac_st1_qB7_029",
+        "question": "Como construir una identidad digital positiva?",
+        "type": "multipleChoice",
+        "options": [
+            "Publicar cualquier cosa",
+            "Compartir contenido respetuoso y cuidar tu privacidad",
+            "No usar redes sociales",
+            "Seguir a todos"
+        ],
+        "correctIndex": 1,
+        "explanation": "Una identidad positiva se construye con contenido respetuoso y buenas prácticas.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses5_l5"
+    },
+    {
+        "id": "ac_st1_qB7_030",
+        "question": "Que es la evaluacion de riesgos digitales?",
+        "type": "trueFalse",
+        "options": [
+            "Verdadero",
+            "Falso"
+        ],
+        "correctIndex": 0,
+        "explanation": "Evaluar riesgos te ayuda a identificar vulnerabilidades en tus cuentas y dispositivos.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses5_l6"
+    }
+]

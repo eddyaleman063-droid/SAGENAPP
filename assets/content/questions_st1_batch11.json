@@ -1,0 +1,452 @@
+[
+    {
+        "id": "ac_st1_qB11_001",
+        "question": "Que es una cuenta digital y por que necesitas crear una con seguridad?",
+        "type": "multipleChoice",
+        "options": [
+            "Es una cuenta de banco tradicional",
+            "Es una cuenta en servicios como correo, redes sociales o bancos digitales que necesitas proteger con contraseñas seguras",
+            "Es un tipo de juego online",
+            "Es una tarjeta de credito"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las cuentas digitales son puertas de acceso a tu vida online; protegerlas es fundamental.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses1_l1"
+    },
+    {
+        "id": "ac_st1_qB11_002",
+        "question": "Cuales son los riesgos mas comunes de tener cuentas digitales sin protección?",
+        "type": "multipleChoice",
+        "options": [
+            "No hay riesgos, todo es seguro",
+            "Robo de identidad, fraude financiero, pérdida de datos personales y suplantacion de identidad",
+            "Solo perder fotos",
+            "Solo perder contactos"
+        ],
+        "correctIndex": 1,
+        "explanation": "Sin protección, tus cuentas son vulnerables a robos, fraudes y suplantacion de identidad.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses1_l2"
+    },
+    {
+        "id": "ac_st1_qB11_003",
+        "question": "Que es la privacidad digital y porque es importante?",
+        "type": "multipleChoice",
+        "options": [
+            "Es no tener internet",
+            "Es controlar que información tuya esta disponible en internet y quien puede acceder a ella",
+            "Es usar redes sociales todo el dia",
+            "Es compartir todo en internet"
+        ],
+        "correctIndex": 1,
+        "explanation": "La privacidad digital te permite decidir que información compartes y con quien.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses2_l1"
+    },
+    {
+        "id": "ac_st1_qB11_004",
+        "question": "Que es la identidad digital y como protegerla?",
+        "type": "multipleChoice",
+        "options": [
+            "Es tu nombre en redes sociales",
+            "Es la información que te representa en internet; protegela con contraseñas seguras, 2FA y limitando lo que compartes",
+            "Es tu número de telefono",
+            "Es tu dirección de casa"
+        ],
+        "correctIndex": 1,
+        "explanation": "Tu identidad digital incluye toda tu información online; protegerla evita suplantacion y robos.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses2_l2"
+    },
+    {
+        "id": "ac_st1_qB11_005",
+        "question": "Que es la huella digital y que información deja?",
+        "type": "multipleChoice",
+        "options": [
+            "Es una marca fisica en tu celular",
+            "Es el rastro de información que dejas al usar internet: busquedas, publicaciones, compras, ubicaciones",
+            "Es tu foto de perfil",
+            "Es tu número de DNI"
+        ],
+        "correctIndex": 1,
+        "explanation": "Tu huella digital incluye todo lo que haces online, desde busquedas hasta compras.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses3_l1"
+    },
+    {
+        "id": "ac_st1_qB11_006",
+        "question": "Por que es importante controlar tu huella digital?",
+        "type": "multipleChoice",
+        "options": [
+            "Para que todos te conozcan",
+            "Porque la información que dejas puede ser usada para robarte identidad, hackear tus cuentas o estafarte",
+            "Para ganar seguidores",
+            "No es importante"
+        ],
+        "correctIndex": 1,
+        "explanation": "Tu huella digital puede ser explotada por atacantes para robar tu identidad o hackear tus cuentas.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses3_l2"
+    },
+    {
+        "id": "ac_st1_qB11_007",
+        "question": "Que son los datos sensibles y por que debes protegerlos especialmente?",
+        "type": "multipleChoice",
+        "options": [
+            "Son datos que todos pueden ver",
+            "Son información como DNI, datos bancarios, contraseñas y salud que si son comprometidos pueden causar daños graves",
+            "Son datos que no son importantes",
+            "Son solo fotos"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los datos sensibles pueden causar pérdidas economicas, robo de identidad o daños personales si son comprometidos.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses4_l1"
+    },
+    {
+        "id": "ac_st1_qB11_008",
+        "question": "Que debes hacer si recibes un correo sospechoso de un banco?",
+        "type": "whatWouldYouDo",
+        "options": [
+            "Hacer clic en el enlace para ver que es",
+            "Ignorar el correo, no hacer clic en enlaces, y llamar al banco directamente por su número oficial",
+            "Reenviar el correo a todos tus contactos",
+            "Responder con tus datos"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los correos de phishing intentan robar tus datos. Nunca hagas clic; llama al banco directamente.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses5_l1"
+    },
+    {
+        "id": "ac_st1_qB11_009",
+        "question": "Que es la verificación telefonica y por que es importante para la seguridad?",
+        "type": "multipleChoice",
+        "options": [
+            "Es llamar a amigos para conversar",
+            "Es un metodo donde el servicio te llama o envia un SMS para verificar tu identidad antes de permitir cambios importantes en tu cuenta",
+            "Es hacer videollamadas",
+            "Es usar el celular para jugar"
+        ],
+        "correctIndex": 1,
+        "explanation": "La verificación telefonica añade una capa extra de seguridad al confirmar que eres tu.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses6_l1"
+    },
+    {
+        "id": "ac_st1_qB11_010",
+        "question": "Que es la seguridad en linea y por que es diferente a la seguridad fisica?",
+        "type": "multipleChoice",
+        "options": [
+            "Es lo mismo que cerrar la puerta de tu casa",
+            "Es proteger tus dispositivos, cuentas y datos en internet; es diferente porque los ataques pueden venir de cualquier lugar del mundo sin que lo veas",
+            "Es usar candados digitales",
+            "Es tener un perro guardián virtual"
+        ],
+        "correctIndex": 1,
+        "explanation": "La seguridad en linea protege de amenazas invisibles que pueden venir de cualquier parte del mundo.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses6_l2"
+    },
+    {
+        "id": "ac_st1_qB11_011",
+        "question": "Que son las notificaciones de seguridad y por que debes leerlas?",
+        "type": "multipleChoice",
+        "options": [
+            "Son publicidad que puedes ignorar",
+            "Son avisos de tus servicios (correo, banco, redes sociales) sobre actividad sospechosa, cambios en configuración o actualizaciones de seguridad",
+            "Son recordatorios de cumpleaños",
+            "Son mensajes de entretenimiento"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las notificaciones de seguridad te alertan sobre actividad sospechosa que debes atender.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses7_l1"
+    },
+    {
+        "id": "ac_st1_qB11_012",
+        "question": "Que son los dispositivos vinculados a tu cuenta y porque debes revisarlos?",
+        "type": "multipleChoice",
+        "options": [
+            "Son celulares que compraste",
+            "Son todos los dispositivos (celulares, computadoras, tablets) que tienen acceso a tu cuenta; revisarlos te ayuda a detectar accesos no autorizados",
+            "Son redes WiFi",
+            "Son apps de tu celular"
+        ],
+        "correctIndex": 1,
+        "explanation": "Revisar dispositivos vinculados te ayuda a detectar si alguien accede a tu cuenta sin tu permiso.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses8_l1"
+    },
+    {
+        "id": "ac_st1_qB11_013",
+        "question": "Que debes hacer si ves un dispositivo que no reconoces en tu lista de dispositivos vinculados?",
+        "type": "whatWouldYouDo",
+        "options": [
+            "Ignorar el dispositivo",
+            "Cerrar sesión en ese dispositivo inmediatamente y cambiar tu contraseña",
+            "Compartir tu contraseña con el dispositivo",
+            "Eliminar tu cuenta"
+        ],
+        "correctIndex": 1,
+        "explanation": "Cierra sesión en el dispositivo desconocido y cambia tu contraseña para proteger tu cuenta.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses8_l2"
+    },
+    {
+        "id": "ac_st1_qB11_014",
+        "question": "Que es una copia de seguridad (backup) y por que debes hacerla regularmente?",
+        "type": "multipleChoice",
+        "options": [
+            "Es una copia de tus contraseñas en papel",
+            "Es una copia de tus datos importantes que te permite recuperarlos si pierdes tu dispositivo o es danado",
+            "Es una forma de compartir archivos",
+            "Es un tipo de antivirus"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los backups te permiten recuperar tus datos importantes en caso de pérdida o daño de tu dispositivo.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses9_l1"
+    },
+    {
+        "id": "ac_st1_qB11_015",
+        "question": "Que debes hacer antes de cerrar sesión en un dispositivo compartido o publico?",
+        "type": "multipleChoice",
+        "options": [
+            "No hacer nada, la sesión se cierra sola",
+            "Cerrar sesión explicitamente, borrar el historial del navegador y asegurarte de que no quedan datos guardados",
+            "Apagar el dispositivo",
+            "Dejar la sesión abierta para la proxima persona"
+        ],
+        "correctIndex": 1,
+        "explanation": "Cerrar sesión y borrar historial evita que la proxima persona acceda a tu cuenta.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses10_l1"
+    },
+    {
+        "id": "ac_st1_qB11_016",
+        "question": "Por que es importante cerrar sesión en dispositivos que no son tuyos?",
+        "type": "multipleChoice",
+        "options": [
+            "Para que el dispositivo funcione mejor",
+            "Para evitar que la proxima persona que use el dispositivo pueda acceder a tus cuentas",
+            "Para ahorrar bateria",
+            "No es importante"
+        ],
+        "correctIndex": 1,
+        "explanation": "Cerrar sesión protege tus cuentas de accesos no autorizados en dispositivos compartidos.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses10_l2"
+    },
+    {
+        "id": "ac_st1_qB11_017",
+        "question": "Que son las actualizaciones de seguridad y por que son importantes?",
+        "type": "multipleChoice",
+        "options": [
+            "Son cambios de color de pantalla",
+            "Son parches que corrigen vulnerabilidades de seguridad en tus dispositivos y apps, making mas dificil que los atacantes te hackeen",
+            "Son apps nuevas que se instalan",
+            "Son cambios de idioma"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las actualizaciones corrigen fallas de seguridad que los atacantes podrian explotar.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses11_l1"
+    },
+    {
+        "id": "ac_st1_qB11_018",
+        "question": "Que debes hacer si no puedes actualizar tu dispositivo porque no tiene suficiente espacio?",
+        "type": "whatWouldYouDo",
+        "options": [
+            "No hacer nada, la actualización no es importante",
+            "Liberar espacio eliminando apps que no usas, fotos viejas o archivos innecesarios, o consultar con soporte técnico",
+            "Comprar un nuevo celular",
+            "Ignorar la actualización"
+        ],
+        "correctIndex": 1,
+        "explanation": "Libera espacio para poder instalar actualizaciones de seguridad importantes.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses11_l2"
+    },
+    {
+        "id": "ac_st1_qB11_019",
+        "question": "Que es el phishing por WhatsApp y como identificarlo?",
+        "type": "multipleChoice",
+        "options": [
+            "Es cuando te envian memes",
+            "Es cuando recibes mensajes con enlaces falsos, ofertas demasiado buenas o suplantando a alguien conocido para robarte datos",
+            "Es cuando te agregan a grupos",
+            "Es cuando cambias tu foto de perfil"
+        ],
+        "correctIndex": 1,
+        "explanation": "El phishing por WhatsApp usa enlaces falsos y suplantacion para robar tus datos.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses12_l1"
+    },
+    {
+        "id": "ac_st1_qB11_020",
+        "question": "Que debes hacer si recibes un enlace sospechoso por WhatsApp?",
+        "type": "whatWouldYouDo",
+        "options": [
+            "Hacer clic para ver que es",
+            "No hacer clic, eliminar el mensaje y si es de un contacto conocido, verificar con ellos por otro medio",
+            "Reenviar el enlace a todos tus contactos",
+            "Poner tu contraseña en el enlace"
+        ],
+        "correctIndex": 1,
+        "explanation": "Nunca hagas clic en enlaces sospechosos; verifica con el remitente por otro medio.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses12_l2"
+    },
+    {
+        "id": "ac_st1_qB11_021",
+        "question": "Que son las extensiones del navegador y por que debes tener cuidado con ellas?",
+        "type": "multipleChoice",
+        "options": [
+            "Son tipos de pantalla",
+            "Son complementos que añaden funcionalidades al navegador; algunas pueden ser maliciosas y robar tu información",
+            "Son tipos de contraseña",
+            "Son redes sociales"
+        ],
+        "correctIndex": 1,
+        "explanation": "Algunas extensiones maliciosas pueden robar tus datos, contraseñas o historial de navegación.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses13_l1"
+    },
+    {
+        "id": "ac_st1_qB11_022",
+        "question": "Cuales son las señales de que una extension del navegador puede ser maliciosa?",
+        "type": "detectRisk",
+        "options": [
+            "Que sea popular",
+            "Que pida permisos excesivos, tenga muchas critiques negativas o sea de un desarrollador desconocido",
+            "Que sea gratis",
+            "Que tenga buena grafica"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las extensiones maliciosas suelen pedir permisos excesivos y tener critiques negativas.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses13_l2"
+    },
+    {
+        "id": "ac_st1_qB11_023",
+        "question": "Que debes hacer antes de instalar una nueva extension en tu navegador?",
+        "type": "multipleChoice",
+        "options": [
+            "Instalarla rápidamente sin revisar",
+            "Investigar al desarrollador, leer critiques, revisar permisos y solo instalar desde tiendas oficiales",
+            "Pedir opinion a todos tus amigos",
+            "No instalar nunca nada"
+        ],
+        "correctIndex": 1,
+        "explanation": "Investigar la extension antes de instalarla reduce el riesgo de instalar algo malicioso.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses13_l3"
+    },
+    {
+        "id": "ac_st1_qB11_024",
+        "question": "Que son las aplicaciones moviles y por que debes ser cuidadoso al instalarlas?",
+        "type": "multipleChoice",
+        "options": [
+            "Son juegos que siempre son seguros",
+            "Son programas para tu celular; algunas pueden contener malware, robar datos o acceder a información sin tu permiso",
+            "Son tipos de contraseña",
+            "Son correos electrónicos"
+        ],
+        "correctIndex": 1,
+        "explanation": "Algunas apps maliciosas pueden comprometer tu seguridad si no son verificadas.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses14_l1"
+    },
+    {
+        "id": "ac_st1_qB11_025",
+        "question": "Donde debes descargar apps para tu celular y por que?",
+        "type": "multipleChoice",
+        "options": [
+            "De cualquier página de internet",
+            "Solo de tiendas oficiales como Google Play o App Store, porque revisan las apps para detectar malware",
+            "De sitios web de terceros",
+            "De redes sociales"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las tiendas oficiales tienen procesos de verificación que reducen el riesgo de malware.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses14_l2"
+    },
+    {
+        "id": "ac_st1_qB11_026",
+        "question": "Que debes revisar en los permisos que solicita una app antes de instalarla?",
+        "type": "multipleChoice",
+        "options": [
+            "No revisar nada, instalar directamente",
+            "Que los permisos sean coherentes con la función de la app (ej: una app de linternas no necesita acceder a tus contactos)",
+            "Solo si la app es gratis",
+            "Solo el tamano de la app"
+        ],
+        "correctIndex": 1,
+        "explanation": "Si una app pide permisos que no tienen sentido para su función, puede ser maliciosa.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses14_l3"
+    },
+    {
+        "id": "ac_st1_qB11_027",
+        "question": "Que es la ingenieria social y como se relacióna con la seguridad digital?",
+        "type": "multipleChoice",
+        "options": [
+            "Es un tipo de ingenieria civil",
+            "Es el uso de técnicas psicologicas para manipular a las personas y que hagan cosas que no deberian, como revelar contraseñas",
+            "Es un tipo de codigo",
+            "Es una forma de crear páginas web"
+        ],
+        "correctIndex": 1,
+        "explanation": "La ingenieria social manipula emociones para engañar y obtener información sensible.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses15_l1"
+    },
+    {
+        "id": "ac_st1_qB11_028",
+        "question": "Cuales son los sentimientos que los estafadores aprovechan para engañarte?",
+        "type": "multipleChoice",
+        "options": [
+            "Felicidad y satisfaccion",
+            "Miedo, urgencia, curiosidad, confianza y generosidad para manipularte",
+            "Aburrimiento",
+            "Indiferencia"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los estafadores usan emociones para que bajes la guardia y caigas en sus trampas.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses15_l2"
+    },
+    {
+        "id": "ac_st1_qB11_029",
+        "question": "Que debes hacer si algo en un mensaje o correo te parece sospechoso?",
+        "type": "whatWouldYouDo",
+        "options": [
+            "Ignorar tu instinto y confiar",
+            "Parar, pensar y verificar la información antes de actuar; consultar con alguien de confianza si no estas seguro",
+            "Actuar rápidamente sin pensar",
+            "Pedir ayuda en redes sociales"
+        ],
+        "correctIndex": 1,
+        "explanation": "Siempre verifica antes de actuar; tu instinto puede salvarte de una estafa.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses15_l3"
+    },
+    {
+        "id": "ac_st1_qB11_030",
+        "question": "Cual es el resumen de las mejores prácticas básicas de seguridad digital?",
+        "type": "multipleChoice",
+        "options": [
+            "No usar internet",
+            "Usar contraseñas seguras, activar 2FA, mantener actualizados tus dispositivos, no hacer clic en enlaces sospechosos y verificar antes de actuar",
+            "Solo usar redes sociales",
+            "Compartir todo en internet"
+        ],
+        "correctIndex": 1,
+        "explanation": "Estas prácticas forman la base de una buena seguridad digital para principiantes.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses15_l4"
+    }
+]

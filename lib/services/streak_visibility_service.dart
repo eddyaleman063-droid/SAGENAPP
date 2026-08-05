@@ -1,5 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// Controls visibility of streak UI elements.
 class StreakVisibilityService {
   static const _key = 'has_completed_daily_streak';
   final SharedPreferences _prefs;

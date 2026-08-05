@@ -1,45 +1,124 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:go_router/go_router.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/l10n/app_localizations.dart';
+import 'package:sagen/services/experience_service.dart';
 import 'package:sagen/ui/widgets/shimmer_loading.dart';
+import 'package:sagen/ui/widgets/common/sage_emotion_widget.dart';
+import 'package:sagen/services/sage_emotion_service.dart';
+import 'package:sagen/core/theme/app_colors.dart';
 
-class UserProfileScreen extends StatelessWidget {
+class UserProfileScreen extends StatefulWidget {
   final String uid;
   const UserProfileScreen({super.key, required this.uid});
 
   @override
+  State<UserProfileScreen> createState() => _UserProfileScreenState();
+}
+
+class _UserProfileScreenState extends State<UserProfileScreen> {
+  int _retryKey = 0;
+
+  @override
   Widget build(BuildContext context) {
-    final dark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: dark ? PremiumColors.deepBackground : PremiumColors.lightBg,
+      backgroundColor: context.surfaceBackground,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_rounded, color: dark ? Colors.white70 : Colors.black54),
-          onPressed: () => Navigator.of(context).pop(),
+        leading: Semantics(
+          button: true,
+          label: AppLocalizations.of(context)!.backButton,
+          child: IconButton(
+            icon: Icon(Icons.arrow_back_rounded, color: context.iconSecondary),
+            onPressed: () {
+              ExperienceService.instance.lightHaptic();
+              context.pop();
+            },
+            tooltip: AppLocalizations.of(context)!.backButton,
+          ),
         ),
       ),
       body: StreamBuilder<DocumentSnapshot>(
-        stream: FirebaseFirestore.instance.collection('users').doc(uid).snapshots(),
+        key: ValueKey(_retryKey),
+        stream: FirebaseFirestore.instance.collection('users').doc(widget.uid).snapshots(),
         builder: (context, snapshot) {
           final l = AppLocalizations.of(context)!;
           if (snapshot.hasError) {
             return Center(
-              child: Text(l.profileError, style: TextStyle(color: dark ? Colors.white54 : Colors.black54)),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const ExcludeSemantics(
+                    child: SageEmotionWidget(emotion: SageEmotion.worried),
+                  ),
+                  const SizedBox(height: AppSpacing.lg),
+                  Text(
+                    l.profileError,
+                    textAlign: TextAlign.center,
+                    style: AppTextStyle.bodyMd.copyWith(
+                      color: context.textTertiary,
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.xxl),
+                  Semantics(
+                    button: true,
+                    label: l.retry,
+                    child: ElevatedButton(
+                      onPressed: () => setState(() => _retryKey++),
+                      child: Text(l.retry),
+                    ),
+                  ),
+                ],
+              ),
             );
           }
           if (!snapshot.hasData || !snapshot.data!.exists) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const ExcludeSemantics(
+                      child: SageEmotionWidget(emotion: SageEmotion.worried),
+                    ),
+                    const SizedBox(height: AppSpacing.lg),
+                    Text(
+                      l.profileError,
+                      textAlign: TextAlign.center,
+                      style: AppTextStyle.bodyMd.copyWith(
+                        color: context.textTertiary,
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.xxl),
+                    Semantics(
+                      button: true,
+                      label: l.backButton,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          ExperienceService.instance.lightHaptic();
+                          context.pop();
+                        },
+                        child: Text(l.backButton),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
             return const _ProfileShimmer();
           }
 
-          final data = snapshot.data!.data() as Map<String, dynamic>;
-          final firstName = data['firstName'] as String? ?? l.profileDefaultFirstName;
-          final lastName = data['lastName'] as String? ?? l.profileDefaultLastName;
-          final totalXp = data['totalXp'] as int? ?? 0;
-          final currentStreak = data['currentStreak'] as int? ?? 0;
-          final level = (totalXp / 100).floor() + 1;
+          final raw = snapshot.data!.data();
+          if (raw == null || raw is! Map<String, dynamic>) return const _ProfileShimmer();
+          final data = raw;
+          final firstName = (data['firstName'] is String) ? data['firstName'] as String : l.profileDefaultFirstName;
+          final lastName = (data['lastName'] is String) ? data['lastName'] as String : l.profileDefaultLastName;
+          final totalXp = (data['learning_total_xp'] is int) ? data['learning_total_xp'] as int : 0;
+          final currentStreak = (data['currentStreak'] is int) ? data['currentStreak'] as int : 0;
+          final level = (data['learning_level'] is int) ? data['learning_level'] as int : (totalXp ~/ 100) + 1;
 
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
@@ -61,9 +140,8 @@ class UserProfileScreen extends StatelessWidget {
                   ),
                   child: Center(
                     child: Text(
-                      '${firstName[0]}${lastName[0]}',
-                      style: const TextStyle(
-                        fontSize: 32,
+                      '${firstName.isNotEmpty ? firstName[0] : '?'}${lastName.isNotEmpty ? lastName[0] : '?'}',
+                      style: AppTextStyle.display.copyWith(
                         fontWeight: FontWeight.bold,
                         color: PremiumColors.splashBlue,
                       ),
@@ -73,10 +151,9 @@ class UserProfileScreen extends StatelessWidget {
                 const SizedBox(height: AppSpacing.lg),
                 Text(
                   '$firstName $lastName',
-                  style: TextStyle(
-                    fontSize: 22,
+                  style: AppTextStyle.headlineMedium.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: dark ? Colors.white : Colors.black87,
+                    color: context.textPrimary,
                   ),
                 ),
                 const SizedBox(height: AppSpacing.xl),
@@ -84,7 +161,7 @@ class UserProfileScreen extends StatelessWidget {
                 _StatRow(label: l.profileTotalXp, value: '$totalXp'),
                 _StatRow(label: l.profileStreak, value: l.streakDays(currentStreak)),
               ],
-            ),
+            ).animate().fadeIn().slideY(begin: 0.05),
           );
         },
       ),
@@ -99,14 +176,13 @@ class _StatRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dark = Theme.of(context).brightness == Brightness.dark;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: TextStyle(fontSize: 15, color: dark ? Colors.white54 : Colors.black54)),
-          Text(value, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: dark ? Colors.white : Colors.black87)),
+          Text(label, style: AppTextStyle.body.copyWith(color: context.textTertiary)),
+          Text(value, style: AppTextStyle.body.copyWith(fontWeight: FontWeight.w600, color: context.textPrimary)),
         ],
       ),
     );

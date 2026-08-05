@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../config/onboarding_wizard_config.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/theme_constants.dart';
+import '../../../providers/providers.dart';
 import '../../../services/experience_service.dart';
 
-class WizardCommitmentTile extends StatelessWidget {
+class WizardCommitmentTile extends ConsumerWidget {
   final WizardOption option;
   final bool isSelected;
   final VoidCallback onTap;
@@ -17,7 +19,7 @@ class WizardCommitmentTile extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final cs = Theme.of(context).colorScheme;
     final textPrimary = context.textPrimary;
     final textSecondary = cs.onSurface.withValues(alpha: 0.7);
@@ -25,10 +27,17 @@ class WizardCommitmentTile extends StatelessWidget {
     final cardBorder = cs.onSurface.withValues(alpha: 0.08);
     final accentColor = option.color ?? PremiumColors.splashBlue;
 
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: ExperienceService.instance.fast,
+    return Semantics(
+      button: true,
+      selected: isSelected,
+      label: option.label,
+      child: GestureDetector(
+        onTap: () {
+          ExperienceService.instance.lightHaptic();
+          onTap();
+        },
+        child: AnimatedContainer(
+        duration: ref.read(experienceServiceProvider).fast,
         curve: AppEasing.entrance,
         padding: const EdgeInsets.all(AppSpacing.lg),
         decoration: BoxDecoration(
@@ -55,7 +64,9 @@ class WizardCommitmentTile extends StatelessWidget {
                         color: isSelected ? accentColor.withValues(alpha: 0.2) : context.shimmerBase,
                 borderRadius: BorderRadius.circular(AppRadius.md),
               ),
-              child: Icon(option.icon, size: 26, color: accentColor),
+              child: ExcludeSemantics(
+                child: Icon(option.icon, size: 26, color: accentColor),
+              ),
             ),
             const SizedBox(width: AppSpacing.lg),
             Expanded(
@@ -64,28 +75,24 @@ class WizardCommitmentTile extends StatelessWidget {
                 children: [
                   Text(
                     option.label,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: isSelected ? textPrimary : textSecondary,
-                    ),
+                    style: AppTextStyle.titleSmall.copyWith(fontWeight: FontWeight.bold,
+                      color: isSelected ? textPrimary : textSecondary),
                   ),
                   const SizedBox(height: 4),
                   Row(
                     children: [
-                      Icon(
-                        Icons.diamond_rounded,
-                        size: 14,
-                        color: PremiumColors.splashBlue.withValues(alpha: isSelected ? 1.0 : 0.6),
+                      ExcludeSemantics(
+                        child: Icon(
+                          Icons.diamond_rounded,
+                          size: 14,
+                          color: PremiumColors.splashBlue.withValues(alpha: isSelected ? 1.0 : 0.6),
+                        ),
                       ),
                       const SizedBox(width: 4),
                       Text(
                         option.subtitle ?? '',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: PremiumColors.splashBlue.withValues(alpha: isSelected ? 0.9 : 0.6),
-                          fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-                        ),
+                        style: AppTextStyle.caption.copyWith(color: PremiumColors.splashBlue.withValues(alpha: isSelected ? 0.9 : 0.6),
+                          fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal),
                       ),
                     ],
                   ),
@@ -109,6 +116,7 @@ class WizardCommitmentTile extends StatelessWidget {
             ),
           ],
         ),
+      ),
       ),
     );
   }

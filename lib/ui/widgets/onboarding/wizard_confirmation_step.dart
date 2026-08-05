@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sagen/providers/providers.dart';
 
@@ -9,7 +10,10 @@ import '../../../l10n/app_localizations.dart';
 import 'wizard_summary_row.dart' show WizardSummaryRow;
 
 class WizardConfirmationStep extends ConsumerWidget {
-  const WizardConfirmationStep({super.key});
+  final WizardStepConfig stepConfig;
+  final String Function(int, OnboardingWizardState, AppLocalizations)? sageMessageForStep;
+
+  const WizardConfirmationStep({super.key, required this.stepConfig, this.sageMessageForStep});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,7 +29,7 @@ class WizardConfirmationStep extends ConsumerWidget {
     final habits = (state.sectionData[4] as List<String>?) ?? [];
     final goal = state.sectionData[5] as String? ?? '—';
     final commitments = (state.sectionData[6] as List<String>?) ?? [];
-    final config = OnboardingWizardConfig.steps[7];
+    final config = stepConfig;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
@@ -36,11 +40,8 @@ class WizardConfirmationStep extends ConsumerWidget {
             const SizedBox(height: AppSpacing.sm),
             Text(
               config.question,
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-                color: textPrimary,
-              ),
+              style: AppTextStyle.headlineMedium.copyWith(fontWeight: FontWeight.bold,
+                color: textPrimary),
             ),
             const SizedBox(height: AppSpacing.lg),
             WizardSummaryRow(label: l.summaryOrigin, value: referral),
@@ -49,7 +50,7 @@ class WizardConfirmationStep extends ConsumerWidget {
               WizardSummaryRow(label: l.summaryMotivations, value: reasons.join(', ')),
             if (habits.isNotEmpty)
               WizardSummaryRow(label: l.summaryLearning, value: habits.join(', ')),
-            WizardSummaryRow(label: l.summaryDailyGoal, value: '$goal min'),
+            WizardSummaryRow(label: l.summaryDailyGoal, value: l.minutes(goal)),
             if (commitments.isNotEmpty)
               WizardSummaryRow(label: l.summaryCommitment, value: l.commitDays(commitments.length)),
             const SizedBox(height: AppSpacing.xl),
@@ -64,16 +65,15 @@ class WizardConfirmationStep extends ConsumerWidget {
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.auto_awesome_rounded, color: PremiumColors.splashBlue, size: 20),
+                  const ExcludeSemantics(
+                    child: Icon(Icons.auto_awesome_rounded, color: PremiumColors.splashBlue, size: 20),
+                  ),
                   const SizedBox(width: AppSpacing.md),
                   Expanded(
                     child: Text(
                       l.summaryReady,
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: textSecondary,
-                        height: 1.4,
-                      ),
+                      style: AppTextStyle.subtitle.copyWith(color: textSecondary,
+                        height: 1.4),
                     ),
                   ),
                 ],
@@ -82,6 +82,6 @@ class WizardConfirmationStep extends ConsumerWidget {
           ],
         ),
       ),
-    );
+    ).animate().fadeIn().slideY(begin: 0.05);
   }
 }

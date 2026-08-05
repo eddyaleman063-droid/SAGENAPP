@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sagen/config/onboarding_wizard_config.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/l10n/app_localizations.dart';
-import 'package:sagen/services/experience_service.dart';
+import 'package:sagen/providers/providers.dart';
 
 class WizardBottomBar extends ConsumerWidget {
   final int currentIndex;
@@ -23,7 +23,7 @@ class WizardBottomBar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l = AppLocalizations.of(context)!;
-    final exp = ExperienceService.instance;
+    final exp = ref.read(experienceServiceProvider);
     final cs = Theme.of(context).colorScheme;
 
     return Padding(
@@ -44,32 +44,49 @@ class WizardBottomBar extends ConsumerWidget {
               onPressed: onComplete,
             ),
             const SizedBox(height: AppSpacing.sm),
-            TextButton(
-              onPressed: () {
-                exp.lightHaptic();
-                context.goNamed('login', queryParameters: {'onboarding': 'true'});
-              },
-              child: Text(
-                l.onboardingHaveAccount,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: cs.onSurface.withValues(alpha: 0.35),
+            Semantics(
+              button: true,
+              label: l.onboardingHaveAccount,
+              child: TextButton(
+                onPressed: () {
+                  exp.lightHaptic();
+                  context.goNamed('login', queryParameters: {'onboarding': 'true'});
+                },
+                child: Text(
+                  l.onboardingHaveAccount,
+                  style: AppTextStyle.caption.copyWith(color: cs.onSurface.withValues(alpha: 0.55)),
                 ),
               ),
             ),
-          ] else
+          ] else ...[
             WizardButton(
               label: l.continueText,
               enabled: canContinue,
               onPressed: onNext,
             ),
+            const SizedBox(height: AppSpacing.sm),
+            Semantics(
+              button: true,
+              label: l.skipText,
+              child: TextButton(
+                onPressed: () {
+                  exp.lightHaptic();
+                  onComplete();
+                },
+                child: Text(
+                  l.skipText,
+                  style: AppTextStyle.caption.copyWith(color: cs.onSurface.withValues(alpha: 0.55)),
+                ),
+              ),
+            ),
+          ],
         ],
       ),
     );
   }
 }
 
-class WizardButton extends StatefulWidget {
+class WizardButton extends ConsumerStatefulWidget {
   final String label;
   final bool enabled;
   final VoidCallback onPressed;
@@ -82,10 +99,10 @@ class WizardButton extends StatefulWidget {
   });
 
   @override
-  State<WizardButton> createState() => _WizardButtonState();
+  ConsumerState<WizardButton> createState() => _WizardButtonState();
 }
 
-class _WizardButtonState extends State<WizardButton> with SingleTickerProviderStateMixin {
+class _WizardButtonState extends ConsumerState<WizardButton> with SingleTickerProviderStateMixin {
   late AnimationController _shimmerCtrl;
   late Animation<double> _shimmerAnim;
 
@@ -110,7 +127,7 @@ class _WizardButtonState extends State<WizardButton> with SingleTickerProviderSt
 
   @override
   Widget build(BuildContext context) {
-    final exp = ExperienceService.instance;
+    final exp = ref.read(experienceServiceProvider);
     final cs = Theme.of(context).colorScheme;
     return AnimatedBuilder(
       animation: _shimmerAnim,
@@ -147,7 +164,10 @@ class _WizardButtonState extends State<WizardButton> with SingleTickerProviderSt
           ),
           child: Material(
             color: Colors.transparent,
-            child: InkWell(
+            child: Semantics(
+              button: true,
+              label: widget.label,
+              child: InkWell(
               borderRadius: BorderRadius.circular(AppRadius.lg),
               onTap: widget.enabled
                   ? () {
@@ -158,16 +178,14 @@ class _WizardButtonState extends State<WizardButton> with SingleTickerProviderSt
               child: Center(
                 child: AnimatedDefaultTextStyle(
                   duration: AppMotion.fast,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                  style: AppTextStyle.titleSmall.copyWith(fontWeight: FontWeight.bold,
                     color: widget.enabled
                         ? Colors.white
-                        : cs.onSurface.withValues(alpha: 0.25),
-                  ),
+                        : cs.onSurface.withValues(alpha: 0.25)),
                   child: Text(widget.label),
                 ),
               ),
+            ),
             ),
           ),
         );

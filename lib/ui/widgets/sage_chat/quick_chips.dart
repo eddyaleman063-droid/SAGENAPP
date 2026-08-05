@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
 
 class QuickChips extends StatelessWidget {
@@ -17,9 +18,15 @@ class QuickChips extends StatelessWidget {
         itemCount: chips.length,
         itemBuilder: (_, i) => Padding(
           padding: EdgeInsets.only(right: i < chips.length - 1 ? AppSpacing.sm : 0),
-          child: GestureDetector(
-            onTap: () => onTap(chips[i]),
-            child: Container(
+          child: Semantics(
+            button: true,
+            label: chips[i],
+            child: GestureDetector(
+              onTap: () {
+                HapticFeedback.lightImpact();
+                onTap(chips[i]);
+              },
+              child: Container(
               padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.sm),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(AppRadius.pill),
@@ -29,12 +36,13 @@ class QuickChips extends StatelessWidget {
               child: Center(
                 child: Text(
                   chips[i],
-                  style: const TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.w500),
+                  style: AppTextStyle.caption.copyWith(color: Colors.white, fontWeight: FontWeight.w500),
                 ),
               ),
             ),
           ),
         ),
+      ),
       ),
     );
   }

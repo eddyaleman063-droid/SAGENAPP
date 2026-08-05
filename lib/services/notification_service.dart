@@ -3,6 +3,7 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz_data;
 import '../services/app_logger.dart';
 
+/// Manages local and push notification scheduling.
 class NotificationService {
   static final NotificationService instance = NotificationService._();
   NotificationService._() : _logger = AppLogger();
@@ -12,13 +13,13 @@ class NotificationService {
   bool _initialized = false;
 
   static const String _channelId = 'chest_reminder';
-  static const String _channelName = 'Recordatorio diario';
-  static const String _channelDesc = 'Recordatorio para abrir tu cofre diario en SAGEN';
+  static const String _channelName = 'Daily Reminder';
+  static const String _channelDesc = 'Reminder to open your daily chest in SAGEN';
   static const int _reminderId = 2000;
 
   static const String _retentionChannelId = 'streak_retention';
-  static const String _retentionChannelName = 'Retenci\u00f3n de racha';
-  static const String _retentionChannelDesc = 'Alertas para mantener tu racha activa en SAGEN';
+  static const String _retentionChannelName = 'Streak Retention';
+  static const String _retentionChannelDesc = 'Alerts to keep your streak active in SAGEN';
   static const int _streakReminderId = 2001;
 
   Future<void> init() async {
@@ -26,7 +27,15 @@ class NotificationService {
     try {
       tz_data.initializeTimeZones();
       const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
-      const settings = InitializationSettings(android: androidSettings);
+      const iosSettings = DarwinInitializationSettings(
+        requestAlertPermission: true,
+        requestBadgePermission: true,
+        requestSoundPermission: true,
+      );
+      const settings = InitializationSettings(
+        android: androidSettings,
+        iOS: iosSettings,
+      );
       await _plugin.initialize(settings);
       _initialized = true;
       _logger.info('NotificationService initialized');
@@ -47,7 +56,12 @@ class NotificationService {
         priority: Priority.defaultPriority,
         icon: '@mipmap/ic_launcher',
       );
-      const details = NotificationDetails(android: androidDetails);
+      const iosDetails = DarwinNotificationDetails(
+        presentAlert: true,
+        presentBadge: true,
+        presentSound: true,
+      );
+      const details = NotificationDetails(android: androidDetails, iOS: iosDetails);
       final now = tz.TZDateTime.now(tz.local);
       var scheduledDate = tz.TZDateTime(tz.local, now.year, now.month, now.day, 20);
       if (scheduledDate.isBefore(now)) {
@@ -55,8 +69,8 @@ class NotificationService {
       }
       await _plugin.zonedSchedule(
         _reminderId,
-        '¡Tu cofre diario te espera!',
-        'No olvides reclamar tus gemas gratis en SAGEN. Abre la app y toca el cofre.',
+        'Your daily chest awaits!',
+        'Don\'t forget to claim your daily reward in SAGEN. Open the app and tap the chest.',
         scheduledDate,
         details,
         androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
@@ -74,16 +88,16 @@ class NotificationService {
     try {
       await _plugin.cancel(_streakReminderId);
       final now = tz.TZDateTime.now(tz.local);
-      final scheduledDate = now.add(const Duration(hours: 24));
+      final scheduledDate = tz.TZDateTime(tz.local, now.year, now.month, now.day + 1, 18);
 
       String title;
       String body;
       if (currentStreak > 0) {
-        title = 'Tu fuego se est\u00e1 apagando';
-        body = 'Est\u00e1s a punto de perder tu racha de $currentStreak d\u00edas. Entra ahora y defiende tu rango.';
+        title = 'Your fire is fading';
+        body = 'You\'re about to lose your $currentStreak-day streak. Enter now and defend your rank.';
       } else {
-        title = 'El Coliseo te espera';
-        body = 'Tu pr\u00f3xima lecci\u00f3n de ciberseguridad est\u00e1 lista. \u00bfAceptas el desaf\u00edo?';
+        title = 'The Arena awaits';
+        body = 'Your next cybersecurity lesson is ready. Do you accept the challenge?';
       }
 
       const androidDetails = AndroidNotificationDetails(
@@ -94,7 +108,12 @@ class NotificationService {
         priority: Priority.high,
         icon: '@mipmap/ic_launcher',
       );
-      const details = NotificationDetails(android: androidDetails);
+      const iosDetails = DarwinNotificationDetails(
+        presentAlert: true,
+        presentBadge: true,
+        presentSound: true,
+      );
+      const details = NotificationDetails(android: androidDetails, iOS: iosDetails);
       await _plugin.zonedSchedule(
         _streakReminderId,
         title,
@@ -125,6 +144,34 @@ class NotificationService {
       await _plugin.cancelAll();
     } catch (e) {
       _logger.error('cancelAll failed', e);
+    }
+  }
+
+  Future<void> showFreezeConsumedNotification(int remainingFreezes) async {
+    if (!_initialized) return;
+    try {
+      const androidDetails = AndroidNotificationDetails(
+        _retentionChannelId,
+        _retentionChannelName,
+        channelDescription: _retentionChannelDesc,
+        importance: Importance.high,
+        priority: Priority.high,
+        icon: '@mipmap/ic_launcher',
+      );
+      const iosDetails = DarwinNotificationDetails(
+        presentAlert: true,
+        presentBadge: true,
+        presentSound: true,
+      );
+      const details = NotificationDetails(android: androidDetails, iOS: iosDetails);
+      await _plugin.show(
+        _streakReminderId + 2,
+        'Streak shield used',
+        'A shield protected your streak. $remainingFreezes shield(s) remaining.',
+        details,
+      );
+    } catch (e) {
+      _logger.error('showFreezeConsumedNotification failed', e);
     }
   }
 }

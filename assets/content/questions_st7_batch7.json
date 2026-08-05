@@ -1,0 +1,452 @@
+[
+    {
+        "id": "ac_st7_qB7_001",
+        "question": "Que es la seguridad en dispositivos moviles?",
+        "type": "multipleChoice",
+        "options": [
+            "Solo usar contraseña",
+            "Proteger tu celular o tablet contra accesos no autorizados",
+            "No es necesario",
+            "Compartir el dispositivo"
+        ],
+        "correctIndex": 1,
+        "explanation": "La seguridad móvil protege tu dispositivo y los datos que contiene.",
+        "difficulty": 1,
+        "lessonId": "ac_s7_ses1_l1"
+    },
+    {
+        "id": "ac_st7_qB7_002",
+        "question": "Por que es importante bloquear tu celular?",
+        "type": "multipleChoice",
+        "options": [
+            "No es necesario",
+            "Para evitar que otros accedan a tus cuentas y datos",
+            "Porque es obligatorio",
+            "No tiene importancia"
+        ],
+        "correctIndex": 1,
+        "explanation": "El bloqueo del celular es la primera línea de protección contra accesos no autorizados.",
+        "difficulty": 1,
+        "lessonId": "ac_s7_ses1_l2"
+    },
+    {
+        "id": "ac_st7_qB7_003",
+        "question": "Cuales son los métodos de bloqueo más seguros?",
+        "type": "multipleChoice",
+        "options": [
+            "Deslizar para desbloquear",
+            "PIN de 6+ dígitos, patrón complejo, huella o reconocimiento facial",
+            "No usar ningún método",
+            "Solo el patrón"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los métodos biométricos y PINs largos son más seguros que patrones simples.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses1_l3"
+    },
+    {
+        "id": "ac_st7_qB7_004",
+        "question": "Que es el bloqueo automático del celular?",
+        "type": "multipleChoice",
+        "options": [
+            "No existe",
+            "Configurar el celular para que se bloquee después de un tiempo sin uso",
+            "Bloquear el celular manualmente",
+            "No sirve"
+        ],
+        "correctIndex": 1,
+        "explanation": "El bloqueo automático asegura que tu celular se proteja cuando lo dejas sin supervisión.",
+        "difficulty": 1,
+        "lessonId": "ac_s7_ses1_l4"
+    },
+    {
+        "id": "ac_st7_qB7_005",
+        "question": "Que es la encriptación de dispositivos?",
+        "type": "multipleChoice",
+        "options": [
+            "No existe",
+            "Proteger los datos de tu celular para que no se puedan leer si lo roban",
+            "Borrar los datos",
+            "No sirve"
+        ],
+        "correctIndex": 1,
+        "explanation": "La encriptación hace que tus datos sean ilegibles sin la contraseña o biometría.",
+        "difficulty": 3,
+        "lessonId": "ac_s7_ses1_l5"
+    },
+    {
+        "id": "ac_st7_qB7_006",
+        "question": "Que es el borrado remoto de dispositivos?",
+        "type": "multipleChoice",
+        "options": [
+            "No existe",
+            "Borrar todos los datos de tu celular desde otro dispositivo si lo pierdes",
+            "Borrar una app",
+            "No sirve"
+        ],
+        "correctIndex": 1,
+        "explanation": "El borrado remoto te permite eliminar todos los datos si tu celular es robado o perdido.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses1_l6"
+    },
+    {
+        "id": "ac_st7_qB7_007",
+        "question": "Que son las actualizaciones de seguridad del sistema operativo?",
+        "type": "multipleChoice",
+        "options": [
+            "No son importantes",
+            "Parches que corrigen vulnerabilidades de seguridad",
+            "Actualizaciónes de apps",
+            "No sirven"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las actualizaciones del sistema corrigen fallas de seguridad que podrían ser explotadas.",
+        "difficulty": 1,
+        "lessonId": "ac_s7_ses2_l1"
+    },
+    {
+        "id": "ac_st7_qB7_008",
+        "question": "Por que mantener las apps actualizadas?",
+        "type": "multipleChoice",
+        "options": [
+            "No es necesario",
+            "Porque las actualizaciones corrigen vulnerabilidades de seguridad",
+            "Solo para nuevos funciones",
+            "No tiene importancia"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las actualizaciones incluyen parches de seguridad que protegen contra ataques.",
+        "difficulty": 1,
+        "lessonId": "ac_s7_ses2_l2"
+    },
+    {
+        "id": "ac_st7_qB7_009",
+        "question": "Que son las actualizaciones automáticas vs manuales?",
+        "type": "multipleChoice",
+        "options": [
+            "No hay diferencia",
+            "Las automáticas instalan actualizaciones sin intervención, las manuales requieren que las apruebes",
+            "Las manuales son mejores",
+            "No existen"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las actualizaciones automáticas aseguran que siempre tengas los últimos parches.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses2_l3"
+    },
+    {
+        "id": "ac_st7_qB7_010",
+        "question": "Que es la verificación de versiones de seguridad?",
+        "type": "multipleChoice",
+        "options": [
+            "No existe",
+            "Comprobar que tu dispositivo tenga la última versión de seguridad",
+            "Verificar el número de modelo",
+            "No sirve"
+        ],
+        "correctIndex": 1,
+        "explanation": "Verificar la versión de seguridad te asegura de que tienes los parches más recientes.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses2_l4"
+    },
+    {
+        "id": "ac_st7_qB7_011",
+        "question": "Que es el bloqueo de ventanas emergentes?",
+        "type": "multipleChoice",
+        "options": [
+            "No existe",
+            "Evitar que aparezcan ventanas emergentes que pueden contener phishing",
+            "Bloquear publicidad",
+            "No sirve"
+        ],
+        "correctIndex": 1,
+        "explanation": "El bloqueo de pop-ups evita ventanas que pueden contener enlaces maliciosos.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses2_l5"
+    },
+    {
+        "id": "ac_st7_qB7_012",
+        "question": "Que es la navegación segura en el navegador móvil?",
+        "type": "multipleChoice",
+        "options": [
+            "No existe",
+            "Usar configuraciónes de seguridad del navegador para protegerte",
+            "No navegar en internet",
+            "No sirve"
+        ],
+        "correctIndex": 1,
+        "explanation": "Configurar la seguridad del navegador te protege de sitios maliciosos.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses2_l6"
+    },
+    {
+        "id": "ac_st7_qB7_013",
+        "question": "Que son los permisos de apps en tu celular?",
+        "type": "multipleChoice",
+        "options": [
+            "No son importantes",
+            "Accesos que las apps solicitan a datos de tu dispositivo",
+            "Contraseñas",
+            "No existen"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los permisos determinan qué datos puede acceder cada app (cámara, ubicación, contactos).",
+        "difficulty": 1,
+        "lessonId": "ac_s7_ses3_l1"
+    },
+    {
+        "id": "ac_st7_qB7_014",
+        "question": "Por qué revisar los permisos de las apps?",
+        "type": "multipleChoice",
+        "options": [
+            "No es necesario",
+            "Para asegurar que las apps no accedan a datos innecesarios",
+            "Porque es obligatorio",
+            "No tiene importancia"
+        ],
+        "correctIndex": 1,
+        "explanation": "Revisar permisos evita que apps accedan a información que no necesitan.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses3_l2"
+    },
+    {
+        "id": "ac_st7_qB7_015",
+        "question": "Que apps debes instalar para seguridad?",
+        "type": "multipleChoice",
+        "options": [
+            "Ninguna",
+            "Gestor de contraseñas, autenticador y app de seguridad del banco",
+            "Muchas apps de seguridad",
+            "Solo redes sociales"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las apps esenciales incluyen gestor de claves, autenticador y apps bancarias oficiales.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses3_l3"
+    },
+    {
+        "id": "ac_st7_qB7_016",
+        "question": "Que es la configuración de privacidad del celular?",
+        "type": "multipleChoice",
+        "options": [
+            "No existe",
+            "Ajustes que controlan qué datos comparten tus apps y el dispositivo",
+            "Contraseña del celular",
+            "No sirve"
+        ],
+        "correctIndex": 1,
+        "explanation": "La configuración de privacidad te permite controlar el acceso a tus datos.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses3_l4"
+    },
+    {
+        "id": "ac_st7_qB7_017",
+        "question": "Que es la copia de seguridad del celular?",
+        "type": "multipleChoice",
+        "options": [
+            "No es necesaria",
+            "Guardar una copia de tus datos para recuperarlos si pierdes o dañas el dispositivo",
+            "Borrar los datos",
+            "No sirve"
+        ],
+        "correctIndex": 1,
+        "explanation": "La copia de seguridad te permite restaurar tus datos en un dispositivo nuevo.",
+        "difficulty": 1,
+        "lessonId": "ac_s7_ses3_l5"
+    },
+    {
+        "id": "ac_st7_qB7_018",
+        "question": "Que es el Find My Device o Find My iPhone?",
+        "type": "multipleChoice",
+        "options": [
+            "Un juego",
+            "Una herramienta para localizar, bloquear o borrar tu celular remotamente",
+            "Una app de mapas",
+            "No sirve"
+        ],
+        "correctIndex": 1,
+        "explanation": "Estas herramientas te ayudan a localizar o proteger tu celular si lo pierdes.",
+        "difficulty": 1,
+        "lessonId": "ac_s7_ses3_l6"
+    },
+    {
+        "id": "ac_st7_qB7_019",
+        "question": "Que es la red segura WiFi?",
+        "type": "multipleChoice",
+        "options": [
+            "Cualquier WiFi",
+            "Una red con contraseña y cifrado WPA2/WPA3",
+            "WiFi público",
+            "No existe"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las redes seguras usan cifrado WPA2 o WPA3 y requieren contraseña.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses4_l1"
+    },
+    {
+        "id": "ac_st7_qB7_020",
+        "question": "Por qué evitar el WiFi público para cuentas importantes?",
+        "type": "multipleChoice",
+        "options": [
+            "No importa",
+            "Porque los atacantes pueden interceptar tus datos en redes públicas",
+            "Es más rápido",
+            "No hay riesgo"
+        ],
+        "correctIndex": 1,
+        "explanation": "El WiFi público es inseguro porque otros pueden ver tu tráfico de red.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses4_l2"
+    },
+    {
+        "id": "ac_st7_qB7_021",
+        "question": "Que es una VPN y por qué usarla?",
+        "type": "multipleChoice",
+        "options": [
+            "Un tipo de WiFi",
+            "Una red privada virtual que cifra tu conexión a internet",
+            "Un antivirus",
+            "No sirve"
+        ],
+        "correctIndex": 1,
+        "explanation": "Una VPN cifra tu conexión, protegiendo tus datos en redes públicas.",
+        "difficulty": 3,
+        "lessonId": "ac_s7_ses4_l3"
+    },
+    {
+        "id": "ac_st7_qB7_022",
+        "question": "Que es el Bluetooth seguro?",
+        "type": "multipleChoice",
+        "options": [
+            "No existe",
+            "Configurar Bluetooth para que no sea visible y usarlo solo cuando sea necesario",
+            "Compartir datos por Bluetooth",
+            "No sirve"
+        ],
+        "correctIndex": 1,
+        "explanation": "El Bluetooth inactivo o no visible es menos vulnerable a ataques.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses4_l4"
+    },
+    {
+        "id": "ac_st7_qB7_023",
+        "question": "Que es la autenticación biométrica segura?",
+        "type": "multipleChoice",
+        "options": [
+            "Usar PIN de 4 dígitos",
+            "Usar huella, reconocimiento facial o iris como método de bloqueo",
+            "No existe",
+            "Compartir el dispositivo"
+        ],
+        "correctIndex": 1,
+        "explanation": "La biometría ofrece una capa extra de seguridad difícil de replicar.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses4_l5"
+    },
+    {
+        "id": "ac_st7_qB7_024",
+        "question": "Que es el modo invitado en el celular?",
+        "type": "multipleChoice",
+        "options": [
+            "No existe",
+            "Un perfil temporal que limita el acceso a tus datos",
+            "Un juego",
+            "No sirve"
+        ],
+        "correctIndex": 1,
+        "explanation": "El modo invitado permite prestar tu celular sin exponer tus datos personales.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses4_l6"
+    },
+    {
+        "id": "ac_st7_qB7_025",
+        "question": "Que es el bloqueo de SIM?",
+        "type": "multipleChoice",
+        "options": [
+            "No existe",
+            "Proteger tu tarjeta SIM con PIN para evitar que la usen en otro celular",
+            "Bloquear el celular",
+            "No sirve"
+        ],
+        "correctIndex": 1,
+        "explanation": "El PIN del SIM evita que puedan usar tu tarjeta en otro dispositivo.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses5_l1"
+    },
+    {
+        "id": "ac_st7_qB7_026",
+        "question": "Que es la verificación de apps antes de instalar?",
+        "type": "multipleChoice",
+        "options": [
+            "No es necesaria",
+            "Revisar permisos, opiniones y desarrollador antes de descargar",
+            "Instalar todas",
+            "No sirve"
+        ],
+        "correctIndex": 1,
+        "explanation": "Verificar la app evita instalar software malicioso o con permisos excesivos.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses5_l2"
+    },
+    {
+        "id": "ac_st7_qB7_027",
+        "question": "Que es el modo avión y por qué usarlo?",
+        "type": "multipleChoice",
+        "options": [
+            "Para volar",
+            "Desactivar todas las conexiones inalámbricas para mayor seguridad",
+            "No sirve",
+            "Para ahorrar batería"
+        ],
+        "correctIndex": 1,
+        "explanation": "El modo avión desactiva WiFi, Bluetooth y datos móviles, reduciendo ataques.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses5_l3"
+    },
+    {
+        "id": "ac_st7_qB7_028",
+        "question": "Que es la limpieza de dispositivos antes de venderlos?",
+        "type": "multipleChoice",
+        "options": [
+            "Limpiar la pantalla",
+            "Borrar todos los datos y restaurar el dispositivo de fábrica",
+            "Desinstalar apps",
+            "No es necesario"
+        ],
+        "correctIndex": 1,
+        "explanation": "Debes borrar todos los datos y restaurar el dispositivo antes de venderlo o regalarlo.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses5_l4"
+    },
+    {
+        "id": "ac_st7_qB7_029",
+        "question": "Que es la detección de malware en móviles?",
+        "type": "multipleChoice",
+        "options": [
+            "No existe",
+            "Usar herramientas para detectar y eliminar software malicioso",
+            "Un juego",
+            "No sirve"
+        ],
+        "correctIndex": 1,
+        "explanation": "El malware puede robar datos; usar herramientas de detección es importante.",
+        "difficulty": 2,
+        "lessonId": "ac_s7_ses5_l5"
+    },
+    {
+        "id": "ac_st7_qB7_030",
+        "question": "Que es la copia de seguridad cifrada?",
+        "type": "multipleChoice",
+        "options": [
+            "Una copia normal",
+            "Una copia de tus datos protegida con cifrado para mayor seguridad",
+            "Una copia en la nube",
+            "No existe"
+        ],
+        "correctIndex": 1,
+        "explanation": "La copia cifrada protege tus datos aunque accedan al archivo de respaldo.",
+        "difficulty": 3,
+        "lessonId": "ac_s7_ses5_l6"
+    }
+]

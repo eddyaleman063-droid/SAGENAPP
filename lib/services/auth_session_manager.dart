@@ -1,8 +1,14 @@
 import 'auth_models.dart';
+import 'app_logger.dart';
 import 'secure_storage_service.dart';
 
+/// Persists and restores auth sessions via secure storage.
 class AuthSessionManager {
-  final SecureStorageService _secureStorage = SecureStorageService.instance;
+  final SecureStorageService _secureStorage;
+  final AppLogger _logger = AppLogger();
+
+  AuthSessionManager({SecureStorageService? secureStorage})
+      : _secureStorage = secureStorage ?? SecureStorageService.instance;
 
   static const _keyUid = 'auth_fb_uid';
   static const _keyName = 'auth_fb_name';
@@ -13,9 +19,12 @@ class AuthSessionManager {
     try {
       await _secureStorage.write(_keyUid, user.uid);
       await _secureStorage.write(_keyName, user.displayName);
-      if (user.email.isNotEmpty) await _secureStorage.write(_keyEmail, user.email);
-      if (user.photoUrl != null) await _secureStorage.write(_keyPhoto, user.photoUrl!);
-    } catch (_) {}
+      // Always write email/photoUrl to prevent stale data from previous user
+      await _secureStorage.write(_keyEmail, user.email);
+      await _secureStorage.write(_keyPhoto, user.photoUrl ?? '');
+    } catch (e) {
+      _logger.warning('AuthSessionManager: saveSession failed: $e');
+    }
   }
 
   Future<AppUser?> restoreSession() async {
@@ -29,7 +38,9 @@ class AuthSessionManager {
           photoUrl: await _secureStorage.read(_keyPhoto),
         );
       }
-    } catch (_) {}
+    } catch (e) {
+      _logger.warning('AuthSessionManager: restoreSession failed: $e');
+    }
     return null;
   }
 
@@ -39,6 +50,8 @@ class AuthSessionManager {
       await _secureStorage.delete(_keyName);
       await _secureStorage.delete(_keyEmail);
       await _secureStorage.delete(_keyPhoto);
-    } catch (_) {}
+    } catch (e) {
+      _logger.warning('AuthSessionManager: clearSession failed: $e');
+    }
   }
 }

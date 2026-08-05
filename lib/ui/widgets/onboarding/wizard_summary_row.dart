@@ -23,21 +23,15 @@ class WizardSummaryRow extends StatelessWidget {
             width: 100,
             child: Text(
               label,
-              style: TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-                color: cs.onSurface.withValues(alpha: 0.5),
-              ),
+              style: AppTextStyle.subtitle.copyWith(fontWeight: FontWeight.w600,
+                color: cs.onSurface.withValues(alpha: 0.5)),
             ),
           ),
           Expanded(
             child: Text(
               value,
-              style: TextStyle(
-                fontSize: 13,
-                color: cs.onSurface.withValues(alpha: 0.9),
-                height: 1.3,
-              ),
+              style: AppTextStyle.subtitle.copyWith(color: cs.onSurface.withValues(alpha: 0.9),
+                height: 1.3),
             ),
           ),
         ],

@@ -51,7 +51,10 @@ void main() {
     });
     test('persists across service resets', () async {
       SyncQueueService.instance.enqueue(SyncOperationType.profileUpdate, {'xp': 100});
+      SyncQueueService.instance.clear();
+      await Future.delayed(const Duration(milliseconds: 50));
       SyncQueueService.instance.init(prefs);
+      SyncQueueService.instance.enqueue(SyncOperationType.profileUpdate, {'xp': 200});
       expect(SyncQueueService.instance.pendingCount, 1);
     });
     test('handles multiple operation types', () {

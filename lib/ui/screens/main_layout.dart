@@ -1,11 +1,15 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/providers/providers.dart';
 import '../../core/theme/theme_constants.dart';
-import '../../services/experience_service.dart';
-import '../../services/deep_link_service.dart';
+import '../../services/analytics_service.dart';
+import '../../services/audio_service.dart';
+import '../widgets/common/level_up_celebration.dart';
+import 'package:sagen/core/theme/app_colors.dart';
+
 import 'dashboard/dashboard_home_screen.dart';
 import 'dashboard/store_screen.dart';
 import 'dashboard/sage_chat_screen.dart';
@@ -24,6 +28,7 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
   late PageController _pageCtrl;
   bool _animating = false;
   StreamSubscription<int>? _tabSub;
+  StreamSubscription<int>? _levelUpSub;
 
   static List<_TabItem> tabs(BuildContext context) => [
     _TabItem(label: AppLocalizations.of(context)!.navHome, icon: Icons.home_rounded),
@@ -37,21 +42,29 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
   void initState() {
     super.initState();
     _pageCtrl = PageController(initialPage: widget.initialTab);
-    _tabSub = DeepLinkService.instance.tabSwitchStream.listen((tab) {
+    _tabSub = ref.read(deepLinkServiceProvider).tabSwitchStream.listen((tab) {
       if (mounted) _onTabTap(tab);
+    });
+    _levelUpSub = ref.read(learningProvider.notifier).onLevelUp.listen((newLevel) {
+      if (!mounted) return;
+      AudioService.instance.playLevelUp();
+      showLevelUpCelebration(context, newLevel);
     });
   }
 
   @override
   void dispose() {
     _tabSub?.cancel();
+    _levelUpSub?.cancel();
     _pageCtrl.dispose();
     super.dispose();
   }
 
   void _onTabTap(int index) {
-    if (_animating || index == ref.read(dashboardProvider.notifier).activeTab) return;
-    ExperienceService.instance.lightHaptic();
+    if (_animating || index == ref.read(dashboardProvider).activeTab) return;
+    ref.read(experienceServiceProvider).lightHaptic();
+    final tabNames = ['home', 'store', 'sage', 'ranking', 'profile'];
+    AnalyticsService.instance.trackScreen(tabNames[index]);
     setState(() => _animating = true);
     ref.read(dashboardProvider.notifier).setActiveTab(index);
     _pageCtrl.animateToPage(
@@ -67,21 +80,52 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
   @override
   Widget build(BuildContext context) {
     final activeTab = ref.watch(dashboardProvider.select((d) => d.activeTab));
-    final dark = Theme.of(context).brightness == Brightness.dark;
+    final isDemo = ref.watch(authProvider.select((a) => a.isDemoMode));
+    final hasUnclaimedChest = ref.watch(gamificationProvider.select((g) => g.hasUnclaimedChest));
 
     return Scaffold(
-      backgroundColor: dark ? PremiumColors.deepBackground : PremiumColors.lightBg,
+      backgroundColor: context.surfaceBackground,
       body: Stack(
         children: [
-          PageView(
-            controller: _pageCtrl,
-            physics: const NeverScrollableScrollPhysics(),
-            children: const [
-              DashboardHomeScreen(),
-              StoreScreen(),
-              SageChatScreen(),
-              RankingScreen(),
-              ProfileScreen(),
+          Column(
+            children: [
+              if (isDemo)
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
+                  color: PremiumColors.warning.withValues(alpha: 0.9),
+                  child: SafeArea(
+                    bottom: false,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.wifi_off_rounded, size: 14, color: Colors.white),
+                        const SizedBox(width: AppSpacing.xs),
+                        Text(
+                          AppLocalizations.of(context)?.demoModeOffline ?? '',
+                          style: AppTextStyle.label.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 1,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              Expanded(
+                child: PageView(
+                  controller: _pageCtrl,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: const [
+                    DashboardHomeScreen(),
+                    StoreScreen(),
+                    SageChatScreen(),
+                    RankingScreen(),
+                    ProfileScreen(),
+                  ],
+                ),
+              ),
             ],
           ),
           Positioned(
@@ -91,6 +135,7 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
             child: _PremiumNavBar(
               currentIndex: activeTab,
               onTap: _onTabTap,
+              showChestBadge: hasUnclaimedChest,
             ),
           ),
         ],
@@ -108,22 +153,25 @@ class _TabItem {
 class _PremiumNavBar extends StatelessWidget {
   final int currentIndex;
   final ValueChanged<int> onTap;
+  final bool showChestBadge;
 
   const _PremiumNavBar({
     required this.currentIndex,
     required this.onTap,
+    this.showChestBadge = false,
   });
 
   @override
   Widget build(BuildContext context) {
     final dark = Theme.of(context).brightness == Brightness.dark;
+    final tabItems = _MainLayoutState.tabs(context);
     return Container(
-      height: 64,
+      height: 84,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppRadius.xl),
-        color: dark ? PremiumColors.darkCard.withValues(alpha: 0.96) : Colors.white.withValues(alpha: 0.96),
+        color: context.surfaceCard,
         border: Border.all(
-          color: dark ? Colors.white.withValues(alpha: 0.06) : Colors.black.withValues(alpha: 0.06),
+          color: context.subtleBorder,
         ),
         boxShadow: [
           BoxShadow(
@@ -134,45 +182,58 @@ class _PremiumNavBar extends StatelessWidget {
         ],
       ),
       child: Row(
-        children: List.generate(_MainLayoutState.tabs(context).length, (i) {
+        children: List.generate(tabItems.length, (i) {
           final selected = i == currentIndex;
-          final item = _MainLayoutState.tabs(context)[i];
+          final item = tabItems[i];
           return Expanded(
-            child: GestureDetector(
-              onTap: () => onTap(i),
-              child: Container(
-                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(AppRadius.md),
-                  border: Border.all(
-                    color: selected
-                        ? PremiumColors.splashBlue
-                        : Colors.transparent,
-                    width: 1.5,
-                  ),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      item.icon,
-                      size: 22,
+            child: Semantics(
+              button: true,
+              label: item.label,
+              child: GestureDetector(
+                onTap: () {
+                  HapticFeedback.lightImpact();
+                  onTap(i);
+                },
+                child: Container(
+                  margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(AppRadius.md),
+                    border: Border.all(
                       color: selected
                           ? PremiumColors.splashBlue
-                          : dark ? Colors.white38 : Colors.black38,
+                          : Colors.transparent,
+                      width: 1.5,
                     ),
-                    const SizedBox(height: 2),
-                    Text(
-                      item.label,
-                      style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: selected ? FontWeight.w600 : FontWeight.normal,
-                        color: selected
-                            ? PremiumColors.splashBlue
-                            : dark ? Colors.white38 : Colors.black38,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Badge(
+                        isLabelVisible: showChestBadge && i == 1,
+                        backgroundColor: PremiumColors.achievementEnd,
+                        smallSize: 8,
+                        child: Icon(
+                          item.icon,
+                          size: 22,
+                          color: selected
+                              ? PremiumColors.splashBlue
+                              : context.iconSecondary,
+                        ),
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 4),
+                      Text(
+                        item.label,
+                        style: AppTextStyle.bodyMd.copyWith(
+                          fontSize: 12,
+                          fontWeight: selected ? FontWeight.w600 : FontWeight.normal,
+                          color: selected
+                              ? PremiumColors.splashBlue
+                              : context.textSecondary,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

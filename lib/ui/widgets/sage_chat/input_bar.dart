@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:sagen/core/theme/app_colors.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
+import 'package:sagen/l10n/app_localizations.dart';
 
 class InputBar extends StatelessWidget {
   final TextEditingController controller;
@@ -23,51 +26,67 @@ class InputBar extends StatelessWidget {
         AppSpacing.xxl,
         AppSpacing.sm,
         AppSpacing.sm,
-        AppSpacing.sm + MediaQuery.of(context).viewInsets.bottom,
+        AppSpacing.sm + MediaQuery.viewInsetsOf(context).bottom,
       ),
       decoration: BoxDecoration(
         color: dark ? PremiumColors.darkSurface : Colors.white,
-        border: Border(top: BorderSide(color: dark ? Colors.white12 : Colors.black.withValues(alpha: 0.06))),
+        border: Border(top: BorderSide(color: context.subtleBorder)),
       ),
       child: Row(
         children: [
           Expanded(
-            child: TextField(
-              controller: controller,
-              focusNode: focusNode,
-              enabled: enabled,
-              textInputAction: TextInputAction.send,
-              onSubmitted: enabled ? (_) => onSend() : null,
-              decoration: InputDecoration(
-                hintText: 'Pregunta a Sage...',
-                hintStyle: TextStyle(fontSize: 14, color: dark ? Colors.white24 : Colors.black26),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(AppRadius.pill),
-                  borderSide: BorderSide.none,
+            child: Semantics(
+              label: AppLocalizations.of(context)?.chatHint ?? AppLocalizations.of(context)?.chatInputHint ?? '',
+              child: TextField(
+                controller: controller,
+                focusNode: focusNode,
+                enabled: enabled,
+                maxLength: 500,
+                maxLines: 4,
+                inputFormatters: [LengthLimitingTextInputFormatter(500)],
+                textInputAction: TextInputAction.send,
+                onSubmitted: enabled ? (_) => onSend() : null,
+                decoration: InputDecoration(
+                  hintText: AppLocalizations.of(context)?.chatHint ?? AppLocalizations.of(context)?.chatInputHint ?? '',
+                  hintStyle: AppTextStyle.bodyMd.copyWith(color: context.textTertiary),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(AppRadius.pill),
+                    borderSide: BorderSide.none,
+                  ),
+                  filled: true,
+                  fillColor: context.surfaceCard,
+                  contentPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md),
+                  isDense: true,
                 ),
-                filled: true,
-                fillColor: dark ? Colors.white.withValues(alpha: 0.06) : Colors.grey.shade100,
-                contentPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md),
-                isDense: true,
               ),
             ),
           ),
           const SizedBox(width: AppSpacing.sm),
           Container(
-            width: 42,
-            height: 42,
+            width: 48,
+            height: 48,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               gradient: enabled
                   ? const LinearGradient(colors: PremiumColors.gradientSage)
                   : null,
-              color: enabled ? null : (dark ? Colors.white10 : Colors.black12),
+              color: enabled ? null : context.subtle,
             ),
-            child: IconButton(
-              onPressed: enabled ? onSend : null,
-              icon: const Icon(Icons.send_rounded, size: 18),
-              color: enabled ? Colors.white : (dark ? Colors.white24 : Colors.black26),
-              padding: EdgeInsets.zero,
+            child: Semantics(
+              button: true,
+              label: AppLocalizations.of(context)!.sendMessage,
+              child: IconButton(
+                onPressed: enabled
+                    ? () {
+                        HapticFeedback.lightImpact();
+                        onSend();
+                      }
+                    : null,
+                icon: const Icon(Icons.send_rounded, size: 18),
+                color: enabled ? Colors.white : context.textDisabled,
+                padding: EdgeInsets.zero,
+                tooltip: AppLocalizations.of(context)!.sendMessage,
+              ),
             ),
           ),
         ],

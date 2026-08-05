@@ -1,0 +1,10 @@
+{
+  "include": "coverage/lcov.info",
+  "reportOn": ["lib"],
+  "lcov": {
+    "reportDir": "coverage",
+    "title": "SAGEN Coverage Report",
+    "printSummary": true,
+    "threshold": 80
+  }
+}

@@ -1,23 +1,23 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:sagen/services/storage_service.dart';
+import 'package:sagen/repositories/streak_repository.dart';
 import 'package:sagen/services/streak_service.dart';
 
-class MockStorageService extends Mock implements StorageService {}
+class MockStreakRepository extends Mock implements StreakRepository {}
 
 void main() {
   group('StreakService', () {
-    late MockStorageService storage;
+    late MockStreakRepository repo;
     late StreakService service;
 
     setUp(() {
-      storage = MockStorageService();
-      service = StreakService(storage);
+      repo = MockStreakRepository();
+      service = StreakService(repo);
 
-      when(() => storage.getInt(any(), any())).thenReturn(0);
-      when(() => storage.getString(any())).thenReturn('');
-      when(() => storage.setInt(any(), any())).thenAnswer((_) async => true);
-      when(() => storage.setString(any(), any())).thenAnswer((_) async => true);
+      when(() => repo.currentStreak).thenReturn(0);
+      when(() => repo.longestStreak).thenReturn(0);
+      when(() => repo.streakFreezes).thenReturn(0);
+      when(() => repo.lastActivityDate).thenReturn('');
     });
 
     group('load', () {
@@ -36,10 +36,10 @@ void main() {
 
       test('loads saved streak values', () {
         final yesterday = DateTime.now().subtract(const Duration(days: 1));
-        when(() => storage.getInt('streak_current')).thenReturn(5);
-        when(() => storage.getInt('streak_longest')).thenReturn(10);
-        when(() => storage.getInt('streak_freezes')).thenReturn(2);
-        when(() => storage.getString('streak_last_activity'))
+        when(() => repo.currentStreak).thenReturn(5);
+        when(() => repo.longestStreak).thenReturn(10);
+        when(() => repo.streakFreezes).thenReturn(2);
+        when(() => repo.lastActivityDate)
             .thenReturn(yesterday.toIso8601String());
 
         final status = service.load();
@@ -53,10 +53,10 @@ void main() {
 
       test('resets streak after 2+ days without freezes', () {
         final threeDaysAgo = DateTime.now().subtract(const Duration(days: 3));
-        when(() => storage.getInt('streak_current')).thenReturn(5);
-        when(() => storage.getInt('streak_longest')).thenReturn(10);
-        when(() => storage.getInt('streak_freezes')).thenReturn(0);
-        when(() => storage.getString('streak_last_activity'))
+        when(() => repo.currentStreak).thenReturn(5);
+        when(() => repo.longestStreak).thenReturn(10);
+        when(() => repo.streakFreezes).thenReturn(0);
+        when(() => repo.lastActivityDate)
             .thenReturn(threeDaysAgo.toIso8601String());
 
         final status = service.load();
@@ -66,27 +66,27 @@ void main() {
         expect(status.hasStreak, false);
       });
 
-      test('uses freeze for 2-day gap', () {
+      test('uses freeze for 2-day gap via checkIn', () {
         final twoDaysAgo = DateTime.now().subtract(const Duration(days: 2));
-        when(() => storage.getInt('streak_current')).thenReturn(5);
-        when(() => storage.getInt('streak_longest')).thenReturn(10);
-        when(() => storage.getInt('streak_freezes')).thenReturn(1);
-        when(() => storage.getString('streak_last_activity'))
+        when(() => repo.currentStreak).thenReturn(5);
+        when(() => repo.longestStreak).thenReturn(10);
+        when(() => repo.streakFreezes).thenReturn(1);
+        when(() => repo.lastActivityDate)
             .thenReturn(twoDaysAgo.toIso8601String());
 
-        final status = service.load();
+        final status = service.checkIn();
 
-        expect(status.currentStreak, 5);
-        verify(() => storage.setInt('streak_freezes', 0)).called(1);
+        expect(status.currentStreak, 6);
+        expect(status.streakFreezes, 0);
       });
     });
 
     group('checkIn', () {
       test('starts streak at 1 on first check-in', () {
-        when(() => storage.getInt('streak_current')).thenReturn(0);
-        when(() => storage.getInt('streak_longest')).thenReturn(0);
-        when(() => storage.getInt('streak_freezes')).thenReturn(0);
-        when(() => storage.getString('streak_last_activity')).thenReturn('');
+        when(() => repo.currentStreak).thenReturn(0);
+        when(() => repo.longestStreak).thenReturn(0);
+        when(() => repo.streakFreezes).thenReturn(0);
+        when(() => repo.lastActivityDate).thenReturn('');
 
         final status = service.checkIn();
 
@@ -98,10 +98,10 @@ void main() {
 
       test('increments streak for consecutive day check-in', () {
         final yesterday = DateTime.now().subtract(const Duration(days: 1));
-        when(() => storage.getInt('streak_current')).thenReturn(3);
-        when(() => storage.getInt('streak_longest')).thenReturn(5);
-        when(() => storage.getInt('streak_freezes')).thenReturn(0);
-        when(() => storage.getString('streak_last_activity'))
+        when(() => repo.currentStreak).thenReturn(3);
+        when(() => repo.longestStreak).thenReturn(5);
+        when(() => repo.streakFreezes).thenReturn(0);
+        when(() => repo.lastActivityDate)
             .thenReturn(yesterday.toIso8601String());
 
         final status = service.checkIn();
@@ -112,10 +112,10 @@ void main() {
 
       test('returns same streak for same-day check-in', () {
         final today = DateTime.now();
-        when(() => storage.getInt('streak_current')).thenReturn(3);
-        when(() => storage.getInt('streak_longest')).thenReturn(5);
-        when(() => storage.getInt('streak_freezes')).thenReturn(0);
-        when(() => storage.getString('streak_last_activity'))
+        when(() => repo.currentStreak).thenReturn(3);
+        when(() => repo.longestStreak).thenReturn(5);
+        when(() => repo.streakFreezes).thenReturn(0);
+        when(() => repo.lastActivityDate)
             .thenReturn(today.toIso8601String());
 
         final status = service.checkIn();
@@ -125,10 +125,10 @@ void main() {
 
       test('resets streak after gap without freezes', () {
         final threeDaysAgo = DateTime.now().subtract(const Duration(days: 3));
-        when(() => storage.getInt('streak_current')).thenReturn(5);
-        when(() => storage.getInt('streak_longest')).thenReturn(10);
-        when(() => storage.getInt('streak_freezes')).thenReturn(0);
-        when(() => storage.getString('streak_last_activity'))
+        when(() => repo.currentStreak).thenReturn(5);
+        when(() => repo.longestStreak).thenReturn(10);
+        when(() => repo.streakFreezes).thenReturn(0);
+        when(() => repo.lastActivityDate)
             .thenReturn(threeDaysAgo.toIso8601String());
 
         final status = service.checkIn();
@@ -139,51 +139,56 @@ void main() {
 
       test('limits freezes to 7', () {
         final yesterday = DateTime.now().subtract(const Duration(days: 1));
-        when(() => storage.getInt('streak_current')).thenReturn(5);
-        when(() => storage.getInt('streak_longest')).thenReturn(10);
-        when(() => storage.getInt('streak_freezes')).thenReturn(7);
-        when(() => storage.getString('streak_last_activity'))
+        when(() => repo.currentStreak).thenReturn(5);
+        when(() => repo.longestStreak).thenReturn(10);
+        when(() => repo.streakFreezes).thenReturn(7);
+        when(() => repo.lastActivityDate)
             .thenReturn(yesterday.toIso8601String());
 
         service.checkIn();
 
-        verify(() => storage.setInt('streak_freezes', 7)).called(2);
+        verify(() => repo.saveAll(
+          currentStreak: 6,
+          longestStreak: 10,
+          lastActivityDate: any(named: 'lastActivityDate'),
+          streakFreezes: 7,
+        )).called(1);
       });
     });
 
     group('tier', () {
       test('returns inactive for streak 0', () {
-        when(() => storage.getInt('streak_current')).thenReturn(0);
+        when(() => repo.currentStreak).thenReturn(0);
         final status = service.load();
         expect(status.tier, 'inactive');
       });
 
       test('returns basic for streak 1-6', () {
-        when(() => storage.getInt('streak_current')).thenReturn(3);
+        when(() => repo.currentStreak).thenReturn(3);
         final status = service.load();
         expect(status.tier, 'basic');
       });
 
       test('returns glow for streak 7-13', () {
-        when(() => storage.getInt('streak_current')).thenReturn(7);
+        when(() => repo.currentStreak).thenReturn(7);
         final status = service.load();
         expect(status.tier, 'glow');
       });
 
       test('returns particles for streak 14-29', () {
-        when(() => storage.getInt('streak_current')).thenReturn(14);
+        when(() => repo.currentStreak).thenReturn(14);
         final status = service.load();
         expect(status.tier, 'particles');
       });
 
       test('returns crystal for streak 30-99', () {
-        when(() => storage.getInt('streak_current')).thenReturn(30);
+        when(() => repo.currentStreak).thenReturn(30);
         final status = service.load();
         expect(status.tier, 'crystal');
       });
 
       test('returns legendary for streak 100+', () {
-        when(() => storage.getInt('streak_current')).thenReturn(100);
+        when(() => repo.currentStreak).thenReturn(100);
         final status = service.load();
         expect(status.tier, 'legendary');
       });
@@ -238,38 +243,44 @@ void main() {
     });
 
     group('mocktail verification', () {
-      test('checkIn calls storage getters and setters', () {
-        when(() => storage.getInt('streak_current')).thenReturn(0);
-        when(() => storage.getInt('streak_longest')).thenReturn(0);
-        when(() => storage.getInt('streak_freezes')).thenReturn(0);
-        when(() => storage.getString('streak_last_activity')).thenReturn('');
+      test('checkIn calls repo getters and saveAll', () {
+        when(() => repo.currentStreak).thenReturn(0);
+        when(() => repo.longestStreak).thenReturn(0);
+        when(() => repo.streakFreezes).thenReturn(0);
+        when(() => repo.lastActivityDate).thenReturn('');
 
         service.checkIn();
 
-        verify(() => storage.getInt('streak_current')).called(1);
-        verify(() => storage.getInt('streak_longest')).called(1);
-        verify(() => storage.getInt('streak_freezes')).called(1);
-        verify(() => storage.getString('streak_last_activity')).called(1);
-        verify(() => storage.setInt('streak_current', 1)).called(2);
-        verify(() => storage.setInt('streak_longest', 1)).called(2);
-        verify(() => storage.setString('streak_last_activity', any())).called(2);
-        verify(() => storage.setInt('streak_freezes', 1)).called(2);
+        verify(() => repo.currentStreak).called(1);
+        verify(() => repo.longestStreak).called(1);
+        verify(() => repo.streakFreezes).called(1);
+        verify(() => repo.lastActivityDate).called(1);
+        verify(() => repo.saveAll(
+          currentStreak: any(named: 'currentStreak'),
+          longestStreak: any(named: 'longestStreak'),
+          lastActivityDate: any(named: 'lastActivityDate'),
+          streakFreezes: any(named: 'streakFreezes'),
+        )).called(1);
       });
 
-      test('load calls storage getters and setters', () {
-        when(() => storage.getInt('streak_current')).thenReturn(0);
-        when(() => storage.getInt('streak_longest')).thenReturn(0);
-        when(() => storage.getInt('streak_freezes')).thenReturn(0);
-        when(() => storage.getString('streak_last_activity')).thenReturn('');
+      test('load calls repo getters without saving', () {
+        when(() => repo.currentStreak).thenReturn(0);
+        when(() => repo.longestStreak).thenReturn(0);
+        when(() => repo.streakFreezes).thenReturn(0);
+        when(() => repo.lastActivityDate).thenReturn('');
 
         service.load();
 
-        verify(() => storage.getInt('streak_current')).called(1);
-        verify(() => storage.getInt('streak_longest')).called(1);
-        verify(() => storage.getInt('streak_freezes')).called(1);
-        verify(() => storage.getString('streak_last_activity')).called(1);
-        verify(() => storage.setInt(any(), any())).called(3);
-        verify(() => storage.setString(any(), any())).called(1);
+        verify(() => repo.currentStreak).called(1);
+        verify(() => repo.longestStreak).called(1);
+        verify(() => repo.streakFreezes).called(1);
+        verify(() => repo.lastActivityDate).called(1);
+        verifyNever(() => repo.saveAll(
+          currentStreak: any(named: 'currentStreak'),
+          longestStreak: any(named: 'longestStreak'),
+          lastActivityDate: any(named: 'lastActivityDate'),
+          streakFreezes: any(named: 'streakFreezes'),
+        ));
       });
     });
   });

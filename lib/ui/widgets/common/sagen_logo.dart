@@ -34,9 +34,10 @@ class _SagenLogoState extends State<SagenLogo> with SingleTickerProviderStateMix
   void initState() {
     super.initState();
     if (widget.animated) {
+      final speed = widget.neonPulseSpeed.clamp(0.1, 10.0);
       _pulseCtrl = AnimationController(
         vsync: this,
-        duration: Duration(milliseconds: (3000 / widget.neonPulseSpeed).round()),
+        duration: Duration(milliseconds: (3000 / speed).round()),
       )..repeat(reverse: true);
     }
   }
@@ -47,9 +48,10 @@ class _SagenLogoState extends State<SagenLogo> with SingleTickerProviderStateMix
     if (widget.animated != oldWidget.animated) {
       _pulseCtrl?.dispose();
       if (widget.animated) {
+        final speed = widget.neonPulseSpeed.clamp(0.1, 10.0);
         _pulseCtrl = AnimationController(
           vsync: this,
-          duration: Duration(milliseconds: (3000 / widget.neonPulseSpeed).round()),
+          duration: Duration(milliseconds: (3000 / speed).round()),
         )..repeat(reverse: true);
       } else {
         _pulseCtrl = null;
@@ -92,7 +94,7 @@ class _SagenLogoPainter extends CustomPainter {
   final SagenMood mood;
   final double neonIntensity;
 
-  _SagenLogoPainter({
+  const _SagenLogoPainter({
     required this.mood,
     this.neonIntensity = 1.0,
   });
@@ -104,6 +106,26 @@ class _SagenLogoPainter extends CustomPainter {
   static const _iris = Color(0xFF00CED1);
   static const _pupil = Color(0xFF000000);
   static const _highlight = Color(0xFFFFFFFF);
+  static final _squirclePaint = Paint()
+    ..shader = const RadialGradient(
+      center: Alignment(0, 0),
+      radius: 1.0,
+      colors: [_bgCenter, _bgEdge],
+      stops: [0.0, 1.0],
+    ).createShader(Rect.fromCircle(center: Offset.zero, radius: 1));
+  static final _maskPaint = Paint()
+    ..shader = LinearGradient(
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      colors: [
+        _maskBase.withValues(alpha: 0.92),
+        _maskBase,
+        _maskBase.withValues(alpha: 0.85),
+      ],
+      stops: const [0.0, 0.5, 1.0],
+    ).createShader(const Rect.fromLTWH(0, 0, 1, 1));
+  static final _pupilPaint = Paint()..color = _pupil;
+  static final _lidPaint = Paint()..color = _maskBase;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -143,16 +165,13 @@ class _SagenLogoPainter extends CustomPainter {
     }
     path.close();
 
-    canvas.drawPath(
-      path,
-      Paint()
-        ..shader = RadialGradient(
-          center: const Alignment(0, 0),
-          radius: 1.0,
-          colors: [_bgCenter, _bgEdge],
-          stops: const [0.0, 1.0],
-        ).createShader(Rect.fromCircle(center: c, radius: r)),
-    );
+    _squirclePaint.shader = const RadialGradient(
+      center: Alignment(0, 0),
+      radius: 1.0,
+      colors: [_bgCenter, _bgEdge],
+      stops: [0.0, 1.0],
+    ).createShader(Rect.fromCircle(center: c, radius: r));
+    canvas.drawPath(path, _squirclePaint);
   }
 
   Path _buildMaskPath(double r) {
@@ -169,20 +188,17 @@ class _SagenLogoPainter extends CustomPainter {
   }
 
   void _drawMask(Canvas canvas, Path maskPath, double r) {
-    canvas.drawPath(
-      maskPath,
-      Paint()
-        ..shader = LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            _maskBase.withValues(alpha: 0.92),
-            _maskBase,
-            _maskBase.withValues(alpha: 0.85),
-          ],
-          stops: const [0.0, 0.5, 1.0],
-        ).createShader(Rect.fromLTWH(0, 0, r * 2, r * 2)),
-    );
+    _maskPaint.shader = LinearGradient(
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      colors: [
+        _maskBase.withValues(alpha: 0.92),
+        _maskBase,
+        _maskBase.withValues(alpha: 0.85),
+      ],
+      stops: const [0.0, 0.5, 1.0],
+    ).createShader(Rect.fromLTWH(0, 0, r * 2, r * 2));
+    canvas.drawPath(maskPath, _maskPaint);
   }
 
   void _drawNeonGlow(Canvas canvas, Path maskPath, double r) {
@@ -241,23 +257,26 @@ class _SagenLogoPainter extends CustomPainter {
     final textR = eyeR * 0.95;
     final pupilR = eyeR * 0.35;
     final seed = (center.dx * 31 + center.dy * 37).toInt();
+
+    final irisLinePaint = Paint()..strokeWidth = 0.6;
     for (int i = 0; i < 72; i++) {
       final angle = (i / 72) * 2 * math.pi;
       final noise = ((seed * (i + 1) * 7) % 100) / 100;
       final noise2 = ((seed * (i + 1) * 13) % 100) / 100;
       final endDist = textR * (0.65 + noise * 0.35);
+      irisLinePaint
+        ..color = Colors.white.withValues(alpha: 0.10 + noise2 * 0.20)
+        ..strokeWidth = 0.4 + noise * 0.8;
       canvas.drawLine(
         Offset(center.dx + (pupilR + eyeR * 0.05) * math.cos(angle),
             center.dy + (pupilR + eyeR * 0.05) * math.sin(angle)),
         Offset(center.dx + endDist * math.cos(angle),
             center.dy + endDist * math.sin(angle)),
-        Paint()
-          ..color = Colors.white.withValues(alpha: 0.10 + noise2 * 0.20)
-          ..strokeWidth = 0.4 + noise * 0.8,
+        irisLinePaint,
       );
     }
 
-    canvas.drawCircle(center, pupilR, Paint()..color = _pupil);
+    canvas.drawCircle(center, pupilR, _pupilPaint);
 
     canvas.drawCircle(
       center,
@@ -327,7 +346,7 @@ class _SagenLogoPainter extends CustomPainter {
       ..lineTo(ec.dx + eyeR * 1.6, ec.dy - eyeR * 1.5)
       ..lineTo(ec.dx - eyeR * 1.6, ec.dy - eyeR * 1.5)
       ..close();
-    canvas.drawPath(path, Paint()..color = _maskBase);
+    canvas.drawPath(path, _lidPaint);
   }
 
   void _drawBlush(Canvas canvas, Offset leftEye, Offset rightEye, double r) {

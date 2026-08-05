@@ -1,0 +1,70 @@
+name: Coverage Report
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.41.9'
+          channel: 'stable'
+      
+      - name: Install dependencies
+        run: flutter pub get
+      
+      - name: Run tests with coverage
+        run: flutter test --coverage
+      
+      - name: Generate coverage report
+        run: |
+          # Install lcov if not available
+          sudo apt-get install -y lcov || brew install lcov || echo "lcov not installed"
+          
+          # Generate HTML report if lcov is available
+          if command -v genhtml &> /dev/null; then
+            genhtml coverage/lcov.info -o coverage/html
+          fi
+      
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          file: ./coverage/lcov.info
+          flags: unittests
+          name: sagen-coverage
+      
+      - name: Check coverage threshold
+        run: |
+          if [ -f coverage/lcov.info ]; then
+            COVERAGE=$(lcov --summary coverage/lcov.info 2>&1 | grep "lines" | grep -oP '\d+\.\d+%' | head -1)
+            echo "Current coverage: $COVERAGE"
+            
+            # Extract numeric value
+            NUM=$(echo $COVERAGE | sed 's/%//')
+            
+            # Check if coverage is below threshold
+            if (( $(echo "$NUM < 80" | bc -l) )); then
+              echo "Coverage ($COVERAGE) is below 80% threshold"
+              # Don't fail the build, just warn
+              echo "::warning::Coverage is below 80% threshold"
+            else
+              echo "Coverage ($COVERAGE) meets the 80% threshold"
+            fi
+          fi
+      
+      - name: Archive coverage report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-report
+          path: coverage/
+          retention-days: 30

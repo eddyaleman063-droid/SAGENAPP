@@ -1,0 +1,417 @@
+[
+  {
+    "id": "ac_st4_qB10_001",
+    "question": "Que es un gestor de contraseñas?",
+    "type": "multipleChoice",
+    "options": [
+      "Un programa que guarda todas tus claves en un lugar seguro",
+      "Un tipo de banco",
+      "Una app de mensajeria",
+      "Un juego"
+    ],
+    "correctIndex": 0,
+    "explanation": "Un gestor guarda y protege todas tus contraseñas con cifrado.",
+    "difficulty": 1,
+    "lessonId": "ac_s4_ses1_l1"
+  },
+  {
+    "id": "ac_st4_qB10_002",
+    "question": "Que es el cifrado de extremo a extremo en un gestor?",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Significa que solo tu puedes ver tus contraseñas, ni siquiera la empresa.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses1_l2"
+  },
+  {
+    "id": "ac_st4_qB10_003",
+    "question": "Que harias si pierdes el acceso a tu gestor de contraseñas?",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Usar tu clave maestra de respaldo o recuperación",
+      "Crear una cuenta nueva",
+      "Esperar a que se arregle",
+      "Pedir ayuda en redes sociales"
+    ],
+    "correctIndex": 0,
+    "explanation": "Siempre ten un plan de recuperación para tu gestor.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses6_l2"
+  },
+  {
+    "id": "ac_st4_qB10_004",
+    "question": "Por que un gestor es mas seguro que el navegador para guardar claves?",
+    "type": "multipleChoice",
+    "options": [
+      "Porque es mas bonito",
+      "Porque usa cifrado robusto y funciones avanzadas",
+      "Porque es gratis",
+      "Porque es mas rápido"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los gestores ofrecen cifrado superior y funciones de seguridad adicionales.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses18_l1"
+  },
+  {
+    "id": "ac_st4_qB10_005",
+    "question": "Cual es una ventaja de usar un gestor de contraseñas?",
+    "type": "multipleChoice",
+    "options": [
+      "No necesitas recordar todas tus claves",
+      "Te hace internet mas rápido",
+      "Te da internet gratis",
+      "Evita que te roben el celular"
+    ],
+    "correctIndex": 0,
+    "explanation": "Solo necesitas recordar una clave maestra para acceder a todas.",
+    "difficulty": 1,
+    "lessonId": "ac_s4_ses3_l1"
+  },
+  {
+    "id": "ac_st4_qB10_006",
+    "question": "Que es la arquitectura de cero conocimiento?",
+    "type": "multipleChoice",
+    "options": [
+      "El gestor no puede ver tus contraseñas",
+      "Tu conoces todas las claves",
+      "No hay contraseñas",
+      "El gestor guarda todo en texto plano"
+    ],
+    "correctIndex": 0,
+    "explanation": "La empresa del gestor no puede acceder a tus datos.",
+    "difficulty": 3,
+    "lessonId": "ac_s4_ses2_l1"
+  },
+  {
+    "id": "ac_st4_qB10_007",
+    "question": "Que es la clave maestra de un gestor?",
+    "type": "multipleChoice",
+    "options": [
+      "Una contraseña cualquiera",
+      "La única clave que necesitas recordar para acceder a todo",
+      "Un codigo de verificación",
+      "Tu número de telefono"
+    ],
+    "correctIndex": 1,
+    "explanation": "La clave maestra desbloquea todas tus contraseñas guardadas.",
+    "difficulty": 1,
+    "lessonId": "ac_s4_ses6_l1"
+  },
+  {
+    "id": "ac_st4_qB10_008",
+    "question": "Caso: Te pidieron crear una cuenta en un sitio web nuevo. Que haces?",
+    "type": "miniCase",
+    "options": [
+      "Usar el generador del gestor para crear una contraseña fuerte",
+      "Usar la misma contraseña que siempre",
+      "Poner tu nombre y apellido",
+      "No poner contraseña"
+    ],
+    "correctIndex": 0,
+    "explanation": "El generador crea contraseñas seguras y únicas automáticamente.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses9_l1"
+  },
+  {
+    "id": "ac_st4_qB10_009",
+    "question": "Que es el autocompletado seguro de un gestor?",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Llena automáticamente tus datos de forma cifrada y segura.",
+    "difficulty": 1,
+    "lessonId": "ac_s4_ses3_l3"
+  },
+  {
+    "id": "ac_st4_qB10_010",
+    "question": "Que gestores de contraseñas son populares?",
+    "type": "multipleChoice",
+    "options": [
+      "Bitwarden, 1Password, Dashlane",
+      "Google, Facebook, Twitter",
+      "Netflix, Spotify, YouTube",
+      "WhatsApp, Telegram, Signal"
+    ],
+    "correctIndex": 0,
+    "explanation": "Bitwarden, 1Password y Dashlane son gestores reconocidos.",
+    "difficulty": 1,
+    "lessonId": "ac_s4_ses4_l1"
+  },
+  {
+    "id": "ac_st4_qB10_011",
+    "question": "Que harias si el gestor te alerta de una contraseña debil?",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Cambiarla inmediatamente usando el generador",
+      "Ignorar la alerta",
+      "Desactivar las alertas",
+      "Borrar la cuenta del sitio"
+    ],
+    "correctIndex": 0,
+    "explanation": "Las alertas te ayudan a mantener tus cuentas seguras.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses16_l1"
+  },
+  {
+    "id": "ac_st4_qB10_012",
+    "question": "Que es una carpeta en un gestor de contraseñas?",
+    "type": "multipleChoice",
+    "options": [
+      "Un tipo de contraseña",
+      "Una forma de organizar tus cuentas por categorias",
+      "Un backup de seguridad",
+      "Un tipo de cifrado"
+    ],
+    "correctIndex": 1,
+    "explanation": "Las carpetas te ayudan a organizar cuentas personales, trabajo, finanzas, etc.",
+    "difficulty": 1,
+    "lessonId": "ac_s4_ses10_l1"
+  },
+  {
+    "id": "ac_st4_qB10_013",
+    "question": "Por que no debes guardar la clave maestra en un papel visible?",
+    "type": "detectRisk",
+    "options": [
+      "Porque cualquiera que la vea puede acceder a todo",
+      "Porque se puede borrar",
+      "Porque es ilegal",
+      "No hay problema"
+    ],
+    "correctIndex": 0,
+    "explanation": "La clave maestra es la llave de todas tus cuentas, protégela.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses6_l4"
+  },
+  {
+    "id": "ac_st4_qB10_014",
+    "question": "Que es la deteccion de phishing integrada en un gestor?",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Algunos gestores detectan sitios falsos y te alertan.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses3_l4"
+  },
+  {
+    "id": "ac_st4_qB10_015",
+    "question": "Que harias si quieres compartir una contraseña con tu esposo de forma segura?",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Usar la función de compartir del gestor",
+      "Enviarla por WhatsApp",
+      "Decirsela por telefono",
+      "Escribirla en un papel"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los gestores tienen funciones seguras para compartir contraseñas.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses11_l1"
+  },
+  {
+    "id": "ac_st4_qB10_016",
+    "question": "Que es la sincronizacion entre dispositivos en un gestor?",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Permite que tus contraseñas esten actualizadas en celular, tablet y PC.",
+    "difficulty": 1,
+    "lessonId": "ac_s4_ses14_l1"
+  },
+  {
+    "id": "ac_st4_qB10_017",
+    "question": "Que es una nota segura en un gestor?",
+    "type": "multipleChoice",
+    "options": [
+      "Un correo electrónico",
+      "Un lugar para guardar información sensible cifrada",
+      "Un tipo de contraseña",
+      "Un historial de navegación"
+    ],
+    "correctIndex": 1,
+    "explanation": "Las notas seguras permiten guardar documentos, codigos 2FA y datos sensibles.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses12_l1"
+  },
+  {
+    "id": "ac_st4_qB10_018",
+    "question": "Que es un plan familiar de un gestor?",
+    "type": "multipleChoice",
+    "options": [
+      "Un plan solo para ti",
+      "Permite compartir contraseñas de forma segura con tu familia",
+      "Un tipo de seguro",
+      "Un plan de internet"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los planes familiares permiten proteger a toda la familia.",
+    "difficulty": 1,
+    "lessonId": "ac_s4_ses13_l1"
+  },
+  {
+    "id": "ac_st4_qB10_019",
+    "question": "Que harias si el gestor te alerta de una filtracion?",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Cambiar la contraseña afectada inmediatamente",
+      "No hacer nada porque es solo una alerta",
+      "Cerrar el gestor",
+      "Desactivar las alertas"
+    ],
+    "correctIndex": 0,
+    "explanation": "Las alertas de filtracion requieren accion inmediata.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses17_l1"
+  },
+  {
+    "id": "ac_st4_qB10_020",
+    "question": "Que es el historial de contraseñas en un gestor?",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Te permite ver versiones anteriores de tus claves si es necesario.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses8_l6"
+  },
+  {
+    "id": "ac_st4_qB10_021",
+    "question": "Por que es mejor un gestor que tener las contraseñas en un cuaderno?",
+    "type": "multipleChoice",
+    "options": [
+      "Porque el cuaderno es mas barato",
+      "Porque el gestor cifra y protege tus datos",
+      "Porque el cuaderno es mas bonito",
+      "Porque el gestor es mas lento"
+    ],
+    "correctIndex": 1,
+    "explanation": "El cuaderno no tiene protección contra accesos no autorizados.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses1_l3"
+  },
+  {
+    "id": "ac_st4_qB10_022",
+    "question": "Que es la importacion desde el navegador a un gestor?",
+    "type": "multipleChoice",
+    "options": [
+      "Borrar todo del navegador",
+      "Copiar tus contraseñas del navegador al gestor de forma segura",
+      "Cerrar el navegador",
+      "Instalar otro navegador"
+    ],
+    "correctIndex": 1,
+    "explanation": "Permite migrar tus claves guardadas en el navegador al gestor.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses19_l3"
+  },
+  {
+    "id": "ac_st4_qB10_023",
+    "question": "Que es un gestor de tarjetas de credito integrado?",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Algunos gestores guardan datos de pago de forma cifrada.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses9_l6"
+  },
+  {
+    "id": "ac_st4_qB10_024",
+    "question": "Que harias si tu gestor se cierra inesperadamente?",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Volver a abrirlo y verificar que todo este bien",
+      "Desinstalarlo",
+      "Usar el navegador en su lugar",
+      "No hacer nada"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los gestores pueden fallar momentaneamente, vuelve a intentarlo.",
+    "difficulty": 1,
+    "lessonId": "ac_s4_ses8_l4"
+  },
+  {
+    "id": "ac_st4_qB10_025",
+    "question": "Que es la auditoria de seguridad en un gestor?",
+    "type": "multipleChoice",
+    "options": [
+      "Un escaneo de virus",
+      "Un analisis automático de la fortaleza de tus contraseñas",
+      "Un tipo de cifrado",
+      "Un backup automático"
+    ],
+    "correctIndex": 1,
+    "explanation": "La auditoria revisa si tienes contraseñas debiles, reutilizadas o filtradas.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses3_l5"
+  },
+  {
+    "id": "ac_st4_qB10_026",
+    "question": "Que es Bitwarden Send?",
+    "type": "multipleChoice",
+    "options": [
+      "Un servicio de correo",
+      "Una función para compartir archivos cifrados temporalmente",
+      "Un banco digital",
+      "Una app de fotos"
+    ],
+    "correctIndex": 1,
+    "explanation": "Bitwarden Send permite compartir archivos de forma segura y temporal.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses3_l6"
+  },
+  {
+    "id": "ac_st4_qB10_027",
+    "question": "Caso: Tu madre quiere usar un gestor pero le da miedo. Que haces?",
+    "type": "miniCase",
+    "options": [
+      "Configurarle uno sencillo y ensenarle paso a paso",
+      "Decirle que no lo use",
+      "Ponerle tus mismas claves",
+      "Comprarle un cuaderno"
+    ],
+    "correctIndex": 0,
+    "explanation": "La mejor forma de ayudar es configuralo y ensenarle.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses1_l6"
+  },
+  {
+    "id": "ac_st4_qB10_028",
+    "question": "Que es la exportacion de un gestor?",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Permite sacar tus contraseñas para migrar a otro gestor o hacer backup.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses15_l1"
+  },
+  {
+    "id": "ac_st4_qB10_029",
+    "question": "Que es un gestor offline?",
+    "type": "multipleChoice",
+    "options": [
+      "Un gestor que solo funciona con internet",
+      "Un gestor que funciona sin conexión a internet",
+      "Un gestor gratis",
+      "Un gestor para empresas"
+    ],
+    "correctIndex": 1,
+    "explanation": "Algunos gestores pueden funcionar sin internet por seguridad.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses12_l6"
+  },
+  {
+    "id": "ac_st4_qB10_030",
+    "question": "Por que es importante configurar desbloqueo biometrico en el gestor?",
+    "type": "multipleChoice",
+    "options": [
+      "Para que sea mas lento",
+      "Para acceder rápido y seguro con tu huella o rostro",
+      "Para que otros puedan entrar",
+      "No es importante"
+    ],
+    "correctIndex": 1,
+    "explanation": "La biometria te da acceso rápido sin escribir la clave maestra cada vez.",
+    "difficulty": 1,
+    "lessonId": "ac_s4_ses5_l4"
+  }
+]

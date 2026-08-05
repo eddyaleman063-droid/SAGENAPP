@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 
@@ -8,6 +9,7 @@ class ProfileHeaderWidget extends StatelessWidget {
   final int currentLevel;
   final int xp;
   final int nextLevelXp;
+  final bool hasGoldFrame;
 
   const ProfileHeaderWidget({
     super.key,
@@ -16,6 +18,7 @@ class ProfileHeaderWidget extends StatelessWidget {
     required this.currentLevel,
     required this.xp,
     required this.nextLevelXp,
+    this.hasGoldFrame = false,
   });
 
   double get _levelProgress => nextLevelXp > 0 ? (xp % nextLevelXp) / nextLevelXp : 0.0;
@@ -35,7 +38,7 @@ class ProfileHeaderWidget extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          colors: [Color(0xFF0D47A1), Color(0xFF1A237E), Color(0xFF1B2433)],
+          colors: [PremiumColors.primaryDark, PremiumColors.deepBackground, PremiumColors.deepBackground],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
         ),
@@ -70,25 +73,58 @@ class ProfileHeaderWidget extends StatelessWidget {
       child: Stack(
         fit: StackFit.expand,
         children: [
+          // Gold frame ring
+          if (hasGoldFrame)
+            Positioned.fill(
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: const LinearGradient(
+                    colors: [PremiumColors.gold, PremiumColors.goldDark, PremiumColors.gold],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: PremiumColors.gold.withValues(alpha: 0.4),
+                      blurRadius: 8,
+                      spreadRadius: 1,
+                    ),
+                  ],
+                ),
+              ),
+            ),
           CircularProgressIndicator(
             value: _levelProgress.clamp(0.0, 1.0),
             strokeWidth: 3.5,
             backgroundColor: Colors.white.withValues(alpha: 0.1),
-            valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF4AC2DD)),
+            valueColor: AlwaysStoppedAnimation<Color>(
+              hasGoldFrame ? PremiumColors.gold : PremiumColors.splashBlue,
+            ),
           ),
-          Center(
-            child: Container(
-              width: 78,
-              height: 78,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.white.withValues(alpha: 0.25), width: 2),
-              ),
-              child: ClipOval(
-                child: photoUrl != null && photoUrl!.isNotEmpty
-                    ? Image.network(photoUrl!, fit: BoxFit.cover,
-                        errorBuilder: (_, _, _) => _fallbackAvatar())
-                    : _fallbackAvatar(),
+              Semantics(
+            label: 'Foto de perfil',
+            excludeSemantics: true,
+            child: Center(
+              child: Container(
+                width: 78,
+                height: 78,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.white.withValues(alpha: 0.25), width: 2),
+                ),
+                  child: ClipOval(
+                  child: photoUrl != null && photoUrl!.isNotEmpty
+                      ? CachedNetworkImage(
+                          imageUrl: photoUrl!,
+                          fit: BoxFit.cover,
+                          memCacheWidth: 156,
+                          memCacheHeight: 156,
+                          placeholder: (_, _) => _fallbackAvatar(),
+                          errorWidget: (_, _, _) => _fallbackAvatar(),
+                        )
+                      : _fallbackAvatar(),
+                ),
               ),
             ),
           ),
@@ -100,16 +136,13 @@ class ProfileHeaderWidget extends StatelessWidget {
               height: 28,
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                color: Color(0xFF4AC2DD),
+                color: PremiumColors.splashBlue,
               ),
               child: Center(
                 child: Text(
                   '$currentLevel',
-                  style: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
+                  style: AppTextStyle.caption.copyWith(fontWeight: FontWeight.bold,
+                    color: Colors.white),
                 ),
               ),
             ),
@@ -120,36 +153,32 @@ class ProfileHeaderWidget extends StatelessWidget {
   }
 
   Widget _fallbackAvatar() {
-    return Container(
-      color: Colors.white.withValues(alpha: 0.1),
-      child: const Icon(Icons.shield_rounded, size: 40, color: Colors.white54),
+    return ExcludeSemantics(
+      child: Container(
+        color: Colors.white.withValues(alpha: 0.1),
+        child: const Icon(Icons.shield_rounded, size: 40, color: Colors.white54),
+      ),
     );
   }
 
   Widget _buildName(AppLocalizations l) {
     return Text(
       displayName.isNotEmpty ? displayName : l.profileDefaultName,
-      style: const TextStyle(
-        fontSize: 22,
-        fontWeight: FontWeight.bold,
-        color: Colors.white,
-      ),
+      style: AppTextStyle.headlineMedium.copyWith(fontWeight: FontWeight.bold,
+        color: Colors.white),
     );
   }
 
   Widget _buildRank(AppLocalizations l) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.xxs),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppRadius.pill),
         color: Colors.white.withValues(alpha: 0.1),
       ),
       child: Text(
         _rank(l),
-        style: TextStyle(
-          fontSize: 12,
-          color: Colors.white.withValues(alpha: 0.7),
-        ),
+        style: AppTextStyle.caption.copyWith(color: Colors.white.withValues(alpha: 0.7)),
       ),
     );
   }
@@ -168,22 +197,26 @@ class ProfileHeaderWidget extends StatelessWidget {
             children: [
               Text(
                 l.profileLevelValue(currentLevel),
-                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.white),
+                style: AppTextStyle.subtitle.copyWith(fontWeight: FontWeight.w600, color: Colors.white),
               ),
               Text(
                 '$_xpInLevel / $nextLevelXp XP',
-                style: TextStyle(fontSize: 11, color: Colors.white.withValues(alpha: 0.6)),
+                style: AppTextStyle.label.copyWith(color: Colors.white.withValues(alpha: 0.6)),
               ),
             ],
           ),
           const SizedBox(height: AppSpacing.sm),
           ClipRRect(
             borderRadius: BorderRadius.circular(AppRadius.pill),
-            child: LinearProgressIndicator(
-              value: _levelProgress.clamp(0.0, 1.0),
-              backgroundColor: Colors.white.withValues(alpha: 0.1),
-              valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF4AC2DD)),
-              minHeight: 5,
+            child: Semantics(
+              label: l.levelProgress((_levelProgress * 100).round()),
+              value: '${(_levelProgress * 100).round()}',
+              child: LinearProgressIndicator(
+                value: _levelProgress.clamp(0.0, 1.0),
+                backgroundColor: Colors.white.withValues(alpha: 0.1),
+                valueColor: const AlwaysStoppedAnimation<Color>(PremiumColors.splashBlue),
+                minHeight: 5,
+              ),
             ),
           ),
         ],

@@ -1,0 +1,452 @@
+[
+    {
+        "id": "ac_st3_qB7_001",
+        "question": "Que es la autenticación en dos pasos (2FA)?",
+        "type": "multipleChoice",
+        "options": [
+            "Usar dos contraseñas",
+            "Un segundo nivel de seguridad ademas de la contraseña",
+            "Cerrar sesión dos veces",
+            "Cambiar la contraseña"
+        ],
+        "correctIndex": 1,
+        "explanation": "La 2FA agrega una capa extra de seguridad que va mas alla de la contraseña.",
+        "difficulty": 1,
+        "lessonId": "ac_s3_ses1_l1"
+    },
+    {
+        "id": "ac_st3_qB7_002",
+        "question": "Por que contraseña + algo mas es mejor?",
+        "type": "multipleChoice",
+        "options": [
+            "No es mejor",
+            "Si roban tu contraseña, necesitan otro factor para acceder",
+            "Es mas facil recordar",
+            "No hay diferencia"
+        ],
+        "correctIndex": 1,
+        "explanation": "Con 2FA, aunque roben tu contraseña, necesitan un segundo factor que solo tu tienes.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses1_l2"
+    },
+    {
+        "id": "ac_st3_qB7_003",
+        "question": "Como funciona el segundo factor de autenticación?",
+        "type": "multipleChoice",
+        "options": [
+            "Es otra contraseña igual",
+            "Es algo que tienes (celular) o eres (huella) ademas de saber la clave",
+            "Es un código que nunca cambia",
+            "Es opciónal siempre"
+        ],
+        "correctIndex": 1,
+        "explanation": "El segundo factor puede ser algo que tienes (token) o algo que eres (biometria).",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses1_l3"
+    },
+    {
+        "id": "ac_st3_qB7_004",
+        "question": "Cual es un ejemplo cotidiano de 2FA?",
+        "type": "multipleChoice",
+        "options": [
+            "Usar solo contraseña",
+            "Recibir un codigo por SMS al iniciar sesión en el banco",
+            "No usar nada",
+            "Compartir la clave"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los bancos como BCP e Interbank envian codigos SMS como segundo factor.",
+        "difficulty": 1,
+        "lessonId": "ac_s3_ses1_l4"
+    },
+    {
+        "id": "ac_st3_qB7_005",
+        "question": "Cuales son las ventajas de 2FA frente a solo contraseña?",
+        "type": "multipleChoice",
+        "options": [
+            "Ninguna",
+            "Protege aunque roben tu contraseña",
+            "Es mas complicada",
+            "No sirve"
+        ],
+        "correctIndex": 1,
+        "explanation": "La 2FA protege incluso si tu contraseña cae en manos equivocadas.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses1_l5"
+    },
+    {
+        "id": "ac_st3_qB7_006",
+        "question": "Que es el 2FA en servicios de streaming como Netflix?",
+        "type": "multipleChoice",
+        "options": [
+            "No existe",
+            "Una opción de seguridad adicional para proteger tu cuenta",
+            "Es obligatorio",
+            "Solo para empresas"
+        ],
+        "correctIndex": 1,
+        "explanation": "Netflix y otros servicios ofrecen 2FA para proteger cuentas contra accesos no autorizados.",
+        "difficulty": 1,
+        "lessonId": "ac_s3_ses1_l6"
+    },
+    {
+        "id": "ac_st3_qB7_007",
+        "question": "Cuales son los tres tipos de factores de autenticación?",
+        "type": "multipleChoice",
+        "options": [
+            "Algo que sabes, tienes y eres",
+            "Contraseña, PIN y patrón",
+            "Correo, celular y computadora",
+            "Ninguno"
+        ],
+        "correctIndex": 0,
+        "explanation": "Los factores son: conocimiento (algo que sabes), posesión (algo que tienes) y herencia (algo que eres).",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses2_l1"
+    },
+    {
+        "id": "ac_st3_qB7_008",
+        "question": "Que tipo de factor es una contraseña?",
+        "type": "multipleChoice",
+        "options": [
+            "Algo que tienes",
+            "Algo que sabes",
+            "Algo que eres",
+            "Ninguno"
+        ],
+        "correctIndex": 1,
+        "explanation": "Una contraseña es algo que sabes, por eso se considera factor de conocimiento.",
+        "difficulty": 1,
+        "lessonId": "ac_s3_ses2_l2"
+    },
+    {
+        "id": "ac_st3_qB7_009",
+        "question": "Que tipo de factor es un código SMS?",
+        "type": "multipleChoice",
+        "options": [
+            "Algo que sabes",
+            "Algo que tienes (tu celular)",
+            "Algo que eres",
+            "Ninguno"
+        ],
+        "correctIndex": 1,
+        "explanation": "El código SMS llega a tu celular, algo que tienes físicamente.",
+        "difficulty": 1,
+        "lessonId": "ac_s3_ses2_l3"
+    },
+    {
+        "id": "ac_st3_qB7_010",
+        "question": "Que tipo de factor es la huella digital?",
+        "type": "multipleChoice",
+        "options": [
+            "Algo que sabes",
+            "Algo que tienes",
+            "Algo que eres (biometria)",
+            "Ninguno"
+        ],
+        "correctIndex": 2,
+        "explanation": "La huella digital es un rasgo biometrico, algo que eres.",
+        "difficulty": 1,
+        "lessonId": "ac_s3_ses2_l4"
+    },
+    {
+        "id": "ac_st3_qB7_011",
+        "question": "Cual es el factor mas seguro de los tres?",
+        "type": "multipleChoice",
+        "options": [
+            "Algo que sabes",
+            "Algo que tienes",
+            "Algo que eres (biometria)",
+            "Todos son iguales"
+        ],
+        "correctIndex": 2,
+        "explanation": "Los factores biometricos son los mas seguros porque son únicos y no se pueden copiar facilmente.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses2_l5"
+    },
+    {
+        "id": "ac_st3_qB7_012",
+        "question": "Que son los tokens OTP de hardware?",
+        "type": "multipleChoice",
+        "options": [
+            "Apps en el celular",
+            "Llaves fisicas como YubiKey que generan codigos únicos",
+            "Contraseñas escritas en papel",
+            "No existen"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los tokens OTP fisicos como YubiKey generan codigos de un solo uso.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses2_l6"
+    },
+    {
+        "id": "ac_st3_qB7_013",
+        "question": "Que es la verificación por SMS?",
+        "type": "multipleChoice",
+        "options": [
+            "Un tipo de 2FA que envia un codigo al celular",
+            "Enviar un mensaje de texto",
+            "No es seguro",
+            "Solo para empresas"
+        ],
+        "correctIndex": 0,
+        "explanation": "La verificación por SMS envia un código de un solo uso a tu número registrado.",
+        "difficulty": 1,
+        "lessonId": "ac_s3_ses3_l1"
+    },
+    {
+        "id": "ac_st3_qB7_014",
+        "question": "Cuales son los riesgos del SIM swapping?",
+        "type": "multipleChoice",
+        "options": [
+            "Ninguno",
+            "Que roben tu número y reciban tus codigos de verificación",
+            "Que te cobren mas",
+            "Que se cancele tu linea"
+        ],
+        "correctIndex": 1,
+        "explanation": "El SIM swapping es cuando roban tu número para interceptar codigos de verificación.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses3_l2"
+    },
+    {
+        "id": "ac_st3_qB7_015",
+        "question": "Que es la verificación por llamada?",
+        "type": "multipleChoice",
+        "options": [
+            "Llamar a soporte",
+            "Recibir una llamada automatizada con un código de verificación",
+            "No existe",
+            "Es lo mismo que SMS"
+        ],
+        "correctIndex": 1,
+        "explanation": "La verificación por llamada te llama con un código que debes ingresar.",
+        "difficulty": 1,
+        "lessonId": "ac_s3_ses3_l3"
+    },
+    {
+        "id": "ac_st3_qB7_016",
+        "question": "Que debes hacer si cambias de número de celular?",
+        "type": "multipleChoice",
+        "options": [
+            "Nada",
+            "Actualizar tu número en todas las cuentas que usan 2FA por SMS",
+            "Cerrar todas las cuentas",
+            "No usar 2FA"
+        ],
+        "correctIndex": 1,
+        "explanation": "Es crucial actualizar tu número en todas las cuentas para no perder acceso.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses3_l4"
+    },
+    {
+        "id": "ac_st3_qB7_017",
+        "question": "Cuales son las alternativas al SMS como 2FA?",
+        "type": "multipleChoice",
+        "options": [
+            "No hay alternativas",
+            "Apps de autenticación como Google Authenticator o Authy",
+            "Usar otra contraseña",
+            "No usar nada"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las apps de autenticación son mas seguras que SMS porque no dependen de la red telefonica.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses3_l5"
+    },
+    {
+        "id": "ac_st3_qB7_018",
+        "question": "Como configurar la privacidad en 2FA?",
+        "type": "multipleChoice",
+        "options": [
+            "No se puede",
+            "Ajustar quién puede ver tu estado de 2FA y configurar alertas",
+            "Compartir el código",
+            "No es necesario"
+        ],
+        "correctIndex": 1,
+        "explanation": "Puedes configurar alertas y opciónes de privacidad en tus ajustes de seguridad.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses3_l6"
+    },
+    {
+        "id": "ac_st3_qB7_019",
+        "question": "Que es un authenticator app?",
+        "type": "multipleChoice",
+        "options": [
+            "Una app de mensajeria",
+            "Una aplicación que genera codigos de verificación temporales",
+            "Un juego",
+            "Un banco"
+        ],
+        "correctIndex": 1,
+        "explanation": "Apps como Google Authenticator o Authy generan codigos que cambian cada 30 segundos.",
+        "difficulty": 1,
+        "lessonId": "ac_s3_ses4_l1"
+    },
+    {
+        "id": "ac_st3_qB7_020",
+        "question": "Cuales son las ventajas de las apps authenticator sobre SMS?",
+        "type": "multipleChoice",
+        "options": [
+            "Ninguna",
+            "No dependen de la red telefonica y son mas seguras",
+            "Son mas lentas",
+            "No funcionan sin internet"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las apps generan codigos localmente, sin depender de la red movil.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses4_l2"
+    },
+    {
+        "id": "ac_st3_qB7_021",
+        "question": "Como configurar Google Authenticator?",
+        "type": "multipleChoice",
+        "options": [
+            "No se puede",
+            "Escaneando el código QR que te da el servicio",
+            "Escribiendo un correo",
+            "Llamando a soporte"
+        ],
+        "correctIndex": 1,
+        "explanation": "Google Authenticator se configura escaneando el código QR del servicio que quieres proteger.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses4_l3"
+    },
+    {
+        "id": "ac_st3_qB7_022",
+        "question": "Que pasa si pierdes el celular con tu authenticator?",
+        "type": "multipleChoice",
+        "options": [
+            "Pierdes el acceso para siempre",
+            "Usar tus codigos de respaldo que guardaste al configurar",
+            "No pasa nada",
+            "Llamar a la policia"
+        ],
+        "correctIndex": 1,
+        "explanation": "Al configurar 2FA debes guardar codigos de respaldo en un lugar seguro.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses4_l4"
+    },
+    {
+        "id": "ac_st3_qB7_023",
+        "question": "Que son los codigos de respaldo de 2FA?",
+        "type": "multipleChoice",
+        "options": [
+            "Codigos para compartir",
+            "Codigos de un solo uso para acceder si pierdes tu dispositivo",
+            "Codigos para cambiar la contraseña",
+            "No existen"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los codigos de respaldo te permiten acceder si no tienes tu dispositivo de autenticación.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses4_l5"
+    },
+    {
+        "id": "ac_st3_qB7_024",
+        "question": "Como proteger tus codigos de respaldo?",
+        "type": "multipleChoice",
+        "options": [
+            "En el celular",
+            "En un lugar seguro fisico, no digital",
+            "Compartirlos",
+            "No guardarlos"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los codigos de respaldo deben guardarse en un lugar fisico seguro, no en el dispositivo.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses4_l6"
+    },
+    {
+        "id": "ac_st3_qB7_025",
+        "question": "Que es un llavero de seguridad (security key)?",
+        "type": "multipleChoice",
+        "options": [
+            "Un llavero comun",
+            "Un dispositivo fisico como YubiKey para 2FA",
+            "Una app",
+            "Una contraseña"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los llaveros de seguridad como YubiKey son dispositivos fisicos para autenticación.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses5_l1"
+    },
+    {
+        "id": "ac_st3_qB7_026",
+        "question": "Cuales son las ventajas de un llavero de seguridad?",
+        "type": "multipleChoice",
+        "options": [
+            "Ninguna",
+            "Son fisicos, no dependen de apps y son muy seguros",
+            "Son gratuitos",
+            "Funciónan sin configurar"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los llaveros son muy seguros porque son fisicos y no se pueden hackear remotamente.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses5_l2"
+    },
+    {
+        "id": "ac_st3_qB7_027",
+        "question": "Como funcionan los llaveros de seguridad?",
+        "type": "multipleChoice",
+        "options": [
+            "Con contraseña",
+            "Los insertas en el USB o tocas para autenticar",
+            "Con codigo SMS",
+            "No funcionan"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los llaveros se insertan en USB o usan NFC para verificar tu identidad.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses5_l3"
+    },
+    {
+        "id": "ac_st3_qB7_028",
+        "question": "Donde puedes usar un llavero de seguridad?",
+        "type": "multipleChoice",
+        "options": [
+            "Solo en bancos",
+            "En cuentas de Google, Microsoft, y otros servicios compatibles",
+            "En todas partes",
+            "Ninguna"
+        ],
+        "correctIndex": 1,
+        "explanation": "Muchos servicios como Google, Microsoft y GitHub admiten llaveros de seguridad.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses5_l4"
+    },
+    {
+        "id": "ac_st3_qB7_029",
+        "question": "Que es la biometria como 2FA?",
+        "type": "multipleChoice",
+        "options": [
+            "Usar contraseña",
+            "Usar rasgos únicos como huella, rostro o iris",
+            "Usar PIN",
+            "No existe"
+        ],
+        "correctIndex": 1,
+        "explanation": "La biometria usa carácterísticas físicas únicas para la autenticación.",
+        "difficulty": 1,
+        "lessonId": "ac_s3_ses5_l5"
+    },
+    {
+        "id": "ac_st3_qB7_030",
+        "question": "Cuales son los riesgos de la biometria?",
+        "type": "multipleChoice",
+        "options": [
+            "Ninguno",
+            "Si la roban, no puedes cambiar tu huella como cambias una contraseña",
+            "Es muy segura",
+            "No funciona"
+        ],
+        "correctIndex": 1,
+        "explanation": "A diferencia de contraseñas, los datos biometricos no se pueden cambiar si son comprometidos.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses5_l6"
+    }
+]

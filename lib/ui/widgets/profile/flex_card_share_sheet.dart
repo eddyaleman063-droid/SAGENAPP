@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sagen/core/theme/app_colors.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/providers/providers.dart';
 import 'package:sagen/ui/widgets/profile/flex_card_widget.dart';
+import '../../../services/analytics_service.dart';
 
 class FlexCardShareSheet extends ConsumerStatefulWidget {
   final String displayName;
@@ -35,11 +38,11 @@ class _FlexCardShareSheetState extends ConsumerState<FlexCardShareSheet> {
     final l = AppLocalizations.of(context)!;
 
     return Container(
-      height: MediaQuery.of(context).size.height * 0.85,
+      height: MediaQuery.sizeOf(context).height * 0.85,
       margin: const EdgeInsets.all(AppSpacing.xxl),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppRadius.xxl),
-        color: dark ? const Color(0xFF1B2433) : Colors.white,
+        color: dark ? PremiumColors.deepBackground : Colors.white,
       ),
       child: Column(
         children: [
@@ -49,7 +52,7 @@ class _FlexCardShareSheetState extends ConsumerState<FlexCardShareSheet> {
             height: 4,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(AppRadius.pill),
-              color: dark ? Colors.white12 : Colors.black12,
+              color: context.subtle,
             ),
           ),
           const SizedBox(height: AppSpacing.lg),
@@ -71,21 +74,25 @@ class _FlexCardShareSheetState extends ConsumerState<FlexCardShareSheet> {
             child: SizedBox(
               width: double.infinity,
               height: 48,
-              child: ElevatedButton.icon(
-                onPressed: _sharing ? null : _share,
-                icon: _sharing
-                    ? const SizedBox(
-                        width: 18,
-                        height: 18,
-                        child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
-                      )
-                    : const Icon(Icons.share_rounded, size: 18),
-                label: Text(_sharing ? l.rankingSharing : l.rankingShareButton),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: PremiumColors.splashBlue,
-                  foregroundColor: Colors.white,
-                  disabledBackgroundColor: PremiumColors.splashBlue.withValues(alpha: 0.5),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
+              child: Semantics(
+                button: true,
+                label: AppLocalizations.of(context)?.shareProfile ?? '',
+                child: ElevatedButton.icon(
+                  onPressed: _sharing ? null : _share,
+                  icon: _sharing
+                      ? const SizedBox(
+                          width: 18,
+                          height: 18,
+                          child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                        )
+                      : const Icon(Icons.share_rounded, size: 18),
+                  label: Text(_sharing ? l.rankingSharing : l.rankingShareButton),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: PremiumColors.splashBlue,
+                    foregroundColor: Colors.white,
+                    disabledBackgroundColor: PremiumColors.splashBlue.withValues(alpha: 0.5),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
+                  ),
                 ),
               ),
             ),
@@ -99,10 +106,11 @@ class _FlexCardShareSheetState extends ConsumerState<FlexCardShareSheet> {
     setState(() => _sharing = true);
     final bytes = await _flexCardKey.currentState?.capture();
     if (bytes != null && mounted) {
-      await ref.read(shareServiceProvider).shareImage(bytes, source: 'profile');
+      AnalyticsService.instance.trackFlexCardShared('profile');
+      await ref.read(shareServiceProvider).shareImage(bytes, text: AppLocalizations.of(context)?.flexCardJoinAlliance, source: 'profile');
     }
     if (mounted) {
-      Navigator.pop(context);
+      context.pop();
     }
   }
 }

@@ -48,6 +48,9 @@ app.*.map.json
 *.keystore
 android/key.properties
 
+# Firebase config (contains API keys)
+android/app/google-services.json
+
 # Environment variables / API keys
 .env
 .env.local
@@ -60,3 +63,14 @@ api/package-lock.json
 
 # APK builds
 *.apk
+
+# Python scripts
+*.py
+
+# Temporary data files
+*_batch_*.json
+chunk*.json
+stdin.txt
+fetch_pins.sh
+fix_quotes.ps1
+gen_batch2.js

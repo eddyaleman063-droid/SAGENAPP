@@ -1,0 +1,412 @@
+[
+  {
+    "id": "ac_st5_qB10_001",
+    "question": "Por que es importante monitorear tus cuentas?",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Monitorear permite detectar problemas antes de que sea tarde.",
+    "difficulty": 1,
+    "lessonId": "ac_s5_ses1_l1"
+  },
+  {
+    "id": "ac_st5_qB10_002",
+    "question": "Que es la deteccion temprana de intrusiones?",
+    "type": "multipleChoice",
+    "options": [
+      "Esperar a que te hackeen para actuar",
+      "Detectar accesos no autorizados lo antes posible",
+      "Cerrar todas tus cuentas",
+      "No usar internet"
+    ],
+    "correctIndex": 1,
+    "explanation": "Detectar intrusiones rápido reduce el daño.",
+    "difficulty": 1,
+    "lessonId": "ac_s5_ses1_l2"
+  },
+  {
+    "id": "ac_st5_qB10_003",
+    "question": "Que harias si recibes una alerta de inicio de sesión desde Lima y tu estas en Arequipa?",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Cambiar tu contraseña inmediatamente",
+      "Ignorarla porque probablemente es error",
+      "Esperar a que te llegue otra",
+      "Apagar tu celular"
+    ],
+    "correctIndex": 0,
+    "explanation": "Si no reconoces la ubicacion, cambia tu clave de inmediato.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses2_l1"
+  },
+  {
+    "id": "ac_st5_qB10_004",
+    "question": "Que es una alerta de dispositivo no reconocido?",
+    "type": "multipleChoice",
+    "options": [
+      "Un tipo de correo basura",
+      "Una notificacion de que alguien accedio desde un dispositivo nuevo",
+      "Una actualización del celular",
+      "Un tipo de virus"
+    ],
+    "correctIndex": 1,
+    "explanation": "Las alertas te informan cuando hay acceso desde dispositivos que no reconoces.",
+    "difficulty": 1,
+    "lessonId": "ac_s5_ses2_l3"
+  },
+  {
+    "id": "ac_st5_qB10_005",
+    "question": "Que es un historial de actividad de cuenta?",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Muestra todos los accesos y cambios realizados en tu cuenta.",
+    "difficulty": 1,
+    "lessonId": "ac_s5_ses4_l1"
+  },
+  {
+    "id": "ac_st5_qB10_006",
+    "question": "Caso: Ves en tu historial de Facebook un inicio de sesión de un pais extranjero. Que haces?",
+    "type": "miniCase",
+    "options": [
+      "Cerrar esa sesión y cambiar tu contraseña",
+      "No hacer nada porque puede ser tuyo",
+      "Compartir la noticia en tu muro",
+      "Eliminar tu cuenta"
+    ],
+    "correctIndex": 0,
+    "explanation": "Cierra sesiónes sospechosas y protege tu cuenta.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses4_l2"
+  },
+  {
+    "id": "ac_st5_qB10_007",
+    "question": "Que es Have I Been Pwned?",
+    "type": "multipleChoice",
+    "options": [
+      "Un juego online",
+      "Un servicio que verifica si tus datos fueron filtrados",
+      "Una red social",
+      "Un banco digital"
+    ],
+    "correctIndex": 1,
+    "explanation": "Have I Been Pwned te dice si tu correo o contraseña aparecio en filtraciones.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses6_l1"
+  },
+  {
+    "id": "ac_st5_qB10_008",
+    "question": "Que es el monitoreo de la dark web?",
+    "type": "multipleChoice",
+    "options": [
+      "Navegar en la dark web",
+      "Vigilar si tu información aparece en sitios ilegales",
+      "Comprar en la dark web",
+      "Usar la dark web para comprar"
+    ],
+    "correctIndex": 1,
+    "explanation": "El monitoreo verifica si tus datos estan siendo vendidos ilegalmente.",
+    "difficulty": 3,
+    "lessonId": "ac_s5_ses6_l3"
+  },
+  {
+    "id": "ac_st5_qB10_009",
+    "question": "Que es una alerta de cambio de contraseña?",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Te notifica cuando alguien cambia la clave de tu cuenta.",
+    "difficulty": 1,
+    "lessonId": "ac_s5_ses8_l1"
+  },
+  {
+    "id": "ac_st5_qB10_010",
+    "question": "Que harias si recibes una alerta de transferencia que no hiciste?",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Llamar al banco inmediatamente y bloquear la tarjeta",
+      "Esperar a ver si se cancela sola",
+      "Decirle a un amigo que te ayude",
+      "No hacer nada"
+    ],
+    "correctIndex": 0,
+    "explanation": "Actua rápido contactando a tu banco para bloquear la operación.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses9_l1"
+  },
+  {
+    "id": "ac_st5_qB10_011",
+    "question": "Que son las alertas de Yape y Plin?",
+    "type": "multipleChoice",
+    "options": [
+      "Notificaciones de promociones",
+      "Alertas de seguridad para transacciones",
+      "Correos publicitarios",
+      "Mensajes de spam"
+    ],
+    "correctIndex": 1,
+    "explanation": "Yape y Plin te notifican de cada transaccion para tu seguridad.",
+    "difficulty": 1,
+    "lessonId": "ac_s5_ses10_l1"
+  },
+  {
+    "id": "ac_st5_qB10_012",
+    "question": "Que es un dashboard de seguridad?",
+    "type": "multipleChoice",
+    "options": [
+      "Un tipo de contraseña",
+      "Un panel centralizado que muestra el estado de seguridad de tus cuentas",
+      "Un virus",
+      "Un tipo de app"
+    ],
+    "correctIndex": 1,
+    "explanation": "Un dashboard te permite ver todas tus alertas en un solo lugar.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses2_l6"
+  },
+  {
+    "id": "ac_st5_qB10_013",
+    "question": "Que es una alerta de cambio de correo de recuperación?",
+    "type": "detectRisk",
+    "options": [
+      "Es muy riesgoso, pueden tomar control de tu cuenta",
+      "No hay riesgo",
+      "Es solo informativa",
+      "No es importante"
+    ],
+    "correctIndex": 0,
+    "explanation": "Si cambian tu correo de recuperación, pierdes el control de la cuenta.",
+    "difficulty": 3,
+    "lessonId": "ac_s5_ses8_l4"
+  },
+  {
+    "id": "ac_st5_qB10_014",
+    "question": "Que es el Google Security Checkup?",
+    "type": "multipleChoice",
+    "options": [
+      "Un tipo de virus",
+      "Una herramienta gratuita para revisar la seguridad de tu cuenta de Google",
+      "Un banco",
+      "Una app de fotos"
+    ],
+    "correctIndex": 1,
+    "explanation": "Google Security Checkup te ayuda a revisar y mejorar la protección de tu cuenta.",
+    "difficulty": 1,
+    "lessonId": "ac_s5_ses14_l1"
+  },
+  {
+    "id": "ac_st5_qB10_015",
+    "question": "Que harias si ves una publicacion en tu Facebook que no hiciste?",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Eliminarla, cambiar contraseña y revisar dispositivos conectados",
+      "No hacer nada",
+      "Compartirla con tus amigos",
+      "Cerrar tu navegador"
+    ],
+    "correctIndex": 0,
+    "explanation": "Podrian haber hackeado tu cuenta, toma medidas inmediatas.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses5_l1"
+  },
+  {
+    "id": "ac_st5_qB10_016",
+    "question": "Que es la Protección de identidad en Peru?",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Existen servicios y leyes para proteger tu identidad en el pais.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses7_l2"
+  },
+  {
+    "id": "ac_st5_qB10_017",
+    "question": "Que es el monitoreo de DNI y documentos?",
+    "type": "multipleChoice",
+    "options": [
+      "Escanear tu DNI",
+      "Vigilar si tu DNI es usado fraudulentamente",
+      "Hacer una copia del DNI",
+      "Guardar tu DNI en la nube"
+    ],
+    "correctIndex": 1,
+    "explanation": "El monitoreo detecta si alguien esta usando tu DNI ilegalmente.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses7_l3"
+  },
+  {
+    "id": "ac_st5_qB10_018",
+    "question": "Que es un reporte semanal de seguridad?",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Es un resumen automático del estado de seguridad de tus cuentas.",
+    "difficulty": 1,
+    "lessonId": "ac_s5_ses5_l6"
+  },
+  {
+    "id": "ac_st5_qB10_019",
+    "question": "Que harias si tu banco te llama sobre una transaccion sospechosa?",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Verificar la transaccion y confirmar o rechazar",
+      "Colgar porque es un fraude",
+      "Dar tu clave para verificar",
+      "Ignorar la llamada"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los bancos pueden llamarte para verificar transacciones inusuales.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses9_l5"
+  },
+  {
+    "id": "ac_st5_qB10_020",
+    "question": "Que es la automatizacion de respuestas a incidentes?",
+    "type": "multipleChoice",
+    "options": [
+      "Que el sistema responda automáticamente a amenazas",
+      "Un tipo de virus",
+      "Una app de mensajeria",
+      "Un tipo de contraseña"
+    ],
+    "correctIndex": 0,
+    "explanation": "La automatizacion puede bloquear accesos y alertar sin que hagas nada.",
+    "difficulty": 3,
+    "lessonId": "ac_s5_ses4_l6"
+  },
+  {
+    "id": "ac_st5_qB10_021",
+    "question": "Que es una alerta de intento de recuperación de cuenta?",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Te avisa cuando alguien intenta recuperar tu cuenta.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses11_l3"
+  },
+  {
+    "id": "ac_st5_qB10_022",
+    "question": "Que es el INDECOPI?",
+    "type": "multipleChoice",
+    "options": [
+      "Un banco",
+      "El instituto que protege a los consumidores en Peru",
+      "Una empresa de internet",
+      "Un hospital"
+    ],
+    "correctIndex": 1,
+    "explanation": "INDECOPI protege los derechos de los consumidores peruanos.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses17_l3"
+  },
+  {
+    "id": "ac_st5_qB10_023",
+    "question": "Caso: Tu hijo menor de edad recibe un mensaje sospechoso en su celular. Que haces?",
+    "type": "miniCase",
+    "options": [
+      "Revisar el mensaje, reportarlo y ensenarle a no responder",
+      "Quitarle el celular",
+      "Ignorar porque es normal",
+      "Decirle que lo borre"
+    ],
+    "correctIndex": 0,
+    "explanation": "Es una oportunidad para ensenar sobre seguridad digital.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses18_l1"
+  },
+  {
+    "id": "ac_st5_qB10_024",
+    "question": "Que es una alerta de cambio de domicilio?",
+    "type": "multipleChoice",
+    "options": [
+      "Un tipo de correo basura",
+      "Notificacion cuando alguien modifica tu dirección",
+      "Una actualización",
+      "Un tipo de virus"
+    ],
+    "correctIndex": 1,
+    "explanation": "Si cambian tu dirección sin que lo hagas, es una senial de fraude.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses8_l6"
+  },
+  {
+    "id": "ac_st5_qB10_025",
+    "question": "Que es el Facebook Security Checkup?",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Herramienta gratuita para revisar la seguridad de tu cuenta de Facebook.",
+    "difficulty": 1,
+    "lessonId": "ac_s5_ses14_l2"
+  },
+  {
+    "id": "ac_st5_qB10_026",
+    "question": "Que es la alerta de credito?",
+    "type": "multipleChoice",
+    "options": [
+      "Un tipo de prestamo",
+      "Notificacion cuando hay cambios en tu historial crediticio",
+      "Una app de compras",
+      "Un tipo de tarjeta"
+    ],
+    "correctIndex": 1,
+    "explanation": "Las alertas de credito te avisan si alguien intenta abrir creditos a tu nombre.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses10_l6"
+  },
+  {
+    "id": "ac_st5_qB10_027",
+    "question": "Que es un checklist mensual de seguridad?",
+    "type": "multipleChoice",
+    "options": [
+      "Una lista de compras",
+      "Una lista de tareas de seguridad para revisar cada mes",
+      "Un tipo de contraseña",
+      "Un recordatorio de cumpleaños"
+    ],
+    "correctIndex": 1,
+    "explanation": "Un checklist te ayuda a mantener buenos hábitos de seguridad.",
+    "difficulty": 1,
+    "lessonId": "ac_s5_ses14_l5"
+  },
+  {
+    "id": "ac_st5_qB10_028",
+    "question": "Que harias si el monitoreo te detecta tu correo en la dark web?",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Cambiar todas las contraseñas de ese correo y activar 2FA",
+      "No hacer nada porque es solo información",
+      "Eliminar tu correo",
+      "Publicar en redes sociales"
+    ],
+    "correctIndex": 0,
+    "explanation": "Actua rápido protegiendo todas las cuentas vinculadas a ese correo.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses6_l5"
+  },
+  {
+    "id": "ac_st5_qB10_029",
+    "question": "Que es la revision semanal de seguridad?",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Revisar tus cuentas cada semana te ayuda a detectar problemas pronto.",
+    "difficulty": 1,
+    "lessonId": "ac_s5_ses15_l2"
+  },
+  {
+    "id": "ac_st5_qB10_030",
+    "question": "Que es el monitoreo de redes sociales?",
+    "type": "multipleChoice",
+    "options": [
+      "Publicar mas en redes",
+      "Vigilar menciones y actividad de tu perfil para detectar suplantacion",
+      "Seguir a mas personas",
+      "Usar redes sociales todo el dia"
+    ],
+    "correctIndex": 1,
+    "explanation": "Monitorear te permite saber si alguien se hace pasar por ti.",
+    "difficulty": 2,
+    "lessonId": "ac_s5_ses9_l6"
+  }
+]

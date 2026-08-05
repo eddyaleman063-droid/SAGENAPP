@@ -58,7 +58,8 @@ class MainActivity : FlutterActivity() {
             }
         }
 
-        // Existing Firebase MethodChannel
+        // Firebase recovery MethodChannel
+        // Native reinitializes from google-services.json — no secrets passed from Dart.
         MethodChannel(
             flutterEngine.dartExecutor.binaryMessenger,
             "dev.sagen.app/firebase"
@@ -70,22 +71,7 @@ class MainActivity : FlutterActivity() {
                 } catch (_: Exception) {}
 
                 try {
-                    val appId = call.argument<String>("appId") ?: return@setMethodCallHandler result.error("MISSING_ARG", "appId required", null)
-                    val apiKey = call.argument<String>("apiKey") ?: return@setMethodCallHandler result.error("MISSING_ARG", "apiKey required", null)
-                    val projectId = call.argument<String>("projectId") ?: return@setMethodCallHandler result.error("MISSING_ARG", "projectId required", null)
-                    val storageBucket = call.argument<String>("storageBucket") ?: ""
-                    val messagingSenderId = call.argument<String>("messagingSenderId") ?: ""
-                    val dbUrl = call.argument<String>("databaseURL") ?: ""
-
-                    val opts = FirebaseOptions.Builder()
-                        .setApplicationId(appId)
-                        .setApiKey(apiKey)
-                        .setProjectId(projectId)
-                        .setStorageBucket(storageBucket)
-                        .setGcmSenderId(messagingSenderId)
-                        .setDatabaseUrl(dbUrl)
-                        .build()
-
+                    val opts = FirebaseOptions.fromResource(applicationContext)
                     FirebaseApp.initializeApp(applicationContext, opts, "[DEFAULT]")
                     result.success(true)
                 } catch (e: Exception) {

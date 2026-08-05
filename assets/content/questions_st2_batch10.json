@@ -1,0 +1,402 @@
+[
+  {
+    "id": "ac_st2_qB10_001",
+    "question": "Que es la longitud minima recomendada para una contraseña segura?",
+    "type": "multipleChoice",
+    "options": ["4 carácteres", "8 carácteres", "12 o mas carácteres", "Solo 6 digitos"],
+    "correctIndex": 2,
+    "explanation": "Se recomienda un minimo de 12 carácteres para mayor seguridad.",
+    "difficulty": 1,
+    "lessonId": "ac_s2_ses1_l1"
+  },
+  {
+    "id": "ac_st2_qB10_002",
+    "question": "Por que los carácteres especiales hacen mas segura una contraseña?",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Los carácteres especiales aumentan la complejidad de la contraseña.",
+    "difficulty": 1,
+    "lessonId": "ac_s2_ses1_l2"
+  },
+  {
+    "id": "ac_st2_qB10_003",
+    "question": "Que harias si tu contraseña es tu fecha de nacimiento?",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Cambiarla inmediatamente por una mas segura",
+      "No cambiarla porque nadie la sabe",
+      "Decirle a todos que no la usen",
+      "Escribirla en un papel"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los datos personales como fechas son faciles de adivinar.",
+    "difficulty": 2,
+    "lessonId": "ac_s2_ses1_l3"
+  },
+  {
+    "id": "ac_st2_qB10_004",
+    "question": "Completa: Una contraseña segura debe combinar mayusculas, minusculas, números y...",
+    "type": "completePhrase",
+    "options": ["Solo letras", "Simbolos especiales", "Solo tu nombre", "Solo fechas"],
+    "correctIndex": 1,
+    "explanation": "La combinación de todos los tipos de carácteres hace la contraseña mas fuerte.",
+    "difficulty": 1,
+    "lessonId": "ac_s2_ses1_l4"
+  },
+  {
+    "id": "ac_st2_qB10_005",
+    "question": "Cual de estas es una contraseña segura?",
+    "type": "multipleChoice",
+    "options": ["123456", "MiPeru2024!", "password", "qwerty"],
+    "correctIndex": 1,
+    "explanation": "MiPeru2024! combina letras, números y simbolos.",
+    "difficulty": 1,
+    "lessonId": "ac_s2_ses1_l5"
+  },
+  {
+    "id": "ac_st2_qB10_006",
+    "question": "Por que no debes usar 123456 como contraseña?",
+    "type": "multipleChoice",
+    "options": [
+      "Es la contraseña mas comun del mundo",
+      "Es muy larga",
+      "No tiene suficientes letras",
+      "Es muy corta"
+    ],
+    "correctIndex": 0,
+    "explanation": "123456 es la contraseña mas usada y la primera que prueban los hackers.",
+    "difficulty": 1,
+    "lessonId": "ac_s2_ses2_l1"
+  },
+  {
+    "id": "ac_st2_qB10_007",
+    "question": "Detecta el riesgo: Usas tu nombre de mascota como contraseña.",
+    "type": "detectRisk",
+    "options": [
+      "Es riesgoso porque muchos lo saben",
+      "No hay riesgo",
+      "Solo si tienes mucha mascota",
+      "Es seguro si es un nombre raro"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los nombres de mascotas son faciles de adivinar si te conocen.",
+    "difficulty": 2,
+    "lessonId": "ac_s2_ses2_l2"
+  },
+  {
+    "id": "ac_st2_qB10_008",
+    "question": "Que es el metodo de la frase para crear contraseñas?",
+    "type": "multipleChoice",
+    "options": [
+      "Usar una frase memorable y tomar la primera letra de cada palabra",
+      "Escribir tu frase favorita completa",
+      "Usar solo números",
+      "Copiar frases de libros"
+    ],
+    "correctIndex": 0,
+    "explanation": "El metodo de la frase usa palabras personales para crear claves seguras.",
+    "difficulty": 2,
+    "lessonId": "ac_s2_ses3_l1"
+  },
+  {
+    "id": "ac_st2_qB10_009",
+    "question": "Caso: Tu sobrino te pide la contraseña del WiFi. Que haces?",
+    "type": "miniCase",
+    "options": [
+      "Darsela pero cambiarla despues",
+      "No darla y explicarle que es privada",
+      "Darsela porque es familia",
+      "Decirle que la adivine"
+    ],
+    "correctIndex": 1,
+    "explanation": "Las contraseñas no se deben compartir, ni siquiera con familia.",
+    "difficulty": 2,
+    "lessonId": "ac_s2_ses10_l5"
+  },
+  {
+    "id": "ac_st2_qB10_010",
+    "question": "Por que no debes repetir la misma contraseña en diferentes sitios?",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Si hackean un sitio, tendrán acceso a todas tus cuentas.",
+    "difficulty": 1,
+    "lessonId": "ac_s2_ses4_l1"
+  },
+  {
+    "id": "ac_st2_qB10_011",
+    "question": "Que pasa si una contraseña tiene solo letras minuscals?",
+    "type": "multipleChoice",
+    "options": [
+      "Es igual de segura",
+      "Es mas debil porque falta complejidad",
+      "Es mas segura",
+      "No importa"
+    ],
+    "correctIndex": 1,
+    "explanation": "Falta complejidad sin mayusculas, números ni simbolos.",
+    "difficulty": 2,
+    "lessonId": "ac_s2_ses5_l1"
+  },
+  {
+    "id": "ac_st2_qB10_012",
+    "question": "Que es una passphrases?",
+    "type": "multipleChoice",
+    "options": [
+      "Una contraseña muy corta",
+      "Una frase larga que se usa como contraseña",
+      "Un tipo de codigo bancario",
+      "Un PIN de celular"
+    ],
+    "correctIndex": 1,
+    "explanation": "Las passphrases son frases largas que son faciles de recordar pero dificiles de adivinar.",
+    "difficulty": 2,
+    "lessonId": "ac_s2_ses6_l1"
+  },
+  {
+    "id": "ac_st2_qB10_013",
+    "question": "Detecta el riesgo: Usas 111111 como PIN de tu tarjeta BCP.",
+    "type": "detectRisk",
+    "options": [
+      "Es muy riesgoso, es el PIN mas comun",
+      "No hay riesgo",
+      "Solo si no tienes dinero",
+      "Es seguro porque es facil de recordar"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los PINs repetidos son los primeros que intentan los estafadores.",
+    "difficulty": 2,
+    "lessonId": "ac_s2_ses13_l1"
+  },
+  {
+    "id": "ac_st2_qB10_014",
+    "question": "Cada cuanto se recomienda cambiar las contraseñas críticas?",
+    "type": "multipleChoice",
+    "options": [
+      "Cada semana",
+      "Cada 3 a 6 meses",
+      "Nunca",
+      "Solo cuando te hackean"
+    ],
+    "correctIndex": 1,
+    "explanation": "Se recomienda cambiarlas cada 3 a 6 meses o si hay una filtracion.",
+    "difficulty": 2,
+    "lessonId": "ac_s2_ses8_l1"
+  },
+  {
+    "id": "ac_st2_qB10_015",
+    "question": "Donde NO debes guardar tus contraseñas?",
+    "type": "multipleChoice",
+    "options": [
+      "En un gestor de contraseñas",
+      "En un papelito pegado al monitor",
+      "En la memoria del navegador protegida",
+      "En tu celular con bloqueo"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los papelitos son visibles para cualquiera que este cerca.",
+    "difficulty": 1,
+    "lessonId": "ac_s2_ses9_l1"
+  },
+  {
+    "id": "ac_st2_qB10_016",
+    "question": "Que es un gestor de contraseñas?",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Un gestor guarda y genera contraseñas de forma segura.",
+    "difficulty": 1,
+    "lessonId": "ac_s2_ses9_l2"
+  },
+  {
+    "id": "ac_st2_qB10_017",
+    "question": "Que harias si te dicen que tu contraseña aparecio en una filtracion?",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Cambiarla inmediatamente en todos los sitios donde la uses",
+      "No hacer nada porque ya paso el tiempo",
+      "Cambiarla solo en ese sitio",
+      "Esperar un mes para cambiarla"
+    ],
+    "correctIndex": 0,
+    "explanation": "Si una contraseña fue filtrada, debes cambiarla en todas partes.",
+    "difficulty": 2,
+    "lessonId": "ac_s2_ses15_l1"
+  },
+  {
+    "id": "ac_st2_qB10_018",
+    "question": "Que es el PIN de una tarjeta de credito?",
+    "type": "multipleChoice",
+    "options": [
+      "Tu número de cuenta",
+      "Un codigo de 4 digitos para autorizar compras",
+      "Tu nombre escrito",
+      "Tu fecha de nacimiento"
+    ],
+    "correctIndex": 1,
+    "explanation": "El PIN es un codigo secreto de 4 digitos.",
+    "difficulty": 1,
+    "lessonId": "ac_s2_ses13_l3"
+  },
+  {
+    "id": "ac_st2_qB10_019",
+    "question": "Por que las contraseñas largas son mejores que las cortas con simbolos?",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "La longitud aumenta exponencialmente la dificultad para adivinar.",
+    "difficulty": 2,
+    "lessonId": "ac_s2_ses5_l5"
+  },
+  {
+    "id": "ac_st2_qB10_020",
+    "question": "Que harias si tu hijo te pide crear una contraseña para su juego?",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Ayudarle a crear una contraseña fuerte y única",
+      "Ponerle la misma contraseña que la tuya",
+      "Que use su nombre y apellido",
+      "Que no ponga contraseña"
+    ],
+    "correctIndex": 0,
+    "explanation": "Enseña desde joven a crear contraseñas seguras.",
+    "difficulty": 2,
+    "lessonId": "ac_s2_ses18_l1"
+  },
+  {
+    "id": "ac_st2_qB10_021",
+    "question": "Que es una sustitucion predecible en contraseñas?",
+    "type": "multipleChoice",
+    "options": [
+      "Cambiar letras por números como 3 por e",
+      "Usar solo mayusculas",
+      "Usar espacios",
+      "Usar emojis"
+    ],
+    "correctIndex": 0,
+    "explanation": "Sustituciones como @ por a son predecibles para los hackers.",
+    "difficulty": 3,
+    "lessonId": "ac_s2_ses7_l2"
+  },
+  {
+    "id": "ac_st2_qB10_022",
+    "question": "Que es la prueba de resistencia de una contraseña?",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Evalua cuanto tiempo tardaria un ataque de fuerza bruta en descifrarla.",
+    "difficulty": 3,
+    "lessonId": "ac_s2_ses4_l6"
+  },
+  {
+    "id": "ac_st2_qB10_023",
+    "question": "Que harias si te llaman del banco pidiendo tu clave de Yape?",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Colgar inmediatamente y llamar al banco",
+      "Dar la clave para verificar",
+      "Pedirles que esperen",
+      "Decirles que no tienes Yape"
+    ],
+    "correctIndex": 0,
+    "explanation": "El banco nunca te pedira claves por telefono.",
+    "difficulty": 2,
+    "lessonId": "ac_s2_ses10_l3"
+  },
+  {
+    "id": "ac_st2_qB10_024",
+    "question": "Que es un almacenamiento offline de claves?",
+    "type": "multipleChoice",
+    "options": [
+      "Guardar claves en la nube",
+      "Guardar claves en un papel o USB sin internet",
+      "Enviar claves por correo",
+      "Publicar claves en redes sociales"
+    ],
+    "correctIndex": 1,
+    "explanation": "El almacenamiento offline protege tus claves del acceso remoto.",
+    "difficulty": 2,
+    "lessonId": "ac_s2_ses10_l6"
+  },
+  {
+    "id": "ac_st2_qB10_025",
+    "question": "Cual es la diferencia entre PIN y contraseña?",
+    "type": "multipleChoice",
+    "options": [
+      "No hay diferencia",
+      "El PIN es numerico y corto, la contraseña es mas compleja",
+      "La contraseña es solo números",
+      "El PIN es mas largo"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los PINs son numericos y cortos, las contraseñas son mas complejas.",
+    "difficulty": 1,
+    "lessonId": "ac_s2_ses11_l5"
+  },
+  {
+    "id": "ac_st2_qB10_026",
+    "question": "Que es un ataque de fuerza bruta?",
+    "type": "multipleChoice",
+    "options": [
+      "Un ataque fisico",
+      "Probar todas las combinaciónes posibles hasta encontrar la correcta",
+      "Un tipo de virus",
+      "Un robo de celular"
+    ],
+    "correctIndex": 1,
+    "explanation": "El ataque de fuerza bruta prueba combinaciónes hasta acertar.",
+    "difficulty": 3,
+    "lessonId": "ac_s2_ses5_l5"
+  },
+  {
+    "id": "ac_st2_qB10_027",
+    "question": "Que harias si alguien te mira mientras escribes tu contraseña en el cajero?",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Tapar con la otra mano y avisar a seguridad",
+      "No hacer nada porque es normal",
+      "Decirle que se aparte",
+      "Cambiar de cajero"
+    ],
+    "correctIndex": 0,
+    "explanation": "Protege tu PIN cubriendo el teclado cuando lo escribas.",
+    "difficulty": 2,
+    "lessonId": "ac_s2_ses13_l1"
+  },
+  {
+    "id": "ac_st2_qB10_028",
+    "question": "Que es la rotacion programada de claves?",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Es cambiar contraseñas periodicamente siguiendo un calendario.",
+    "difficulty": 2,
+    "lessonId": "ac_s2_ses8_l5"
+  },
+  {
+    "id": "ac_st2_qB10_029",
+    "question": "Por que es malo guardar contraseñas en las notas del celular?",
+    "type": "multipleChoice",
+    "options": [
+      "Porque el celular puede perderse o ser hackeado",
+      "Porque ocupan mucho espacio",
+      "Porque se borran solas",
+      "No es malo, es seguro"
+    ],
+    "correctIndex": 0,
+    "explanation": "Las notas del celular no estan protegidas con cifrado.",
+    "difficulty": 2,
+    "lessonId": "ac_s2_ses9_l1"
+  },
+  {
+    "id": "ac_st2_qB10_030",
+    "question": "Que es la educación familiar en contraseñas?",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Ensenar a toda la familia a crear claves seguras protege al grupo.",
+    "difficulty": 1,
+    "lessonId": "ac_s2_ses1_l6"
+  }
+]

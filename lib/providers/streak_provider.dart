@@ -1,14 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../l10n/app_localizations.dart';
+import '../utils/map_utils.dart';
+
 import '../services/analytics_service.dart';
-import '../services/cloud_sync_service.dart';
-import '../services/notification_service.dart';
+import '../services/app_logger.dart';
 import '../services/storage_service.dart';
 import '../services/streak_service.dart';
-import '../models/chest_type.dart';
-import '../models/chest_reward.dart';
-import '../services/chest_event_bus.dart';
-import 'learning_provider.dart';
-import 'service_providers.dart';
+import 'providers.dart';
 
 class StreakState {
   final StreakStatus status;
@@ -20,6 +18,10 @@ class StreakState {
   final Map<String, int> monthlyData;
   final List<String> streakHistory;
   final List<String> emotionalMessages;
+  final int? lastMilestone;
+  final Map<String, int>? cachedMonthlyStreakStats;
+
+  static const milestoneValues = [7, 14, 30, 60, 100, 180, 365];
 
   const StreakState({
     required this.status,
@@ -31,7 +33,12 @@ class StreakState {
     required this.monthlyData,
     required this.streakHistory,
     required this.emotionalMessages,
+    this.lastMilestone,
+    this.cachedMonthlyStreakStats,
   });
+
+  bool get justHitMilestone => lastMilestone != null;
+  bool get freezeConsumed => status.freezeConsumed;
 
   StreakState copyWith({
     StreakStatus? status,
@@ -43,6 +50,8 @@ class StreakState {
     Map<String, int>? monthlyData,
     List<String>? streakHistory,
     List<String>? emotionalMessages,
+    int? Function()? lastMilestone,
+    Map<String, int>? cachedMonthlyStreakStats,
   }) {
     return StreakState(
       status: status ?? this.status,
@@ -54,37 +63,42 @@ class StreakState {
       monthlyData: monthlyData ?? this.monthlyData,
       streakHistory: streakHistory ?? this.streakHistory,
       emotionalMessages: emotionalMessages ?? this.emotionalMessages,
+      lastMilestone: lastMilestone != null ? lastMilestone() : this.lastMilestone,
+      cachedMonthlyStreakStats: cachedMonthlyStreakStats ?? this.cachedMonthlyStreakStats,
     );
   }
 
   int get currentStreak => status.currentStreak;
   bool get isStreakFrozen => status.isStreakFrozen;
+
+  double get streakMultiplier {
+    if (currentStreak < 10) return 1.0;
+    final mult = 1.0 + (currentStreak ~/ 10) * 0.1;
+    return mult.clamp(1.0, 2.0);
+  }
 }
 
 class StreakNotifier extends Notifier<StreakState> {
-  static int _staticStreak = 0;
-  static int get currentStreakStatic => _staticStreak;
   late StreakService _service;
-  late CloudSyncService _cloudSync;
 
   static const _missions = [
-    'Aprende qué es el phishing',
-    'Activa la autenticación en dos pasos',
-    'Revisa tus contraseñas',
-    'Identifica un enlace sospechoso',
-    'Aprende sobre redes WiFi seguras',
-    'Configura una contraseña segura',
-    'Reconoce un correo fraudulento',
+    'Learn what phishing is',
+    'Enable two-factor authentication',
+    'Review your passwords',
+    'Identify a suspicious link',
+    'Learn about secure WiFi networks',
+    'Create a strong password',
+    'Recognize a fraudulent email',
   ];
 
   static const _emotionalQuotes = [
-    'Tu seguridad mejora cada día.',
-    '7 días protegiendo tu identidad digital.',
-    'Cada día cuenta para tu protección.',
-    'Estás construyendo un hábito digital seguro.',
-    'Tu escudo se fortalece día a día.',
-    'La consistencia es tu mejor defensa.',
-    'Sigue así. Tu esfuerzo de hoy protege tu mañana.',
+    'Your security improves every day.',
+    '7 days protecting your digital identity.',
+    'Every day counts for your protection.',
+    'You are building a secure digital habit.',
+    'Your shield grows stronger day by day.',
+    'Consistency is your best defense.',
+    'Keep going. Today\'s effort protects your tomorrow.',
   ];
 
   static const _keyTotalCheckIns = 'streak_total_checkins';
@@ -97,9 +111,7 @@ class StreakNotifier extends Notifier<StreakState> {
   @override
   StreakState build() {
     _service = ref.watch(streakServiceProvider);
-    _cloudSync = ref.watch(cloudSyncServiceProvider);
     final status = _service.load();
-    _staticStreak = status.currentStreak;
     return _loadState(status, ref.watch(storageServiceProvider));
   }
 
@@ -111,11 +123,18 @@ class StreakNotifier extends Notifier<StreakState> {
         ? raw.split(',').where((s) => s.isNotEmpty).toList()
         : <String>[];
     final ws = storage.getString(_keyWeeklyStats);
-    final weeklyStats = ws.isNotEmpty ? _parseStringMap(ws) : <String, int>{};
+    final weeklyStats = ws.isNotEmpty ? parseStringMap(ws) : <String, int>{};
     final hm = storage.getString(_keyHeatmap);
-    final heatmapData = hm.isNotEmpty ? _parseStringMap(hm) : <String, int>{};
+    final heatmapData = hm.isNotEmpty ? parseStringMap(hm) : <String, int>{};
+    if (heatmapData.length > 365) {
+      final keys = heatmapData.keys.toList()..sort();
+      final excess = heatmapData.length - 365;
+      for (int i = 0; i < excess; i++) {
+        heatmapData.remove(keys[i]);
+      }
+    }
     final md = storage.getString(_keyMonthlyData);
-    final monthlyData = md.isNotEmpty ? _parseStringMap(md) : <String, int>{};
+    final monthlyData = md.isNotEmpty ? parseStringMap(md) : <String, int>{};
     final emotionalMessages = _computeEmotionalMessages(status);
     return StreakState(
       status: status,
@@ -130,34 +149,20 @@ class StreakNotifier extends Notifier<StreakState> {
     );
   }
 
-  Map<String, int> _parseStringMap(String raw) {
-    final map = <String, int>{};
-    if (raw.isEmpty) return map;
-    for (final entry in raw.split(',')) {
-      final parts = entry.split(':');
-      if (parts.length == 2) map[parts[0]] = int.tryParse(parts[1]) ?? 0;
-    }
-    return map;
-  }
-
-  String _encodeStringMap(Map<String, int> map) {
-    return map.entries.map((e) => '${e.key}:${e.value}').join(',');
-  }
-
   List<String> _computeEmotionalMessages(StreakStatus status) {
     final msgs = <String>[];
     if (status.currentStreak >= 100) {
-      msgs.add('100 días de protección constante. Leyenda.');
+      msgs.add('100 days of constant protection. Legend.');
     } else if (status.currentStreak >= 50) {
-      msgs.add('50 días de protección digital constante.');
+      msgs.add('50 days of constant digital protection.');
     } else if (status.currentStreak >= 30) {
-      msgs.add('Un mes de aprendizaje. Tu dedicación te convierte en Guardián Digital.');
+      msgs.add('One month of learning. Your dedication makes you a Digital Guardian.');
     } else if (status.currentStreak >= 14) {
-      msgs.add('Dos semanas de constancia. Tu escudo brilla con fuerza.');
+      msgs.add('Two weeks of consistency. Your shield shines.');
     } else if (status.currentStreak >= 7) {
-      msgs.add('Una semana protegiendo tu identidad digital. Sigue así.');
+      msgs.add('One week protecting your digital identity. Keep it up!');
     } else if (status.currentStreak >= 3) {
-      msgs.add('3 días seguidos. Estás construyendo un hábito sólido.');
+      msgs.add('3 days in a row. You are building a solid habit.');
     }
     if (msgs.isEmpty && status.currentStreak > 0) {
       msgs.addAll(_emotionalQuotes.take(2));
@@ -170,20 +175,25 @@ class StreakNotifier extends Notifier<StreakState> {
     storage.setInt(_keyTotalCheckIns, s.totalCheckIns);
     storage.setInt(_keyPerfectWeeks, s.perfectWeeks);
     storage.setString(_keyHistory, s.streakHistory.join(','));
-    storage.setString(_keyWeeklyStats, _encodeStringMap(s.weeklyStats));
-    storage.setString(_keyHeatmap, _encodeStringMap(s.heatmapData));
-    storage.setString(_keyMonthlyData, _encodeStringMap(s.monthlyData));
+    storage.setString(_keyWeeklyStats, encodeStringMap(s.weeklyStats));
+    storage.setString(_keyHeatmap, encodeStringMap(s.heatmapData));
+    storage.setString(_keyMonthlyData, encodeStringMap(s.monthlyData));
   }
 
   void _syncStreakToFirestore() {
     try {
-      _cloudSync.notifyFieldChanged('streak_current', state.status.currentStreak);
-      _cloudSync.notifyFieldChanged('streak_longest', state.status.longestStreak);
-    } catch (_) {}
+      // Sync streak to server via Cloud Function (not just local cache)
+      ref.read(economicFunctionsServiceProvider).incrementStreak().catchError((e) {
+        // Non-critical: local streak is already updated
+        return null;
+      });
+    } catch (e) {
+      AppLogger().warning('StreakNotifier._syncStreakToFirestore failed: $e');
+    }
   }
 
   void _checkAchievements(int oldStreak, StreakStatus newStatus) {
-    final a = AnalyticsService.instance;
+    final a = ref.read(analyticsServiceProvider);
     if (newStatus.currentStreak >= 1 && oldStreak == 0) a.unlockAchievement(Achievement.shieldBasic);
     if (newStatus.currentStreak >= 7 && oldStreak < 7) a.unlockAchievement(Achievement.shieldGlow);
     if (newStatus.currentStreak >= 30 && oldStreak < 30) {
@@ -230,6 +240,8 @@ class StreakNotifier extends Notifier<StreakState> {
   String get currentMission => _missions[DateTime.now().day % _missions.length];
 
   Map<String, int> get monthlyStreakStats {
+    final cached = state.cachedMonthlyStreakStats;
+    if (cached != null) return cached;
     final now = DateTime.now();
     final stats = <String, int>{};
     for (int i = 0; i < 6; i++) {
@@ -237,17 +249,24 @@ class StreakNotifier extends Notifier<StreakState> {
       final key = '${month.year}-${month.month.toString().padLeft(2, '0')}';
       stats[key] = state.monthlyData[key] ?? 0;
     }
+    // Cache the result without side effects — cache is set on next state update
     return stats;
   }
 
-  String get shieldTierName {
+  /// Call after building to cache monthly stats (avoids getter side effect)
+  void cacheMonthlyStats() {
+    if (state.cachedMonthlyStreakStats != null) return;
+    state = state.copyWith(cachedMonthlyStreakStats: monthlyStreakStats);
+  }
+
+  String shieldTierName(AppLocalizations l) {
     switch (tier) {
-      case 'legendary': return 'Escudo Legendario';
-      case 'crystal': return 'Escudo de Cristal';
-      case 'particles': return 'Escudo de Partículas';
-      case 'glow': return 'Escudo Radiante';
-      case 'basic': return 'Escudo Básico';
-      default: return 'Sin Escudo';
+      case 'legendary': return l.shieldTierLegendary;
+      case 'crystal': return l.shieldTierCrystal;
+      case 'particles': return l.shieldTierParticles;
+      case 'glow': return l.shieldTierGlow;
+      case 'basic': return l.shieldTierBasic;
+      default: return l.shieldTierInactive;
     }
   }
 
@@ -261,112 +280,176 @@ class StreakNotifier extends Notifier<StreakState> {
   static const _keyJustDefrosted = 'streak_just_defrosted';
 
   void checkIn() {
-    final wasFrozen = state.isStreakFrozen;
-    final oldStreak = state.status.currentStreak;
-    final newStatus = _service.checkIn();
-    final newTotalCheckIns = state.totalCheckIns + 1;
+    try {
+      final wasFrozen = state.isStreakFrozen;
+      final oldStreak = state.status.currentStreak;
+      final lastDate = state.status.lastActivityDate;
 
-    final now = DateTime.now();
-    final weekKey = '${now.year}-W${_isoWeekNumber(now)}';
-    final newWeeklyStats = Map<String, int>.from(state.weeklyStats);
-    newWeeklyStats[weekKey] = (newWeeklyStats[weekKey] ?? 0) + 1;
+      final items = ref.read(itemProvider.notifier);
 
-    final monthKey = '${now.year}-${now.month.toString().padLeft(2, '0')}';
-    final newMonthlyData = Map<String, int>.from(state.monthlyData);
-    newMonthlyData[monthKey] = (newMonthlyData[monthKey] ?? 0) + 1;
+      // Pre-compute diff to determine if protection items are needed
+      bool needsProtection = false;
+      bool usePhoenixFeather = false;
+      if (oldStreak > 0 && lastDate != null) {
+        final now = DateTime.now();
+        final today = DateTime(now.year, now.month, now.day);
+        final last = DateTime(lastDate.year, lastDate.month, lastDate.day);
+        final diff = today.difference(last).inDays;
+        if (diff >= 2) {
+          needsProtection = true;
+          // Phoenix Feather revives streak if no freeze available
+          if (!items.hasTitaniumShield() && items.hasPhoenixFeather()) {
+            usePhoenixFeather = true;
+          }
+        }
+      }
 
-    final heatmapKey = now.toIso8601String().substring(0, 10);
-    final newHeatmap = Map<String, int>.from(state.heatmapData);
-    newHeatmap[heatmapKey] = (newHeatmap[heatmapKey] ?? 0) + 1;
-    final keys = newHeatmap.keys.toList()..sort();
-    while (newHeatmap.length > 365) {
-      newHeatmap.remove(keys.first);
-    }
+      // Inject a freeze if Titanium Shield should protect
+      if (needsProtection && items.hasTitaniumShield()) {
+        items.useTitaniumShield();
+        final currentFreezes = streakFreezes;
+        final maxFreezes = ref.read(remoteConfigServiceProvider).streakMaxFreezes;
+        if (currentFreezes < maxFreezes) {
+          setFreezes(currentFreezes + 1);
+        }
+      }
 
-    _checkAchievements(oldStreak, newStatus);
+      final newStatus = _service.checkIn();
 
-    final newEmotions = _computeEmotionalMessages(newStatus);
+      // Phoenix Feather: revive streak if it would have been lost
+      if (usePhoenixFeather && newStatus.currentStreak < oldStreak && oldStreak > 0) {
+        items.usePhoenixFeather();
+        final revivedStatus = StreakStatus(
+          currentStreak: oldStreak,
+          longestStreak: newStatus.longestStreak,
+          lastActivityDate: DateTime.now(),
+          streakFreezes: newStatus.streakFreezes,
+          isAtRisk: false,
+          message: 'Your Phoenix Feather revived your streak!',
+          tier: newStatus.tier,
+        );
+        state = state.copyWith(status: revivedStatus);
+        // Persist the corrected streak to SharedPreferences
+        _service.saveStreak(
+          currentStreak: oldStreak,
+          longestStreak: revivedStatus.longestStreak,
+          lastActivityDate: DateTime.now(),
+          streakFreezes: newStatus.streakFreezes,
+        );
+        _saveExtras(ref.read(storageServiceProvider));
+        _syncStreakToFirestore();
+        _scheduleStreakReminder();
+        return;
+      }
 
-    final newPerfectWeeks = (newStatus.currentStreak > 0 && newStatus.currentStreak % 7 == 0)
-        ? state.perfectWeeks + 1
-        : state.perfectWeeks;
+      final newTotalCheckIns = state.totalCheckIns + 1;
 
-    _checkStreakChest(oldStreak, newStatus);
+      final now = DateTime.now();
+      final weekKey = '${now.year}-W${_isoWeekNumber(now)}';
+      final newWeeklyStats = Map<String, int>.from(state.weeklyStats);
+      newWeeklyStats[weekKey] = (newWeeklyStats[weekKey] ?? 0) + 1;
 
-    state = state.copyWith(
-      status: newStatus,
-      totalCheckIns: newTotalCheckIns,
-      perfectWeeks: newPerfectWeeks,
-      weeklyStats: newWeeklyStats,
-      monthlyData: newMonthlyData,
-      heatmapData: newHeatmap,
-      emotionalMessages: newEmotions,
-    );
+      final monthKey = '${now.year}-${now.month.toString().padLeft(2, '0')}';
+      final newMonthlyData = Map<String, int>.from(state.monthlyData);
+      newMonthlyData[monthKey] = (newMonthlyData[monthKey] ?? 0) + 1;
 
-    final storage = ref.read(storageServiceProvider);
-    if (wasFrozen && !newStatus.isStreakFrozen) {
-      storage.setBool(_keyJustDefrosted, true);
-    }
-    _saveExtras(storage);
-    _syncStreakToFirestore();
-    _scheduleStreakReminder();
-  }
+      final heatmapKey = now.toIso8601String().substring(0, 10);
+      final newHeatmap = Map<String, int>.from(state.heatmapData);
+      newHeatmap[heatmapKey] = (newHeatmap[heatmapKey] ?? 0) + 1;
+      if (newHeatmap.length > 365) {
+        final keys = newHeatmap.keys.toList()..sort();
+        final toRemove = newHeatmap.length - 365;
+        for (int i = 0; i < toRemove; i++) {
+          newHeatmap.remove(keys[i]);
+        }
+      }
 
-  void _checkStreakChest(int oldStreak, StreakStatus newStatus) {
-    final newStreak = newStatus.currentStreak;
-    if (newStreak <= oldStreak) return;
+      _checkAchievements(oldStreak, newStatus);
+      AnalyticsService.instance.track(AnalyticEvent.streakCheckIn, properties: {'streak': newStatus.currentStreak.toString()});
 
-    if (newStreak == 7 || newStreak == 14 || newStreak == 30 || newStreak == 100) {
-      final t = newStreak == 7
-          ? ChestType.silver
-          : newStreak == 14
-              ? ChestType.gold
-              : ChestType.legendary;
-      final title = newStreak == 7
-          ? '¡7 días de racha!'
-          : newStreak == 14
-              ? '¡14 días de racha!'
-              : newStreak == 30
-                  ? '¡30 días de racha!'
-                  : '¡100 días de racha!';
-      final message = newStreak == 7
-          ? 'Una semana protegiendo tu identidad digital.'
-          : newStreak == 14
-              ? 'Dos semanas de constancia. Sigue así.'
-              : newStreak == 30
-                  ? 'Un mes. Eres un Guardián Digital.'
-                  : '100 días. Leyenda.';
+      final newEmotions = _computeEmotionalMessages(newStatus);
 
-      final baseXp = newStreak >= 100 ? 100 : (newStreak >= 30 ? 60 : (newStreak >= 14 ? 30 : 20));
-      final baseGems = newStreak >= 100 ? 30 : (newStreak >= 30 ? 20 : (newStreak >= 14 ? 10 : 5));
+      final newPerfectWeeks = (newStatus.currentStreak > 0 && newStatus.currentStreak % 7 == 0)
+          ? state.perfectWeeks + 1
+          : state.perfectWeeks;
 
-      final reward = ChestRewardRoller.roll(t, overrideXp: baseXp, overrideGems: baseGems);
+      ref.read(streakChestServiceProvider).checkAndReward(
+        oldStreak: oldStreak,
+        newStreak: newStatus.currentStreak,
+        learning: ref.read(learningProvider.notifier),
+      ).catchError((e) {
+        AppLogger().error('streak chest reward failed: $e');
+      });
 
-      ref.read(learningProvider.notifier).addGems(reward.gems);
-      ref.read(learningProvider.notifier).addXp(reward.xp);
+      final int? milestone = StreakState.milestoneValues
+          .where((m) => oldStreak < m && newStatus.currentStreak >= m)
+          .isEmpty
+          ? null
+          : StreakState.milestoneValues
+              .where((m) => oldStreak < m && newStatus.currentStreak >= m)
+              .first;
 
-      ChestEventBus.instance.fire(ChestRewardData(
-        type: t,
-        xp: reward.xp,
-        gems: reward.gems,
-        streakShields: reward.streakShields,
-        xpBoost: reward.xpBoost,
-        gemMultiplier: reward.gemMultiplier,
-        title: title,
-        message: message,
-        source: 'streak',
-      ));
+      state = state.copyWith(
+        status: newStatus,
+        totalCheckIns: newTotalCheckIns,
+        perfectWeeks: newPerfectWeeks,
+        weeklyStats: newWeeklyStats,
+        monthlyData: newMonthlyData,
+        heatmapData: newHeatmap,
+        emotionalMessages: newEmotions,
+        lastMilestone: () => milestone,
+        cachedMonthlyStreakStats: null,
+      );
+
+      if (milestone != null) {
+        ref.read(gemProvider.notifier).awardStreakMilestone(milestone);
+      }
+
+      ref.read(gemProvider.notifier).awardDailyBonus(newStatus.currentStreak);
+
+      final storage = ref.read(storageServiceProvider);
+      if (wasFrozen && !newStatus.isStreakFrozen) {
+        storage.setBool(_keyJustDefrosted, true);
+      }
+      if (newStatus.freezeConsumed) {
+        ref.read(notificationServiceProvider).showFreezeConsumedNotification(newStatus.streakFreezes);
+      }
+      _saveExtras(storage);
+      _syncStreakToFirestore();
+      _scheduleStreakReminder();
+    } catch (e) {
+      AppLogger().error('streak checkIn failed: $e');
     }
   }
 
   void _scheduleStreakReminder() {
-    _staticStreak = state.status.currentStreak;
-    NotificationService.instance.scheduleStreakReminder(_staticStreak);
+    ref.read(notificationServiceProvider).scheduleStreakReminder(state.status.currentStreak);
+  }
+
+  void clearMilestone() {
+    state = state.copyWith(lastMilestone: () => null);
+  }
+
+  void setFreezes(int count) {
+    final current = state.status;
+    final maxFreezes = ref.read(remoteConfigServiceProvider).streakMaxFreezes;
+    final clamped = count.clamp(0, maxFreezes);
+    final newStatus = StreakStatus(
+      currentStreak: current.currentStreak,
+      longestStreak: current.longestStreak,
+      lastActivityDate: current.lastActivityDate,
+      streakFreezes: clamped,
+      isAtRisk: current.isAtRisk,
+      message: current.message,
+      tier: current.tier,
+    );
+    state = state.copyWith(status: newStatus);
+    _service.saveFreezes(clamped);
+    _saveExtras(ref.read(storageServiceProvider));
   }
 
   void reload() {
     final newStatus = _service.load();
-    _staticStreak = newStatus.currentStreak;
     state = state.copyWith(status: newStatus);
     _syncStreakToFirestore();
   }

@@ -15,7 +15,7 @@
 ```bash
 # 1. Clonar el repo
 git clone <url>
-cd safestudentapp
+cd SAGENAPP
 
 # 2. Instalar dependencias
 flutter pub get

@@ -1,8 +1,8 @@
+/// Completed quiz result with scores and timing.
 class QuizResult {
   final int totalQuestions;
   final int correctAnswers;
   final int xpEarned;
-  final int gemsEarned;
   final bool perfect;
   final Duration timeTaken;
   final String stageId;
@@ -12,7 +12,6 @@ class QuizResult {
     required this.totalQuestions,
     required this.correctAnswers,
     required this.xpEarned,
-    required this.gemsEarned,
     required this.perfect,
     required this.timeTaken,
     required this.stageId,

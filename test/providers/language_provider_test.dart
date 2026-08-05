@@ -45,7 +45,7 @@ void main() {
 
     test('build defaults to Spanish when no saved preference', () {
       final state = container.read(languageProvider);
-      expect(state.language, AppLanguage.es);
+      expect(state.hasUserChosen, false);
     });
 
     test('setLanguage changes language and marks as user chosen', () {

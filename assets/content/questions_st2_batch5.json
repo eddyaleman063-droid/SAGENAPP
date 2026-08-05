@@ -1,0 +1,450 @@
+[
+    {
+        "id": "ac_st2_qB5_001",
+        "question": "Verdadero o Falso: Una contraseña como '123456' es suficientemente segura para una cuenta bancaria.",
+        "type": "trueFalse",
+        "options": [
+            "Verdadero",
+            "Falso"
+        ],
+        "correctIndex": 1,
+        "explanation": "Falso. '123456' es la contraseña más débil y fácil de adivinar. Nunca la uses para cuentas importantes.",
+        "difficulty": 1,
+        "lessonId": "ac_s2_ses1_l1"
+    },
+    {
+        "id": "ac_st2_qB5_002",
+        "question": "Completa la frase: Nunca debes escribir tu contraseña en un papel pegado en ___ porque cualquiera podría verla.",
+        "type": "completePhrase",
+        "options": [
+            "tu billetera",
+            "tu escritorio o monitor",
+            "tu correo electrónico",
+            "tu teléfono celular"
+        ],
+        "correctIndex": 1,
+        "explanation": "El escritorio o monitor son visibles para cualquiera que entre a tu espacio. Usa un gestor de contraseñas en su lugar.",
+        "difficulty": 1,
+        "lessonId": "ac_s2_ses1_l2"
+    },
+    {
+        "id": "ac_st2_qB5_003",
+        "question": "Que es un ataque de fuerza bruta y como protegerte de él?",
+        "type": "multipleChoice",
+        "options": [
+            "Es cuando alguien te pega físicamente",
+            "Es cuando un atacante prueba miles de combinaciónes de contraseñas hasta encontrar la tuya",
+            "Es un tipo de virus",
+            "Es una actualización de seguridad"
+        ],
+        "correctIndex": 1,
+        "explanation": "La fuerza bruta prueba todas las combinaciónes posibles. Usa contraseñas largas y complejas para hacer este ataque casi imposible.",
+        "difficulty": 3,
+        "lessonId": "ac_s2_ses1_l3"
+    },
+    {
+        "id": "ac_st2_qB5_004",
+        "question": "Cada cuánto tiempo deberías cambiar tus contraseñas importantes?",
+        "type": "multipleChoice",
+        "options": [
+            "Nunca, una vez puesta es para siempre",
+            "Cada 3 a 6 meses, o si sospechas que fue comprometida",
+            "Cada semana",
+            "Solo cuando te hackeen"
+        ],
+        "correctIndex": 1,
+        "explanation": "Cambia contraseñas importantes cada 3-6 meses. Si sospechas que fue filtrada, cambiala inmediatamente.",
+        "difficulty": 2,
+        "lessonId": "ac_s2_ses1_l4"
+    },
+    {
+        "id": "ac_st2_qB5_005",
+        "question": "Por que es peligroso reutilizar la misma contraseña en múltiples sitios?",
+        "type": "detectRisk",
+        "options": [
+            "No es peligroso, es conveniente",
+            "Si un sitio es hackeado, tus otras cuentas también quedan en riesgo",
+            "Solo es peligrosi usas el mismo correo",
+            "Único riesgo es que olvides cual usaste"
+        ],
+        "correctIndex": 1,
+        "explanation": "Si un sitio es comprometido, los atacantes probarán esas credenciales en otros sitios. Usa contraseñas únicas para cada cuenta importante.",
+        "difficulty": 2,
+        "lessonId": "ac_s2_ses1_l5"
+    },
+    {
+        "id": "ac_st2_qB5_006",
+        "question": "Que es el credential stuffing y como afecta tus cuentas?",
+        "type": "multipleChoice",
+        "options": [
+            "Es cuando guardas credenciales en un archivo",
+            "Es cuando atacantes usan credenciales filtradas de un sitio para acceder a otros",
+            "Es una forma de guardar contraseñas",
+            "Es un tipo de actualización"
+        ],
+        "correctIndex": 1,
+        "explanation": "El credential stuffing usa listas de usuarios y contraseñas filtradas para probar en múltiples sitios. Por eso debes usar contraseñas únicas.",
+        "difficulty": 3,
+        "lessonId": "ac_s2_ses1_l6"
+    },
+    {
+        "id": "ac_st2_qB5_007",
+        "question": "Cual es la mejor forma de recordar contraseñas seguras?",
+        "type": "multipleChoice",
+        "options": [
+            "Usar tu fecha de nacimiento",
+            "Usar una frase memorable combinada con simbolos y números",
+            "Usar el nombre de tu mascota",
+            "Escribirlas en tu celular sin bloqueo"
+        ],
+        "correctIndex": 1,
+        "explanation": "Una frase como 'MiGatoCome2!Peces#' es fuerte y fácil de recordar. Combina palabras con números y simbolos.",
+        "difficulty": 2,
+        "lessonId": "ac_s2_ses2_l1"
+    },
+    {
+        "id": "ac_st2_qB5_008",
+        "question": "Que es un gestor de contraseñas y por que deberías usar uno?",
+        "type": "multipleChoice",
+        "options": [
+            "Un programa que guarda tus contraseñas en un archivo de texto",
+            "Una app segura que genera y almacena contraseñas fuertes de forma cifrada",
+            "Un tipo de red social",
+            "Una página para comprar contraseñas"
+        ],
+        "correctIndex": 1,
+        "explanation": "Un gestor de contraseñas como Bitwarden o 1Password guarda todas tus claves de forma segura y genera contraseñas fuertes únicas.",
+        "difficulty": 2,
+        "lessonId": "ac_s2_ses2_l2"
+    },
+    {
+        "id": "ac_st2_qB5_009",
+        "question": "Por qué no debes enviar contraseñas por correo electrónico?",
+        "type": "detectRisk",
+        "options": [
+            "No hay riesgo, el correo es seguro",
+            "Los correos pueden ser interceptados o quedarchivados permanentemente",
+            "Solo es riesgoso si envías muchos correos",
+            "Único riesgo es que no llegue"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los correos no son seguros para información sensible. Pueden ser interceptados, hackeados o archivados para siempre.",
+        "difficulty": 2,
+        "lessonId": "ac_s2_ses2_l3"
+    },
+    {
+        "id": "ac_st2_qB5_010",
+        "question": "Que es una pregunta de seguridad y cómo elegir una buena?",
+        "type": "multipleChoice",
+        "options": [
+            "Es una pregunta que todos conocen la respuesta",
+            "Es una pregunta cuya respuesta solo tu sabes y no se puede encontrar en redes sociales",
+            "Es una pregunta sobre tu mascota",
+            "Es una pregunta con respuesta de una sola palabra"
+        ],
+        "correctIndex": 1,
+        "explanation": "Elige preguntas cuyas respuestas no puedan ser adivinadas o encontradas en tu perfil público. Evita nombres de mascotas o ciudades.",
+        "difficulty": 2,
+        "lessonId": "ac_s2_ses2_l4"
+    },
+    {
+        "id": "ac_st2_qB5_011",
+        "question": "Cual es el riesgo de usar WiFi publico para entrar a tu correo?",
+        "type": "detectRisk",
+        "options": [
+            "No hay riesgo",
+            "Los atacantes pueden interceptar tu contraseña en la red",
+            "Solo es lento",
+            "Único riesgo es que no carguen los correos"
+        ],
+        "correctIndex": 1,
+        "explanation": "En WiFi publico sin cifrado, tus datos viajan sin protección. Usa VPN o evita entrar a cuentas importantes en estas redes.",
+        "difficulty": 3,
+        "lessonId": "ac_s2_ses2_l5"
+    },
+    {
+        "id": "ac_st2_qB5_012",
+        "question": "Que es un ataque de phishing y cómo reconocerlo?",
+        "type": "multipleChoice",
+        "options": [
+            "Es cuando te envían un correo de bienvenida",
+            "Es un mensaje falso que finge ser de una empresa para robarte datos",
+            "Es una actualización de seguridad",
+            "Es un tipo de contraseña"
+        ],
+        "correctIndex": 1,
+        "explanation": "El phishing usa correos o mensajes falsos con enlaces a sitios fraudulentos. Desconfía de mensajes con urgencia o errores ortográficos.",
+        "difficulty": 2,
+        "lessonId": "ac_s2_ses2_l6"
+    },
+    {
+        "id": "ac_st2_qB5_013",
+        "question": "Por qué no debes guardar contraseñas en el navegador sin protección?",
+        "type": "detectRisk",
+        "options": [
+            "No hay riesgo, es conveniente",
+            "Si alguien accede a tu dispositivo puede ver todas tus contraseñas",
+            "Solo es riesgoso si compartes la computadora",
+            "Único riesgo es que se llene la memoria"
+        ],
+        "correctIndex": 1,
+        "explanation": "Guardar contraseñas sin cifrado en el navegador es peligroso. Usa un gestor de contraseñas dedicado que las cifre.",
+        "difficulty": 2,
+        "lessonId": "ac_s2_ses3_l1"
+    },
+    {
+        "id": "ac_st2_qB5_014",
+        "question": "Que es la autenticación por biométricos (huella dactilar, reconocimiento facial) y sus ventajas?",
+        "type": "multipleChoice",
+        "options": [
+            "Es un tipo de contraseña débil",
+            "Es usar carácterísticas físicas únicas para autenticarte, más rápido y seguro que contraseñas",
+            "Es una forma de hackear cuentas",
+            "Es una actualización de sistema"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los biométricos son únicos para ti y difíciles de replicar. Son más rápidos y seguros que las contraseñas tradicionales.",
+        "difficulty": 2,
+        "lessonId": "ac_s2_ses3_l2"
+    },
+    {
+        "id": "ac_st2_qB5_015",
+        "question": "Cual es el problema de usar información personal en contraseñas (nombres, fechas)?",
+        "type": "detectRisk",
+        "options": [
+            "No hay problema, es fácil de recordar",
+            "Los atacantes pueden encontrar esa información en redes sociales y adivinar tu contraseña",
+            "Solo es problema si usas tu propio nombre",
+            "Único riesgo es que sea muy larga"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los atacantes investigan tus redes sociales para adivinar contraseñas. Evita nombres, fechas y datos personales obvios.",
+        "difficulty": 2,
+        "lessonId": "ac_s2_ses3_l3"
+    },
+    {
+        "id": "ac_st2_qB5_016",
+        "question": "Que es un código de recuperación y por qué debes guardarlo en lugar seguro?",
+        "type": "multipleChoice",
+        "options": [
+            "Es un código para desactivar la seguridad",
+            "Es un código que te permite recuperar tu cuenta si pierdes acceso a tu dispositivo",
+            "Es un código para hackear cuentas",
+            "Es una contraseña temporal"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los códigos de recuperación son tu última opción para acceder a tu cuenta si pierdes tu dispositivo o acceso a 2FA.",
+        "difficulty": 3,
+        "lessonId": "ac_s2_ses3_l4"
+    },
+    {
+        "id": "ac_st2_qB5_017",
+        "question": "Por qué es importante usar contraseñas diferentes para cuentas bancarias y redes sociales?",
+        "type": "multipleChoice",
+        "options": [
+            "No es importante, todas las cuentas son igual de sensibles",
+            "Las cuentas bancarias tienen mayor impacto financiero si son comprometidas",
+            "Solo es importante si tienes mucho dinero",
+            "Único riesgo es que te bloqueen la cuenta"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las cuentas bancarias tienen mayor riesgo financiero. Usa contraseñas aún más fuertes y únicas para cuentas con dinero.",
+        "difficulty": 2,
+        "lessonId": "ac_s2_ses3_l5"
+    },
+    {
+        "id": "ac_st2_qB5_018",
+        "question": "Que es un ataque de diccionario y cómo protegerte?",
+        "type": "multipleChoice",
+        "options": [
+            "Es cuando alguien lee tu diccionario",
+            "Es cuando un atacante usa listas de palabras comunes para adivinar contraseñas",
+            "Es un tipo de virus",
+            "Es una actualización de seguridad"
+        ],
+        "correctIndex": 1,
+        "explanation": "El ataque de diccionario usa palabras comunes. Usa contraseñas con combinaciónes de letras, números y símbolos que no sean palabras reales.",
+        "difficulty": 3,
+        "lessonId": "ac_s2_ses3_l6"
+    },
+    {
+        "id": "ac_st2_qB5_019",
+        "question": "Cual es el riesgo de compartir tu contraseña con familiares de confianza?",
+        "type": "detectRisk",
+        "options": [
+            "No hay riesgo si son de confianza",
+            "Si ellos la comparten o la guardan inseguramente, tu cuenta queda en riesgo",
+            "Solo es riesgoso si no son familia",
+            "Único riesgo es que cambien tu perfil"
+        ],
+        "correctIndex": 1,
+        "explanation": "Incluso con familiares, compartir contraseñas es riesgoso. Pueden guardarla inseguramente o compartirla sin querer.",
+        "difficulty": 2,
+        "lessonId": "ac_s2_ses4_l1"
+    },
+    {
+        "id": "ac_st2_qB5_020",
+        "question": "Que es el password spraying y cómo difiere del ataque de fuerza bruta?",
+        "type": "multipleChoice",
+        "options": [
+            "Es lo mismo que fuerza bruta",
+            "Es cuando un atacante prueba pocas contraseñas comunes en muchas cuentas diferentes",
+            "Es cuando rocías agua en tu teclado",
+            "Es una actualización de seguridad"
+        ],
+        "correctIndex": 1,
+        "explanation": "El password spraying prueba contraseñas comunes (123456, contraseña) en múltiples cuentas para evitar bloqueos.",
+        "difficulty": 3,
+        "lessonId": "ac_s2_ses4_l2"
+    },
+    {
+        "id": "ac_st2_qB5_021",
+        "question": "Por qué no debes usar redes sociales para guardar contraseñas en mensajes privados?",
+        "type": "detectRisk",
+        "options": [
+            "No hay riesgo, los mensajes son privados",
+            "Las redes sociales pueden ser hackeadas y tus mensajes expuestos",
+            "Solo es riesgoso si usas Facebook",
+            "Único riesgo es que se borren los mensajes"
+        ],
+        "correctIndex": 1,
+        "explanation": "Nunca guardes contraseñas en redes sociales, incluso en mensajes privados. Pueden ser hackeadas o accedidas por empleados.",
+        "difficulty": 2,
+        "lessonId": "ac_s2_ses4_l3"
+    },
+    {
+        "id": "ac_st2_qB5_022",
+        "question": "Que es una contraseña de un solo uso (OTP) y cómo funciona?",
+        "type": "multipleChoice",
+        "options": [
+            "Es una contraseña que usas una sola vez y luego cambia automáticamente",
+            "Es una contraseña que nunca cambias",
+            "Es una contraseña que compartes con otros",
+            "Es una contraseña que escribes en papel"
+        ],
+        "correctIndex": 0,
+        "explanation": "Los OTP son códigos temporales que cambian cada pocos segundos, ofreciendo alta seguridad para autenticación.",
+        "difficulty": 3,
+        "lessonId": "ac_s2_ses4_l4"
+    },
+    {
+        "id": "ac_st2_qB5_023",
+        "question": "Cual es la mejor práctica al crear una contraseña para tu correo principal?",
+        "type": "multipleChoice",
+        "options": [
+            "Usar tu nombre y año de nacimiento",
+            "Crear una frase única con simbolos, números y mayúsculas/minusculas",
+            "Usar 'contraseña123'",
+            "Usar la misma que para tu WiFi"
+        ],
+        "correctIndex": 1,
+        "explanation": "Tu correo es la clave para recuperar todas tus cuentas. Usa una contraseña muy fuerte y única para él.",
+        "difficulty": 2,
+        "lessonId": "ac_s2_ses4_l5"
+    },
+    {
+        "id": "ac_st2_qB5_024",
+        "question": "Que es el brute force con GPU y por qué es más peligroso?",
+        "type": "multipleChoice",
+        "options": [
+            "Es cuando usas la GPU para jugar",
+            "Es cuando atacantes usan tarjetas gráficas potentes para probar millones de contraseñas por segundo",
+            "Es una actualización de tarjeta gráfica",
+            "Es un tipo de virus"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las GPUs pueden probar millones de combinaciónes por segundo. Por eso necesitas contraseñas largas y complejas.",
+        "difficulty": 3,
+        "lessonId": "ac_s2_ses4_l6"
+    },
+    {
+        "id": "ac_st2_qB5_025",
+        "question": "Por qué es importante no usar patrones predecibles en contraseñas (123, abc, qwerty)?",
+        "type": "detectRisk",
+        "options": [
+            "No hay riesgo, son fáciles de recordar",
+            "Los atacantes prueban estos patrones primero en sus ataques",
+            "Solo es riesgoso si son muy cortos",
+            "Único riesgo es que te bloqueen la cuenta"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los patrones comunes como 123, qwerty o abc son lo primero que prueban los atacantes. Evita secuencias obvias.",
+        "difficulty": 1,
+        "lessonId": "ac_s2_ses5_l1"
+    },
+    {
+        "id": "ac_st2_qB5_026",
+        "question": "Que es un vault (bóveda) de contraseñas y por qué es más seguro que el navegador?",
+        "type": "multipleChoice",
+        "options": [
+            "Es un lugar donde guardas papel",
+            "Es un almacén cifrado de contraseñas con protección maestra adicional",
+            "Es un tipo de red social",
+            "Es una página web normal"
+        ],
+        "correctIndex": 1,
+        "explanation": "Un vault cifra tus contraseñas con encriptación fuerte y requiere una contraseña maestra, más seguro que el navegador.",
+        "difficulty": 2,
+        "lessonId": "ac_s2_ses5_l2"
+    },
+    {
+        "id": "ac_st2_qB5_027",
+        "question": "Cual es el riesgo de usar la misma contraseña para WiFi y para tu correo?",
+        "type": "detectRisk",
+        "options": [
+            "No hay riesgo",
+            "Si hackean tu WiFi, pueden intentar la misma contraseña en tu correo",
+            "Solo es riesgoso si tu WiFi es débil",
+            "Único riesgo es que sea lento"
+        ],
+        "correctIndex": 1,
+        "explanation": "Reutilizar contraseñas entre diferentes servicios multiplica el riesgo. Usa contraseñas únicas para cada tipo de cuenta.",
+        "difficulty": 2,
+        "lessonId": "ac_s2_ses5_l3"
+    },
+    {
+        "id": "ac_st2_qB5_028",
+        "question": "Que es el passphrases y por qué se recomiendan sobre contraseñas cortas?",
+        "type": "multipleChoice",
+        "options": [
+            "Son frases muy largas y difíciles de recordar",
+            "Son frases cortas y memorables que combinadas con símbolos son muy seguras",
+            "Son contraseñas de un solo uso",
+            "Son contraseñas que cambian automáticamente"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los passphrases como 'MiGatoCome2!Peces#' son largos, memorables y difíciles de adivinar, pero fáciles de recordar.",
+        "difficulty": 2,
+        "lessonId": "ac_s2_ses5_l4"
+    },
+    {
+        "id": "ac_st2_qB5_029",
+        "question": "Por qué no debes guardar contraseñas en archivos de texto sin cifrar?",
+        "type": "detectRisk",
+        "options": [
+            "No hay riesgo si el archivo está en tu escritorio",
+            "Cualquiera con acceso a tu dispositivo puede abrir el archivo y ver tus contraseñas",
+            "Solo es riesgoso si compartes el archivo",
+            "Único riesgo es que se borre el archivo"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los archivos de texto sin cifrar son como un libro abierto. Usa un gestor de contraseñas o al menos cifra el archivo.",
+        "difficulty": 2,
+        "lessonId": "ac_s2_ses5_l5"
+    },
+    {
+        "id": "ac_st2_qB5_030",
+        "question": "Que es el password hashing y por qué lo usan los sitios web seguros?",
+        "type": "multipleChoice",
+        "options": [
+            "Es cuando borran tu contraseña permanentemente",
+            "Es cuando el sitio guarda tu contraseña convertida en código ilegible, no la contraseña original",
+            "Es una forma de comprimir contraseñas",
+            "Es una actualización de seguridad"
+        ],
+        "correctIndex": 1,
+        "explanation": "El hashing convierte tu contraseña en código ilegible. Incluso si hackean el sitio, no obtienen tus contraseñas reales.",
+        "difficulty": 3,
+        "lessonId": "ac_s2_ses5_l6"
+    }
+]

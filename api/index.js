@@ -30,22 +30,48 @@ const WEBHOOK_BASE = process.env.VERCEL_URL
 
 const STREAK_SHIELD_MAX = 2;
 
-const productCatalog = {
-  'gems_50':    { gems: 50,   title: '50 Gemas - SAGEN',            price: 5.00,  bonuses: [] },
-  'gems_120':   { gems: 120,  title: '120 Gemas - SAGEN',           price: 10.00, bonuses: [] },
-  'gems_300':   { gems: 300,  title: '300 Gemas - SAGEN',           price: 20.00, bonuses: [] },
-  'gems_500':   { gems: 500,  title: '500 Gemas - SAGEN',           price: 35.00, bonuses: [] },
-  'gems_1000':  { gems: 1000, title: '1000 Gemas - SAGEN',          price: 60.00, bonuses: [] },
-  'bundle_protector':   { gems: 100,  title: 'Pack Protegido - SAGEN',      price: 12.00, bonuses: [{ type: 'streakProtector', quantity: 1 }] },
-  'bundle_xp':          { gems: 200,  title: 'Pack Impulso - SAGEN',        price: 20.00, bonuses: [{ type: 'xpBoost', quantity: 1 }] },
-  'bundle_multiplier':  { gems: 300,  title: 'Pack Fortuna - SAGEN',        price: 28.00, bonuses: [{ type: 'gemMultiplier', quantity: 1 }] },
-  'bundle_luck':        { gems: 250,  title: 'Pack Suerte - SAGEN',         price: 24.00, bonuses: [{ type: 'luckBoost', quantity: 1 }] },
+const hardcodedCatalog = {
+  'donation_5':    { amount: 5,   title: 'Donación $5 - SAGEN',            price: 5.00,  bonuses: [] },
+  'donation_10':   { amount: 10,  title: 'Donación $10 - SAGEN',           price: 10.00, bonuses: [] },
+  'donation_20':   { amount: 20,  title: 'Donación $20 - SAGEN',           price: 20.00, bonuses: [] },
+  'donation_35':   { amount: 35,  title: 'Donación $35 - SAGEN',           price: 35.00, bonuses: [] },
+  'donation_60':   { amount: 60,  title: 'Donación $60 - SAGEN',           price: 60.00, bonuses: [] },
+  'bundle_protector':   { amount: 12,  title: 'Pack Protegido - SAGEN',      price: 12.00, bonuses: [{ type: 'streakProtector', quantity: 1 }] },
+  'bundle_xp':          { amount: 20,  title: 'Pack Impulso - SAGEN',        price: 20.00, bonuses: [{ type: 'xpBoost', quantity: 1 }] },
+  'bundle_multiplier':  { amount: 28,  title: 'Pack Fortuna - SAGEN',        price: 28.00, bonuses: [{ type: 'xpMultiplier', quantity: 1 }] },
+  'bundle_luck':        { amount: 24,  title: 'Pack Suerte - SAGEN',         price: 24.00, bonuses: [{ type: 'luckBoost', quantity: 1 }] },
 };
 
-function getProductDetails(productId, gemsFromClient, priceFromClient, bonusesFromClient) {
-  const catalog = productCatalog[productId];
-  if (catalog) return catalog;
-  return { gems: gemsFromClient, title: `${gemsFromClient} Gemas - SAGEN`, price: priceFromClient || 0, bonuses: bonusesFromClient || [] };
+let _catalogCache = null;
+let _catalogCacheTime = 0;
+const CATALOG_CACHE_TTL = 5 * 60 * 1000;
+
+async function loadCatalog() {
+  const now = Date.now();
+  if (_catalogCache && (now - _catalogCacheTime) < CATALOG_CACHE_TTL) {
+    return _catalogCache;
+  }
+  try {
+    const snap = await admin.firestore().doc('config/productCatalog').get();
+    if (snap.exists) {
+      const data = snap.data();
+      _catalogCache = data.products || hardcodedCatalog;
+      _catalogCacheTime = now;
+      return _catalogCache;
+    }
+  } catch (e) {
+    console.warn('Failed to load catalog from Firestore, using hardcoded', e.message);
+  }
+  _catalogCache = hardcodedCatalog;
+  _catalogCacheTime = now;
+  return _catalogCache;
+}
+
+async function getProductDetails(productId) {
+  const catalog = await loadCatalog();
+  const item = catalog[productId];
+  if (item) return item;
+  throw new Error(`Producto desconocido: ${productId}`);
 }
 
 function getStreakShieldSlots(currentShields) {
@@ -53,7 +79,12 @@ function getStreakShieldSlots(currentShields) {
 }
 
 function shortHash(s) {
-  return crypto.createHash('sha256').update(s).digest('hex').slice(0, 12);
+  const secret = process.env.PURCHASE_SECRET;
+  if (!secret) {
+    console.error('PURCHASE_SECRET not configured for shortHash');
+    return crypto.createHash('sha256').update(s).digest('hex').slice(0, 12);
+  }
+  return crypto.createHmac('sha256', secret).update(s).digest('hex').slice(0, 16);
 }
 
 // ── Auth middleware ─────────────────────────────────────────────
@@ -82,6 +113,43 @@ async function requireAdmin(req, res, next) {
   });
 }
 
+// ── Rate limiting (Firestore-based, distributed) ───────────────
+const RATE_LIMIT_WINDOW = 60 * 1000;
+const RATE_LIMIT_MAX = 10;
+
+async function rateLimit(req, res, next) {
+  const key = req.user?.uid || req.ip;
+  const now = Date.now();
+  const windowStart = now - RATE_LIMIT_WINDOW;
+
+  try {
+    const rateLimitRef = admin.firestore().doc(`rate_limits/${key}`);
+    await admin.firestore().runTransaction(async (transaction) => {
+      const doc = await transaction.get(rateLimitRef);
+      const data = doc.data() || {};
+      const timestamps = (data.timestamps || []).filter(t => t > windowStart);
+
+      if (timestamps.length >= RATE_LIMIT_MAX) {
+        throw new Error('RATE_LIMIT_EXCEEDED');
+      }
+
+      timestamps.push(now);
+      transaction.set(rateLimitRef, {
+        timestamps,
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      }, { merge: true });
+    });
+    next();
+  } catch (e) {
+    if (e.message === 'RATE_LIMIT_EXCEEDED') {
+      return res.status(429).json({ error: 'resource-exhausted', message: 'Demasiadas solicitudes. Intenta de nuevo.' });
+    }
+    // On Firestore errors, fail open (allow request) to avoid blocking users
+    console.warn('Rate limit check failed (fail-open)', e.message);
+    next();
+  }
+}
+
 // ── Express app ────────────────────────────────────────────────
 const app = express();
 app.use(express.json());
@@ -89,30 +157,34 @@ app.use(express.json());
 // ────────────────────────────────────────────────────────────────
 // POST /api/createPaymentPreference
 // ────────────────────────────────────────────────────────────────
-app.post('/api/createPaymentPreference', async (req, res) => {
+app.post('/api/createPaymentPreference', requireAuth, rateLimit, async (req, res) => {
   try {
-    const { gems, userId, productId, bonuses, price } = req.body;
-    if (!gems || !userId) {
-      return res.status(400).json({ error: 'invalid-argument', message: 'Se requieren gems y userId' });
+    const { amount, productId } = req.body;
+    if (!amount || !productId) {
+      return res.status(400).json({ error: 'invalid-argument', message: 'Se requieren amount y productId' });
     }
 
-    const pkg = getProductDetails(productId || `gems_${gems}`, gems, price, bonuses);
-    const effectivePrice = price || pkg.price;
-    const obfuscatedRef = `${shortHash(userId)}|${gems}|${productId || ''}|${Date.now()}`;
+    const pkg = await getProductDetails(productId);
+    if (pkg.amount !== amount) {
+      return res.status(400).json({ error: 'invalid-argument', message: `Monto no coincide: esperado ${pkg.amount}` });
+    }
+
+    const userId = req.user.uid;
+    const obfuscatedRef = `${shortHash(userId)}|${amount}|${productId}`;
 
     const preference = new Preference(mpClient);
     const result = await preference.create({
       body: {
         items: [{
-          id: productId || `gems_${gems}`,
+          id: productId,
           title: pkg.title,
-          description: `${gems} gemas para usar en SAGEN`,
+          description: `Donación de $${amount} para SAGEN`,
           quantity: 1,
-          unit_price: effectivePrice,
+          unit_price: pkg.price,
           currency_id: 'PEN',
         }],
         external_reference: obfuscatedRef,
-        metadata: { userId, gems, productId: productId || '' },
+        metadata: { userId, amount, productId },
         back_urls: {
           success: `${APP_URL}payment/success`,
           failure: `${APP_URL}payment/failure`,
@@ -124,7 +196,7 @@ app.post('/api/createPaymentPreference', async (req, res) => {
       },
     });
 
-    console.log('Preference created', { preferenceId: result.id, obfuscatedRef, gems, productId: productId || 'none' });
+    console.log('Preference created', { preferenceId: result.id, obfuscatedRef, amount, productId: productId || 'none' });
     res.json({ result: { preferenceId: result.id, initPoint: result.init_point || result.sandbox_init_point, externalRef: obfuscatedRef } });
   } catch (error) {
     console.error('createPaymentPreference error', error);
@@ -144,6 +216,35 @@ app.post('/api/handlePaymentWebhook', async (req, res) => {
       return res.status(200).send('OK');
     }
 
+    // ── VERIFY WEBHOOK SIGNATURE (MANDATORY) ───────────────────
+    const WEBHOOK_SECRET = process.env.MERCADOPAGO_WEBHOOK_SECRET;
+    if (!WEBHOOK_SECRET) {
+      console.error('MERCADOPAGO_WEBHOOK_SECRET not configured — rejecting webhook for security');
+      return res.status(500).send('Server misconfigured');
+    }
+    {
+      const signature = req.headers['x-signature'] || '';
+      const parts = {};
+      for (const part of signature.split(';')) {
+        const [k, v] = part.split('=');
+        if (k && v) parts[k.trim()] = v.trim();
+      }
+      const ts = parts['ts'];
+      const v1 = parts['v1'];
+      if (!ts || !v1) {
+        console.warn('Webhook missing signature', { paymentId: data.id });
+        return res.status(401).send('Unauthorized');
+      }
+      const rawBody = JSON.stringify(req.body);
+      const expected = crypto.createHmac('sha256', WEBHOOK_SECRET)
+        .update(`ts${ts}req${rawBody}`)
+        .digest('hex');
+      if (!crypto.timingSafeEqual(Buffer.from(v1, 'hex'), Buffer.from(expected, 'hex'))) {
+        console.warn('Webhook signature mismatch', { paymentId: data.id });
+        return res.status(401).send('Unauthorized');
+      }
+    }
+
     const paymentId = data.id.toString();
     const response = await fetch(`https://api.mercadopago.com/v1/payments/${paymentId}`, {
       headers: { Authorization: `Bearer ${MERCADOPAGO_ACCESS_TOKEN}` },
@@ -158,7 +259,7 @@ app.post('/api/handlePaymentWebhook', async (req, res) => {
     const externalRef = payment.external_reference || '';
     const extParts = externalRef.split('|');
     const userId = payment.metadata?.userId || extParts[0] || '';
-    const gems = parseInt(payment.metadata?.gems || extParts[1], 10);
+    const amount = parseInt(payment.metadata?.amount || extParts[1], 10);
     const productId = payment.metadata?.productId || extParts[2] || null;
 
     if (payment.status !== 'approved') {
@@ -177,14 +278,15 @@ app.post('/api/handlePaymentWebhook', async (req, res) => {
       return res.status(200).send('OK');
     }
 
-    if (!userId || isNaN(gems) || gems <= 0) {
-      console.error('Invalid userId or gems', { userId, gems });
+    if (!userId || isNaN(amount) || amount <= 0) {
+      console.error('Invalid userId or amount', { userId, amount });
       return res.status(200).send('OK');
     }
 
     const userRef = admin.firestore().doc(`users/${userId}`);
     const logRef = admin.firestore().doc(`payment_logs/${paymentId}`);
-    const pkg = productCatalog[productId];
+    const catalog = await loadCatalog();
+    const pkg = catalog[productId];
     const bonuses = pkg ? pkg.bonuses : [];
 
     await admin.firestore().runTransaction(async (transaction) => {
@@ -198,11 +300,12 @@ app.post('/api/handlePaymentWebhook', async (req, res) => {
 
       const userData = userDoc.data() || {};
       const updateData = {
-        learning_gems: (userData.learning_gems || 0) + gems,
-        learning_total_gems: (userData.learning_total_gems || 0) + gems,
+        total_donated: (userData.total_donated || 0) + amount,
+        is_supporter: true,
         lastPaymentAt: admin.firestore.FieldValue.serverTimestamp(),
         lastPaymentMethod: 'mercadopago',
-        lastPaymentAmount: gems,
+        lastPaymentAmount: amount,
+        _ts_total_donated: admin.firestore.FieldValue.serverTimestamp(),
       };
 
       for (const bonus of bonuses) {
@@ -213,8 +316,8 @@ app.post('/api/handlePaymentWebhook', async (req, res) => {
           if (toAdd > 0) updateData.shop_streak_shields = currentShields + toAdd;
         } else if (bonus.type === 'xpBoost') {
           updateData.shop_purchased_xp_boosts = (userData.shop_purchased_xp_boosts || 0) + bonus.quantity;
-        } else if (bonus.type === 'gemMultiplier') {
-          updateData.shop_purchased_gem_multipliers = (userData.shop_purchased_gem_multipliers || 0) + bonus.quantity;
+        } else if (bonus.type === 'xpMultiplier') {
+          updateData.shop_purchased_xp_multipliers = (userData.shop_purchased_xp_multipliers || 0) + bonus.quantity;
         } else if (bonus.type === 'luckBoost') {
           updateData.shop_purchased_luck_boosts = (userData.shop_purchased_luck_boosts || 0) + bonus.quantity;
         }
@@ -222,13 +325,13 @@ app.post('/api/handlePaymentWebhook', async (req, res) => {
 
       transaction.update(userRef, updateData);
       transaction.create(logRef, {
-        userId, gems, productId, bonuses, amount: payment.transaction_amount || 0,
+        userId, amount, productId, bonuses, amount: payment.transaction_amount || 0,
         currency: payment.currency_id || 'PEN', paymentId, paymentMethod: payment.payment_method_id || 'unknown',
         status: payment.status, externalRef, createdAt: admin.firestore.FieldValue.serverTimestamp(),
       });
     });
 
-    console.log('Payment processed', { userId, gems, productId: productId || 'none' });
+    console.log('Payment processed', { userId, amount, productId: productId || 'none' });
     return res.status(200).send('OK');
   } catch (error) {
     console.error('Webhook handler error', error);
@@ -237,13 +340,13 @@ app.post('/api/handlePaymentWebhook', async (req, res) => {
 });
 
 // ────────────────────────────────────────────────────────────────
-// POST /api/adminCreditGems
+// POST /api/adminCreditDonation
 // ────────────────────────────────────────────────────────────────
-app.post('/api/adminCreditGems', requireAdmin, async (req, res) => {
+app.post('/api/adminCreditDonation', requireAdmin, async (req, res) => {
   try {
-    const { userId, gems, paymentMethod, productId, idempotencyKey } = req.body;
-    if (!userId || !gems || gems <= 0 || !idempotencyKey) {
-      return res.status(400).json({ error: 'invalid-argument', message: 'userId, gems e idempotencyKey requeridos' });
+    const { userId, amount, paymentMethod, productId, idempotencyKey } = req.body;
+    if (!userId || !amount || amount <= 0 || !idempotencyKey) {
+      return res.status(400).json({ error: 'invalid-argument', message: 'userId, amount e idempotencyKey requeridos' });
     }
 
     const logRef = admin.firestore().doc(`payment_logs/${idempotencyKey}`);
@@ -261,17 +364,18 @@ app.post('/api/adminCreditGems', requireAdmin, async (req, res) => {
       }
 
       const userData = userDoc.data() || {};
-      const currentBalance = userData.learning_gems || 0;
-      const currentTotalEarned = userData.learning_total_gems || 0;
+      const currentBalance = userData.total_donated || 0;
       const updateData = {
-        learning_gems: currentBalance + gems,
-        learning_total_gems: currentTotalEarned + gems,
+        total_donated: currentBalance + amount,
+        is_supporter: true,
         lastManualCreditAt: admin.firestore.FieldValue.serverTimestamp(),
         lastManualCreditMethod: method,
-        lastManualCreditAmount: gems,
+        lastManualCreditAmount: amount,
+        _ts_total_donated: admin.firestore.FieldValue.serverTimestamp(),
       };
 
-      const pkg = productCatalog[productId];
+      const catalog = await loadCatalog();
+      const pkg = catalog[productId];
       const bonuses = pkg ? pkg.bonuses : [];
       for (const bonus of bonuses) {
         if (bonus.type === 'streakProtector') {
@@ -281,8 +385,8 @@ app.post('/api/adminCreditGems', requireAdmin, async (req, res) => {
           if (toAdd > 0) updateData.shop_streak_shields = currentShields + toAdd;
         } else if (bonus.type === 'xpBoost') {
           updateData.shop_purchased_xp_boosts = (userData.shop_purchased_xp_boosts || 0) + bonus.quantity;
-        } else if (bonus.type === 'gemMultiplier') {
-          updateData.shop_purchased_gem_multipliers = (userData.shop_purchased_gem_multipliers || 0) + bonus.quantity;
+        } else if (bonus.type === 'xpMultiplier') {
+          updateData.shop_purchased_xp_multipliers = (userData.shop_purchased_xp_multipliers || 0) + bonus.quantity;
         } else if (bonus.type === 'luckBoost') {
           updateData.shop_purchased_luck_boosts = (userData.shop_purchased_luck_boosts || 0) + bonus.quantity;
         }
@@ -290,18 +394,18 @@ app.post('/api/adminCreditGems', requireAdmin, async (req, res) => {
 
       transaction.update(userRef, updateData);
       transaction.create(logRef, {
-        userId, gems, productId: productId || null, bonuses, method: 'manual_' + method,
-        creditedBy: 'admin', postBalance: currentBalance + gems,
+        userId, amount, productId: productId || null, bonuses, method: 'manual_' + method,
+        creditedBy: 'admin', postBalance: currentBalance + amount,
         createdAt: admin.firestore.FieldValue.serverTimestamp(),
       });
 
-      return { success: true, duplicate: false, newBalance: currentBalance + gems, bonuses };
+      return { success: true, duplicate: false, newBalance: currentBalance + amount, bonuses };
     });
 
-    console.log('Manual gems credited', { userId, gems, method });
+    console.log('Manual donation credited', { userId, amount, method });
     res.json({ result });
   } catch (error) {
-    console.error('adminCreditGems error', error);
+    console.error('adminCreditDonation error', error);
     if (error.message === 'Usuario no encontrado') {
       return res.status(404).json({ error: 'not-found', message: error.message });
     }
@@ -312,12 +416,14 @@ app.post('/api/adminCreditGems', requireAdmin, async (req, res) => {
 // ────────────────────────────────────────────────────────────────
 // POST /api/validatePurchase
 // ────────────────────────────────────────────────────────────────
-app.post('/api/validatePurchase', async (req, res) => {
+app.post('/api/validatePurchase', requireAuth, rateLimit, async (req, res) => {
   try {
-    const { cost, itemId, userId } = req.body;
-    if (!cost || cost <= 0 || !itemId || !userId) {
-      return res.status(400).json({ error: 'invalid-argument', message: 'cost, itemId y userId requeridos' });
+    const { cost, itemId } = req.body;
+    if (!cost || cost <= 0 || !itemId) {
+      return res.status(400).json({ error: 'invalid-argument', message: 'cost y itemId requeridos' });
     }
+
+    const userId = req.user.uid;
     const userRef = admin.firestore().doc(`users/${userId}`);
     const userDoc = await userRef.get();
     if (!userDoc.exists) {
@@ -329,8 +435,14 @@ app.post('/api/validatePurchase', async (req, res) => {
       return res.status(400).json({ error: 'failed-precondition', message: 'Gemas insuficientes' });
     }
 
+    const hmacSecret = process.env.PURCHASE_SECRET;
+    if (!hmacSecret) {
+      console.error('PURCHASE_SECRET not configured');
+      return res.status(500).json({ error: 'internal', message: 'Server configuration error' });
+    }
+
     const payload = JSON.stringify({ userId, itemId, cost, ts: Date.now(), exp: Date.now() + 60000 });
-    const hmac = crypto.createHmac('sha256', 'fallback-dev-secret').update(payload).digest('hex');
+    const hmac = crypto.createHmac('sha256', hmacSecret).update(payload).digest('hex');
     const token = Buffer.from(JSON.stringify({ payload, sig: hmac })).toString('base64');
 
     console.log('Purchase validation token issued', { userId, itemId, cost });
@@ -344,7 +456,7 @@ app.post('/api/validatePurchase', async (req, res) => {
 // ────────────────────────────────────────────────────────────────
 // POST /api/registerPendingPayment
 // ────────────────────────────────────────────────────────────────
-app.post('/api/registerPendingPayment', async (req, res) => {
+app.post('/api/registerPendingPayment', requireAuth, rateLimit, async (req, res) => {
   try {
     const { paymentMethod, operationId, amount, productId } = req.body;
     if (!paymentMethod || !operationId) {

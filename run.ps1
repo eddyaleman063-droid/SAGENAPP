@@ -1,8 +1,8 @@
 <#
 .SYNOPSIS
-  Safe Student — Build & Run Script
+  SAGEN — Build & Run Script
 .DESCRIPTION
-  Professional CLI for running, building, and maintaining Safe Student.
+  Professional CLI for running, building, and maintaining SAGEN.
   Reads .env automatically and passes --dart-define to Flutter.
 .PARAMETER Action
   run       -> flutter run (default)
@@ -66,7 +66,7 @@ ${C_BOLD}${C_BLU}  ███████  █████   █████  █
   █████   ███████ ███████ █████       █████   ███████ ██
   ██      ██   ██ ██   ██ ██          ██      ██   ██ ██
   ██      ██   ██ ██   ██ ███████     ██      ██   ██ ███████${C_RESET}
-${C_DIM}  Safe Student — Build System${C_RESET}
+${C_DIM}  SAGEN — Build System${C_RESET}
 
 "@
 }
@@ -109,7 +109,7 @@ function Read-PubspecVersion {
 function Show-VersionInfo {
   $v = Read-PubspecVersion
   Write-Line
-  Write-Info "${C_BOLD}App:${C_RESET}    Safe Student"
+  Write-Info "${C_BOLD}App:${C_RESET}    SAGEN"
   Write-Info "${C_BOLD}Version:${C_RESET} $($v.version)+$($v.build)"
   Write-Info "${C_BOLD}Flutter:${C_RESET} $(flutter --version 2>$null | Select-String 'Flutter' | ForEach-Object { $_.ToString().Split(' ')[1] })"
   Write-Line

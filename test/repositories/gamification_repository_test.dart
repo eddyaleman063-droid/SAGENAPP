@@ -4,12 +4,12 @@ import 'package:sagen/repositories/gamification_repository.dart';
 
 void main() {
   late SharedPreferences prefs;
-  late GamificationRepository repo;
+  late GamificationRepositoryImpl repo;
 
   setUp(() async {
     SharedPreferences.setMockInitialValues({});
     prefs = await SharedPreferences.getInstance();
-    repo = GamificationRepository(prefs);
+    repo = GamificationRepositoryImpl(prefs);
   });
 
   group('Daily Chest - Midnight Reset', () {
@@ -38,7 +38,7 @@ void main() {
       prefs.setString('gamification_last_claim_date', yesterday.toIso8601String().substring(0, 10));
       repo.checkMidnightReset();
       // Chest should be expired
-      repo = GamificationRepository(prefs);
+      repo = GamificationRepositoryImpl(prefs);
       repo.checkMidnightReset();
       // New day should generate a NEW chest, not carry over the old one
       expect(repo.canClaimDailyChest, isTrue);
@@ -51,7 +51,7 @@ void main() {
       // Simulate clock manipulation by setting a future date
       final tomorrow = DateTime.now().add(const Duration(days: 1));
       prefs.setString('gamification_last_claim_date', tomorrow.toIso8601String().substring(0, 10));
-      repo = GamificationRepository(prefs);
+      repo = GamificationRepositoryImpl(prefs);
       repo.canClaimDailyChest; // re-evaluates
       expect(() => repo.claimDailyChest(), throwsA(isA<Exception>()));
     });

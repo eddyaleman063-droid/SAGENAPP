@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/theme_constants.dart';
 import 'package:sagen/ui/widgets/common/sagen_touch_response.dart';
 
@@ -18,11 +19,10 @@ class SagenMultiOptionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     final accentColor = Theme.of(context).colorScheme.primary;
     final borderColor = isSelected
         ? accentColor
-        : (isDark ? Colors.white : Colors.black).withValues(alpha: 0.15);
+        : context.subtle;
     final bgColor = isSelected
         ? accentColor.withValues(alpha: 0.10)
         : Colors.transparent;
@@ -35,42 +35,47 @@ class SagenMultiOptionCard extends StatelessWidget {
         horizontal: AppSpacing.lg,
         vertical: AppSpacing.xxs,
       ),
-      child: SagenTouchResponse(
-        onTap: onTap,
-        child: Material(
-          color: bgColor,
-          borderRadius: BorderRadius.circular(AppRadius.xl),
-          child: AnimatedContainer(
-            duration: AppMotion.fast,
-            curve: AppEasing.standard,
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppSpacing.lg,
-              vertical: AppSpacing.lg,
-            ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(AppRadius.xl),
-              border: Border.all(color: borderColor, width: 2),
-            ),
-            child: Row(
-              children: [
-                SizedBox(
-                  width: 24,
-                  height: 24,
-                  child: leading,
-                ),
-                const SizedBox(width: AppSpacing.md),
-                Expanded(
-                  child: Text(
-                    title,
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: titleColor,
-                          fontWeight: FontWeight.w600,
-                        ),
+      child: Semantics(
+        button: true,
+        selected: isSelected,
+        label: title,
+        child: SagenTouchResponse(
+          onTap: onTap,
+          child: Material(
+            color: bgColor,
+            borderRadius: BorderRadius.circular(AppRadius.xl),
+            child: AnimatedContainer(
+              duration: AppMotion.fast,
+              curve: AppEasing.standard,
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.lg,
+                vertical: AppSpacing.lg,
+              ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(AppRadius.xl),
+                border: Border.all(color: borderColor, width: 2),
+              ),
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: leading,
                   ),
-                ),
-                const SizedBox(width: AppSpacing.md),
-                _CustomCheckbox(isSelected: isSelected, accentColor: accentColor),
-              ],
+                  const SizedBox(width: AppSpacing.md),
+                  Expanded(
+                    child: Text(
+                      title,
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                            color: titleColor,
+                            fontWeight: FontWeight.w600,
+                          ),
+                    ),
+                  ),
+                  const SizedBox(width: AppSpacing.md),
+                  _CustomCheckbox(isSelected: isSelected, accentColor: accentColor),
+                ],
+              ),
             ),
           ),
         ),
@@ -97,7 +102,7 @@ class _CustomCheckbox extends StatelessWidget {
       height: 22,
       decoration: BoxDecoration(
         color: isSelected ? accentColor : Colors.transparent,
-        borderRadius: BorderRadius.circular(6),
+        borderRadius: BorderRadius.circular(AppRadius.xs),
         border: Border.all(
           color: isSelected ? accentColor : accentColor.withValues(alpha: 0.4),
           width: 2,

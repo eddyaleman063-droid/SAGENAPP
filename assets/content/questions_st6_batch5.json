@@ -1,0 +1,450 @@
+[
+    {
+        "id": "ac_st6_qB5_001",
+        "question": "Verdadero o Falso: Configurar métodos de recuperación es innecesario si nunca pierdes tu dispositivo.",
+        "type": "trueFalse",
+        "options": [
+            "Verdadero",
+            "Falso"
+        ],
+        "correctIndex": 1,
+        "explanation": "Falso. Los métodos de recuperación son esenciales para recuperar acceso si olvidas tu contraseña, pierdes el dispositivo o te hackean.",
+        "difficulty": 1,
+        "lessonId": "ac_s6_ses1_l1"
+    },
+    {
+        "id": "ac_st6_qB5_002",
+        "question": "Completa la frase: Un correo de recuperación alternativo es importante porque si pierdes acceso a tu correo principal, podrás recuperar tus otras ___.",
+        "type": "completePhrase",
+        "options": [
+            "dispositivos",
+            "cuentas",
+            "contraseñas",
+            "aplicaciones"
+        ],
+        "correctIndex": 1,
+        "explanation": "Un correo alternativo te permite recuperar el acceso a todas las cuentas vinculadas a tu correo principal.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses1_l2"
+    },
+    {
+        "id": "ac_st6_qB5_003",
+        "question": "Que son los códigos de respaldo y cómo se usan?",
+        "type": "multipleChoice",
+        "options": [
+            "Son contraseñas temporales que cambian cada vez",
+            "Son códigos de un solo uso que puedes usar si pierdes acceso a tu método 2FA principal",
+            "Son códigos para hackear cuentas",
+            "Son códigos de Wi-Fi"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los códigos de respaldo te permiten acceder a tu cuenta si pierdes tu celular o app de autenticación. Guárdalos en lugar seguro.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses1_l3"
+    },
+    {
+        "id": "ac_st6_qB5_004",
+        "question": "Que debes hacer si olvidas tu contraseña y no tienes métodos de recuperación configurados?",
+        "type": "whatWouldYouDo",
+        "options": [
+            "Crear una nueva cuenta",
+            "Seguir el proceso de recuperación oficial del servicio, que puede incluir verificar identidad con documentos",
+            "Pedir a un amigo que te ayude a hackear la cuenta",
+            "Esperar a que se resuelva solo"
+        ],
+        "correctIndex": 1,
+        "explanation": "Todos los servicios tienen un proceso de recuperación, aunque puede ser largo. Nunca intentes hackear tu propia cuenta.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses1_l4"
+    },
+    {
+        "id": "ac_st6_qB5_005",
+        "question": "Por qué no debes guardar códigos de respaldo en el mismo dispositivo que usas para 2FA?",
+        "type": "detectRisk",
+        "options": [
+            "No hay riesgo, es conveniente",
+            "Si pierdes el dispositivo, pierdes tanto los códigos como el acceso a tu cuenta",
+            "Solo es riesgoso si tienes muchos dispositivos",
+            "Único riesgo es que se llene la memoria"
+        ],
+        "correctIndex": 1,
+        "explanation": "Guarda los códigos en un lugar físico seguro, como una caja fuerte o un papel guardado en casa. Así podrás recuperar acceso si lo pierdes.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses1_l5"
+    },
+    {
+        "id": "ac_st6_qB5_006",
+        "question": "Que es la verificación de identidad con documentos y cuándo es necesaria?",
+        "type": "multipleChoice",
+        "options": [
+            "Es cuando pones tu contraseña tres veces",
+            "Es cuando el servicio te pide una foto de tu DNI o pasaporte para demostrar que eres tú",
+            "Es una forma de hackear cuentas",
+            "Es una actualización de seguridad"
+        ],
+        "correctIndex": 1,
+        "explanation": "En casos de recuperación sin métodos alternativos, los servicios pueden pedir documentos para verificar tu identidad.",
+        "difficulty": 3,
+        "lessonId": "ac_s6_ses1_l6"
+    },
+    {
+        "id": "ac_st6_qB5_007",
+        "question": "Cual es la mejor práctica para almacenar códigos de respaldo?",
+        "type": "multipleChoice",
+        "options": [
+            "En el navegador sin contraseña",
+            "En un lugar físico seguro como una caja fuerte, o en un gestor de contraseñas cifrado",
+            "En redes sociales privadas",
+            "Escribirlos en un correo electrónico"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los códigos son como llaves de emergencia. Guárdalos fuera de línea en lugar seguro, o en un gestor con cifrado fuerte.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses2_l1"
+    },
+    {
+        "id": "ac_st6_qB5_008",
+        "question": "Por qué es importante tener múltiples métodos de recuperación configurados?",
+        "type": "multipleChoice",
+        "options": [
+            "No es importante, uno basta",
+            "Si un método falla o queda comprometido, tienes opciónes alternativas",
+            "Para que sea más difícil de hackear",
+            "No hay razón"
+        ],
+        "correctIndex": 1,
+        "explanation": "La redundancia es clave: si pierdes tu celular, tienes el correo alternativo; si pierdes acceso al correo, tienes códigos de respaldo.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses2_l2"
+    },
+    {
+        "id": "ac_st6_qB5_009",
+        "question": "Que es el proceso de recuperación de cuenta por preguntas de seguridad?",
+        "type": "multipleChoice",
+        "options": [
+            "Es cuando te envían un correo con la contraseña",
+            "Es cuando respondes preguntas que solo tú conoces para verificar tu identidad",
+            "Es una forma de hackear cuentas",
+            "Es una actualización de seguridad"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las preguntas de seguridad son un método de recuperación, pero debes elegir preguntas cuyas respuestas no se puedan adivinar.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses2_l3"
+    },
+    {
+        "id": "ac_st6_qB5_010",
+        "question": "Cual es el riesgo de usar preguntas de seguridad con respuestas fáciles de adivinar?",
+        "type": "detectRisk",
+        "options": [
+            "No hay riesgo, son preguntas personales",
+            "Los atacantes pueden encontrar la información en redes sociales y recuperar tu cuenta",
+            "Solo es riesgoso si son preguntas difíciles",
+            "Único riesgo es que no recuerdes la respuesta"
+        ],
+        "correctIndex": 1,
+        "explanation": "Preguntas como 'nombre de tu mascota' o 'ciudad donde naciste' son fáciles de encontrar en tu perfil público.",
+        "difficulty": 3,
+        "lessonId": "ac_s6_ses2_l4"
+    },
+    {
+        "id": "ac_st6_qB5_011",
+        "question": "Por qué no debes compartir información de recuperación con nadie?",
+        "type": "detectRisk",
+        "options": [
+            "No hay riesgo, son solo preguntas",
+            "Si alguien conoce tus respuestas de seguridad, puede recuperar tu cuenta y tomar control",
+            "Solo es riesgoso si son familiares",
+            "Único riesgo es que cambien tu perfil"
+        ],
+        "correctIndex": 1,
+        "explanation": "Tu información de recuperación es tan sensible como tu contraseña. Si la compartes, pierdes el control de tu cuenta.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses2_l5"
+    },
+    {
+        "id": "ac_st6_qB5_012",
+        "question": "Que es el proceso de verificación por amigo de confianza y cómo funciona?",
+        "type": "multipleChoice",
+        "options": [
+            "Es cuando un amigo te presta su contraseña",
+            "Es cuando designas amigos que pueden ayudarte a recuperar tu cuenta si pierdes acceso",
+            "Es una forma de hackear cuentas",
+            "Es una actualización de seguridad"
+        ],
+        "correctIndex": 1,
+        "explanation": "Algunos servicios te permiten elegir amigos de confianza que pueden ayudarte a verificar tu identidad si te bloqueas.",
+        "difficulty": 3,
+        "lessonId": "ac_s6_ses2_l6"
+    },
+    {
+        "id": "ac_st6_qB5_013",
+        "question": "Por qué es importante actualizar tus métodos de recuperación periódicamente?",
+        "type": "whatWouldYouDo",
+        "options": [
+            "No es importante, una vez configurados sirven para siempre",
+            "Si cambias de número o correo, los métodos antiguos no funcionarán cuando los necesites",
+            "Para que el sistema sea más lento",
+            "No hay razón"
+        ],
+        "correctIndex": 1,
+        "explanation": "Si cambias de número de celular o correo, actualiza tus métodos de recuperación. De lo contrario, no podrás usarlos cuando los necesites.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses3_l1"
+    },
+    {
+        "id": "ac_st6_qB5_014",
+        "question": "Que es el código de recuperación maestro y por qué es importante?",
+        "type": "multipleChoice",
+        "options": [
+            "Es una contraseña que usas una vez",
+            "Es un código único que te permite recuperar todas tus cuentas si todo lo demás falla",
+            "Es un código para hackear cuentas",
+            "Es una actualización de sistema"
+        ],
+        "correctIndex": 1,
+        "explanation": "Es tu último recurso. Guárdalo en un lugar extremadamente seguro, como una caja fuerte bancaria.",
+        "difficulty": 3,
+        "lessonId": "ac_s6_ses3_l2"
+    },
+    {
+        "id": "ac_st6_qB5_015",
+        "question": "Cual es la diferencia entre recuperación de cuenta y restablecimiento de contraseña?",
+        "type": "multipleChoice",
+        "options": [
+            "Son lo mismo",
+            "Recuperación es cuando pierdes acceso total; restablecimiento es cuando solo olvidaste la contraseña",
+            "Recuperación es más rápido",
+            "Restablecimiento es más seguro"
+        ],
+        "correctIndex": 1,
+        "explanation": "Restablecer contraseña es un proceso simple. Recuperar cuenta es más complejo cuando has perdido todos los métodos de acceso.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses3_l3"
+    },
+    {
+        "id": "ac_st6_qB5_016",
+        "question": "Por qué no debes usar el mismo número de teléfono para recuperación en todas tus cuentas?",
+        "type": "detectRisk",
+        "options": [
+            "No hay riesgo, es conveniente",
+            "Si pierdes ese número, pierdes acceso a todas tus cuentas de golpe",
+            "Solo es riesgoso si cambias de operador",
+            "Único riesgo es que no tengas señal"
+        ],
+        "correctIndex": 1,
+        "explanation": "Diversifica: usa correo para algunas cuentas, número de teléfono para otras. Así no pierdes todo si pierdes un método.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses3_l4"
+    },
+    {
+        "id": "ac_st6_qB5_017",
+        "question": "Que es la recuperación de cuenta por dispositivo de confianza y cómo funciona?",
+        "type": "multipleChoice",
+        "options": [
+            "Es cuando usas tu contraseña en un dispositivo nuevo",
+            "Es cuando un dispositivo que ya usaste puede servir como verificación para recuperar acceso",
+            "Es una forma de hackear cuentas",
+            "Es una actualización de seguridad"
+        ],
+        "correctIndex": 1,
+        "explanation": "Si tienes un dispositivo registrado como confiable, puede servir para verificar tu identidad cuando pierdas acceso desde otro.",
+        "difficulty": 3,
+        "lessonId": "ac_s6_ses3_l5"
+    },
+    {
+        "id": "ac_st6_qB5_018",
+        "question": "Que debes hacer si sospechas que alguien intentó recuperar tu cuenta sin tu permiso?",
+        "type": "whatWouldYouDo",
+        "options": [
+            "No hacer nada porque probablemente sea error",
+            "Cambiar inmediatamente tu contraseña, revisar métodos de recuperación y activar 2FA si no lo tienes",
+            "Borrar todos tus correos",
+            "Cerrar tu cuenta permanentemente"
+        ],
+        "correctIndex": 1,
+        "explanation": "Actúa rápido: cambia credenciales, verifica que no hayan añadido nuevos métodos de recuperación y refuerza la seguridad.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses3_l6"
+    },
+    {
+        "id": "ac_st6_qB5_019",
+        "question": "Por qué es importante guardar códigos de recuperación en formato impreso?",
+        "type": "multipleChoice",
+        "options": [
+            "No es importante, el digital es suficiente",
+            "Los códigos impresos no pueden ser hackeados o perdidos por fallas tecnológicas",
+            "Para que sean más fáciles de leer",
+            "No hay razón"
+        ],
+        "correctIndex": 1,
+        "explanation": "Un papel guardado en lugar seguro no depende de electricidad, internet o dispositivos. Es tu respaldo ultimate.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses4_l1"
+    },
+    {
+        "id": "ac_st6_qB5_020",
+        "question": "Que es la recuperación de cuenta por verificación de identidad biométrica?",
+        "type": "multipleChoice",
+        "options": [
+            "Es cuando pones tu contraseña tres veces",
+            "Es cuando el servicio usa tu huella, rostro u otra carácterística biométrica para verificar tu identidad",
+            "Es una forma de hackear cuentas",
+            "Es una actualización de sistema"
+        ],
+        "correctIndex": 1,
+        "explanation": "Algunos servicios permiten recuperar cuenta usando biometría, pero generalmente requieren otros métodos de respaldo.",
+        "difficulty": 3,
+        "lessonId": "ac_s6_ses4_l2"
+    },
+    {
+        "id": "ac_st6_qB5_021",
+        "question": "Cual es el proceso típico de recuperación de cuenta de Google si pierdes acceso?",
+        "type": "multipleChoice",
+        "options": [
+            "Llamar a Google y dar tu contraseña",
+            "Seguir el proceso online que incluye verificar identidad con información conocida, dispositivos de confianza o código de respaldo",
+            "Crear una nueva cuenta",
+            "Esperar a que Google te contacte"
+        ],
+        "correctIndex": 1,
+        "explanation": "Google ofrece múltiples opciónes: verificar desde dispositivo conocido, usar código de respaldo, o responder preguntas de seguridad.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses4_l3"
+    },
+    {
+        "id": "ac_st6_qB5_022",
+        "question": "Por qué no debes usar servicios de 'recuperación de cuentas' de terceros?",
+        "type": "detectRisk",
+        "options": [
+            "No hay riesgo, son servicios legítimos",
+            "Muchos son estafas que roban tus datos o te cobran sin soluciónar nada",
+            "Solo son riesgosen si son baratos",
+            "Único riesgo es que no funcionen"
+        ],
+        "correctIndex": 1,
+        "explanation": "Nunca confíes en servicios de terceros para recuperar cuentas. Usa siempre los canales oficiales del servicio.",
+        "difficulty": 3,
+        "lessonId": "ac_s6_ses4_l4"
+    },
+    {
+        "id": "ac_st6_qB5_023",
+        "question": "Que es la recuperación de cuenta por teléfono alternativo y por qué es útil?",
+        "type": "multipleChoice",
+        "options": [
+            "Es cuando llamas a tu propio teléfono",
+            "Es cuando registras un segundo número de teléfono para recibir códigos de recuperación",
+            "Es una forma de hackear cuentas",
+            "Es una actualización de seguridad"
+        ],
+        "correctIndex": 1,
+        "explanation": "Si pierdes tu número principal, un segundo número registrado puede servir para recuperar acceso.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses4_l5"
+    },
+    {
+        "id": "ac_st6_qB5_024",
+        "question": "Por qué es importante noautomatizar la recuperación de cuentas con información predecible?",
+        "type": "detectRisk",
+        "options": [
+            "No hay riesgo, es más rápido",
+            "Los atacantes pueden predecir esa información y recuperar tu cuenta antes que tú",
+            "Solo es riesgoso si usas contraseñas fuertes",
+            "Único riesgo es que sea tedioso"
+        ],
+        "correctIndex": 1,
+        "explanation": "Si tu información de recuperación es predecible (fecha de nacimiento, nombre de mascota), los atacantes pueden usarla contra ti.",
+        "difficulty": 3,
+        "lessonId": "ac_s6_ses4_l6"
+    },
+    {
+        "id": "ac_st6_qB5_025",
+        "question": "Que debes hacer después de recuperar una cuenta hackeada?",
+        "type": "whatWouldYouDo",
+        "options": [
+            "No hacer nada, ya está recuperada",
+            "Cambiar todas las contraseñas, revisar actividad, actualizar métodos de recuperación y revisar permisos de apps",
+            "Compartir la noticia en redes sociales",
+            "Esperar a que pasen unos meses"
+        ],
+        "correctIndex": 1,
+        "explanation": "Después de recuperar una cuenta, actúa como si fuera una nueva: cambia todo, revisa que no haya daños y refuerza la seguridad.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses5_l1"
+    },
+    {
+        "id": "ac_st6_qB5_026",
+        "question": "Por qué es importante registrar tus métodos de recuperación en un documento físico?",
+        "type": "multipleChoice",
+        "options": [
+            "No es importante, el digital es suficiente",
+            "Si pierdes acceso a todos tus dispositivos digitales, el documento físico puede salvarte",
+            "Para que sea más cómodo",
+            "No hay razón"
+        ],
+        "correctIndex": 1,
+        "explanation": "Un documento impreso con tus métodos de recuperación guardado en lugar seguro es tu última línea de defensa.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses5_l2"
+    },
+    {
+        "id": "ac_st6_qB5_027",
+        "question": "Cual es el error más común al configurar métodos de recuperación?",
+        "type": "multipleChoice",
+        "options": [
+            "Usar métodos demasiado seguros",
+            "No configurar ningún método de recuperación, asumiendo que nunca perderás acceso",
+            "Usar múltiples métodos",
+            "Actualizar los métodos regularmente"
+        ],
+        "correctIndex": 1,
+        "explanation": "El error más común es no prepararse hasta que es tarde. Siempre configura al menos un método de recuperación.",
+        "difficulty": 1,
+        "lessonId": "ac_s6_ses5_l3"
+    },
+    {
+        "id": "ac_st6_qB5_028",
+        "question": "Que es la recuperación de cuenta por contacto de emergencia y cómo funciona?",
+        "type": "multipleChoice",
+        "options": [
+            "Es cuando llamas al 911",
+            "Es cuando designas personas de confianza que pueden ayudar a verificar tu identidad ante el servicio",
+            "Es una forma de hackear cuentas",
+            "Es una actualización de seguridad"
+        ],
+        "correctIndex": 1,
+        "explanation": "Algunos servicios permiten elegir contactos de emergencia que pueden ayudar a verificar tu identidad si pierdes acceso.",
+        "difficulty": 3,
+        "lessonId": "ac_s6_ses5_l4"
+    },
+    {
+        "id": "ac_st6_qB5_029",
+        "question": "Por qué no debes enviar códigos de recuperación por redes sociales?",
+        "type": "detectRisk",
+        "options": [
+            "No hay riesgo, son códigos temporales",
+            "Las redes sociales pueden ser hackeadas y los códigos expuestos públicamente",
+            "Solo es riesgosen si los compartes con muchos",
+            "Único riesgo es que no lleguen"
+        ],
+        "correctIndex": 1,
+        "explanation": "Nunca compartas códigos por canales inseguros. Usa métodos oficiales del servicio para la recuperación.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses5_l5"
+    },
+    {
+        "id": "ac_st6_qB5_030",
+        "question": "Que es la recuperación de cuenta por verificación de actividad pasada?",
+        "type": "multipleChoice",
+        "options": [
+            "Es cuando el servicio revisa tu historial de navegación",
+            "Es cuando el servicio te pregunta sobre actividad reciente que solo tú conocerías (último inicio de sesión, dispositivos usados)",
+            "Es una forma de hackear cuentas",
+            "Es una actualización de seguridad"
+        ],
+        "correctIndex": 1,
+        "explanation": "El servicio puede preguntarte sobre detalles de actividad reciente para verificar que eres el dueño legítimo de la cuenta.",
+        "difficulty": 3,
+        "lessonId": "ac_s6_ses5_l6"
+    }
+]

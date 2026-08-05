@@ -1,0 +1,452 @@
+[
+    {
+        "id": "ac_st5_qB7_001",
+        "question": "Que son las alertas de seguridad en tus cuentas?",
+        "type": "multipleChoice",
+        "options": [
+            "Mensajes de publicidad",
+            "Notificaciones que te informan sobre actividad sospechosa",
+            "Correos basura",
+            "No son importantes"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las alertas de seguridad te avisan cuando hay actividad inusual en tus cuentas.",
+        "difficulty": 1,
+        "lessonId": "ac_s5_ses1_l1"
+    },
+    {
+        "id": "ac_st5_qB7_002",
+        "question": "Por qué es importante activar las alertas de seguridad?",
+        "type": "multipleChoice",
+        "options": [
+            "No es necesario",
+            "Para detectar accesos no autorizados rápidamente",
+            "Para recibir publicidad",
+            "No sirven"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las alertas te permiten reaccionar rápido ante intentos de acceso sospechosos.",
+        "difficulty": 1,
+        "lessonId": "ac_s5_ses1_l2"
+    },
+    {
+        "id": "ac_st5_qB7_003",
+        "question": "Que tipo de alertas debes activar primero?",
+        "type": "multipleChoice",
+        "options": [
+            "Ninguna",
+            "Alertas de inicio de sesión desde dispositivos nuevos",
+            "Solo de publicidad",
+            "Las que lleguen por defecto"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las alertas de dispositivos nuevos son prioritarias para detectar accesos no autorizados.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses1_l3"
+    },
+    {
+        "id": "ac_st5_qB7_004",
+        "question": "Que hacer si recibes una alerta de inicio de sesión sospechoso?",
+        "type": "multipleChoice",
+        "options": [
+            "Ignorarla",
+            "Cambiar tu contraseña inmediatamente y revisar la actividad",
+            "Cerrar la app",
+            "No pasa nada"
+        ],
+        "correctIndex": 1,
+        "explanation": "Ante una alerta sospechosa, debes cambiar tu contraseña y revisar la actividad reciente.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses1_l4"
+    },
+    {
+        "id": "ac_st5_qB7_005",
+        "question": "Que son las alertas de cambios de contraseña?",
+        "type": "multipleChoice",
+        "options": [
+            "No existen",
+            "Notificaciones cuando alguien intenta o cambia tu contraseña",
+            "Correos de marketing",
+            "No son importantes"
+        ],
+        "correctIndex": 1,
+        "explanation": "Estas alertas te avisan si alguien intenta cambiar tu contraseña sin autorización.",
+        "difficulty": 1,
+        "lessonId": "ac_s5_ses1_l5"
+    },
+    {
+        "id": "ac_st5_qB7_006",
+        "question": "Que son las alertas de dispositivos vinculados nuevos?",
+        "type": "multipleChoice",
+        "options": [
+            "No existen",
+            "Notificaciones cuando un nuevo dispositivo accede a tu cuenta",
+            "Mensajes de texto",
+            "No sirven"
+        ],
+        "correctIndex": 1,
+        "explanation": "Estas alertas te informan cuando un dispositivo que no reconoces accede a tu cuenta.",
+        "difficulty": 1,
+        "lessonId": "ac_s5_ses1_l6"
+    },
+    {
+        "id": "ac_st5_qB7_007",
+        "question": "Como activar alertas en tu correo Gmail?",
+        "type": "multipleChoice",
+        "options": [
+            "No se puede",
+            "Ajustes > Seguridad > Alertas de actividad",
+            "No es necesario",
+            "Llamando a soporte"
+        ],
+        "correctIndex": 1,
+        "explanation": "En Gmail puedes activar alertas en la sección de seguridad de tu cuenta de Google.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses2_l1"
+    },
+    {
+        "id": "ac_st5_qB7_008",
+        "question": "Como configurar alertas en Facebook?",
+        "type": "multipleChoice",
+        "options": [
+            "No se puede",
+            "Configuración > Seguridad > Alertas de seguridad",
+            "No es necesario",
+            "Solo en la app"
+        ],
+        "correctIndex": 1,
+        "explanation": "Facebook tiene opciónes de alertas de seguridad en la configuración de tu cuenta.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses2_l2"
+    },
+    {
+        "id": "ac_st5_qB7_009",
+        "question": "Como activar alertas en cuentas bancarias?",
+        "type": "multipleChoice",
+        "options": [
+            "No se puede",
+            "Desde la app del banco en configuración de notificaciones",
+            "Llamando al banco",
+            "No son necesarias"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los bancos como BCP e Interbank tienen alertas de transacciones y accesos.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses2_l3"
+    },
+    {
+        "id": "ac_st5_qB7_010",
+        "question": "Que son las alertas por correo electrónico?",
+        "type": "multipleChoice",
+        "options": [
+            "Spam",
+            "Mensajes de seguridad que te avisan sobre actividad en tu cuenta",
+            "Publicidad",
+            "No son importantes"
+        ],
+        "correctIndex": 1,
+        "explanation": "Muchos servicios envían alertas de seguridad por correo electrónico.",
+        "difficulty": 1,
+        "lessonId": "ac_s5_ses2_l4"
+    },
+    {
+        "id": "ac_st5_qB7_011",
+        "question": "Como configurar notificaciones push de seguridad?",
+        "type": "multipleChoice",
+        "options": [
+            "No se puede",
+            "Activar notificaciones en los ajustes de la app o del dispositivo",
+            "No es necesario",
+            "Solo por SMS"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las notificaciones push te alertan instantáneamente en tu dispositivo móvil.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses2_l5"
+    },
+    {
+        "id": "ac_st5_qB7_012",
+        "question": "Que son las alertas de actividad inusual en Google?",
+        "type": "multipleChoice",
+        "options": [
+            "No existen",
+            "Notificaciones cuando Google detecta actividad sospechosa en tu cuenta",
+            "Correos de marketing",
+            "No sirven"
+        ],
+        "correctIndex": 1,
+        "explanation": "Google alerta cuando detecta actividad inusual como inicios de sesión desde ubicaciones extrañas.",
+        "difficulty": 1,
+        "lessonId": "ac_s5_ses2_l6"
+    },
+    {
+        "id": "ac_st5_qB7_013",
+        "question": "Que hacer si no recibes alertas de seguridad?",
+        "type": "multipleChoice",
+        "options": [
+            "No importa",
+            "Revisar la configuración de notificaciones y asegurarse de que estén activas",
+            "No hay nada que hacer",
+            "Cambiar de dispositivo"
+        ],
+        "correctIndex": 1,
+        "explanation": "Debes verificar que las alertas estén activadas y que tus datos de contacto sean correctos.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses3_l1"
+    },
+    {
+        "id": "ac_st5_qB7_014",
+        "question": "Que son las alertas de verificación en dos pasos?",
+        "type": "multipleChoice",
+        "options": [
+            "No existen",
+            "Notificaciones cuando alguien intenta activar 2FA en tu cuenta",
+            "Mensajes de texto",
+            "No son importantes"
+        ],
+        "correctIndex": 1,
+        "explanation": "Estas alertas te avisan si alguien intenta modificar la configuración de 2FA.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses3_l2"
+    },
+    {
+        "id": "ac_st5_qB7_015",
+        "question": "Como configurar alertas para múltiples cuentas?",
+        "type": "multipleChoice",
+        "options": [
+            "No se puede",
+            "Revisar y activar alertas en cada cuenta individualmente",
+            "Solo en una cuenta",
+            "No es necesario"
+        ],
+        "correctIndex": 1,
+        "explanation": "Cada cuenta tiene sus propias configuraciónes de alertas que debes activar por separado.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses3_l3"
+    },
+    {
+        "id": "ac_st5_qB7_016",
+        "question": "Que son las alertas de ubicación inusual?",
+        "type": "multipleChoice",
+        "options": [
+            "No existen",
+            "Notificaciones cuando acceden a tu cuenta desde una ubicación diferente",
+            "Mensajes basura",
+            "No sirven"
+        ],
+        "correctIndex": 1,
+        "explanation": "Estas alertas te avisan cuando alguien accede desde una ciudad o país diferente.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses3_l4"
+    },
+    {
+        "id": "ac_st5_qB7_017",
+        "question": "Que hacer si te llegan alertas falsas (phishing)?",
+        "type": "multipleChoice",
+        "options": [
+            "Hacer clic en el enlace",
+            "No hacer clic, verificar directamente en la configuración de tu cuenta",
+            "Ignorarlas siempre",
+            "Reenviarlas"
+        ],
+        "correctIndex": 1,
+        "explanation": "Nunca hagas clic en alertas sospechosas; verifica directamente en la plataforma oficial.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses3_l5"
+    },
+    {
+        "id": "ac_st5_qB7_018",
+        "question": "Que son las alertas de sesión activa?",
+        "type": "multipleChoice",
+        "options": [
+            "No existen",
+            "Información sobre dispositivos que tienen sesión abierta en tu cuenta",
+            "Mensajes de texto",
+            "No son importantes"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las alertas de sesión activa muestran qué dispositivos tienen acceso a tu cuenta.",
+        "difficulty": 1,
+        "lessonId": "ac_s5_ses3_l6"
+    },
+    {
+        "id": "ac_st5_qB7_019",
+        "question": "Que son las alertas de intentos de acceso fallidos?",
+        "type": "multipleChoice",
+        "options": [
+            "No existen",
+            "Notificaciones cuando alguien intenta acceder y falla varias veces",
+            "Correos de marketing",
+            "No sirven"
+        ],
+        "correctIndex": 1,
+        "explanation": "Estas alertas te avisan cuando hay múltiples intentos fallidos de acceso.",
+        "difficulty": 1,
+        "lessonId": "ac_s5_ses4_l1"
+    },
+    {
+        "id": "ac_st5_qB7_020",
+        "question": "Como distinguir una alerta real de una de phishing?",
+        "type": "multipleChoice",
+        "options": [
+            "No se puede",
+            "Verificando el remitente y accediendo directamente a tu cuenta",
+            "Haciendo clic en el enlace",
+            "Todas son reales"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las alertas reales nunca piden clics; verifica siempre directamente en la plataforma.",
+        "difficulty": 3,
+        "lessonId": "ac_s5_ses4_l2"
+    },
+    {
+        "id": "ac_st5_qB7_021",
+        "question": "Que hacer ante una alerta de cuenta comprometida?",
+        "type": "multipleChoice",
+        "options": [
+            "Ignorarla",
+            "Cambiar contraseña, activar 2FA y revisar actividad reciente",
+            "Cerrar la app",
+            "No pasa nada"
+        ],
+        "correctIndex": 1,
+        "explanation": "Ante una cuenta comprometida, actúa rápido: cambia clave, activa 2FA y revisa.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses4_l3"
+    },
+    {
+        "id": "ac_st5_qB7_022",
+        "question": "Que son las alertas de métodos de recuperación?",
+        "type": "multipleChoice",
+        "options": [
+            "No existen",
+            "Notificaciones cuando cambian tu correo o número de recuperación",
+            "Mensajes basura",
+            "No son importantes"
+        ],
+        "correctIndex": 1,
+        "explanation": "Estas alertas te avisan si alguien intenta modificar tus datos de recuperación.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses4_l4"
+    },
+    {
+        "id": "ac_st5_qB7_023",
+        "question": "Como configurar alertas por SMS en tus cuentas?",
+        "type": "multipleChoice",
+        "options": [
+            "No se puede",
+            "Registrando tu número y activando notificaciones SMS",
+            "No es seguro",
+            "Solo por correo"
+        ],
+        "correctIndex": 1,
+        "explanation": "Puedes configurar alertas SMS en la sección de seguridad de muchas cuentas.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses4_l5"
+    },
+    {
+        "id": "ac_st5_qB7_024",
+        "question": "Que son las alertas de permisos de apps?",
+        "type": "multipleChoice",
+        "options": [
+            "No existen",
+            "Notificaciones cuando una app solicita acceso a tu cuenta",
+            "Mensajes de texto",
+            "No sirven"
+        ],
+        "correctIndex": 1,
+        "explanation": "Estas alertas te informan cuando una app solicita permisos para acceder a tus datos.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses4_l6"
+    },
+    {
+        "id": "ac_st5_qB7_025",
+        "question": "Que hacer si no entiendes una alerta de seguridad?",
+        "type": "multipleChoice",
+        "options": [
+            "Ignorarla",
+            "Buscar información en la ayuda oficial o contactar soporte",
+            "Hacer clic en cualquier enlace",
+            "No importa"
+        ],
+        "correctIndex": 1,
+        "explanation": "Si no entiendes una alerta, consulta la ayuda oficial sin hacer clic en enlaces.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses5_l1"
+    },
+    {
+        "id": "ac_st5_qB7_026",
+        "question": "Como priorizar las alertas de seguridad?",
+        "type": "multipleChoice",
+        "options": [
+            "Todas son iguales",
+            "Enfocarte primero en alertas de cuentas críticas como bancos y correo",
+            "No hacer nada",
+            "Eliminar todas"
+        ],
+        "correctIndex": 1,
+        "explanation": "Prioriza alertas de cuentas financieras y correo que son las más críticas.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses5_l2"
+    },
+    {
+        "id": "ac_st5_qB7_027",
+        "question": "Que son las alertas de actividad de cuenta de Google?",
+        "type": "multipleChoice",
+        "options": [
+            "No existen",
+            "Resumen de actividad reciente en tu cuenta de Google",
+            "Correos de marketing",
+            "No sirven"
+        ],
+        "correctIndex": 1,
+        "explanation": "Google envía resúmenes de actividad para que revises el estado de tu cuenta.",
+        "difficulty": 1,
+        "lessonId": "ac_s5_ses5_l3"
+    },
+    {
+        "id": "ac_st5_qB7_028",
+        "question": "Como configurar alertas en Instagram?",
+        "type": "multipleChoice",
+        "options": [
+            "No se puede",
+            "Configuración > Seguridad > Alertas de seguridad",
+            "No es necesario",
+            "Solo en celulares"
+        ],
+        "correctIndex": 1,
+        "explanation": "Instagram tiene opciónes de alertas de seguridad en la configuración de tu cuenta.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses5_l4"
+    },
+    {
+        "id": "ac_st5_qB7_029",
+        "question": "Que son las alertas de sesión cerrada remotamente?",
+        "type": "multipleChoice",
+        "options": [
+            "No existen",
+            "Notificaciones cuando cierras sesión desde otro dispositivo",
+            "Mensajes basura",
+            "No son importantes"
+        ],
+        "correctIndex": 1,
+        "explanation": "Estas alertas te informan cuando alguien cierra tu sesión desde otro lugar.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses5_l5"
+    },
+    {
+        "id": "ac_st5_qB7_030",
+        "question": "Como monitorear todas tus alertas de seguridad en un solo lugar?",
+        "type": "multipleChoice",
+        "options": [
+            "No se puede",
+            "Revisar periódicamente la configuración de seguridad de cada cuenta importante",
+            "No es necesario",
+            "Usar un solo correo"
+        ],
+        "correctIndex": 1,
+        "explanation": "No hay un lugar único; debes revisar periódicamente cada cuenta importante.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses5_l6"
+    }
+]

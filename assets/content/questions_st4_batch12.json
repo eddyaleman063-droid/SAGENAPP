@@ -1,0 +1,450 @@
+[
+  {
+    "id": "ac_st4_qB12_001",
+    "question": "Que es un gestor de contraseñas?",
+    "type": "multipleChoice",
+    "options": [
+      "Un tipo de antivirus",
+      "Una aplicación que almacena, genera y gestiona tus contraseñas de forma segura",
+      "Un servicio de correo electrónico",
+      "Una red social"
+    ],
+    "correctIndex": 1,
+    "explanation": "Un gestor de contraseñas es una aplicación que guarda todas tus contraseñas de forma cifrada y segura.",
+    "difficulty": 1,
+    "lessonId": "ac_s4_ses1_l1"
+  },
+  {
+    "id": "ac_st4_qB12_002",
+    "question": "Como funciona un gestor de contraseñas?",
+    "type": "multipleChoice",
+    "options": [
+      "Guarda las contraseñas en un archivo de texto",
+      "Cifra todas tus contraseñas y las guarda en una bóveda digital, accediendo con una contraseña maestra",
+      "Las envía por correo electrónico cada día",
+      "Las imprime en un papel"
+    ],
+    "correctIndex": 1,
+    "explanation": "El gestor cifra tus contraseñas en una bóveda segura y solo tú puedes acceder con tu contraseña maestra.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses1_l2"
+  },
+  {
+    "id": "ac_st4_qB12_003",
+    "question": "Cuales son las ventajas de usar un gestor de contraseñas?",
+    "type": "multipleChoice",
+    "options": [
+      "Solo genera contraseñas",
+      "Genera contraseñas fuertes, las almacena de forma segura, sincroniza entre dispositivos y auto-completa formularios",
+      "Es caro y complicado",
+      "Solo funciona en computadoras"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los gestores ofrecen generación, almacenamiento seguro, sincronización y auto-completado de contraseñas.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses1_l3"
+  },
+  {
+    "id": "ac_st4_qB12_004",
+    "question": "Es seguro usar un gestor de contraseñas?",
+    "type": "trueFalse",
+    "options": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correctIndex": 0,
+    "explanation": "Verdadero. Los gestores reputables usan cifrado fuerte y son más seguros que guardar contraseñas en lugares no protegidos.",
+    "difficulty": 1,
+    "lessonId": "ac_s4_ses1_l4"
+  },
+  {
+    "id": "ac_st4_qB12_005",
+    "question": "Cual es la diferencia entre un gestor de contraseñas y simplemente memorizarlas?",
+    "type": "multipleChoice",
+    "options": [
+      "Memorizar es mejor porque no dependes de tecnología",
+      "Un gestor genera y guarda contraseñas únicas y fuertes para cada cuenta, mientras que memorizar limita a pocas o débiles",
+      "No hay diferencia",
+      "El gestor es más lento"
+    ],
+    "correctIndex": 1,
+    "explanation": "El gestor te permite tener contraseñas únicas y fuertes en todas tus cuentas sin la carga de memorizarlas todas.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses1_l5"
+  },
+  {
+    "id": "ac_st4_qB12_006",
+    "question": "Que es Bitwarden?",
+    "type": "multipleChoice",
+    "options": [
+      "Un tipo de banco digital",
+      "Un gestor de contraseñas de código abierto y gratuito que es una de las opciónes más populares",
+      "Una red social",
+      "Un antivirus"
+    ],
+    "correctIndex": 1,
+    "explanation": "Bitwarden es un gestor de contraseñas de código abierto, gratuito y muy seguro, disponible en múltiples plataformas.",
+    "difficulty": 1,
+    "lessonId": "ac_s4_ses2_l1"
+  },
+  {
+    "id": "ac_st4_qB12_007",
+    "question": "Cuales son las ventajas de usar Bitwarden?",
+    "type": "multipleChoice",
+    "options": [
+      "Es de pago obligatorio",
+      "Es gratuito, de código abierto, multiplataforma y tiene funciones de generación y auto-completado",
+      "Solo funciona en Windows",
+      "No tiene versión móvil"
+    ],
+    "correctIndex": 1,
+    "explanation": "Bitwarden es gratuito, de código abierto, funciona en todas las plataformas y ofrece todas las funciones esenciales.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses2_l2"
+  },
+  {
+    "id": "ac_st4_qB12_008",
+    "question": "Como empezar a usar Bitwarden?",
+    "type": "multipleChoice",
+    "options": [
+      "Necesitas invitar a un amigo",
+      "Descargar la app o extensión del navegador, crear una cuenta con tu correo y configurar una contraseña maestra",
+      "Llamar a soporte técnico",
+      "Comprar una licencia"
+    ],
+    "correctIndex": 1,
+    "explanation": "Solo necesitas descargar la app, crear una cuenta y configurar una contraseña maestra fuerte.",
+    "difficulty": 1,
+    "lessonId": "ac_s4_ses2_l3"
+  },
+  {
+    "id": "ac_st4_qB12_009",
+    "question": "Que son las funciones básicas de Bitwarden?",
+    "type": "multipleChoice",
+    "options": [
+      "Solo guardar contraseñas",
+      "Almacenar contraseñas, generar contraseñas fuertes, auto-completar formularios y sincronizar entre dispositivos",
+      "Solo generar contraseñas",
+      "Solo sincronizar"
+    ],
+    "correctIndex": 1,
+    "explanation": "Bitwarden ofrece almacenamiento, generación, auto-completado y sincronización de contraseñas.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses2_l4"
+  },
+  {
+    "id": "ac_st4_qB12_010",
+    "question": "Que es 1Password?",
+    "type": "multipleChoice",
+    "options": [
+      "Un tipo de contraseña",
+      "Un gestor de contraseñas premium conocido por su facilidad de uso y funciones avanzadas",
+      "Un servicio de correo",
+      "Una app de mensajería"
+    ],
+    "correctIndex": 1,
+    "explanation": "1Password es un gestor de contraseñas premium popular por su interfaz intuitiva y funciones avanzadas como Watchtower.",
+    "difficulty": 1,
+    "lessonId": "ac_s4_ses3_l1"
+  },
+  {
+    "id": "ac_st4_qB12_011",
+    "question": "Cuales son las carácterísticas principales de 1Password?",
+    "type": "multipleChoice",
+    "options": [
+      "Solo guarda contraseñas",
+      "Interfaz amigable, Watchtower para alertas de seguridad, modos Viajero y Emergencia, y sincronización perfecta",
+      "Es gratuito y de código abierto",
+      "Solo funciona en Apple"
+    ],
+    "correctIndex": 1,
+    "explanation": "1Password destaca por su facilidad de uso, Watchtower, modos especiales y sincronización entre dispositivos.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses3_l2"
+  },
+  {
+    "id": "ac_st4_qB12_012",
+    "question": "Como configurar 1Password por primera vez?",
+    "type": "multipleChoice",
+    "options": [
+      "Necesitas ser experto en tecnología",
+      "Descargar la app, crear una cuenta, configurar la contraseña maestra y empezar a guardar contraseñas",
+      "Llamar a soporte",
+      "Comprar un servidor"
+    ],
+    "correctIndex": 1,
+    "explanation": "La configuración es sencilla: descargar, crear cuenta, configurar contraseña maestra y comenzar a usar.",
+    "difficulty": 1,
+    "lessonId": "ac_s4_ses3_l3"
+  },
+  {
+    "id": "ac_st4_qB12_013",
+    "question": "Que es Watchtower en 1Password?",
+    "type": "multipleChoice",
+    "options": [
+      "Un tipo de contraseña",
+      "Una función que analiza la seguridad de tus contraseñas y te alerta sobre vulnerabilidades",
+      "Un modo de incógnito",
+      "Una herramienta de respaldo"
+    ],
+    "correctIndex": 1,
+    "explanation": "Watchtower monitorea tus contraseñas y te alerta si alguna está comprometida, es débil o se repite.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses3_l4"
+  },
+  {
+    "id": "ac_st4_qB12_014",
+    "question": "Como elegir entre Bitwarden y 1Password?",
+    "type": "multipleChoice",
+    "options": [
+      "Siempre elegir el más caro",
+      "Bitwarden es mejor para presupuesto ajustado y código abierto; 1Password para facilidad de uso y funciones premium",
+      "No hay diferencia",
+      "Elegir al azar"
+    ],
+    "correctIndex": 1,
+    "explanation": "Bitwarden es ideal si buscas algo gratuito y seguro; 1Password si prefieres facilidad de uso y funciones avanzadas.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses4_l2"
+  },
+  {
+    "id": "ac_st4_qB12_015",
+    "question": "Que debes preguntar antes de elegir un gestor de contraseñas?",
+    "type": "multipleChoice",
+    "options": [
+      "Solo el precio",
+      "Si es compatible con tus dispositivos, si tiene funciones que necesitas, su política de privacidad y precio",
+      "Solo si tiene buena apariencia",
+      "Nada, el primero que encuentres"
+    ],
+    "correctIndex": 1,
+    "explanation": "Considera compatibilidad, funciones, privacidad, precio y facilidad de uso antes de decidir.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses4_l3"
+  },
+  {
+    "id": "ac_st4_qB12_016",
+    "question": "Que gestor de contraseñas recomendarías para una persona mayor?",
+    "type": "multipleChoice",
+    "options": [
+      "El más complicadoytécnico",
+      "Bitwarden o 1Password por su facilidad de uso y disponibilidad en móviles y computadoras",
+      "No necesitan gestor",
+      "Escribir las contraseñas en un papel"
+    ],
+    "correctIndex": 1,
+    "explanation": "Para personas mayores, Bitwarden y 1Password son excelentes opciónes por su interfaz intuitiva y disponibilidad móvil.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses4_l5"
+  },
+  {
+    "id": "ac_st4_qB12_017",
+    "question": "Que son los primeros pasos para usar un gestor de contraseñas?",
+    "type": "multipleChoice",
+    "options": [
+      "Solo descargar la app",
+      "Crear cuenta, configurar contraseña maestra fuerte, instalar extensión del navegador y app móvil",
+      "Comprar una licencia",
+      "Llamar a soporte"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los primeros pasos son: crear cuenta, configurar contraseña maestra, instalar extensiones y apps.",
+    "difficulty": 1,
+    "lessonId": "ac_s4_ses5_l1"
+  },
+  {
+    "id": "ac_st4_qB12_018",
+    "question": "Como importar contraseñas existentes a un gestor?",
+    "type": "multipleChoice",
+    "options": [
+      "No se pueden importar",
+      "Exportar desde el navegador o el gestor anterior e importar al nuevo gestor usando archivos CSV o funciones de importación",
+      "Escribirlas una por una manualmente",
+      "Pedir a un técnico"
+    ],
+    "correctIndex": 1,
+    "explanation": "La mayoría de gestores permiten importar desde navegadores u otros gestores usando archivos CSV o funciones integradas.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses5_l2"
+  },
+  {
+    "id": "ac_st4_qB12_019",
+    "question": "Por que es importante configurar la app móvil del gestor?",
+    "type": "multipleChoice",
+    "options": [
+      "No es importante",
+      "Para acceder a tus contraseñas desde tu celular y usar funciones como auto-completado y desbloqueo biométrico",
+      "Solo para ver notificaciones",
+      "No tiene ninguna ventaja"
+    ],
+    "correctIndex": 1,
+    "explanation": "La app móvil te permite acceder a tus contraseñas en cualquier lugar y usar funciones convenientes como desbloqueo biométrico.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses5_l3"
+  },
+  {
+    "id": "ac_st4_qB12_020",
+    "question": "Que es el desbloqueo biométrico en un gestor de contraseñas?",
+    "type": "multipleChoice",
+    "options": [
+      "Un tipo de contraseña",
+      "Usar tu huella dactilar, reconocimiento facial o patrón para acceder al gestor sin escribir la contraseña maestra cada vez",
+      "Una función de respaldo",
+      "Un modo de incógnito"
+    ],
+    "correctIndex": 1,
+    "explanation": "El desbloqueo biométrico usa tu huella o rostro para acceder rápidamente al gestor sin escribir la contraseña.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses5_l4"
+  },
+  {
+    "id": "ac_st4_qB12_021",
+    "question": "Que haces despues de configurar tu gestor de contraseñas?",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Nada mas, ya quedo listo",
+      "Importar contraseñas existentes, probar el auto-completado y guardar nuevas contraseñas a partir de ahora",
+      "Compartir la contraseña maestra con tu familia",
+      "Desactivar todas las contraseñas anteriores"
+    ],
+    "correctIndex": 1,
+    "explanation": "Después de configurar, importa contraseñas, prueba el funcionamiento y empieza a guardar nuevas.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses5_l5"
+  },
+  {
+    "id": "ac_st4_qB12_022",
+    "question": "Que es la sincronización en un gestor de contraseñas?",
+    "type": "multipleChoice",
+    "options": [
+      "Borrar las contraseñas",
+      "La capacidad de mantener tus contraseñas actualizadas y accesibles en todos tus dispositivos",
+      "Enviar contraseñas por correo",
+      "Compartir contraseñas con otros"
+    ],
+    "correctIndex": 1,
+    "explanation": "La sincronización asegura que tus contraseñas estén disponibles y actualizadas en tu celular, computadora y tablet.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses3_l5"
+  },
+  {
+    "id": "ac_st4_qB12_023",
+    "question": "Que es la función de auto-completado de formularios?",
+    "type": "multipleChoice",
+    "options": [
+      "Llenar formularios físicos en papel",
+      "Completar automáticamente los campos de usuario y contraseña cuando visitas un sitio web",
+      "Enviar formularios por correo",
+      "Imprimir formularios"
+    ],
+    "correctIndex": 1,
+    "explanation": "El auto-completado rellena automáticamente tus credenciales cuando visitas sitios web, ahorrando tiempo.",
+    "difficulty": 1,
+    "lessonId": "ac_s4_ses5_l5"
+  },
+  {
+    "id": "ac_st4_qB12_024",
+    "question": "Que es un alias de correo electrónico en un gestor de contraseñas?",
+    "type": "multipleChoice",
+    "options": [
+      "Un segundo nombre",
+      "Direcciónes de correo temporales o enmascaradas que protegen tu correo real al registrarte en sitios",
+      "Un tipo de contraseña",
+      "Un contacto de emergencia"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los alias protegen tu correo real usando direcciónes temporales que reenvían a tu correo principal.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses3_l4"
+  },
+  {
+    "id": "ac_st4_qB12_025",
+    "question": "Que es el modo Viajero en 1Password?",
+    "type": "multipleChoice",
+    "options": [
+      "Un tipo de contraseña",
+      "Una función que oculta ciertas contraseñas y categorías cuando viajas para mayor seguridad",
+      "Un servicio de viajes",
+      "Una app de mapas"
+    ],
+    "correctIndex": 1,
+    "explanation": "El modo Viajero oculta información sensible cuando cruzas fronteras o viajas a lugares de riesgo.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses3_l4"
+  },
+  {
+    "id": "ac_st4_qB12_026",
+    "question": "Que es el modo Emergencia en un gestor de contraseñas?",
+    "type": "multipleChoice",
+    "options": [
+      "Un botón de pánico",
+      "Una función que permite a una persona de confianza acceder a tus contraseñas esenciales en caso de emergencia",
+      "Un tipo de alarma",
+      "Una función de respaldo automático"
+    ],
+    "correctIndex": 1,
+    "explanation": "El modo Emergencia designa a una persona de confianza que puede acceder a tus contraseñas críticas en emergencias.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses3_l4"
+  },
+  {
+    "id": "ac_st4_qB12_027",
+    "question": "Por que es importante usar una contraseña maestra fuerte en tu gestor?",
+    "type": "multipleChoice",
+    "options": [
+      "No importa, puede ser débil",
+      "Porque es la única contraseña que necesitas memorizar y protege todas las demás; si es débil, todas están en riesgo",
+      "Para que sea fácil de recordar",
+      "No tiene importancia"
+    ],
+    "correctIndex": 1,
+    "explanation": "La contraseña maestra es la llave de tu bóveda. Si es débil, todas tus contraseñas están comprometidas.",
+    "difficulty": 2,
+    "lessonId": "ac_s4_ses1_l4"
+  },
+  {
+    "id": "ac_st4_qB12_028",
+    "question": "Que es el cifrado de extremo a extremo en un gestor de contraseñas?",
+    "type": "multipleChoice",
+    "options": [
+      "Un tipo de virus",
+      "Un método donde tus contraseñas se cifran en tu dispositivo y solo se descifran cuando tú accedes a ellas",
+      "Una función de respaldo",
+      "Un tipo de conexión a internet"
+    ],
+    "correctIndex": 1,
+    "explanation": "Con cifrado E2E, tus datos se cifran en tu dispositivo y ni siquiera la empresa del gestor puede verlos.",
+    "difficulty": 3,
+    "lessonId": "ac_s4_ses1_l4"
+  },
+  {
+    "id": "ac_st4_qB12_029",
+    "question": "Que harías si olvidas tu contraseña maestra del gestor?",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Puedes recuperarla fácilmente",
+      "Usar el código de recuperación que configuraste o contactar al soporte, pero si no tienes respaldo, perderás el acceso",
+      "Pedir a un amigo que la adivine",
+      "Desinstalar y reinstallar la app"
+    ],
+    "correctIndex": 1,
+    "explanation": "Sin código de recuperación o soporte adecuado, perder el acceso a la contraseña maestra significa perder todas las contraseñas.",
+    "difficulty": 3,
+    "lessonId": "ac_s4_ses5_l5"
+  },
+  {
+    "id": "ac_st4_qB12_030",
+    "question": "Cual es la mejor práctica al usar un gestor de contraseñas?",
+    "type": "multipleChoice",
+    "options": [
+      "Usar la misma contraseña maestra en varios sitios",
+      "Usar una contraseña maestra fuerte y única, activar 2FA en el gestor y guardar códigos de recuperación en lugar seguro",
+      "Compartir la contraseña maestra con familiares",
+      "No usar nunca la función de auto-completado"
+    ],
+    "correctIndex": 1,
+    "explanation": "Las mejores prácticas incluyen contraseña maestra fuerte, 2FA en el gestor y códigos de recuperación seguros.",
+    "difficulty": 3,
+    "lessonId": "ac_s4_ses5_l5"
+  }
+]

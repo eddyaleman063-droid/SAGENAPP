@@ -13,7 +13,6 @@ _$DailyMissionImpl _$$DailyMissionImplFromJson(Map<String, dynamic> json) =>
       description: json['description'] as String,
       type: $enumDecode(_$MissionTypeEnumMap, json['type']),
       xpReward: (json['xpReward'] as num?)?.toInt() ?? 30,
-      gemReward: (json['gemReward'] as num?)?.toInt() ?? 10,
       target: (json['target'] as num?)?.toInt() ?? 1,
       difficulty:
           $enumDecodeNullable(_$MissionDifficultyEnumMap, json['difficulty']) ??
@@ -22,7 +21,6 @@ _$DailyMissionImpl _$$DailyMissionImplFromJson(Map<String, dynamic> json) =>
           $enumDecodeNullable(_$MissionRarityEnumMap, json['rarity']) ??
           MissionRarity.common,
       xpBonus: (json['xpBonus'] as num?)?.toInt() ?? 0,
-      gemBonus: (json['gemBonus'] as num?)?.toInt() ?? 0,
       streakBonus: (json['streakBonus'] as num?)?.toInt() ?? 0,
       category:
           $enumDecodeNullable(_$MissionCategoryEnumMap, json['category']) ??
@@ -38,12 +36,10 @@ Map<String, dynamic> _$$DailyMissionImplToJson(_$DailyMissionImpl instance) =>
       'description': instance.description,
       'type': _$MissionTypeEnumMap[instance.type]!,
       'xpReward': instance.xpReward,
-      'gemReward': instance.gemReward,
       'target': instance.target,
       'difficulty': _$MissionDifficultyEnumMap[instance.difficulty]!,
       'rarity': _$MissionRarityEnumMap[instance.rarity]!,
       'xpBonus': instance.xpBonus,
-      'gemBonus': instance.gemBonus,
       'streakBonus': instance.streakBonus,
       'category': _$MissionCategoryEnumMap[instance.category]!,
       'progress': instance.progress,

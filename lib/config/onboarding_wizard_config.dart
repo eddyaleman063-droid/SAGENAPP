@@ -1,9 +1,20 @@
 import 'package:flutter/material.dart';
+import '../l10n/app_localizations.dart';
 import '../services/sage_emotion_service.dart';
+import '../core/theme/theme_constants.dart';
+
+enum WizardStepType {
+  presentation,
+  single,
+  multi,
+  level,
+  goal,
+  confirmation,
+}
 
 class WizardStepConfig {
   final String question;
-  final String type;
+  final WizardStepType type;
   final SageEmotion emotion;
   final String sageMessage;
   final List<WizardOption> options;
@@ -36,118 +47,116 @@ class WizardOption {
 class OnboardingWizardConfig {
   OnboardingWizardConfig._();
 
-  static const int totalSteps = 9;
+  static const int totalSteps = 9; // Must match localizedSteps().length
 
-  static List<WizardStepConfig> get steps => _steps;
-
-  static const _steps = <WizardStepConfig>[
+  static List<WizardStepConfig> localizedSteps(AppLocalizations l) => [
     WizardStepConfig(
-      question: '¡Bienvenido a SAGEN!',
-      type: 'presentation',
+      question: l.wizardWelcomeTitle,
+      type: WizardStepType.presentation,
       emotion: SageEmotion.excitedWave,
-      sageMessage: '¡Hola! Soy Sage, tu guía de seguridad digital. ¿Comenzamos?',
+      sageMessage: l.wizardWelcomeSage,
       options: [],
     ),
     WizardStepConfig(
-      question: '¿Cómo conociste SAGEN?',
-      type: 'single',
+      question: l.wizardHowFound,
+      type: WizardStepType.single,
       emotion: SageEmotion.curious,
-      sageMessage: 'Cuéntame, ¿cómo nos encontraste?',
+      sageMessage: l.wizardHowFoundSage,
       options: [
-        WizardOption(label: 'Google', value: 'Google', icon: Icons.g_mobiledata_rounded),
-        WizardOption(label: 'Facebook', value: 'Facebook', icon: Icons.facebook_rounded),
-        WizardOption(label: 'Instagram', value: 'Instagram', icon: Icons.camera_alt_outlined),
-        WizardOption(label: 'TikTok', value: 'TikTok', icon: Icons.music_note_rounded),
-        WizardOption(label: 'YouTube', value: 'YouTube', icon: Icons.play_circle_outline_rounded),
-        WizardOption(label: 'App Store', value: 'App Store', icon: Icons.store_rounded),
-        WizardOption(label: 'Amigos', value: 'Amigos', icon: Icons.people_outline_rounded),
-        WizardOption(label: 'Noticias', value: 'Noticias', icon: Icons.article_rounded),
-        WizardOption(label: 'TV', value: 'TV', icon: Icons.tv_rounded),
-        WizardOption(label: 'Otros', value: 'Otros', icon: Icons.more_horiz_rounded),
+        WizardOption(label: l.wizardGoogle, value: 'Google', icon: Icons.g_mobiledata_rounded),
+        WizardOption(label: l.wizardFacebook, value: 'Facebook', icon: Icons.facebook_rounded),
+        WizardOption(label: l.wizardInstagram, value: 'Instagram', icon: Icons.camera_alt_outlined),
+        WizardOption(label: l.wizardTikTok, value: 'TikTok', icon: Icons.music_note_rounded),
+        WizardOption(label: l.wizardYouTube, value: 'YouTube', icon: Icons.play_circle_outline_rounded),
+        WizardOption(label: l.wizardAppStore, value: 'App Store', icon: Icons.store_rounded),
+        WizardOption(label: l.wizardFriends, value: 'Friends', icon: Icons.people_outline_rounded),
+        WizardOption(label: l.wizardNews, value: 'News', icon: Icons.article_rounded),
+        WizardOption(label: l.wizardTV, value: 'TV', icon: Icons.tv_rounded),
+        WizardOption(label: l.wizardOther, value: 'Other', icon: Icons.more_horiz_rounded),
       ],
     ),
     WizardStepConfig(
-      question: '¿Cuánto sabes de seguridad digital?',
-      type: 'level',
+      question: l.wizardHowMuchKnow,
+      type: WizardStepType.level,
       emotion: SageEmotion.thinking,
-      sageMessage: '¿Qué tanto sabes del tema?',
+      sageMessage: l.wizardHowMuchKnowSage,
       options: [
-        WizardOption(label: 'Estoy empezando', value: '1', icon: Icons.eco_rounded, color: Color(0xFF66BB6A), subtitle: 'Nunca he explorado este tema'),
-        WizardOption(label: 'Conozco algunos conceptos', value: '2', icon: Icons.grass_rounded, color: Color(0xFF42A5F5), subtitle: 'Reconozco algunos términos'),
-        WizardOption(label: 'Puedo defendereme', value: '3', icon: Icons.park_rounded, color: Color(0xFFFFB300), subtitle: 'Entiendo y practico lo básico'),
-        WizardOption(label: 'Entiendo varios temas', value: '4', icon: Icons.forest_rounded, color: Color(0xFFE65100), subtitle: 'Manejo varios conceptos'),
-        WizardOption(label: 'Se bastante del tema', value: '5', icon: Icons.landslide_rounded, color: Color(0xFF7C3AED), subtitle: 'Puedo debatir temas avanzados'),
+        WizardOption(label: l.wizardLevel1, value: '1', icon: Icons.eco_rounded, color: PremiumColors.wizardGreen, subtitle: l.wizardLevel1Sub),
+        WizardOption(label: l.wizardLevel2, value: '2', icon: Icons.grass_rounded, color: PremiumColors.wizardBlue, subtitle: l.wizardLevel2Sub),
+        WizardOption(label: l.wizardLevel3, value: '3', icon: Icons.park_rounded, color: PremiumColors.wizardAmber, subtitle: l.wizardLevel3Sub),
+        WizardOption(label: l.wizardLevel4, value: '4', icon: Icons.forest_rounded, color: PremiumColors.wizardDeepOrange, subtitle: l.wizardLevel4Sub),
+        WizardOption(label: l.wizardLevel5, value: '5', icon: Icons.landslide_rounded, color: PremiumColors.wizardPurple, subtitle: l.wizardLevel5Sub),
       ],
     ),
     WizardStepConfig(
-      question: '¿Por qué quieres aprender?',
-      type: 'multi',
+      question: l.wizardWhyLearn,
+      type: WizardStepType.multi,
       emotion: SageEmotion.curious,
-      sageMessage: '¿Por qué quieres aprender seguridad digital?',
+      sageMessage: l.wizardWhyLearnSage,
       options: [
-        WizardOption(label: 'Protegerme', value: 'shield', icon: Icons.shield_rounded),
-        WizardOption(label: 'Impulsar mis estudios', value: 'school', icon: Icons.school_rounded),
-        WizardOption(label: 'Por curiosidad', value: 'curiosity', icon: Icons.lightbulb_outline_rounded),
-        WizardOption(label: 'Prepararme para el trabajo', value: 'work', icon: Icons.work_outline_rounded),
-        WizardOption(label: 'Proteger a mi familia', value: 'family', icon: Icons.family_restroom_rounded),
-        WizardOption(label: 'Para divertirme', value: 'fun', icon: Icons.celebration_outlined),
+        WizardOption(label: l.wizardProtect, value: 'shield', icon: Icons.shield_rounded),
+        WizardOption(label: l.wizardBoostStudies, value: 'school', icon: Icons.school_rounded),
+        WizardOption(label: l.wizardCuriosity, value: 'curiosity', icon: Icons.lightbulb_outline_rounded),
+        WizardOption(label: l.wizardPrepareWork, value: 'work', icon: Icons.work_outline_rounded),
+        WizardOption(label: l.wizardProtectFamily, value: 'family', icon: Icons.family_restroom_rounded),
+        WizardOption(label: l.wizardHaveFun, value: 'fun', icon: Icons.celebration_outlined),
       ],
     ),
     WizardStepConfig(
-      question: '¿Qué te gustaría aprender?',
-      type: 'single',
+      question: l.wizardWhatLearn,
+      type: WizardStepType.single,
       emotion: SageEmotion.curious,
-      sageMessage: '¿Qué te gustaría aprender primero?',
+      sageMessage: l.wizardWhatLearnSage,
       options: [
-        WizardOption(label: 'Proteger mis cuentas', value: 'accounts', icon: Icons.lock_outline_rounded),
-        WizardOption(label: 'Detectar estafas', value: 'scams', icon: Icons.warning_amber_rounded),
-        WizardOption(label: 'Navegar seguro', value: 'browsing', icon: Icons.language_rounded),
-        WizardOption(label: 'Proteger mi privacidad', value: 'privacy', icon: Icons.visibility_off_rounded),
-        WizardOption(label: 'Todo lo anterior', value: 'all', icon: Icons.auto_awesome_rounded),
+        WizardOption(label: l.wizardProtectAccounts, value: 'accounts', icon: Icons.lock_outline_rounded),
+        WizardOption(label: l.wizardDetectScams, value: 'scams', icon: Icons.warning_amber_rounded),
+        WizardOption(label: l.wizardSafeBrowsing, value: 'browsing', icon: Icons.language_rounded),
+        WizardOption(label: l.wizardProtectPrivacy, value: 'privacy', icon: Icons.visibility_off_rounded),
+        WizardOption(label: l.wizardAllAbove, value: 'all', icon: Icons.auto_awesome_rounded),
       ],
     ),
     WizardStepConfig(
-      question: '¿Cómo prefieres aprender?',
-      type: 'multi',
+      question: l.wizardHowPrefer,
+      type: WizardStepType.multi,
       emotion: SageEmotion.calm,
-      sageMessage: 'Elige tus formas favoritas de aprender',
+      sageMessage: l.wizardHowPreferSage,
       options: [
-        WizardOption(label: 'Practicar con quizzes', value: 'quiz', icon: Icons.quiz_rounded),
-        WizardOption(label: 'Leer artículos', value: 'article', icon: Icons.article_rounded),
-        WizardOption(label: 'Ver videos educativos', value: 'video', icon: Icons.ondemand_video_rounded),
-        WizardOption(label: 'Analizar enlaces', value: 'link', icon: Icons.link_rounded),
-        WizardOption(label: 'Chat con Sage', value: 'chat', icon: Icons.chat_rounded),
+        WizardOption(label: l.wizardQuizzes, value: 'quiz', icon: Icons.quiz_rounded),
+        WizardOption(label: l.wizardArticles, value: 'article', icon: Icons.article_rounded),
+        WizardOption(label: l.wizardVideos, value: 'video', icon: Icons.ondemand_video_rounded),
+        WizardOption(label: l.wizardLinks, value: 'link', icon: Icons.link_rounded),
+        WizardOption(label: l.wizardChatSage, value: 'chat', icon: Icons.chat_rounded),
       ],
     ),
     WizardStepConfig(
-      question: '¿Cuánto tiempo puedes dedicar al día?',
-      type: 'goal',
+      question: l.wizardTimeDedicate,
+      type: WizardStepType.goal,
       emotion: SageEmotion.calm,
-      sageMessage: 'Elige tu ritmo ideal de aprendizaje',
+      sageMessage: l.wizardTimeSage,
       options: [
-        WizardOption(label: '3 min', value: '3', icon: Icons.coffee_rounded, color: Color(0xFF66BB6A), subtitle: 'Relajado'),
-        WizardOption(label: '10 min', value: '10', icon: Icons.timer_rounded, color: Color(0xFF42A5F5), subtitle: 'Normal'),
-        WizardOption(label: '15 min', value: '15', icon: Icons.bolt_rounded, color: Color(0xFFFFB300), subtitle: 'Serio'),
-        WizardOption(label: '30 min', value: '30', icon: Icons.local_fire_department_rounded, color: Color(0xFFE53935), subtitle: 'Intenso'),
+        WizardOption(label: l.wizardGoal3, value: '3', icon: Icons.coffee_rounded, color: PremiumColors.wizardGreen, subtitle: l.wizardGoal3Sub),
+        WizardOption(label: l.wizardGoal10, value: '10', icon: Icons.timer_rounded, color: PremiumColors.wizardBlue, subtitle: l.wizardGoal10Sub),
+        WizardOption(label: l.wizardGoal15, value: '15', icon: Icons.bolt_rounded, color: PremiumColors.wizardAmber, subtitle: l.wizardGoal15Sub),
+        WizardOption(label: l.wizardGoal30, value: '30', icon: Icons.local_fire_department_rounded, color: PremiumColors.wizardDeepRed, subtitle: l.wizardGoal30Sub),
       ],
     ),
     WizardStepConfig(
-      question: 'Elige tu compromiso',
-      type: 'multi',
+      question: l.wizardCommitment,
+      type: WizardStepType.multi,
       emotion: SageEmotion.excited,
-      sageMessage: 'Selecciona tus metas de constancia',
+      sageMessage: l.wizardCommitmentSage,
       options: [
-        WizardOption(label: '7 días', value: '7', icon: Icons.local_fire_department_rounded, color: Color(0xFFFFB300), subtitle: '30 gemas'),
-        WizardOption(label: '14 días', value: '14', icon: Icons.local_fire_department_rounded, color: Color(0xFFFF8F00), subtitle: '80 gemas'),
-        WizardOption(label: '30 días', value: '30', icon: Icons.local_fire_department_rounded, color: Color(0xFFFF6D00), subtitle: '200 gemas'),
-        WizardOption(label: '50 días', value: '50', icon: Icons.local_fire_department_rounded, color: Color(0xFFE53935), subtitle: '400 gemas'),
+        WizardOption(label: l.wizardCommit7, value: '7', icon: Icons.local_fire_department_rounded, color: PremiumColors.wizardAmber, subtitle: l.wizardCommit7Sub),
+        WizardOption(label: l.wizardCommit14, value: '14', icon: Icons.local_fire_department_rounded, color: PremiumColors.wizardAmberDark, subtitle: l.wizardCommit14Sub),
+        WizardOption(label: l.wizardCommit30, value: '30', icon: Icons.local_fire_department_rounded, color: PremiumColors.wizardOrange, subtitle: l.wizardCommit30Sub),
+        WizardOption(label: l.wizardCommit50, value: '50', icon: Icons.local_fire_department_rounded, color: PremiumColors.wizardDeepRed, subtitle: l.wizardCommit50Sub),
       ],
     ),
     WizardStepConfig(
-      question: 'Compromiso confirmado',
-      type: 'confirmation',
+      question: l.wizardConfirmed,
+      type: WizardStepType.confirmation,
       emotion: SageEmotion.excitedWave,
-      sageMessage: '¡Has configurado tu ruta de aprendizaje!',
+      sageMessage: l.wizardConfirmedSage,
       options: [],
     ),
   ];

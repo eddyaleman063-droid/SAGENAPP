@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../services/storage_service.dart';
+import '../core/theme/app_theme.dart';
 import '../core/theme/theme_constants.dart';
 import 'prefs_provider.dart';
 
@@ -9,12 +10,14 @@ class ThemeState {
   final bool scheduleEnabled;
   final int scheduleStartHour;
   final int scheduleEndHour;
+  final String themeVariant;
 
   const ThemeState({
     this.mode = ThemeMode.system,
     this.scheduleEnabled = false,
     this.scheduleStartHour = 20,
     this.scheduleEndHour = 7,
+    this.themeVariant = 'default',
   });
 
   ThemeState copyWith({
@@ -22,45 +25,39 @@ class ThemeState {
     bool? scheduleEnabled,
     int? scheduleStartHour,
     int? scheduleEndHour,
+    String? themeVariant,
   }) =>
       ThemeState(
         mode: mode ?? this.mode,
         scheduleEnabled: scheduleEnabled ?? this.scheduleEnabled,
         scheduleStartHour: scheduleStartHour ?? this.scheduleStartHour,
         scheduleEndHour: scheduleEndHour ?? this.scheduleEndHour,
+        themeVariant: themeVariant ?? this.themeVariant,
       );
 
   ThemeData get currentTheme {
     final isDark = effectiveMode == ThemeMode.dark;
-    return ThemeData(
-      useMaterial3: true,
-      brightness: isDark ? Brightness.dark : Brightness.light,
-      colorSchemeSeed: PremiumColors.primary,
-      scaffoldBackgroundColor: isDark ? PremiumColors.darkBg : PremiumColors.lightBg,
-      cardColor: isDark ? PremiumColors.darkCard : Colors.white,
-      dividerColor: (isDark ? Colors.white : Colors.black).withValues(alpha: 0.08),
-      appBarTheme: AppBarTheme(
-        backgroundColor: isDark ? PremiumColors.darkSurface : Colors.white,
-        foregroundColor: isDark ? Colors.white : PremiumColors.textDark,
-        elevation: 0,
-        centerTitle: true,
-      ),
-      bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        backgroundColor: isDark ? PremiumColors.darkSurface : Colors.white,
-        selectedItemColor: PremiumColors.primary,
-        unselectedItemColor: (isDark ? Colors.white : Colors.black).withValues(alpha: 0.4),
-      ),
-      dialogTheme: DialogThemeData(
-        backgroundColor: isDark ? PremiumColors.darkCard : Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      ),
-      chipTheme: ChipThemeData(
-        backgroundColor: isDark ? PremiumColors.darkSurface : const Color(0xFFF0F4FF),
-        selectedColor: PremiumColors.primary.withValues(alpha: 0.15),
-        labelStyle: TextStyle(color: isDark ? Colors.white : PremiumColors.textDark),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      ),
-    );
+    final base = isDark ? AppTheme.dark : AppTheme.light;
+    switch (themeVariant) {
+      case 'blue':
+        return base.copyWith(
+          colorScheme: base.colorScheme.copyWith(
+            primary: PremiumColors.primary,
+            secondary: PremiumColors.primaryAccent,
+          ),
+          scaffoldBackgroundColor: isDark ? PremiumColors.ambientDark : PremiumColors.variantBlueLight,
+        );
+      case 'purple':
+        return base.copyWith(
+          colorScheme: base.colorScheme.copyWith(
+            primary: PremiumColors.variantPurplePrimary,
+            secondary: PremiumColors.variantPurpleSecondary,
+          ),
+          scaffoldBackgroundColor: isDark ? PremiumColors.variantPurpleDark : PremiumColors.variantPurpleLight,
+        );
+      default:
+        return base;
+    }
   }
 
   ThemeMode get effectiveMode {
@@ -80,7 +77,7 @@ class ThemeNotifier extends Notifier<ThemeState> {
 
   @override
   ThemeState build() {
-    final prefs = ref.watch(prefsProvider);
+    final prefs = ref.read(prefsProvider);
     _storage = StorageService(prefs);
     return _loadFromStorage();
   }
@@ -92,7 +89,13 @@ class ThemeNotifier extends Notifier<ThemeState> {
       scheduleEnabled: _storage.getBool('theme_schedule_enabled', false),
       scheduleStartHour: _storage.getInt('theme_schedule_start', 20),
       scheduleEndHour: _storage.getInt('theme_schedule_end', 7),
+      themeVariant: _storage.getString('theme_variant', 'default'),
     );
+  }
+
+  void setThemeVariant(String variant) {
+    state = state.copyWith(themeVariant: variant);
+    _storage.setString('theme_variant', variant);
   }
 
   void setMode(ThemeMode mode) {

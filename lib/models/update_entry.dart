@@ -1,5 +1,8 @@
+import '../l10n/app_localizations.dart';
+
 enum UpdateType { feature, improvement, fix }
 
+/// A single changelog entry with date, description, and type.
 class UpdateEntry {
   final DateTime date;
   final String title;
@@ -20,111 +23,113 @@ class UpdateEntry {
   static List<UpdateEntry> all() => _entries;
 
   static List<UpdateEntry> newEntries() => _entries.where((e) => e.isNew).toList();
+
+  static List<UpdateEntry> allLocalized(AppLocalizations l) => _localizedEntries(l);
 }
 
 final _entries = <UpdateEntry>[
   UpdateEntry(
     date: _june(13),
-    title: 'Sistema de Energía',
-    description: 'Ahora cada lección consume energía. Responde bien para gastar solo 1,'
-        ' fallar cuesta 2. Los combos de aciertos regeneran energía.'
-        ' Al llegar a 0 no puedes continuar la lección.',
+    title: 'Energy System',
+    description: 'Each lesson now costs energy. Answer correctly to spend only 1,'
+        ' failing costs 2. Combo streaks regenerate energy.'
+        ' When you reach 0, you cannot continue the lesson.',
     type: UpdateType.feature,
     version: '1.5.0',
     isNew: true,
   ),
   UpdateEntry(
     date: _june(13),
-    title: 'Energía Infinita',
-    description: 'Nuevo objeto especial en la tienda que otorga energía ilimitada'
-        ' por tiempo limitado. Actívalo desde tu inventario.',
+    title: 'Infinite Energy',
+    description: 'New special item in the store that grants unlimited energy'
+        ' for a limited time. Activate it from your inventory.',
     type: UpdateType.feature,
     version: '1.5.0',
     isNew: true,
   ),
   UpdateEntry(
     date: _june(13),
-    title: 'Iconos de objetos mejorados',
-    description: 'Todos los objetos especiales ahora tienen iconos'
-        ' personalizados y más llamativos en la tienda y el inventario.',
+    title: 'Improved item icons',
+    description: 'All special items now have customized'
+        ' and more eye-catching icons in the store and inventory.',
     version: '1.5.0',
     isNew: true,
   ),
   UpdateEntry(
     date: _june(12),
-    title: 'Rutas tipadas con GoRouter Builder',
-    description: 'Las rutas de splash y welcome ahora son tipadas,'
-        ' detectando errores en tiempo de compilación.',
+    title: 'Typed routes with GoRouter Builder',
+    description: 'Splash and welcome routes are now typed,'
+        ' catching errors at compile time.',
     version: '1.4.1',
     isNew: true,
   ),
   UpdateEntry(
     date: _june(10),
-    title: 'Mascota programática',
-    description: 'La mascota ahora se dibuja con CustomPainter.'
-        ' 29 emociones, sin assets, transiciones suaves entre emociones.',
+    title: 'Programmatic mascot',
+    description: 'The mascot is now drawn with CustomPainter.'
+        ' 29 emotions, no assets, smooth transitions between emotions.',
     type: UpdateType.feature,
     version: '1.4.0',
   ),
   UpdateEntry(
     date: _june(8),
-    title: 'Actualizaciones y novedades',
-    description: 'Nueva pantalla en la barra inferior que muestra'
-        ' el historial de cambios y novedades de la app.',
+    title: 'Updates and news',
+    description: 'New screen in the bottom bar that shows'
+        ' the changelog and app news.',
     type: UpdateType.feature,
     version: '1.4.0',
   ),
   UpdateEntry(
     date: _june(5),
-    title: 'Mercado Pago integrado',
-    description: 'Pagos directos con Mercado Pago para paquetes de gemas y bundles.'
-        ' También disponible el pago por WhatsApp.',
+    title: 'Mercado Pago integrated',
+    description: 'Direct payments with Mercado Pago for gem packages and bundles.'
+        ' WhatsApp payment also available.',
     type: UpdateType.feature,
     version: '1.3.0',
   ),
   UpdateEntry(
     date: _may(30),
-    title: 'Protector de racha mejorado',
-    description: 'Límite máximo de 2 protectores. Al alcanzarlo,'
-        ' se muestran offertas de potenciadores en su lugar.',
+    title: 'Improved streak protector',
+    description: 'Maximum limit of 2 protectors. When reached,'
+        ' booster offers are shown instead.',
     version: '1.2.1',
   ),
   UpdateEntry(
     date: _may(25),
-    title: 'Potenciadores de lección',
-    description: 'Nuevos objetos: Boost de XP (2x), Multiplicador de gemas (2x en cofres),'
-        ' Boost de suerte (2x probabilidades). Se compran y activan desde la tienda.',
+    title: 'Lesson boosters',
+    description: 'New items: XP Boost (2x), Gem Multiplier (2x in chests),'
+        ' Luck Boost (2x probabilities). Buy and activate from the store.',
     type: UpdateType.feature,
     version: '1.2.0',
   ),
   UpdateEntry(
     date: _may(15),
-    title: 'Corrección de pruebas unitarias',
-    description: 'Se corrigieron 7 pruebas fallidas. Ahora todas las pruebas'
-        ' pasan correctamente (419 tests). 0 issues de análisis.',
+    title: 'Unit test fixes',
+    description: 'Fixed 7 failing tests. All tests now'
+        ' pass correctly (419 tests). 0 analysis issues.',
     type: UpdateType.fix,
     version: '1.1.3',
   ),
   UpdateEntry(
     date: _april(20),
-    title: 'Cofres de racha y lección',
-    description: 'Nuevo sistema de cofres: cofre diario por racha,'
-        ' cofre de lección cada 3/5/6/10 lecciones completadas.',
+    title: 'Streak and lesson chests',
+    description: 'New chest system: daily streak chest,'
+        ' lesson chest every 3/5/6/10 completed lessons.',
     type: UpdateType.feature,
     version: '1.1.0',
   ),
   UpdateEntry(
     date: _april(10),
-    title: 'Misiones diarias',
-    description: 'Sistema de misiones diarias con recompensas en gemas y experiencia.',
+    title: 'Daily missions',
+    description: 'Daily mission system with gem and experience rewards.',
     type: UpdateType.feature,
     version: '1.0.2',
   ),
   UpdateEntry(
     date: _march(28),
-    title: 'Primera versión',
-    description: 'Lanzamiento inicial con lecciones interactivas, racha diaria,'
-        ' gemas, tienda y perfil de usuario.',
+    title: 'First version',
+    description: 'Initial launch with interactive lessons, daily streak,'
+        ' gems, store and user profile.',
     type: UpdateType.feature,
     version: '1.0.0',
   ),
@@ -134,3 +139,19 @@ DateTime _march(int day) => DateTime(2026, 3, day);
 DateTime _april(int day) => DateTime(2026, 4, day);
 DateTime _may(int day) => DateTime(2026, 5, day);
 DateTime _june(int day) => DateTime(2026, 6, day);
+
+List<UpdateEntry> _localizedEntries(AppLocalizations l) => [
+  UpdateEntry(date: _june(13), title: l.updateEnergySystem, description: l.updateEnergySystemDesc, type: UpdateType.feature, version: '1.5.0', isNew: true),
+  UpdateEntry(date: _june(13), title: l.updateInfiniteEnergy, description: l.updateInfiniteEnergyDesc, type: UpdateType.feature, version: '1.5.0', isNew: true),
+  UpdateEntry(date: _june(13), title: l.updateImprovedIcons, description: l.updateImprovedIconsDesc, version: '1.5.0', isNew: true),
+  UpdateEntry(date: _june(12), title: l.updateTypedRoutes, description: l.updateTypedRoutesDesc, version: '1.4.1', isNew: true),
+  UpdateEntry(date: _june(10), title: l.updateProgrammaticMascot, description: l.updateProgrammaticMascotDesc, type: UpdateType.feature, version: '1.4.0'),
+  UpdateEntry(date: _june(8), title: l.updateChangelog, description: l.updateChangelogDesc, type: UpdateType.feature, version: '1.4.0'),
+  UpdateEntry(date: _june(5), title: l.updateMercadoPago, description: l.updateMercadoPagoDesc, type: UpdateType.feature, version: '1.3.0'),
+  UpdateEntry(date: _may(30), title: l.updateStreakProtectorImproved, description: l.updateStreakProtectorImprovedDesc, version: '1.2.1'),
+  UpdateEntry(date: _may(25), title: l.updateLessonBoosters, description: l.updateLessonBoostersDesc, type: UpdateType.feature, version: '1.2.0'),
+  UpdateEntry(date: _may(15), title: l.updateTestFix, description: l.updateTestFixDesc, type: UpdateType.fix, version: '1.1.3'),
+  UpdateEntry(date: _april(20), title: l.updateChestSystem, description: l.updateChestSystemDesc, type: UpdateType.feature, version: '1.1.0'),
+  UpdateEntry(date: _april(10), title: l.updateDailyMissions, description: l.updateDailyMissionsDesc, type: UpdateType.feature, version: '1.0.2'),
+  UpdateEntry(date: _march(28), title: l.updateFirstVersion, description: l.updateFirstVersionDesc, type: UpdateType.feature, version: '1.0.0'),
+];

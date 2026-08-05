@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../config/onboarding_wizard_config.dart';
 import '../../../core/theme/theme_constants.dart';
+import 'package:sagen/services/experience_service.dart';
+import 'package:sagen/l10n/app_localizations.dart';
 
 class WizardTopBar extends ConsumerWidget {
   final int currentIndex;
@@ -21,11 +23,19 @@ class WizardTopBar extends ConsumerWidget {
       padding: const EdgeInsets.fromLTRB(AppSpacing.xs, AppSpacing.sm, AppSpacing.lg, AppSpacing.sm),
       child: Row(
         children: [
-          IconButton(
-            icon: const Icon(Icons.arrow_back_rounded, size: 22),
-            color: cs.onSurface.withValues(alpha: 0.7),
-            onPressed: onBack,
-            splashRadius: 20,
+          Semantics(
+            button: true,
+            label: AppLocalizations.of(context)!.backButton,
+            child: IconButton(
+              icon: const Icon(Icons.arrow_back_rounded, size: 22),
+              color: cs.onSurface.withValues(alpha: 0.7),
+              onPressed: () {
+                ExperienceService.instance.lightHaptic();
+                onBack();
+              },
+              splashRadius: 20,
+              tooltip: AppLocalizations.of(context)!.backButton,
+            ),
           ),
           const SizedBox(width: AppSpacing.sm),
           Expanded(

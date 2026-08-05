@@ -1,0 +1,452 @@
+[
+    {
+        "id": "ac_st4_qB7_001",
+        "question": "Que es un gestor de contraseñas?",
+        "type": "multipleChoice",
+        "options": [
+            "Un programa para crear contraseñas",
+            "Una herramienta que guarda y administra todas tus contraseñas de forma segura",
+            "Un banco de datos publico",
+            "Una red social"
+        ],
+        "correctIndex": 1,
+        "explanation": "Un gestor de contraseñas almacena tus claves de forma cifrada y segura.",
+        "difficulty": 1,
+        "lessonId": "ac_s4_ses1_l1"
+    },
+    {
+        "id": "ac_st4_qB7_002",
+        "question": "Por que usar un gestor de contraseñas?",
+        "type": "multipleChoice",
+        "options": [
+            "No es necesario",
+            "Para no tener que recordar todas tus contraseñas",
+            "Para compartirlas con todos",
+            "Porque es obligatorio"
+        ],
+        "correctIndex": 1,
+        "explanation": "El gestor recuerda tus contraseñas para que solo necesites recordar una clave maestra.",
+        "difficulty": 1,
+        "lessonId": "ac_s4_ses1_l2"
+    },
+    {
+        "id": "ac_st4_qB7_003",
+        "question": "Que es la contraseña maestra en un gestor?",
+        "type": "multipleChoice",
+        "options": [
+            "La primera contraseña que creaste",
+            "La única contraseña que debes recordar para acceder a todas las demás",
+            "Una contraseña para compartir",
+            "No existe"
+        ],
+        "correctIndex": 1,
+        "explanation": "La contraseña maestra protege el acceso a todas las demás contraseñas almacenadas.",
+        "difficulty": 2,
+        "lessonId": "ac_s4_ses1_l3"
+    },
+    {
+        "id": "ac_st4_qB7_004",
+        "question": "Cuales son los gestores de contraseñas mas populares?",
+        "type": "multipleChoice",
+        "options": [
+            "Solo uno existe",
+            "Bitwarden, LastPass, 1Password, Dashlane",
+            "Solo el navegador",
+            "No hay opciónes"
+        ],
+        "correctIndex": 1,
+        "explanation": "Existen varios gestores como Bitwarden, LastPass, 1Password y Dashlane.",
+        "difficulty": 1,
+        "lessonId": "ac_s4_ses1_l4"
+    },
+    {
+        "id": "ac_st4_qB7_005",
+        "question": "Que es el cifrado de extremo a extremo en gestores?",
+        "type": "multipleChoice",
+        "options": [
+            "No cifra nada",
+            "Solo tu puedes descifrar tus contraseñas, ni siquiera la empresa",
+            "La empresa tiene acceso",
+            "Es opciónal"
+        ],
+        "correctIndex": 1,
+        "explanation": "El cifrado E2E significa que solo tu tienes la clave para descifrar tus datos.",
+        "difficulty": 3,
+        "lessonId": "ac_s4_ses1_l5"
+    },
+    {
+        "id": "ac_st4_qB7_006",
+        "question": "Que es el autofill de contraseñas?",
+        "type": "multipleChoice",
+        "options": [
+            "Escribir las contraseñas manualmente",
+            "El gestor completa automáticamente tus credenciales en formularios",
+            "Compartir contraseñas",
+            "No existe"
+        ],
+        "correctIndex": 1,
+        "explanation": "El autofill rellena automáticamente tus credenciales cuando visitas sitios web.",
+        "difficulty": 1,
+        "lessonId": "ac_s4_ses1_l6"
+    },
+    {
+        "id": "ac_st4_qB7_007",
+        "question": "Que es un generador de contraseñas en el gestor?",
+        "type": "multipleChoice",
+        "options": [
+            "Un creador de frases",
+            "Una herramienta que crea contraseñas fuertes y aleatorias",
+            "Un compartidor de claves",
+            "No existe"
+        ],
+        "correctIndex": 1,
+        "explanation": "El generador crea contraseñas únicas y seguras automáticamente.",
+        "difficulty": 1,
+        "lessonId": "ac_s4_ses2_l1"
+    },
+    {
+        "id": "ac_st4_qB7_008",
+        "question": "Como el gestor detecta sitios web falsos?",
+        "type": "multipleChoice",
+        "options": [
+            "No puede",
+            "Solo completa credenciales en sitios oficiales que reconoce",
+            "Adivina",
+            "No es posible"
+        ],
+        "correctIndex": 1,
+        "explanation": "El gestor solo autocompleta en sitios que coinciden con las URLs guardadas.",
+        "difficulty": 2,
+        "lessonId": "ac_s4_ses2_l2"
+    },
+    {
+        "id": "ac_st4_qB7_009",
+        "question": "Que es la vigilancia de brechas en gestores?",
+        "type": "multipleChoice",
+        "options": [
+            "Vigilar tu casa",
+            "Alertarte si tus credenciales aparecen en filtraciones conocidas",
+            "Vigilar tus redes sociales",
+            "No existe"
+        ],
+        "correctIndex": 1,
+        "explanation": "Algunos gestores monitorean si tus datos aparecen en brechas de seguridad.",
+        "difficulty": 2,
+        "lessonId": "ac_s4_ses2_l3"
+    },
+    {
+        "id": "ac_st4_qB7_010",
+        "question": "Como funciona elcompartir de contraseñas en el gestor?",
+        "type": "multipleChoice",
+        "options": [
+            "Compartir por correo",
+            "Enviar contraseñas de forma segura y cifrada a otros usuarios del gestor",
+            "Escribir en papel",
+            "No se puede"
+        ],
+        "correctIndex": 1,
+        "explanation": "Elcompartir seguro permite pasar contraseñas a familiares o colegas de forma protegida.",
+        "difficulty": 2,
+        "lessonId": "ac_s4_ses2_l4"
+    },
+    {
+        "id": "ac_st4_qB7_011",
+        "question": "Que es el monitor de seguridad del gestor?",
+        "type": "multipleChoice",
+        "options": [
+            "Una pantalla",
+            "Un sistema que analiza la fortaleza y unicidad de tus contraseñas",
+            "Un antivirus",
+            "No existe"
+        ],
+        "correctIndex": 1,
+        "explanation": "El monitor revisa si tus contraseñas son débiles, repetidas o comprometidas.",
+        "difficulty": 2,
+        "lessonId": "ac_s4_ses2_l5"
+    },
+    {
+        "id": "ac_st4_qB7_012",
+        "question": "Que es el modo emergencia en gestores?",
+        "type": "multipleChoice",
+        "options": [
+            "Borrar todo",
+            "Permitir que un contacto de confianza acceda a tus contraseñas en caso de emergencia",
+            "Cerrar sesión",
+            "No existe"
+        ],
+        "correctIndex": 1,
+        "explanation": "El modo emergencia designa contactos que pueden acceder a tus datos si no puedes.",
+        "difficulty": 3,
+        "lessonId": "ac_s4_ses2_l6"
+    },
+    {
+        "id": "ac_st4_qB7_013",
+        "question": "Como instalar un gestor de contraseñas?",
+        "type": "multipleChoice",
+        "options": [
+            "No se puede",
+            "Descargando la app o extension del navegador",
+            "Llamando a soporte",
+            "No es necesario"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los gestores se instalan como app movil o extension de navegador.",
+        "difficulty": 1,
+        "lessonId": "ac_s4_ses3_l1"
+    },
+    {
+        "id": "ac_st4_qB7_014",
+        "question": "Como importar contraseñas existentes al gestor?",
+        "type": "multipleChoice",
+        "options": [
+            "Escribirlas una por una",
+            "Usar la función de importar desde el navegador u otros gestores",
+            "No se puede",
+            "Compartirlas por correo"
+        ],
+        "correctIndex": 1,
+        "explanation": "La mayoría de gestores pueden importar contraseñas desde navegadores o otros gestores.",
+        "difficulty": 2,
+        "lessonId": "ac_s4_ses3_l2"
+    },
+    {
+        "id": "ac_st4_qB7_015",
+        "question": "Que es la sincronización entre dispositivos?",
+        "type": "multipleChoice",
+        "options": [
+            "No existe",
+            "Mantener tus contraseñas actualizadas en todos tus dispositivos",
+            "Compartir con otros",
+            "Borrar datos"
+        ],
+        "correctIndex": 1,
+        "explanation": "La sincronización asegura que tus contraseñas estén disponibles en todos tus dispositivos.",
+        "difficulty": 2,
+        "lessonId": "ac_s4_ses3_l3"
+    },
+    {
+        "id": "ac_st4_qB7_016",
+        "question": "Como configurar autofill en el navegador?",
+        "type": "multipleChoice",
+        "options": [
+            "No se puede",
+            "Ajustes del navegador > Contraseñas > Autocompletar",
+            "No es recomendable",
+            "Solo en celulares"
+        ],
+        "correctIndex": 1,
+        "explanation": "Puedes activar el autocompletar de contraseñas en los ajustes de privacidad del navegador.",
+        "difficulty": 2,
+        "lessonId": "ac_s4_ses3_l4"
+    },
+    {
+        "id": "ac_st4_qB7_017",
+        "question": "Que es la autenticación biométrica para el gestor?",
+        "type": "multipleChoice",
+        "options": [
+            "Usar contraseña",
+            "Usar huella dactilar o reconocimiento facial para desbloquear el gestor",
+            "No existe",
+            "Compartir datos"
+        ],
+        "correctIndex": 1,
+        "explanation": "La biometria te permite acceder al gestor con tu huella o rostro sin escribir la clave.",
+        "difficulty": 2,
+        "lessonId": "ac_s4_ses3_l5"
+    },
+    {
+        "id": "ac_st4_qB7_018",
+        "question": "Como actualizar el gestor de contraseñas?",
+        "type": "multipleChoice",
+        "options": [
+            "No es necesario",
+            "Mantener la app y extension actualizados para parches de seguridad",
+            "Desinstalar y reinstallar",
+            "No se puede"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las actualizaciones incluyen mejoras de seguridad y correcciónes de errores.",
+        "difficulty": 1,
+        "lessonId": "ac_s4_ses3_l6"
+    },
+    {
+        "id": "ac_st4_qB7_019",
+        "question": "Cuales son los riesgos de usar el navegador para guardar contraseñas?",
+        "type": "multipleChoice",
+        "options": [
+            "Ninguno",
+            "El navegador no cifra tan seguro como un gestor dedicado",
+            "Es mas seguro",
+            "No funciona"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los navegadores guardan contraseñas pero sin el mismo nivel de cifrado que un gestor.",
+        "difficulty": 2,
+        "lessonId": "ac_s4_ses4_l1"
+    },
+    {
+        "id": "ac_st4_qB7_020",
+        "question": "Por que un gestor es mejor que notas del celular?",
+        "type": "multipleChoice",
+        "options": [
+            "No es mejor",
+            "El gestor cifra las contraseñas, las notas no",
+            "Es igual",
+            "Las notas son mas seguras"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las notas del celular no están cifradas y pueden ser accedidas por cualquiera con tu celular.",
+        "difficulty": 2,
+        "lessonId": "ac_s4_ses4_l2"
+    },
+    {
+        "id": "ac_st4_qB7_021",
+        "question": "Que pasa si olvidas la contraseña maestra del gestor?",
+        "type": "multipleChoice",
+        "options": [
+            "Nada",
+            "Puedes perder el acceso a todas tus contraseñas",
+            "Se restablece automáticamente",
+            "La empresa la recupera"
+        ],
+        "correctIndex": 1,
+        "explanation": "Si olvidas la maestra y no tienes respaldo, puedes perder acceso a tus datos.",
+        "difficulty": 2,
+        "lessonId": "ac_s4_ses4_l3"
+    },
+    {
+        "id": "ac_st4_qB7_022",
+        "question": "Que es un vault o bóveda en el gestor?",
+        "type": "multipleChoice",
+        "options": [
+            "Un juego",
+            "El lugar seguro donde se almacenan tus contraseñas cifradas",
+            "Una carpeta de correo",
+            "No existe"
+        ],
+        "correctIndex": 1,
+        "explanation": "El vault es el repositorio seguro y cifrado donde se guardan todas tus credenciales.",
+        "difficulty": 2,
+        "lessonId": "ac_s4_ses4_l4"
+    },
+    {
+        "id": "ac_st4_qB7_023",
+        "question": "Como funcionan los notes o notas seguras del gestor?",
+        "type": "multipleChoice",
+        "options": [
+            "Igual que las notas del celular",
+            "Para guardar información sensible como códigos de respaldo de forma cifrada",
+            "Para guardar fotos",
+            "No existen"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las notas seguras del gestor cifran información como códigos de respaldo.",
+        "difficulty": 2,
+        "lessonId": "ac_s4_ses4_l5"
+    },
+    {
+        "id": "ac_st4_qB7_024",
+        "question": "Que es la función de auditoría de seguridad del gestor?",
+        "type": "multipleChoice",
+        "options": [
+            "No existe",
+            "Analizar la fortaleza, unicidad y estado de tus contraseñas",
+            "Borrar contraseñas",
+            "Compartir datos"
+        ],
+        "correctIndex": 1,
+        "explanation": "La auditoría revisa si tus contraseñas son débiles, repetidas o comprometidas.",
+        "difficulty": 2,
+        "lessonId": "ac_s4_ses4_l6"
+    },
+    {
+        "id": "ac_st4_qB7_025",
+        "question": "Que es el 2FA para el gestor de contraseñas?",
+        "type": "multipleChoice",
+        "options": [
+            "No se puede usar",
+            "Una capa extra de seguridad para proteger el acceso al gestor",
+            "Es obligatorio",
+            "No sirve"
+        ],
+        "correctIndex": 1,
+        "explanation": "Activar 2FA en el gestor protege tus datos aunque alguien obtenga tu maestra.",
+        "difficulty": 2,
+        "lessonId": "ac_s4_ses5_l1"
+    },
+    {
+        "id": "ac_st4_qB7_026",
+        "question": "Como proteger la contraseña maestra?",
+        "type": "multipleChoice",
+        "options": [
+            "Compartirla",
+            "Crearla fuerte y no compartirla con nadie",
+            "Escribirla en el celular",
+            "Usar 123456"
+        ],
+        "correctIndex": 1,
+        "explanation": "La maestra debe ser fuerte, única y nunca compartida.",
+        "difficulty": 2,
+        "lessonId": "ac_s4_ses5_l2"
+    },
+    {
+        "id": "ac_st4_qB7_027",
+        "question": "Que son los campos personalizados en el gestor?",
+        "type": "multipleChoice",
+        "options": [
+            "No existen",
+            "Campos adicionales para guardar información específica como DNI o PIN",
+            "Campos obligatorios",
+            "No sirven"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los campos personalizados permiten guardar información adicional como DNI o PIN.",
+        "difficulty": 3,
+        "lessonId": "ac_s4_ses5_l3"
+    },
+    {
+        "id": "ac_st4_qB7_028",
+        "question": "Como eliminar una contraseña del gestor?",
+        "type": "multipleChoice",
+        "options": [
+            "No se puede",
+            "Selecciónando la entrada y elegiendo eliminar",
+            "Llamando a soporte",
+            "Borrando la app"
+        ],
+        "correctIndex": 1,
+        "explanation": "Puedes eliminar entradas directamente desde la interfaz del gestor.",
+        "difficulty": 1,
+        "lessonId": "ac_s4_ses5_l4"
+    },
+    {
+        "id": "ac_st4_qB7_029",
+        "question": "Que es el historial de contraseñas en el gestor?",
+        "type": "multipleChoice",
+        "options": [
+            "No existe",
+            "Un registro de contraseñas anteriores para recuperación",
+            "Un registro de inicio de sesión",
+            "No sirve"
+        ],
+        "correctIndex": 1,
+        "explanation": "El historial guarda contraseñas anteriores para evitar reutilizarlas o recuperarlas.",
+        "difficulty": 3,
+        "lessonId": "ac_s4_ses5_l5"
+    },
+    {
+        "id": "ac_st4_qB7_030",
+        "question": "Como hacer backup del gestor de contraseñas?",
+        "type": "multipleChoice",
+        "options": [
+            "No es necesario",
+            "Exportar un archivo cifrado y guardarlo en un lugar seguro",
+            "No se puede",
+            "Compartirlo por correo"
+        ],
+        "correctIndex": 1,
+        "explanation": "Debes exportar un respaldo cifrado y guardarlo en un lugar seguro fuera de línea.",
+        "difficulty": 2,
+        "lessonId": "ac_s4_ses5_l6"
+    }
+]

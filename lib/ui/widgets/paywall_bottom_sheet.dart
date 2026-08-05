@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sagen/config/app_config.dart';
+import 'package:sagen/core/theme/app_colors.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/providers/payment_provider.dart';
 import 'package:sagen/ui/widgets/common/sagen_notification.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class GemPackage {
-  final int gems;
+class DonationPackage {
+  final int supporterLevel;
   final double price;
   final String labelKey;
 
-  const GemPackage(this.gems, this.price, this.labelKey);
+  const DonationPackage(this.supporterLevel, this.price, this.labelKey);
 
   String localizedLabel(AppLocalizations l) {
     switch (labelKey) {
@@ -24,10 +26,10 @@ class GemPackage {
   }
 }
 
-const gemPackages = [
-  GemPackage(50, 5.00, 'paywallBasic'),
-  GemPackage(120, 10.00, 'paywallPopular'),
-  GemPackage(300, 20.00, 'paywallPremium'),
+const donationPackages = [
+  DonationPackage(1, 3.00, 'paywallBasic'),
+  DonationPackage(2, 5.00, 'paywallPopular'),
+  DonationPackage(3, 10.00, 'paywallPremium'),
 ];
 
 class PaywallBottomSheet extends ConsumerWidget {
@@ -35,7 +37,7 @@ class PaywallBottomSheet extends ConsumerWidget {
 
   const PaywallBottomSheet({super.key, this.userId});
 
-  static const String _whatsAppNumber = '51934890627';
+  static const String _whatsAppNumber = AppConfig.whatsappNumber;
 
   static Future<void> show(BuildContext context, {String? userId}) {
     return showModalBottomSheet(
@@ -46,10 +48,10 @@ class PaywallBottomSheet extends ConsumerWidget {
     );
   }
 
-  Future<void> _processLocalPayment(BuildContext context, GemPackage pkg, String? uid) async {
+  Future<void> _processLocalPayment(BuildContext context, DonationPackage pkg, String? uid) async {
     final l = AppLocalizations.of(context)!;
     final userId = uid ?? 'guest_${DateTime.now().millisecondsSinceEpoch}';
-    final message = l.paywallWhatsAppMessage(pkg.gems, pkg.price.toStringAsFixed(2), userId);
+    final message = l.paywallWhatsAppMessage(l.currencySymbol, pkg.supporterLevel, pkg.price.toStringAsFixed(2), userId);
 
     try {
       final uri = Uri.https('wa.me', '/$_whatsAppNumber', {'text': message});
@@ -67,10 +69,9 @@ class PaywallBottomSheet extends ConsumerWidget {
     }
   }
 
-  Future<void> _processMpPayment(BuildContext context, WidgetRef ref, GemPackage pkg) async {
+  Future<void> _processMpPayment(BuildContext context, WidgetRef ref, DonationPackage pkg) async {
     final l = AppLocalizations.of(context)!;
     final initPoint = await ref.read(paymentProvider.notifier).initiateMercadoPago(
-      gems: pkg.gems,
       price: pkg.price,
     );
 
@@ -78,7 +79,7 @@ class PaywallBottomSheet extends ConsumerWidget {
       if (context.mounted) {
         SagenNotification.show(
           context,
-          message: 'Error al conectar con Mercado Pago. Intenta de nuevo.',
+          message: l.paymentMercadoPagoError,
           type: NotificationType.error,
         );
       }
@@ -100,16 +101,16 @@ class PaywallBottomSheet extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l = AppLocalizations.of(context)!;
-    final dark = Theme.of(context).brightness == Brightness.dark;
     final paymentState = ref.watch(paymentProvider);
 
     return Container(
       decoration: BoxDecoration(
-        color: dark ? const Color(0xFF0D1117) : Colors.white,
+        color: context.surfaceBackground,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(AppRadius.xxl)),
       ),
       padding: const EdgeInsets.all(AppSpacing.xxl),
-      child: Column(
+      child: SingleChildScrollView(
+        child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -118,36 +119,29 @@ class PaywallBottomSheet extends ConsumerWidget {
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: dark ? Colors.white24 : Colors.black12,
+                color: context.subtle,
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
           ),
           const SizedBox(height: AppSpacing.xl),
           Text(
-            l.paywallGetMoreGems,
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: dark ? Colors.white : Colors.black87,
-            ),
+            l.paywallSupportUs,
+            style: AppTextStyle.titleLg.copyWith(fontWeight: FontWeight.bold,
+              color: context.textPrimary),
           ),
           const SizedBox(height: AppSpacing.sm),
           Text(
             l.paywallDescription,
-            style: TextStyle(
-              fontSize: 13,
-              color: dark ? Colors.white38 : Colors.black45,
-            ),
+            style: AppTextStyle.subtitle.copyWith(color: context.textTertiary),
           ),
           const SizedBox(height: AppSpacing.xl),
-          ...gemPackages.map((pkg) => Padding(
+          ...donationPackages.map((pkg) => Padding(
             padding: const EdgeInsets.only(bottom: AppSpacing.md),
             child: Column(
               children: [
                 _PackageCard(
                   pkg: pkg,
-                  dark: dark,
                   onTap: () => _processLocalPayment(context, pkg, userId),
                 ),
                 const SizedBox(height: AppSpacing.xs),
@@ -164,14 +158,11 @@ class PaywallBottomSheet extends ConsumerWidget {
                           )
                         : const Icon(Icons.payment_rounded, size: 18),
                     label: Text(
-                      'Mercado Pago',
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: dark ? Colors.cyanAccent : const Color(0xFF009EE3),
-                      ),
+                      l.paywallMercadoPago,
+                      style: AppTextStyle.subtitle.copyWith(color: PremiumColors.accentCyan),
                     ),
                     style: TextButton.styleFrom(
-                      foregroundColor: dark ? Colors.cyanAccent : const Color(0xFF009EE3),
+                      foregroundColor: PremiumColors.accentCyan,
                       padding: const EdgeInsets.symmetric(vertical: 4),
                     ),
                   ),
@@ -183,41 +174,45 @@ class PaywallBottomSheet extends ConsumerWidget {
           Center(
             child: Text(
               l.paywallPaymentMethods,
-              style: TextStyle(
-                fontSize: 11,
-                color: dark ? Colors.white24 : Colors.black26,
-              ),
+              style: AppTextStyle.label.copyWith(color: context.textTertiary),
             ),
           ),
           const SizedBox(height: AppSpacing.lg),
         ],
+      ),
       ),
     );
   }
 }
 
 class _PackageCard extends StatelessWidget {
-  final GemPackage pkg;
-  final bool dark;
+  final DonationPackage pkg;
   final VoidCallback onTap;
 
-  const _PackageCard({required this.pkg, required this.dark, required this.onTap});
+  const _PackageCard({required this.pkg, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(AppSpacing.lg),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(AppRadius.xl),
-          color: dark ? const Color(0xFF1A1F2E) : PremiumColors.primary.withValues(alpha: 0.05),
-          border: Border.all(
-            color: PremiumColors.primary.withValues(alpha: 0.2),
+    return Semantics(
+      button: true,
+      label: l.paywallPackageSupporter(pkg.supporterLevel),
+      hint: l.paywallPackageLabel(pkg.localizedLabel(l).toLowerCase()),
+      child: GestureDetector(
+        onTap: () {
+          HapticFeedback.lightImpact();
+          onTap();
+        },
+        child: Container(
+          padding: const EdgeInsets.all(AppSpacing.lg),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(AppRadius.xl),
+            color: context.surfaceCard,
+            border: Border.all(
+              color: PremiumColors.primary.withValues(alpha: 0.2),
+            ),
           ),
-        ),
-        child: Row(
+          child: Row(
           children: [
             Container(
               width: 48,
@@ -228,7 +223,9 @@ class _PackageCard extends StatelessWidget {
                   colors: [PremiumColors.primary, PremiumColors.primaryAccent],
                 ),
               ),
-              child: const Icon(Icons.diamond_rounded, color: Colors.white, size: 24),
+              child: const ExcludeSemantics(
+                child: Icon(Icons.favorite_rounded, color: Colors.white, size: 24),
+              ),
             ),
             const SizedBox(width: AppSpacing.lg),
             Expanded(
@@ -236,16 +233,13 @@ class _PackageCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    l.paywallPackageGems(pkg.gems),
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: dark ? Colors.white : Colors.black87,
-                    ),
+                    l.paywallPackageSupporter(pkg.supporterLevel),
+                    style: AppTextStyle.titleSmall.copyWith(fontWeight: FontWeight.bold,
+                      color: context.textPrimary),
                   ),
                   Text(
                     l.paywallPackageLabel(pkg.localizedLabel(l).toLowerCase()),
-                    style: TextStyle(fontSize: 12, color: dark ? Colors.white38 : Colors.black45),
+                    style: AppTextStyle.caption.copyWith(color: context.textTertiary),
                   ),
                 ],
               ),
@@ -257,16 +251,14 @@ class _PackageCard extends StatelessWidget {
                 color: PremiumColors.primary,
               ),
               child: Text(
-                'S/${pkg.price.toStringAsFixed(2)}',
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
+                '${l.currencySymbol}${pkg.price.toStringAsFixed(2)}',
+                style: AppTextStyle.bodyMd.copyWith(fontWeight: FontWeight.bold,
+                  color: Colors.white),
               ),
             ),
           ],
         ),
+      ),
       ),
     );
   }

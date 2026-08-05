@@ -2,10 +2,12 @@ import 'dart:async';
 import 'package:app_links/app_links.dart';
 import 'app_logger.dart';
 
+/// Represents a parsed deep link action.
 sealed class DeepLinkAction {
   const DeepLinkAction();
 }
 
+/// Deep link targeting a user profile by UID.
 class ProfileDeepLink extends DeepLinkAction {
   final String uid;
   const ProfileDeepLink(this.uid);
@@ -22,7 +24,8 @@ class LessonDeepLink extends DeepLinkAction {
 
 class PaymentSuccessDeepLink extends DeepLinkAction {
   final String? externalRef;
-  const PaymentSuccessDeepLink([this.externalRef]);
+  final double? donationAmount;
+  const PaymentSuccessDeepLink([this.externalRef, this.donationAmount]);
 }
 
 class PaymentFailureDeepLink extends DeepLinkAction {
@@ -38,14 +41,19 @@ class UnknownDeepLink extends DeepLinkAction {
   const UnknownDeepLink(this.uri);
 }
 
+/// Handles incoming deep links and routes them to actions.
 class DeepLinkService {
   static final DeepLinkService instance = DeepLinkService._();
   DeepLinkService._() : _logger = AppLogger();
   final AppLogger _logger;
 
+  // Firebase UIDs are 28 alphanumeric chars. Reject anything else.
+  static final RegExp _validUid = RegExp(r'^[a-zA-Z0-9]{28}$');
+
   final AppLinks _appLinks = AppLinks();
   StreamSubscription<Uri>? _sub;
   Uri? _initialLink;
+  bool _initialized = false;
 
   final StreamController<DeepLinkAction> _actionController =
       StreamController<DeepLinkAction>.broadcast();
@@ -58,15 +66,20 @@ class DeepLinkService {
   Stream<int> get tabSwitchStream => _tabSwitchController.stream;
 
   Future<void> init() async {
+    if (_initialized) return;
+    _initialized = true;
     try {
       _initialLink = await _appLinks.getInitialLink();
       if (_initialLink != null) {
         _actionController.add(handleDeepLink(_initialLink!));
       }
-      _sub = _appLinks.uriLinkStream.listen((uri) {
-        _logger.info('DeepLink received: $uri');
-        _actionController.add(handleDeepLink(uri));
-      });
+      _sub = _appLinks.uriLinkStream.listen(
+        (uri) {
+          _logger.info('DeepLink received: $uri');
+          _actionController.add(handleDeepLink(uri));
+        },
+        onError: (e) => _logger.error('DeepLink stream error', e),
+      );
       _logger.info('DeepLinkService initialized');
     } catch (e) {
       _logger.error('DeepLinkService init failed', e);
@@ -81,10 +94,10 @@ class DeepLinkService {
     switch (host) {
       case 'profile':
         final uid = params['uid'];
-        if (uid != null && uid.isNotEmpty) {
+        if (uid != null && uid.isNotEmpty && _validUid.hasMatch(uid)) {
           return ProfileDeepLink(uid);
         }
-        _logger.warning('DeepLink /profile missing uid');
+        _logger.warning('DeepLink /profile missing or invalid uid');
         return UnknownDeepLink(uri);
 
       case 'ranking':
@@ -101,7 +114,9 @@ class DeepLinkService {
       case 'payment':
         switch (path) {
           case '/success':
-            return PaymentSuccessDeepLink(params['external_ref']);
+            final amountParam = params['amount'];
+            final donationAmount = amountParam != null ? double.tryParse(amountParam) : null;
+            return PaymentSuccessDeepLink(params['external_reference'], donationAmount);
           case '/failure':
             return const PaymentFailureDeepLink();
           case '/pending':

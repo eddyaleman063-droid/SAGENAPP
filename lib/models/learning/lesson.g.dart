@@ -14,9 +14,10 @@ _$LessonImpl _$$LessonImplFromJson(Map<String, dynamic> json) => _$LessonImpl(
       .map((e) => Challenge.fromJson(e as Map<String, dynamic>))
       .toList(),
   xpReward: (json['xpReward'] as num?)?.toInt() ?? 15,
-  gemReward: (json['gemReward'] as num?)?.toInt() ?? 5,
   estimatedMinutes: (json['estimatedMinutes'] as num?)?.toInt() ?? 3,
   completed: json['completed'] as bool? ?? false,
+  correctAnswers: (json['correctAnswers'] as num?)?.toInt() ?? 0,
+  totalQuestions: (json['totalQuestions'] as num?)?.toInt() ?? 0,
 );
 
 Map<String, dynamic> _$$LessonImplToJson(_$LessonImpl instance) =>
@@ -26,7 +27,8 @@ Map<String, dynamic> _$$LessonImplToJson(_$LessonImpl instance) =>
       'subtitle': instance.subtitle,
       'challenges': instance.challenges,
       'xpReward': instance.xpReward,
-      'gemReward': instance.gemReward,
       'estimatedMinutes': instance.estimatedMinutes,
       'completed': instance.completed,
+      'correctAnswers': instance.correctAnswers,
+      'totalQuestions': instance.totalQuestions,
     };

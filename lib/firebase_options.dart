@@ -5,9 +5,6 @@ import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 /// Build requirements:
 ///   `--dart-define=FIREBASE_API_KEY=key`
 ///   `--dart-define=FIREBASE_IOS_APP_ID=ios_id`   (required for iOS)
-///
-/// AdMob App ID: `ca-app-pub-1378895779847608~4074871758`
-/// Rewarded ad unit: `ca-app-pub-1378895779847608/4455969532`
 class DefaultFirebaseOptions {
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: String.fromEnvironment('FIREBASE_API_KEY', defaultValue: ''),

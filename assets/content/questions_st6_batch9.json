@@ -1,0 +1,302 @@
+[
+    {
+        "id": "ac_st6_qB9_001",
+        "question": "Que es un plan de recuperación de cuentas y por que lo necesitas",
+        "type": "multipleChoice",
+        "options": ["Un tipo de seguro", "Un conjunto de pasos preparados para recuperar el acceso a tus cuentas si algo sale mal", "Una app de seguridad", "Un tipo de encriptado"],
+        "correctIndex": 1,
+        "explanation": "Tener un plan preparado te permite actuar rápidamente ante pérdida de acceso o compromiso.",
+        "difficulty": 1,
+        "lessonId": "ac_s6_ses1_l1"
+    },
+    {
+        "id": "ac_st6_qB9_002",
+        "question": "Verdadero o Falso: No necesitas un plan de recuperación si usas contraseñas seguras",
+        "type": "trueFalse",
+        "options": ["Verdadero", "Falso"],
+        "correctIndex": 1,
+        "explanation": "Incluso con contraseñas seguras, puedes perder acceso por otros motivos como robo de dispositivo.",
+        "difficulty": 1,
+        "lessonId": "ac_s6_ses1_l2"
+    },
+    {
+        "id": "ac_st6_qB9_003",
+        "question": "Que información debes documentar para tu plan de recuperación",
+        "type": "multipleChoice",
+        "options": ["Tus contraseñas en un papel", "Metodos de recuperación, contactos de soporte y códigos de respaldo guardados de forma segura", "Solo tu correo electrónico", "Nada, no es necesario"],
+        "correctIndex": 1,
+        "explanation": "Documentar los metodos de recuperación te prepara para actuar cuando los necesites.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses2_l1"
+    },
+    {
+        "id": "ac_st6_qB9_004",
+        "question": "Que son los códigos de recuperación y donde debes guardarlos",
+        "type": "multipleChoice",
+        "options": ["En tu celular", "Códigos de un solo uso para acceder si pierdes el 2FA, guardados en lugar seguro fisico o cifrado", "En tu correo", "En redes sociales"],
+        "correctIndex": 1,
+        "explanation": "Los códigos de recuperación son tu ultimo recurso para acceder a cuentas críticas.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses2_l2"
+    },
+    {
+        "id": "ac_st6_qB9_005",
+        "question": "Que es la recuperación de cuenta por correo electrónico alternativo",
+        "type": "multipleChoice",
+        "options": ["Un tipo de virus", "Usar un correo de respaldo para recibir enlaces de recuperación de contraseña", "Una app de seguridad", "Un tipo de encriptado"],
+        "correctIndex": 1,
+        "explanation": "Tener un correo alternativo configurado te permite recuperar cuentas si pierdes acceso al principal.",
+        "difficulty": 1,
+        "lessonId": "ac_s6_ses3_l1"
+    },
+    {
+        "id": "ac_st6_qB9_006",
+        "question": "Por que es importante tener un correo de recuperación que no uses regularmente",
+        "type": "detectRisk",
+        "options": ["No importa", "Si tu correo principal es comprometido, el alternativo sigue seguro para recuperar cuentas", "Para recibir menos correos", "Para guardar mas archivos"],
+        "correctIndex": 1,
+        "explanation": "Un correo de respaldo dedicado reduce el riesgo de que ambos sean comprometidos simultaneamente.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses3_l2"
+    },
+    {
+        "id": "ac_st6_qB9_007",
+        "question": "Que es la verificación de identidad en procesos de recuperación",
+        "type": "multipleChoice",
+        "options": ["Un tipo de contraseña", "El proceso donde demuestras al servicio que eres el dueño legitimo de la cuenta", "Una app de seguridad", "Un tipo de encriptado"],
+        "correctIndex": 1,
+        "explanation": "Los servicios pueden pedir documentos o verificaciónes adicionales para confirmar tu identidad.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses4_l1"
+    },
+    {
+        "id": "ac_st6_qB9_008",
+        "question": "Cuales son los documentos que pueden solicitarte para recuperar una cuenta",
+        "type": "multipleChoice",
+        "options": ["Solo tu contraseña", "DNI, comprobante de domicilio, fotos de perfil o respuestas de seguridad", "Solo tu correo", "Nada"],
+        "correctIndex": 1,
+        "explanation": "Los servicios pueden pedir diferentes tipos de evidencia para verificar tu identidad.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses4_l2"
+    },
+    {
+        "id": "ac_st6_qB9_009",
+        "question": "Que es la recuperación de cuenta por número de telefono",
+        "type": "multipleChoice",
+        "options": ["Un tipo de virus", "Recibir un código de verificación por SMS o llamada para recuperar el acceso", "Una app de seguridad", "Un tipo de encriptado"],
+        "correctIndex": 1,
+        "explanation": "El telefono registrado permite recibir códigos de verificación para recuperar la cuenta.",
+        "difficulty": 1,
+        "lessonId": "ac_s6_ses5_l1"
+    },
+    {
+        "id": "ac_st6_qB9_010",
+        "question": "Que debes hacer si pierdes el acceso a tu número de telefono registrado",
+        "type": "whatWouldYouDo",
+        "options": ["Esperar a que vuelva a funcionar", "Contactar al servicio de soporte y usar metodos alternativos de recuperación", "Crear una cuenta nueva", "Pedir prestado un telefono"],
+        "correctIndex": 1,
+        "explanation": "El soporte puede guiarte hacia metodos alternativos para verificar tu identidad.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses5_l2"
+    },
+    {
+        "id": "ac_st6_qB9_011",
+        "question": "Que es la recuperación de cuenta por preguntas de seguridad",
+        "type": "multipleChoice",
+        "options": ["Un tipo de virus", "Responder preguntas personales predefinidas para demostrar que eres el dueño", "Una app de seguridad", "Un tipo de encriptado"],
+        "correctIndex": 1,
+        "explanation": "Las preguntas de seguridad son un metodo de recuperación cuando otros no estan disponibles.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses6_l1"
+    },
+    {
+        "id": "ac_st6_qB9_012",
+        "question": "Por que las respuestas a preguntas de seguridad deben ser dificiles de adivinar",
+        "type": "multipleChoice",
+        "options": ["No importa", "Porque los atacantes pueden encontrar información personal en redes sociales", "Para que se vean bien", "No es necesario"],
+        "correctIndex": 1,
+        "explanation": "La información personal es facilmente accessible, por eso las respuestas deben ser únicas y no obvias.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses6_l2"
+    },
+    {
+        "id": "ac_st6_qB9_013",
+        "question": "Que es la recuperación asistida por soporte al cliente",
+        "type": "multipleChoice",
+        "options": ["Un tipo de virus", "Contactar al equipo de soporte del servicio para que te ayuden a recuperar el acceso", "Una app de seguridad", "Un tipo de encriptado"],
+        "correctIndex": 1,
+        "explanation": "El soporte puede verificar tu identidad manualmente y restaurar el acceso a tu cuenta.",
+        "difficulty": 1,
+        "lessonId": "ac_s6_ses7_l1"
+    },
+    {
+        "id": "ac_st6_qB9_014",
+        "question": "Cuales son los tiempos tipicos de espera para recuperar una cuenta",
+        "type": "multipleChoice",
+        "options": ["Siempre es inmediato", "Depende del servicio; puede ser desde minutos hasta varios dias", "Siempre 24 horas", "Nunca se puede recuperar"],
+        "correctIndex": 1,
+        "explanation": "Los tiempos varian segun el servicio y el metodo de recuperación utilizado.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses7_l2"
+    },
+    {
+        "id": "ac_st6_qB9_015",
+        "question": "Que es el periodo de enfriamiento en la recuperación de cuentas",
+        "type": "multipleChoice",
+        "options": ["Un tipo de virus", "Un tiempo de espera obligatorio para evitar que atacantes recuperen cuentas rápidamente", "Una función de seguridad del celular", "Un tipo de encriptado"],
+        "correctIndex": 1,
+        "explanation": "Este periodo protege contra recuperaciónes maliciosas dando tiempo para detectar intentos no autorizados.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses8_l1"
+    },
+    {
+        "id": "ac_st6_qB9_016",
+        "question": "Que debes hacer durante el periodo de enfriamiento",
+        "type": "whatWouldYouDo",
+        "options": ["Nada", "Verificar que no haya actividad sospechosa y preparar documentacion de identidad", "Cancelar la recuperación", "Pedir ayuda en redes sociales"],
+        "correctIndex": 1,
+        "explanation": "Usa este tiempo para recopilar evidencia de que eres el dueño legitimo de la cuenta.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses8_l2"
+    },
+    {
+        "id": "ac_st6_qB9_017",
+        "question": "Que es la recuperación de cuenta biométrica",
+        "type": "multipleChoice",
+        "options": ["Un tipo de virus", "Usar huella dactilar o reconocimiento facial para recuperar el acceso a tu cuenta", "Una app de seguridad", "Un tipo de encriptado"],
+        "correctIndex": 1,
+        "explanation": "Algunos servicios permiten recuperar cuentas usando verificación biométrica guardada.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses9_l1"
+    },
+    {
+        "id": "ac_st6_qB9_018",
+        "question": "Que es la recuperación de cuenta por contactos de confianza",
+        "type": "multipleChoice",
+        "options": ["Un tipo de virus", "Tus contactos verificados pueden ayudar a confirmar tu identidad para recuperar el acceso", "Una app de seguridad", "Un tipo de encriptado"],
+        "correctIndex": 1,
+        "explanation": "Algunos servicios permiten que contactos de confianza validen tu identidad.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses9_l2"
+    },
+    {
+        "id": "ac_st6_qB9_019",
+        "question": "Caso: Tu madre olvido la contraseña de su correo y no tiene acceso al telefono registrado. Que le recomiendas",
+        "type": "miniCase",
+        "options": ["Que cree una cuenta nueva", "Que use el proceso de recuperación por correo alternativo o contacte al soporte", "Que espere a que le acuerdo", "Que pida ayuda en Facebook"],
+        "correctIndex": 1,
+        "explanation": "Los metodos de recuperación alternativos y el soporte son las mejores opciónes.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses10_l1"
+    },
+    {
+        "id": "ac_st6_qB9_020",
+        "question": "Que es la verificación en dos pasos en el contexto de recuperación",
+        "type": "multipleChoice",
+        "options": ["Un tipo de virus", "Un paso adicional de verificación que protege contra recuperaciónes no autorizadas", "Una app de seguridad", "Un tipo de encriptado"],
+        "correctIndex": 1,
+        "explanation": "La 2FA en recuperación asegura que solo el dueño legitimo pueda acceder a la cuenta.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses10_l2"
+    },
+    {
+        "id": "ac_st6_qB9_021",
+        "question": "Que debes documentar despues de recuperar una cuenta",
+        "type": "whatWouldYouDo",
+        "options": ["Nada", "Actualizar códigos de respaldo, metodos de recuperación y contraseñas", "Compartir la nueva contraseña", "Cerrar la cuenta"],
+        "correctIndex": 1,
+        "explanation": "Despues de recuperar, actualiza todos los metodos de seguridad para prevenir futuros problemas.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses11_l1"
+    },
+    {
+        "id": "ac_st6_qB9_022",
+        "question": "Que es un backup de contactos y por que es importante para la recuperación",
+        "type": "multipleChoice",
+        "options": ["Una app de contactos", "Una copia de tus contactos que te permite recuperarlos si pierdes el dispositivo", "Un tipo de encriptado", "Una red social"],
+        "correctIndex": 1,
+        "explanation": "Los contactos son importantes para metodos de recuperación como contactos de confianza.",
+        "difficulty": 1,
+        "lessonId": "ac_s6_ses11_l2"
+    },
+    {
+        "id": "ac_st6_qB9_023",
+        "question": "Que es la recuperación de cuenta en servicios de Google",
+        "type": "multipleChoice",
+        "options": ["Un tipo de virus", "El proceso para recuperar acceso a tu cuenta de Google usando metodos configurados", "Una app de seguridad", "Un tipo de encriptado"],
+        "correctIndex": 1,
+        "explanation": "Google ofrece múltiples metodos de recuperación como correo, telefono y verificación de identidad.",
+        "difficulty": 1,
+        "lessonId": "ac_s6_ses12_l1"
+    },
+    {
+        "id": "ac_st6_qB9_024",
+        "question": "Que es la recuperación de cuenta en servicios de Apple",
+        "type": "multipleChoice",
+        "options": ["Un tipo de virus", "El proceso para recuperar acceso a tu Apple ID usando códigos de recuperación o soporte", "Una app de seguridad", "Un tipo de encriptado"],
+        "correctIndex": 1,
+        "explanation": "Apple ofrece códigos de recuperación y verificación de identidad para proteger tu cuenta.",
+        "difficulty": 1,
+        "lessonId": "ac_s6_ses12_l2"
+    },
+    {
+        "id": "ac_st6_qB9_025",
+        "question": "Cuales son los errores comunes al intentar recuperar una cuenta",
+        "type": "detectRisk",
+        "options": ["Usar los canales oficiales", "Compartir información sensible con extraños o usar enlaces de correos sospechosos", "Contactar al soporte", "Tener paciencia"],
+        "correctIndex": 1,
+        "explanation": "Los atacantes aprovechan la desesperacion para robar mas información durante la recuperación.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses13_l1"
+    },
+    {
+        "id": "ac_st6_qB9_026",
+        "question": "Que debes hacer si sospechas que alguien intento recuperar tu cuenta",
+        "type": "whatWouldYouDo",
+        "options": ["Ignorarlo", "Cambiar inmediatamente la contraseña, revisar metodos de recuperación y activar 2FA", "Cerrar la cuenta", "Pedir ayuda en redes sociales"],
+        "correctIndex": 1,
+        "explanation": "Actua rápido para asegurar tu cuenta y prevenir acceso no autorizado.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses13_l2"
+    },
+    {
+        "id": "ac_st6_qB9_027",
+        "question": "Que es la recuperación de cuenta en Windows",
+        "type": "multipleChoice",
+        "options": ["Un tipo de virus", "El proceso para recuperar acceso a tu cuenta de Microsoft o computadora Windows", "Una app de seguridad", "Un tipo de encriptado"],
+        "correctIndex": 1,
+        "explanation": "Windows ofrece metodos de recuperación como PIN, códigos de seguridad y verificación por telefono.",
+        "difficulty": 1,
+        "lessonId": "ac_s6_ses14_l1"
+    },
+    {
+        "id": "ac_st6_qB9_028",
+        "question": "Que es la recuperación de cuenta en redes sociales",
+        "type": "multipleChoice",
+        "options": ["Un tipo de virus", "El proceso para recuperar acceso a Facebook, Instagram u otras redes usando sus herramientas", "Una app de seguridad", "Un tipo de encriptado"],
+        "correctIndex": 1,
+        "explanation": "Las redes sociales ofrecen procesos de recuperación que pueden incluir verificación de identidad.",
+        "difficulty": 1,
+        "lessonId": "ac_s6_ses14_l2"
+    },
+    {
+        "id": "ac_st6_qB9_029",
+        "question": "Caso: Tu padre perdió su telefono y no puede acceder a su banco. Que pasos debe seguir",
+        "type": "miniCase",
+        "options": ["Esperar a comprar un telefono nuevo", "Llamar al banco para bloquear la cuenta, reportar el robo y usar otro dispositivo para recuperar acceso", "No hacer nada", "Pedir prestado un telefono y acceder a su cuenta"],
+        "correctIndex": 1,
+        "explanation": "Actuar rápidamente protege tu cuenta y te permite recuperar el acceso desde otro dispositivo.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses15_l1"
+    },
+    {
+        "id": "ac_st6_qB9_030",
+        "question": "Cuáles son las mejores prácticas para estar preparado ante un incidente de seguridad",
+        "type": "multipleChoice",
+        "options": ["No hacer nada", "Tener códigos de respaldo, correo alternativo, 2FA y un plan de recuperación documentado", "Compartir contraseñas con familiares", "Usar la misma contraseña en todas partes"],
+        "correctIndex": 1,
+        "explanation": "La preparacion es la mejor defensa ante pérdida de acceso o compromiso de cuentas.",
+        "difficulty": 2,
+        "lessonId": "ac_s6_ses15_l2"
+    }
+]

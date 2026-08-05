@@ -1,20 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:intl/intl.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/providers/providers.dart';
 import '../../../core/theme/theme_constants.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../models/learning/lesson.dart';
+import '../../../models/learning/session.dart';
 import '../../../models/learning/stage.dart';
-import '../../../services/experience_service.dart';
+
 import '../../../ui/widgets/shimmer_loading.dart';
+import '../../../ui/widgets/common/sage_emotion_widget.dart';
+import '../../../services/sage_emotion_service.dart';
 import 'package:go_router/go_router.dart';
 
 class LessonsScreen extends ConsumerWidget {
   const LessonsScreen({super.key});
 
   void _openLesson(WidgetRef ref, BuildContext context, String stageId, String lessonId, String title) {
-    final exp = ExperienceService.instance;
+    final exp = ref.read(experienceServiceProvider);
     exp.lightHaptic();
     ref.read(sessionProvider.notifier).startSession(stageId, lessonId);
     context.pushNamed(
@@ -29,13 +35,13 @@ class LessonsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final dark = Theme.of(context).brightness == Brightness.dark;
+    final l = AppLocalizations.of(context)!;
     final learning = ref.watch(learningProvider);
     final stages = learning.stages;
 
     if (learning.isLoading) {
       return Scaffold(
-        backgroundColor: dark ? PremiumColors.darkBg : PremiumColors.lightBg,
+        backgroundColor: context.surfaceBackground,
         body: SafeArea(
           child: CustomScrollView(
             slivers: [
@@ -69,7 +75,7 @@ class LessonsScreen extends ConsumerWidget {
 
     if (learning.errorMessage != null) {
       return Scaffold(
-        backgroundColor: dark ? PremiumColors.darkBg : PremiumColors.lightBg,
+        backgroundColor: context.surfaceBackground,
         body: SafeArea(
           child: Center(
             child: Padding(
@@ -77,25 +83,30 @@ class LessonsScreen extends ConsumerWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.cloud_off_rounded, size: 64, color: dark ? Colors.white24 : Colors.black26),
+                  const ExcludeSemantics(
+                    child: SageEmotionWidget(emotion: SageEmotion.worried),
+                  ),
                   const SizedBox(height: AppSpacing.lg),
                   Text(
                     learning.errorMessage!,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: dark ? Colors.white54 : Colors.black54,
+                    style: AppTextStyle.body.copyWith(
+                      color: context.textTertiary,
                     ),
                   ),
                   const SizedBox(height: AppSpacing.xl),
-                  ElevatedButton.icon(
-                    onPressed: () => ref.read(learningProvider.notifier).reload(),
-                    icon: const Icon(Icons.refresh_rounded, size: 18),
-                    label: Text(AppLocalizations.of(context)!.tryAgain),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: PremiumColors.primary,
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
+                  Semantics(
+                    button: true,
+                    label: l.retry,
+                    child: ElevatedButton.icon(
+                      onPressed: () => ref.read(learningProvider.notifier).reload(),
+                      icon: const Icon(Icons.refresh_rounded, size: 18),
+                      label: Text(l.tryAgain),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: PremiumColors.primary,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
+                      ),
                     ),
                   ),
                 ],
@@ -108,7 +119,7 @@ class LessonsScreen extends ConsumerWidget {
 
     if (stages.isEmpty) {
       return Scaffold(
-        backgroundColor: dark ? PremiumColors.darkBg : PremiumColors.lightBg,
+        backgroundColor: context.surfaceBackground,
         body: SafeArea(
           child: Center(
             child: Padding(
@@ -116,14 +127,15 @@ class LessonsScreen extends ConsumerWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.school_rounded, size: 64, color: dark ? Colors.white24 : Colors.black26),
+                  const ExcludeSemantics(
+                    child: SageEmotionWidget(emotion: SageEmotion.curious),
+                  ),
                   const SizedBox(height: AppSpacing.lg),
                   Text(
-                    'No hay lecciones disponibles. Vuelve pronto.',
+                    l.noLessonsAvailable,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: dark ? Colors.white54 : Colors.black54,
+                    style: AppTextStyle.body.copyWith(
+                      color: context.textTertiary,
                     ),
                   ),
                 ],
@@ -135,7 +147,7 @@ class LessonsScreen extends ConsumerWidget {
     }
 
     return Scaffold(
-      backgroundColor: dark ? PremiumColors.darkBg : PremiumColors.lightBg,
+      backgroundColor: context.surfaceBackground,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -144,14 +156,13 @@ class LessonsScreen extends ConsumerWidget {
               padding: const EdgeInsets.fromLTRB(AppSpacing.xxl, AppSpacing.lg, AppSpacing.xxl, 0),
               child: Row(
                 children: [
-                  Icon(Icons.map_rounded, size: 20, color: dark ? Colors.white54 : Colors.black54),
+                  ExcludeSemantics(child: Icon(Icons.map_rounded, size: 20, color: context.iconSecondary)),
                   const SizedBox(width: AppSpacing.sm),
                   Text(
-                    AppLocalizations.of(context)!.lessonsYourPath,
-                    style: TextStyle(
-                      fontSize: 20,
+                    l.lessonsYourPath,
+                    style: AppTextStyle.titleLg.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: dark ? Colors.white.withValues(alpha: 0.9) : Colors.black87,
+                      color: context.textPrimary,
                     ),
                   ),
                 ],
@@ -164,51 +175,59 @@ class LessonsScreen extends ConsumerWidget {
                 children: [
                   _StatChip(
                     icon: Icons.check_circle_rounded,
-                    label: AppLocalizations.of(context)!.lessonsCompleted(learning.lessonsCompleted),
+                    label: l.lessonsCompleted(learning.lessonsCompleted),
                     color: PremiumColors.success,
-                    dark: dark,
                   ),
                   const SizedBox(width: AppSpacing.md),
                   _StatChip(
                     icon: Icons.auto_awesome_rounded,
-                    label: AppLocalizations.of(context)!.lessonsLevel(learning.currentLevel),
+                    label: l.lessonsLevel(learning.currentLevel),
                     color: PremiumColors.xpColor,
-                    dark: dark,
                   ),
                   const Spacer(),
                   Text(
-                    '${(learning.overallProgress * 100).toInt()}%',
-                    style: TextStyle(
-                      fontSize: 24,
+                    '${NumberFormat.decimalPattern().format((learning.overallProgress * 100).round())}%',
+                    style: AppTextStyle.headline.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: dark ? Colors.white.withValues(alpha: 0.9) : Colors.black87,
+                      color: context.textPrimary,
                     ),
                   ),
                 ],
               ),
             ),
             const SizedBox(height: AppSpacing.md),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(AppRadius.pill),
-              child: LinearProgressIndicator(
-                value: learning.overallProgress,
-                backgroundColor: dark ? Colors.white.withValues(alpha: 0.08) : Colors.black.withValues(alpha: 0.06),
-                valueColor: const AlwaysStoppedAnimation<Color>(PremiumColors.success),
-                minHeight: 4,
+            Semantics(
+              label: l.courseProgressLabel((learning.overallProgress * 100).toInt()),
+              container: true,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(AppRadius.pill),
+                child: LinearProgressIndicator(
+                  value: learning.overallProgress,
+                  backgroundColor: context.subtleBorder,
+                  valueColor: const AlwaysStoppedAnimation<Color>(PremiumColors.success),
+                  minHeight: 4,
+                ),
               ),
             ),
             const SizedBox(height: AppSpacing.lg),
             Expanded(
-              child: ListView.separated(
-                padding: const EdgeInsets.fromLTRB(AppSpacing.xxl, 0, AppSpacing.xxl, 100),
-                itemCount: stages.length,
-                separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.md),
-                itemBuilder: (ctx, i) => _StageNode(
-                  stage: stages[i],
-                  index: i,
-                  isLast: i == stages.length - 1,
-                  dark: dark,
-                  onLessonTap: (sid, lid, title) => _openLesson(ref, context, sid, lid, title),
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  ref.invalidate(learningProvider);
+                },
+                child: ListView.separated(
+                  padding: const EdgeInsets.fromLTRB(AppSpacing.xxl, 0, AppSpacing.xxl, 100),
+                  itemCount: stages.length,
+                  separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.md),
+                  itemBuilder: (ctx, i) => KeyedSubtree(
+                    key: ValueKey('stage_${stages[i].id}'),
+                    child: _StageNode(
+                      stage: stages[i],
+                      index: i,
+                      isLast: i == stages.length - 1,
+                      onLessonTap: (sid, lid, title) => _openLesson(ref, context, sid, lid, title),
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -223,8 +242,7 @@ class _StatChip extends StatelessWidget {
   final IconData icon;
   final String label;
   final Color color;
-  final bool dark;
-  const _StatChip({required this.icon, required this.label, required this.color, required this.dark});
+  const _StatChip({required this.icon, required this.label, required this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -237,11 +255,11 @@ class _StatChip extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 14, color: color),
+          ExcludeSemantics(child: Icon(icon, size: 14, color: color)),
           const SizedBox(width: AppSpacing.xxs),
           Text(
             label,
-            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: color),
+            style: AppTextStyle.caption.copyWith(fontWeight: FontWeight.w500, color: color),
           ),
         ],
       ),
@@ -255,9 +273,8 @@ class _StageNode extends StatelessWidget {
   final Stage stage;
   final int index;
   final bool isLast;
-  final bool dark;
   final _LessonTapCallback? onLessonTap;
-  const _StageNode({required this.stage, required this.index, required this.isLast, required this.dark, this.onLessonTap});
+  const _StageNode({required this.stage, required this.index, required this.isLast, this.onLessonTap});
 
   @override
   Widget build(BuildContext context) {
@@ -282,20 +299,20 @@ class _StageNode extends StatelessWidget {
                         ? PremiumColors.success
                         : unlocked
                             ? PremiumColors.primaryAccent
-                            : (dark ? Colors.white12 : Colors.black12),
+                            : context.subtle,
                     boxShadow: unlocked && !completed
                         ? [BoxShadow(color: PremiumColors.primaryAccent.withValues(alpha: 0.3), blurRadius: 8)]
                         : null,
                   ),
-                  child: Icon(
+                  child: ExcludeSemantics(child: Icon(
                     completed
                         ? Icons.check_rounded
                         : unlocked
                             ? Icons.play_arrow_rounded
                             : Icons.lock_rounded,
                     size: 16,
-                    color: completed || unlocked ? Colors.white : (dark ? Colors.white24 : Colors.black26),
-                  ),
+                    color: completed || unlocked ? Colors.white : context.subtle,
+                  )),
                 ),
                 if (!isLast)
                   Expanded(
@@ -303,7 +320,7 @@ class _StageNode extends StatelessWidget {
                       width: 2,
                       color: completed
                           ? PremiumColors.success.withValues(alpha: 0.4)
-                          : (dark ? Colors.white12 : Colors.black.withValues(alpha: 0.08)),
+                          : context.borderSubtle,
                     ),
                   ),
               ],
@@ -317,14 +334,14 @@ class _StageNode extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(AppRadius.xl),
                 color: unlocked
-                    ? (dark ? PremiumColors.darkCard : Colors.white)
-                    : (dark ? Colors.white.withValues(alpha: 0.03) : Colors.black.withValues(alpha: 0.02)),
+                    ? context.surfaceCard
+                    : context.surfaceTinted,
                 border: Border.all(
                   color: completed
                       ? PremiumColors.success.withValues(alpha: 0.3)
                       : unlocked
                           ? PremiumColors.primaryAccent.withValues(alpha: 0.2)
-                          : (dark ? Colors.white12 : Colors.black.withValues(alpha: 0.06)),
+                          : context.subtle,
                 ),
                 boxShadow: unlocked && !completed
                     ? AppShadows.glow(color: PremiumColors.primaryAccent, intensity: 0.06, radius: 12)
@@ -338,55 +355,63 @@ class _StageNode extends StatelessWidget {
                       Expanded(
                         child: Text(
                           stage.title,
-                          style: TextStyle(
-                            fontSize: 15,
+                          style: AppTextStyle.body.copyWith(
                             fontWeight: FontWeight.w600,
                             color: unlocked
-                                ? (dark ? Colors.white.withValues(alpha: 0.9) : Colors.black87)
-                                : (dark ? Colors.white24 : Colors.black26),
+                                ? context.textPrimary
+                                : context.textDisabled,
                           ),
                         ),
                       ),
                       if (hasProgress)
                         Text(
                           '${stage.completedCount}/${stage.lessons.length}',
-                          style: TextStyle(fontSize: 12, color: PremiumColors.primaryAccent.withValues(alpha: 0.7)),
+                          style: AppTextStyle.caption.copyWith(color: PremiumColors.primaryAccent.withValues(alpha: 0.7)),
                         ),
                       if (completed)
-                        const Icon(Icons.check_circle_rounded, size: 18, color: PremiumColors.success),
+                        const ExcludeSemantics(child: Icon(Icons.check_circle_rounded, size: 18, color: PremiumColors.success)),
                     ],
                   ),
                   const SizedBox(height: AppSpacing.xxs),
                   Text(
                     stage.subtitle,
-                    style: TextStyle(
-                      fontSize: 12,
+                    style: AppTextStyle.caption.copyWith(
                       color: unlocked
-                          ? (dark ? Colors.white38 : Colors.black45)
-                          : (dark ? Colors.white12 : Colors.black12),
+                          ? context.textTertiary
+                          : context.subtle,
                     ),
                   ),
                   if (!completed && unlocked && stage.completedCount > 0) ...[
                     const SizedBox(height: AppSpacing.sm),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(AppRadius.pill),
-                      child: LinearProgressIndicator(
-                        value: stage.progress,
-                        backgroundColor: dark ? Colors.white.withValues(alpha: 0.06) : Colors.black.withValues(alpha: 0.06),
-                        valueColor: const AlwaysStoppedAnimation<Color>(PremiumColors.primaryAccent),
-                        minHeight: 3,
+                    Semantics(
+                      label: AppLocalizations.of(context)!.stageProgressLabel((stage.progress * 100).toInt()),
+                      container: true,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(AppRadius.pill),
+                        child: LinearProgressIndicator(
+                          value: stage.progress,
+                          backgroundColor: context.surfaceTinted,
+                          valueColor: const AlwaysStoppedAnimation<Color>(PremiumColors.primaryAccent),
+                          minHeight: 3,
+                        ),
                       ),
                     ),
                   ],
                   if (unlocked) ...[
                     const SizedBox(height: AppSpacing.md),
-                    ...stage.lessons.map((lesson) => _LessonRow(
-                      lesson: lesson,
-                      dark: dark,
-                      onTap: stage.unlocked && !lesson.completed
-                          ? () => onLessonTap?.call(stage.id, lesson.id, lesson.title)
-                          : null,
-                    )),
+                    if (stage.sessions.isNotEmpty)
+                      ...stage.sessions.map((session) => _SessionGroup(
+                        session: session,
+                        onLessonTap: onLessonTap,
+                        stageId: stage.id,
+                      ))
+                    else
+                      ...stage.lessons.map((lesson) => _LessonRow(
+                        lesson: lesson,
+                        onTap: stage.unlocked && !lesson.completed
+                            ? () => onLessonTap?.call(stage.id, lesson.id, lesson.title)
+                            : null,
+                      )),
                   ],
                 ],
               ),
@@ -406,47 +431,150 @@ class _StageNode extends StatelessWidget {
   }
 }
 
-class _LessonRow extends StatelessWidget {
+class _LessonRow extends ConsumerWidget {
   final Lesson lesson;
-  final bool dark;
   final VoidCallback? onTap;
-  const _LessonRow({required this.lesson, required this.dark, this.onTap});
+  const _LessonRow({required this.lesson, this.onTap});
 
   @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Padding(
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context)!;
+    return Semantics(
+      button: onTap != null,
+      label: lesson.completed ? '${lesson.title}, ${l.statusCompleted}' : lesson.title,
+      child: GestureDetector(
+        onTap: onTap != null ? () {
+          ref.read(experienceServiceProvider).lightHaptic();
+          onTap?.call();
+        } : null,
+        child: Padding(
         padding: const EdgeInsets.only(bottom: AppSpacing.xs),
         child: Row(
           children: [
-            Icon(
+            ExcludeSemantics(child: Icon(
               lesson.completed ? Icons.check_circle_rounded : Icons.radio_button_unchecked_rounded,
               size: 16,
               color: lesson.completed
                   ? PremiumColors.success
-                  : (dark ? Colors.white24 : Colors.black26),
-            ),
+                  : context.subtle,
+            )),
             const SizedBox(width: AppSpacing.sm),
             Expanded(
               child: Text(
                 lesson.title,
-                style: TextStyle(
-                  fontSize: 13,
-                  color: lesson.completed
-                      ? (dark ? Colors.white.withValues(alpha: 0.6) : Colors.black54)
-                      : (dark ? Colors.white.withValues(alpha: 0.8) : Colors.black87),
-                  decoration: lesson.completed ? TextDecoration.lineThrough : null,
-                  decorationColor: dark ? Colors.white38 : Colors.black38,
-                ),
+                  style: AppTextStyle.subtitle.copyWith(
+                    color: lesson.completed
+                        ? context.textSecondary
+                        : context.textPrimary,
+                    decoration: lesson.completed ? TextDecoration.lineThrough : null,
+                    decorationColor: context.textTertiary,
+                  ),
               ),
             ),
             Text(
-              AppLocalizations.of(context)!.minutes(lesson.estimatedMinutes),
-              style: TextStyle(fontSize: 11, color: dark ? Colors.white24 : Colors.black26),
+              l.minutes(lesson.estimatedMinutes),
+              style: AppTextStyle.label.copyWith(color: context.textTertiary),
             ),
           ],
         ),
+      ),
+      ),
+    );
+  }
+}
+
+class _SessionGroup extends StatefulWidget {
+  final Session session;
+  final _LessonTapCallback? onLessonTap;
+  final String stageId;
+  const _SessionGroup({required this.session, this.onLessonTap, required this.stageId});
+
+  @override
+  State<_SessionGroup> createState() => _SessionGroupState();
+}
+
+class _SessionGroupState extends State<_SessionGroup> {
+  bool _expanded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final completedCount = widget.session.lessons.where((l) => l.completed).length;
+    final totalCount = widget.session.lessons.length;
+    final isComplete = completedCount == totalCount && totalCount > 0;
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: AppSpacing.sm),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(AppRadius.lg),
+        color: context.surfaceTinted,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Semantics(
+            button: true,
+            label: _expanded ? AppLocalizations.of(context)!.collapseSession(widget.session.title) : AppLocalizations.of(context)!.expandSession(widget.session.title),
+            child: GestureDetector(
+              onTap: () {
+                HapticFeedback.lightImpact();
+                setState(() => _expanded = !_expanded);
+              },
+              child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
+              child: Row(
+                children: [
+                  ExcludeSemantics(child: Icon(
+                    isComplete ? Icons.check_circle_rounded : Icons.play_circle_outline_rounded,
+                    size: 16,
+                    color: isComplete
+                        ? PremiumColors.success
+                        : context.textTertiary,
+                  )),
+                  const SizedBox(width: AppSpacing.sm),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.session.title,
+                          style: AppTextStyle.subtitle.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: context.textPrimary,
+                          ),
+                        ),
+                        if (widget.session.subtitle.isNotEmpty)
+                          Text(
+                            widget.session.subtitle,
+                            style: AppTextStyle.label.copyWith(color: context.textTertiary),
+                          ),
+                      ],
+                    ),
+                  ),
+                  Text(
+                    '$completedCount/$totalCount',
+                    style: AppTextStyle.label.copyWith(color: context.textTertiary),
+                  ),
+                  const SizedBox(width: AppSpacing.xs),
+                  ExcludeSemantics(child: Icon(
+                    _expanded ? Icons.expand_less_rounded : Icons.expand_more_rounded,
+                    size: 18,
+                    color: context.textTertiary,
+                  )),
+                ],
+              ),
+              ),
+            ),
+          ),
+          if (_expanded) ...[
+            ...widget.session.lessons.map((lesson) => _LessonRow(
+              lesson: lesson,
+              onTap: !lesson.completed
+                  ? () => widget.onLessonTap?.call(widget.stageId, lesson.id, lesson.title)
+                  : null,
+            )),
+            const SizedBox(height: AppSpacing.xs),
+          ],
+        ],
       ),
     );
   }

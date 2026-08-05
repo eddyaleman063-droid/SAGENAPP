@@ -25,22 +25,14 @@ class HeroMissionCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppRadius.xl),
         gradient: LinearGradient(
           colors: dark
-              ? [const Color(0xFF0D9488), const Color(0xFF1B2433)]
-              : [const Color(0xFF0D9488), const Color(0xFF1565C0)],
+              ? [PremiumColors.teal, PremiumColors.deepBackground]
+              : [PremiumColors.teal, PremiumColors.primary],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         boxShadow: [
-          BoxShadow(
-            color: const Color(0xFF0D9488).withValues(alpha: 0.3),
-            blurRadius: 28,
-            spreadRadius: 3,
-          ),
-          BoxShadow(
-            color: const Color(0xFF4AC2DD).withValues(alpha: 0.08),
-            blurRadius: 50,
-            spreadRadius: -5,
-          ),
+          ...AppShadows.elevated(color: PremiumColors.teal, intensity: 0.3),
+          AppEffects.softGlow(PremiumColors.teal),
         ],
       ),
       child: Padding(
@@ -53,39 +45,34 @@ class HeroMissionCard extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
+                    style: AppTextStyle.title.copyWith(fontWeight: FontWeight.bold,
+                      color: Colors.white),
                   ),
-                  const SizedBox(height: 6),
+                  const SizedBox(height: AppSpacing.xs),
                   Text(
                     subtitle,
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: Colors.white.withValues(alpha: 0.7),
-                    ),
+                    style: AppTextStyle.subtitle.copyWith(color: Colors.white.withValues(alpha: 0.7)),
                   ),
                   const SizedBox(height: AppSpacing.md),
                   SizedBox(
-                    height: 36,
-                    child: ElevatedButton(
-                      onPressed: onAction,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: const Color(0xFF0D9488),
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(AppRadius.pill),
+                    height: 48,
+                    child: Semantics(
+                      button: true,
+                      label: actionLabel,
+                      child: ElevatedButton(
+                        onPressed: onAction,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          foregroundColor: PremiumColors.teal,
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(AppRadius.pill),
+                          ),
+                          elevation: 0,
                         ),
-                        elevation: 0,
-                      ),
-                      child: Text(
-                        actionLabel,
-                        style: const TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600,
+                        child: Text(
+                          actionLabel,
+                          style: AppTextStyle.subtitle.copyWith(fontWeight: FontWeight.w600),
                         ),
                       ),
                     ),
@@ -94,10 +81,12 @@ class HeroMissionCard extends StatelessWidget {
               ),
             ),
             const SizedBox(width: AppSpacing.md),
-            Icon(
-              Icons.auto_awesome_rounded,
-              size: 48,
-              color: Colors.white.withValues(alpha: 0.2),
+            ExcludeSemantics(
+              child: Icon(
+                Icons.auto_awesome_rounded,
+                size: 48,
+                color: Colors.white.withValues(alpha: 0.2),
+              ),
             ),
           ],
         ),

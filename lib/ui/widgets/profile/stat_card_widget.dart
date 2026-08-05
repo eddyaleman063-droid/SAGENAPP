@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/theme_constants.dart';
 
-class StatCardWidget extends StatelessWidget {
+class StatCardWidget extends StatefulWidget {
   final IconData icon;
   final String value;
   final String label;
@@ -18,44 +18,66 @@ class StatCardWidget extends StatelessWidget {
   });
 
   @override
+  State<StatCardWidget> createState() => _StatCardWidgetState();
+}
+
+class _StatCardWidgetState extends State<StatCardWidget>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _ctrl;
+  late Animation<double> _scaleAnim;
+
+  @override
+  void initState() {
+    super.initState();
+    _ctrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 600));
+    _scaleAnim = CurvedAnimation(parent: _ctrl, curve: Curves.elasticOut);
+    _ctrl.forward();
+  }
+
+  @override
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final accent = accentColor ?? iconColor;
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg, horizontal: AppSpacing.md),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppRadius.xl),
-        color: const Color(0xFF253145),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 36,
-            height: 36,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: iconColor.withValues(alpha: 0.15),
+    final accent = widget.accentColor ?? widget.iconColor;
+    return ScaleTransition(
+      scale: _scaleAnim,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg, horizontal: AppSpacing.md),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(AppRadius.xl),
+          color: PremiumColors.darkCard,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 36,
+              height: 36,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: widget.iconColor.withValues(alpha: 0.15),
+              ),
+              child: ExcludeSemantics(
+                child: Icon(widget.icon, size: 18, color: widget.iconColor),
+              ),
             ),
-            child: Icon(icon, size: 18, color: iconColor),
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: accent.withValues(alpha: 0.95),
+            const SizedBox(height: AppSpacing.sm),
+            Text(
+              widget.value,
+              style: AppTextStyle.titleLg.copyWith(fontWeight: FontWeight.bold,
+                color: accent.withValues(alpha: 0.95)),
             ),
-          ),
-          const SizedBox(height: 2),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 11,
-              color: Colors.white.withValues(alpha: 0.45),
+            const SizedBox(height: AppSpacing.xxs),
+            Text(
+              widget.label,
+              style: AppTextStyle.label.copyWith(color: Colors.white.withValues(alpha: 0.45)),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

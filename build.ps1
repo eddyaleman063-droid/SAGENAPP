@@ -1,11 +1,6 @@
 <#
 .SYNOPSIS
-  Safe Student - Release Build Script
-.DESCRIPTION
-  Production-grade build script for generating release APK/AAB.
-<#
-.SYNOPSIS
-  Safe Student - Release Build Script
+  SAGEN - Release Build Script
 .DESCRIPTION
   Production-grade build script for generating release APK/AAB.
   Reads .env, signs with keystore if available, and outputs to build/releases/.

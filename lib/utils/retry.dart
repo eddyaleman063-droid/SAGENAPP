@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 enum RetryPolicy { fixed, linearBackoff, exponentialBackoff }
 
@@ -42,6 +43,9 @@ Duration _computeDelay(RetryConfig cfg, int attempt) {
     case RetryPolicy.linearBackoff:
       return cfg.baseDelay * attempt;
     case RetryPolicy.exponentialBackoff:
-      return cfg.baseDelay * (1 << (attempt - 1));
+      // Add jitter: base * 2^(attempt-1) + random [0, base]
+      final exponentialDelay = cfg.baseDelay * (1 << (attempt - 1));
+      final jitter = Duration(milliseconds: Random().nextInt(cfg.baseDelay.inMilliseconds + 1));
+      return exponentialDelay + jitter;
   }
 }

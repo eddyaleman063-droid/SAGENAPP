@@ -1,16 +1,47 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sagen/providers/providers.dart';
+import 'package:sagen/services/economic_functions_service.dart';
+import 'package:sagen/services/streak_chest_service.dart';
+
+import '../helpers/mock_learning_provider.dart';
+
+class MockEconomicFunctionsService extends Mock
+    implements EconomicFunctionsService {}
+
+class MockStreakChestService extends Mock implements StreakChestService {}
 
 void main() {
+  setUpAll(() {
+    registerFallbackValue(MockLearningNotifier());
+  });
+
+  ProviderContainer createContainer(SharedPreferences prefs) {
+    final mockEconomic = MockEconomicFunctionsService();
+    final mockChest = MockStreakChestService();
+
+    when(() => mockEconomic.incrementStreak()).thenAnswer((_) async => <String, dynamic>{});
+    when(() => mockChest.checkAndReward(
+          oldStreak: any(named: 'oldStreak'),
+          newStreak: any(named: 'newStreak'),
+          learning: any(named: 'learning'),
+        )).thenAnswer((_) async {});
+
+    return ProviderContainer(overrides: [
+      prefsProvider.overrideWithValue(prefs),
+      learningProvider.overrideWith(MockLearningNotifier.new),
+      economicFunctionsServiceProvider.overrideWithValue(mockEconomic),
+      streakChestServiceProvider.overrideWithValue(mockChest),
+    ]);
+  }
+
   group('StreakNotifier', () {
     test('starts with zero streak', () async {
       SharedPreferences.setMockInitialValues({});
       final prefs = await SharedPreferences.getInstance();
-      final container = ProviderContainer(overrides: [
-        prefsProvider.overrideWithValue(prefs),
-      ]);
+      final container = createContainer(prefs);
       addTearDown(() => container.dispose());
       final notifier = container.read(streakProvider.notifier);
       expect(notifier.currentStreak, 0);
@@ -21,9 +52,7 @@ void main() {
     test('tracks daily check-in', () async {
       SharedPreferences.setMockInitialValues({});
       final prefs = await SharedPreferences.getInstance();
-      final container = ProviderContainer(overrides: [
-        prefsProvider.overrideWithValue(prefs),
-      ]);
+      final container = createContainer(prefs);
       addTearDown(() => container.dispose());
       final notifier = container.read(streakProvider.notifier);
       notifier.checkIn();
@@ -33,9 +62,7 @@ void main() {
     test('provides emotional messages after check-in', () async {
       SharedPreferences.setMockInitialValues({});
       final prefs = await SharedPreferences.getInstance();
-      final container = ProviderContainer(overrides: [
-        prefsProvider.overrideWithValue(prefs),
-      ]);
+      final container = createContainer(prefs);
       addTearDown(() => container.dispose());
       final notifier = container.read(streakProvider.notifier);
       notifier.checkIn();
@@ -44,9 +71,7 @@ void main() {
     test('check-in increments streak', () async {
       SharedPreferences.setMockInitialValues({});
       final prefs = await SharedPreferences.getInstance();
-      final container = ProviderContainer(overrides: [
-        prefsProvider.overrideWithValue(prefs),
-      ]);
+      final container = createContainer(prefs);
       addTearDown(() => container.dispose());
       final notifier = container.read(streakProvider.notifier);
       notifier.checkIn();
@@ -56,9 +81,7 @@ void main() {
     test('monthly stats accessible', () async {
       SharedPreferences.setMockInitialValues({});
       final prefs = await SharedPreferences.getInstance();
-      final container = ProviderContainer(overrides: [
-        prefsProvider.overrideWithValue(prefs),
-      ]);
+      final container = createContainer(prefs);
       addTearDown(() => container.dispose());
       final notifier = container.read(streakProvider.notifier);
       expect(notifier.monthlyStreakStats, isNotNull);
@@ -67,9 +90,7 @@ void main() {
     test('weekly stats accessible', () async {
       SharedPreferences.setMockInitialValues({});
       final prefs = await SharedPreferences.getInstance();
-      final container = ProviderContainer(overrides: [
-        prefsProvider.overrideWithValue(prefs),
-      ]);
+      final container = createContainer(prefs);
       addTearDown(() => container.dispose());
       final notifier = container.read(streakProvider.notifier);
       expect(notifier.weeklyStats, isNotNull);
@@ -77,9 +98,7 @@ void main() {
     test('heatmap data accessible', () async {
       SharedPreferences.setMockInitialValues({});
       final prefs = await SharedPreferences.getInstance();
-      final container = ProviderContainer(overrides: [
-        prefsProvider.overrideWithValue(prefs),
-      ]);
+      final container = createContainer(prefs);
       addTearDown(() => container.dispose());
       final notifier = container.read(streakProvider.notifier);
       expect(notifier.heatmapData, isNotNull);
@@ -95,9 +114,7 @@ void main() {
         'streak_last_activity': yesterday,
       });
       final prefs = await SharedPreferences.getInstance();
-      final container = ProviderContainer(overrides: [
-        prefsProvider.overrideWithValue(prefs),
-      ]);
+      final container = createContainer(prefs);
       addTearDown(() => container.dispose());
       final notifier = container.read(streakProvider.notifier);
       expect(notifier.isStreakFrozen, isTrue);

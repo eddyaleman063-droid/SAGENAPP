@@ -1,198 +1,247 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:math';
-import 'package:google_generative_ai/google_generative_ai.dart';
+import 'package:cloud_functions/cloud_functions.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../config/app_config.dart';
 import 'ai_service.dart';
+import 'api_client.dart';
 import 'app_logger.dart';
 import 'sage_prompt_builder.dart';
 
+/// Gemini API client that proxies all requests through a Cloud Function.
+/// The API key is NEVER exposed to the client binary.
 class GeminiApiClient {
   final AppLogger _logger;
-  GenerativeModel? _model;
+  final ApiClient _apiClient;
   final SagePromptBuilder _promptBuilder = SagePromptBuilder();
   final Random _jitter = Random();
+  FirebaseFunctions? _functions;
+  
+  // Client-side rate limiting: max 10 requests per minute
+  static const int _maxRequestsPerMinute = 10;
+  final List<DateTime> _requestTimestamps = [];
 
-  GeminiApiClient({AppLogger? logger}) : _logger = logger ?? AppLogger();
+  GeminiApiClient({AppLogger? logger, ApiClient? apiClient})
+      : _logger = logger ?? AppLogger(),
+        _apiClient = apiClient ?? ApiClient.instance;
 
-  bool get isAvailable => _model != null;
+  bool get isAvailable => true;
 
   int get _maxRetries => AppConfig.geminiMaxRetries;
 
+  FirebaseFunctions get _getFunctions => _functions ??= FirebaseFunctions.instance;
+
   void init() {
-    const apiKey = AppConfig.geminiApiKey;
-    if (apiKey.isEmpty) {
-      _logger.warning('GeminiApiClient: GEMINI_API_KEY not set');
-      return;
-    }
-    _model = GenerativeModel(
-      model: AppConfig.geminiModel,
-      apiKey: apiKey,
-      generationConfig: GenerationConfig(
-        maxOutputTokens: AppConfig.geminiMaxOutputTokens,
-        temperature: AppConfig.geminiTemperature,
-        topK: AppConfig.geminiTopK,
-        topP: AppConfig.geminiTopP,
-      ),
-      systemInstruction: _promptBuilder.buildSystemInstruction(),
-    );
-    _logger.info('GeminiApiClient: initialized with ${AppConfig.geminiModel}');
+    _logger.info('GeminiApiClient: initialized via Cloud Function proxy');
   }
 
-  Future<String> generate(List<Content> contents, {int retryCount = 0}) async {
-    if (_model == null) {
+  Future<String> generate(
+    List<Map<String, dynamic>> contents, {
+    String userName = '',
+    int userLevel = 1,
+    int currentStreak = 0,
+    List<String> weakTopics = const [],
+  }) async {
+    // Client-side rate limiting
+    final now = DateTime.now();
+    _requestTimestamps.removeWhere((t) => now.difference(t).inMinutes >= 1);
+    if (_requestTimestamps.length >= _maxRequestsPerMinute) {
       throw const AiException(
-        AiErrorType.apiKey,
-        'Gemini no está configurado. Agrega GEMINI_API_KEY al lanzar la app.',
+        AiErrorType.rateLimit,
+        'Too many requests. Wait a moment before trying again.',
       );
     }
-
-    try {
-      final response = await _model!
-          .generateContent(contents)
-          .timeout(AppConfig.geminiTimeout);
-      final text = response.text;
-      if (text == null || text.trim().isEmpty) {
-        throw const AiException(
-          AiErrorType.invalidResponse,
-          'Gemini devolvió una respuesta vacía.',
+    _requestTimestamps.add(now);
+    
+    for (int attempt = 0; attempt <= _maxRetries; attempt++) {
+      try {
+        final systemPrompt = _promptBuilder.buildSystemInstruction(
+          userName: userName,
+          userLevel: userLevel,
+          currentStreak: currentStreak,
+          weakTopics: weakTopics,
         );
-      }
-      return text;
-    } on TimeoutException {
-      throw const AiException(
-        AiErrorType.timeout,
-        'Gemini tardó demasiado en responder.',
-      );
-    } on AiException {
-      rethrow;
-    } on GenerativeAIException catch (e) {
-      if (retryCount < _maxRetries && _shouldRetry(e)) {
-        final base = AppConfig.geminiRetryDelay * (retryCount + 1);
-        final jitter = Duration(milliseconds: _jitter.nextInt(1000));
-        await Future.delayed(base + jitter);
-        return generate(contents, retryCount: retryCount + 1);
-      }
-      throw _mapGenerativeError(e);
-    } catch (e) {
-      throw AiException(
-        AiErrorType.unknown,
-        'Error inesperado al contactar a Gemini.',
-        originalError: e,
-      );
-    }
-  }
 
-  Stream<String> generateStream(List<Content> contents, {int retryCount = 0}) async* {
-    if (_model == null) {
-      throw const AiException(
-        AiErrorType.apiKey,
-        'Gemini no está configurado. Agrega GEMINI_API_KEY al lanzar la app.',
-      );
-    }
+        final result = await _getFunctions
+            .httpsCallable('generateContent')
+            .call({
+              'contents': contents,
+              'systemInstruction': systemPrompt,
+            })
+            .timeout(AppConfig.geminiTimeout);
 
-    Stream<String> stream;
-    try {
-      stream = _model!
-          .generateContentStream(contents)
-          .timeout(AppConfig.geminiStreamTimeout)
-          .map((response) => response.text ?? '');
-    } on TimeoutException {
-      throw const AiException(
-        AiErrorType.timeout,
-        'Gemini tardó demasiado en responder.',
-      );
-    } on GenerativeAIException catch (e) {
-      if (retryCount < _maxRetries && _shouldRetry(e)) {
-        final base = AppConfig.geminiRetryDelay * (retryCount + 1);
-        final jitter = Duration(milliseconds: _jitter.nextInt(1000));
-        await Future.delayed(base + jitter);
-        yield* generateStream(contents, retryCount: retryCount + 1);
-        return;
-      }
-      throw _mapGenerativeError(e);
-    } catch (e) {
-      throw AiException(
-        AiErrorType.unknown,
-        'Error inesperado en streaming.',
-        originalError: e,
-      );
-    }
-
-    bool receivedContent = false;
-    try {
-      await for (final chunk in stream) {
-        if (chunk.isNotEmpty) {
-          receivedContent = true;
-          yield chunk;
+        final text = result.data['text'] as String?;
+        if (text == null || text.trim().isEmpty) {
+          throw const AiException(
+            AiErrorType.invalidResponse,
+            'Gemini returned an empty response.',
+          );
         }
-      }
-      if (!receivedContent) {
+        return text;
+      } on TimeoutException {
         throw const AiException(
-          AiErrorType.invalidResponse,
-          'Gemini no generó contenido.',
+          AiErrorType.timeout,
+          'Gemini took too long to respond.',
+        );
+      } on AiException {
+        rethrow;
+      } on FirebaseFunctionsException catch (e) {
+        if (attempt < _maxRetries && _shouldRetry(e)) {
+          final base = AppConfig.geminiRetryDelay * (attempt + 1);
+          final jitter = Duration(milliseconds: _jitter.nextInt(1000));
+          await Future.delayed(base + jitter);
+          continue;
+        }
+        throw _mapFunctionsError(e);
+      } catch (e) {
+        throw AiException(
+          AiErrorType.unknown,
+          'Unexpected error contacting Gemini.',
+          originalError: e,
         );
       }
-    } on AiException {
-      rethrow;
-    } on TimeoutException {
+    }
+    throw const AiException(AiErrorType.unknown, 'Gemini: max retries reached');
+  }
+
+  Stream<String> generateStream(
+    List<Map<String, dynamic>> contents, {
+    String userName = '',
+    int userLevel = 1,
+    int currentStreak = 0,
+    List<String> weakTopics = const [],
+  }) async* {
+    // Client-side rate limiting (same as generate())
+    final now = DateTime.now();
+    _requestTimestamps.removeWhere((t) => now.difference(t).inMinutes >= 1);
+    if (_requestTimestamps.length >= _maxRequestsPerMinute) {
       throw const AiException(
-        AiErrorType.timeout,
-        'Gemini tardó demasiado en responder.',
+        AiErrorType.rateLimit,
+        'Too many requests. Wait a moment before trying again.',
       );
-    } on GenerativeAIException catch (e) {
-      if (retryCount < _maxRetries && _shouldRetry(e)) {
-        final base = AppConfig.geminiRetryDelay * (retryCount + 1);
-        final jitter = Duration(milliseconds: _jitter.nextInt(1000));
-        await Future.delayed(base + jitter);
-        yield* generateStream(contents, retryCount: retryCount + 1);
+    }
+    _requestTimestamps.add(now);
+
+    for (int attempt = 0; attempt <= _maxRetries; attempt++) {
+      try {
+        final systemPrompt = _promptBuilder.buildSystemInstruction(
+          userName: userName,
+          userLevel: userLevel,
+          currentStreak: currentStreak,
+          weakTopics: weakTopics,
+        );
+
+        final user = FirebaseAuth.instance.currentUser;
+        if (user == null) {
+          throw const AiException(AiErrorType.auth, 'No authenticated user.');
+        }
+        final token = await user.getIdToken();
+
+        final projectId = FirebaseFunctions.instanceFor(region: 'us-central1')
+            .app
+            .options
+            .projectId;
+        final url = Uri.parse(
+          'https://us-central1-$projectId.cloudfunctions.net/generateContentStream',
+        );
+
+        final request = ApiRequest(
+          method: 'POST',
+          uri: url,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+          body: jsonEncode({
+            'contents': contents,
+            'systemInstruction': systemPrompt,
+          }),
+          timeout: const Duration(seconds: 90),
+        );
+
+        String buffer = '';
+        await for (final chunk in _apiClient.sendStreaming(request)) {
+          buffer += chunk;
+          final lines = buffer.split('\n');
+          buffer = lines.removeLast();
+
+          for (final line in lines) {
+            if (line.startsWith('data: ')) {
+              final data = line.substring(6).trim();
+              if (data == '[DONE]') return;
+              try {
+                final parsed = jsonDecode(data) as Map<String, dynamic>;
+                final text = parsed['text'] as String?;
+                if (text != null && text.isNotEmpty) {
+                  yield text;
+                }
+              } catch (e) {
+                _logger.warning('GeminiApiClient: failed to parse SSE data line: $e');
+              }
+            }
+          }
+        }
+
+        if (buffer.trim().isNotEmpty && buffer.startsWith('data: ')) {
+          final data = buffer.substring(6).trim();
+          if (data != '[DONE]') {
+            try {
+              final parsed = jsonDecode(data) as Map<String, dynamic>;
+              final text = parsed['text'] as String?;
+              if (text != null && text.isNotEmpty) {
+                yield text;
+              }
+            } catch (e) {
+              _logger.warning('GeminiApiClient: failed to parse final SSE buffer: $e');
+            }
+          }
+        }
         return;
+      } on TimeoutException {
+        throw const AiException(
+          AiErrorType.timeout,
+          'Gemini took too long to respond.',
+        );
+      } on AiException {
+        rethrow;
+      } catch (e) {
+        if (attempt < _maxRetries) {
+          final base = AppConfig.geminiRetryDelay * (attempt + 1);
+          final jitter = Duration(milliseconds: _jitter.nextInt(1000));
+          await Future.delayed(base + jitter);
+          continue;
+        }
+        throw AiException(
+          AiErrorType.unknown,
+          'Unexpected error contacting Gemini.',
+          originalError: e,
+        );
       }
-      throw _mapGenerativeError(e);
-    } catch (e) {
-      throw AiException(
-        AiErrorType.unknown,
-        'Error inesperado en streaming.',
-        originalError: e,
-      );
     }
+    throw const AiException(AiErrorType.unknown, 'Gemini: max retries reached');
   }
 
-  void dispose() {
-    _model = null;
+  void dispose() {}
+
+  bool _shouldRetry(FirebaseFunctionsException e) {
+    return e.code == 'internal' || e.code == 'unavailable';
   }
 
-  bool _shouldRetry(GenerativeAIException e) => e is ServerException;
-
-  AiException _mapGenerativeError(GenerativeAIException e) {
-    if (e is InvalidApiKey) {
-      return const AiException(
-        AiErrorType.auth,
-        'La API key de Gemini no es válida. Verifica que GEMINI_API_KEY sea correcta.',
-      );
+  AiException _mapFunctionsError(FirebaseFunctionsException e) {
+    switch (e.code) {
+      case 'unauthenticated':
+        return const AiException(AiErrorType.auth, 'Invalid session.');
+      case 'resource-exhausted':
+        return const AiException(AiErrorType.rateLimit, 'Too many requests. Wait a moment.');
+      case 'invalid-argument':
+        return const AiException(AiErrorType.invalidResponse, 'Invalid request.');
+      case 'failed-precondition':
+        return const AiException(AiErrorType.apiKey, 'Gemini is not configured.');
+      case 'internal':
+        return const AiException(AiErrorType.server, 'Gemini server is unavailable.');
+      default:
+        return AiException(AiErrorType.unknown, 'Gemini error: ${e.message}');
     }
-    if (e is ServerException) {
-      return const AiException(
-        AiErrorType.server,
-        'El servidor de Gemini no está disponible momentáneamente.',
-      );
-    }
-    if (e is UnsupportedUserLocation) {
-      return const AiException(
-        AiErrorType.auth,
-        'Tu ubicación no es compatible con la API de Gemini.',
-      );
-    }
-    if (e is GenerativeAISdkException) {
-      return AiException(
-        AiErrorType.unknown,
-        'Error interno del SDK de Gemini: ${e.message}',
-        originalError: e,
-      );
-    }
-    return AiException(
-      AiErrorType.unknown,
-      'Error de Gemini: ${e.message}',
-      originalError: e,
-    );
   }
 }

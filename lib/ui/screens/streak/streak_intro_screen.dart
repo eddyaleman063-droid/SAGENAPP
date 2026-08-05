@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:sagen/core/theme/app_colors.dart';
 import '../../../core/theme/theme_constants.dart';
 import '../../../ui/widgets/common/sage_emotion_widget.dart';
 import '../../../services/sage_emotion_service.dart';
 import 'package:sagen/l10n/app_localizations.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 class StreakIntroScreen extends StatelessWidget {
   final VoidCallback onContinue;
@@ -46,8 +48,7 @@ class StreakIntroScreen extends StatelessWidget {
                     const SizedBox(width: AppSpacing.sm),
                     Text(
                       l.streakBadge,
-                      style: const TextStyle(
-                        fontSize: 12,
+                      style: AppTextStyle.caption.copyWith(
                         fontWeight: FontWeight.bold,
                         color: PremiumColors.streakOrange,
                         letterSpacing: 1.5,
@@ -59,19 +60,16 @@ class StreakIntroScreen extends StatelessWidget {
               const SizedBox(height: AppSpacing.xl),
               Text(
                 l.streakKeepAlive,
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: dark ? Colors.white.withValues(alpha: 0.95) : Colors.black87,
+                style: AppTextStyle.headline.copyWith(
+                  color: context.textPrimary,
                 ),
               ),
               const SizedBox(height: AppSpacing.md),
               Text(
                 l.streakKeepAliveDesc,
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: dark ? Colors.white.withValues(alpha: 0.5) : Colors.black45,
+                style: AppTextStyle.bodyMd.copyWith(
+                  color: context.textSecondary,
                   height: 1.5,
                 ),
               ),
@@ -80,18 +78,18 @@ class StreakIntroScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(AppSpacing.lg),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(AppRadius.xl),
-                  color: dark ? Colors.white.withValues(alpha: 0.04) : Colors.black.withValues(alpha: 0.03),
+                  color: context.surfaceTinted,
                   border: Border.all(
-                    color: dark ? Colors.white.withValues(alpha: 0.08) : Colors.black.withValues(alpha: 0.06),
+                    color: context.subtleBorder,
                   ),
                 ),
                 child: Column(
                   children: [
-                    _BenefitRow(icon: Icons.shield_rounded, text: l.streakStrongerShield, dark: dark),
+                    _BenefitRow(icon: Icons.shield_rounded, text: l.streakStrongerShield),
                     const SizedBox(height: AppSpacing.md),
-                    _BenefitRow(icon: Icons.auto_awesome_rounded, text: l.streakRewards, dark: dark),
+                    _BenefitRow(icon: Icons.auto_awesome_rounded, text: l.streakRewards),
                     const SizedBox(height: AppSpacing.md),
-                    _BenefitRow(icon: Icons.emoji_events_rounded, text: l.streakAchievements, dark: dark),
+                    _BenefitRow(icon: Icons.emoji_events_rounded, text: l.streakAchievements),
                   ],
                 ),
               ),
@@ -99,20 +97,24 @@ class StreakIntroScreen extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 height: 54,
-                child: ElevatedButton(
-                  onPressed: onContinue,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: PremiumColors.streakOrange,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
-                    elevation: 4,
+                child: Semantics(
+                  button: true,
+                  label: l.streakGotIt,
+                  child: ElevatedButton(
+                    onPressed: onContinue,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: PremiumColors.streakOrange,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
+                      elevation: 4,
+                    ),
+                    child: Text(l.streakGotIt, style: AppTextStyle.titleSmall.copyWith(fontWeight: FontWeight.bold)),
                   ),
-                  child: Text(l.streakGotIt, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                 ),
               ),
               const SizedBox(height: AppSpacing.md),
             ],
-          ),
+          ).animate().fadeIn().slideY(begin: 0.05),
         ),
       ),
     );
@@ -122,9 +124,8 @@ class StreakIntroScreen extends StatelessWidget {
 class _BenefitRow extends StatelessWidget {
   final IconData icon;
   final String text;
-  final bool dark;
 
-  const _BenefitRow({required this.icon, required this.text, required this.dark});
+  const _BenefitRow({required this.icon, required this.text});
 
   @override
   Widget build(BuildContext context) {
@@ -135,9 +136,8 @@ class _BenefitRow extends StatelessWidget {
         Expanded(
           child: Text(
             text,
-            style: TextStyle(
-              fontSize: 13,
-              color: dark ? Colors.white.withValues(alpha: 0.7) : Colors.black87,
+            style: AppTextStyle.subtitle.copyWith(
+              color: context.textSecondary,
             ),
           ),
         ),

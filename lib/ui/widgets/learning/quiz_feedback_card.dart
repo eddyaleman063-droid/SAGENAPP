@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/theme_constants.dart';
-import '../../../l10n/app_localizations.dart';
+import '../common/localization_helper.dart';
 
 class QuizFeedbackCard extends StatelessWidget {
   final bool correct;
@@ -21,7 +21,7 @@ class QuizFeedbackCard extends StatelessWidget {
         color: correct
             ? PremiumColors.success.withValues(alpha: 0.06)
             : PremiumColors.error.withValues(alpha: 0.06),
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
           color: correct
               ? PremiumColors.success.withValues(alpha: 0.2)
@@ -39,33 +39,29 @@ class QuizFeedbackCard extends StatelessWidget {
                   : PremiumColors.error.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(AppSpacing.sm),
             ),
-            child: Icon(
-              correct ? Icons.check_rounded : Icons.info_rounded,
-              size: 16,
-              color: correct ? PremiumColors.success : PremiumColors.error,
+            child: ExcludeSemantics(
+              child: Icon(
+                correct ? Icons.check_rounded : Icons.info_rounded,
+                size: 16,
+                color: correct ? PremiumColors.success : PremiumColors.error,
+              ),
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppSpacing.md),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  correct ? AppLocalizations.of(context)!.sessionCorrect : AppLocalizations.of(context)!.sessionIncorrect,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                    color: correct ? PremiumColors.success : PremiumColors.error,
-                  ),
+                  correct ? l10n(context).sessionCorrect : l10n(context).sessionIncorrect,
+                  style: AppTextStyle.bodyMd.copyWith(fontWeight: FontWeight.bold,
+                    color: correct ? PremiumColors.success : PremiumColors.error),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: AppSpacing.xxs),
                 Text(
                   explanation,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.54),
-                    height: 1.4,
-                  ),
+                  style: AppTextStyle.caption.copyWith(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.54),
+                    height: 1.4),
                 ),
               ],
             ),

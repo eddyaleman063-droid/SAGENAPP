@@ -1,10 +1,13 @@
-// ignore_for_file: prefer_const_constructors
-
-import 'dart:math' as math;
+﻿import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:go_router/go_router.dart';
+import 'package:sagen/l10n/app_localizations.dart';
+import 'package:sagen/services/experience_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sagen/core/theme/app_colors.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/providers/providers.dart';
 
@@ -20,11 +23,11 @@ class DailyGoalConfig {
   });
 }
 
-const List<DailyGoalConfig> dailyGoalOptions = [
-  DailyGoalConfig(label: "Relajado", minutes: 3, questionsPerSession: 5),
-  DailyGoalConfig(label: "Normal", minutes: 10, questionsPerSession: 12),
-  DailyGoalConfig(label: "Serio", minutes: 15, questionsPerSession: 18),
-  DailyGoalConfig(label: "Intenso", minutes: 30, questionsPerSession: 35),
+List<DailyGoalConfig> dailyGoalOptions(AppLocalizations l) => [
+  DailyGoalConfig(label: l.dailyGoalRelaxed, minutes: 3, questionsPerSession: 5),
+  DailyGoalConfig(label: l.dailyGoalNormal, minutes: 10, questionsPerSession: 12),
+  DailyGoalConfig(label: l.dailyGoalSerious, minutes: 15, questionsPerSession: 18),
+  DailyGoalConfig(label: l.dailyGoalIntense, minutes: 30, questionsPerSession: 35),
 ];
 
 class DailyGoalScreen extends ConsumerStatefulWidget {
@@ -44,18 +47,20 @@ class DailyGoalScreen extends ConsumerStatefulWidget {
 class _DailyGoalScreenState extends ConsumerState<DailyGoalScreen> {
   int? _selectedIndex;
   bool _isPressed = false;
+  List<DailyGoalConfig> _goals = [];
 
   static const double _progressValue = 0.90;
 
   void _onTapDown(TapDownDetails _) {
     setState(() => _isPressed = true);
-    HapticFeedback.mediumImpact();
+    ExperienceService.instance.mediumHaptic();
   }
 
   void _onTapUp(TapUpDetails _) {
     setState(() => _isPressed = false);
+    HapticFeedback.lightImpact();
     if (_selectedIndex != null) {
-      final goal = dailyGoalOptions[_selectedIndex!];
+      final goal = _goals[_selectedIndex!];
       ref.read(dashboardProvider.notifier).setDailyGoalMinutes(goal.minutes);
       widget.onContinue?.call();
     }
@@ -69,7 +74,9 @@ class _DailyGoalScreenState extends ConsumerState<DailyGoalScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     final dark = Theme.of(context).brightness == Brightness.dark;
+    _goals = dailyGoalOptions(l);
     return Scaffold(
       backgroundColor: dark ? PremiumColors.deepBackground : PremiumColors.lightBg,
       body: SafeArea(
@@ -77,23 +84,28 @@ class _DailyGoalScreenState extends ConsumerState<DailyGoalScreen> {
           children: [
             // ── Header ──
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxs, vertical: AppSpacing.sm),
               child: Row(
                 children: [
-                  IconButton(
-                    icon: Icon(
-                      Icons.arrow_back,
-                      color: dark ? Colors.white.withValues(alpha: 0.6) : Colors.black54,
+                  Semantics(
+                    button: true,
+                    label: l.backButton,
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.arrow_back,
+                        color: context.textSecondary,
+                      ),
+                      onPressed: widget.onBack ?? () => context.pop(),
+                      tooltip: l.backButton,
                     ),
-                    onPressed: widget.onBack ?? () => Navigator.pop(context),
                   ),
                   const SizedBox(width: AppSpacing.sm),
                   Expanded(
                     child: Container(
                       height: 12,
                       decoration: BoxDecoration(
-                        color: dark ? Colors.grey[850] : Colors.grey.shade200,
-                        borderRadius: BorderRadius.circular(6),
+                        color: context.surfaceCard,
+                        borderRadius: BorderRadius.circular(AppRadius.xs),
                       ),
                       child: FractionallySizedBox(
                         alignment: Alignment.centerLeft,
@@ -101,7 +113,7 @@ class _DailyGoalScreenState extends ConsumerState<DailyGoalScreen> {
                         child: Container(
                           decoration: BoxDecoration(
                             color: PremiumColors.primaryAccent,
-                            borderRadius: BorderRadius.circular(6),
+                            borderRadius: BorderRadius.circular(AppRadius.xs),
                           ),
                         ),
                       ),
@@ -122,33 +134,37 @@ class _DailyGoalScreenState extends ConsumerState<DailyGoalScreen> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Image.asset(
-                      'assets/mascot/emotions/sage_curious.png',
-                      width: 80,
-                      height: 80,
+                    ExcludeSemantics(
+                      child: Image.asset(
+                        'assets/mascot/emotions/sage_curious.png',
+                        width: 80,
+                        height: 80,
+                        cacheWidth: 160,
+                        cacheHeight: 160,
+                        errorBuilder: (_, _, _) => const Icon(Icons.pets, size: 48),
+                      ),
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppSpacing.sm),
                     Expanded(
                       child: Stack(
                         clipBehavior: Clip.none,
                         children: [
                           Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 16),
+                                horizontal: AppSpacing.xl, vertical: AppSpacing.lg),
                             decoration: BoxDecoration(
-                              color: dark ? const Color(0xFF2A3448) : Colors.white,
-                              borderRadius: BorderRadius.circular(16),
+                              color: dark ? PremiumColors.onboardingBubbleDark : Colors.white,
+                              borderRadius: BorderRadius.circular(AppRadius.xl),
                               border: Border.all(
                                 color: dark
                                     ? Colors.white.withValues(alpha: 0.10)
-                                    : Colors.grey.withValues(alpha: 0.30),
+                                    : context.borderSubtle,
                               ),
                             ),
                             child: Text(
-                              "¿Cuál es tu meta diaria de aprendizaje?",
-                              style: TextStyle(
-                                color: dark ? Colors.white : Colors.black87,
-                                fontSize: 15,
+                              l.dailyGoalQuestion,
+                              style: AppTextStyle.body.copyWith(
+                                color: context.textPrimary,
                                 height: 1.4,
                               ),
                             ),
@@ -163,11 +179,11 @@ class _DailyGoalScreenState extends ConsumerState<DailyGoalScreen> {
                                   width: 12,
                                   height: 12,
                                   decoration: BoxDecoration(
-                                    color: dark ? const Color(0xFF2A3448) : Colors.white,
+                                    color: dark ? PremiumColors.onboardingBubbleDark : Colors.white,
                                     border: Border.all(
                                       color: dark
                                           ? Colors.white.withValues(alpha: 0.10)
-                                          : Colors.grey.withValues(alpha: 0.30),
+                                          : context.borderSubtle,
                                     ),
                                   ),
                                 ),
@@ -190,54 +206,61 @@ class _DailyGoalScreenState extends ConsumerState<DailyGoalScreen> {
                 physics: const BouncingScrollPhysics(),
                 padding:
                     const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
-                itemCount: dailyGoalOptions.length,
+                itemCount: _goals.length,
                 itemBuilder: (context, index) {
-                  final goal = dailyGoalOptions[index];
+                  final goal = _goals[index];
                   final isSelected = _selectedIndex == index;
-                  return GestureDetector(
-                    onTap: () => setState(() => _selectedIndex = index),
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 200),
-                      height: 60,
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      margin: const EdgeInsets.only(bottom: 12),
-                      decoration: BoxDecoration(
-                        color: isSelected
-                            ? PremiumColors.primaryAccent
-                                .withValues(alpha: 0.08)
-                            : (dark ? Colors.white.withValues(alpha: 0.03) : Colors.grey.withValues(alpha: 0.08)),
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
+                  return Semantics(
+                    key: ValueKey('goal_$index'),
+                    button: true,
+                    selected: isSelected,
+                    label: '${l.minutesPerDay(goal.minutes)} - ${goal.label}',
+                    child: GestureDetector(
+                      onTap: () {
+                        HapticFeedback.lightImpact();
+                        setState(() => _selectedIndex = index);
+                      },
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        height: 60,
+                        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                        margin: const EdgeInsets.only(bottom: AppSpacing.md),
+                        decoration: BoxDecoration(
                           color: isSelected
                               ? PremiumColors.primaryAccent
-                              : (dark
-                                  ? Colors.white.withValues(alpha: 0.10)
-                                  : Colors.grey.withValues(alpha: 0.30)),
-                          width: isSelected ? 2.5 : 1,
+                                  .withValues(alpha: 0.08)
+                              : context.subtle,
+                          borderRadius: BorderRadius.circular(AppRadius.xl),
+                          border: Border.all(
+                            color: isSelected
+                                ? PremiumColors.primaryAccent
+                                : (dark
+                                    ? Colors.white.withValues(alpha: 0.10)
+                                    : context.borderSubtle),
+                            width: isSelected ? 2.5 : 1,
+                          ),
                         ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "${goal.minutes} min/día",
-                            style: TextStyle(
-                              color: dark ? Colors.white : Colors.black87,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              l.minutesPerDay(goal.minutes),
+                              style: AppTextStyle.titleSmall.copyWith(
+                                color: context.textPrimary,
+                                fontWeight: FontWeight.w700,
+                              ),
                             ),
-                          ),
-                          Text(
-                            goal.label,
-                            style: TextStyle(
-                              color: isSelected
-                                  ? PremiumColors.primaryAccent
-                                  : (dark ? Colors.white.withValues(alpha: 0.50) : Colors.black54),
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
+                            Text(
+                              goal.label,
+                              style: AppTextStyle.body.copyWith(
+                                color: isSelected
+                                    ? PremiumColors.primaryAccent
+                                    : context.textTertiary,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   );
@@ -249,42 +272,45 @@ class _DailyGoalScreenState extends ConsumerState<DailyGoalScreen> {
             Padding(
               padding: const EdgeInsets.fromLTRB(
                   AppSpacing.xxl, 0, AppSpacing.xxl, AppSpacing.xxl),
-              child: GestureDetector(
-                onTapDown: _canContinue ? _onTapDown : null,
-                onTapUp: _canContinue ? _onTapUp : null,
-                onTapCancel: _canContinue ? _onTapCancel : null,
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 80),
-                  transform: _isPressed
-                      ? Matrix4.translationValues(0, 4, 0)
-                      : Matrix4.identity(),
-                  height: 54,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: _canContinue
-                        ? PremiumColors.primaryAccent
-                        : (dark ? Colors.grey[850] : Colors.grey.shade200),
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: _isPressed || !_canContinue
-                        ? []
-                        : [
-                            BoxShadow(
-                              color: PremiumColors.primaryDark,
-                              offset: const Offset(0, 4),
-                              blurRadius: 0,
-                            ),
-                          ],
-                  ),
-                  child: Center(
-                    child: Text(
-                      'MANTENER MI COMPROMISO',
-                      style: TextStyle(
-                        color: _canContinue
-                            ? (dark ? Colors.white : Colors.black87)
-                            : (dark ? Colors.white.withValues(alpha: 0.30) : Colors.black.withValues(alpha: 0.30)),
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 1.5,
+              child: Semantics(
+                button: true,
+                label: AppLocalizations.of(context)!.onboardingCommitButton,
+                child: GestureDetector(
+                  onTapDown: _canContinue ? _onTapDown : null,
+                  onTapUp: _canContinue ? _onTapUp : null,
+                  onTapCancel: _canContinue ? _onTapCancel : null,
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 80),
+                    transform: _isPressed
+                        ? Matrix4.translationValues(0, 4, 0)
+                        : Matrix4.identity(),
+                    height: 54,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: _canContinue
+                          ? PremiumColors.primaryAccent
+                          : context.surfaceCard,
+                      borderRadius: BorderRadius.circular(AppRadius.xl),
+                      boxShadow: _isPressed || !_canContinue
+                          ? []
+                          : [
+                              const BoxShadow(
+                                color: PremiumColors.primaryDark,
+                                offset: Offset(0, 4),
+                                blurRadius: 0,
+                              ),
+                            ],
+                    ),
+                    child: Center(
+                      child: Text(
+                        AppLocalizations.of(context)!.onboardingCommitButton,
+                        style: AppTextStyle.titleSmall.copyWith(
+                          color: _canContinue
+                              ? context.textPrimary
+                              : context.subtle,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 1.5,
+                        ),
                       ),
                     ),
                   ),
@@ -292,7 +318,7 @@ class _DailyGoalScreenState extends ConsumerState<DailyGoalScreen> {
               ),
             ),
           ],
-        ),
+        ).animate().fadeIn().slideY(begin: 0.05),
       ),
     );
   }

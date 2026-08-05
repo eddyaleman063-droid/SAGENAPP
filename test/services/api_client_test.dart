@@ -39,12 +39,6 @@ void main() {
       expect(request.host, 'api.example.com');
     });
 
-    test('isStreaming returns true for GET and POST', () {
-      final get = ApiRequest(method: 'GET', uri: Uri.parse('https://example.com'));
-      final post = ApiRequest(method: 'POST', uri: Uri.parse('https://example.com'));
-      expect(get.isStreaming, true);
-      expect(post.isStreaming, true);
-    });
   });
 
   group('ApiResponse', () {
@@ -105,17 +99,6 @@ void main() {
       await ApiClient.init();
       ApiClient.instance.dispose();
       expect(() => ApiClient.instance, throwsA(isA<StateError>()));
-    });
-
-    test('init with empty pinnedHosts still creates client', () async {
-      final client = await ApiClient.init(pinnedHosts: {});
-      expect(client, isNotNull);
-    });
-
-    test('createPinnedClient returns plain Client for unknown host', () {
-      final client = ApiClient.createPinnedClient('unknown.example.com');
-      expect(client, isNotNull);
-      client.close();
     });
   });
 

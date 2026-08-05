@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sagen/core/theme/app_colors.dart';
+import 'package:sagen/l10n/app_localizations.dart';
 import '../../../core/theme/theme_constants.dart';
 import '../../../providers/payment_provider.dart';
+import 'package:sagen/providers/providers.dart';
 
 class PaymentFailedScreen extends ConsumerWidget {
   final String? error;
@@ -12,6 +15,7 @@ class PaymentFailedScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context)!;
     return Scaffold(
       body: Center(
         child: Padding(
@@ -19,24 +23,25 @@ class PaymentFailedScreen extends ConsumerWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Container(
-                width: 100,
-                height: 100,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.red.shade50,
-                ),
-                child: Icon(
-                  Icons.close_rounded,
-                  color: Colors.red.shade400,
-                  size: 52,
+              ExcludeSemantics(
+                child: Container(
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: PremiumColors.error.withValues(alpha: 0.1),
+                  ),
+                  child: const Icon(
+                    Icons.close_rounded,
+                    color: PremiumColors.error,
+                    size: 52,
+                  ),
                 ),
               ),
               const SizedBox(height: AppSpacing.xxl),
               Text(
-                'Pago no completado',
-                style: TextStyle(
-                  fontSize: 22,
+                l.paymentNotCompleted,
+                style: AppTextStyle.headlineMedium.copyWith(
                   fontWeight: FontWeight.bold,
                   color: context.textPrimary,
                 ),
@@ -50,8 +55,7 @@ class PaymentFailedScreen extends ConsumerWidget {
                   child: Text(
                     error!,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 14,
+                    style: AppTextStyle.bodyMd.copyWith(
                       color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                     ),
                   ),
@@ -62,21 +66,25 @@ class PaymentFailedScreen extends ConsumerWidget {
                   Expanded(
                     child: SizedBox(
                       height: 52,
-                      child: OutlinedButton(
-                        onPressed: () {
-                          ref.read(paymentProvider.notifier).reset();
-                          context.pop();
-                        },
-                        style: OutlinedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(AppRadius.xl),
+                      child: Semantics(
+                        button: true,
+                        label: l.paymentTryAgain,
+                        child: OutlinedButton(
+                          onPressed: () {
+                            ref.read(experienceServiceProvider).lightHaptic();
+                            ref.read(paymentProvider.notifier).reset();
+                            context.pop();
+                          },
+                          style: OutlinedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(AppRadius.xl),
+                            ),
                           ),
-                        ),
-                        child: const Text(
-                          'Intentar de nuevo',
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600,
+                          child: Text(
+                            l.paymentTryAgain,
+                            style: AppTextStyle.body.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
                       ),
@@ -86,22 +94,26 @@ class PaymentFailedScreen extends ConsumerWidget {
                   Expanded(
                     child: SizedBox(
                       height: 52,
-                      child: FilledButton(
-                        onPressed: () {
-                          ref.read(paymentProvider.notifier).reset();
-                          context.go('/main');
-                        },
-                        style: FilledButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(AppRadius.xl),
+                      child: Semantics(
+                        button: true,
+                        label: l.paymentGoHome,
+                        child: FilledButton(
+                          onPressed: () {
+                            ref.read(experienceServiceProvider).lightHaptic();
+                            ref.read(paymentProvider.notifier).reset();
+                            context.goNamed('main');
+                          },
+                          style: FilledButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(AppRadius.xl),
+                            ),
                           ),
-                        ),
-                        child: const Text(
-                          'Ir al inicio',
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
+                          child: Text(
+                            l.paymentGoHome,
+                            style: AppTextStyle.body.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
@@ -110,7 +122,7 @@ class PaymentFailedScreen extends ConsumerWidget {
                 ],
               ),
             ],
-          ),
+          ).animate().fadeIn(duration: 400.ms).slideY(begin: 0.1),
         ),
       ),
     );

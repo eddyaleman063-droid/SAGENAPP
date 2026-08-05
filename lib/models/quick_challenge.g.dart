@@ -20,7 +20,6 @@ _$QuickChallengeImpl _$$QuickChallengeImplFromJson(Map<String, dynamic> json) =>
       consequenceCorrect: json['consequenceCorrect'] as String? ?? '',
       consequenceWrong: json['consequenceWrong'] as String? ?? '',
       xpReward: (json['xpReward'] as num?)?.toInt() ?? 15,
-      gemReward: (json['gemReward'] as num?)?.toInt() ?? 5,
     );
 
 Map<String, dynamic> _$$QuickChallengeImplToJson(
@@ -36,7 +35,6 @@ Map<String, dynamic> _$$QuickChallengeImplToJson(
   'consequenceCorrect': instance.consequenceCorrect,
   'consequenceWrong': instance.consequenceWrong,
   'xpReward': instance.xpReward,
-  'gemReward': instance.gemReward,
 };
 
 const _$QuickChallengeTypeEnumMap = {

@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:math';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/product.dart';
 import '../services/app_logger.dart';
@@ -10,7 +12,6 @@ enum PaymentStatus {
   idle,
   creatingPreference,
   waitingPayment,
-  confirming,
   completed,
   failed,
 }
@@ -18,184 +19,271 @@ enum PaymentStatus {
 class PaymentState {
   final PaymentStatus status;
   final String? errorMessage;
-  final int? pendingGems;
   final double? pendingAmount;
   final PaymentMethod? selectedMethod;
   final String? preferenceId;
   final String? initPoint;
-  final int? gemsBefore;
-  final int? gemsAfter;
+  final int? donatedBefore;
+  final int? donatedAfter;
   final Product? selectedProduct;
+  final String? pendingPaymentId;
+  final int pollAttempts;
+  final DateTime? preferenceCreatedAt;
 
   const PaymentState({
     this.status = PaymentStatus.idle,
     this.errorMessage,
-    this.pendingGems,
     this.pendingAmount,
     this.selectedMethod,
     this.preferenceId,
     this.initPoint,
-    this.gemsBefore,
-    this.gemsAfter,
+    this.donatedBefore,
+    this.donatedAfter,
     this.selectedProduct,
+    this.pendingPaymentId,
+    this.pollAttempts = 0,
+    this.preferenceCreatedAt,
   });
 
   PaymentState copyWith({
     PaymentStatus? status,
     String? errorMessage,
-    int? pendingGems,
     double? pendingAmount,
     PaymentMethod? selectedMethod,
     String? preferenceId,
     String? initPoint,
-    int? gemsBefore,
-    int? gemsAfter,
+    int? donatedBefore,
+    int? donatedAfter,
     Product? selectedProduct,
+    String? pendingPaymentId,
+    int? pollAttempts,
     bool clearError = false,
+    DateTime? preferenceCreatedAt,
   }) {
     return PaymentState(
       status: status ?? this.status,
       errorMessage: clearError ? null : (errorMessage ?? this.errorMessage),
-      pendingGems: pendingGems ?? this.pendingGems,
       pendingAmount: pendingAmount ?? this.pendingAmount,
       selectedMethod: selectedMethod ?? this.selectedMethod,
       preferenceId: preferenceId ?? this.preferenceId,
       initPoint: initPoint ?? this.initPoint,
-      gemsBefore: gemsBefore ?? this.gemsBefore,
-      gemsAfter: gemsAfter ?? this.gemsAfter,
+      donatedBefore: donatedBefore ?? this.donatedBefore,
+      donatedAfter: donatedAfter ?? this.donatedAfter,
       selectedProduct: selectedProduct ?? this.selectedProduct,
+      pendingPaymentId: pendingPaymentId ?? this.pendingPaymentId,
+      pollAttempts: pollAttempts ?? this.pollAttempts,
+      preferenceCreatedAt: preferenceCreatedAt ?? this.preferenceCreatedAt,
     );
   }
 }
 
-class PaymentNotifier extends Notifier<PaymentState> {
+class PaymentNotifier extends AutoDisposeNotifier<PaymentState> {
   late final MercadoPagoService _mpService;
   late final AppLogger _logger;
+  Timer? _pollTimer;
+  bool _polling = false;
 
   @override
   PaymentState build() {
     _mpService = MercadoPagoService();
     _logger = AppLogger();
+    ref.onDispose(() => _pollTimer?.cancel());
     return const PaymentState();
   }
 
   Future<String?> initiateMercadoPago({
-    required int gems,
     required double price,
     Product? product,
   }) async {
+    if (state.status != PaymentStatus.idle) return null;
+
+    final authNotifier = ref.read(authProvider.notifier);
     final authState = ref.read(authProvider);
     final userId = authState.uid;
 
     if (userId == null || userId.isEmpty) {
       state = state.copyWith(
         status: PaymentStatus.failed,
-        errorMessage: 'Debes iniciar sesión para comprar gemas',
+        errorMessage: 'You must be signed in to donate',
       );
       return null;
     }
 
+    // PAY-003: Reuse existing preference for same product within 5 minutes
+    if (state.preferenceId != null && state.selectedProduct?.id == product?.id) {
+      final created = state.preferenceCreatedAt;
+      if (created != null && DateTime.now().difference(created).inMinutes < 5) {
+        return state.initPoint;
+      }
+    }
+
     state = state.copyWith(
       status: PaymentStatus.creatingPreference,
-      pendingGems: gems,
       pendingAmount: price,
       selectedMethod: PaymentMethod.mercadopago,
-      gemsBefore: ref.read(learningProvider).gems,
+      donatedBefore: ref.read(learningProvider).totalDonated.toInt(),
       selectedProduct: product,
       clearError: true,
     );
 
     try {
+      final idToken = await authNotifier.getIdToken();
+      if (idToken == null || idToken.isEmpty) {
+        state = state.copyWith(
+          status: PaymentStatus.failed,
+          errorMessage: 'Could not get session. Please sign in again.',
+        );
+        return null;
+      }
+
+      final productId = product?.id;
+      if (productId == null || productId.isEmpty) {
+        state = state.copyWith(
+          status: PaymentStatus.failed,
+          errorMessage: 'Invalid product',
+        );
+        return null;
+      }
+
       final pref = await _mpService.createPreference(
-        gems: gems,
-        userId: userId,
-        productId: product?.id,
-        bonuses: product?.bonuses
-            .map((b) => {'type': b.type.name, 'quantity': b.quantity})
-            .toList(),
-        price: price,
+        amount: price.toInt(),
+        productId: productId,
+        idToken: idToken,
       );
 
       state = state.copyWith(
         status: PaymentStatus.waitingPayment,
         preferenceId: pref.preferenceId,
         initPoint: pref.initPoint,
+        preferenceCreatedAt: DateTime.now(),
       );
 
       return pref.initPoint;
     } catch (e) {
       state = state.copyWith(
         status: PaymentStatus.failed,
-        errorMessage: e.toString(),
+        errorMessage: 'Could not start payment. Please try again.',
       );
       return null;
     }
   }
 
   Future<void> initiateWhatsApp({
-    required int gems,
     required double price,
     Product? product,
   }) async {
+    if (state.status != PaymentStatus.idle) return;
+    final authNotifier = ref.read(authProvider.notifier);
     state = state.copyWith(
       status: PaymentStatus.waitingPayment,
-      pendingGems: gems,
       pendingAmount: price,
       selectedMethod: PaymentMethod.whatsapp,
-      gemsBefore: ref.read(learningProvider).gems,
+      donatedBefore: ref.read(learningProvider).totalDonated.toInt(),
       selectedProduct: product,
       clearError: true,
     );
-    // Register pending payment on server
+    // Register pending payment on server (requires auth)
     try {
-      const opId = 'wa_whatsapp'; // simplified; real flow would use UUID
-      await _mpService.registerPendingPayment(
+      final idToken = await authNotifier.getIdToken();
+      if (idToken == null || idToken.isEmpty) {
+        _logger.warning('registerPendingPayment: no idToken, skipping server registration');
+        return;
+      }
+      final opId = 'wa_${DateTime.now().millisecondsSinceEpoch}_${Random().nextInt(999999)}';
+      final result = await _mpService.registerPendingPayment(
         paymentMethod: 'whatsapp',
         operationId: opId,
-        amount: gems,
+        idToken: idToken,
+        amount: price.toInt(),
         productId: product?.id,
       );
+      final pendingId = result['pendingPaymentId'] as String?;
+      if (pendingId != null) {
+        state = state.copyWith(pendingPaymentId: pendingId);
+        _startPolling(pendingId);
+      }
     } catch (e) {
       _logger.error('Failed to register pending payment', e);
+      state = state.copyWith(
+        status: PaymentStatus.failed,
+        errorMessage: 'Could not register payment. Please try again.',
+      );
     }
   }
 
-  void onPaymentSuccess(String externalRef) {
-    _logger.info('Payment success callback: $externalRef');
+  void _startPolling(String pendingPaymentId) {
+    _pollTimer?.cancel();
+    _pollTimer = Timer.periodic(const Duration(seconds: 5), (_) => _pollPaymentStatus(pendingPaymentId));
+  }
 
-    final gemsBefore = state.gemsBefore ?? ref.read(learningProvider).gems;
-    final currentGems = ref.read(learningProvider).gems;
-
-    state = state.copyWith(
-      status: PaymentStatus.completed,
-      gemsAfter: currentGems > gemsBefore
-          ? currentGems
-          : (gemsBefore + (state.pendingGems ?? 0)),
-    );
+  Future<void> _pollPaymentStatus(String pendingPaymentId) async {
+    if (_polling) return;
+    if (state.pollAttempts >= 60) {
+      _pollTimer?.cancel();
+      state = state.copyWith(
+        status: PaymentStatus.failed,
+        errorMessage: 'Payment verification timed out. Check your payment history or try again.',
+        pendingPaymentId: null,
+      );
+      return;
+    }
+    _polling = true;
+    try {
+      state = state.copyWith(pollAttempts: state.pollAttempts + 1);
+      final authNotifier = ref.read(authProvider.notifier);
+      final idToken = await authNotifier.getIdToken();
+      if (idToken == null || idToken.isEmpty) return;
+      final result = await _mpService.checkPendingPaymentStatus(
+        pendingPaymentId: pendingPaymentId,
+        idToken: idToken,
+      );
+      final status = result['status'] as String?;
+      if (status == 'confirmed' || status == 'credited') {
+        _pollTimer?.cancel();
+        await refreshGems();
+        state = state.copyWith(
+          status: PaymentStatus.completed,
+          pendingPaymentId: null,
+        );
+      } else if (status == 'expired' || status == 'not_found') {
+        _pollTimer?.cancel();
+        state = state.copyWith(
+          status: PaymentStatus.failed,
+          errorMessage: 'Payment expired. Please try again.',
+          pendingPaymentId: null,
+        );
+      }
+    } catch (e) {
+      _logger.warning('Poll payment status failed: $e');
+    } finally {
+      _polling = false;
+    }
   }
 
   void onPaymentFailure({String? error}) {
+    _pollTimer?.cancel();
     state = state.copyWith(
       status: PaymentStatus.failed,
-      errorMessage: error ?? 'El pago fue cancelado o no se completó',
+      errorMessage: error ?? 'Payment was cancelled or did not complete',
     );
   }
 
-  void refreshGems() {
-    final currentGems = ref.read(learningProvider).gems;
-    state = state.copyWith(
-      gemsAfter: currentGems,
-      status: currentGems > (state.gemsBefore ?? 0)
-          ? PaymentStatus.completed
-          : state.status,
-    );
+  Future<void> refreshGems() async {
+    try {
+      await ref.read(learningProvider.notifier).reload();
+      final currentDonated = ref.read(learningProvider).totalDonated;
+      state = state.copyWith(donatedAfter: currentDonated.toInt());
+    } catch (e) {
+      AppLogger().warning('PaymentNotifier.refreshGems failed: $e');
+    }
   }
 
   void reset() {
+    _pollTimer?.cancel();
     state = const PaymentState();
   }
 }
 
-final paymentProvider = NotifierProvider<PaymentNotifier, PaymentState>(
+final paymentProvider = NotifierProvider.autoDispose<PaymentNotifier, PaymentState>(
   PaymentNotifier.new,
 );

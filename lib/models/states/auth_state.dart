@@ -1,3 +1,4 @@
+/// Sealed state for the authentication lifecycle.
 sealed class AuthState {
   const AuthState();
 }

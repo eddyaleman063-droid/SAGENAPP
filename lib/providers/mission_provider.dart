@@ -1,13 +1,13 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:math' as math;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../models/chest_reward.dart';
 import '../models/chest_type.dart';
 import '../models/daily_mission.dart';
 import '../services/chest_event_bus.dart';
 import '../services/storage_service.dart';
-import 'learning_provider.dart';
-import 'prefs_provider.dart';
+import '../services/app_logger.dart';
+import 'providers.dart';
 
 class MissionState {
   final List<DailyMission> missions;
@@ -36,6 +36,7 @@ class MissionState {
 
 class MissionNotifier extends Notifier<MissionState> {
   late final StorageService _storage;
+  bool _disposed = false;
 
   List<DailyMission> get missions => List.unmodifiable(state.missions);
   int get totalMissionsCompleted => state.totalMissionsCompleted;
@@ -47,7 +48,8 @@ class MissionNotifier extends Notifier<MissionState> {
 
   @override
   MissionState build() {
-    _storage = StorageService(ref.watch(prefsProvider));
+    ref.onDispose(() => _disposed = true);
+    _storage = StorageService(ref.read(prefsProvider));
     _load();
     _checkReset();
     return state;
@@ -64,7 +66,9 @@ class MissionNotifier extends Notifier<MissionState> {
               .map((e) => DailyMission.fromJson(e as Map<String, dynamic>))
               .toList();
         }
-      } catch (_) {}
+      } catch (e) {
+        AppLogger().warning('Failed to parse missions JSON: $e');
+      }
     }
     final resetStr = _storage.getString(_keyReset);
     DateTime lastReset = DateTime.now();
@@ -84,7 +88,6 @@ class MissionNotifier extends Notifier<MissionState> {
   }
 
   void _save() {
-    state = state.copyWith();
     _storage.setString(
       _keyMissions,
       jsonEncode(state.missions.map((m) => m.toJson()).toList()),
@@ -109,135 +112,120 @@ class MissionNotifier extends Notifier<MissionState> {
   }
 
   void _generateMissions() {
-    final daySeed = DateTime.now().day;
+    final daySeed = DateTime.now().difference(DateTime(2024, 1, 1)).inDays;
+    final uid = ref.read(authServiceProvider).currentUser?.uid ?? 'anonymous';
+    final userSeed = uid.hashCode;
+    final combinedSeed = daySeed ^ userSeed;
     final allMissions = [
       DailyMission(
         id: 'm1',
-        title: 'Lección perfecta',
-        description: 'Completa una lección sin errores.',
+        title: 'Perfect Lesson',
+        description: 'Complete a lesson without mistakes.',
         type: MissionType.perfectLesson,
         target: 1,
         xpReward: 40,
-        gemReward: 15,
         difficulty: MissionDifficulty.hard,
         rarity: MissionRarity.rare,
         xpBonus: 10,
-        gemBonus: 5,
         category: MissionCategory.learning,
       ),
       DailyMission(
         id: 'm2',
-        title: 'Aprendiz activo',
-        description: 'Completa 1 lección de seguridad.',
+        title: 'Active Learner',
+        description: 'Complete 1 security lesson.',
         type: MissionType.completeLesson,
         target: 1,
         xpReward: 30,
-        gemReward: 10,
         difficulty: MissionDifficulty.easy,
         rarity: MissionRarity.common,
         category: MissionCategory.learning,
       ),
       DailyMission(
         id: 'm3',
-        title: 'Detective digital',
-        description: 'Analiza un enlace sospechoso.',
+        title: 'Digital Detective',
+        description: 'Analyze a suspicious link.',
         type: MissionType.analyzeLink,
         target: 1,
         xpReward: 25,
-        gemReward: 8,
         difficulty: MissionDifficulty.easy,
         rarity: MissionRarity.common,
         category: MissionCategory.protection,
       ),
       DailyMission(
         id: 'm4',
-        title: 'Conversa con Sage',
-        description:
-            'Habla con Sage sobre seguridad digital.',
+        title: 'Chat with Sage',
+        description: 'Talk to Sage about digital security.',
         type: MissionType.talkToSage,
         target: 1,
         xpReward: 20,
-        gemReward: 5,
         difficulty: MissionDifficulty.easy,
         rarity: MissionRarity.common,
         category: MissionCategory.awareness,
       ),
       DailyMission(
         id: 'm5',
-        title: 'Racha activa',
-        description: 'Mantén tu racha de aprendizaje hoy.',
+        title: 'Active Streak',
+        description: 'Maintain your learning streak today.',
         type: MissionType.maintainStreak,
         target: 1,
         xpReward: 35,
-        gemReward: 12,
         difficulty: MissionDifficulty.medium,
         rarity: MissionRarity.rare,
         xpBonus: 5,
-        gemBonus: 3,
         streakBonus: 1,
         category: MissionCategory.consistency,
       ),
       DailyMission(
         id: 'm6',
-        title: 'Desafío exprés',
-        description:
-            'Completa un desafío rápido de 30 segundos.',
+        title: 'Express Challenge',
+        description: 'Complete a quick 30-second challenge.',
         type: MissionType.quickChallenge,
         target: 1,
         xpReward: 20,
-        gemReward: 6,
         difficulty: MissionDifficulty.easy,
         rarity: MissionRarity.common,
         category: MissionCategory.learning,
       ),
       DailyMission(
         id: 'm7',
-        title: 'Cazador de phishing',
-        description:
-            'Detecta correctamente un intento de phishing.',
+        title: 'Phishing Hunter',
+        description: 'Correctly detect a phishing attempt.',
         type: MissionType.detectPhishing,
         target: 1,
         xpReward: 45,
-        gemReward: 15,
         difficulty: MissionDifficulty.hard,
         rarity: MissionRarity.epic,
         xpBonus: 15,
-        gemBonus: 7,
         category: MissionCategory.privacy,
       ),
       DailyMission(
         id: 'm8',
-        title: '3 consultas',
-        description:
-            'Habla 3 veces con Sage sobre temas distintos.',
+        title: '3 Queries',
+        description: 'Talk to Sage 3 times about different topics.',
         type: MissionType.talkToSage,
         target: 3,
         xpReward: 50,
-        gemReward: 18,
         difficulty: MissionDifficulty.medium,
         rarity: MissionRarity.rare,
         xpBonus: 10,
-        gemBonus: 5,
         category: MissionCategory.awareness,
       ),
       DailyMission(
         id: 'm9',
-        title: 'Protector consistente',
-        description: 'Completa 3 lecciones hoy.',
+        title: 'Constant Protector',
+        description: 'Complete 3 lessons today.',
         type: MissionType.completeLesson,
         target: 3,
         xpReward: 60,
-        gemReward: 20,
         difficulty: MissionDifficulty.hard,
         rarity: MissionRarity.epic,
         xpBonus: 20,
-        gemBonus: 8,
         streakBonus: 2,
         category: MissionCategory.consistency,
       ),
     ];
 
-    final startIdx = daySeed % allMissions.length;
+    final startIdx = combinedSeed % allMissions.length;
     state = state.copyWith(missions: [
       allMissions[startIdx % allMissions.length],
       allMissions[(startIdx + 3) % allMissions.length],
@@ -267,44 +255,40 @@ class MissionNotifier extends Notifier<MissionState> {
     );
     _save();
 
-    if (newCompleted) _rewardMission(mission);
+    if (newCompleted) {
+      _rewardMission(mission).catchError((e) {
+        AppLogger().warning('Mission reward failed: $e');
+      });
+    }
   }
 
-  void _rewardMission(DailyMission mission) {
+  Future<void> _rewardMission(DailyMission mission) async {
+    if (_disposed) return;
     final roll = math.Random().nextDouble();
 
     ChestType? chestType;
-    String label;
 
-    if (roll < 0.01) {
+    if (roll < 0.02) {
       chestType = ChestType.legendary;
-      label = '¡Legendario!';
-    } else if (roll < 0.06) {
+    } else if (roll < 0.08) {
       chestType = ChestType.gold;
-      label = '¡Oro!';
-    } else if (roll < 0.20) {
+    } else if (roll < 0.25) {
       chestType = ChestType.silver;
-      label = '¡Plata!';
-    } else if (roll < 0.45) {
+    } else if (roll < 0.70) {
       chestType = ChestType.bronze;
-      label = '¡Bronce!';
-    } else {
-      label = 'Recompensa';
     }
 
     if (chestType != null) {
-      final reward = ChestRewardRoller.roll(chestType);
-      ref.read(learningProvider.notifier).addGems(reward.gems);
-      ref.read(learningProvider.notifier).addXp(reward.xp);
-      ChestEventBus.instance.fire(ChestRewardData(
+      final reward = await ref.read(chestRewardRollerProvider).roll(chestType);
+      await ref.read(learningProvider.notifier).addXp(reward.xp, reason: 'mission_reward');
+      ref.read(gemProvider.notifier).awardMissionGems();
+      ref.read(chestEventBusProvider).fire(ChestRewardData(
         type: chestType,
         xp: reward.xp,
-        gems: reward.gems,
         streakShields: reward.streakShields,
         xpBoost: reward.xpBoost,
-        gemMultiplier: reward.gemMultiplier,
-        title: '$label Misión completada',
-        message: 'Al completar "${mission.title}" has obtenido un cofre.',
+        specialItems: reward.specialItems,
+        cosmeticUnlocks: reward.cosmeticUnlocks,
         source: 'mission',
       ));
     }

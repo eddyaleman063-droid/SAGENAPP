@@ -9,8 +9,27 @@ import 'package:shared_preferences/shared_preferences.dart';
 class MockCloudSyncService extends Mock implements CloudSyncService {}
 class MockAuthService extends Mock implements AuthService {}
 
+class TestLearningNotifier extends LearningNotifier {
+  @override
+  LearningState build() {
+    return const LearningState(isLoading: false);
+  }
+
+  @override
+  Future<void> addXp(int amount, {String? reason, String? lessonId}) async {
+    final newXp = state.xp + amount;
+    final newTotalXp = state.totalXpEarned + amount;
+    final newLevel = (newTotalXp / 100).floor() + 1;
+    state = state.copyWith(
+      xp: newLevel > state.currentLevel ? 0 : newXp,
+      totalXpEarned: newTotalXp,
+      currentLevel: newLevel > state.currentLevel ? newLevel : state.currentLevel,
+    );
+  }
+}
+
 void main() {
-  group('LearningNotifier - Gems', () {
+  group('LearningNotifier - XP', () {
     late ProviderContainer container;
 
     setUp(() async {
@@ -20,73 +39,38 @@ void main() {
         prefsProvider.overrideWithValue(prefs),
         cloudSyncServiceProvider.overrideWith((ref) => MockCloudSyncService()),
         authServiceProvider.overrideWith((ref) => MockAuthService()),
+        learningProvider.overrideWith(() => TestLearningNotifier()),
       ]);
     });
 
     tearDown(() => container.dispose());
 
-    test('initial gems is 0', () {
+    test('initial xp is 0', () {
       final notifier = container.read(learningProvider.notifier);
-      expect(notifier.state.gems, 0);
+      expect(notifier.state.xp, 0);
     });
 
-    test('addGems increases balance and totalGemsEarned', () {
+    test('addXp increases balance and totalXpEarned', () async {
       final notifier = container.read(learningProvider.notifier);
-      notifier.addGems(10);
-      expect(notifier.state.gems, 10);
-      expect(notifier.state.totalGemsEarned, 10);
+      await notifier.addXp(10);
+      expect(notifier.state.xp, 10);
+      expect(notifier.state.totalXpEarned, 10);
     });
 
-    test('addGems accumulates correctly across multiple calls', () {
+    test('addXp accumulates correctly across multiple calls', () async {
       final notifier = container.read(learningProvider.notifier);
-      notifier.addGems(5);
-      notifier.addGems(15);
-      notifier.addGems(3);
-      expect(notifier.state.gems, 23);
-      expect(notifier.state.totalGemsEarned, 23);
+      await notifier.addXp(5);
+      await notifier.addXp(15);
+      await notifier.addXp(3);
+      expect(notifier.state.xp, 23);
+      expect(notifier.state.totalXpEarned, 23);
     });
 
-    test('spendGems returns true when sufficient', () {
+    test('addXp with 0 is a no-op', () async {
       final notifier = container.read(learningProvider.notifier);
-      notifier.addGems(20);
-      expect(notifier.spendGems(15), isTrue);
-      expect(notifier.state.gems, 5);
-    });
-
-    test('spendGems returns false when insufficient', () {
-      final notifier = container.read(learningProvider.notifier);
-      notifier.addGems(10);
-      expect(notifier.spendGems(20), isFalse);
-      expect(notifier.state.gems, 10);
-    });
-
-    test('spendGems with exact balance returns true and depletes', () {
-      final notifier = container.read(learningProvider.notifier);
-      notifier.addGems(50);
-      expect(notifier.spendGems(50), isTrue);
-      expect(notifier.state.gems, 0);
-    });
-
-    test('spendGems does not change totalGemsEarned', () {
-      final notifier = container.read(learningProvider.notifier);
-      notifier.addGems(100);
-      expect(notifier.state.totalGemsEarned, 100);
-      notifier.spendGems(30);
-      expect(notifier.state.gems, 70);
-      expect(notifier.state.totalGemsEarned, 100);
-    });
-
-    test('spendGems with 0 gems returns false', () {
-      final notifier = container.read(learningProvider.notifier);
-      expect(notifier.spendGems(1), isFalse);
-      expect(notifier.state.gems, 0);
-    });
-
-    test('addGems with 0 is a no-op', () {
-      final notifier = container.read(learningProvider.notifier);
-      notifier.addGems(0);
-      expect(notifier.state.gems, 0);
-      expect(notifier.state.totalGemsEarned, 0);
+      await notifier.addXp(0);
+      expect(notifier.state.xp, 0);
+      expect(notifier.state.totalXpEarned, 0);
     });
   });
 }

@@ -1,0 +1,450 @@
+[
+    {
+        "id": "ac_st1_qB5_001",
+        "question": "Verdadero o Falso: Usar la misma contraseña para el correo y el banco es seguro si la contraseña es muy larga.",
+        "type": "trueFalse",
+        "options": [
+            "Verdadero",
+            "Falso"
+        ],
+        "correctIndex": 1,
+        "explanation": "Falso. Reutilizar contraseñas es peligroso sin importar su longitud. Si una cuenta es comprometida, todas quedan en riesgo.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses3_l2"
+    },
+    {
+        "id": "ac_st1_qB5_002",
+        "question": "Completa la frase: Para proteger tus cuentas, siempre debes usar contraseñas ___.",
+        "type": "completePhrase",
+        "options": [
+            "iguales para todas",
+            "débiles y fáciles de recordar",
+            "fuertes y únicas para cada cuenta",
+            "escritas en un papel pegado en la pantalla"
+        ],
+        "correctIndex": 2,
+        "explanation": "Las contraseñas deben ser fuertes (mezclando letras, números y símbolos) y únicas para cada cuenta importante.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses3_l2"
+    },
+    {
+        "id": "ac_st1_qB5_003",
+        "question": "Que es la autenticación en dos pasos (2FA) y por que es importante?",
+        "type": "multipleChoice",
+        "options": [
+            "Es cuando pones dos contraseñas diferentes",
+            "Es un metodo que requiere algo que sabes (contraseña) y algo que tienes (celular)",
+            "Es cuando cambias tu contraseña cada dos meses",
+            "Es un tipo de virus de seguridad"
+        ],
+        "correctIndex": 1,
+        "explanation": "La 2FA añade una capa extra de seguridad: ademas de tu contraseña, necesitas un codigo que llega a tu celular o app.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses3_l3"
+    },
+    {
+        "id": "ac_st1_qB5_004",
+        "question": "Cual de estas es una contraseña segura para tu cuenta de correo?",
+        "type": "multipleChoice",
+        "options": [
+            "123456",
+            "MiNombre2024",
+            "Gato#Negro$7!xY",
+            "contraseña"
+        ],
+        "correctIndex": 2,
+        "explanation": "Una contraseña segura combina mayusculas, minusculas, números y simbolos. 'Gato#Negro$7!xY' cumple estos requisitos.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses3_l1"
+    },
+    {
+        "id": "ac_st1_qB5_005",
+        "question": "Por que es peligroso publicar tu ubicacion en tiempo real en redes sociales?",
+        "type": "detectRisk",
+        "options": [
+            "No es peligroso, es divertido",
+            "Puede ser usado por ladrones para saber cuando no estas en casa",
+            "Solo es peligroso si tienes muchos seguidores",
+            "Único riesgo es que te molesten con mensajes"
+        ],
+        "correctIndex": 1,
+        "explanation": "Publicar tu ubicacion en tiempo real permite que delincuentes sepan cuando tu casa esta vacia. Espera a salir para publicar.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses4_l4"
+    },
+    {
+        "id": "ac_st1_qB5_006",
+        "question": "Que es un ataque de phishing por WhatsApp?",
+        "type": "multipleChoice",
+        "options": [
+            "Es cuando te envian un mensaje de texto normal",
+            "Es un mensaje falso que finge ser de una tienda o banco para robarte datos",
+            "Es una actualización de la app",
+            "Es un codigo de verificación"
+        ],
+        "correctIndex": 1,
+        "explanation": "El phishing por WhatsApp usa mensajes falsos con enlaces a sitios fraudulentos. Nunca hagas clic en enlaces de remitentes desconocidos.",
+        "difficulty": 3,
+        "lessonId": "ac_s1_ses17_l4"
+    },
+    {
+        "id": "ac_st1_qB5_007",
+        "question": "Que debes hacer antes de vender tu celular viejo?",
+        "type": "whatWouldYouDo",
+        "options": [
+            "Borrar algunos mensajes y fotos",
+            "Restablecerlo de fabrica y eliminar todas tus cuentas y datos",
+            "Solo quitar la tarjeta SIM",
+            "No hacer nada, el comprador se encargara"
+        ],
+        "correctIndex": 1,
+        "explanation": "Siempre restablece tu celular de fabrica antes de venderlo para borrar todos tus datos, cuentas y contraseñas.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses20_l2"
+    },
+    {
+        "id": "ac_st1_qB5_008",
+        "question": "Que es la suplantacion de identidad (spoofing) en llamadas telefonicas?",
+        "type": "multipleChoice",
+        "options": [
+            "Es cuando alguien te llama para saludar",
+            "Es cuando un atacante falsifica el número de llamada para parecer tu banco",
+            "Es una llamada de publicidad",
+            "Es una actualización de tu operador"
+        ],
+        "correctIndex": 1,
+        "explanation": "El spoofing falsifica el ID de llamada. Si recibes una llamada 'de tu banco', cuelga y llama al número oficial.",
+        "difficulty": 3,
+        "lessonId": "ac_s1_ses18_l2"
+    },
+    {
+        "id": "ac_st1_qB5_009",
+        "question": "Cual es el riesgo de usar WiFi publico sin contraseña para hacer transacciones bancarias?",
+        "type": "detectRisk",
+        "options": [
+            "No hay riesgo, el WiFi es seguro",
+            "Los atacantes pueden interceptar tus datos bancarios",
+            "Solo es lento",
+            "Único riesgo es que se corte la conexión"
+        ],
+        "correctIndex": 1,
+        "explanation": "En WiFi publico sin cifrado, los atacantes pueden ver todo lo que haces. Nunca hagas transacciones bancarias en estas redes.",
+        "difficulty": 3,
+        "lessonId": "ac_s1_ses2_l6"
+    },
+    {
+        "id": "ac_st1_qB5_010",
+        "question": "Que es un gestor de contraseñas y por que deberias usar uno?",
+        "type": "multipleChoice",
+        "options": [
+            "Un programa que guarda tus contraseñas en un archivo de texto",
+            "Una app segura que guarda y genera contraseñas fuertes automáticamente",
+            "Un tipo de red social",
+            "Una página para comprar contraseñas"
+        ],
+        "correctIndex": 1,
+        "explanation": "Un gestor de contraseñas como Bitwarden o Google Password Manager guarda todas tus claves de forma cifrada y segura.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses4_l6"
+    },
+    {
+        "id": "ac_st1_qB5_011",
+        "question": "Que debes hacer si tu celular pierde conexión y no puedes recibir codigos de verificación?",
+        "type": "whatWouldYouDo",
+        "options": [
+            "Esperar a que vuelva la señal",
+            "Usar un metodo de recuperación alternativo como correo o pregunta de seguridad",
+            "Pedir a un amigo que te pase sus codigos",
+            "Borrar la cuenta y crear una nueva"
+        ],
+        "correctIndex": 1,
+        "explanation": "Siempre ten metodos de recuperación alternativos configurados: correo secundario, pregunta de seguridad o app de autenticación.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses9_l4"
+    },
+    {
+        "id": "ac_st1_qB5_012",
+        "question": "Que tipo de información nunca debes incluir en tu perfil de redes sociales?",
+        "type": "detectRisk",
+        "options": [
+            "Tu nombre artístico",
+            "Tu número de DNI, dirección o fecha de nacimiento completa",
+            "Tu color favorito",
+            "El nombre de tu mascota"
+        ],
+        "correctIndex": 1,
+        "explanation": "Datos como DNI, dirección completa y fecha de nacimiento pueden ser usados para robo de identidad o hackeo de cuentas.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses4_l1"
+    },
+    {
+        "id": "ac_st1_qB5_013",
+        "question": "Que es un token de seguridad fisico y como protege tus cuentas?",
+        "type": "multipleChoice",
+        "options": [
+            "Es un codigo que te envian por SMS",
+            "Es un dispositivo USB que genera codigos únicos para iniciar sesión",
+            "Es una pregunta de seguridad",
+            "Es una contraseña guardada en papel"
+        ],
+        "correctIndex": 1,
+        "explanation": "Un token fisico como YubiKey genera codigos únicos cada vez que lo conectas, protegiendo tus cuentas incluso si hackean tu contraseña.",
+        "difficulty": 3,
+        "lessonId": "ac_s1_ses9_l5"
+    },
+    {
+        "id": "ac_st1_qB5_014",
+        "question": "Cual es el peligro de abrir archivos adjuntos de remitentes desconocidos?",
+        "type": "detectRisk",
+        "options": [
+            "No hay peligro, son archivos normales",
+            "Pueden contener virus o malware que infecten tu dispositivo",
+            "Solo son peligrosos si pesan mucho",
+            "Único riesgo es que no se abran"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los archivos adjuntos pueden contener virus, troyanos o ransomware. Nunca abras archivos de remitentes que no conoces.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses17_l1"
+    },
+    {
+        "id": "ac_st1_qB5_015",
+        "question": "Que es la ingenieria social y como te pueden atacar con ella?",
+        "type": "multipleChoice",
+        "options": [
+            "Es un tipo de virus",
+            "Es cuando alguien te manipula para que reveles información confidencial",
+            "Es un programa de seguridad",
+            "Es una forma de navegar internet"
+        ],
+        "correctIndex": 1,
+        "explanation": "La ingenieria social usa engaños para que des tu contraseña, datos bancarios u otra información sensible.",
+        "difficulty": 3,
+        "lessonId": "ac_s1_ses17_l3"
+    },
+    {
+        "id": "ac_st1_qB5_016",
+        "question": "Que debes hacer si tu amigo te pide dinero por WhatsApp porque 'se quedo sin efectivo'?",
+        "type": "whatWouldYouDo",
+        "options": [
+            "Enviar el dinero inmediatamente",
+            "Llamar a tu amigo por telefono para confirmar que elsea realmente él",
+            "Pedirle su contraseña para verificar",
+            "Ignorar el mensaje"
+        ],
+        "correctIndex": 1,
+        "explanation": "Siempre verifica por un canal seguro. Los estafadores hackean cuentas y piden dinero haciendose pasar por amigos.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses18_l4"
+    },
+    {
+        "id": "ac_st1_qB5_017",
+        "question": "Que es el cifrado de datos y por que es importante en comúnicaciones?",
+        "type": "multipleChoice",
+        "options": [
+            "Es cuando borras los datos permanentemente",
+            "Es convertir la información en codigo para que solo el destinatario pueda leerla",
+            "Es una forma de comprimir archivos",
+            "Es una actualización de sistema"
+        ],
+        "correctIndex": 1,
+        "explanation": "El cifrado convierte tus datos en codigo ilegible. Solo quien tiene la clave puede descifrarlos, protegiendo tu información.",
+        "difficulty": 3,
+        "lessonId": "ac_s1_ses6_l3"
+    },
+    {
+        "id": "ac_st1_qB5_018",
+        "question": "Por que es importante cerrar sesión en computadoras publicas?",
+        "type": "multipleChoice",
+        "options": [
+            "No es importante, la sesión se cierra sola",
+            "Para que el siguiente usuario no pueda acceder a tus cuentas",
+            "Para ahorrar bateria",
+            "Para que la computadora funcione mas rápido"
+        ],
+        "correctIndex": 1,
+        "explanation": "Siempre cierra sesión en computadoras publicas para evitar que el siguiente usuario acceda a tus cuentas y datos.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses20_l4"
+    },
+    {
+        "id": "ac_st1_qB5_019",
+        "question": "Que es un código de verificación por SMS y por qué no es totalmente seguro?",
+        "type": "detectRisk",
+        "options": [
+            "Es un codigo que te envian por correo",
+            "Puede ser interceptado por atacantes que hackean tu linea telefonica",
+            "Es un codigo que solo sirve para una vez",
+            "Es un tipo de contraseña"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los SMS pueden ser interceptados mediante SIM swapping o malware. Usa apps de autenticación como Google Authenticator cuando sea posible.",
+        "difficulty": 3,
+        "lessonId": "ac_s1_ses9_l3"
+    },
+    {
+        "id": "ac_st1_qB5_020",
+        "question": "Que debes hacer si tu computadora muestra un mensaje de 'ransomware' que bloquea tus archivos?",
+        "type": "whatWouldYouDo",
+        "options": [
+            "Pagar el rescate inmediatamente",
+            "Desconectarla de internet, no pagar y buscar ayuda técnica profesiónal",
+            "Borrar todos los archivos manualmente",
+            "Reiniciar la computadora varias veces"
+        ],
+        "correctIndex": 1,
+        "explanation": "Nunca pagues rescate. Desconecta la computadora, no uses USB y busca ayuda técnica. Puede que tus archivos se recuperen sin pagar.",
+        "difficulty": 3,
+        "lessonId": "ac_s1_ses16_l5"
+    },
+    {
+        "id": "ac_st1_qB5_021",
+        "question": "Que es la huella digital y como puedes reducirla en internet?",
+        "type": "multipleChoice",
+        "options": [
+            "Es tu huella dactilar",
+            "Son los rastros que dejas con tus busquedas, likes y compras en linea",
+            "Es tu contraseña",
+            "Es tu número de telefono"
+        ],
+        "correctIndex": 1,
+        "explanation": "Tu huella digital incluye todo lo que haces en internet. Usa navegadores privados y evita dar datos innecesarios.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses6_l4"
+    },
+    {
+        "id": "ac_st1_qB5_022",
+        "question": "Cual es el riesgo de usar el mismo correo para cuentas personales y de trabajo?",
+        "type": "detectRisk",
+        "options": [
+            "No hay riesgo",
+            "Si hackean tu correo personal, pueden acceder a tu trabajo y viceversa",
+            "Solo es riesgoso si trabajas desde casa",
+            "Único riesgo es que recibas muchos correos"
+        ],
+        "correctIndex": 1,
+        "explanation": "Usar el mismo correo para todo mezcla tu vida personal y laboral. Si una se ve comprometida, la otra también.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses8_l3"
+    },
+    {
+        "id": "ac_st1_qB5_023",
+        "question": "Que es un ataque Man-in-the-Middle y cómo te afecta en WiFi publico?",
+        "type": "multipleChoice",
+        "options": [
+            "Es cuando alguien se sienta entre tú y la pantalla",
+            "Es cuando un atacante se posiciona entre tu dispositivo y el router para interceptar datos",
+            "Es un tipo de virus",
+            "Es una actualización de seguridad"
+        ],
+        "correctIndex": 1,
+        "explanation": "En WiFi publico, un atacante puede posicionarse entre tu dispositivo y el router para ver todo lo que haces, incluyendo contraseñas.",
+        "difficulty": 3,
+        "lessonId": "ac_s1_ses2_l6"
+    },
+    {
+        "id": "ac_st1_qB5_024",
+        "question": "Que debes hacer si recibes un mensaje de que has ganado un premio que no recuerdas haber participado?",
+        "type": "whatWouldYouDo",
+        "options": [
+            "Reclamar el premio inmediatamente",
+            "Ignorar el mensaje, probablemente es una estafa",
+            "Compartir el mensaje con amigos",
+            "Llamar al número que te envian"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los premios no solicitados son estafas. Los atacantes usan la avaricia para robarte datos o dinero.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses18_l4"
+    },
+    {
+        "id": "ac_st1_qB5_025",
+        "question": "Que es el doxing y cómo protegerte de él?",
+        "type": "multipleChoice",
+        "options": [
+            "Es un tipo de virus",
+            "Es cuando alguien publica tu información personal sin tu consentimiento",
+            "Es una forma de navegar internet",
+            "Es un programa de seguridad"
+        ],
+        "correctIndex": 1,
+        "explanation": "El doxing es exponer tu información privada (dirección, telefono, DNI) para acosarte. Protege tus datos y no compartas información sensible.",
+        "difficulty": 3,
+        "lessonId": "ac_s1_ses4_l4"
+    },
+    {
+        "id": "ac_st1_qB5_026",
+        "question": "Por que es importante actualizar las aplicaciones de tu celular?",
+        "type": "multipleChoice",
+        "options": [
+            "Para que tengan nuevos colores",
+            "Para corregir fallos de seguridad que podrian ser explotados por hackers",
+            "Para que pesen menos",
+            "No es importante"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las actualizaciones corrigen vulnerabilidades. Un celular desactualizado es facil blanco de ataques conocidos.",
+        "difficulty": 1,
+        "lessonId": "ac_s1_ses16_l1"
+    },
+    {
+        "id": "ac_st1_qB5_027",
+        "question": "Que es un SIM swapping y como puede afectar tus cuentas bancarias?",
+        "type": "detectRisk",
+        "options": [
+            "Es cuando cambias de celular",
+            "Es cuando un atacante obtiene tu número de telefono para interceptar codigos de verificación",
+            "Es una actualización de tu chip",
+            "Es un tipo de virus"
+        ],
+        "correctIndex": 1,
+        "explanation": "En SIM swapping, los atacantes engañan a tu operador para llevar tu número a su chip. Así reciben tus codigos de verificación bancaria.",
+        "difficulty": 3,
+        "lessonId": "ac_s1_ses9_l6"
+    },
+    {
+        "id": "ac_st1_qB5_028",
+        "question": "Cual es la mejor forma de proteger tu correo electrónico?",
+        "type": "multipleChoice",
+        "options": [
+            "Usar la misma contraseña que para tus redes sociales",
+            "Activar 2FA, usar contraseña fuerte y no compartir nunca tu codigo de verificación",
+            "Compartir tu contraseña con tu familia",
+            "No usar correo electrónico"
+        ],
+        "correctIndex": 1,
+        "explanation": "Protege tu correo con 2FA, contraseña fuerte y nunca compartas codigos. Tu correo es la llave para recuperar todas tus cuentas.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses8_l4"
+    },
+    {
+        "id": "ac_st1_qB5_029",
+        "question": "Que es un keylogger y cómo puede robar tus contraseñas?",
+        "type": "multipleChoice",
+        "options": [
+            "Es un tipo de virus que borra tus archivos",
+            "Es un software que graba todo lo que escribes en el teclado",
+            "Es un bloqueador de teclado",
+            "Es una actualización de sistema"
+        ],
+        "correctIndex": 1,
+        "explanation": "Un keylogger graba cada tecla que presionas, incluyendo contraseñas. Se instala mediante archivos adjuntos o descargas.",
+        "difficulty": 3,
+        "lessonId": "ac_s1_ses16_l3"
+    },
+    {
+        "id": "ac_st1_qB5_030",
+        "question": "Por que es peligroso hacer clic en enlaces de correos o mensajes que no esperabas?",
+        "type": "detectRisk",
+        "options": [
+            "No es peligroso, son enlaces normales",
+            "Pueden llevarte a sitios de phishing o descargar malware automáticamente",
+            "Solo es peligro si el enlace es muy largo",
+            "Único riesgo es que no se abra la página"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los enlaces inesperados pueden ser phishing o malware. Nunca hagas clic si no esperabas el mensaje, aunque parezca de una empresa conocida.",
+        "difficulty": 2,
+        "lessonId": "ac_s1_ses18_l3"
+    }
+]

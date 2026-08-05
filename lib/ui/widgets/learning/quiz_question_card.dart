@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/theme_constants.dart';
-import '../../../l10n/app_localizations.dart';
 import '../../../models/learning/challenge.dart';
 import '../../../models/learning/lesson_type.dart';
+import '../common/localization_helper.dart';
 
 class QuizQuestionCard extends StatelessWidget {
   final Challenge challenge;
@@ -40,31 +40,25 @@ class QuizQuestionCard extends StatelessWidget {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.xxs),
                 decoration: BoxDecoration(
                   color: challenge.color.withValues(alpha: 0.15),
-                  borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(AppRadius.sm),
                 ),
                 child: Text(
                   typeLabel,
-                  style: TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.bold,
-                    color: challenge.color,
-                  ),
+                  style: AppTextStyle.label.copyWith(fontWeight: FontWeight.bold,
+                    color: challenge.color),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.lg),
           Text(
             challenge.question,
-            style: TextStyle(
-              fontSize: 17,
-              fontWeight: FontWeight.w600,
+            style: AppTextStyle.bodyLg.copyWith(fontWeight: FontWeight.w600,
               color: Theme.of(context).colorScheme.onSurface,
-              height: 1.4,
-            ),
+              height: 1.4),
           ),
         ],
       ),
@@ -72,7 +66,7 @@ class QuizQuestionCard extends StatelessWidget {
   }
 
   String _typeLabel(LessonType type, BuildContext context) {
-    final l = AppLocalizations.of(context)!;
+    final l = l10n(context);
     switch (type) {
       case LessonType.trueFalse: return l.challengeTrueFalse;
       case LessonType.multipleChoice: return l.challengeMultiple;

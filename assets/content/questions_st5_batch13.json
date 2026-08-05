@@ -1,0 +1,452 @@
+[
+    {
+        "id": "ac_st5_qB13_001",
+        "question": "Que es una alerta de seguridad en tus cuentas digitales",
+        "type": "multipleChoice",
+        "options": [
+            "Un tipo de notificacion de cumpleanos",
+            "Una notificacion que te avisa de actividad sospechosa o accesos no autorizados",
+            "Un correo basura",
+            "Una forma de cambiar tu contraseña"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las alertas de seguridad te informan cuando algo inusual ocurre en tus cuentas para que actues rápido.",
+        "difficulty": 1,
+        "lessonId": "ac_s5_ses1_l1"
+    },
+    {
+        "id": "ac_st5_qB13_002",
+        "question": "Que tipo de alerta recibes cuando alguien accede a tu cuenta desde otro pais",
+        "type": "completePhrase",
+        "options": [
+            "Una alerta de cumpleanos",
+            "Una notificacion de inicio de sesión desde ubicacion desconocida",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los servicios te alertan cuando detectan accesos desde ubicaciones inusuales o nuevas.",
+        "difficulty": 1,
+        "lessonId": "ac_s5_ses1_l1"
+    },
+    {
+        "id": "ac_st5_qB13_003",
+        "question": "Que es el monitoreo decontraseña de contraseñas en la dark web",
+        "type": "detectRisk",
+        "options": [
+            "Ver tus contraseñas en la red",
+            "Servicio que revisa si tus datos aparecen en mercados ilegales de la dark web",
+            "Un tipo de red social",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "Estos servicios buscan en la dark web si tus contraseñas o datos fueron filtrados y vendidos ilegalmente.",
+        "difficulty": 3,
+        "lessonId": "ac_s5_ses1_l2"
+    },
+    {
+        "id": "ac_st5_qB13_004",
+        "question": "Que es el alerta de cambio de contraseña y porque es importante",
+        "type": "multipleChoice",
+        "options": [
+            "Una notificacion cuando cambias tu foto de perfil",
+            "Una alerta cuando alguien intenta o logra cambiar tu contraseña",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "Si recibes esta alerta y no fuiste tu, significa que alguien esta intentando tomar control de tu cuenta.",
+        "difficulty": 1,
+        "lessonId": "ac_s5_ses1_l3"
+    },
+    {
+        "id": "ac_st5_qB13_005",
+        "question": "Que es el monitoreo decontraseña de tarjetas de credito y como te protege",
+        "type": "completePhrase",
+        "options": [
+            "Ver tu saldo bancario",
+            "Servicio que te alerta si tu tarjeta aparece en filtraciones o transacciones sospechosas",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "El monitoreo de tarjetas te protege alertandote de uso no autorizado o datos filtrados.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses1_l4"
+    },
+    {
+        "id": "ac_st5_qB13_006",
+        "question": "Que es el historial de actividad en tus cuentas y porque debes revisarlo",
+        "type": "multipleChoice",
+        "options": [
+            "Un registro de tus fotos",
+            "Registro de todas las acciones realizadas en tu cuenta para detectar actividad sospechosa",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "El historial te muestra todas las acciones en tu cuenta, permitiendote detectar accesos no autorizados.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses1_l5"
+    },
+    {
+        "id": "ac_st5_qB13_007",
+        "question": "Que es la verificación decontraseña de identidad en caso de robo",
+        "type": "completePhrase",
+        "options": [
+            "Cambiar tu nombre",
+            "Proceso para demostrar que eres tu quien recupera la cuenta despues de un robo",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "La verificación de identidad te permite recuperar tu cuenta demostrando que eres el verdadero propietario.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses1_l6"
+    },
+    {
+        "id": "ac_st5_qB13_008",
+        "question": "Que es la configuración de alertas por correo electrónico",
+        "type": "multipleChoice",
+        "options": [
+            "Enviar correos a todos tus contactos",
+            "Establecer que tipo de notificaciones quieres recibir y como",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "Configurar alertas te permite elegir que eventos importantes quieres que te notifiquen por correo.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses2_l1"
+    },
+    {
+        "id": "ac_st5_qB13_009",
+        "question": "Que es el control decontraseña de sesiónes activas",
+        "type": "detectRisk",
+        "options": [
+            "Ver todas tus sesiónes en redes sociales",
+            "Ver y cerrar dispositivos que tengan acceso a tu cuenta actualmente",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "El control de sesiónes te muestra donde estas logueado y te permite cerrar sesiónes sospechosas.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses2_l2"
+    },
+    {
+        "id": "ac_st5_qB13_010",
+        "question": "Que es la alerta de intento de acceso fallido",
+        "type": "multipleChoice",
+        "options": [
+            "Cuando te equivocas de contraseña una vez",
+            "Notificacion cuando alguien intenta acceder a tu cuenta y falla multiple veces",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "Esta alerta te avisa cuando alguien esta intentando adivinar tu contraseña con múltiples intentos fallidos.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses2_l3"
+    },
+    {
+        "id": "ac_st5_qB13_011",
+        "question": "Que es el monitoreo decontraseña decontraseña decontraseña decontraseña decontraseña",
+        "type": "completePhrase",
+        "options": [
+            "Ver tus datos en tiempo real",
+            "Servicio que revisa continuamente si tus datos aparecen en filtraciones conocidas",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "Estos servicios revisan constantemente bases de datos de filtraciones para alertarte de compromisos.",
+        "difficulty": 3,
+        "lessonId": "ac_s5_ses2_l4"
+    },
+    {
+        "id": "ac_st5_qB13_012",
+        "question": "Que es la respuesta automática a incidentes de seguridad",
+        "type": "multipleChoice",
+        "options": [
+            "Enviar un correo automáticamente",
+            "Acciones que se activan automáticamente ante una amenaza detectada",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "La respuesta automática puede bloquear tu cuenta o cerrar sesiónes cuando detecta actividad maliciosa.",
+        "difficulty": 3,
+        "lessonId": "ac_s5_ses2_l5"
+    },
+    {
+        "id": "ac_st5_qB13_013",
+        "question": "Que es la verificación decontraseña decontraseña decontraseña decontraseña decontraseña decontraseña",
+        "type": "completePhrase",
+        "options": [
+            "Ver tu perfil en redes sociales",
+            "Comprobar si tu información aparece en listas de filtraciones conocidas",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "La verificación comprueba si tus datos personales o contraseñas fueron expuestos en filtraciones.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses2_l6"
+    },
+    {
+        "id": "ac_st5_qB13_014",
+        "question": "Que es el sistema de alertas tempranas decontraseña decontraseña decontraseña",
+        "type": "multipleChoice",
+        "options": [
+            "Un alarma de casa",
+            "Mecanismo que detecta amenazas antes de que causen daño real",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las alertas tempranas detectan actividades sospechosas al inicio para que puedas actuar antes del daño.",
+        "difficulty": 3,
+        "lessonId": "ac_s5_ses3_l1"
+    },
+    {
+        "id": "ac_st5_qB13_015",
+        "question": "Que es la segmentacion de red y como protege tus dispositivos",
+        "type": "detectRisk",
+        "options": [
+            "Conectar todos tus dispositivos juntos",
+            "Separar tu red en partes para limitar el acceso en caso de compromiso",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "La segmentacion limita el daño si un dispositivo es comprometido, protegiendo los demas.",
+        "difficulty": 3,
+        "lessonId": "ac_s5_ses3_l2"
+    },
+    {
+        "id": "ac_st5_qB13_016",
+        "question": "Que es el registro deintención decontraseña decontraseña decontraseña",
+        "type": "completePhrase",
+        "options": [
+            "Ver tus correos electrónicos",
+            "Seguimiento de todas las acciones realizadas en tu cuenta para detectar anomalías",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "El registro de intentos te muestra todos los accesos y acciones para que puedas revisar si hay actividad sospechosa.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses3_l3"
+    },
+    {
+        "id": "ac_st5_qB13_017",
+        "question": "Que es la clasificacion decontraseña decontraseña decontraseña decontraseña",
+        "type": "multipleChoice",
+        "options": [
+            "Etiquetar tus correos",
+            "Sistema que categoriza la información por nivel de sensibilidad",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "La clasificacion ayuda a proteger mas la información mas sensible y delicada.",
+        "difficulty": 3,
+        "lessonId": "ac_s5_ses3_l4"
+    },
+    {
+        "id": "ac_st5_qB13_018",
+        "question": "Que es la simulacion decontraseña decontraseña decontraseña decontraseña decontraseña",
+        "type": "completePhrase",
+        "options": [
+            "Jugar en internet",
+            "Ejercicios prácticos para preparar a las personas ante incidentes de seguridad",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las simulaciones práctican que hacer ante un ataque real, mejorando la preparacion.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses3_l5"
+    },
+    {
+        "id": "ac_st5_qB13_019",
+        "question": "Que es el monitoreo decontraseña decontraseña decontraseña decontraseña decontraseña decontraseña",
+        "type": "multipleChoice",
+        "options": [
+            "Ver tus fotos",
+            "Seguimiento continuo de la actividad en tus cuentas para detectar amenazas",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "El monitoreo revisa continuamente tus cuentas para detectar actividades sospechosas o no autorizadas.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses3_l6"
+    },
+    {
+        "id": "ac_st5_qB13_020",
+        "question": "Que es la respuesta acontraseña decontraseña decontraseña decontraseña decontraseña decontraseña",
+        "type": "completePhrase",
+        "options": [
+            "Borrar tus datos",
+            "Acciones inmediatas que debes tomar cuando detectas un incidente de seguridad",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "La respuesta incluye cerrar sesiónes, cambiar contraseñas y notificar a los servicios afectados.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses4_l1"
+    },
+    {
+        "id": "ac_st5_qB13_021",
+        "question": "Que es la recuperación decontraseña decontraseña decontraseña decontraseña decontraseña decontraseña",
+        "type": "multipleChoice",
+        "options": [
+            "Recuperar tu celular",
+            "Proceso para restaurar el acceso a tus cuentas despues de un incidente de seguridad",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "La recuperación te ayuda a volver a tener control de tus cuentas despues de un ataque.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses4_l2"
+    },
+    {
+        "id": "ac_st5_qB13_022",
+        "question": "Que es el reporte decontraseña decontraseña decontraseña decontraseña decontraseña",
+        "type": "completePhrase",
+        "options": [
+            "Enviar un correo",
+            "Documentar oficialmente un incidente de seguridad para que sea investigado",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "El reporte oficial permite que las autoridades o empresas investiguen el incidente.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses4_l3"
+    },
+    {
+        "id": "ac_st5_qB13_023",
+        "question": "Que es la comúnicacion decontraseña decontraseña decontraseña decontraseña decontraseña",
+        "type": "multipleChoice",
+        "options": [
+            "Hablar por telefono",
+            "Informar a las personas afectadas sobre un incidente de seguridad",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "La comúnicacion efectiva es clave para que todos afectados puedan tomar medidas de protección.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses4_l4"
+    },
+    {
+        "id": "ac_st5_qB13_024",
+        "question": "Que es la lección aprendida despues de un incidente de seguridad",
+        "type": "completePhrase",
+        "options": [
+            "Olvidar lo que paso",
+            "Analisis de que salio mal y que mejorar para prevenir futuros incidentes",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "Cada incidente es una oportunidad para mejorar tus protocolos de seguridad.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses4_l5"
+    },
+    {
+        "id": "ac_st5_qB13_025",
+        "question": "Que es la actualización decontraseña decontraseña decontraseña decontraseña decontraseña",
+        "type": "multipleChoice",
+        "options": [
+            "Cambiar tu correo",
+            "Mejorar tus sistemas y procesos de seguridad basado en incidentes anteriores",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "La actualización continua asegura que tus protecciónes evolucionen con las nuevas amenazas.",
+        "difficulty": 3,
+        "lessonId": "ac_s5_ses4_l6"
+    },
+    {
+        "id": "ac_st5_qB13_026",
+        "question": "Que es la auditoria decontraseña decontraseña decontraseña decontraseña decontraseña",
+        "type": "completePhrase",
+        "options": [
+            "Ver tus datos",
+            "Revision periódica de tus configuraciónes de seguridad para encontrar debilidades",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las auditorias identifican vulnerabilidades antes de que los atacantes las exploten.",
+        "difficulty": 3,
+        "lessonId": "ac_s5_ses4_l6"
+    },
+    {
+        "id": "ac_st5_qB13_027",
+        "question": "Que consejo le darias a alguien que nunca revisa las alertas de seguridad de sus cuentas",
+        "type": "whatWouldYouDo",
+        "options": [
+            "Que no las revise porque no son importantes",
+            "Que active todas las alertas y las revise semanalmente para estar informado",
+            "Que le pida a alguien que las revise por el",
+            "Que no se preocupe porque nada va a pasar"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las alertas son tu primera linea de defensa. Activalas y revisalas regularmente.",
+        "difficulty": 1,
+        "lessonId": "ac_s5_ses4_l6"
+    },
+    {
+        "id": "ac_st5_qB13_028",
+        "question": "Caso: Tu amigo recibió una alerta de inicio de sesión desde otro pais y no le importo. Que le dices",
+        "type": "miniCase",
+        "options": [
+            "Que esta bien porque es viajero",
+            "Que actue inmediatamente: cambie contraseña y cierre sesiónes sospechosas",
+            "Que la ignore porque es error del sistema",
+            "Que espere a ver si pasa algo mas"
+        ],
+        "correctIndex": 1,
+        "explanation": "Una alerta de ubicacion desconocida es señal de que alguien pudo acceder a su cuenta sin autorizacion.",
+        "difficulty": 1,
+        "lessonId": "ac_s5_ses4_l6"
+    },
+    {
+        "id": "ac_st5_qB13_029",
+        "question": "Que es la privacidad en redes sociales y por que es importante monitorearla",
+        "type": "multipleChoice",
+        "options": [
+            "No es importante porque es publico",
+            "Controlar quien puede ver tu información personal para prevenirabusos",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "Monitorear tu privacidad te permite controlar quien ve tu información y prevenir suplantaciones.",
+        "difficulty": 1,
+        "lessonId": "ac_s5_ses4_l6"
+    },
+    {
+        "id": "ac_st5_qB13_030",
+        "question": "Que es el plan de respuesta a incidentes y porque toda persona debe tener uno",
+        "type": "whatWouldYouDo",
+        "options": [
+            "No es necesario porque no van a atacarme",
+            "Un conjunto de pasos claros para actuar rápidamente si eres victima de un ciberataque",
+            "Un tipo de virus",
+            "Una forma de enviar dinero"
+        ],
+        "correctIndex": 1,
+        "explanation": "Tener un plan te permite actuar con calma y eficiencia si eres victima de un ataque.",
+        "difficulty": 2,
+        "lessonId": "ac_s5_ses4_l6"
+    }
+]

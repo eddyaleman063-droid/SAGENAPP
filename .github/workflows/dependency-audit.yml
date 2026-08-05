@@ -1,0 +1,43 @@
+name: Dependency Audit
+
+on:
+  schedule:
+    - cron: '0 8 * * 1'  # Every Monday at 8am
+  workflow_dispatch:
+
+jobs:
+  audit:
+    name: Audit Dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.41.9'
+          channel: stable
+          cache: true
+
+      - name: Check for outdated packages
+        run: flutter pub outdated --json > outdated_report.json || true
+
+      - name: Check for dependency issues
+        run: dart pub deps --no-dev --style=compact > deps_report.txt || true
+
+      - name: Verify pubspec.lock consistency
+        run: |
+          flutter pub get
+          git diff --exit-code pubspec.lock || echo "pubspec.lock needs updating"
+
+      - name: Check for vulnerable packages
+        run: |
+          echo "=== Checking known vulnerable packages ==="
+          dart analyze lib/ --no-fatal-infos 2>&1 | grep -i "deprecated\|vulnerability" || echo "No known vulnerabilities found in analysis"
+
+      - name: Upload reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dependency-reports
+          path: |
+            outdated_report.json
+            deps_report.txt

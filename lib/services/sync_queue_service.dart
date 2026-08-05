@@ -42,6 +42,16 @@ class SyncOperation {
   );
 }
 
+/// Generic sync queue backed by SharedPreferences.
+///
+/// H-ARC-01 COORDINATION:
+/// This service is initialized but currently has NO active callers in
+/// production code (no calls to enqueue() or processQueue() outside tests).
+/// It exists as infrastructure for future use. When a caller is added,
+/// it MUST route writes through CloudSyncService (profile fields) or
+/// EconomicFunctionsService (economic fields) — never direct Firestore.
+/// The external [processor] callback in processQueue() must respect
+/// CloudSyncService.isGlobalSyncInProgress before writing to Firestore.
 class SyncQueueService {
   static final SyncQueueService instance = SyncQueueService._();
   SyncQueueService._() : _logger = AppLogger();
@@ -54,8 +64,10 @@ class SyncQueueService {
   bool _processing = false;
   bool get isProcessing => _processing;
   int get pendingCount => _queue.length;
+  SharedPreferences? _prefs;
 
   Future<void> init(SharedPreferences prefs) async {
+    _prefs = prefs;
     final stored = prefs.getString(_queueKey);
     if (stored != null && stored.isNotEmpty) {
       try {
@@ -90,12 +102,14 @@ class SyncQueueService {
     );
     _queue.add(op);
     _logger.debug('SyncQueue: enqueued ${type.name} (${_queue.length} pending)');
-    SharedPreferences.getInstance().then((prefs) => _save(prefs));
+    final prefs = _prefs;
+    if (prefs != null) _save(prefs);
   }
 
   void remove(String id) {
     _queue.removeWhere((op) => op.id == id);
-    SharedPreferences.getInstance().then((prefs) => _save(prefs));
+    final prefs = _prefs;
+    if (prefs != null) _save(prefs);
   }
 
   Future<bool> processQueue({
@@ -104,36 +118,42 @@ class SyncQueueService {
     if (_processing || _queue.isEmpty) return false;
     _processing = true;
 
-    final prefs = await SharedPreferences.getInstance();
-    final remaining = List<SyncOperation>.from(_queue);
-    _queue.clear();
-
-    for (final op in remaining) {
-      if (op.retryCount >= _maxRetries) {
-        _logger.warning('SyncQueue: dropping operation ${op.id} after $_maxRetries retries');
-        continue;
-      }
-
-      try {
-        final success = await processor(op);
-        if (success) {
-          _logger.debug('SyncQueue: completed ${op.id}');
-        } else {
-          op.retryCount++;
-          _queue.add(op);
-          _logger.warning('SyncQueue: failed ${op.id}, retry ${op.retryCount}/$_maxRetries');
-        }
-      } catch (e) {
-        op.retryCount++;
-        _queue.add(op);
-        _logger.error('SyncQueue: error processing ${op.id}', e);
-      }
-    }
+    final prefs = _prefs ?? await SharedPreferences.getInstance();
 
     try {
-      await _save(prefs);
-    } catch (e) {
-      _logger.error('SyncQueue: failed to save after processing', e);
+      while (_queue.isNotEmpty) {
+        final op = _queue.first;
+
+        if (op.retryCount >= _maxRetries) {
+          _queue.removeAt(0);
+          await _save(prefs);
+          _logger.warning('SyncQueue: dropping operation ${op.id} after $_maxRetries retries');
+          continue;
+        }
+
+        try {
+          final success = await processor(op);
+          if (success) {
+            _queue.removeAt(0);
+            await _save(prefs);
+            _logger.debug('SyncQueue: completed ${op.id}');
+          } else {
+            op.retryCount++;
+            _queue.removeAt(0);
+            _queue.add(op);
+            await _save(prefs);
+            _logger.warning('SyncQueue: failed ${op.id}, retry ${op.retryCount}/$_maxRetries');
+            break;
+          }
+        } catch (e) {
+          op.retryCount++;
+          _queue.removeAt(0);
+          _queue.add(op);
+          await _save(prefs);
+          _logger.error('SyncQueue: error processing ${op.id}', e);
+          break;
+        }
+      }
     } finally {
       _processing = false;
     }

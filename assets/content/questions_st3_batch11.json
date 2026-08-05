@@ -1,0 +1,452 @@
+[
+    {
+        "id": "ac_st3_qB11_001",
+        "question": "Que problemas resuelve la autenticación en dos pasos (2FA)?",
+        "type": "multipleChoice",
+        "options": [
+            "Problemas de velocidad de internet",
+            "Protege tu cuenta aunque tu contraseña sea comprometida, añadiendo una segunda capa de seguridad",
+            "Problemas de memoria del celular",
+            "Problemas de pantalla rota"
+        ],
+        "correctIndex": 1,
+        "explanation": "La 2FA protege tu cuenta aunque alguien tenga tu contraseña, porque necesita un segundo factor para acceder.",
+        "difficulty": 1,
+        "lessonId": "ac_s3_ses1_l1"
+    },
+    {
+        "id": "ac_st3_qB11_002",
+        "question": "Cuales son los tres tipos principales de factores de autenticación?",
+        "type": "multipleChoice",
+        "options": [
+            "Usuario, contraseña y correo",
+            "Algo que sabes (contraseña), algo que posees (celular) y algo que eres (biometria)",
+            "WiFi, Bluetooth y GPS",
+            "Facebook, WhatsApp e Instagram"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los tres factores son: saber (contraseña), poseer (dispositivo) y ser (biometria).",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses1_l2"
+    },
+    {
+        "id": "ac_st3_qB11_003",
+        "question": "Que es la autenticación de un solo factor y porque es insuficiente?",
+        "type": "multipleChoice",
+        "options": [
+            "Es usar dos contraseñas diferentes",
+            "Es usar solo una contraseña para proteger tu cuenta, lo que la hace vulnerable si es descubierta",
+            "Es usar biometria y contraseña",
+            "Es usar un codigo por SMS"
+        ],
+        "correctIndex": 1,
+        "explanation": "Un solo factor (solo contraseña) es insuficiente porque si es descubierta, tu cuenta queda expuesta.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses1_l3"
+    },
+    {
+        "id": "ac_st3_qB11_004",
+        "question": "Que es el 2FA y cuando debes activarlo?",
+        "type": "multipleChoice",
+        "options": [
+            "Es un tipo de virus que se activa automáticamente",
+            "Es una capa extra de seguridad que debes activar en todas tus cuentas importantes (correo, banco, redes sociales)",
+            "Es una función que solo usan las empresas",
+            "Es un tipo de juego online"
+        ],
+        "correctIndex": 1,
+        "explanation": "Activa 2FA en todas tus cuentas importantes para protegerlas aunque tu contraseña sea comprometida.",
+        "difficulty": 1,
+        "lessonId": "ac_s3_ses1_l4"
+    },
+    {
+        "id": "ac_st3_qB11_005",
+        "question": "Cuales son los tres tipos de factores de autenticación y sus ejemplos?",
+        "type": "multipleChoice",
+        "options": [
+            "Contraseña, correo y telefono",
+            "Saber (contraseña, PIN), poseer (celular, token) y ser (huella, rostro)",
+            "WiFi, Bluetooth y GPS",
+            "Facebook, Twitter e Instagram"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los factores son saber (conocimiento), poseer (dispositivo) y ser (biometria).",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses2_l1"
+    },
+    {
+        "id": "ac_st3_qB11_006",
+        "question": "Que es el factor 'saber' en la autenticación?",
+        "type": "multipleChoice",
+        "options": [
+            "Es usar tu celular",
+            "Es información que solo tu conoces, como una contraseña, PIN o respuesta a pregunta de seguridad",
+            "Es usar tu huella dactilar",
+            "Es recibir un codigo por SMS"
+        ],
+        "correctIndex": 1,
+        "explanation": "El factor saber es información que solo tu debes conocer, como contraseñas o PINs.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses2_l2"
+    },
+    {
+        "id": "ac_st3_qB11_007",
+        "question": "Que es el factor 'poseer' en la autenticación?",
+        "type": "multipleChoice",
+        "options": [
+            "Es saber tu contraseña",
+            "Es algo fisico que posees, como un celular, tarjeta de seguridad o token fisico",
+            "Es tu huella dactilar",
+            "Es tu número de DNI"
+        ],
+        "correctIndex": 1,
+        "explanation": "El factor poseer es un dispositivo fisico que tienes en tu poder, como tu celular.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses2_l3"
+    },
+    {
+        "id": "ac_st3_qB11_008",
+        "question": "Que es el factor 'ser' (biometria) en la autenticación?",
+        "type": "multipleChoice",
+        "options": [
+            "Es usar una contraseña",
+            "Es una carácteristica fisica única de ti, como huella dactilar, reconocimiento facial o iris",
+            "Es usar un token",
+            "Es recibir un codigo por correo"
+        ],
+        "correctIndex": 1,
+        "explanation": "El factor ser usa carácteristicas biometricas únicas como huella, rostro o iris.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses2_l4"
+    },
+    {
+        "id": "ac_st3_qB11_009",
+        "question": "Que es un ejemplo práctico de 2FA en una cuenta de Google?",
+        "type": "multipleChoice",
+        "options": [
+            "Solo usar contraseña",
+            "Escribir la contraseña y luego confirmar con un codigo de la app Authenticator o un SMS",
+            "Solo usar huella dactilar",
+            "Solo usar reconocimiento facial"
+        ],
+        "correctIndex": 1,
+        "explanation": "Google te pide la contraseña y luego un segundo factor como codigo de la app o SMS.",
+        "difficulty": 1,
+        "lessonId": "ac_s3_ses2_l5"
+    },
+    {
+        "id": "ac_st3_qB11_010",
+        "question": "Como funciona el 2FA por SMS y cuales son sus riesgos?",
+        "type": "multipleChoice",
+        "options": [
+            "Es el metodo mas seguro que existe",
+            "Te envia un codigo por mensaje de texto; el riesgo es el SIM swapping donde un atacante transfiere tu número a otro chip",
+            "No tiene ningun riesgo",
+            "Solo funciona con WiFi"
+        ],
+        "correctIndex": 1,
+        "explanation": "El SMS es comun pero vulnerable al SIM swapping, donde un atacante obtiene tu número.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses3_l1"
+    },
+    {
+        "id": "ac_st3_qB11_011",
+        "question": "Que es el SIM swapping y como protegerte de el?",
+        "type": "multipleChoice",
+        "options": [
+            "Es cambiar la funda de tu celular",
+            "Es cuando un atacante convence a tu operador de transferir tu número a su chip, bloqueando tu acceso a SMS; protegete con PIN de operador y 2FA por app",
+            "Es instalar una nueva SIM en tu celular",
+            "Es activar el roaming internaciónal"
+        ],
+        "correctIndex": 1,
+        "explanation": "El SIM swapping es peligroso. Usa 2FA por app en lugar de SMS y configura PIN con tu operador.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses3_l2"
+    },
+    {
+        "id": "ac_st3_qB11_012",
+        "question": "Cuales son las ventajas de usar una app authenticator sobre el SMS para 2FA?",
+        "type": "multipleChoice",
+        "options": [
+            "El SMS es mas rápido",
+            "Las apps como Google Authenticator o Authy generan codigos sin necesidad de internet y son mas seguras que SMS",
+            "Las apps cuestan dinero",
+            "El SMS es mas seguro"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las apps authenticator generan codigos offline y no son vulnerables al SIM swapping.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses4_l1"
+    },
+    {
+        "id": "ac_st3_qB11_013",
+        "question": "Que es Google Authenticator y como configurarlo?",
+        "type": "multipleChoice",
+        "options": [
+            "Es un tipo de contraseña",
+            "Es una app gratuita de Google que genera codigos de verificación para 2FA; se configura escaneando un codigo QR",
+            "Es un navegador de internet",
+            "Es una app de correo"
+        ],
+        "correctIndex": 1,
+        "explanation": "Google Authenticator es una app que genera codigos temporales para verificar tu identidad.",
+        "difficulty": 1,
+        "lessonId": "ac_s3_ses4_l2"
+    },
+    {
+        "id": "ac_st3_qB11_014",
+        "question": "Que es Authy y porque algunos lo prefieren sobre Google Authenticator?",
+        "type": "multipleChoice",
+        "options": [
+            "Es un tipo de juego",
+            "Es una app similar a Google Authenticator pero con sincronizacion entre dispositivos y respaldo en la nube",
+            "Es un banco digital",
+            "Es una red social"
+        ],
+        "correctIndex": 1,
+        "explanation": "Authy ofrece sincronizacion y respaldo, lo que facilita la recuperación si pierdes tu celular.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses4_l3"
+    },
+    {
+        "id": "ac_st3_qB11_015",
+        "question": "Que son los codigos de respaldo en la configuración de 2FA?",
+        "type": "multipleChoice",
+        "options": [
+            "Son codigos para desactivar el 2FA",
+            "Son codigos de un solo uso que puedes usar cuando no tienes acceso a tu app authenticator",
+            "Son codigos para cambiar tu contraseña",
+            "Son codigos para hackear cuentas"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los codigos de respaldo te permiten acceder a tu cuenta cuando no puedes usar tu metodo principal de 2FA.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses4_l4"
+    },
+    {
+        "id": "ac_st3_qB11_016",
+        "question": "Que son las claves de seguridad fisicas y porque son el metodo mas seguro?",
+        "type": "multipleChoice",
+        "options": [
+            "Son contraseñas escritas en papel",
+            "Son dispositivos fisicos (como YubiKey) que debes conectar o acercar al dispositivo para verificar tu identidad",
+            "Son tipos de tarjeta de credito",
+            "Son auriculares bluetooth"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las claves fisicas son muy seguras porque son dificiles de hackear físicamente.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses5_l1"
+    },
+    {
+        "id": "ac_st3_qB11_017",
+        "question": "Que son las passkeys y como representan el futuro de la autenticación?",
+        "type": "multipleChoice",
+        "options": [
+            "Son contraseñas mas largas",
+            "Son credenciales digitales que reemplazan las contraseñas usando biometria o PIN del dispositivo",
+            "Son tipos de tarjeta de seguridad",
+            "Son codigos QR"
+        ],
+        "correctIndex": 1,
+        "explanation": "Las passkeys usan criptografia y biometria para eliminar la necesidad de contraseñas.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses5_l2"
+    },
+    {
+        "id": "ac_st3_qB11_018",
+        "question": "Que es la biometria avanzada en la autenticación?",
+        "type": "multipleChoice",
+        "options": [
+            "Es usar una contraseña larga",
+            "Es usar carácteristicas fisicas únicas como reconocimiento de iris, voz o patrones de escritura para verificar identidad",
+            "Es usar un PIN de 6 digitos",
+            "Es usar una tarjeta de credito"
+        ],
+        "correctIndex": 1,
+        "explanation": "La biometria avanzada usa carácteristicas únicas como iris o voz que son muy dificiles de falsificar.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses5_l3"
+    },
+    {
+        "id": "ac_st3_qB11_019",
+        "question": "Que debes hacer con tus codigos de respaldo de 2FA?",
+        "type": "multipleChoice",
+        "options": [
+            "Compartirlos en redes sociales",
+            "Guardarlos impresos en un lugar fisico seguro o en un gestor de contraseñas encriptado",
+            "No guardarlos porque no son importantes",
+            "Enviarlos por correo a tus amigos"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los codigos de respaldo deben guardarse en un lugar seguro y accesible solo para ti.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses4_l4"
+    },
+    {
+        "id": "ac_st3_qB11_020",
+        "question": "Cada cuanto se recomienda revisar la configuración de 2FA en tus cuentas?",
+        "type": "multipleChoice",
+        "options": [
+            "Nunca hay que revisarla",
+            "Al menos una vez al ano, o cuando cambies de dispositivo o sospeches de actividad sospechosa",
+            "Cada semana",
+            "Solo cuando hay un problema"
+        ],
+        "correctIndex": 1,
+        "explanation": "Revisa tu configuración de 2FA periodicamente para asegurarte de que este actualizada y funcionando.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses7_l1"
+    },
+    {
+        "id": "ac_st3_qB11_021",
+        "question": "Que es un token de hardware y como se usa?",
+        "type": "multipleChoice",
+        "options": [
+            "Es un tipo de contraseña escrita en papel",
+            "Es un dispositivo fisico que generas codigos de verificación o se conecta al USB de tu computadora para verificar tu identidad",
+            "Es una tarjeta de credito",
+            "Es un auricular bluetooth"
+        ],
+        "correctIndex": 1,
+        "explanation": "Los tokens de hardware generan codigos o usan criptografia para verificar tu identidad de forma segura.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses5_l1"
+    },
+    {
+        "id": "ac_st3_qB11_022",
+        "question": "Por que es importante tener múltiples metodos de 2FA configurados?",
+        "type": "multipleChoice",
+        "options": [
+            "Porque es requisito de todos los bancos",
+            "Porque si pierdes acceso a un metodo (celular, app), tienes alternativas para seguir protegiendo tu cuenta",
+            "No es necesario tener múltiples metodos",
+            "Porque quieres confundir al hacker"
+        ],
+        "correctIndex": 1,
+        "explanation": "Múltiples metodos te dan alternativas si uno falla, aumentando la seguridad de tu cuenta.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses6_l1"
+    },
+    {
+        "id": "ac_st3_qB11_023",
+        "question": "Que debes hacer si pierdes tu celular donde tenias tu app authenticator?",
+        "type": "whatWouldYouDo",
+        "options": [
+            "No hacer nada, el 2FA se desactiva solo",
+            "Usar los codigos de respaldo que guardaste, o contactar al soporte del servicio para recuperar el acceso",
+            "Comprar el mismo modelo de celular",
+            "Pedir a un amigo que desactive el 2FA por ti"
+        ],
+        "correctIndex": 1,
+        "explanation": "Usa tus codigos de respaldo o contacta al soporte para recuperar el acceso a tu cuenta.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses6_l2"
+    },
+    {
+        "id": "ac_st3_qB11_024",
+        "question": "Que es la biometria y porque se usa cada vez mas en la autenticación?",
+        "type": "multipleChoice",
+        "options": [
+            "Es un tipo de contraseña",
+            "Es el uso de carácteristicas fisicas únicas (huella, rostro) para verificar identidad; es conveniente y dificil de falsificar",
+            "Es un tipo de token",
+            "Es un metodo de pago"
+        ],
+        "correctIndex": 1,
+        "explanation": "La biometria es conveniente porque no necesitas recordar nada y es dificil de falsificar.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses2_l4"
+    },
+    {
+        "id": "ac_st3_qB11_025",
+        "question": "Cuales son las limitaciones de la biometria en la autenticación?",
+        "type": "multipleChoice",
+        "options": [
+            "No tiene limitaciones",
+            "Si tus datos biometricos son robados, no puedes cambiarlos como una contraseña; y algunos sistemas pueden ser engañados",
+            "Solo funciona en celulares caros",
+            "No es segura en absoluto"
+        ],
+        "correctIndex": 1,
+        "explanation": "La biometria tiene limitaciones: si los datos son comprometidos, no puedes cambiarlos facilmente.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses2_l6"
+    },
+    {
+        "id": "ac_st3_qB11_026",
+        "question": "Que debes hacer si recibes un codigo de verificación que no solicitaste?",
+        "type": "whatWouldYouDo",
+        "options": [
+            "Ignorarlo porque seguro es error",
+            "No compartirlo con nadie y cambiar tu contraseña de inmediato, ya que alguien esta intentando acceder a tu cuenta",
+            "Compartirlo con amigos para que lo usen",
+            "Responder al mensaje pidiendo mas información"
+        ],
+        "correctIndex": 1,
+        "explanation": "Nunca compartas codigos no solicitados. Si lo recibes, significa que alguien intenta acceder a tu cuenta.",
+        "difficulty": 1,
+        "lessonId": "ac_s3_ses3_l1"
+    },
+    {
+        "id": "ac_st3_qB11_027",
+        "question": "Que es la autenticación adaptativa y como funciona?",
+        "type": "multipleChoice",
+        "options": [
+            "Es un tipo de contraseña que cambia cada dia",
+            "Es un sistema que ajusta el nivel de verificación segun el riesgo: si detecta algo sospechoso, pide mas verificación",
+            "Es un tipo de biometria",
+            "Es un metodo de pago"
+        ],
+        "correctIndex": 1,
+        "explanation": "La autenticación adaptativa evalua el riesgo y ajusta la verificación accordingly.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses7_l2"
+    },
+    {
+        "id": "ac_st3_qB11_028",
+        "question": "Cuales son los errores mas comunes al configurar 2FA?",
+        "type": "detectRisk",
+        "options": [
+            "Usar múltiples metodos de verificación",
+            "No guardar codigos de respaldo, usar solo SMS como metodo y no revisar la configuración periodicamente",
+            "Activar 2FA en todas las cuentas",
+            "Usar apps authenticator"
+        ],
+        "correctIndex": 1,
+        "explanation": "Estos errores pueden dejar tu cuenta vulnerable aunque tengas 2FA activado.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses8_l1"
+    },
+    {
+        "id": "ac_st3_qB11_029",
+        "question": "Cual es el checklist de seguridad para tu configuración de 2FA?",
+        "type": "multipleChoice",
+        "options": [
+            "Solo tener contraseña segura",
+            "2FA activado en cuentas importantes, múltiples metodos configurados, codigos de respaldo guardados, app authenticator instalada y configuración revisada",
+            "Solo tener celular nuevo",
+            "Solo tener redes sociales"
+        ],
+        "correctIndex": 1,
+        "explanation": "Tu checklist debe incluir todos estos elementos para una protección completa.",
+        "difficulty": 2,
+        "lessonId": "ac_s3_ses8_l2"
+    },
+    {
+        "id": "ac_st3_qB11_030",
+        "question": "Cual es el futuro de la autenticación sin contraseñas?",
+        "type": "multipleChoice",
+        "options": [
+            "Seguir usando contraseñas para siempre",
+            "Passkeys, biometria avanzada y autenticación adaptativa que eliminan la necesidad de contraseñas tradicionales",
+            "No habra cambios",
+            "Todos usaran el mismo metodo"
+        ],
+        "correctIndex": 1,
+        "explanation": "El futuro apunta a eliminar las contraseñas con passkeys, biometria y autenticación basada en riesgo.",
+        "difficulty": 3,
+        "lessonId": "ac_s3_ses8_l3"
+    }
+]

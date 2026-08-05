@@ -16,6 +16,8 @@ _$ChallengeImpl _$$ChallengeImplFromJson(Map<String, dynamic> json) =>
           .toList(),
       correctIndex: (json['correctIndex'] as num).toInt(),
       explanation: json['explanation'] as String,
+      lessonId: json['lessonId'] as String? ?? '',
+      difficulty: (json['difficulty'] as num?)?.toInt() ?? 1,
     );
 
 Map<String, dynamic> _$$ChallengeImplToJson(_$ChallengeImpl instance) =>
@@ -26,6 +28,8 @@ Map<String, dynamic> _$$ChallengeImplToJson(_$ChallengeImpl instance) =>
       'options': instance.options,
       'correctIndex': instance.correctIndex,
       'explanation': instance.explanation,
+      'lessonId': instance.lessonId,
+      'difficulty': instance.difficulty,
     };
 
 const _$LessonTypeEnumMap = {

@@ -1,0 +1,412 @@
+[
+  {
+    "id": "ac_st6_qB10_001",
+    "question": "Por que necesitas un plan de recuperación de cuentas?",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Un plan te prepara para recuperar el acceso si algo sale mal.",
+    "difficulty": 1,
+    "lessonId": "ac_s6_ses1_l1"
+  },
+  {
+    "id": "ac_st6_qB10_002",
+    "question": "Que es un correo de recuperación?",
+    "type": "multipleChoice",
+    "options": [
+      "Un correo para recibir publicidad",
+      "Un correo alternativo para recuperar el acceso a tus cuentas",
+      "Un correo nuevo que creas cada mes",
+      "Un correo para enviar archivos"
+    ],
+    "correctIndex": 1,
+    "explanation": "El correo de recuperación te permite volver a acceder si olvidas tu clave.",
+    "difficulty": 1,
+    "lessonId": "ac_s6_ses2_l1"
+  },
+  {
+    "id": "ac_st6_qB10_003",
+    "question": "Que harias si pierdes acceso a tu correo principal y no tienes recuperación?",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Contactar al soporte del servicio con documentos de identidad",
+      "Crear un correo nuevo y listo",
+      "No hacer nada",
+      "Pedir a un amigo que entre a tu correo"
+    ],
+    "correctIndex": 0,
+    "explanation": "El soporte puede ayudarte con verificación de identidad.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses12_l1"
+  },
+  {
+    "id": "ac_st6_qB10_004",
+    "question": "Que es un codigo de recuperación?",
+    "type": "multipleChoice",
+    "options": [
+      "Una contraseña temporal",
+      "Un codigo que te permite acceder si pierdes tu metodo principal",
+      "Un tipo de virus",
+      "Un codigo de descuento"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los codigos de recuperación son tu Plan B para acceder a tus cuentas.",
+    "difficulty": 1,
+    "lessonId": "ac_s6_ses4_l1"
+  },
+  {
+    "id": "ac_st6_qB10_005",
+    "question": "Que es la verificación de identidad ante soporte?",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Es el proceso de demostrar que eres el dueño de la cuenta.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses13_l2"
+  },
+  {
+    "id": "ac_st6_qB10_006",
+    "question": "Caso: Te roban el celular y tenias tu banco en la app. Que haces?",
+    "type": "miniCase",
+    "options": [
+      "Llamar al banco inmediatamente para bloquear la app",
+      "Comprar un celular nuevo y reinstallar la app",
+      "No hacer nada porque ya no esta el celular",
+      "Esperar a que aparezca"
+    ],
+    "correctIndex": 0,
+    "explanation": "Contacta al banco de inmediato para proteger tu cuenta.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses8_l1"
+  },
+  {
+    "id": "ac_st6_qB10_007",
+    "question": "Que es la herencia digital?",
+    "type": "multipleChoice",
+    "options": [
+      "Dejar tu celular a tus hijos",
+      "Que pasa con tus cuentas digitales si falleces",
+      "Un tipo de testamento",
+      "Una app de genealogia"
+    ],
+    "correctIndex": 1,
+    "explanation": "La herencia digital planifica que pasa con tus cuentas en el futuro.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses17_l1"
+  },
+  {
+    "id": "ac_st6_qB10_008",
+    "question": "Que es Google Takeout?",
+    "type": "multipleChoice",
+    "options": [
+      "Un restaurante",
+      "Una herramienta para descargar todos tus datos de Google",
+      "Un tipo de comida",
+      "Una app de deliveroo"
+    ],
+    "correctIndex": 1,
+    "explanation": "Google Takeout te permite exportar todos tus datos de Google.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses11_l1"
+  },
+  {
+    "id": "ac_st6_qB10_009",
+    "question": "Por que debes mantener actualizado tu correo de recuperación?",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Si cambias de correo y no actualizas, pierdes la forma de recuperar tus cuentas.",
+    "difficulty": 1,
+    "lessonId": "ac_s6_ses2_l2"
+  },
+  {
+    "id": "ac_st6_qB10_010",
+    "question": "Que harias si te bloquean la cuenta de Facebook y no puedes entrar?",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Usar la opción de recuperación de Meta con documentos",
+      "Crear una cuenta nueva",
+      "No hacer nada",
+      "Pedir a amigos que publiquen en tu muro"
+    ],
+    "correctIndex": 0,
+    "explanation": "Meta tiene procesos de verificación de identidad para recuperar cuentas.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses7_l1"
+  },
+  {
+    "id": "ac_st6_qB10_011",
+    "question": "Que documentos necesitas para verificar tu identidad?",
+    "type": "multipleChoice",
+    "options": [
+      "Solo tu nombre",
+      "DNI, pasaporte o documentos oficiales",
+      "Una foto de tu mascota",
+      "Tu dirección de internet"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los documentos oficiales como el DNI son necesarios para la verificación.",
+    "difficulty": 1,
+    "lessonId": "ac_s6_ses13_l1"
+  },
+  {
+    "id": "ac_st6_qB10_012",
+    "question": "Que es un periodo de espera de recuperación?",
+    "type": "multipleChoice",
+    "options": [
+      "Tiempo de espera antes de poder usar internet",
+      "Tiempo que debes esperar antes de que el sistema te devuelva el acceso",
+      "Un tipo de vacaciones",
+      "Un descanso del celular"
+    ],
+    "correctIndex": 1,
+    "explanation": "Algunos servicios tienen un periodo de espera por seguridad.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses15_l5"
+  },
+  {
+    "id": "ac_st6_qB10_013",
+    "question": "Detecta el riesgo: Guardas todos tus codigos de recuperación en el correo que estas intentando recuperar.",
+    "type": "detectRisk",
+    "options": [
+      "Es muy riesgoso, es un circulo vicioso",
+      "No hay riesgo",
+      "Es seguro porque esta protegido",
+      "No importa"
+    ],
+    "correctIndex": 0,
+    "explanation": "Nunca guardes codigos de respaldo en el mismo lugar que estas protegiendo.",
+    "difficulty": 3,
+    "lessonId": "ac_s6_ses4_l2"
+  },
+  {
+    "id": "ac_st6_qB10_014",
+    "question": "Que es una bitacora de recuperación?",
+    "type": "multipleChoice",
+    "options": [
+      "Un libro de visitas",
+      "Un registro seguro con la información de tus cuentas críticas",
+      "Un tipo de diario",
+      "Una agenda de citas"
+    ],
+    "correctIndex": 1,
+    "explanation": "La bitacora guarda toda la información necesaria para recuperar tus cuentas.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses10_l2"
+  },
+  {
+    "id": "ac_st6_qB10_015",
+    "question": "Que es el proceso de recuperación de Google?",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Google tiene un proceso paso a paso para recuperar cuentas comprometidas.",
+    "difficulty": 1,
+    "lessonId": "ac_s6_ses6_l3"
+  },
+  {
+    "id": "ac_st6_qB10_016",
+    "question": "Que harias si tu banco te dice que hubo actividad sospechosa?",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Verificar tus transacciones y reportar las que no reconoces",
+      "No hacer nada porque probablemente es error",
+      "Cerrar tu cuenta",
+      "Cambiar de banco"
+    ],
+    "correctIndex": 0,
+    "explanation": "Siempre verifica y reporta actividad que no reconozcas.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses8_l3"
+  },
+  {
+    "id": "ac_st6_qB10_017",
+    "question": "Que es un plan de recuperación familiar?",
+    "type": "multipleChoice",
+    "options": [
+      "Un plan de internet para la familia",
+      "Un plan para que toda la familia sepa que hacer si pierden acceso",
+      "Un tipo de seguro",
+      "Un plan de vacaciones"
+    ],
+    "correctIndex": 1,
+    "explanation": "El plan familiar asegura que todos sepan que hacer en caso de emergencia.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses4_l6"
+  },
+  {
+    "id": "ac_st6_qB10_018",
+    "question": "Que es un simulacro de recuperación?",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Es prácticar el proceso de recuperación para estar preparado.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses2_l6"
+  },
+  {
+    "id": "ac_st6_qB10_019",
+    "question": "Que es la verificación por video llamada?",
+    "type": "multipleChoice",
+    "options": [
+      "Un tipo de videollamada para hablar con amigos",
+      "Un metodo para verificar tu identidad mostrando tu DNI por video",
+      "Una app de videollamadas",
+      "Un tipo de virus"
+    ],
+    "correctIndex": 1,
+    "explanation": "Algunos servicios verifican tu identidad por videollamada con documentos.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses13_l4"
+  },
+  {
+    "id": "ac_st6_qB10_020",
+    "question": "Que es el administrador de cuentas inactivas de Google?",
+    "type": "multipleChoice",
+    "options": [
+      "Un programa que borra cuentas",
+      "Una función que permite designar a alguien que acceda a tu cuenta si algo te pasa",
+      "Un tipo de virus",
+      "Una app de productividad"
+    ],
+    "correctIndex": 1,
+    "explanation": "Permite que alguien de confianza acceda a tu cuenta si quedas inactivo.",
+    "difficulty": 3,
+    "lessonId": "ac_s6_ses3_l6"
+  },
+  {
+    "id": "ac_st6_qB10_021",
+    "question": "Por que es importante cifrar el archivo de codigos de recuperación?",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "El cifrado protege la información si alguien accede al archivo.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses4_l5"
+  },
+  {
+    "id": "ac_st6_qB10_022",
+    "question": "Que es una credencial de emergencia corporativa?",
+    "type": "multipleChoice",
+    "options": [
+      "Una tarjeta de credito empresarial",
+      "Un acceso temporal a cuentas laborales en caso de emergencia",
+      "Un tipo de seguro",
+      "Un documento de identidad"
+    ],
+    "correctIndex": 1,
+    "explanation": "Son credenciales temporales para acceder a recursos críticos del trabajo.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses9_l4"
+  },
+  {
+    "id": "ac_st6_qB10_023",
+    "question": "Que harias si pierdes acceso a tu cuenta de banco y necesitas pagar una factura urgente?",
+    "type": "whatWouldYouDo",
+    "options": [
+      "Ir a una sucursal del banco con tu DNI para recuperar acceso",
+      "Pedir prestado a un desconocido",
+      "No pagar la factura",
+      "Usar otro banco sin decir nada"
+    ],
+    "correctIndex": 0,
+    "explanation": "La sucursal puede ayudarte a recuperar el acceso presencialmente.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses8_l2"
+  },
+  {
+    "id": "ac_st6_qB10_024",
+    "question": "Que es el Facebook Download para exportar datos?",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Es la herramienta de Meta para descargar tu información de Facebook.",
+    "difficulty": 1,
+    "lessonId": "ac_s6_ses11_l2"
+  },
+  {
+    "id": "ac_st6_qB10_025",
+    "question": "Que es un fraude de verificación de identidad?",
+    "type": "multipleChoice",
+    "options": [
+      "Un tipo de verificación segura",
+      "Cuando alguien se hace pasar por soporte para robar tus datos",
+      "Un proceso legitimo",
+      "Una app de verificación"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los estafadores pueden hacerse pasar para obtener tus datos.",
+    "difficulty": 3,
+    "lessonId": "ac_s6_ses13_l5"
+  },
+  {
+    "id": "ac_st6_qB10_026",
+    "question": "Que es una respaldo fisico de seguridad?",
+    "type": "multipleChoice",
+    "options": [
+      "Guardar claves en la nube",
+      "Imprimir o escribir codigos importantes en un lugar seguro fisico",
+      "Enviar por correo",
+      "Publicar en redes"
+    ],
+    "correctIndex": 1,
+    "explanation": "Un respaldo fisico no depende de internet ni de dispositivos.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses5_l6"
+  },
+  {
+    "id": "ac_st6_qB10_027",
+    "question": "Caso: Tu tio fallecio y necesitas acceder a sus cuentas. Que haces?",
+    "type": "miniCase",
+    "options": [
+      "Contactar a cada servicio con documentos que demuestren tu parentesco",
+      "Intentar adivinar las contraseñas",
+      "Crear cuentas nuevas a su nombre",
+      "No hacer nada"
+    ],
+    "correctIndex": 0,
+    "explanation": "Cada servicio tiene procesos para herencia digital con documentacion.",
+    "difficulty": 2,
+    "lessonId": "ac_s6_ses17_l1"
+  },
+  {
+    "id": "ac_st6_qB10_028",
+    "question": "Que es un checklist de recuperación mensual?",
+    "type": "trueFalse",
+    "options": ["Verdadero", "Falso"],
+    "correctIndex": 0,
+    "explanation": "Una lista de verificación para asegurar que tus metodos de recuperación funcionan.",
+    "difficulty": 1,
+    "lessonId": "ac_s6_ses6_l6"
+  },
+  {
+    "id": "ac_st6_qB10_029",
+    "question": "Por que debes agregar múltiples opciónes de recuperación?",
+    "type": "multipleChoice",
+    "options": [
+      "Para confundir a los hackers",
+      "Porque si una falla tienes otra alternativa",
+      "No es necesario",
+      "Porque lo pide la ley"
+    ],
+    "correctIndex": 1,
+    "explanation": "Tener múltiples opciónes aumenta tus posibilidades de recuperar acceso.",
+    "difficulty": 1,
+    "lessonId": "ac_s6_ses16_l5"
+  },
+  {
+    "id": "ac_st6_qB10_030",
+    "question": "Que es la recuperación de cripto wallets?",
+    "type": "multipleChoice",
+    "options": [
+      "Comprar criptomonedas",
+      "Acceder a tus activos digitales usando frases semilla o claves privadas",
+      "Enviar dinero a otros",
+      "Minar criptomonedas"
+    ],
+    "correctIndex": 1,
+    "explanation": "La recuperación de criptos depende de tus frases semilla y claves privadas.",
+    "difficulty": 3,
+    "lessonId": "ac_s6_ses1_l6"
+  }
+]

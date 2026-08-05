@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../config/onboarding_wizard_config.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/theme_constants.dart';
+import '../../../services/experience_service.dart';
 
 class WizardLevelTile extends StatelessWidget {
   final WizardOption option;
@@ -28,10 +29,17 @@ class WizardLevelTile extends StatelessWidget {
     final fill = levelVal / 5.0;
     final accentColor = option.color ?? PremiumColors.splashBlue;
 
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
+    return Semantics(
+      button: true,
+      selected: isSelected,
+      label: option.label,
+      child: GestureDetector(
+        onTap: () {
+          ExperienceService.instance.lightHaptic();
+          onTap();
+        },
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
         curve: AppEasing.entrance,
         padding: const EdgeInsets.all(AppSpacing.lg),
         decoration: BoxDecoration(
@@ -47,7 +55,9 @@ class WizardLevelTile extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(option.icon, size: 22, color: isSelected ? accentColor : iconColor),
+                ExcludeSemantics(
+                  child: Icon(option.icon, size: 22, color: isSelected ? accentColor : iconColor),
+                ),
                 const SizedBox(width: AppSpacing.md),
                 Expanded(
                   child: Column(
@@ -55,20 +65,14 @@ class WizardLevelTile extends StatelessWidget {
                     children: [
                       Text(
                         option.label,
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                          color: isSelected ? textPrimary : textSecondary,
-                        ),
+                        style: AppTextStyle.body.copyWith(fontWeight: FontWeight.w600,
+                          color: isSelected ? textPrimary : textSecondary),
                       ),
                       if (option.subtitle != null) ...[
                         const SizedBox(height: 2),
                         Text(
                           option.subtitle!,
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: isSelected ? textSecondary.withValues(alpha: 0.7) : textSecondary.withValues(alpha: 0.4),
-                          ),
+                          style: AppTextStyle.caption.copyWith(color: isSelected ? textSecondary.withValues(alpha: 0.7) : textSecondary.withValues(alpha: 0.4)),
                         ),
                       ],
                     ],
@@ -93,6 +97,7 @@ class WizardLevelTile extends StatelessWidget {
             ),
           ],
         ),
+      ),
       ),
     );
   }

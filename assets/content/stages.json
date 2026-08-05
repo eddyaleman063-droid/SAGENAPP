@@ -9,7 +9,7 @@
       {
         "id": "ac_s1_ses1",
         "title": "¿Qué es una cuenta digital?",
-        "subtitle": "Sesión 1 · 5 lecciones",
+        "subtitle": "Sesión 1 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s1_ses1_l1",
@@ -68,7 +68,7 @@
           },
           {
             "id": "ac_s1_ses1_l6",
-            "title": "Verificacion en dos pasos basica",
+            "title": "Verificación en dos pasos básica",
             "subtitle": "Introduccion al segundo factor",
             "challenges": [],
             "xpReward": 15,
@@ -83,7 +83,7 @@
       {
         "id": "ac_s1_ses2",
         "title": "Tipos de cuentas que usas a diario",
-        "subtitle": "Sesión 2 · 5 lecciones",
+        "subtitle": "Sesión 2 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s1_ses2_l1",
@@ -143,7 +143,7 @@
           {
             "id": "ac_s1_ses2_l6",
             "title": "Navegacion segura en internet",
-            "subtitle": "Practicas de navegacion responsable",
+            "subtitle": "Prácticas de navegación responsable",
             "challenges": [],
             "xpReward": 15,
             "gemReward": 5,
@@ -157,7 +157,7 @@
       {
         "id": "ac_s1_ses3",
         "title": "Riesgos básicos al crear cuentas",
-        "subtitle": "Sesión 3 · 5 lecciones",
+        "subtitle": "Sesión 3 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s1_ses3_l1",
@@ -231,7 +231,7 @@
       {
         "id": "ac_s1_ses4",
         "title": "La importancia de la privacidad",
-        "subtitle": "Sesión 4 · 5 lecciones",
+        "subtitle": "Sesión 4 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s1_ses4_l1",
@@ -305,7 +305,7 @@
       {
         "id": "ac_s1_ses5",
         "title": "Tu identidad digital",
-        "subtitle": "Sesión 5 · 5 lecciones",
+        "subtitle": "Sesión 5 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s1_ses5_l1",
@@ -379,7 +379,7 @@
       {
         "id": "ac_s1_ses6",
         "title": "Huella digital y cuentas",
-        "subtitle": "Sesión 6 · 5 lecciones",
+        "subtitle": "Sesión 6 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s1_ses6_l1",
@@ -438,7 +438,7 @@
           },
           {
             "id": "ac_s1_ses6_l6",
-            "title": "Configurar autenticacion en redes",
+            "title": "Configurar autenticación en redes",
             "subtitle": "Aprende a proteger tus perfiles sociales",
             "challenges": [],
             "xpReward": 15,
@@ -453,7 +453,7 @@
       {
         "id": "ac_s1_ses7",
         "title": "Datos sensibles en tus cuentas",
-        "subtitle": "Sesión 7 · 5 lecciones",
+        "subtitle": "Sesión 7 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s1_ses7_l1",
@@ -513,7 +513,7 @@
           {
             "id": "ac_s1_ses7_l6",
             "title": "Extensiones de seguridad",
-            "subtitle": "Agrega capas de proteccion al navegador",
+            "subtitle": "Agrega capas de protección al navegador",
             "challenges": [],
             "xpReward": 15,
             "gemReward": 5,
@@ -527,7 +527,7 @@
       {
         "id": "ac_s1_ses8",
         "title": "Correo electrónico: la clave maestra",
-        "subtitle": "Sesión 8 · 5 lecciones",
+        "subtitle": "Sesión 8 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s1_ses8_l1",
@@ -601,7 +601,7 @@
       {
         "id": "ac_s1_ses9",
         "title": "Números de teléfono y verificación",
-        "subtitle": "Sesión 9 · 5 lecciones",
+        "subtitle": "Sesión 9 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s1_ses9_l1",
@@ -660,8 +660,8 @@
           },
           {
             "id": "ac_s1_ses9_l6",
-            "title": "Configuracion de privacidad",
-            "subtitle": "Ajusta quien ve tu informacion",
+            "title": "Configuración de privacidad",
+            "subtitle": "Ajusta quien ve tu información",
             "challenges": [],
             "xpReward": 15,
             "gemReward": 5,
@@ -675,7 +675,7 @@
       {
         "id": "ac_s1_ses10",
         "title": "Preguntas de seguridad básicas",
-        "subtitle": "Sesión 10 · 5 lecciones",
+        "subtitle": "Sesión 10 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s1_ses10_l1",
@@ -749,7 +749,7 @@
       {
         "id": "ac_s1_ses11",
         "title": "Configuración inicial de privacidad",
-        "subtitle": "Sesión 11 · 5 lecciones",
+        "subtitle": "Sesión 11 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s1_ses11_l1",
@@ -809,7 +809,7 @@
           {
             "id": "ac_s1_ses11_l6",
             "title": "Extensiones de seguridad",
-            "subtitle": "Agrega capas de proteccion al navegador",
+            "subtitle": "Agrega capas de protección al navegador",
             "challenges": [],
             "xpReward": 15,
             "gemReward": 5,
@@ -823,7 +823,7 @@
       {
         "id": "ac_s1_ses12",
         "title": "Notificaciones de seguridad",
-        "subtitle": "Sesión 12 · 5 lecciones",
+        "subtitle": "Sesión 12 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s1_ses12_l1",
@@ -897,7 +897,7 @@
       {
         "id": "ac_s1_ses13",
         "title": "Dispositivos vinculados",
-        "subtitle": "Sesión 13 · 5 lecciones",
+        "subtitle": "Sesión 13 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s1_ses13_l1",
@@ -934,7 +934,7 @@
           },
           {
             "id": "ac_s1_ses13_l4",
-            "title": "Sesiones activas en dispositivos antiguos",
+            "title": "Sesiónes activas en dispositivos antiguos",
             "subtitle": "Lección 4 de la sesión 13",
             "challenges": [],
             "xpReward": 15,
@@ -960,7 +960,7 @@
       {
         "id": "ac_s1_ses14",
         "title": "Copias de seguridad básicas",
-        "subtitle": "Sesión 14 · 5 lecciones",
+        "subtitle": "Sesión 14 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s1_ses14_l1",
@@ -1023,7 +1023,7 @@
       {
         "id": "ac_s1_ses15",
         "title": "Cierre de sesión seguro",
-        "subtitle": "Sesión 15 · 5 lecciones",
+        "subtitle": "Sesión 15 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s1_ses15_l1",
@@ -1085,8 +1085,8 @@
       },
       {
         "id": "ac_s1_ses16",
-        "title": "Actualizaciones de seguridad",
-        "subtitle": "Sesión 16 · 5 lecciones",
+        "title": "Actualizaciónes de seguridad",
+        "subtitle": "Sesión 16 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s1_ses16_l1",
@@ -1112,7 +1112,7 @@
           },
           {
             "id": "ac_s1_ses16_l3",
-            "title": "Actualizaciones automáticas vs manuales",
+            "title": "Actualizaciónes automáticas vs manuales",
             "subtitle": "Lección 3 de la sesión 16",
             "challenges": [],
             "xpReward": 15,
@@ -1123,7 +1123,7 @@
           },
           {
             "id": "ac_s1_ses16_l4",
-            "title": "Actualizaciones del sistema operativo",
+            "title": "Actualizaciónes del sistema operativo",
             "subtitle": "Lección 4 de la sesión 16",
             "challenges": [],
             "xpReward": 15,
@@ -1149,7 +1149,7 @@
       {
         "id": "ac_s1_ses17",
         "title": "Phishing básico: no todo es lo que parece",
-        "subtitle": "Sesión 17 · 5 lecciones",
+        "subtitle": "Sesión 17 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s1_ses17_l1",
@@ -1212,7 +1212,7 @@
       {
         "id": "ac_s1_ses18",
         "title": "Enlaces sospechosos",
-        "subtitle": "Sesión 18 · 5 lecciones",
+        "subtitle": "Sesión 18 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s1_ses18_l1",
@@ -1275,7 +1275,7 @@
       {
         "id": "ac_s1_ses19",
         "title": "Extensiones y apps de terceros",
-        "subtitle": "Sesión 19 · 5 lecciones",
+        "subtitle": "Sesión 19 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s1_ses19_l1",
@@ -1338,7 +1338,7 @@
       {
         "id": "ac_s1_ses20",
         "title": "Evaluación de fundamentos",
-        "subtitle": "Sesión 20 · 2 lecciones",
+        "subtitle": "Sesión 20 · 2 lecciónes",
         "lessons": [
           {
             "id": "ac_s1_ses20_l1",
@@ -1411,8 +1411,8 @@
     "sessions": [
       {
         "id": "ac_s2_ses1",
-        "title": "Características de una buena contraseña",
-        "subtitle": "Sesión 1 · 5 lecciones",
+        "title": "Carácterísticas de una buena contraseña",
+        "subtitle": "Sesión 1 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s2_ses1_l1",
@@ -1427,7 +1427,7 @@
           },
           {
             "id": "ac_s2_ses1_l2",
-            "title": "Uso de caracteres especiales",
+            "title": "Uso de carácteres especiales",
             "subtitle": "Lección 2 de la sesión 1",
             "challenges": [],
             "xpReward": 15,
@@ -1471,7 +1471,7 @@
           },
           {
             "id": "ac_s2_ses1_l6",
-            "title": "Educacion familiar en contrasenas",
+            "title": "Educación familiar en contraseñas",
             "subtitle": "Ensenia a tu circulo a crear claves seguras",
             "challenges": [],
             "xpReward": 15,
@@ -1486,7 +1486,7 @@
       {
         "id": "ac_s2_ses2",
         "title": "Errores comunes al elegir contraseñas",
-        "subtitle": "Sesión 2 · 5 lecciones",
+        "subtitle": "Sesión 2 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s2_ses2_l1",
@@ -1545,7 +1545,7 @@
           },
           {
             "id": "ac_s2_ses2_l6",
-            "title": "Contrasenas para dispositivos IoT",
+            "title": "Contraseñas para dispositivos IoT",
             "subtitle": "Protege tus dispositivos inteligentes",
             "challenges": [],
             "xpReward": 15,
@@ -1560,7 +1560,7 @@
       {
         "id": "ac_s2_ses3",
         "title": "Cómo crear contraseñas memorables",
-        "subtitle": "Sesión 3 · 5 lecciones",
+        "subtitle": "Sesión 3 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s2_ses3_l1",
@@ -1575,7 +1575,7 @@
           },
           {
             "id": "ac_s2_ses3_l2",
-            "title": "Combinaciones personales",
+            "title": "Combinaciónes personales",
             "subtitle": "Lección 2 de la sesión 3",
             "challenges": [],
             "xpReward": 15,
@@ -1620,7 +1620,7 @@
           {
             "id": "ac_s2_ses3_l6",
             "title": "Rotacion programada de claves",
-            "subtitle": "Calendario para cambiar contrasenas",
+            "subtitle": "Calendario para cambiar contraseñas",
             "challenges": [],
             "xpReward": 15,
             "gemReward": 5,
@@ -1634,7 +1634,7 @@
       {
         "id": "ac_s2_ses4",
         "title": "Contraseñas únicas por servicio",
-        "subtitle": "Sesión 4 · 5 lecciones",
+        "subtitle": "Sesión 4 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s2_ses4_l1",
@@ -1693,7 +1693,7 @@
           },
           {
             "id": "ac_s2_ses4_l6",
-            "title": "Prueba de resistencia de contrasenas",
+            "title": "Prueba de resistencia de contraseñas",
             "subtitle": "Evalua la fortaleza de tus claves",
             "challenges": [],
             "xpReward": 15,
@@ -1708,11 +1708,11 @@
       {
         "id": "ac_s2_ses5",
         "title": "Longitud vs complejidad",
-        "subtitle": "Sesión 5 · 5 lecciones",
+        "subtitle": "Sesión 5 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s2_ses5_l1",
-            "title": "Por qué 12+ caracteres importa más que los símbolos",
+            "title": "Por qué 12+ carácteres importa más que los símbolos",
             "subtitle": "Lección 1 de la sesión 5",
             "challenges": [],
             "xpReward": 15,
@@ -1734,7 +1734,7 @@
           },
           {
             "id": "ac_s2_ses5_l3",
-            "title": "Comparación entre longitud y caracteres especiales",
+            "title": "Comparación entre longitud y carácteres especiales",
             "subtitle": "Lección 3 de la sesión 5",
             "challenges": [],
             "xpReward": 15,
@@ -1767,7 +1767,7 @@
           },
           {
             "id": "ac_s2_ses5_l6",
-            "title": "Generador de contrasenas por tema",
+            "title": "Generador de contraseñas por tema",
             "subtitle": "Crea claves tematicas faciles de recordar",
             "challenges": [],
             "xpReward": 15,
@@ -1782,7 +1782,7 @@
       {
         "id": "ac_s2_ses6",
         "title": "Frases de paso (passphrases)",
-        "subtitle": "Sesión 6 · 5 lecciones",
+        "subtitle": "Sesión 6 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s2_ses6_l1",
@@ -1841,8 +1841,8 @@
           },
           {
             "id": "ac_s2_ses6_l6",
-            "title": "Contrasenas biometricas",
-            "subtitle": "Usa huella o rostro como contrasena",
+            "title": "Contraseñas biometricas",
+            "subtitle": "Usa huella o rostro como contraseña",
             "challenges": [],
             "xpReward": 15,
             "gemReward": 5,
@@ -1856,7 +1856,7 @@
       {
         "id": "ac_s2_ses7",
         "title": "Patrones a evitar",
-        "subtitle": "Sesión 7 · 5 lecciones",
+        "subtitle": "Sesión 7 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s2_ses7_l1",
@@ -1915,7 +1915,7 @@
           },
           {
             "id": "ac_s2_ses7_l6",
-            "title": "Educacion familiar en contrasenas",
+            "title": "Educación familiar en contraseñas",
             "subtitle": "Ensenia a tu circulo a crear claves seguras",
             "challenges": [],
             "xpReward": 15,
@@ -1930,7 +1930,7 @@
       {
         "id": "ac_s2_ses8",
         "title": "Rotación de contraseñas",
-        "subtitle": "Sesión 8 · 5 lecciones",
+        "subtitle": "Sesión 8 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s2_ses8_l1",
@@ -1989,7 +1989,7 @@
           },
           {
             "id": "ac_s2_ses8_l6",
-            "title": "Evaluacion de contrasenas actuales",
+            "title": "Evaluacion de contraseñas actuales",
             "subtitle": "Audita la seguridad de tus claves existentes",
             "challenges": [],
             "xpReward": 15,
@@ -2004,7 +2004,7 @@
       {
         "id": "ac_s2_ses9",
         "title": "Almacenamiento seguro de contraseñas",
-        "subtitle": "Sesión 9 · 5 lecciones",
+        "subtitle": "Sesión 9 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s2_ses9_l1",
@@ -2063,7 +2063,7 @@
           },
           {
             "id": "ac_s2_ses9_l6",
-            "title": "Contrasena maestra para gestor",
+            "title": "Contraseña maestra para gestor",
             "subtitle": "Crea la clave que protege todas tus claves",
             "challenges": [],
             "xpReward": 15,
@@ -2078,7 +2078,7 @@
       {
         "id": "ac_s2_ses10",
         "title": "Compartir contraseñas de forma segura",
-        "subtitle": "Sesión 10 · 5 lecciones",
+        "subtitle": "Sesión 10 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s2_ses10_l1",
@@ -2152,7 +2152,7 @@
       {
         "id": "ac_s2_ses11",
         "title": "Contraseñas de dispositivos",
-        "subtitle": "Sesión 11 · 5 lecciones",
+        "subtitle": "Sesión 11 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s2_ses11_l1",
@@ -2211,7 +2211,7 @@
           },
           {
             "id": "ac_s2_ses11_l6",
-            "title": "Contrasenas visuales",
+            "title": "Contraseñas visuales",
             "subtitle": "Crea claves basadas en imagenes",
             "challenges": [],
             "xpReward": 15,
@@ -2226,7 +2226,7 @@
       {
         "id": "ac_s2_ses12",
         "title": "Contraseñas de redes WiFi",
-        "subtitle": "Sesión 12 · 5 lecciones",
+        "subtitle": "Sesión 12 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s2_ses12_l1",
@@ -2289,7 +2289,7 @@
       {
         "id": "ac_s2_ses13",
         "title": "PINs y códigos de acceso",
-        "subtitle": "Sesión 13 · 5 lecciones",
+        "subtitle": "Sesión 13 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s2_ses13_l1",
@@ -2352,7 +2352,7 @@
       {
         "id": "ac_s2_ses14",
         "title": "Preguntas de seguridad avanzadas",
-        "subtitle": "Sesión 14 · 5 lecciones",
+        "subtitle": "Sesión 14 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s2_ses14_l1",
@@ -2415,7 +2415,7 @@
       {
         "id": "ac_s2_ses15",
         "title": "Cambiar contraseñas después de un incidente",
-        "subtitle": "Sesión 15 · 5 lecciones",
+        "subtitle": "Sesión 15 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s2_ses15_l1",
@@ -2478,11 +2478,11 @@
       {
         "id": "ac_s2_ses16",
         "title": "Verificar si tu contraseña fue filtrada",
-        "subtitle": "Sesión 16 · 5 lecciones",
+        "subtitle": "Sesión 16 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s2_ses16_l1",
-            "title": "How secure is my password",
+            "title": "Qué tan segura es mi contraseña",
             "subtitle": "Lección 1 de la sesión 16",
             "challenges": [],
             "xpReward": 15,
@@ -2541,7 +2541,7 @@
       {
         "id": "ac_s2_ses17",
         "title": "Política de contraseñas en el trabajo",
-        "subtitle": "Sesión 17 · 5 lecciones",
+        "subtitle": "Sesión 17 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s2_ses17_l1",
@@ -2604,7 +2604,7 @@
       {
         "id": "ac_s2_ses18",
         "title": "Contraseñas para menores de edad",
-        "subtitle": "Sesión 18 · 5 lecciones",
+        "subtitle": "Sesión 18 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s2_ses18_l1",
@@ -2667,7 +2667,7 @@
       {
         "id": "ac_s2_ses19",
         "title": "El factor humano: hábitos seguros",
-        "subtitle": "Sesión 19 · 5 lecciones",
+        "subtitle": "Sesión 19 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s2_ses19_l1",
@@ -2730,7 +2730,7 @@
       {
         "id": "ac_s2_ses20",
         "title": "Evaluación de contraseñas",
-        "subtitle": "Sesión 20 · 2 lecciones",
+        "subtitle": "Sesión 20 · 2 lecciónes",
         "lessons": [
           {
             "id": "ac_s2_ses20_l1",
@@ -2757,7 +2757,7 @@
           {
             "id": "ac_s2_ses20_l3",
             "title": "Rotacion programada de claves",
-            "subtitle": "Calendario para cambiar contrasenas",
+            "subtitle": "Calendario para cambiar contraseñas",
             "challenges": [],
             "xpReward": 15,
             "gemReward": 5,
@@ -2767,7 +2767,7 @@
           },
           {
             "id": "ac_s2_ses20_l4",
-            "title": "Multiples perfiles de contrasenas",
+            "title": "Múltiples perfiles de contraseñas",
             "subtitle": "Separa claves personales y laborales",
             "challenges": [],
             "xpReward": 15,
@@ -2778,7 +2778,7 @@
           },
           {
             "id": "ac_s2_ses20_l5",
-            "title": "Contrasenas para ninos",
+            "title": "Contraseñas para ninos",
             "subtitle": "Adapta claves seguras para menores",
             "challenges": [],
             "xpReward": 15,
@@ -2793,7 +2793,7 @@
       {
         "id": "ac_s2_ses21",
         "title": "Sesión adicional 21",
-        "subtitle": "Sesión 21 · 5 lecciones",
+        "subtitle": "Sesión 21 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s2_ses21_l1",
@@ -2856,7 +2856,7 @@
       {
         "id": "ac_s2_ses22",
         "title": "Sesión adicional 22",
-        "subtitle": "Sesión 22 · 5 lecciones",
+        "subtitle": "Sesión 22 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s2_ses22_l1",
@@ -2919,7 +2919,7 @@
       {
         "id": "ac_s2_ses23",
         "title": "Sesión adicional 23",
-        "subtitle": "Sesión 23 · 5 lecciones",
+        "subtitle": "Sesión 23 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s2_ses23_l1",
@@ -2982,7 +2982,7 @@
       {
         "id": "ac_s2_ses24",
         "title": "Sesión adicional 24",
-        "subtitle": "Sesión 24 · 5 lecciones",
+        "subtitle": "Sesión 24 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s2_ses24_l1",
@@ -3045,7 +3045,7 @@
       {
         "id": "ac_s2_ses25",
         "title": "Sesión adicional 25",
-        "subtitle": "Sesión 25 · 5 lecciones",
+        "subtitle": "Sesión 25 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s2_ses25_l1",
@@ -3119,7 +3119,7 @@
       {
         "id": "ac_s3_ses1",
         "title": "¿Qué es la autenticación en dos pasos?",
-        "subtitle": "Sesión 1 · 5 lecciones",
+        "subtitle": "Sesión 1 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s3_ses1_l1",
@@ -3193,7 +3193,7 @@
       {
         "id": "ac_s3_ses2",
         "title": "Tipos de segundo factor",
-        "subtitle": "Sesión 2 · 5 lecciones",
+        "subtitle": "Sesión 2 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s3_ses2_l1",
@@ -3267,7 +3267,7 @@
       {
         "id": "ac_s3_ses3",
         "title": "2FA por SMS",
-        "subtitle": "Sesión 3 · 5 lecciones",
+        "subtitle": "Sesión 3 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s3_ses3_l1",
@@ -3327,7 +3327,7 @@
           {
             "id": "ac_s3_ses3_l6",
             "title": "Passkeys en dispositivos moviles",
-            "subtitle": "Adopta la autenticacion sin contrasena",
+            "subtitle": "Adopta la autenticación sin contraseña",
             "challenges": [],
             "xpReward": 15,
             "gemReward": 5,
@@ -3341,7 +3341,7 @@
       {
         "id": "ac_s3_ses4",
         "title": "2FA por apps de autenticación",
-        "subtitle": "Sesión 4 · 5 lecciones",
+        "subtitle": "Sesión 4 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s3_ses4_l1",
@@ -3415,7 +3415,7 @@
       {
         "id": "ac_s3_ses5",
         "title": "Claves de seguridad físicas",
-        "subtitle": "Sesión 5 · 5 lecciones",
+        "subtitle": "Sesión 5 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s3_ses5_l1",
@@ -3489,7 +3489,7 @@
       {
         "id": "ac_s3_ses6",
         "title": "Códigos de respaldo",
-        "subtitle": "Sesión 6 · 5 lecciones",
+        "subtitle": "Sesión 6 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s3_ses6_l1",
@@ -3548,7 +3548,7 @@
           },
           {
             "id": "ac_s3_ses6_l6",
-            "title": "Recuperacion con multiples factores",
+            "title": "Recuperación con múltiples factores",
             "subtitle": "Combina metodos para emergencias",
             "challenges": [],
             "xpReward": 15,
@@ -3563,7 +3563,7 @@
       {
         "id": "ac_s3_ses7",
         "title": "Biometría: huella y rostro",
-        "subtitle": "Sesión 7 · 5 lecciones",
+        "subtitle": "Sesión 7 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s3_ses7_l1",
@@ -3622,7 +3622,7 @@
           },
           {
             "id": "ac_s3_ses7_l6",
-            "title": "App de autenticacion en PC",
+            "title": "App de autenticación en PC",
             "subtitle": "Usa 2FA desde tu computadora",
             "challenges": [],
             "xpReward": 15,
@@ -3637,7 +3637,7 @@
       {
         "id": "ac_s3_ses8",
         "title": "Notificaciones push de autenticación",
-        "subtitle": "Sesión 8 · 5 lecciones",
+        "subtitle": "Sesión 8 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s3_ses8_l1",
@@ -3711,7 +3711,7 @@
       {
         "id": "ac_s3_ses9",
         "title": "2FA en redes sociales",
-        "subtitle": "Sesión 9 · 5 lecciones",
+        "subtitle": "Sesión 9 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s3_ses9_l1",
@@ -3785,7 +3785,7 @@
       {
         "id": "ac_s3_ses10",
         "title": "2FA en correo electrónico",
-        "subtitle": "Sesión 10 · 5 lecciones",
+        "subtitle": "Sesión 10 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s3_ses10_l1",
@@ -3859,7 +3859,7 @@
       {
         "id": "ac_s3_ses11",
         "title": "2FA en banca y finanzas",
-        "subtitle": "Sesión 11 · 5 lecciones",
+        "subtitle": "Sesión 11 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s3_ses11_l1",
@@ -3919,7 +3919,7 @@
           {
             "id": "ac_s3_ses11_l6",
             "title": "Alertas de intento de 2FA",
-            "subtitle": "Notificaciones de autenticacion fallida",
+            "subtitle": "Notificaciones de autenticación fallida",
             "challenges": [],
             "xpReward": 15,
             "gemReward": 5,
@@ -3933,7 +3933,7 @@
       {
         "id": "ac_s3_ses12",
         "title": "2FA en cuentas de trabajo",
-        "subtitle": "Sesión 12 · 5 lecciones",
+        "subtitle": "Sesión 12 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s3_ses12_l1",
@@ -3993,7 +3993,7 @@
           {
             "id": "ac_s3_ses12_l6",
             "title": "Passkeys en dispositivos moviles",
-            "subtitle": "Adopta la autenticacion sin contrasena",
+            "subtitle": "Adopta la autenticación sin contraseña",
             "challenges": [],
             "xpReward": 15,
             "gemReward": 5,
@@ -4007,7 +4007,7 @@
       {
         "id": "ac_s3_ses13",
         "title": "Desactivar 2FA de forma segura",
-        "subtitle": "Sesión 13 · 5 lecciones",
+        "subtitle": "Sesión 13 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s3_ses13_l1",
@@ -4055,7 +4055,7 @@
           },
           {
             "id": "ac_s3_ses13_l5",
-            "title": "Alternativas mientras solucionas problemas",
+            "title": "Alternativas mientras soluciónas problemas",
             "subtitle": "Lección 5 de la sesión 13",
             "challenges": [],
             "xpReward": 15,
@@ -4081,7 +4081,7 @@
       {
         "id": "ac_s3_ses14",
         "title": "Recuperar acceso sin segundo factor",
-        "subtitle": "Sesión 14 · 5 lecciones",
+        "subtitle": "Sesión 14 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s3_ses14_l1",
@@ -4144,7 +4144,7 @@
       {
         "id": "ac_s3_ses15",
         "title": "Autenticación sin contraseña (passkeys)",
-        "subtitle": "Sesión 15 · 5 lecciones",
+        "subtitle": "Sesión 15 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s3_ses15_l1",
@@ -4207,7 +4207,7 @@
       {
         "id": "ac_s3_ses16",
         "title": "Passkeys en Apple, Google y Microsoft",
-        "subtitle": "Sesión 16 · 5 lecciones",
+        "subtitle": "Sesión 16 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s3_ses16_l1",
@@ -4270,7 +4270,7 @@
       {
         "id": "ac_s3_ses17",
         "title": "Tokens y llaves de seguridad",
-        "subtitle": "Sesión 17 · 5 lecciones",
+        "subtitle": "Sesión 17 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s3_ses17_l1",
@@ -4333,7 +4333,7 @@
       {
         "id": "ac_s3_ses18",
         "title": "2FA para familiares",
-        "subtitle": "Sesión 18 · 5 lecciones",
+        "subtitle": "Sesión 18 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s3_ses18_l1",
@@ -4396,7 +4396,7 @@
       {
         "id": "ac_s3_ses19",
         "title": "Mantener tus métodos 2FA actualizados",
-        "subtitle": "Sesión 19 · 5 lecciones",
+        "subtitle": "Sesión 19 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s3_ses19_l1",
@@ -4459,7 +4459,7 @@
       {
         "id": "ac_s3_ses20",
         "title": "Evaluación de autenticación",
-        "subtitle": "Sesión 20 · 2 lecciones",
+        "subtitle": "Sesión 20 · 2 lecciónes",
         "lessons": [
           {
             "id": "ac_s3_ses20_l1",
@@ -4485,8 +4485,8 @@
           },
           {
             "id": "ac_s3_ses20_l3",
-            "title": "Autenticacion por voz",
-            "subtitle": "Verificacion biometrica de voz",
+            "title": "Autenticación por voz",
+            "subtitle": "Verificación biometrica de voz",
             "challenges": [],
             "xpReward": 15,
             "gemReward": 5,
@@ -4522,7 +4522,7 @@
       {
         "id": "ac_s3_ses21",
         "title": "Sesión adicional 21",
-        "subtitle": "Sesión 21 · 5 lecciones",
+        "subtitle": "Sesión 21 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s3_ses21_l1",
@@ -4585,7 +4585,7 @@
       {
         "id": "ac_s3_ses22",
         "title": "Sesión adicional 22",
-        "subtitle": "Sesión 22 · 5 lecciones",
+        "subtitle": "Sesión 22 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s3_ses22_l1",
@@ -4648,7 +4648,7 @@
       {
         "id": "ac_s3_ses23",
         "title": "Sesión adicional 23",
-        "subtitle": "Sesión 23 · 5 lecciones",
+        "subtitle": "Sesión 23 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s3_ses23_l1",
@@ -4711,7 +4711,7 @@
       {
         "id": "ac_s3_ses24",
         "title": "Sesión adicional 24",
-        "subtitle": "Sesión 24 · 5 lecciones",
+        "subtitle": "Sesión 24 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s3_ses24_l1",
@@ -4774,7 +4774,7 @@
       {
         "id": "ac_s3_ses25",
         "title": "Sesión adicional 25",
-        "subtitle": "Sesión 25 · 5 lecciones",
+        "subtitle": "Sesión 25 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s3_ses25_l1",
@@ -4837,7 +4837,7 @@
       {
         "id": "ac_s3_ses26",
         "title": "Sesión adicional 26",
-        "subtitle": "Sesión 26 · 5 lecciones",
+        "subtitle": "Sesión 26 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s3_ses26_l1",
@@ -4911,7 +4911,7 @@
       {
         "id": "ac_s4_ses1",
         "title": "¿Qué es un gestor de contraseñas?",
-        "subtitle": "Sesión 1 · 5 lecciones",
+        "subtitle": "Sesión 1 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s4_ses1_l1",
@@ -4970,7 +4970,7 @@
           },
           {
             "id": "ac_s4_ses1_l6",
-            "title": "Gestor de contrasenas familiar",
+            "title": "Gestor de contraseñas familiar",
             "subtitle": "Protege a toda tu familia",
             "challenges": [],
             "xpReward": 15,
@@ -4985,7 +4985,7 @@
       {
         "id": "ac_s4_ses2",
         "title": "Cómo funciona un gestor",
-        "subtitle": "Sesión 2 · 5 lecciones",
+        "subtitle": "Sesión 2 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s4_ses2_l1",
@@ -5059,7 +5059,7 @@
       {
         "id": "ac_s4_ses3",
         "title": "Ventajas de usar un gestor",
-        "subtitle": "Sesión 3 · 5 lecciones",
+        "subtitle": "Sesión 3 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s4_ses3_l1",
@@ -5133,7 +5133,7 @@
       {
         "id": "ac_s4_ses4",
         "title": "Gestores populares: comparativa",
-        "subtitle": "Sesión 4 · 5 lecciones",
+        "subtitle": "Sesión 4 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s4_ses4_l1",
@@ -5207,7 +5207,7 @@
       {
         "id": "ac_s4_ses5",
         "title": "Instalación y configuración inicial",
-        "subtitle": "Sesión 5 · 5 lecciones",
+        "subtitle": "Sesión 5 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s4_ses5_l1",
@@ -5281,7 +5281,7 @@
       {
         "id": "ac_s4_ses6",
         "title": "La contraseña maestra",
-        "subtitle": "Sesión 6 · 5 lecciones",
+        "subtitle": "Sesión 6 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s4_ses6_l1",
@@ -5355,7 +5355,7 @@
       {
         "id": "ac_s4_ses7",
         "title": "Guardar tu primera contraseña",
-        "subtitle": "Sesión 7 · 5 lecciones",
+        "subtitle": "Sesión 7 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s4_ses7_l1",
@@ -5429,7 +5429,7 @@
       {
         "id": "ac_s4_ses8",
         "title": "Autocompletado en navegador y apps",
-        "subtitle": "Sesión 8 · 5 lecciones",
+        "subtitle": "Sesión 8 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s4_ses8_l1",
@@ -5488,7 +5488,7 @@
           },
           {
             "id": "ac_s4_ses8_l6",
-            "title": "Historial de contrasenas",
+            "title": "Historial de contraseñas",
             "subtitle": "Accede a versiones anteriores de tus claves",
             "challenges": [],
             "xpReward": 15,
@@ -5503,7 +5503,7 @@
       {
         "id": "ac_s4_ses9",
         "title": "Generador de contraseñas integrado",
-        "subtitle": "Sesión 9 · 5 lecciones",
+        "subtitle": "Sesión 9 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s4_ses9_l1",
@@ -5518,7 +5518,7 @@
           },
           {
             "id": "ac_s4_ses9_l2",
-            "title": "Personalizar longitud y caracteres",
+            "title": "Personalizar longitud y carácteres",
             "subtitle": "Lección 2 de la sesión 9",
             "challenges": [],
             "xpReward": 15,
@@ -5577,7 +5577,7 @@
       {
         "id": "ac_s4_ses10",
         "title": "Organizar por categorías y carpetas",
-        "subtitle": "Sesión 10 · 5 lecciones",
+        "subtitle": "Sesión 10 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s4_ses10_l1",
@@ -5651,11 +5651,11 @@
       {
         "id": "ac_s4_ses11",
         "title": "Compartir contraseñas de forma segura",
-        "subtitle": "Sesión 11 · 5 lecciones",
+        "subtitle": "Sesión 11 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s4_ses11_l1",
-            "title": "Funciones de uso compartido",
+            "title": "Funciónes de uso compartido",
             "subtitle": "Lección 1 de la sesión 11",
             "challenges": [],
             "xpReward": 15,
@@ -5725,7 +5725,7 @@
       {
         "id": "ac_s4_ses12",
         "title": "Notas seguras y documentos",
-        "subtitle": "Sesión 12 · 5 lecciones",
+        "subtitle": "Sesión 12 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s4_ses12_l1",
@@ -5784,8 +5784,8 @@
           },
           {
             "id": "ac_s4_ses12_l6",
-            "title": "Gestor de contrasenas offline",
-            "subtitle": "Usa tu gestor sin conexion a internet",
+            "title": "Gestor de contraseñas offline",
+            "subtitle": "Usa tu gestor sin conexión a internet",
             "challenges": [],
             "xpReward": 15,
             "gemReward": 5,
@@ -5799,7 +5799,7 @@
       {
         "id": "ac_s4_ses13",
         "title": "Gestor de familia o equipo",
-        "subtitle": "Sesión 13 · 5 lecciones",
+        "subtitle": "Sesión 13 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s4_ses13_l1",
@@ -5862,7 +5862,7 @@
       {
         "id": "ac_s4_ses14",
         "title": "Sincronización entre dispositivos",
-        "subtitle": "Sesión 14 · 5 lecciones",
+        "subtitle": "Sesión 14 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s4_ses14_l1",
@@ -5925,7 +5925,7 @@
       {
         "id": "ac_s4_ses15",
         "title": "Exportar e importar contraseñas",
-        "subtitle": "Sesión 15 · 5 lecciones",
+        "subtitle": "Sesión 15 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s4_ses15_l1",
@@ -5988,7 +5988,7 @@
       {
         "id": "ac_s4_ses16",
         "title": "Auditoría de seguridad integrada",
-        "subtitle": "Sesión 16 · 5 lecciones",
+        "subtitle": "Sesión 16 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s4_ses16_l1",
@@ -6051,7 +6051,7 @@
       {
         "id": "ac_s4_ses17",
         "title": "Alertas de contraseñas vulnerables",
-        "subtitle": "Sesión 17 · 5 lecciones",
+        "subtitle": "Sesión 17 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s4_ses17_l1",
@@ -6114,7 +6114,7 @@
       {
         "id": "ac_s4_ses18",
         "title": "Gestor vs navegador: diferencias clave",
-        "subtitle": "Sesión 18 · 5 lecciones",
+        "subtitle": "Sesión 18 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s4_ses18_l1",
@@ -6177,7 +6177,7 @@
       {
         "id": "ac_s4_ses19",
         "title": "Migrar a un gestor: paso a paso",
-        "subtitle": "Sesión 19 · 5 lecciones",
+        "subtitle": "Sesión 19 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s4_ses19_l1",
@@ -6240,7 +6240,7 @@
       {
         "id": "ac_s4_ses20",
         "title": "Evaluación de gestores",
-        "subtitle": "Sesión 20 · 2 lecciones",
+        "subtitle": "Sesión 20 · 2 lecciónes",
         "lessons": [
           {
             "id": "ac_s4_ses20_l1",
@@ -6278,7 +6278,7 @@
           {
             "id": "ac_s4_ses20_l4",
             "title": "Importacion desde CSV",
-            "subtitle": "Migra contrasenas desde archivos",
+            "subtitle": "Migra contraseñas desde archivos",
             "challenges": [],
             "xpReward": 15,
             "gemReward": 5,
@@ -6303,7 +6303,7 @@
       {
         "id": "ac_s4_ses21",
         "title": "Sesión adicional 21",
-        "subtitle": "Sesión 21 · 5 lecciones",
+        "subtitle": "Sesión 21 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s4_ses21_l1",
@@ -6366,7 +6366,7 @@
       {
         "id": "ac_s4_ses22",
         "title": "Sesión adicional 22",
-        "subtitle": "Sesión 22 · 5 lecciones",
+        "subtitle": "Sesión 22 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s4_ses22_l1",
@@ -6429,7 +6429,7 @@
       {
         "id": "ac_s4_ses23",
         "title": "Sesión adicional 23",
-        "subtitle": "Sesión 23 · 5 lecciones",
+        "subtitle": "Sesión 23 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s4_ses23_l1",
@@ -6492,7 +6492,7 @@
       {
         "id": "ac_s4_ses24",
         "title": "Sesión adicional 24",
-        "subtitle": "Sesión 24 · 5 lecciones",
+        "subtitle": "Sesión 24 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s4_ses24_l1",
@@ -6555,7 +6555,7 @@
       {
         "id": "ac_s4_ses25",
         "title": "Sesión adicional 25",
-        "subtitle": "Sesión 25 · 5 lecciones",
+        "subtitle": "Sesión 25 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s4_ses25_l1",
@@ -6629,7 +6629,7 @@
       {
         "id": "ac_s5_ses1",
         "title": "¿Por qué monitorear tus cuentas?",
-        "subtitle": "Sesión 1 · 5 lecciones",
+        "subtitle": "Sesión 1 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s5_ses1_l1",
@@ -6703,7 +6703,7 @@
       {
         "id": "ac_s5_ses2",
         "title": "Alertas de inicio de sesión",
-        "subtitle": "Sesión 2 · 5 lecciones",
+        "subtitle": "Sesión 2 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s5_ses2_l1",
@@ -6777,7 +6777,7 @@
       {
         "id": "ac_s5_ses3",
         "title": "Notificaciones de dispositivos nuevos",
-        "subtitle": "Sesión 3 · 5 lecciones",
+        "subtitle": "Sesión 3 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s5_ses3_l1",
@@ -6851,7 +6851,7 @@
       {
         "id": "ac_s5_ses4",
         "title": "Historial de actividad de cuenta",
-        "subtitle": "Sesión 4 · 5 lecciones",
+        "subtitle": "Sesión 4 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s5_ses4_l1",
@@ -6911,7 +6911,7 @@
           {
             "id": "ac_s5_ses4_l6",
             "title": "Automatizacion de respuestas",
-            "subtitle": "Responde automaticamente a incidentes",
+            "subtitle": "Responde automáticamente a incidentes",
             "challenges": [],
             "xpReward": 15,
             "gemReward": 5,
@@ -6925,7 +6925,7 @@
       {
         "id": "ac_s5_ses5",
         "title": "Detección de accesos no autorizados",
-        "subtitle": "Sesión 5 · 5 lecciones",
+        "subtitle": "Sesión 5 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s5_ses5_l1",
@@ -6999,7 +6999,7 @@
       {
         "id": "ac_s5_ses6",
         "title": "Monitoreo de la dark web",
-        "subtitle": "Sesión 6 · 5 lecciones",
+        "subtitle": "Sesión 6 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s5_ses6_l1",
@@ -7059,7 +7059,7 @@
           {
             "id": "ac_s5_ses6_l6",
             "title": "Monitoreo de deep web",
-            "subtitle": "Vigila tu informacion en la deep web",
+            "subtitle": "Vigila tu información en la deep web",
             "challenges": [],
             "xpReward": 15,
             "gemReward": 5,
@@ -7073,7 +7073,7 @@
       {
         "id": "ac_s5_ses7",
         "title": "Servicios de monitoreo de identidad",
-        "subtitle": "Sesión 7 · 5 lecciones",
+        "subtitle": "Sesión 7 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s5_ses7_l1",
@@ -7147,7 +7147,7 @@
       {
         "id": "ac_s5_ses8",
         "title": "Alertas de cambio de contraseña",
-        "subtitle": "Sesión 8 · 5 lecciones",
+        "subtitle": "Sesión 8 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s5_ses8_l1",
@@ -7207,7 +7207,7 @@
           {
             "id": "ac_s5_ses8_l6",
             "title": "Alertas de cambio de domicilio",
-            "subtitle": "Notificacion de cambios en tu direccion",
+            "subtitle": "Notificacion de cambios en tu dirección",
             "challenges": [],
             "xpReward": 15,
             "gemReward": 5,
@@ -7221,7 +7221,7 @@
       {
         "id": "ac_s5_ses9",
         "title": "Monitoreo de transacciones financieras",
-        "subtitle": "Sesión 9 · 5 lecciones",
+        "subtitle": "Sesión 9 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s5_ses9_l1",
@@ -7258,7 +7258,7 @@
           },
           {
             "id": "ac_s5_ses9_l4",
-            "title": "Alertas de transacciones internacionales",
+            "title": "Alertas de transacciones internaciónales",
             "subtitle": "Lección 4 de la sesión 9",
             "challenges": [],
             "xpReward": 15,
@@ -7295,7 +7295,7 @@
       {
         "id": "ac_s5_ses10",
         "title": "Alertas de retiros y transferencias",
-        "subtitle": "Sesión 10 · 5 lecciones",
+        "subtitle": "Sesión 10 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s5_ses10_l1",
@@ -7310,7 +7310,7 @@
           },
           {
             "id": "ac_s5_ses10_l2",
-            "title": "Transferencias internacionales",
+            "title": "Transferencias internaciónales",
             "subtitle": "Lección 2 de la sesión 10",
             "challenges": [],
             "xpReward": 15,
@@ -7369,7 +7369,7 @@
       {
         "id": "ac_s5_ses11",
         "title": "Configurar alertas en redes sociales",
-        "subtitle": "Sesión 11 · 5 lecciones",
+        "subtitle": "Sesión 11 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s5_ses11_l1",
@@ -7443,7 +7443,7 @@
       {
         "id": "ac_s5_ses12",
         "title": "Monitoreo de cuentas de trabajo",
-        "subtitle": "Sesión 12 · 5 lecciones",
+        "subtitle": "Sesión 12 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s5_ses12_l1",
@@ -7517,7 +7517,7 @@
       {
         "id": "ac_s5_ses13",
         "title": "Alertas de correo electrónico",
-        "subtitle": "Sesión 13 · 5 lecciones",
+        "subtitle": "Sesión 13 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s5_ses13_l1",
@@ -7591,7 +7591,7 @@
       {
         "id": "ac_s5_ses14",
         "title": "Herramientas de monitoreo gratuitas",
-        "subtitle": "Sesión 14 · 5 lecciones",
+        "subtitle": "Sesión 14 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s5_ses14_l1",
@@ -7665,7 +7665,7 @@
       {
         "id": "ac_s5_ses15",
         "title": "Dashboard de seguridad personal",
-        "subtitle": "Sesión 15 · 5 lecciones",
+        "subtitle": "Sesión 15 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s5_ses15_l1",
@@ -7728,7 +7728,7 @@
       {
         "id": "ac_s5_ses16",
         "title": "Responder a una alerta",
-        "subtitle": "Sesión 16 · 5 lecciones",
+        "subtitle": "Sesión 16 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s5_ses16_l1",
@@ -7754,7 +7754,7 @@
           },
           {
             "id": "ac_s5_ses16_l3",
-            "title": "Cerrar sesiones activas",
+            "title": "Cerrar sesiónes activas",
             "subtitle": "Lección 3 de la sesión 16",
             "challenges": [],
             "xpReward": 15,
@@ -7791,7 +7791,7 @@
       {
         "id": "ac_s5_ses17",
         "title": "Reportar actividad sospechosa",
-        "subtitle": "Sesión 17 · 5 lecciones",
+        "subtitle": "Sesión 17 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s5_ses17_l1",
@@ -7854,7 +7854,7 @@
       {
         "id": "ac_s5_ses18",
         "title": "Monitoreo familiar",
-        "subtitle": "Sesión 18 · 5 lecciones",
+        "subtitle": "Sesión 18 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s5_ses18_l1",
@@ -7917,7 +7917,7 @@
       {
         "id": "ac_s5_ses19",
         "title": "Automatizar la seguridad",
-        "subtitle": "Sesión 19 · 5 lecciones",
+        "subtitle": "Sesión 19 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s5_ses19_l1",
@@ -7980,7 +7980,7 @@
       {
         "id": "ac_s5_ses20",
         "title": "Evaluación de monitoreo",
-        "subtitle": "Sesión 20 · 2 lecciones",
+        "subtitle": "Sesión 20 · 2 lecciónes",
         "lessons": [
           {
             "id": "ac_s5_ses20_l1",
@@ -8029,7 +8029,7 @@
           {
             "id": "ac_s5_ses20_l5",
             "title": "Monitoreo de deep web",
-            "subtitle": "Vigila tu informacion en la deep web",
+            "subtitle": "Vigila tu información en la deep web",
             "challenges": [],
             "xpReward": 15,
             "gemReward": 5,
@@ -8043,7 +8043,7 @@
       {
         "id": "ac_s5_ses21",
         "title": "Sesión adicional 21",
-        "subtitle": "Sesión 21 · 5 lecciones",
+        "subtitle": "Sesión 21 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s5_ses21_l1",
@@ -8106,7 +8106,7 @@
       {
         "id": "ac_s5_ses22",
         "title": "Sesión adicional 22",
-        "subtitle": "Sesión 22 · 5 lecciones",
+        "subtitle": "Sesión 22 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s5_ses22_l1",
@@ -8169,7 +8169,7 @@
       {
         "id": "ac_s5_ses23",
         "title": "Sesión adicional 23",
-        "subtitle": "Sesión 23 · 5 lecciones",
+        "subtitle": "Sesión 23 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s5_ses23_l1",
@@ -8232,7 +8232,7 @@
       {
         "id": "ac_s5_ses24",
         "title": "Sesión adicional 24",
-        "subtitle": "Sesión 24 · 5 lecciones",
+        "subtitle": "Sesión 24 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s5_ses24_l1",
@@ -8295,7 +8295,7 @@
       {
         "id": "ac_s5_ses25",
         "title": "Sesión adicional 25",
-        "subtitle": "Sesión 25 · 5 lecciones",
+        "subtitle": "Sesión 25 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s5_ses25_l1",
@@ -8358,7 +8358,7 @@
       {
         "id": "ac_s5_ses26",
         "title": "Sesión adicional 26",
-        "subtitle": "Sesión 26 · 5 lecciones",
+        "subtitle": "Sesión 26 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s5_ses26_l1",
@@ -8421,7 +8421,7 @@
       {
         "id": "ac_s5_ses27",
         "title": "Sesión adicional 27",
-        "subtitle": "Sesión 27 · 5 lecciones",
+        "subtitle": "Sesión 27 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s5_ses27_l1",
@@ -8484,7 +8484,7 @@
       {
         "id": "ac_s5_ses28",
         "title": "Sesión adicional 28",
-        "subtitle": "Sesión 28 · 5 lecciones",
+        "subtitle": "Sesión 28 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s5_ses28_l1",
@@ -8547,7 +8547,7 @@
       {
         "id": "ac_s5_ses29",
         "title": "Sesión adicional 29",
-        "subtitle": "Sesión 29 · 5 lecciones",
+        "subtitle": "Sesión 29 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s5_ses29_l1",
@@ -8610,7 +8610,7 @@
       {
         "id": "ac_s5_ses30",
         "title": "Sesión adicional 30",
-        "subtitle": "Sesión 30 · 5 lecciones",
+        "subtitle": "Sesión 30 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s5_ses30_l1",
@@ -8684,7 +8684,7 @@
       {
         "id": "ac_s6_ses1",
         "title": "Plan de recuperación de cuentas",
-        "subtitle": "Sesión 1 · 5 lecciones",
+        "subtitle": "Sesión 1 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s6_ses1_l1",
@@ -8743,7 +8743,7 @@
           },
           {
             "id": "ac_s6_ses1_l6",
-            "title": "Recuperacion de cripto wallets",
+            "title": "Recuperación de cripto wallets",
             "subtitle": "Accede a tus activos digitales",
             "challenges": [],
             "xpReward": 15,
@@ -8758,7 +8758,7 @@
       {
         "id": "ac_s6_ses2",
         "title": "Correo de recuperación",
-        "subtitle": "Sesión 2 · 5 lecciones",
+        "subtitle": "Sesión 2 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s6_ses2_l1",
@@ -8817,8 +8817,8 @@
           },
           {
             "id": "ac_s6_ses2_l6",
-            "title": "Simulacro de recuperacion",
-            "subtitle": "Practica sin riesgo",
+            "title": "Simulacro de recuperación",
+            "subtitle": "Práctica sin riesgo",
             "challenges": [],
             "xpReward": 15,
             "gemReward": 5,
@@ -8832,7 +8832,7 @@
       {
         "id": "ac_s6_ses3",
         "title": "Teléfono de recuperación",
-        "subtitle": "Sesión 3 · 5 lecciones",
+        "subtitle": "Sesión 3 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s6_ses3_l1",
@@ -8906,7 +8906,7 @@
       {
         "id": "ac_s6_ses4",
         "title": "Códigos de recuperación",
-        "subtitle": "Sesión 4 · 5 lecciones",
+        "subtitle": "Sesión 4 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s6_ses4_l1",
@@ -8965,7 +8965,7 @@
           },
           {
             "id": "ac_s6_ses4_l6",
-            "title": "Plan de recuperacion familiar",
+            "title": "Plan de recuperación familiar",
             "subtitle": "Prepara a toda tu familia",
             "challenges": [],
             "xpReward": 15,
@@ -8980,7 +8980,7 @@
       {
         "id": "ac_s6_ses5",
         "title": "Preguntas de seguridad",
-        "subtitle": "Sesión 5 · 5 lecciones",
+        "subtitle": "Sesión 5 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s6_ses5_l1",
@@ -9054,7 +9054,7 @@
       {
         "id": "ac_s6_ses6",
         "title": "Recuperar cuenta de Google",
-        "subtitle": "Sesión 6 · 5 lecciones",
+        "subtitle": "Sesión 6 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s6_ses6_l1",
@@ -9113,8 +9113,8 @@
           },
           {
             "id": "ac_s6_ses6_l6",
-            "title": "Checklist de recuperacion",
-            "subtitle": "Lista de verificacion mensual",
+            "title": "Checklist de recuperación",
+            "subtitle": "Lista de verificación mensual",
             "challenges": [],
             "xpReward": 15,
             "gemReward": 5,
@@ -9128,7 +9128,7 @@
       {
         "id": "ac_s6_ses7",
         "title": "Recuperar cuenta de Facebook/Instagram",
-        "subtitle": "Sesión 7 · 5 lecciones",
+        "subtitle": "Sesión 7 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s6_ses7_l1",
@@ -9187,8 +9187,8 @@
           },
           {
             "id": "ac_s6_ses7_l6",
-            "title": "Simulacro de recuperacion",
-            "subtitle": "Practica sin riesgo",
+            "title": "Simulacro de recuperación",
+            "subtitle": "Práctica sin riesgo",
             "challenges": [],
             "xpReward": 15,
             "gemReward": 5,
@@ -9202,7 +9202,7 @@
       {
         "id": "ac_s6_ses8",
         "title": "Recuperar cuenta de banco",
-        "subtitle": "Sesión 8 · 5 lecciones",
+        "subtitle": "Sesión 8 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s6_ses8_l1",
@@ -9261,7 +9261,7 @@
           },
           {
             "id": "ac_s6_ses8_l6",
-            "title": "Plan de recuperacion familiar",
+            "title": "Plan de recuperación familiar",
             "subtitle": "Prepara a toda tu familia",
             "challenges": [],
             "xpReward": 15,
@@ -9276,7 +9276,7 @@
       {
         "id": "ac_s6_ses9",
         "title": "Recuperar cuenta de trabajo",
-        "subtitle": "Sesión 9 · 5 lecciones",
+        "subtitle": "Sesión 9 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s6_ses9_l1",
@@ -9335,7 +9335,7 @@
           },
           {
             "id": "ac_s6_ses9_l6",
-            "title": "Recuperacion de cuentas de trabajo",
+            "title": "Recuperación de cuentas de trabajo",
             "subtitle": "Accede a recursos corporativos",
             "challenges": [],
             "xpReward": 15,
@@ -9350,7 +9350,7 @@
       {
         "id": "ac_s6_ses10",
         "title": "Respaldar información de cuentas",
-        "subtitle": "Sesión 10 · 5 lecciones",
+        "subtitle": "Sesión 10 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s6_ses10_l1",
@@ -9409,7 +9409,7 @@
           },
           {
             "id": "ac_s6_ses10_l6",
-            "title": "Recuperacion de fotos y archivos",
+            "title": "Recuperación de fotos y archivos",
             "subtitle": "Restaura tus recuerdos digitales",
             "challenges": [],
             "xpReward": 15,
@@ -9424,7 +9424,7 @@
       {
         "id": "ac_s6_ses11",
         "title": "Exportar datos de tus cuentas",
-        "subtitle": "Sesión 11 · 5 lecciones",
+        "subtitle": "Sesión 11 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s6_ses11_l1",
@@ -9483,8 +9483,8 @@
           },
           {
             "id": "ac_s6_ses11_l6",
-            "title": "Checklist de recuperacion",
-            "subtitle": "Lista de verificacion mensual",
+            "title": "Checklist de recuperación",
+            "subtitle": "Lista de verificación mensual",
             "challenges": [],
             "xpReward": 15,
             "gemReward": 5,
@@ -9498,7 +9498,7 @@
       {
         "id": "ac_s6_ses12",
         "title": "Contactar soporte técnico",
-        "subtitle": "Sesión 12 · 5 lecciones",
+        "subtitle": "Sesión 12 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s6_ses12_l1",
@@ -9561,7 +9561,7 @@
       {
         "id": "ac_s6_ses13",
         "title": "Verificación de identidad",
-        "subtitle": "Sesión 13 · 5 lecciones",
+        "subtitle": "Sesión 13 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s6_ses13_l1",
@@ -9624,7 +9624,7 @@
       {
         "id": "ac_s6_ses14",
         "title": "Recuperación sin acceso al correo",
-        "subtitle": "Sesión 14 · 5 lecciones",
+        "subtitle": "Sesión 14 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s6_ses14_l1",
@@ -9687,7 +9687,7 @@
       {
         "id": "ac_s6_ses15",
         "title": "Recuperación sin acceso al celular",
-        "subtitle": "Sesión 15 · 5 lecciones",
+        "subtitle": "Sesión 15 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s6_ses15_l1",
@@ -9750,7 +9750,7 @@
       {
         "id": "ac_s6_ses16",
         "title": "Prevenir pérdida de acceso",
-        "subtitle": "Sesión 16 · 5 lecciones",
+        "subtitle": "Sesión 16 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s6_ses16_l1",
@@ -9765,7 +9765,7 @@
           },
           {
             "id": "ac_s6_ses16_l2",
-            "title": "Revisar opciones de recuperación",
+            "title": "Revisar opciónes de recuperación",
             "subtitle": "Lección 2 de la sesión 16",
             "challenges": [],
             "xpReward": 15,
@@ -9798,7 +9798,7 @@
           },
           {
             "id": "ac_s6_ses16_l5",
-            "title": "Agregar múltiples opciones de recuperación",
+            "title": "Agregar múltiples opciónes de recuperación",
             "subtitle": "Lección 5 de la sesión 16",
             "challenges": [],
             "xpReward": 15,
@@ -9813,7 +9813,7 @@
       {
         "id": "ac_s6_ses17",
         "title": "Heredar cuentas digitales",
-        "subtitle": "Sesión 17 · 5 lecciones",
+        "subtitle": "Sesión 17 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s6_ses17_l1",
@@ -9876,7 +9876,7 @@
       {
         "id": "ac_s6_ses18",
         "title": "Checklist de recuperación",
-        "subtitle": "Sesión 18 · 5 lecciones",
+        "subtitle": "Sesión 18 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s6_ses18_l1",
@@ -9939,7 +9939,7 @@
       {
         "id": "ac_s6_ses19",
         "title": "Simular una recuperación",
-        "subtitle": "Sesión 19 · 5 lecciones",
+        "subtitle": "Sesión 19 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s6_ses19_l1",
@@ -10002,7 +10002,7 @@
       {
         "id": "ac_s6_ses20",
         "title": "Evaluación de recuperación",
-        "subtitle": "Sesión 20 · 2 lecciones",
+        "subtitle": "Sesión 20 · 2 lecciónes",
         "lessons": [
           {
             "id": "ac_s6_ses20_l1",
@@ -10028,7 +10028,7 @@
           },
           {
             "id": "ac_s6_ses20_l3",
-            "title": "Respaldos automaticos en la nube",
+            "title": "Respaldos automáticos en la nube",
             "subtitle": "Configura copias de seguridad programadas",
             "challenges": [],
             "xpReward": 15,
@@ -10050,7 +10050,7 @@
           },
           {
             "id": "ac_s6_ses20_l5",
-            "title": "Recuperacion de cuentas de streaming",
+            "title": "Recuperación de cuentas de streaming",
             "subtitle": "Restaura acceso a entretenimiento",
             "challenges": [],
             "xpReward": 15,
@@ -10065,7 +10065,7 @@
       {
         "id": "ac_s6_ses21",
         "title": "Sesión adicional 21",
-        "subtitle": "Sesión 21 · 5 lecciones",
+        "subtitle": "Sesión 21 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s6_ses21_l1",
@@ -10128,7 +10128,7 @@
       {
         "id": "ac_s6_ses22",
         "title": "Sesión adicional 22",
-        "subtitle": "Sesión 22 · 5 lecciones",
+        "subtitle": "Sesión 22 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s6_ses22_l1",
@@ -10194,7 +10194,7 @@
   },
   {
     "id": "ac_st7",
-    "title": "Dispositivos y Sesiones",
+    "title": "Dispositivos y Sesiónes",
     "subtitle": "Gestiona desde dónde accedes",
     "accent": "#6A1B9A",
     "icon": 58330,
@@ -10202,7 +10202,7 @@
       {
         "id": "ac_s7_ses1",
         "title": "Tus dispositivos y tus cuentas",
-        "subtitle": "Sesión 1 · 5 lecciones",
+        "subtitle": "Sesión 1 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s7_ses1_l1",
@@ -10276,7 +10276,7 @@
       {
         "id": "ac_s7_ses2",
         "title": "Revisar dispositivos conectados",
-        "subtitle": "Sesión 2 · 5 lecciones",
+        "subtitle": "Sesión 2 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s7_ses2_l1",
@@ -10349,8 +10349,8 @@
       },
       {
         "id": "ac_s7_ses3",
-        "title": "Cerrar sesiones remotas",
-        "subtitle": "Sesión 3 · 5 lecciones",
+        "title": "Cerrar sesiónes remotas",
+        "subtitle": "Sesión 3 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s7_ses3_l1",
@@ -10365,7 +10365,7 @@
           },
           {
             "id": "ac_s7_ses3_l2",
-            "title": "Terminar sesiones activas",
+            "title": "Terminar sesiónes activas",
             "subtitle": "Lección 2 de la sesión 3",
             "challenges": [],
             "xpReward": 15,
@@ -10398,7 +10398,7 @@
           },
           {
             "id": "ac_s7_ses3_l5",
-            "title": "Verificar que las sesiones se cerraron",
+            "title": "Verificar que las sesiónes se cerraron",
             "subtitle": "Lección 5 de la sesión 3",
             "challenges": [],
             "xpReward": 15,
@@ -10423,12 +10423,12 @@
       },
       {
         "id": "ac_s7_ses4",
-        "title": "Gestión de sesiones activas",
-        "subtitle": "Sesión 4 · 5 lecciones",
+        "title": "Gestión de sesiónes activas",
+        "subtitle": "Sesión 4 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s7_ses4_l1",
-            "title": "Dónde ver sesiones activas",
+            "title": "Dónde ver sesiónes activas",
             "subtitle": "Lección 1 de la sesión 4",
             "challenges": [],
             "xpReward": 15,
@@ -10439,7 +10439,7 @@
           },
           {
             "id": "ac_s7_ses4_l2",
-            "title": "Cuándo cerrar todas las sesiones",
+            "title": "Cuándo cerrar todas las sesiónes",
             "subtitle": "Lección 2 de la sesión 4",
             "challenges": [],
             "xpReward": 15,
@@ -10450,7 +10450,7 @@
           },
           {
             "id": "ac_s7_ses4_l3",
-            "title": "Sesiones activas en servicios de streaming",
+            "title": "Sesiónes activas en servicios de streaming",
             "subtitle": "Lección 3 de la sesión 4",
             "challenges": [],
             "xpReward": 15,
@@ -10461,7 +10461,7 @@
           },
           {
             "id": "ac_s7_ses4_l4",
-            "title": "Sesiones activas en apps de mensajería",
+            "title": "Sesiónes activas en apps de mensajería",
             "subtitle": "Lección 4 de la sesión 4",
             "challenges": [],
             "xpReward": 15,
@@ -10498,7 +10498,7 @@
       {
         "id": "ac_s7_ses5",
         "title": "Dispositivos confiables vs desconocidos",
-        "subtitle": "Sesión 5 · 5 lecciones",
+        "subtitle": "Sesión 5 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s7_ses5_l1",
@@ -10572,7 +10572,7 @@
       {
         "id": "ac_s7_ses6",
         "title": "App passwords o contraseñas de aplicación",
-        "subtitle": "Sesión 6 · 5 lecciones",
+        "subtitle": "Sesión 6 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s7_ses6_l1",
@@ -10646,7 +10646,7 @@
       {
         "id": "ac_s7_ses7",
         "title": "Tokens y permisos de apps",
-        "subtitle": "Sesión 7 · 5 lecciones",
+        "subtitle": "Sesión 7 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s7_ses7_l1",
@@ -10706,7 +10706,7 @@
           {
             "id": "ac_s7_ses7_l6",
             "title": "Bloqueo biometrico avanzado",
-            "subtitle": "Configura multiples biometricos",
+            "subtitle": "Configura múltiples biometricos",
             "challenges": [],
             "xpReward": 15,
             "gemReward": 5,
@@ -10720,7 +10720,7 @@
       {
         "id": "ac_s7_ses8",
         "title": "Acceso de terceros a tus cuentas",
-        "subtitle": "Sesión 8 · 5 lecciones",
+        "subtitle": "Sesión 8 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s7_ses8_l1",
@@ -10794,7 +10794,7 @@
       {
         "id": "ac_s7_ses9",
         "title": "Revocar acceso de apps antiguas",
-        "subtitle": "Sesión 9 · 5 lecciones",
+        "subtitle": "Sesión 9 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s7_ses9_l1",
@@ -10868,7 +10868,7 @@
       {
         "id": "ac_s7_ses10",
         "title": "Dispositivos perdidos o robados",
-        "subtitle": "Sesión 10 · 5 lecciones",
+        "subtitle": "Sesión 10 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s7_ses10_l1",
@@ -10894,7 +10894,7 @@
           },
           {
             "id": "ac_s7_ses10_l3",
-            "title": "Cerrar sesiones",
+            "title": "Cerrar sesiónes",
             "subtitle": "Lección 3 de la sesión 10",
             "challenges": [],
             "xpReward": 15,
@@ -10942,7 +10942,7 @@
       {
         "id": "ac_s7_ses11",
         "title": "Bloqueo remoto de dispositivos",
-        "subtitle": "Sesión 11 · 5 lecciones",
+        "subtitle": "Sesión 11 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s7_ses11_l1",
@@ -11001,7 +11001,7 @@
           },
           {
             "id": "ac_s7_ses11_l6",
-            "title": "Conexion Bluetooth segura",
+            "title": "Conexión Bluetooth segura",
             "subtitle": "Evita ataques por Bluetooth",
             "challenges": [],
             "xpReward": 15,
@@ -11016,7 +11016,7 @@
       {
         "id": "ac_s7_ses12",
         "title": "Borrado remoto de datos",
-        "subtitle": "Sesión 12 · 5 lecciones",
+        "subtitle": "Sesión 12 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s7_ses12_l1",
@@ -11090,7 +11090,7 @@
       {
         "id": "ac_s7_ses13",
         "title": "Find My Device y cerraduras remotas",
-        "subtitle": "Sesión 13 · 5 lecciones",
+        "subtitle": "Sesión 13 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s7_ses13_l1",
@@ -11164,7 +11164,7 @@
       {
         "id": "ac_s7_ses14",
         "title": "Seguridad en dispositivos compartidos",
-        "subtitle": "Sesión 14 · 5 lecciones",
+        "subtitle": "Sesión 14 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s7_ses14_l1",
@@ -11238,7 +11238,7 @@
       {
         "id": "ac_s7_ses15",
         "title": "Perfiles de usuario en dispositivos",
-        "subtitle": "Sesión 15 · 5 lecciones",
+        "subtitle": "Sesión 15 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s7_ses15_l1",
@@ -11301,11 +11301,11 @@
       {
         "id": "ac_s7_ses16",
         "title": "Mantener dispositivos actualizados",
-        "subtitle": "Sesión 16 · 5 lecciones",
+        "subtitle": "Sesión 16 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s7_ses16_l1",
-            "title": "Actualizaciones de seguridad",
+            "title": "Actualizaciónes de seguridad",
             "subtitle": "Lección 1 de la sesión 16",
             "challenges": [],
             "xpReward": 15,
@@ -11364,7 +11364,7 @@
       {
         "id": "ac_s7_ses17",
         "title": "Cifrado de dispositivos",
-        "subtitle": "Sesión 17 · 5 lecciones",
+        "subtitle": "Sesión 17 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s7_ses17_l1",
@@ -11427,7 +11427,7 @@
       {
         "id": "ac_s7_ses18",
         "title": "Pantalla de bloqueo y biometría",
-        "subtitle": "Sesión 18 · 5 lecciones",
+        "subtitle": "Sesión 18 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s7_ses18_l1",
@@ -11490,7 +11490,7 @@
       {
         "id": "ac_s7_ses19",
         "title": "Redes WiFi y dispositivos IoT",
-        "subtitle": "Sesión 19 · 5 lecciones",
+        "subtitle": "Sesión 19 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s7_ses19_l1",
@@ -11553,7 +11553,7 @@
       {
         "id": "ac_s7_ses20",
         "title": "Evaluación de dispositivos",
-        "subtitle": "Sesión 20 · 2 lecciones",
+        "subtitle": "Sesión 20 · 2 lecciónes",
         "lessons": [
           {
             "id": "ac_s7_ses20_l1",
@@ -11616,7 +11616,7 @@
       {
         "id": "ac_s7_ses21",
         "title": "Sesión adicional 21",
-        "subtitle": "Sesión 21 · 5 lecciones",
+        "subtitle": "Sesión 21 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s7_ses21_l1",
@@ -11679,7 +11679,7 @@
       {
         "id": "ac_s7_ses22",
         "title": "Sesión adicional 22",
-        "subtitle": "Sesión 22 · 5 lecciones",
+        "subtitle": "Sesión 22 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s7_ses22_l1",
@@ -11742,7 +11742,7 @@
       {
         "id": "ac_s7_ses23",
         "title": "Sesión adicional 23",
-        "subtitle": "Sesión 23 · 5 lecciones",
+        "subtitle": "Sesión 23 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s7_ses23_l1",
@@ -11805,7 +11805,7 @@
       {
         "id": "ac_s7_ses24",
         "title": "Sesión adicional 24",
-        "subtitle": "Sesión 24 · 5 lecciones",
+        "subtitle": "Sesión 24 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s7_ses24_l1",
@@ -11868,7 +11868,7 @@
       {
         "id": "ac_s7_ses25",
         "title": "Sesión adicional 25",
-        "subtitle": "Sesión 25 · 5 lecciones",
+        "subtitle": "Sesión 25 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s7_ses25_l1",
@@ -11931,7 +11931,7 @@
       {
         "id": "ac_s7_ses26",
         "title": "Sesión adicional 26",
-        "subtitle": "Sesión 26 · 5 lecciones",
+        "subtitle": "Sesión 26 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s7_ses26_l1",
@@ -11994,7 +11994,7 @@
       {
         "id": "ac_s7_ses27",
         "title": "Sesión adicional 27",
-        "subtitle": "Sesión 27 · 5 lecciones",
+        "subtitle": "Sesión 27 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s7_ses27_l1",
@@ -12068,7 +12068,7 @@
       {
         "id": "ac_s8_ses1",
         "title": "Repaso de fundamentos y contraseñas",
-        "subtitle": "Sesión 1 · 5 lecciones",
+        "subtitle": "Sesión 1 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s8_ses1_l1",
@@ -12142,7 +12142,7 @@
       {
         "id": "ac_s8_ses2",
         "title": "Repaso de 2FA y gestores",
-        "subtitle": "Sesión 2 · 5 lecciones",
+        "subtitle": "Sesión 2 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s8_ses2_l1",
@@ -12216,7 +12216,7 @@
       {
         "id": "ac_s8_ses3",
         "title": "Repaso de monitoreo y alertas",
-        "subtitle": "Sesión 3 · 5 lecciones",
+        "subtitle": "Sesión 3 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s8_ses3_l1",
@@ -12290,7 +12290,7 @@
       {
         "id": "ac_s8_ses4",
         "title": "Repaso de recuperación y dispositivos",
-        "subtitle": "Sesión 4 · 5 lecciones",
+        "subtitle": "Sesión 4 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s8_ses4_l1",
@@ -12327,7 +12327,7 @@
           },
           {
             "id": "ac_s8_ses4_l4",
-            "title": "Ejercicio de sesiones remotas",
+            "title": "Ejercicio de sesiónes remotas",
             "subtitle": "Lección 4 de la sesión 4",
             "challenges": [],
             "xpReward": 15,
@@ -12364,7 +12364,7 @@
       {
         "id": "ac_s8_ses5",
         "title": "Caso práctico 1: Cuenta comprometida",
-        "subtitle": "Sesión 5 · 5 lecciones",
+        "subtitle": "Sesión 5 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s8_ses5_l1",
@@ -12438,7 +12438,7 @@
       {
         "id": "ac_s8_ses6",
         "title": "Caso práctico 2: Migración a gestor",
-        "subtitle": "Sesión 6 · 5 lecciones",
+        "subtitle": "Sesión 6 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s8_ses6_l1",
@@ -12497,7 +12497,7 @@
           },
           {
             "id": "ac_s8_ses6_l6",
-            "title": "Desafio de identificacion de riesgos",
+            "title": "Desafio de identificación de riesgos",
             "subtitle": "Pon a prueba tu juicio de seguridad",
             "challenges": [],
             "xpReward": 15,
@@ -12512,7 +12512,7 @@
       {
         "id": "ac_s8_ses7",
         "title": "Caso práctico 3: Configuración completa",
-        "subtitle": "Sesión 7 · 5 lecciones",
+        "subtitle": "Sesión 7 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s8_ses7_l1",
@@ -12586,7 +12586,7 @@
       {
         "id": "ac_s8_ses8",
         "title": "Caso práctico 4: Plan familiar",
-        "subtitle": "Sesión 8 · 5 lecciones",
+        "subtitle": "Sesión 8 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s8_ses8_l1",
@@ -12660,7 +12660,7 @@
       {
         "id": "ac_s8_ses9",
         "title": "Simulación de ataque",
-        "subtitle": "Sesión 9 · 5 lecciones",
+        "subtitle": "Sesión 9 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s8_ses9_l1",
@@ -12720,7 +12720,7 @@
           {
             "id": "ac_s8_ses9_l6",
             "title": "Mapa de riesgos personal",
-            "subtitle": "Identifica tus vulnerabilidades unicas",
+            "subtitle": "Identifica tus vulnerabilidades únicas",
             "challenges": [],
             "xpReward": 15,
             "gemReward": 5,
@@ -12734,7 +12734,7 @@
       {
         "id": "ac_s8_ses10",
         "title": "Auditoría de seguridad personal",
-        "subtitle": "Sesión 10 · 5 lecciones",
+        "subtitle": "Sesión 10 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s8_ses10_l1",
@@ -12808,7 +12808,7 @@
       {
         "id": "ac_s8_ses11",
         "title": "Plan de mejora continua",
-        "subtitle": "Sesión 11 · 5 lecciones",
+        "subtitle": "Sesión 11 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s8_ses11_l1",
@@ -12882,7 +12882,7 @@
       {
         "id": "ac_s8_ses12",
         "title": "Certificación del curso",
-        "subtitle": "Sesión 12 · 5 lecciones",
+        "subtitle": "Sesión 12 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s8_ses12_l1",
@@ -12942,7 +12942,7 @@
           {
             "id": "ac_s8_ses12_l6",
             "title": "Evaluacion de provedores de seguridad",
-            "subtitle": "Compara servicios de proteccion digital",
+            "subtitle": "Compara servicios de protección digital",
             "challenges": [],
             "xpReward": 15,
             "gemReward": 5,
@@ -12956,7 +12956,7 @@
       {
         "id": "ac_s8_ses13",
         "title": "Próximos pasos",
-        "subtitle": "Sesión 13 · 5 lecciones",
+        "subtitle": "Sesión 13 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s8_ses13_l1",
@@ -13019,7 +13019,7 @@
       {
         "id": "ac_s8_ses14",
         "title": "Comunidad y recursos",
-        "subtitle": "Sesión 14 · 5 lecciones",
+        "subtitle": "Sesión 14 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s8_ses14_l1",
@@ -13082,7 +13082,7 @@
       {
         "id": "ac_s8_ses15",
         "title": "Reto final de velocidad",
-        "subtitle": "Sesión 15 · 5 lecciones",
+        "subtitle": "Sesión 15 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s8_ses15_l1",
@@ -13145,7 +13145,7 @@
       {
         "id": "ac_s8_ses16",
         "title": "Preguntas avanzadas",
-        "subtitle": "Sesión 16 · 5 lecciones",
+        "subtitle": "Sesión 16 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s8_ses16_l1",
@@ -13160,7 +13160,7 @@
           },
           {
             "id": "ac_s8_ses16_l2",
-            "title": "Razonamiento complejo",
+            "title": "Razónamiento complejo",
             "subtitle": "Lección 2 de la sesión 16",
             "challenges": [],
             "xpReward": 15,
@@ -13193,7 +13193,7 @@
           },
           {
             "id": "ac_s8_ses16_l5",
-            "title": "Preguntas de razonamiento crítico",
+            "title": "Preguntas de razónamiento crítico",
             "subtitle": "Lección 5 de la sesión 16",
             "challenges": [],
             "xpReward": 15,
@@ -13208,11 +13208,11 @@
       {
         "id": "ac_s8_ses17",
         "title": "Escenarios reales",
-        "subtitle": "Sesión 17 · 5 lecciones",
+        "subtitle": "Sesión 17 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s8_ses17_l1",
-            "title": "Casos basados en situaciones reales",
+            "title": "Casos basados en situaciónes reales",
             "subtitle": "Lección 1 de la sesión 17",
             "challenges": [],
             "xpReward": 15,
@@ -13256,7 +13256,7 @@
           },
           {
             "id": "ac_s8_ses17_l5",
-            "title": "Lecciones aprendidas de incidentes reales",
+            "title": "Lecciónes aprendidas de incidentes reales",
             "subtitle": "Lección 5 de la sesión 17",
             "challenges": [],
             "xpReward": 15,
@@ -13271,7 +13271,7 @@
       {
         "id": "ac_s8_ses18",
         "title": "Evaluación escrita",
-        "subtitle": "Sesión 18 · 5 lecciones",
+        "subtitle": "Sesión 18 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s8_ses18_l1",
@@ -13334,7 +13334,7 @@
       {
         "id": "ac_s8_ses19",
         "title": "Graduación",
-        "subtitle": "Sesión 19 · 2 lecciones",
+        "subtitle": "Sesión 19 · 2 lecciónes",
         "lessons": [
           {
             "id": "ac_s8_ses19_l1",
@@ -13371,7 +13371,7 @@
           },
           {
             "id": "ac_s8_ses19_l4",
-            "title": "Construccion de kit de emergencia",
+            "title": "Construcción de kit de emergencia",
             "subtitle": "Prepara recursos para incidentes",
             "challenges": [],
             "xpReward": 15,
@@ -13382,7 +13382,7 @@
           },
           {
             "id": "ac_s8_ses19_l5",
-            "title": "Desafio de identificacion de riesgos",
+            "title": "Desafio de identificación de riesgos",
             "subtitle": "Pon a prueba tu juicio de seguridad",
             "challenges": [],
             "xpReward": 15,
@@ -13397,7 +13397,7 @@
       {
         "id": "ac_s8_ses20",
         "title": "Sesión adicional 20",
-        "subtitle": "Sesión 20 · 5 lecciones",
+        "subtitle": "Sesión 20 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s8_ses20_l1",
@@ -13460,7 +13460,7 @@
       {
         "id": "ac_s8_ses21",
         "title": "Sesión adicional 21",
-        "subtitle": "Sesión 21 · 5 lecciones",
+        "subtitle": "Sesión 21 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s8_ses21_l1",
@@ -13523,7 +13523,7 @@
       {
         "id": "ac_s8_ses22",
         "title": "Sesión adicional 22",
-        "subtitle": "Sesión 22 · 5 lecciones",
+        "subtitle": "Sesión 22 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s8_ses22_l1",
@@ -13586,7 +13586,7 @@
       {
         "id": "ac_s8_ses23",
         "title": "Sesión adicional 23",
-        "subtitle": "Sesión 23 · 5 lecciones",
+        "subtitle": "Sesión 23 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s8_ses23_l1",
@@ -13649,7 +13649,7 @@
       {
         "id": "ac_s8_ses24",
         "title": "Sesión adicional 24",
-        "subtitle": "Sesión 24 · 5 lecciones",
+        "subtitle": "Sesión 24 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s8_ses24_l1",
@@ -13712,7 +13712,7 @@
       {
         "id": "ac_s8_ses25",
         "title": "Sesión adicional 25",
-        "subtitle": "Sesión 25 · 5 lecciones",
+        "subtitle": "Sesión 25 · 5 lecciónes",
         "lessons": [
           {
             "id": "ac_s8_ses25_l1",

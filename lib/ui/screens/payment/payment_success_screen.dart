@@ -1,79 +1,137 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sagen/core/theme/app_colors.dart';
 import '../../../core/theme/theme_constants.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../providers/payment_provider.dart';
+import '../../widgets/common/sagen_notification.dart';
 
-class PaymentSuccessScreen extends ConsumerWidget {
-  final int gems;
+class PaymentSuccessScreen extends ConsumerStatefulWidget {
+  final double donationAmount;
 
-  const PaymentSuccessScreen({super.key, required this.gems});
+  const PaymentSuccessScreen({super.key, required this.donationAmount});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<PaymentSuccessScreen> createState() => _PaymentSuccessScreenState();
+}
+
+class _PaymentSuccessScreenState extends ConsumerState<PaymentSuccessScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _scaleCtrl;
+  late AnimationController _checkCtrl;
+
+  @override
+  void initState() {
+    super.initState();
+    _scaleCtrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 600),
+    );
+    _checkCtrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 400),
+    );
+    HapticFeedback.heavyImpact();
+    _scaleCtrl.forward().then((_) => _checkCtrl.forward());
+  }
+
+  @override
+  void dispose() {
+    _scaleCtrl.dispose();
+    _checkCtrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
 
-    return Scaffold(
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        context.go('/home');
+      },
+      child: Scaffold(
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(AppSpacing.xxl),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Container(
-                width: 100,
-                height: 100,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: LinearGradient(
-                    colors: [PremiumColors.success, Color(0xFF66BB6A)],
+              ScaleTransition(
+                scale: CurvedAnimation(parent: _scaleCtrl, curve: Curves.elasticOut),
+                child: Semantics(
+                  label: AppLocalizations.of(context)?.thankYouForSupport ?? '',
+                  child: Container(
+                    width: 100,
+                    height: 100,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: LinearGradient(
+                        colors: [PremiumColors.success, PremiumColors.success],
+                      ),
+                    ),
+                    child: FadeTransition(
+                      opacity: _checkCtrl,
+                      child: const Icon(
+                        Icons.check_rounded,
+                        color: Colors.white,
+                        size: 52,
+                      ),
+                    ),
                   ),
-                ),
-                child: const Icon(
-                  Icons.check_rounded,
-                  color: Colors.white,
-                  size: 52,
                 ),
               ),
               const SizedBox(height: AppSpacing.xxl),
               Text(
-                l.paywallPackageGems(gems),
-                style: TextStyle(
-                  fontSize: 32,
+                '${l.currencySymbol}${widget.donationAmount.toStringAsFixed(2)}',
+                style: AppTextStyle.display.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: context.textPrimary,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
               const SizedBox(height: AppSpacing.md),
-              Text(
-                '${l.paywallGetMoreGems} — ¡Acreditadas!',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-                ),
+              const Icon(
+                Icons.volunteer_activism_rounded,
+                size: 24,
+                color: PremiumColors.success,
               ),
               const SizedBox(height: AppSpacing.xxl),
               SizedBox(
                 width: double.infinity,
                 height: 52,
-                child: FilledButton(
-                  onPressed: () {
-                    ref.read(paymentProvider.notifier).reset();
-                    context.go('/main');
-                  },
-                  style: FilledButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(AppRadius.xl),
+                child: Semantics(
+                  button: true,
+                  label: l.continueText,
+                  child: FilledButton(
+                    onPressed: () async {
+                      HapticFeedback.lightImpact();
+                      try {
+                        ref.read(paymentProvider.notifier).reset();
+                        context.goNamed('main');
+                      } catch (e) {
+                        if (mounted) {
+                          SagenNotification.show(
+                            context,
+                            message: l.errorSomethingWrong,
+                            type: NotificationType.error,
+                          );
+                        }
+                      }
+                    },
+                    style: FilledButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(AppRadius.xl),
+                      ),
                     ),
-                  ),
-                  child: const Text(
-                    'Volver a SAGEN',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
+                    child: Text(
+                      l.continueText,
+                      style: AppTextStyle.titleSmall.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
@@ -82,6 +140,7 @@ class PaymentSuccessScreen extends ConsumerWidget {
           ),
         ),
       ),
+    ),
     );
   }
 }

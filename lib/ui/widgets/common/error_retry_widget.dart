@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sagen/core/theme/app_colors.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/l10n/app_localizations.dart';
+import 'package:sagen/ui/widgets/common/sage_emotion_widget.dart';
+import 'package:sagen/services/sage_emotion_service.dart';
 
 class ErrorRetryWidget extends StatelessWidget {
   final String? message;
@@ -25,17 +28,14 @@ class ErrorRetryWidget extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
-              Icons.cloud_off_rounded,
-              size: 56,
-              color: context.textDisabled,
+            Semantics(
+              label: l.errorGeneric,
+              child: const SageEmotionWidget(emotion: SageEmotion.worried),
             ),
             const SizedBox(height: AppSpacing.lg),
             Text(
               message ?? l.errorSomethingWrong,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
+              style: AppTextStyle.titleSmall.copyWith(
                 color: context.textSecondary,
               ),
               textAlign: TextAlign.center,
@@ -44,8 +44,7 @@ class ErrorRetryWidget extends StatelessWidget {
               const SizedBox(height: AppSpacing.sm),
               Text(
                 details!,
-                style: TextStyle(
-                  fontSize: 13,
+                style: AppTextStyle.subtitle.copyWith(
                   color: context.textTertiary,
                 ),
                 textAlign: TextAlign.center,
@@ -54,7 +53,10 @@ class ErrorRetryWidget extends StatelessWidget {
             if (onRetry != null) ...[
               const SizedBox(height: AppSpacing.xl),
               OutlinedButton.icon(
-                onPressed: onRetry,
+                onPressed: () {
+                  HapticFeedback.lightImpact();
+                  onRetry?.call();
+                },
                 icon: const Icon(Icons.refresh_rounded, size: 18),
                 label: Text(l.tryAgain),
                 style: OutlinedButton.styleFrom(

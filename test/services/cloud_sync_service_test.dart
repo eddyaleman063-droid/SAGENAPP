@@ -1,54 +1,120 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sagen/services/auth_service.dart';
-import 'package:sagen/services/cloud_sync_service.dart';
+import 'package:sagen/config/firestore_field_config.dart';
 
 void main() {
-  group('CloudSyncService', () {
-    late CloudSyncService service;
+  group('FirestoreFieldConfig', () {
+    test('isServerOnlyField returns true for economic fields', () {
+      expect(FirestoreFieldConfig.isServerOnlyField('learning_gems'), isTrue);
+      expect(FirestoreFieldConfig.isServerOnlyField('learning_total_xp'), isTrue);
+      expect(FirestoreFieldConfig.isServerOnlyField('streakCurrent'), isTrue);
 
-    setUp(() async {
-      SharedPreferences.setMockInitialValues({});
-      final prefs = await SharedPreferences.getInstance();
-      service = CloudSyncService(authService: AuthService());
-      await service.init(prefs);
     });
-    test('initializes with no last sync', () {
-      expect(service.isInitialized, true);
-      expect(service.lastSync, isNull);
-      expect(service.isSyncing, false);
+
+    test('isServerOnlyField returns false for profile fields', () {
+      expect(FirestoreFieldConfig.isServerOnlyField('firstName'), isFalse);
+      expect(FirestoreFieldConfig.isServerOnlyField('email'), isFalse);
     });
-    test('syncProfile returns false when not syncing (no user)', () async {
-      final result = await service.syncProfile();
-      expect(result, false);
+
+    test('isProfileField returns true for profile fields', () {
+      expect(FirestoreFieldConfig.isProfileField('firstName'), isTrue);
+      expect(FirestoreFieldConfig.isProfileField('email'), isTrue);
+      expect(FirestoreFieldConfig.isProfileField('age'), isTrue);
     });
-    test('syncProgress returns null when not syncing (no user)', () async {
-      final result = await service.syncProgress();
-      expect(result, isNull);
+
+    test('isProfileField returns false for server-only fields', () {
+      expect(FirestoreFieldConfig.isProfileField('learning_gems'), isFalse);
     });
-    test('syncMissions returns false when not syncing (no user)', () async {
-      final result = await service.syncMissions();
-      expect(result, false);
+
+    test('validateFieldType passes for correct types', () {
+      expect(FirestoreFieldConfig.validateFieldType('firstName', 'test'), isTrue);
+      expect(FirestoreFieldConfig.validateFieldType('age', 25), isTrue);
+      expect(FirestoreFieldConfig.validateFieldType('onboardingCompleted', true), isTrue);
     });
-    test('restoreProfile returns null when not syncing (no user)', () async {
-      final result = await service.restoreProfile();
-      expect(result, isNull);
+
+    test('validateFieldType fails for wrong types', () {
+      expect(FirestoreFieldConfig.validateFieldType('firstName', 123), isFalse);
+      expect(FirestoreFieldConfig.validateFieldType('age', 'twenty'), isFalse);
     });
-    test('restoreProgress returns null when not syncing (no user)', () async {
-      final result = await service.restoreProgress();
-      expect(result, isNull);
+
+    test('validateFieldType passes for unknown fields', () {
+      expect(FirestoreFieldConfig.validateFieldType('unknownField', 'anything'), isTrue);
     });
-    test('deleteCloudData returns false when not syncing (no user)', () async {
-      final result = await service.deleteCloudData(
-        'test-uid',
+
+    test('validateStringLength passes within limit', () {
+      expect(FirestoreFieldConfig.validateStringLength('firstName', 'John'), isTrue);
+    });
+
+    test('validateStringLength fails over limit', () {
+      expect(
+        FirestoreFieldConfig.validateStringLength('firstName', 'A' * 51),
+        isFalse,
       );
-      expect(result, false);
     });
-    test('gracefully handles double init', () async {
-      SharedPreferences.setMockInitialValues({});
-      final prefs = await SharedPreferences.getInstance();
-      await service.init(prefs);
-      expect(service.isInitialized, true);
+
+    test('validateStringLength passes for unknown fields', () {
+      expect(FirestoreFieldConfig.validateStringLength('unknown', 'any'), isTrue);
+    });
+
+    test('validateIntRange passes within range', () {
+      expect(FirestoreFieldConfig.validateIntRange('age', 25), isTrue);
+      expect(FirestoreFieldConfig.validateIntRange('age', 13), isTrue);
+      expect(FirestoreFieldConfig.validateIntRange('age', 120), isTrue);
+    });
+
+    test('validateIntRange fails out of range', () {
+      expect(FirestoreFieldConfig.validateIntRange('age', 12), isFalse);
+      expect(FirestoreFieldConfig.validateIntRange('age', 121), isFalse);
+    });
+
+    test('validateIntRange passes for unknown fields', () {
+      expect(FirestoreFieldConfig.validateIntRange('unknown', 999), isTrue);
+    });
+
+    test('syncKeys contains all expected profile keys', () {
+      expect(FirestoreFieldConfig.syncKeys, contains('firstName'));
+      expect(FirestoreFieldConfig.syncKeys, contains('email'));
+      expect(FirestoreFieldConfig.syncKeys, contains('motivation'));
+      expect(FirestoreFieldConfig.syncKeys, contains('updatedAt'));
+    });
+
+    test('spToFirestoreMapping keys are subset of profileFields', () {
+      for (final key in FirestoreFieldConfig.spToFirestoreMapping.keys) {
+        expect(FirestoreFieldConfig.profileFields, contains(key));
+      }
+    });
+
+    test('serverOnlyFields does not overlap with profileFields', () {
+      final overlap = FirestoreFieldConfig.serverOnlyFields
+          .intersection(FirestoreFieldConfig.profileFields);
+      expect(overlap, isEmpty);
+    });
+
+    test('profileFieldTypes covers all profile fields', () {
+      for (final field in FirestoreFieldConfig.profileFields) {
+        expect(FirestoreFieldConfig.profileFieldTypes, contains(field),
+          reason: 'profileFieldTypes missing type for $field');
+      }
+    });
+
+    test('stringFieldMaxLengths are positive', () {
+      for (final entry in FirestoreFieldConfig.stringFieldMaxLengths.entries) {
+        expect(entry.value, greaterThan(0),
+          reason: '${entry.key} has non-positive max length');
+      }
+    });
+
+    test('intFieldRanges have min <= max', () {
+      for (final entry in FirestoreFieldConfig.intFieldRanges.entries) {
+        expect(entry.value.$1, lessThanOrEqualTo(entry.value.$2),
+          reason: '${entry.key} has min > max');
+      }
+    });
+
+    test('all serverOnlyFields are covered by syncKeys exclusion', () {
+      for (final field in FirestoreFieldConfig.serverOnlyFields) {
+        expect(FirestoreFieldConfig.syncKeys, isNot(contains(field)),
+          reason: 'server-only field $field should NOT be in syncKeys');
+      }
     });
   });
 }

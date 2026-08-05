@@ -27,34 +27,38 @@ class SagenStickyButton extends StatelessWidget {
           AppSpacing.lg,
           AppSpacing.lg,
         ),
-        child: SagenTouchResponse(
-          onTap: enabled ? onPressed : null,
-          enabled: enabled,
-          child: AnimatedContainer(
-            duration: AppMotion.fast,
-            curve: AppEasing.standard,
-            height: 56,
-            decoration: BoxDecoration(
-              color: enabled
-                  ? const Color(0xFF22C55E)
-                  : const Color(0xFF374151),
-              borderRadius: BorderRadius.circular(AppRadius.md),
-              border: enabled
-                  ? const Border(
-                      bottom: BorderSide(
-                        color: Color(0xFF16A34A),
-                        width: 4,
+        child: Semantics(
+          button: true,
+          label: label,
+          child: SagenTouchResponse(
+            onTap: enabled ? onPressed : null,
+            enabled: enabled,
+            child: AnimatedContainer(
+              duration: AppMotion.fast,
+              curve: AppEasing.standard,
+              height: 56,
+              decoration: BoxDecoration(
+                color: enabled
+                    ? PremiumColors.buttonGreen
+                    : PremiumColors.buttonGrayDark,
+                borderRadius: BorderRadius.circular(AppRadius.md),
+                border: enabled
+                    ? const Border(
+                        bottom: BorderSide(
+                          color: PremiumColors.buttonGreenBorder,
+                          width: 4,
+                        ),
+                      )
+                    : null,
+              ),
+              child: Center(
+                child: Text(
+                  label,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: enabled ? Colors.white : PremiumColors.buttonGrayLight,
+                        fontWeight: FontWeight.bold,
                       ),
-                    )
-                  : null,
-            ),
-            child: Center(
-              child: Text(
-                label,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: enabled ? Colors.white : const Color(0xFF9CA3AF),
-                      fontWeight: FontWeight.bold,
-                    ),
+                ),
               ),
             ),
           ),
