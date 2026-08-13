@@ -2,9 +2,9 @@ name: Coverage Report
 
 on:
   push:
-    branches: [main, develop]
+    branches: [master, main, develop]
   pull_request:
-    branches: [main]
+    branches: [master, main, develop]
 
 jobs:
   coverage:
@@ -25,11 +25,24 @@ jobs:
       - name: Run tests with coverage
         run: flutter test --coverage
       
+      - name: Install lcov
+        run: |
+          sudo apt-get install -y lcov || brew install lcov || echo "lcov not installed"
+      
+      - name: Filter out generated code from coverage
+        run: |
+          if command -v lcov &> /dev/null; then
+            lcov --remove coverage/lcov.info \
+              '*app_localizations*.dart' '*.g.dart' '*.freezed.dart' \
+              -o coverage/lcov_filtered.info
+            cp coverage/lcov_filtered.info coverage/lcov.info
+            echo "Filtered out generated code from coverage report"
+          else
+            echo "lcov not available, keeping unfiltered report"
+          fi
+      
       - name: Generate coverage report
         run: |
-          # Install lcov if not available
-          sudo apt-get install -y lcov || brew install lcov || echo "lcov not installed"
-          
           # Generate HTML report if lcov is available
           if command -v genhtml &> /dev/null; then
             genhtml coverage/lcov.info -o coverage/html

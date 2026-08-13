@@ -20,7 +20,7 @@ void main() {
         lessThan(5000),
         reason: 'Cold startup should complete within 5 seconds',
       );
-    });
+    }, tags: ['performance']);
 
     testWidgets('Widget rebuild does not exceed 16ms frame budget', (
       tester,
@@ -41,7 +41,7 @@ void main() {
         lessThan(100),
         reason: 'Frame rebuild should complete within budget',
       );
-    });
+    }, tags: ['performance']);
   });
 
   group('Performance — Memory Benchmarks', () {
@@ -69,6 +69,6 @@ void main() {
         true,
         reason: 'App should remain stable after repeated rebuilds',
       );
-    });
+    }, tags: ['performance']);
   });
 }

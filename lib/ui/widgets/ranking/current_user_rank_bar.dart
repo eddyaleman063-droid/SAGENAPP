@@ -45,7 +45,7 @@ class CurrentUserRankBar extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                l.rankingYourPosition(rank, _formatXp(totalXp)),
+                l.rankingYourPosition(_formatXp(totalXp), rank),
                 style: AppTextStyle.subtitle.copyWith(
                   color: context.textSecondary,
                   fontWeight: FontWeight.w600,

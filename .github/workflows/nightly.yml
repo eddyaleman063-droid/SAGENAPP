@@ -25,8 +25,11 @@ jobs:
       - name: Analyze
         run: flutter analyze --no-fatal-infos
 
-      - name: Run all tests
+      - name: Run tests (excludes performance benchmarks)
         run: flutter test --timeout 120s --coverage
+
+      - name: Run performance benchmarks
+        run: flutter test --tags performance --run-skipped --timeout 300s
         continue-on-error: true
 
       - name: Upload coverage

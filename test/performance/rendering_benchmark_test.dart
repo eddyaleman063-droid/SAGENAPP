@@ -33,7 +33,7 @@ void main() {
         reason: 'WelcomeScreen initial render should complete within 10000ms',
       );
       await tester.pump(const Duration(seconds: 6));
-    });
+    }, tags: ['performance']);
 
     testWidgets('GlassCard renders within 50ms', (tester) async {
       await tester.binding.setSurfaceSize(const Size(1080, 1920));
@@ -62,7 +62,7 @@ void main() {
         lessThan(500),
         reason: 'GlassCard render should complete within 500ms',
       );
-    });
+    }, tags: ['performance']);
 
     testWidgets('Animation startup does not block frame', (tester) async {
       await tester.binding.setSurfaceSize(const Size(1080, 1920));
@@ -81,7 +81,7 @@ void main() {
         reason: 'Animation startup should not block more than 5000ms',
       );
       await tester.pump(const Duration(seconds: 6));
-    });
+    }, tags: ['performance']);
 
     testWidgets('Widget tree depth does not exceed 200', (tester) async {
       await tester.binding.setSurfaceSize(const Size(1080, 1920));
@@ -105,7 +105,7 @@ void main() {
         reason: 'Widget tree depth should be manageable for performance',
       );
       await tester.pump(const Duration(seconds: 6));
-    });
+    }, tags: ['performance']);
   });
 
   group('Performance — Build Benchmarks', () {
@@ -127,7 +127,7 @@ void main() {
         reason: '100 rebuilds should complete within 10 seconds',
       );
       await tester.pump(const Duration(seconds: 6));
-    });
+    }, tags: ['performance']);
 
     testWidgets('State management does not leak', (tester) async {
       await tester.binding.setSurfaceSize(const Size(1080, 1920));
@@ -146,7 +146,7 @@ void main() {
         reason: 'State should not leak after 10 widget replacements',
       );
       await tester.pump(const Duration(seconds: 6));
-    });
+    }, tags: ['performance']);
   });
 
   group('Performance — Layout Benchmarks', () {
@@ -169,7 +169,7 @@ void main() {
         reason: 'Layout recalculation should complete within budget',
       );
       await tester.pump(const Duration(seconds: 6));
-    });
+    }, tags: ['performance']);
 
     testWidgets('Multiple screen sizes do not cause layout overflow', (
       tester,
@@ -196,6 +196,6 @@ void main() {
         );
       }
       await tester.pump(const Duration(seconds: 6));
-    });
+    }, tags: ['performance']);
   });
 }
