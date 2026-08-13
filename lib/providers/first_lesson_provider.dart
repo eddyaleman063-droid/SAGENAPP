@@ -99,7 +99,9 @@ class FirstLessonNotifier extends AutoDisposeNotifier<FirstLessonState> {
       ];
     }
 
-    final shuffled = List<Challenge>.from(allQuestions)..shuffle(_random);
+    final unique = <String>{};
+    final deduped = allQuestions.where((q) => unique.add(q.id)).toList();
+    final shuffled = List<Challenge>.from(deduped)..shuffle(_random);
     final selected = shuffled.take(questionCount).toList();
 
     state = FirstLessonState(

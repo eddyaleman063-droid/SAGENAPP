@@ -285,7 +285,7 @@ abstract class AppLocalizations {
   /// No description provided for @adminCreditDonationSuccess.
   ///
   /// In es, this message translates to:
-  /// **'\$gems donaciones acreditadas a \$userId'**
+  /// **'{gems} donaciones acreditadas a {userId}'**
   String adminCreditDonationSuccess(Object gems, Object userId);
 
   /// No description provided for @adminCreditDonationTitle.
@@ -303,7 +303,7 @@ abstract class AppLocalizations {
   /// No description provided for @adminCreditSuccessNotification.
   ///
   /// In es, this message translates to:
-  /// **'\$gems donaciones acreditadas a \$userId'**
+  /// **'{gems} donaciones acreditadas a {userId}'**
   String adminCreditSuccessNotification(Object gems, Object userId);
 
   /// No description provided for @adminDonations.
@@ -633,7 +633,7 @@ abstract class AppLocalizations {
   /// No description provided for @authNotFoundMessage.
   ///
   /// In es, this message translates to:
-  /// **'No hay una cuenta registrada con \$email. ¿Desea crear una nueva cuenta y empezar a aprender?'**
+  /// **'No hay una cuenta registrada con {email}. ¿Desea crear una nueva cuenta y empezar a aprender?'**
   String authNotFoundMessage(Object email);
 
   /// No description provided for @authNotFoundTitle.
@@ -1023,7 +1023,7 @@ abstract class AppLocalizations {
   /// No description provided for @challenge_analyze_link_desc.
   ///
   /// In es, this message translates to:
-  /// **'Analiza \$count enlace(s)'**
+  /// **'Analiza {count} enlace(s)'**
   String challenge_analyze_link_desc(Object count);
 
   /// No description provided for @challenge_analyze_link_title.
@@ -1035,7 +1035,7 @@ abstract class AppLocalizations {
   /// No description provided for @challenge_answer_questions_desc.
   ///
   /// In es, this message translates to:
-  /// **'Responde \$count pregunta(s)'**
+  /// **'Responde {count} pregunta(s)'**
   String challenge_answer_questions_desc(Object count);
 
   /// No description provided for @challenge_answer_questions_title.
@@ -1047,7 +1047,7 @@ abstract class AppLocalizations {
   /// No description provided for @challenge_check_in_desc.
   ///
   /// In es, this message translates to:
-  /// **'Regístrate \$count vez(veces)'**
+  /// **'Regístrate {count} vez(veces)'**
   String challenge_check_in_desc(Object count);
 
   /// No description provided for @challenge_check_in_title.
@@ -1059,7 +1059,7 @@ abstract class AppLocalizations {
   /// No description provided for @challenge_complete_lesson_desc.
   ///
   /// In es, this message translates to:
-  /// **'Completa \$count lección(es)'**
+  /// **'Completa {count} lección(es)'**
   String challenge_complete_lesson_desc(Object count);
 
   /// No description provided for @challenge_complete_lesson_title.
@@ -1071,7 +1071,7 @@ abstract class AppLocalizations {
   /// No description provided for @challenge_complete_session_desc.
   ///
   /// In es, this message translates to:
-  /// **'Completa \$count sesión(es)'**
+  /// **'Completa {count} sesión(es)'**
   String challenge_complete_session_desc(Object count);
 
   /// No description provided for @challenge_complete_session_title.
@@ -1095,7 +1095,7 @@ abstract class AppLocalizations {
   /// No description provided for @challenge_correct_streak_desc.
   ///
   /// In es, this message translates to:
-  /// **'Obtén \$count respuestas correctas seguidas'**
+  /// **'Obtén {count} respuestas correctas seguidas'**
   String challenge_correct_streak_desc(Object count);
 
   /// No description provided for @challenge_correct_streak_title.
@@ -1107,7 +1107,7 @@ abstract class AppLocalizations {
   /// No description provided for @challenge_detect_phishing_desc.
   ///
   /// In es, this message translates to:
-  /// **'Detecta \$count intento(s) de phishing'**
+  /// **'Detecta {count} intento(s) de phishing'**
   String challenge_detect_phishing_desc(Object count);
 
   /// No description provided for @challenge_detect_phishing_title.
@@ -1119,7 +1119,7 @@ abstract class AppLocalizations {
   /// No description provided for @challenge_earn_xp_desc.
   ///
   /// In es, this message translates to:
-  /// **'Gana \$xp XP'**
+  /// **'Gana {xp} XP'**
   String challenge_earn_xp_desc(Object xp);
 
   /// No description provided for @challenge_earn_xp_title.
@@ -1131,7 +1131,7 @@ abstract class AppLocalizations {
   /// No description provided for @challenge_learn_minutes_desc.
   ///
   /// In es, this message translates to:
-  /// **'Aprende durante \$count minutos'**
+  /// **'Aprende durante {count} minutos'**
   String challenge_learn_minutes_desc(Object count);
 
   /// No description provided for @challenge_learn_minutes_title.
@@ -1143,7 +1143,7 @@ abstract class AppLocalizations {
   /// No description provided for @challenge_learn_topic_desc.
   ///
   /// In es, this message translates to:
-  /// **'Aprende \$count tema(s)'**
+  /// **'Aprende {count} tema(s)'**
   String challenge_learn_topic_desc(Object count);
 
   /// No description provided for @challenge_learn_topic_title.
@@ -1167,7 +1167,7 @@ abstract class AppLocalizations {
   /// No description provided for @challenge_privacy_check_desc.
   ///
   /// In es, this message translates to:
-  /// **'Revisa ajustes de privacidad \$count vez(veces)'**
+  /// **'Revisa ajustes de privacidad {count} vez(veces)'**
   String challenge_privacy_check_desc(Object count);
 
   /// No description provided for @challenge_privacy_check_title.
@@ -1179,7 +1179,7 @@ abstract class AppLocalizations {
   /// No description provided for @challenge_quiz_night_desc.
   ///
   /// In es, this message translates to:
-  /// **'Completa \$count mini quiz'**
+  /// **'Completa {count} mini quiz'**
   String challenge_quiz_night_desc(Object count);
 
   /// No description provided for @challenge_quiz_night_title.
@@ -1191,7 +1191,7 @@ abstract class AppLocalizations {
   /// No description provided for @challenge_review_tips_desc.
   ///
   /// In es, this message translates to:
-  /// **'Revisa \$count consejo(s) de seguridad'**
+  /// **'Revisa {count} consejo(s) de seguridad'**
   String challenge_review_tips_desc(Object count);
 
   /// No description provided for @challenge_review_tips_title.
@@ -1203,7 +1203,7 @@ abstract class AppLocalizations {
   /// No description provided for @challenge_security_audit_desc.
   ///
   /// In es, this message translates to:
-  /// **'Completa \$count auditoría(s)'**
+  /// **'Completa {count} auditoría(s)'**
   String challenge_security_audit_desc(Object count);
 
   /// No description provided for @challenge_security_audit_title.
@@ -1215,7 +1215,7 @@ abstract class AppLocalizations {
   /// No description provided for @challenge_share_knowledge_desc.
   ///
   /// In es, this message translates to:
-  /// **'Comparte \$count consejo(s)'**
+  /// **'Comparte {count} consejo(s)'**
   String challenge_share_knowledge_desc(Object count);
 
   /// No description provided for @challenge_share_knowledge_title.
@@ -1227,7 +1227,7 @@ abstract class AppLocalizations {
   /// No description provided for @challenge_social_awareness_desc.
   ///
   /// In es, this message translates to:
-  /// **'Completa \$count desafío(s) de conciencia social'**
+  /// **'Completa {count} desafío(s) de conciencia social'**
   String challenge_social_awareness_desc(Object count);
 
   /// No description provided for @challenge_social_awareness_title.
@@ -1239,7 +1239,7 @@ abstract class AppLocalizations {
   /// No description provided for @challenge_streak_milestone_desc.
   ///
   /// In es, this message translates to:
-  /// **'Mantén una racha de \$count días'**
+  /// **'Mantén una racha de {count} días'**
   String challenge_streak_milestone_desc(Object count);
 
   /// No description provided for @challenge_streak_milestone_title.
@@ -1251,7 +1251,7 @@ abstract class AppLocalizations {
   /// No description provided for @challenge_talk_sage_desc.
   ///
   /// In es, this message translates to:
-  /// **'Charla con Sage \$count vez(veces)'**
+  /// **'Charla con Sage {count} vez(veces)'**
   String challenge_talk_sage_desc(Object count);
 
   /// No description provided for @challenge_talk_sage_title.
@@ -1263,7 +1263,7 @@ abstract class AppLocalizations {
   /// No description provided for @challenge_test_password_desc.
   ///
   /// In es, this message translates to:
-  /// **'Prueba \$count contraseña(s)'**
+  /// **'Prueba {count} contraseña(s)'**
   String challenge_test_password_desc(Object count);
 
   /// No description provided for @challenge_test_password_title.
@@ -1353,7 +1353,7 @@ abstract class AppLocalizations {
   /// No description provided for @changelogV5_3.
   ///
   /// In es, this message translates to:
-  /// **'19,250 preguntas de ciberseguridad'**
+  /// **'17,157 preguntas de ciberseguridad'**
   String get changelogV5_3;
 
   /// No description provided for @changelogV5_4.
@@ -1497,7 +1497,7 @@ abstract class AppLocalizations {
   /// No description provided for @chestEvolvedTo.
   ///
   /// In es, this message translates to:
-  /// **'Evolucionó a \$type'**
+  /// **'Evolucionó a {type}'**
   String chestEvolvedTo(Object type);
 
   /// No description provided for @chestNoChange.
@@ -1509,7 +1509,7 @@ abstract class AppLocalizations {
   /// No description provided for @chestOpenedTitle.
   ///
   /// In es, this message translates to:
-  /// **'¡Cofre \$type!'**
+  /// **'¡Cofre {type}!'**
   String chestOpenedTitle(Object type);
 
   /// No description provided for @chestPityProgress.
@@ -1581,19 +1581,19 @@ abstract class AppLocalizations {
   /// No description provided for @chestTitle.
   ///
   /// In es, this message translates to:
-  /// **'Cofre \$type'**
+  /// **'Cofre {type}'**
   String chestTitle(Object type);
 
   /// No description provided for @chestTreasure.
   ///
   /// In es, this message translates to:
-  /// **'Cofre del tesoro \$type'**
+  /// **'Cofre del tesoro {type}'**
   String chestTreasure(Object type);
 
   /// No description provided for @chestTreasureLabel.
   ///
   /// In es, this message translates to:
-  /// **'Tesoro \$type'**
+  /// **'Tesoro {type}'**
   String chestTreasureLabel(Object type);
 
   /// No description provided for @chestTypeBronze.
@@ -1683,13 +1683,13 @@ abstract class AppLocalizations {
   /// No description provided for @commitDays.
   ///
   /// In es, this message translates to:
-  /// **'\$days días'**
+  /// **'{days} días'**
   String commitDays(Object days);
 
   /// No description provided for @commitGoalLabel.
   ///
   /// In es, this message translates to:
-  /// **'Tu meta: \$days días'**
+  /// **'Tu meta: {days} días'**
   String commitGoalLabel(Object days);
 
   /// No description provided for @commitSelected.
@@ -1701,7 +1701,7 @@ abstract class AppLocalizations {
   /// No description provided for @commitYourGoal.
   ///
   /// In es, this message translates to:
-  /// **'Tu meta: \$days días'**
+  /// **'Tu meta: {days} días'**
   String commitYourGoal(Object days);
 
   /// No description provided for @completePrevious.
@@ -1719,7 +1719,7 @@ abstract class AppLocalizations {
   /// No description provided for @continueLesson.
   ///
   /// In es, this message translates to:
-  /// **'Continuar lección: \$title'**
+  /// **'Continuar lección: {title}'**
   String continueLesson(Object title);
 
   /// No description provided for @continueText.
@@ -1743,7 +1743,7 @@ abstract class AppLocalizations {
   /// No description provided for @correctAnswers.
   ///
   /// In es, this message translates to:
-  /// **'\$correct de \$total correctas'**
+  /// **'{correct} de {total} correctas'**
   String correctAnswers(Object correct, Object total);
 
   /// No description provided for @currencySymbol.
@@ -1755,7 +1755,7 @@ abstract class AppLocalizations {
   /// No description provided for @cyberQuizProgress.
   ///
   /// In es, this message translates to:
-  /// **'Pregunta \$current de \$total'**
+  /// **'Pregunta {current} de {total}'**
   String cyberQuizProgress(Object current, Object total);
 
   /// No description provided for @dailyGoalIntense.
@@ -1767,7 +1767,7 @@ abstract class AppLocalizations {
   /// No description provided for @dailyGoalMinutesPerDay.
   ///
   /// In es, this message translates to:
-  /// **'\$minutes min/día'**
+  /// **'{minutes} min/día'**
   String dailyGoalMinutesPerDay(Object minutes);
 
   /// No description provided for @dailyGoalNormal.
@@ -1821,7 +1821,7 @@ abstract class AppLocalizations {
   /// No description provided for @darkModeScheduleInfo.
   ///
   /// In es, this message translates to:
-  /// **'El modo oscuro estará activo de \$start:00 a \$end:00'**
+  /// **'El modo oscuro estará activo de {start}:00 a {end}:00'**
   String darkModeScheduleInfo(Object end, Object start);
 
   /// No description provided for @darkModeStart.
@@ -2067,7 +2067,7 @@ abstract class AppLocalizations {
   /// No description provided for @dot.
   ///
   /// In es, this message translates to:
-  /// **'Punto \$number'**
+  /// **'Punto {number}'**
   String dot(Object number);
 
   /// No description provided for @ecoCo2Saved.
@@ -2631,7 +2631,7 @@ abstract class AppLocalizations {
   /// No description provided for @firstLessonProgress.
   ///
   /// In es, this message translates to:
-  /// **'Lección \$current de \$total'**
+  /// **'Lección {current} de {total}'**
   String firstLessonProgress(Object current, Object total);
 
   /// No description provided for @firstLessonSeeResults.
@@ -2721,7 +2721,7 @@ abstract class AppLocalizations {
   /// No description provided for @goToLesson.
   ///
   /// In es, this message translates to:
-  /// **'Ir a lecciones: \$title'**
+  /// **'Ir a lecciones: {title}'**
   String goToLesson(Object title);
 
   /// No description provided for @greetingAfternoon.
@@ -2823,7 +2823,7 @@ abstract class AppLocalizations {
   /// No description provided for @heatmapLessons.
   ///
   /// In es, this message translates to:
-  /// **'\$count lecciones'**
+  /// **'{count} lecciones'**
   String heatmapLessons(Object count);
 
   /// No description provided for @heatmapMore.
@@ -2991,7 +2991,7 @@ abstract class AppLocalizations {
   /// No description provided for @impactProgressToNext.
   ///
   /// In es, this message translates to:
-  /// **'\$count lecciones para el siguiente nivel'**
+  /// **'{count} lecciones para el siguiente nivel'**
   String impactProgressToNext(Object count);
 
   /// No description provided for @impactProtectedUsers.
@@ -3255,7 +3255,7 @@ abstract class AppLocalizations {
   /// No description provided for @lessonProgress.
   ///
   /// In es, this message translates to:
-  /// **'Progreso: \$percent%'**
+  /// **'Progreso: {percent}%'**
   String lessonProgress(Object percent);
 
   /// No description provided for @lessonResultsPreparing.
@@ -3267,7 +3267,7 @@ abstract class AppLocalizations {
   /// No description provided for @lessonsCompleted.
   ///
   /// In es, this message translates to:
-  /// **'\$count lecciones completadas'**
+  /// **'{count} lecciones completadas'**
   String lessonsCompleted(Object count);
 
   /// No description provided for @lessonsCompletedPlural.
@@ -3279,13 +3279,13 @@ abstract class AppLocalizations {
   /// No description provided for @lessonsCount.
   ///
   /// In es, this message translates to:
-  /// **'\$count lecciones'**
+  /// **'{count} lecciones'**
   String lessonsCount(Object count);
 
   /// No description provided for @lessonsLevel.
   ///
   /// In es, this message translates to:
-  /// **'Nivel \$level'**
+  /// **'Nivel {level}'**
   String lessonsLevel(Object level);
 
   /// No description provided for @lessonsNoAvailable.
@@ -3339,7 +3339,7 @@ abstract class AppLocalizations {
   /// No description provided for @levelProgress.
   ///
   /// In es, this message translates to:
-  /// **'Progreso de nivel: \$percent por ciento'**
+  /// **'Progreso de nivel: {percent} por ciento'**
   String levelProgress(Object percent);
 
   /// No description provided for @loading.
@@ -3543,13 +3543,13 @@ abstract class AppLocalizations {
   /// No description provided for @minutes.
   ///
   /// In es, this message translates to:
-  /// **'\$min min'**
+  /// **'{min} min'**
   String minutes(Object min);
 
   /// No description provided for @minutesPerDay.
   ///
   /// In es, this message translates to:
-  /// **'\$count minutos por día'**
+  /// **'{count} minutos por día'**
   String minutesPerDay(Object count);
 
   /// No description provided for @missionActiveLearnerDesc.
@@ -3651,7 +3651,7 @@ abstract class AppLocalizations {
   /// No description provided for @missionProgress.
   ///
   /// In es, this message translates to:
-  /// **'Progreso de misión: \$percent por ciento'**
+  /// **'Progreso de misión: {percent} por ciento'**
   String missionProgress(Object percent);
 
   /// No description provided for @missionThreeQueriesDesc.
@@ -4029,7 +4029,7 @@ abstract class AppLocalizations {
   /// No description provided for @onbGoalMinPerDay.
   ///
   /// In es, this message translates to:
-  /// **'\$minutes min/día'**
+  /// **'{minutes} min/día'**
   String onbGoalMinPerDay(Object minutes);
 
   /// No description provided for @onbGoalNormal.
@@ -4263,7 +4263,7 @@ abstract class AppLocalizations {
   /// No description provided for @onbQuizIntro.
   ///
   /// In es, this message translates to:
-  /// **'Responda \$count preguntas rápidas antes de su primer entrenamiento digital'**
+  /// **'Responda {count} preguntas rápidas antes de su primer entrenamiento digital'**
   String onbQuizIntro(Object count);
 
   /// No description provided for @onbRecommended.
@@ -4476,23 +4476,113 @@ abstract class AppLocalizations {
   /// **'Obtenido'**
   String get owned;
 
+  /// No description provided for @passClaimFailed.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo reclamar la recompensa. Inténtalo de nuevo.'**
+  String get passClaimFailed;
+
+  /// No description provided for @passClaimedLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Reclamado'**
+  String get passClaimedLabel;
+
+  /// No description provided for @passDaysLeft.
+  ///
+  /// In es, this message translates to:
+  /// **'Quedan {count} días'**
+  String passDaysLeft(Object count);
+
   /// No description provided for @passEarnSp.
   ///
   /// In es, this message translates to:
   /// **'Gana SP completando lecciones'**
   String get passEarnSp;
 
+  /// No description provided for @passHowToEarnDailyLimit.
+  ///
+  /// In es, this message translates to:
+  /// **'Límite diario de SP'**
+  String get passHowToEarnDailyLimit;
+
+  /// No description provided for @passHowToEarnLesson.
+  ///
+  /// In es, this message translates to:
+  /// **'Completa una lección: +10 SP'**
+  String get passHowToEarnLesson;
+
+  /// No description provided for @passHowToEarnMission.
+  ///
+  /// In es, this message translates to:
+  /// **'Completa misiones diarias: +5 SP'**
+  String get passHowToEarnMission;
+
+  /// No description provided for @passHowToEarnPerfect.
+  ///
+  /// In es, this message translates to:
+  /// **'Lección perfecta: +15 SP'**
+  String get passHowToEarnPerfect;
+
+  /// No description provided for @passHowToEarnReview.
+  ///
+  /// In es, this message translates to:
+  /// **'Repasa una lección'**
+  String get passHowToEarnReview;
+
+  /// No description provided for @passHowToEarnTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Cómo ganar SP'**
+  String get passHowToEarnTitle;
+
   /// No description provided for @passLevel.
   ///
   /// In es, this message translates to:
-  /// **'Nivel \$level'**
+  /// **'Nivel {level}'**
   String passLevel(Object level);
+
+  /// No description provided for @passLevelsTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Niveles'**
+  String get passLevelsTitle;
+
+  /// No description provided for @passLocked.
+  ///
+  /// In es, this message translates to:
+  /// **'Bloqueado'**
+  String get passLocked;
+
+  /// No description provided for @passMaxLevel.
+  ///
+  /// In es, this message translates to:
+  /// **'¡Nivel máximo!'**
+  String get passMaxLevel;
+
+  /// No description provided for @passProgress.
+  ///
+  /// In es, this message translates to:
+  /// **'SP: {current} / {required}'**
+  String passProgress(Object current, Object required);
+
+  /// No description provided for @passReached.
+  ///
+  /// In es, this message translates to:
+  /// **'Alcanzado'**
+  String get passReached;
+
+  /// No description provided for @passRewardClaimed.
+  ///
+  /// In es, this message translates to:
+  /// **'¡Recompensa reclamada!'**
+  String get passRewardClaimed;
 
   /// No description provided for @passRewards.
   ///
   /// In es, this message translates to:
-  /// **'Recompensas (\$current/\$max)'**
-  String passRewards(Object max, Object current);
+  /// **'Recompensas ({current}/{max})'**
+  String passRewards(Object current, Object max);
 
   /// No description provided for @paymentCredited.
   ///
@@ -4563,19 +4653,19 @@ abstract class AppLocalizations {
   /// No description provided for @paywallPackageAmount.
   ///
   /// In es, this message translates to:
-  /// **'\$gems donaciones'**
+  /// **'{gems} donaciones'**
   String paywallPackageAmount(Object gems);
 
   /// No description provided for @paywallPackageLabel.
   ///
   /// In es, this message translates to:
-  /// **'Paquete \$label'**
+  /// **'Paquete {label}'**
   String paywallPackageLabel(Object label);
 
   /// No description provided for @paywallPackageSupporter.
   ///
   /// In es, this message translates to:
-  /// **'Nivel de Supporter \$level'**
+  /// **'Nivel de Supporter {level}'**
   String paywallPackageSupporter(Object level);
 
   /// No description provided for @paywallPaymentMethods.
@@ -4605,19 +4695,19 @@ abstract class AppLocalizations {
   /// No description provided for @paywallWhatsAppError.
   ///
   /// In es, this message translates to:
-  /// **'Error al abrir WhatsApp. Paga vía: \$link'**
+  /// **'Error al abrir WhatsApp. Paga vía: {link}'**
   String paywallWhatsAppError(Object link);
 
   /// No description provided for @paywallWhatsAppFallback.
   ///
   /// In es, this message translates to:
-  /// **'Abre WhatsApp y envía: \$message'**
+  /// **'Abre WhatsApp y envía: {message}'**
   String paywallWhatsAppFallback(Object message);
 
   /// No description provided for @paywallWhatsAppMessage.
   ///
   /// In es, this message translates to:
-  /// **'Hola, quiero donar \$currencySymbol\$price a SAGEN (Supporter \$supporterLevel). Mi ID de usuario es: \$userId'**
+  /// **'Hola, quiero donar {currencySymbol}{price} a SAGEN (Supporter {supporterLevel}). Mi ID de usuario es: {userId}'**
   String paywallWhatsAppMessage(
     Object currencySymbol,
     Object supporterLevel,
@@ -4994,7 +5084,7 @@ abstract class AppLocalizations {
   /// No description provided for @profileLevelValue.
   ///
   /// In es, this message translates to:
-  /// **'Nivel \$level'**
+  /// **'Nivel {level}'**
   String profileLevelValue(Object level);
 
   /// No description provided for @profileStreak.
@@ -5150,13 +5240,13 @@ abstract class AppLocalizations {
   /// No description provided for @questionProgress.
   ///
   /// In es, this message translates to:
-  /// **'Pregunta \$current de \$total'**
+  /// **'Pregunta {current} de {total}'**
   String questionProgress(Object current, Object total);
 
   /// No description provided for @questions.
   ///
   /// In es, this message translates to:
-  /// **'\$count preguntas'**
+  /// **'{count} preguntas'**
   String questions(Object count);
 
   /// No description provided for @quickActions.
@@ -5288,7 +5378,7 @@ abstract class AppLocalizations {
   /// No description provided for @quizProgress.
   ///
   /// In es, this message translates to:
-  /// **'Progreso del cuestionario: \$percent por ciento'**
+  /// **'Progreso del cuestionario: {percent} por ciento'**
   String quizProgress(Object percent);
 
   /// No description provided for @quizProgressExpired.
@@ -5360,7 +5450,7 @@ abstract class AppLocalizations {
   /// No description provided for @rankingPosition.
   ///
   /// In es, this message translates to:
-  /// **'Posición #\$rank'**
+  /// **'Posición #{rank}'**
   String rankingPosition(Object rank);
 
   /// No description provided for @rankingShareButton.
@@ -5396,13 +5486,13 @@ abstract class AppLocalizations {
   /// No description provided for @rankingXpToTop50.
   ///
   /// In es, this message translates to:
-  /// **'Te faltan \$xp XP para entrar al Top 50'**
+  /// **'Te faltan {xp} XP para entrar al Top 50'**
   String rankingXpToTop50(Object xp);
 
   /// No description provided for @rankingYourPosition.
   ///
   /// In es, this message translates to:
-  /// **'Tu posición: #\$rank · \$xp XP'**
+  /// **'Tu posición: #{rank} · {xp} XP'**
   String rankingYourPosition(Object xp, Object rank);
 
   /// No description provided for @rarityGold.
@@ -5864,25 +5954,25 @@ abstract class AppLocalizations {
   /// No description provided for @rewardAdCooldown.
   ///
   /// In es, this message translates to:
-  /// **'Disponible en \$seconds segundos'**
+  /// **'Disponible en {seconds} segundos'**
   String rewardAdCooldown(Object seconds);
 
   /// No description provided for @rewardAdEarned.
   ///
   /// In es, this message translates to:
-  /// **'¡Ganaste \$count donaciones!'**
+  /// **'¡Ganaste {count} donaciones!'**
   String rewardAdEarned(Object count);
 
   /// No description provided for @rewardAdEarnedGems.
   ///
   /// In es, this message translates to:
-  /// **'+\$gems gemas'**
+  /// **'+{gems} gemas'**
   String rewardAdEarnedGems(Object gems);
 
   /// No description provided for @rewardAdEarnedXp.
   ///
   /// In es, this message translates to:
-  /// **'¡+\$xp XP ganados!'**
+  /// **'¡+{xp} XP ganados!'**
   String rewardAdEarnedXp(Object xp);
 
   /// No description provided for @rewardAdNotAvailable.
@@ -5960,13 +6050,13 @@ abstract class AppLocalizations {
   /// No description provided for @sageAchievementUnlocked.
   ///
   /// In es, this message translates to:
-  /// **'\$name¡Logro desbloqueado!'**
+  /// **'{name}¡Logro desbloqueado!'**
   String sageAchievementUnlocked(Object name);
 
   /// No description provided for @sageAdvancing.
   ///
   /// In es, this message translates to:
-  /// **'\${name}Sigues avanzando.\$levelHint'**
+  /// **'{name}Sigues avanzando.{levelHint}'**
   String sageAdvancing(Object levelHint, Object name);
 
   /// No description provided for @sageChatDescription.
@@ -5990,7 +6080,7 @@ abstract class AppLocalizations {
   /// No description provided for @sageCongratulations.
   ///
   /// In es, this message translates to:
-  /// **'\$name¡Felicidades!'**
+  /// **'{name}¡Felicidades!'**
   String sageCongratulations(Object name);
 
   /// No description provided for @sageCriticalError.
@@ -6008,19 +6098,19 @@ abstract class AppLocalizations {
   /// No description provided for @sageEmptyState.
   ///
   /// In es, this message translates to:
-  /// **'\${name}No hay nada aquí todavía'**
+  /// **'{name}No hay nada aquí todavía'**
   String sageEmptyState(Object name);
 
   /// No description provided for @sageGreatJob.
   ///
   /// In es, this message translates to:
-  /// **'\$name¡Excelente trabajo!\$extra'**
+  /// **'{name}¡Excelente trabajo!{extra}'**
   String sageGreatJob(Object name, Object extra);
 
   /// No description provided for @sageHighStreakDays.
   ///
   /// In es, this message translates to:
-  /// **' \$streak días seguidos.'**
+  /// **' {streak} días seguidos.'**
   String sageHighStreakDays(Object streak);
 
   /// No description provided for @sageImportant.
@@ -6032,13 +6122,13 @@ abstract class AppLocalizations {
   /// No description provided for @sageImpressiveStreak.
   ///
   /// In es, this message translates to:
-  /// **'\$name¡Racha impresionante!\$days'**
+  /// **'{name}¡Racha impresionante!{days}'**
   String sageImpressiveStreak(Object name, Object days);
 
   /// No description provided for @sageLevelHint.
   ///
   /// In es, this message translates to:
-  /// **' El nivel \$level ya está cerca.'**
+  /// **' El nivel {level} ya está cerca.'**
   String sageLevelHint(Object level);
 
   /// No description provided for @sageLoading.
@@ -6140,19 +6230,19 @@ abstract class AppLocalizations {
   /// No description provided for @sageStreakAmazing.
   ///
   /// In es, this message translates to:
-  /// **'¡Tu racha de \$streak días es increíble!'**
+  /// **'¡Tu racha de {streak} días es increíble!'**
   String sageStreakAmazing(Object streak);
 
   /// No description provided for @sageStreakAtRisk.
   ///
   /// In es, this message translates to:
-  /// **' ¡No pierdas \$streak días de esfuerzo!'**
+  /// **' ¡No pierdas {streak} días de esfuerzo!'**
   String sageStreakAtRisk(Object streak);
 
   /// No description provided for @sageStreakAtRiskMessage.
   ///
   /// In es, this message translates to:
-  /// **'\$name¡No pierdas tu racha!\$urgency'**
+  /// **'{name}¡No pierdas tu racha!{urgency}'**
   String sageStreakAtRiskMessage(Object urgency, Object name);
 
   /// No description provided for @sageStreakLost.
@@ -6164,13 +6254,13 @@ abstract class AppLocalizations {
   /// No description provided for @sageStreakLostMessage.
   ///
   /// In es, this message translates to:
-  /// **'\${name}La racha se ha perdido.\$encouragement'**
+  /// **'{name}La racha se ha perdido.{encouragement}'**
   String sageStreakLostMessage(Object name, Object encouragement);
 
   /// No description provided for @sageTellMeMore.
   ///
   /// In es, this message translates to:
-  /// **'\${name}Cuéntame más de ti'**
+  /// **'{name}Cuéntame más de ti'**
   String sageTellMeMore(Object name);
 
   /// No description provided for @sageTryAgain.
@@ -6182,13 +6272,13 @@ abstract class AppLocalizations {
   /// No description provided for @sageWelcomeBack.
   ///
   /// In es, this message translates to:
-  /// **'\$name¡Bienvenido de vuelta!'**
+  /// **'{name}¡Bienvenido de vuelta!'**
   String sageWelcomeBack(Object name);
 
   /// No description provided for @sageWhatDoYouThink.
   ///
   /// In es, this message translates to:
-  /// **'\$name¿Qué crees que es correcto?'**
+  /// **'{name}¿Qué crees que es correcto?'**
   String sageWhatDoYouThink(Object name);
 
   /// No description provided for @sagenPassClaim.
@@ -6320,7 +6410,7 @@ abstract class AppLocalizations {
   /// No description provided for @sessionCorrectAnswer.
   ///
   /// In es, this message translates to:
-  /// **'Respuesta correcta: \$answer'**
+  /// **'Respuesta correcta: {answer}'**
   String sessionCorrectAnswer(Object answer);
 
   /// No description provided for @sessionExp.
@@ -6380,7 +6470,7 @@ abstract class AppLocalizations {
   /// No description provided for @sessionScore.
   ///
   /// In es, this message translates to:
-  /// **'\$correct/\$total correctas'**
+  /// **'{correct}/{total} correctas'**
   String sessionScore(Object correct, Object total);
 
   /// No description provided for @sessionSelectAnswer.
@@ -7142,7 +7232,7 @@ abstract class AppLocalizations {
   /// No description provided for @stageProgress.
   ///
   /// In es, this message translates to:
-  /// **'Progreso de etapa: \$percent por ciento'**
+  /// **'Progreso de etapa: {percent} por ciento'**
   String stageProgress(Object percent);
 
   /// No description provided for @startText.
@@ -7238,7 +7328,7 @@ abstract class AppLocalizations {
   /// No description provided for @storeBuyItem.
   ///
   /// In es, this message translates to:
-  /// **'Comprar \$item por \$cost donaciones'**
+  /// **'Comprar {item} por {cost} donaciones'**
   String storeBuyItem(Object cost, Object item);
 
   /// No description provided for @storeCategoryConsumables.
@@ -7274,7 +7364,7 @@ abstract class AppLocalizations {
   /// No description provided for @storeChestExpiresIn.
   ///
   /// In es, this message translates to:
-  /// **'\$gems donados — expira a medianoche'**
+  /// **'{gems} donados — expira a medianoche'**
   String storeChestExpiresIn(Object gems);
 
   /// No description provided for @storeChestRenews.
@@ -7292,7 +7382,7 @@ abstract class AppLocalizations {
   /// No description provided for @storeConfirmMessage.
   ///
   /// In es, this message translates to:
-  /// **'¿Deseas comprar \$item por \$cost donaciones?'**
+  /// **'¿Deseas comprar {item} por {cost} donaciones?'**
   String storeConfirmMessage(Object cost, Object item);
 
   /// No description provided for @storeConfirmTitle.
@@ -7310,7 +7400,7 @@ abstract class AppLocalizations {
   /// No description provided for @storeDonateSubtitle.
   ///
   /// In es, this message translates to:
-  /// **'Desde \$price'**
+  /// **'Desde {price}'**
   String storeDonateSubtitle(Object price);
 
   /// No description provided for @storeDonationsLabel.
@@ -7391,6 +7481,30 @@ abstract class AppLocalizations {
   /// **'Protege tu racha'**
   String get storeProtectStreak;
 
+  /// No description provided for @storeDailyChestClaim.
+  ///
+  /// In es, this message translates to:
+  /// **'Reclamar'**
+  String get storeDailyChestClaim;
+
+  /// No description provided for @storeDailyChestReward.
+  ///
+  /// In es, this message translates to:
+  /// **'¡+{xp} XP!'**
+  String storeDailyChestReward(Object xp);
+
+  /// No description provided for @storeDailyChestSubtitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Reclama tu recompensa diaria gratuita'**
+  String get storeDailyChestSubtitle;
+
+  /// No description provided for @storeDailyChestTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Cofre diario'**
+  String get storeDailyChestTitle;
+
   /// No description provided for @storePurchaseFailed.
   ///
   /// In es, this message translates to:
@@ -7442,7 +7556,7 @@ abstract class AppLocalizations {
   /// No description provided for @storeWhatsappPackages.
   ///
   /// In es, this message translates to:
-  /// **'Paquetes desde \$price — Pago por WhatsApp'**
+  /// **'Paquetes desde {price} — Pago por WhatsApp'**
   String storeWhatsappPackages(Object price);
 
   /// No description provided for @streakAchievements.
@@ -7520,7 +7634,7 @@ abstract class AppLocalizations {
   /// No description provided for @streakCurrentProgress.
   ///
   /// In es, this message translates to:
-  /// **'Racha actual: \$current / \$goal días'**
+  /// **'Racha actual: {current} / {goal} días'**
   String streakCurrentProgress(Object goal, Object current);
 
   /// No description provided for @streakDayFri.
@@ -7580,13 +7694,13 @@ abstract class AppLocalizations {
   /// No description provided for @streakDays.
   ///
   /// In es, this message translates to:
-  /// **'\$count días'**
+  /// **'{count} días'**
   String streakDays(Object count);
 
   /// No description provided for @streakDaysCount.
   ///
   /// In es, this message translates to:
-  /// **'\$count días de racha'**
+  /// **'{count} días de racha'**
   String streakDaysCount(Object count);
 
   /// No description provided for @streakDaysCountPlural.
@@ -7946,7 +8060,7 @@ abstract class AppLocalizations {
   /// No description provided for @summaryStreakDays.
   ///
   /// In es, this message translates to:
-  /// **'+\$days día(s)'**
+  /// **'+{days} día(s)'**
   String summaryStreakDays(Object days);
 
   /// No description provided for @summaryXpBonus.
@@ -8096,7 +8210,7 @@ abstract class AppLocalizations {
   /// No description provided for @tutorLessonsProgress.
   ///
   /// In es, this message translates to:
-  /// **'\$completed / \$required lecciones'**
+  /// **'{completed} / {required} lecciones'**
   String tutorLessonsProgress(Object completed, Object required);
 
   /// No description provided for @tutorLocked.
@@ -8114,7 +8228,7 @@ abstract class AppLocalizations {
   /// No description provided for @tutorMotivationAlmost.
   ///
   /// In es, this message translates to:
-  /// **'Ya casi, solo te faltan \$count lecciones. ¡Sigue así!'**
+  /// **'Ya casi, solo te faltan {count} lecciones. ¡Sigue así!'**
   String tutorMotivationAlmost(Object count);
 
   /// No description provided for @tutorMotivationGeneral.
@@ -8126,7 +8240,7 @@ abstract class AppLocalizations {
   /// No description provided for @tutorMotivationGood.
   ///
   /// In es, this message translates to:
-  /// **'¡Buen ritmo! Te faltan \$count lecciones para acceder a Sage.'**
+  /// **'¡Buen ritmo! Te faltan {count} lecciones para acceder a Sage.'**
   String tutorMotivationGood(Object count);
 
   /// No description provided for @tutorSampleAnswer1.
@@ -8408,7 +8522,7 @@ abstract class AppLocalizations {
   /// No description provided for @verifyEmailMessage.
   ///
   /// In es, this message translates to:
-  /// **'Enviamos un enlace de verificación a \$email. Haz clic en el enlace para activar tu cuenta.'**
+  /// **'Enviamos un enlace de verificación a {email}. Haz clic en el enlace para activar tu cuenta.'**
   String verifyEmailMessage(Object email);
 
   /// No description provided for @verifyEmailNotVerified.
@@ -8486,7 +8600,7 @@ abstract class AppLocalizations {
   /// No description provided for @weeklyChestProgressCount.
   ///
   /// In es, this message translates to:
-  /// **'\$done/\$total'**
+  /// **'{done}/{total}'**
   String weeklyChestProgressCount(Object done, Object total);
 
   /// No description provided for @welcomeLoginButton.
@@ -8972,13 +9086,13 @@ abstract class AppLocalizations {
   /// No description provided for @xpReward.
   ///
   /// In es, this message translates to:
-  /// **'+\$xp XP'**
+  /// **'+{xp} XP'**
   String xpReward(Object xp);
 
   /// No description provided for @xpRewardLabel.
   ///
   /// In es, this message translates to:
-  /// **'+\$gems XP'**
+  /// **'+{gems} XP'**
   String xpRewardLabel(Object gems);
 
   /// No description provided for @yourActivity.

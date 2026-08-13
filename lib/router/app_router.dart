@@ -13,6 +13,7 @@ import '../ui/screens/onboarding/onboarding_wizard_screen.dart';
 import '../ui/screens/onboarding/post_onboarding_flow.dart';
 import '../ui/screens/main_layout.dart';
 import '../ui/screens/dashboard/lessons_screen.dart';
+import '../ui/screens/dashboard/sagen_pass_screen.dart';
 import '../ui/screens/dashboard/user_profile_screen.dart';
 import '../ui/screens/lesson/lesson_session_screen.dart';
 import '../ui/screens/lesson/lesson_results_screen.dart';
@@ -48,6 +49,15 @@ final routerProvider = Provider<GoRouter>((ref) {
       }
 
       if (!auth.isAuthenticated) {
+        // Usuario logueado pero con email sin verificar: llevarlo a la
+        // pantalla de verificación en vez de tratarlo como un visitante.
+        // El flujo de onboarding continúa sin interrupción.
+        if (auth.pendingVerification && auth.uid != null) {
+          const onboardingRoutes = {'/onboarding', '/onboarding/flow'};
+          if (onboardingRoutes.contains(location)) return null;
+          if (location != '/verify-email') return '/verify-email';
+          return null;
+        }
         if (location == '/') return '/welcome';
         final publicRoutes = <String>{
           '/welcome', '/login', '/forgot-password',
@@ -269,6 +279,20 @@ final routerProvider = Provider<GoRouter>((ref) {
           child: const DailyStreakScreen(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) =>
               FadeTransition(opacity: animation, child: child),
+        ),
+      ),
+      GoRoute(
+        path: '/pass',
+        name: 'pass',
+        pageBuilder: (context, state) => CustomTransitionPage<void>(
+          key: state.pageKey,
+          child: const SagenPassScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              SlideTransition(
+                position: Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero)
+                    .animate(CurvedAnimation(parent: animation, curve: Curves.easeOut)),
+                child: child,
+              ),
         ),
       ),
       GoRoute(

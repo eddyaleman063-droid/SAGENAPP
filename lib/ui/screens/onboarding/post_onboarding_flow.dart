@@ -92,7 +92,7 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
       if (!mounted) return;
       final auth = ref.read(authProvider);
       if (auth.isAuthenticated) {
-        _createProfile(auth, funnel);
+        await _createProfile(auth, funnel);
         ref.read(analyticsServiceProvider).track(AnalyticEvent.signUp, properties: {
           'method': 'google',
         });
@@ -111,7 +111,7 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
       if (!mounted) return;
       final auth = ref.read(authProvider);
       if (auth.showVerificationScreen || auth.isAuthenticated) {
-        _createProfile(auth, funnel);
+        await _createProfile(auth, funnel);
         ref.read(analyticsServiceProvider).track(AnalyticEvent.signUp, properties: {
           'method': 'email',
         });
@@ -122,26 +122,30 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
     }
   }
 
-  void _createProfile(AuthState auth, RegistrationFunnelState funnel) {
-    try {
-      final uid = ref.read(authServiceProvider).currentUser?.uid;
-      if (uid == null) return;
-      ref.read(firestoreServiceProvider).createUserProfile(
-        uid: uid,
-        firstName: funnel.name,
-        lastName: funnel.surname,
-        email: funnel.email.isNotEmpty ? funnel.email : auth.email,
-        age: funnel.age,
-      );
-    } catch (e) {
-      AppLogger().warning('post_onboarding: _createProfile failed: $e');
-      if (mounted) {
-        SagenNotification.show(
-          context,
-          message: AppLocalizations.of(context)?.errorGeneric ?? '',
-          type: NotificationType.error,
+  Future<void> _createProfile(AuthState auth, RegistrationFunnelState funnel) async {
+    final uid = ref.read(authServiceProvider).currentUser?.uid;
+    if (uid == null) return;
+    for (int attempt = 0; attempt < 3; attempt++) {
+      try {
+        await ref.read(firestoreServiceProvider).createUserProfile(
+          uid: uid,
+          firstName: funnel.name,
+          lastName: funnel.surname,
+          email: funnel.email.isNotEmpty ? funnel.email : auth.email,
+          age: funnel.age,
         );
+        return;
+      } catch (e) {
+        AppLogger().warning('post_onboarding: _createProfile attempt $attempt failed: $e');
+        if (attempt < 2) await Future.delayed(const Duration(seconds: 1));
       }
+    }
+    if (mounted) {
+      SagenNotification.show(
+        context,
+        message: AppLocalizations.of(context)?.errorGeneric ?? '',
+        type: NotificationType.error,
+      );
     }
   }
 

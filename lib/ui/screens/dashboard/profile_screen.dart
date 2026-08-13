@@ -13,6 +13,7 @@ import 'package:sagen/ui/widgets/profile/flex_card_share_sheet.dart';
 import 'package:sagen/ui/widgets/profile/profile_header_widget.dart';
 import 'package:sagen/ui/widgets/profile/settings_actions.dart';
 import 'package:sagen/ui/widgets/profile/stat_card_widget.dart';
+import 'package:sagen/ui/widgets/store/sagen_pass_card.dart';
 import 'package:sagen/ui/widgets/store/sagen_support_card.dart';
 import 'package:sagen/core/theme/app_colors.dart';
 
@@ -137,6 +138,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with AutomaticKee
               padding: EdgeInsets.fromLTRB(AppSpacing.xxl, AppSpacing.xl, AppSpacing.xxl, 0),
               child: SagenSupportCard(),
             ),
+          ),
+          const SliverToBoxAdapter(
+            child: SagenPassCard(),
           ),
           SliverToBoxAdapter(
             child: Padding(

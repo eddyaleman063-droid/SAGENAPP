@@ -8,10 +8,10 @@ import '../../core/theme/theme_constants.dart';
 part 'stage.freezed.dart';
 part 'stage.g.dart';
 
-class _ColorConverter implements JsonConverter<Color, int> {
+class _ColorConverter implements JsonConverter<Color, Object> {
   const _ColorConverter();
   @override
-  Color fromJson(dynamic json) {
+  Color fromJson(Object json) {
     if (json is int) return Color(json);
     if (json is String) {
       var h = json.replaceFirst('#', '');
@@ -26,10 +26,10 @@ class _ColorConverter implements JsonConverter<Color, int> {
     return PremiumColors.wizardOrange;
   }
   @override
-  int toJson(Color object) => object.toARGB32();
+  Object toJson(Color object) => object.toARGB32();
 }
 
-class _IconConverter implements JsonConverter<IconData, String> {
+class _IconConverter implements JsonConverter<IconData, Object> {
   const _IconConverter();
 
   static const _iconMap = <String, IconData>{
@@ -45,10 +45,18 @@ class _IconConverter implements JsonConverter<IconData, String> {
     'visibility': Icons.visibility_rounded,
   };
 
+  static final Map<int, IconData> _codePointMap = {
+    for (final entry in _iconMap.entries) entry.value.codePoint: entry.value,
+  };
+
   @override
-  IconData fromJson(String json) => _iconMap[json] ?? Icons.shield_rounded;
+  IconData fromJson(Object json) {
+    if (json is String) return _iconMap[json] ?? Icons.shield_rounded;
+    if (json is int) return _codePointMap[json] ?? Icons.shield_rounded;
+    return Icons.shield_rounded;
+  }
   @override
-  String toJson(IconData object) {
+  Object toJson(IconData object) {
     for (final entry in _iconMap.entries) {
       if (entry.value == object) return entry.key;
     }

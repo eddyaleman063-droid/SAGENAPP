@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -89,10 +88,7 @@ class BackgroundSyncService {
   final _workmanager = Workmanager();
 
   Future<void> init() async {
-    await _workmanager.initialize(
-      _callbackDispatcher,
-      isInDebugMode: kDebugMode,
-    );
+    await _workmanager.initialize(_callbackDispatcher);
   }
 
   Future<void> registerPeriodicSync() async {

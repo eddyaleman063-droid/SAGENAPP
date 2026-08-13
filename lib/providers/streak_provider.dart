@@ -342,20 +342,31 @@ class StreakNotifier extends Notifier<StreakState> {
         return;
       }
 
-      final newTotalCheckIns = state.totalCheckIns + 1;
-
+      // Solo el primer check-in del día debe inflar las estadísticas.
       final now = DateTime.now();
+      final today = DateTime(now.year, now.month, now.day);
+      final isFirstCheckInToday = lastDate == null ||
+          DateTime(lastDate.year, lastDate.month, lastDate.day) != today;
+
+      final newTotalCheckIns = isFirstCheckInToday ? state.totalCheckIns + 1 : state.totalCheckIns;
+
       final weekKey = '${now.year}-W${_isoWeekNumber(now)}';
       final newWeeklyStats = Map<String, int>.from(state.weeklyStats);
-      newWeeklyStats[weekKey] = (newWeeklyStats[weekKey] ?? 0) + 1;
+      if (isFirstCheckInToday) {
+        newWeeklyStats[weekKey] = (newWeeklyStats[weekKey] ?? 0) + 1;
+      }
 
       final monthKey = '${now.year}-${now.month.toString().padLeft(2, '0')}';
       final newMonthlyData = Map<String, int>.from(state.monthlyData);
-      newMonthlyData[monthKey] = (newMonthlyData[monthKey] ?? 0) + 1;
+      if (isFirstCheckInToday) {
+        newMonthlyData[monthKey] = (newMonthlyData[monthKey] ?? 0) + 1;
+      }
 
       final heatmapKey = now.toIso8601String().substring(0, 10);
       final newHeatmap = Map<String, int>.from(state.heatmapData);
-      newHeatmap[heatmapKey] = (newHeatmap[heatmapKey] ?? 0) + 1;
+      if (isFirstCheckInToday) {
+        newHeatmap[heatmapKey] = (newHeatmap[heatmapKey] ?? 0) + 1;
+      }
       if (newHeatmap.length > 365) {
         final keys = newHeatmap.keys.toList()..sort();
         final toRemove = newHeatmap.length - 365;
@@ -369,7 +380,9 @@ class StreakNotifier extends Notifier<StreakState> {
 
       final newEmotions = _computeEmotionalMessages(newStatus);
 
-      final newPerfectWeeks = (newStatus.currentStreak > 0 && newStatus.currentStreak % 7 == 0)
+      final newPerfectWeeks = (isFirstCheckInToday &&
+              newStatus.currentStreak > 0 &&
+              newStatus.currentStreak % 7 == 0)
           ? state.perfectWeeks + 1
           : state.perfectWeeks;
 

@@ -94,10 +94,11 @@ class SagenPassNotifier extends Notifier<SagenPass> {
   }
 
   /// Earns SP via server-side Cloud Function, then updates local state.
+  /// The server decides the SP amount by `reason`; clients never send an amount.
   /// Server response is validated to prevent crashes from malformed data.
-  Future<void> addSP(int amount, {String? reason}) async {
+  Future<void> addSP({String? reason}) async {
     if (state.isMaxLevel) return;
-    final result = await ref.read(gamificationCloudServiceProvider).earnSP(amount, reason: reason);
+    final result = await ref.read(gamificationCloudServiceProvider).earnSP(reason: reason);
     if (result == null) return;
 
     // Validate server response types before applying

@@ -12,6 +12,7 @@ class MockFirestore {
     const self = this;
     return {
       path,
+      id: path.split('/').pop(),
       get() {
         const data = self._docs.get(path);
         return Promise.resolve({
@@ -44,12 +45,25 @@ class MockFirestore {
 
   runTransaction(fn) {
     const self = this;
+    const applyData = (path, data, merge) => {
+      const existing = self._docs.get(path) || {};
+      const next = {};
+      if (merge) Object.assign(next, existing);
+      for (const [key, value] of Object.entries(data)) {
+        if (value && typeof value === 'object' && value.__increment !== undefined) {
+          next[key] = (existing[key] || 0) + value.__increment;
+        } else {
+          next[key] = value;
+        }
+      }
+      self._docs.set(path, next);
+    };
     const transaction = {
       get(docRef) {
         return docRef.get();
       },
       update(docRef, data) {
-        docRef.update(data);
+        applyData(docRef.path, data, true);
       },
       create(docRef, data) {
         const path = docRef.path;
@@ -58,8 +72,8 @@ class MockFirestore {
         }
         self._docs.set(path, { ...data });
       },
-      set(docRef, data) {
-        self._docs.set(docRef.path, { ...data });
+      set(docRef, data, options) {
+        applyData(docRef.path, data, !!(options && options.merge));
       },
     };
     return fn(transaction);
@@ -82,6 +96,7 @@ const firestoreInstance = new MockFirestore();
 
 const FieldValue = {
   serverTimestamp: () => 'SERVER_TIMESTAMP',
+  increment: (value) => ({ __increment: value }),
 };
 
 const Timestamp = {

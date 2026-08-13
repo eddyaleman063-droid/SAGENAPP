@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -22,9 +23,16 @@ class LocalQuestionDB {
   static const _dbName = 'sagen_questions.db';
   static const _dbVersion = 2;
 
+  /// Test-only override for the directory that holds the database file.
+  /// When null (default), `getDatabasesPath()` is used. Allows tests running
+  /// in parallel isolates to avoid SQLite file locking each other.
+  @visibleForTesting
+  static String? overrideDatabasesPath;
+
   /// In-memory cache of question IDs grouped by lessonId for fast random selection.
   final Map<String, List<String>> _idCacheByLesson = {};
   final Map<String, List<String>> _idCacheByType = {};
+  final Map<String, List<String>> _idCacheByStage = {};
 
   Future<Database> get database async {
     if (_db != null) return _db!;
@@ -45,7 +53,7 @@ class LocalQuestionDB {
   }
 
   Future<Database> _openDB() async {
-    final dbPath = await getDatabasesPath();
+    final dbPath = overrideDatabasesPath ?? await getDatabasesPath();
     final path = join(dbPath, _dbName);
     return openDatabase(
       path,
@@ -111,6 +119,14 @@ class LocalQuestionDB {
   }
 
   static final _questionIdPattern = RegExp(r'^ac_s(\d+)_ses(\d+)_l(\d+)_q(\d+)$');
+
+  /// Maps a runtime stage id ('ac_st1') to the generated question prefix
+  /// ('ac_s1') used by the question bank lessonIds.
+  static String _stagePrefix(String stageId) {
+    final match = RegExp(r'^ac_st(\d+)$').firstMatch(stageId);
+    if (match == null) return stageId;
+    return 'ac_s${match.group(1)}';
+  }
 
   static String _extractLessonId(String questionId) {
     final match = _questionIdPattern.firstMatch(questionId);
@@ -185,6 +201,7 @@ class LocalQuestionDB {
 
       if (storedChecksum == currentChecksum) {
         _seededStages.add(stageId);
+        _idCacheByStage.clear();
         await _ensurePoolsSeeded(db);
         return;
       }
@@ -194,9 +211,10 @@ class LocalQuestionDB {
 
       // Clear old data for this stage if checksum changed
       if (storedChecksum != null) {
-        await db.delete('questions', where: 'lessonId LIKE ?', whereArgs: ['${stageId}_%']);
+        await db.delete('questions', where: 'lessonId LIKE ?', whereArgs: ['${_stagePrefix(stageId)}_%']);
         _idCacheByLesson.clear();
         _idCacheByType.clear();
+        _idCacheByStage.clear();
         AppLogger().info('Cleared old data for stage $stageId (checksum changed)');
       }
 
@@ -236,6 +254,7 @@ class LocalQuestionDB {
       _seededStages.add(stageId);
       _idCacheByLesson.clear();
       _idCacheByType.clear();
+      _idCacheByStage.clear();
       await _storeChecksum(db, 'stage_$stageId', currentChecksum);
       if (skippedCount > 0) {
         AppLogger().warning(
@@ -470,12 +489,24 @@ class LocalQuestionDB {
       await _ensureStageSeeded(stageId);
       final db = await database;
 
-      // Use in-memory ID cache for fast random selection
+      // Preferred: questions tagged with this exact lessonId.
       if (!_idCacheByLesson.containsKey(lessonId)) {
         await _rebuildIdCache(db, lessonId: lessonId);
       }
-      final ids = _idCacheByLesson[lessonId];
-      if (ids == null || ids.isEmpty) return [];
+      var ids = _idCacheByLesson[lessonId] ?? const [];
+
+      // Fallback: the runtime curriculum lessonIds differ from the
+      // generated question bank's lessonIds (98 lessons were empty).
+      // Serve deterministically from the whole stage so no lesson is
+      // ever empty and all generated questions stay reachable.
+      if (ids.isEmpty) {
+        final stagePrefix = _stagePrefix(stageId);
+        if (!_idCacheByStage.containsKey(stageId)) {
+          await _rebuildStageCache(db, stageId: stageId, prefix: stagePrefix);
+        }
+        ids = _idCacheByStage[stageId] ?? const [];
+      }
+      if (ids.isEmpty) return [];
 
       final selectedIds = _pickRandomIds(ids, count, seed: lessonId.hashCode);
       final placeholders = List.generate(selectedIds.length, (_) => '?').join(',');
@@ -618,9 +649,11 @@ class LocalQuestionDB {
     if (db != null) {
       await db.close();
       _db = null;
+      _dbCompleter = null;
       _seededStages.clear();
       _idCacheByLesson.clear();
       _idCacheByType.clear();
+      _idCacheByStage.clear();
     }
   }
 
@@ -638,6 +671,15 @@ class LocalQuestionDB {
       final rows = await db.query('questions', columns: ['id'], where: 'type = ?', whereArgs: [type]);
       _idCacheByType[type] = rows.map((r) => r['id'] as String).toList();
     }
+  }
+
+  /// Rebuilds the in-memory ID cache for an entire stage (all lessons
+  /// whose lessonId starts with the stage's question prefix).
+  Future<List<String>?> _rebuildStageCache(Database db, {required String stageId, required String prefix}) async {
+    final rows = await db.query('questions', columns: ['id'], where: 'lessonId LIKE ?', whereArgs: ['$prefix%']);
+    final ids = rows.map((r) => r['id'] as String).toList();
+    _idCacheByStage[stageId] = ids;
+    return ids;
   }
 
   /// Picks [count] random IDs from [pool] without shuffling the entire list.

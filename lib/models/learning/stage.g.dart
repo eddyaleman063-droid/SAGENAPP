@@ -10,8 +10,8 @@ _$StageImpl _$$StageImplFromJson(Map<String, dynamic> json) => _$StageImpl(
   id: json['id'] as String,
   title: json['title'] as String,
   subtitle: json['subtitle'] as String,
-  accent: const _ColorConverter().fromJson((json['accent'] as num).toInt()),
-  icon: const _IconConverter().fromJson(json['icon'] as String),
+  accent: const _ColorConverter().fromJson(json['accent'] as Object),
+  icon: const _IconConverter().fromJson(json['icon'] as Object),
   lessons:
       (json['lessons'] as List<dynamic>?)
           ?.map((e) => Lesson.fromJson(e as Map<String, dynamic>))

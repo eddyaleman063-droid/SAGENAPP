@@ -1,11 +1,36 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const { getDailyXpDocRef, computeCappedXp, MAX_DAILY_XP } = require('./economic');
+const gems = require('./gems');
 
 // ══════════════════════════════════════════════════════════════════
 // GAMIFICATION FUNCTIONS — Server-authoritative daily claims
 // Daily chest, missions, and ad rewards are validated server-side.
 // ══════════════════════════════════════════════════════════════════
+
+// Server-authoritative Sagen Pass SP per reason.
+// The client can NOT specify the amount — the server decides it.
+const SP_REWARDS = {
+  lesson: 10,
+  daily_chest: 5,
+  streak_chest: 5,
+  ad_reward: 3,
+  mini_game: 5,
+  review: 5,
+  achievement: 10,
+  mission_reward: 5,
+  challenge: 10,
+  perfect_lesson: 15,
+};
+const DEFAULT_SP_REWARD = 5;
+
+// Max Sagen Pass SP earnable per day (anti-farm).
+const MAX_DAILY_SP = 100;
+
+function getDailySpDocRef(userId) {
+  const today = new Date().toISOString().split('T')[0];
+  return admin.firestore().doc(`daily_sp_sources/${userId}_${today}`);
+}
 
 /**
  * Firestore-based distributed rate limiting.
@@ -56,12 +81,14 @@ exports.claimDailyChest = functions.runWith({ maxInstances: 5 }).https.onCall(as
   const userRef = admin.firestore().doc(`users/${userId}`);
   const today = new Date().toISOString().split('T')[0];
   const dailyXpRef = getDailyXpDocRef(userId);
+  const dailyGemsRef = gems.getDailyGemsDocRef(userId);
 
   try {
     const result = await admin.firestore().runTransaction(async (transaction) => {
-      const [userDoc, dailyXpDoc] = await Promise.all([
+      const [userDoc, dailyXpDoc, dailyGemsDoc] = await Promise.all([
         transaction.get(userRef),
         transaction.get(dailyXpRef),
+        transaction.get(dailyGemsRef),
       ]);
       if (!userDoc.exists) {
         throw new functions.https.HttpsError('not-found', 'Usuario no encontrado');
@@ -89,6 +116,13 @@ exports.claimDailyChest = functions.runWith({ maxInstances: 5 }).https.onCall(as
 
       const newTotalXp = currentTotalXp + cappedXp;
       const newLevel = Math.floor(newTotalXp / 100) + 1;
+
+      const dailyGemsData = dailyGemsDoc.data() || {};
+      const gemCredit = gems.applyGemCredit(
+        transaction, userRef, userData,
+        dailyGemsRef, dailyGemsData,
+        'daily_chest', gems.GEM_REWARDS.daily_chest,
+      );
 
       transaction.update(userRef, {
         learning_total_xp: newTotalXp,
@@ -126,6 +160,11 @@ exports.claimDailyChest = functions.runWith({ maxInstances: 5 }).https.onCall(as
         xp: cappedXp,
         leveledUp: newLevel > currentLevel,
         newLevel,
+        gems: {
+          added: gemCredit.gemsAdded,
+          balance: gemCredit.balance,
+          dailyCapped: gemCredit.dailyCapped,
+        },
       };
     });
 
@@ -140,7 +179,8 @@ exports.claimDailyChest = functions.runWith({ maxInstances: 5 }).https.onCall(as
 
 /**
  * HTTPS Callable: Earn Sagen Pass SP.
- * Server validates and calculates level-ups atomically.
+ * Server-authoritative: the SP amount is decided by `reason`, NOT by the client.
+ * Enforces a daily SP cap to prevent farming to max level.
  */
 exports.earnSagenPassSP = functions.runWith({ maxInstances: 5 }).https.onCall(async (data, context) => {
   if (!context.auth) {
@@ -153,29 +193,45 @@ exports.earnSagenPassSP = functions.runWith({ maxInstances: 5 }).https.onCall(as
     throw new functions.https.HttpsError('resource-exhausted', 'Demasiadas solicitudes');
   }
 
-  const { amount, reason } = data;
-  if (!amount || amount <= 0 || amount > 50) {
-    throw new functions.https.HttpsError('invalid-argument', 'El monto debe estar entre 1 y 50');
-  }
+  // Server-authoritative: ignore any client-provided amount.
+  const reason = data && typeof data.reason === 'string' ? data.reason : 'lesson';
+  const spToAdd = SP_REWARDS[reason] || DEFAULT_SP_REWARD;
 
   const userRef = admin.firestore().doc(`users/${userId}`);
+  const dailySpRef = getDailySpDocRef(userId);
 
   try {
     const result = await admin.firestore().runTransaction(async (transaction) => {
-      const userDoc = await transaction.get(userRef);
+      const [userDoc, dailySpDoc] = await Promise.all([
+        transaction.get(userRef),
+        transaction.get(dailySpRef),
+      ]);
       if (!userDoc.exists) {
         throw new functions.https.HttpsError('not-found', 'Usuario no encontrado');
       }
 
       const userData = userDoc.data() || {};
+
+      // SAGEN PASS holders earn unlimited SP (no daily cap).
+      const isPassHolder = userData.sagen_pass_active === true;
+      const dailySpData = dailySpDoc.data() || {};
+      const spEarnedToday = dailySpData.total || 0;
+      const remainingDailySp = isPassHolder
+        ? spToAdd
+        : Math.max(0, MAX_DAILY_SP - spEarnedToday);
+      const cappedSp = Math.min(spToAdd, remainingDailySp);
+
+      if (cappedSp <= 0) {
+        throw new functions.https.HttpsError('resource-exhausted', `Limite diario de SP alcanzado (${MAX_DAILY_SP} SP/dia)`);
+      }
+
       const currentSP = userData.sagen_pass_sp || 0;
       const currentLevel = userData.sagen_pass_level || 1;
-      const claimedLevels = userData.sagen_pass_claimed || [];
 
       // SP required per level: 50 + (level - 1) * 10
       const spForLevel = (level) => 50 + (level - 1) * 10;
 
-      let newSP = currentSP + amount;
+      let newSP = currentSP + cappedSp;
       let newLevel = currentLevel;
       const maxLevel = 50;
 
@@ -194,15 +250,24 @@ exports.earnSagenPassSP = functions.runWith({ maxInstances: 5 }).https.onCall(as
         _ts_sagen_pass: admin.firestore.FieldValue.serverTimestamp(),
       });
 
+      transaction.set(dailySpRef, {
+        total: admin.firestore.FieldValue.increment(cappedSp),
+        [reason]: admin.firestore.FieldValue.increment(cappedSp),
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      }, { merge: true });
+
       return {
         success: true,
         sp: newSP,
         level: newLevel,
         leveledUp: newLevel > currentLevel,
+        spAdded: cappedSp,
+        dailyCapped: isPassHolder ? false : cappedSp < spToAdd,
+        premium: isPassHolder,
       };
     });
 
-    functions.logger.info('Sagen Pass SP earned', { userId, amount, reason, level: result.level });
+    functions.logger.info('Sagen Pass SP earned', { userId, reason, sp: result.spAdded, level: result.level });
     return result;
   } catch (error) {
     if (error instanceof functions.https.HttpsError) throw error;
@@ -324,6 +389,8 @@ exports.getSagenPassSeason = functions.runWith({ maxInstances: 5 }).https.onCall
       level: userData.sagen_pass_level || 1,
       sp: userData.sagen_pass_sp || 0,
       claimed: userData.sagen_pass_claimed || [],
+      premium: userData.sagen_pass_active === true,
+      maxLevel: 50,
     };
   } catch (error) {
     if (error instanceof functions.https.HttpsError) throw error;
@@ -358,13 +425,15 @@ exports.rollChestDrop = functions.runWith({ maxInstances: 5 }).https.onCall(asyn
   const userRef = admin.firestore().doc(`users/${userId}`);
   const logRef = admin.firestore().doc(`transaction_logs/${idempotencyKey}`);
   const dailyXpRef = getDailyXpDocRef(userId);
+  const dailyGemsRef = gems.getDailyGemsDocRef(userId);
 
   try {
     const result = await admin.firestore().runTransaction(async (transaction) => {
-      const [userDoc, logDoc, dailyXpDoc] = await Promise.all([
+      const [userDoc, logDoc, dailyXpDoc, dailyGemsDoc] = await Promise.all([
         transaction.get(userRef),
         transaction.get(logRef),
         transaction.get(dailyXpRef),
+        transaction.get(dailyGemsRef),
       ]);
 
       if (logDoc.exists) {
@@ -404,6 +473,17 @@ exports.rollChestDrop = functions.runWith({ maxInstances: 5 }).https.onCall(asyn
       const currentTotalXp = userData.learning_total_xp || 0;
       const currentLevel = userData.learning_level || 1;
       const currentShields = userData.streak_shields || 0;
+
+      // Server-authoritative gems from the chest: floor(xp / 3), clamped.
+      const requestedGems = Math.max(
+        gems.GEM_REWARDS.chest_drop_min,
+        Math.min(gems.GEM_REWARDS.chest_drop_max, Math.floor(cappedXp / gems.GEM_REWARDS.chest_drop_per_xp)),
+      );
+      const gemCredit = gems.applyGemCredit(
+        transaction, userRef, userData,
+        dailyGemsRef, dailyGemsDoc.data() || {},
+        'chest_drop', requestedGems,
+      );
 
       const newTotalXp = currentTotalXp + cappedXp;
       const newLevel = Math.floor(newTotalXp / 100) + 1;
@@ -449,6 +529,11 @@ exports.rollChestDrop = functions.runWith({ maxInstances: 5 }).https.onCall(asyn
         category,
         leveledUp: newLevel > currentLevel,
         newLevel,
+        gems: {
+          added: gemCredit.gemsAdded,
+          balance: gemCredit.balance,
+          dailyCapped: gemCredit.dailyCapped,
+        },
       };
     });
 
@@ -482,12 +567,14 @@ exports.claimAdReward = functions.runWith({ maxInstances: 3 }).https.onCall(asyn
   const today = new Date().toISOString().split('T')[0];
   const userRef = admin.firestore().doc(`users/${userId}`);
   const dailyXpRef = getDailyXpDocRef(userId);
+  const dailyGemsRef = gems.getDailyGemsDocRef(userId);
 
   try {
     const result = await admin.firestore().runTransaction(async (transaction) => {
-      const [userDoc, dailyXpDoc] = await Promise.all([
+      const [userDoc, dailyXpDoc, dailyGemsDoc] = await Promise.all([
         transaction.get(userRef),
         transaction.get(dailyXpRef),
+        transaction.get(dailyGemsRef),
       ]);
       if (!userDoc.exists) {
         throw new functions.https.HttpsError('not-found', 'Usuario no encontrado');
@@ -515,6 +602,13 @@ exports.claimAdReward = functions.runWith({ maxInstances: 3 }).https.onCall(asyn
       const newTotalXp = currentTotalXp + cappedXp;
       const newLevel = Math.floor(newTotalXp / 100) + 1;
 
+      const dailyGemsData = dailyGemsDoc.data() || {};
+      const gemCredit = gems.applyGemCredit(
+        transaction, userRef, userData,
+        dailyGemsRef, dailyGemsData,
+        'ad_reward', gems.GEM_REWARDS.ad_reward,
+      );
+
       transaction.update(userRef, {
         learning_total_xp: newTotalXp,
         learning_level: newLevel,
@@ -537,6 +631,11 @@ exports.claimAdReward = functions.runWith({ maxInstances: 3 }).https.onCall(asyn
         newLevel,
         dailyCount: adCount + 1,
         dailyLimit: 5,
+        gems: {
+          added: gemCredit.gemsAdded,
+          balance: gemCredit.balance,
+          dailyCapped: gemCredit.dailyCapped,
+        },
       };
     });
 

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../l10n/app_localizations.dart';
 import '../models/learning/stage.dart';
+import '../models/learning/lesson.dart';
 
 import '../services/app_logger.dart';
 import 'providers.dart';
@@ -76,8 +77,11 @@ class LearningState {
     return done / total;
   }
 
-  int get nextLevelXp => currentLevel * 100;
-  double get levelProgress => totalXpEarned % nextLevelXp / nextLevelXp;
+  int get nextLevelXp => 100;
+  double get levelProgress {
+    final inLevelXp = totalXpEarned - (currentLevel - 1) * 100;
+    return (inLevelXp / 100).clamp(0.0, 1.0);
+  }
 }
 
 class LearningNotifier extends Notifier<LearningState> {
@@ -89,6 +93,17 @@ class LearningNotifier extends Notifier<LearningState> {
   Stream<int> get onLevelUp => _levelUpController.stream;
 
   LearningRepository get _repo => ref.read(learningRepositoryProvider);
+
+  /// XP real que se acredita al completar una lección, aplicando
+  /// multiplicador de racha y boosts. Fuente única usada tanto para
+  /// acreditar como para mostrar en la pantalla de resultados.
+  int xpForLesson(Lesson lesson) {
+    final streakMult = ref.read(streakProvider).streakMultiplier;
+    final boostActive = ref.read(shopProvider).xpBoostActive;
+    final focusElixirActive = ref.read(itemProvider.notifier).isFocusElixirActive();
+    final boostMult = (boostActive || focusElixirActive) ? 2.0 : 1.0;
+    return (lesson.xpReward * streakMult * boostMult).round();
+  }
 
   static List<String> _localizedEmotionalPhrases(AppLocalizations l) => [
     l.emotionPhrase1,
@@ -384,12 +399,8 @@ class LearningNotifier extends Notifier<LearningState> {
     final newStages = List.of(state.stages);
     newStages[stageIndex] = stage.copyWith(lessons: newLessons);
 
-    // Apply streak multiplier + XP boost + Focus Elixir to XP
-    final streakMult = ref.read(streakProvider).streakMultiplier;
     final boostActive = ref.read(shopProvider).xpBoostActive;
-    final focusElixirActive = ref.read(itemProvider.notifier).isFocusElixirActive();
-    final boostMult = (boostActive || focusElixirActive) ? 2.0 : 1.0;
-    final multipliedXp = (lesson.xpReward * streakMult * boostMult).round();
+    final multipliedXp = xpForLesson(lesson);
     if (boostActive) ref.read(shopProvider.notifier).deactivateXpBoost();
 
     final newLessonsCompleted = state.lessonsCompleted + 1;
@@ -399,7 +410,7 @@ class LearningNotifier extends Notifier<LearningState> {
     final newLevel = (newTotalXp / 100).floor() + 1;
     final didLevelUp = newLevel > state.currentLevel;
     final finalCurrentLevel = didLevelUp ? newLevel : state.currentLevel;
-    final finalXp = didLevelUp ? 0 : newXp;
+    final finalXp = didLevelUp ? newTotalXp - (newLevel - 1) * 100 : newXp;
 
     state = state.copyWith(
       stages: () => newStages,
@@ -537,7 +548,7 @@ class LearningNotifier extends Notifier<LearningState> {
     final newLevel = (newTotalXp / 100).floor() + 1;
     final didLevelUp = newLevel > state.currentLevel;
     state = state.copyWith(
-      xp: didLevelUp ? 0 : newXp,
+      xp: didLevelUp ? newTotalXp - (newLevel - 1) * 100 : newXp,
       totalXpEarned: newTotalXp,
       currentLevel: didLevelUp ? newLevel : state.currentLevel,
     );
@@ -560,6 +571,26 @@ class LearningNotifier extends Notifier<LearningState> {
       );
       AppLogger().warning('addXp server call failed, reverted: $e');
     }
+  }
+
+  /// Applies XP already credited server-side (e.g. daily chest).
+  /// Updates local state and repo only; does NOT call the server,
+  /// preventing double-crediting rewards already granted by a callable.
+  void applyServerXp(int amount) {
+    if (amount <= 0) return;
+    final newTotalXp = (state.totalXpEarned + amount).clamp(0, 1000000);
+    final newLevel = (newTotalXp / 100).floor() + 1;
+    final didLevelUp = newLevel > state.currentLevel;
+    final newXp = didLevelUp ? newTotalXp - (newLevel - 1) * 100 : state.xp + amount;
+    state = state.copyWith(
+      xp: newXp,
+      totalXpEarned: newTotalXp,
+      currentLevel: didLevelUp ? newLevel : state.currentLevel,
+    );
+    if (didLevelUp && !_disposed) _levelUpController.add(newLevel);
+    _repo.saveXp(state.xp);
+    _repo.saveTotalXp(state.totalXpEarned);
+    _repo.saveLevel(state.currentLevel);
   }
 
   void unlockAchievement(String name) {

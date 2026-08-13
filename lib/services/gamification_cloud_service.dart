@@ -85,10 +85,10 @@ class GamificationCloudService {
   }
 
   /// Earns Sagen Pass SP with explicit error handling.
-  Future<AppResult<Map<String, dynamic>>> earnSPResult(int amount, {String? reason}) async {
+  /// The server decides the SP amount by `reason`; clients never send an amount.
+  Future<AppResult<Map<String, dynamic>>> earnSPResult({String? reason}) async {
     try {
       final result = await _functions.httpsCallable('earnSagenPassSP').call({
-        'amount': amount,
         'reason': reason ?? 'lesson',
       });
       final data = _validateResponse(result.data);
@@ -164,8 +164,8 @@ class GamificationCloudService {
     return result.value;
   }
 
-  Future<Map<String, dynamic>?> earnSP(int amount, {String? reason}) async {
-    final result = await earnSPResult(amount, reason: reason);
+  Future<Map<String, dynamic>?> earnSP({String? reason}) async {
+    final result = await earnSPResult(reason: reason);
     return result.value;
   }
 

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_dynamic_icon_plus/flutter_dynamic_icon_plus.dart';
 import '../models/sagen_pass.dart';
 import '../providers/streak_provider.dart';
@@ -43,9 +44,14 @@ class IconManager {
     unawaited(_applyIcon(icon));
   }
 
-  SageAppIcon _evaluateIcon(StreakState streak, SagenPass pass) {
-    final now = DateTime.now();
-    final hour = now.hour;
+  @visibleForTesting
+  SageAppIcon evaluateIconForTesting(StreakState streak, SagenPass pass, {DateTime? now}) {
+    return _evaluateIcon(streak, pass, now: now);
+  }
+
+  SageAppIcon _evaluateIcon(StreakState streak, SagenPass pass, {DateTime? now}) {
+    final current = now ?? DateTime.now();
+    final hour = current.hour;
 
     // Frozen with protector active
     if (streak.isStreakFrozen) return SageAppIcon.sageFrozen;

@@ -74,3 +74,11 @@ stdin.txt
 fetch_pins.sh
 fix_quotes.ps1
 gen_batch2.js
+
+# Repo guard / session coordination (see AGENTS.md)
+.sagen-session.lock
+/backups/
+
+# Local dumps and backups
+/Downloads/
+*.bak

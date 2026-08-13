@@ -43,14 +43,11 @@ void main() {
       expect(state.dailyMissionsCompleted, 0);
     });
 
-    test('claimDailyChest returns xp and updates state', () async {
+    test('claimDailyChest keeps chest unclaimed when cloud claim fails', () async {
       final notifier = container.read(gamificationProvider.notifier);
       final xp = await notifier.claimDailyChest();
-      expect(xp, greaterThanOrEqualTo(0));
-      if (xp > 0) {
-        final state = container.read(gamificationProvider);
-        expect(state.hasUnclaimedChest, false);
-      }
+      expect(xp, 0);
+      expect(container.read(gamificationProvider).hasUnclaimedChest, true);
     });
 
     test('incrementMission increments mission completed count', () {

@@ -1,6 +1,7 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const crypto = require('crypto');
+const gems = require('./gems');
 
 // ══════════════════════════════════════════════════════════════════
 // ECONOMIC FUNCTIONS — Server-authoritative mutations
@@ -334,15 +335,14 @@ exports.completeLesson = functions.runWith({ maxInstances: 10 }).https.onCall(as
     throw new functions.https.HttpsError('unauthenticated', 'Debes iniciar sesion');
   }
 
-  const { lessonId } = data;
+  const { lessonId, correctCount, perfect } = data;
 
   if (!lessonId || typeof lessonId !== 'string') {
     throw new functions.https.HttpsError('invalid-argument', 'lessonId requerido');
   }
 
   // Server-authoritative rewards: ignore client-proposed values
-  const rewards = LESSON_REWARDS[lessonId] || LESSON_REWARDS.default;
-  const xp = Math.min(rewards.xp, MAX_XP_PER_LESSON);
+  const xp = Math.min(getLessonXp(lessonId), MAX_XP_PER_LESSON);
 
   if (xp === 0) {
     throw new functions.https.HttpsError('invalid-argument', 'xp debe ser > 0');
@@ -352,13 +352,15 @@ exports.completeLesson = functions.runWith({ maxInstances: 10 }).https.onCall(as
   const userRef = admin.firestore().doc(`users/${userId}`);
   const logRef = admin.firestore().doc(`transaction_logs/${userId}_${lessonId}`);
   const dailyXpRef = getDailyXpDocRef(userId);
+  const dailyGemsRef = gems.getDailyGemsDocRef(userId);
 
   try {
     const result = await admin.firestore().runTransaction(async (transaction) => {
-      const [userDoc, logDoc, dailyXpDoc] = await Promise.all([
+      const [userDoc, logDoc, dailyXpDoc, dailyGemsDoc] = await Promise.all([
         transaction.get(userRef),
         transaction.get(logRef),
         transaction.get(dailyXpRef),
+        transaction.get(dailyGemsRef),
       ]);
 
       if (logDoc.exists) {
@@ -373,6 +375,7 @@ exports.completeLesson = functions.runWith({ maxInstances: 10 }).https.onCall(as
             previousStreak: userDoc.data()?.currentStreak || 0,
           },
           lessonsCompleted: userDoc.data()?.lessonsCompleted || 0,
+          gems: { added: 0, balance: userDoc.data()?.learning_gems || 0 },
         };
       }
 
@@ -425,6 +428,26 @@ exports.completeLesson = functions.runWith({ maxInstances: 10 }).https.onCall(as
 
       const lessonsCompleted = (userData.lessonsCompleted || 0) + 1;
 
+      // Server-authoritative gems for the lesson: correct answers, perfect
+      // bonus and first-lesson-of-day bonus, all capped by the daily gem cap.
+      const gemsDailyData = dailyGemsDoc.data() || {};
+      const correct = Math.min(Math.max(parseInt(correctCount, 10) || 0, 0), 20);
+      const baseGems = correct * gems.GEM_REWARDS.lesson_correct;
+      const perfectGems = perfect === true ? gems.GEM_REWARDS.perfect_bonus : 0;
+      let firstOfDayGems = 0;
+      if (!gemsDailyData.first_lesson_of_day) {
+        firstOfDayGems = gems.GEM_REWARDS.first_lesson_of_day;
+      }
+      const requestedGems = baseGems + perfectGems + firstOfDayGems;
+      const gemCredit = gems.applyGemCredit(
+        transaction, userRef, userData,
+        dailyGemsRef, gemsDailyData,
+        'lesson', requestedGems,
+      );
+      if (firstOfDayGems > 0) {
+        transaction.set(dailyGemsRef, { first_lesson_of_day: true }, { merge: true });
+      }
+
       transaction.update(userRef, {
         learning_total_xp: newTotalXp,
         learning_level: newLevel,
@@ -464,6 +487,13 @@ exports.completeLesson = functions.runWith({ maxInstances: 10 }).https.onCall(as
           previousStreak: currentStreak,
         },
         lessonsCompleted,
+        gems: {
+          added: gemCredit.gemsAdded,
+          balance: gemCredit.balance,
+          dailyCapped: gemCredit.dailyCapped,
+          perfect: perfectGems > 0,
+          firstOfDay: firstOfDayGems > 0,
+        },
       };
     });
 
@@ -471,6 +501,7 @@ exports.completeLesson = functions.runWith({ maxInstances: 10 }).https.onCall(as
       userId, lessonId, duplicate: result.duplicate,
       xpAdded: result.xp.added,
       level: result.level.current, streak: result.streak.current,
+      gems: result.gems && result.gems.added,
     });
 
     return result;

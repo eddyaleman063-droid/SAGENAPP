@@ -28,6 +28,23 @@ cp .env.example .env
 .\run.ps1
 ```
 
+## Setup automático en máquina nueva (Windows)
+
+`setup.ps1` detecta e instala todo el toolchain (Flutter 3.41.9, JDK 17,
+Android SDK con platform-tools, platforms;android-36, build-tools y NDK 28.2),
+corre `flutter pub get` y compila el APK debug:
+
+```powershell
+# Todo de una vez (incluye build del APK)
+.\setup.ps1
+
+# Solo toolchain + dependencias (sin build)
+.\setup.ps1 -SkipBuild
+
+# Sin instalar el Android SDK (solo analyze/test)
+.\setup.ps1 -SkipAndroidSdk
+```
+
 ---
 
 ## Uso del script `run.ps1`

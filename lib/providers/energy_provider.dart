@@ -51,7 +51,7 @@ class EnergyNotifier extends Notifier<EnergyState> {
       AppLogger().warning('Failed to load energy state: operation failed');
       initial = EnergyState(energy: _maxEnergy, lastRegen: DateTime.now());
     }
-    _startRegen();
+    _startRegen(initial.energy);
     ref.onDispose(() => _regenTimer?.cancel());
     return initial;
   }
@@ -78,9 +78,9 @@ class EnergyNotifier extends Notifier<EnergyState> {
     return EnergyState(energy: energy, lastRegen: lastRegen);
   }
 
-  void _startRegen() {
+  void _startRegen(int currentEnergy) {
     _regenTimer?.cancel();
-    if (state.energy >= _maxEnergy) return;
+    if (currentEnergy >= _maxEnergy) return;
     _regenTimer = Timer.periodic(_regenInterval, (_) {
       if (state.energy >= _maxEnergy) {
         _regenTimer?.cancel();

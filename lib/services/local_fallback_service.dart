@@ -45,10 +45,10 @@ class LocalFallbackService implements AiService {
     if (msg.contains('hola') || msg.contains('buenos dias') ||
         msg.contains('buenas tardes') || msg.contains('buenas noches') ||
         msg.contains('que tal') || msg.contains('como estas') ||
-        msg.contains('hello') || msg.contains('hi') || msg.contains('hey') ||
+        msg.contains('hello') || _wordMatch(msg, 'hi') || _wordMatch(msg, 'hey') ||
         msg.contains('good morning') || msg.contains('good afternoon') ||
         msg.contains('good evening') || msg.contains('greetings') ||
-        msg.contains('howdy') || msg.contains('sup') ||
+        _wordMatch(msg, 'howdy') || _wordMatch(msg, 'sup') ||
         msg.contains('whats up') || msg.contains('how are you')) {
       return [
         '¡Hola! Soy Sage, tu tutor de ciberseguridad. ¿Cómo puedo ayudarte hoy? Puedo explicarte sobre phishing, contraseñas seguras, privacidad en redes sociales, malware y mucho más. ¿Qué te gustaría aprender?',
@@ -215,6 +215,10 @@ class LocalFallbackService implements AiService {
       return _defaultResponses[_random.nextInt(_defaultResponses.length)];
     }
     return responses[_random.nextInt(responses.length)];
+  }
+
+  bool _wordMatch(String msg, String word) {
+    return RegExp('(^|[^a-z0-9])$word([^a-z0-9]|\$)').hasMatch(msg);
   }
 
   String _removeDiacritics(String input) {

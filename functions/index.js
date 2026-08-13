@@ -20,6 +20,9 @@ const WEBHOOK_BASE = `https://us-central1-${process.env.GCLOUD_PROJECT || 'sagen
 
 const STREAK_SHIELD_MAX = 2;
 
+// Gems bonus granted when the SAGEN PASS is purchased (one-time).
+const SAGEN_PASS_GEMS = 500;
+
 const hardcodedCatalog = {
   'donate_basic':    { amount: 3,   title: 'Supporter - SAGEN',       price: 3.00,  bonuses: [] },
   'donate_popular':  { amount: 5,   title: 'Super Supporter - SAGEN', price: 5.00,  bonuses: [] },
@@ -27,6 +30,7 @@ const hardcodedCatalog = {
   'bundle_protector':{ amount: 12,  title: 'Pack Protegido - SAGEN',  price: 12.00, bonuses: [{ type: 'streakProtector', quantity: 1 }] },
   'bundle_xp':       { amount: 20,  title: 'Pack Impulso - SAGEN',    price: 20.00, bonuses: [{ type: 'xpBoost', quantity: 1 }] },
   'bundle_luck':     { amount: 24,  title: 'Pack Suerte - SAGEN',     price: 24.00, bonuses: [{ type: 'luckBoost', quantity: 1 }] },
+  'sagen_pass':      { amount: 9.90, title: 'SAGEN PASS',             price: 9.90,  bonuses: [{ type: 'sagenPass', quantity: 1, gems: SAGEN_PASS_GEMS }] },
 };
 
 let _catalogCache = null;
@@ -70,6 +74,35 @@ async function getProductBonuses(amount) {
 
 function getStreakShieldSlots(currentShields) {
   return Math.max(0, STREAK_SHIELD_MAX - currentShields);
+}
+
+/**
+ * Applies product bonus grants to the user doc update payload.
+ * The SAGEN PASS grants: premium flag, question-bank unlock, and gems.
+ */
+function applyProductBonuses(updateData, userData, bonuses) {
+  for (const bonus of bonuses) {
+    if (bonus.type === 'streakProtector') {
+      const currentShields = userData.shop_streak_shields || 0;
+      const available = getStreakShieldSlots(currentShields);
+      const toAdd = Math.min(bonus.quantity, available);
+      if (toAdd > 0) {
+        updateData.shop_streak_shields = currentShields + toAdd;
+      }
+    } else if (bonus.type === 'xpBoost') {
+      updateData.shop_purchased_xp_boosts = (userData.shop_purchased_xp_boosts || 0) + bonus.quantity;
+    } else if (bonus.type === 'xpMultiplier') {
+      updateData.shop_purchased_xp_multipliers = (userData.shop_purchased_xp_multipliers || 0) + bonus.quantity;
+    } else if (bonus.type === 'luckBoost') {
+      updateData.shop_purchased_luck_boosts = (userData.shop_purchased_luck_boosts || 0) + bonus.quantity;
+    } else if (bonus.type === 'sagenPass') {
+      updateData.sagen_pass_active = true;
+      updateData.sagen_pass_purchased_at = admin.firestore.FieldValue.serverTimestamp();
+      updateData.premium_question_bank = true;
+      updateData.learning_gems = Math.min(100000, (userData.learning_gems || 0) + (bonus.gems || SAGEN_PASS_GEMS));
+    }
+  }
+  return updateData;
 }
 
 // ── Rate limiting (Firestore-based, distributed) ─────────────────
@@ -382,29 +415,7 @@ exports.handlePaymentWebhook = functions.runWith({ maxInstances: 5 }).https.onRe
         _ts_totalDonated: admin.firestore.FieldValue.serverTimestamp(),
       };
 
-      for (const bonus of bonuses) {
-        if (bonus.type === 'streakProtector') {
-          const currentShields = userData.shop_streak_shields || 0;
-          const available = getStreakShieldSlots(currentShields);
-          const toAdd = Math.min(bonus.quantity, available);
-          if (toAdd > 0) {
-            updateData.shop_streak_shields = currentShields + toAdd;
-            functions.logger.info('Credited streak shields', {
-              userId, previous: currentShields, added: toAdd, newTotal: currentShields + toAdd,
-            });
-          } else {
-            functions.logger.warn('Streak shield cap reached, not crediting', {
-              userId, currentShields, max: STREAK_SHIELD_MAX,
-            });
-          }
-        } else if (bonus.type === 'xpBoost') {
-          updateData.shop_purchased_xp_boosts = (userData.shop_purchased_xp_boosts || 0) + bonus.quantity;
-        } else if (bonus.type === 'xpMultiplier') {
-          updateData.shop_purchased_xp_multipliers = (userData.shop_purchased_xp_multipliers || 0) + bonus.quantity;
-        } else if (bonus.type === 'luckBoost') {
-          updateData.shop_purchased_luck_boosts = (userData.shop_purchased_luck_boosts || 0) + bonus.quantity;
-        }
-      }
+      applyProductBonuses(updateData, userData, bonuses);
 
       transaction.update(userRef, updateData);
 
@@ -527,22 +538,7 @@ exports.adminCreditDonation = functions.runWith({ maxInstances: 3 }).https.onCal
       const pkg = catalog[productId];
       const bonuses = pkg ? pkg.bonuses : [];
 
-      for (const bonus of bonuses) {
-        if (bonus.type === 'streakProtector') {
-          const currentShields = userData.shop_streak_shields || 0;
-          const available = getStreakShieldSlots(currentShields);
-          const toAdd = Math.min(bonus.quantity, available);
-          if (toAdd > 0) {
-            updateData.shop_streak_shields = currentShields + toAdd;
-          }
-        } else if (bonus.type === 'xpBoost') {
-          updateData.shop_purchased_xp_boosts = (userData.shop_purchased_xp_boosts || 0) + bonus.quantity;
-        } else if (bonus.type === 'xpMultiplier') {
-          updateData.shop_purchased_xp_multipliers = (userData.shop_purchased_xp_multipliers || 0) + bonus.quantity;
-        } else if (bonus.type === 'luckBoost') {
-          updateData.shop_purchased_luck_boosts = (userData.shop_purchased_luck_boosts || 0) + bonus.quantity;
-        }
-      }
+      applyProductBonuses(updateData, userData, bonuses);
 
       transaction.update(userRef, updateData);
       transaction.create(logRef, {
@@ -788,6 +784,12 @@ exports.claimSagenPassReward = gamification.claimSagenPassReward;
 exports.claimAdReward = gamification.claimAdReward;
 exports.rollChestDrop = gamification.rollChestDrop;
 exports.getSagenPassSeason = gamification.getSagenPassSeason;
+
+// ── Gem Economy (server-authoritative, anti-farm) ────────────────
+const gems = require('./gems');
+exports.earnGems = gems.earnGems;
+exports.spendGems = gems.spendGems;
+exports.getGemsBalance = gems.getGemsBalance;
 
 // ── AI Streaming (CRIT-2) ──────────────────────────────────────────
 const aiStreaming = require('./ai_streaming');

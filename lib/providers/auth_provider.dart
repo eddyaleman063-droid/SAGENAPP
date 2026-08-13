@@ -72,7 +72,9 @@ class AuthNotifier extends Notifier<AuthState> {
   SharedPreferences? _prefs;
   StreamSubscription<AppUser?>? _authSub;
   DateTime? _lastAuthAttempt;
+  DateTime? _lastAuthError;
   static const _authCooldown = Duration(seconds: 3);
+  static const _authErrorWindow = Duration(minutes: 1);
   int _consecutiveAuthErrors = 0;
   static const _maxConsecutiveErrors = 5;
   int _onboardingLoadEpoch = 0;
@@ -109,7 +111,13 @@ class AuthNotifier extends Notifier<AuthState> {
       return false;
     }
     if (_consecutiveAuthErrors >= _maxConsecutiveErrors) {
-      return false;
+      final lastError = _lastAuthError;
+      if (lastError != null && now.difference(lastError) >= _authErrorWindow) {
+        // Ventana temporal: tras 1 minuto sin errores, se permite reintentar.
+        _consecutiveAuthErrors = 0;
+      } else {
+        return false;
+      }
     }
     _lastAuthAttempt = now;
     return true;
@@ -117,6 +125,7 @@ class AuthNotifier extends Notifier<AuthState> {
 
   void _recordAuthError() {
     _consecutiveAuthErrors++;
+    _lastAuthError = DateTime.now();
   }
 
   void _resetAuthErrors() {
@@ -363,9 +372,11 @@ class AuthNotifier extends Notifier<AuthState> {
       await _authService.sendEmailVerification();
     } on AuthException catch (e) {
       state = state.copyWith(errorMessage: () => e.code);
+      rethrow;
     } catch (_) {
       AppLogger().warning('Auth: resendVerificationEmail failed');
       state = state.copyWith(errorMessage: () => 'resend_error');
+      rethrow;
     }
   }
 
@@ -526,10 +537,10 @@ class AuthNotifier extends Notifier<AuthState> {
     final uid = state.uid;
     if (uid == null) return;
     try {
-      await FirebaseFirestore.instance.collection('users').doc(uid).update({
+      await FirebaseFirestore.instance.collection('users').doc(uid).set({
         'onboardingCompleted': true,
         'updatedAt': FieldValue.serverTimestamp(),
-      });
+      }, SetOptions(merge: true));
       state = state.copyWith(onboardingCompleted: true);
     } catch (e) {
       AppLogger().warning('auth: markOnboardingCompleted failed: $e');

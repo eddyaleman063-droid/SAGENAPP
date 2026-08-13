@@ -5,6 +5,16 @@ All notable changes to SAGEN will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.1.1] - 2026-08-05
+
+### Fixed
+- Build de Android: `workmanager` actualizado de 0.5.2 a 0.10.7 (la API antigua usaba el Flutter embedding v1, incompatible con Flutter 3.41+). `BackgroundSyncService` funciona con el embedding moderno.
+- `MainActivity.kt`: `FirebaseOptions.fromResource()` ahora devuelve `FirebaseOptions?`; se maneja el caso nulo antes de `FirebaseApp.initializeApp`.
+- `android/gradle.properties`: eliminada la ruta hardcodeada de `org.gradle.java.home` que rompía el build sin Android Studio.
+
+### Changed
+- Removidos archivos temporales de debug/tests de la raíz del repo.
+
 ## [Unreleased]
 
 ### Added

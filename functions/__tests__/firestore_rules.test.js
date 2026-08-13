@@ -56,8 +56,9 @@ describe('firestore.rules — users collection', () => {
     expect(RULES).toMatch(/request\.auth\.uid\s*==\s*userId/);
   });
 
-  test('isProfileOnly function exists', () => {
-    expect(RULES).toMatch(/function\s+isProfileOnly\(\)/);
+  test('isProfileCreate and isProfileUpdate functions exist', () => {
+    expect(RULES).toMatch(/function\s+isProfileCreate\(\)/);
+    expect(RULES).toMatch(/function\s+isProfileUpdate\(\)/);
   });
 
   test('profileKeys includes essential fields', () => {
@@ -136,9 +137,9 @@ describe('firestore.rules — users collection', () => {
     expect(RULES).toMatch(/data\.preferredLanguage\.size\(\)\s*<=\s*10/);
   });
 
-  test('unknownKeys check prevents arbitrary field writes', () => {
-    expect(RULES).toMatch(/unknownKeys\s*=\s*data\.keys\.filter/);
-    expect(RULES).toMatch(/unknownKeys\.size\(\)\s*==\s*0/);
+  test('hasOnly(profileKeys) prevents arbitrary field writes', () => {
+    expect(RULES).toMatch(/data\.keys\(\)\.hasOnly\(profileKeys\(\)\)/);
+    expect(RULES).toMatch(/function\s+profileKeys\(\)/);
   });
 });
 
@@ -235,10 +236,8 @@ describe('firestore.rules — pending_payments', () => {
     expect(RULES).toMatch(/request\.resource\.data\.operationId\.size\(\)\s*<=\s*100/);
   });
 
-  test('amount is int, 0-100000', () => {
-    expect(RULES).toMatch(/request\.resource\.data\.amount is int/);
-    expect(RULES).toMatch(/request\.resource\.data\.amount\s*>=\s*0/);
-    expect(RULES).toMatch(/request\.resource\.data\.amount\s*<=\s*100000/);
+  test('amount must be 0 on creation (server records real amount)', () => {
+    expect(RULES).toMatch(/request\.resource\.data\.amount\s*==\s*0/);
   });
 
   test('status must be pending', () => {

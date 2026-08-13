@@ -17,6 +17,7 @@ import 'package:sagen/ui/widgets/store/header.dart';
 import 'package:sagen/ui/widgets/store/streak_fire_card.dart';
 import 'package:sagen/ui/widgets/store/shop_item_card.dart';
 import 'package:sagen/ui/widgets/store/supporter_tiers_section.dart';
+import 'package:sagen/ui/widgets/store/daily_chest_card.dart';
 import 'package:sagen/core/theme/app_colors.dart';
 
 class StoreScreen extends ConsumerStatefulWidget {
@@ -227,6 +228,17 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
                 slivers: [
                   SliverToBoxAdapter(
                     child: StoreHeader(dark: dark),
+                  ),
+                  SliverPadding(
+                    padding: EdgeInsets.fromLTRB(
+                      horizontalPadding,
+                      AppSpacing.md,
+                      horizontalPadding,
+                      AppSpacing.md,
+                    ),
+                    sliver: const SliverToBoxAdapter(
+                      child: DailyChestCard(),
+                    ),
                   ),
                   SliverPadding(
                     padding: EdgeInsets.fromLTRB(

@@ -72,8 +72,12 @@ class MainActivity : FlutterActivity() {
 
                 try {
                     val opts = FirebaseOptions.fromResource(applicationContext)
-                    FirebaseApp.initializeApp(applicationContext, opts, "[DEFAULT]")
-                    result.success(true)
+                    if (opts == null) {
+                        result.error("FIREBASE_ERROR", "FirebaseOptions not found", null)
+                    } else {
+                        FirebaseApp.initializeApp(applicationContext, opts, "[DEFAULT]")
+                        result.success(true)
+                    }
                 } catch (e: Exception) {
                     result.error("FIREBASE_ERROR", e.message, null)
                 }

@@ -122,7 +122,9 @@ class SessionNotifier extends AutoDisposeNotifier<SessionState> {
     final challenge = state.currentChallenge;
     if (challenge == null) return;
     final feedbackCorrect = selectedIndex == challenge.correctIndex;
-    final newLives = feedbackCorrect ? state.lives : state.lives - 1;
+    final newLives = feedbackCorrect
+        ? state.lives
+        : (state.lives > 0 ? state.lives - 1 : 0);
     state = state.copyWith(
       feedbackSelected: selectedIndex,
       feedbackCorrect: feedbackCorrect,
@@ -140,6 +142,10 @@ class SessionNotifier extends AutoDisposeNotifier<SessionState> {
   }
 
   void nextQuestion() {
+    if (state.lives <= 0) {
+      state = state.copyWith(phase: SessionPhase.gameOver);
+      return;
+    }
     if (state.currentIndex + 1 >= state.totalQuestions) {
       state = state.copyWith(phase: SessionPhase.completed);
       return;

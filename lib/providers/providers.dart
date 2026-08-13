@@ -40,6 +40,7 @@ export 'protection_provider.dart';
 export 'registration_funnel_provider.dart';
 export 'review_provider.dart';
 export 'sage_ai_provider.dart';
+export 'sagen_pass_provider.dart';
 export 'service_providers.dart';
 export 'session_provider.dart';
 export 'shop_provider.dart';

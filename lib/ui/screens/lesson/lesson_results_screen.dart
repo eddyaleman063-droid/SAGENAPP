@@ -7,6 +7,7 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/theme_constants.dart';
 
 import 'package:sagen/l10n/app_localizations.dart';
+import 'package:sagen/models/learning/lesson.dart';
 import '../../widgets/common/premium_loader.dart';
 import '../../widgets/rive_flame_widget.dart';
 
@@ -39,6 +40,20 @@ class LessonResultsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l = AppLocalizations.of(context)!;
     final session = ref.watch(sessionProvider);
+
+    Lesson? currentLesson;
+    for (final s in ref.watch(learningProvider).stages) {
+      for (final ls in s.lessons) {
+        if (ls.id == lessonId) {
+          currentLesson = ls;
+          break;
+        }
+      }
+      if (currentLesson != null) break;
+    }
+    final awardedXp = currentLesson == null
+        ? session.earnedXp
+        : ref.read(learningProvider.notifier).xpForLesson(currentLesson);
 
     if (session.phase == SessionPhase.intro) {
       return PremiumLoader(
@@ -125,10 +140,10 @@ class LessonResultsScreen extends ConsumerWidget {
                 children: [
                   _ResultBadge(
                     icon: Icons.auto_awesome_rounded,
-                    value: '+${session.earnedXp}',
+                    value: '+$awardedXp',
                     label: l.profileXpLabel,
                     color: PremiumColors.xpColor,
-                    semanticsLabel: l.resultXpGained('${session.earnedXp}'),
+                    semanticsLabel: l.resultXpGained('$awardedXp'),
                   ),
                   const SizedBox(width: AppSpacing.lg),
                   _ResultBadge(

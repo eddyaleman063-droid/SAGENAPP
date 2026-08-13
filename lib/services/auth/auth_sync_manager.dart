@@ -9,20 +9,26 @@ import '../app_logger.dart';
 class AuthSyncManager {
   final CloudSyncService _cloudSync;
   int _onboardingLoadId = 0;
+  int _sessionEpoch = 0;
 
   AuthSyncManager(this._cloudSync);
 
   /// Sync local data with server after login. Retries up to 3 times.
+  /// Aborts if the session changes (logout/login) while retrying.
   Future<void> syncAfterLogin(String uid, SharedPreferences prefs) async {
+    final epoch = ++_sessionEpoch;
     const maxAttempts = 3;
     for (var attempt = 0; attempt < maxAttempts; attempt++) {
       try {
         await _cloudSync.loadAll(uid, prefs);
+        if (epoch != _sessionEpoch) return; // Session changed — discard stale result
         return;
       } catch (e) {
+        if (epoch != _sessionEpoch) return; // Session changed — stop retrying
         AppLogger().warning('AuthSyncManager: sync attempt ${attempt + 1} failed: $e');
         if (attempt < maxAttempts - 1) {
           await Future<void>.delayed(Duration(seconds: 1 << attempt));
+          if (epoch != _sessionEpoch) return; // Logged out during backoff
         }
       }
     }
@@ -41,6 +47,7 @@ class AuthSyncManager {
 
   /// Save all local data to cloud before sign-out.
   Future<void> saveBeforeSignOut(String uid, SharedPreferences prefs) async {
+    cancelInflightLoads();
     try {
       await _cloudSync.saveAll(uid, prefs);
       await _cloudSync.clearLocal(prefs);
@@ -51,6 +58,7 @@ class AuthSyncManager {
 
   /// Delete all cloud data for account deletion.
   Future<void> deleteCloudData(String uid, SharedPreferences prefs) async {
+    cancelInflightLoads();
     try {
       await _cloudSync.deleteCloudData(uid);
       await _cloudSync.clearLocal(prefs);

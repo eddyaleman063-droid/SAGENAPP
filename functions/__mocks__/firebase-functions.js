@@ -32,10 +32,21 @@ const pubsub = {
   }),
 };
 
+// runWith returns a builder exposing https/pubsub/logger/config.
+// In tests we want the wrapped handler (fn) exposed directly.
+const runWith = () => ({
+  https,
+  pubsub,
+  logger,
+  config,
+  HttpsError,
+});
+
 module.exports = {
   https,
   logger,
   config,
   HttpsError,
   pubsub,
+  runWith,
 };

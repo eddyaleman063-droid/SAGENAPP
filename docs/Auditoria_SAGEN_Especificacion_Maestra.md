@@ -98,7 +98,7 @@ Resumen orientativo; no reemplaza la revisión directa del código ni del proyec
 - Público objetivo principal: adultos de 30 años o más en Los Órganos y Talara, Piura — un segmento que exige máxima claridad, bajo esfuerzo cognitivo y alta tolerancia a errores de uso.
 - Plataformas soportadas: Android, iOS, Web, Windows, Linux y macOS, construidas desde una base Flutter común.
 - Backend: Firebase (Firestore, Authentication, Storage, Cloud Functions).
-- Contenido educativo: un banco de aproximadamente 19 230 preguntas distribuidas en etapas, sesiones y lecciones.
+- Contenido educativo: un banco de aproximadamente 17 157 preguntas distribuidas en etapas, sesiones y lecciones.
 - El proyecto se presenta en una competencia escolar de emprendimiento (EPT) que califica sobre cinco criterios oficiales: **Originalidad, Impacto, Economía, Sostenibilidad y Validación** (ver Sección 6). Cualquier hallazgo relacionado con pruebas de usuario debe distinguir con claridad entre datos reales recolectados y supuestos de diseño.
 
 ## 6. Criterios de Evaluación de la Competencia y su Vínculo con la Auditoría
@@ -280,7 +280,7 @@ Este es el núcleo de la aplicación: toda la experiencia del usuario depende de
 Organización, escalabilidad, modularidad, reutilización, separación de responsabilidades, y el flujo completo del aprendizaje de principio a fin.
 
 ### 15.2 Banco de Preguntas
-Verificar la integridad de las aproximadamente 19 230 preguntas:
+Verificar la integridad de las aproximadamente 17 157 preguntas:
 - Duplicados, preguntas vacías o mal redactadas, errores ortográficos.
 - Respuestas marcadas como correctas que en realidad no lo son, y distractores mal construidos o poco plausibles.
 - Distribución del contenido y balance de dificultad entre etapas, sesiones y lecciones.

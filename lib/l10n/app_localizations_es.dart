@@ -100,7 +100,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String adminCreditDonationSuccess(Object gems, Object userId) {
-    return '\$gems donaciones acreditadas a \$userId';
+    return '$gems donaciones acreditadas a $userId';
   }
 
   @override
@@ -112,7 +112,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String adminCreditSuccessNotification(Object gems, Object userId) {
-    return '\$gems donaciones acreditadas a \$userId';
+    return '$gems donaciones acreditadas a $userId';
   }
 
   @override
@@ -284,7 +284,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String authNotFoundMessage(Object email) {
-    return 'No hay una cuenta registrada con \$email. ¿Desea crear una nueva cuenta y empezar a aprender?';
+    return 'No hay una cuenta registrada con $email. ¿Desea crear una nueva cuenta y empezar a aprender?';
   }
 
   @override
@@ -491,7 +491,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String challenge_analyze_link_desc(Object count) {
-    return 'Analiza \$count enlace(s)';
+    return 'Analiza $count enlace(s)';
   }
 
   @override
@@ -499,7 +499,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String challenge_answer_questions_desc(Object count) {
-    return 'Responde \$count pregunta(s)';
+    return 'Responde $count pregunta(s)';
   }
 
   @override
@@ -507,7 +507,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String challenge_check_in_desc(Object count) {
-    return 'Regístrate \$count vez(veces)';
+    return 'Regístrate $count vez(veces)';
   }
 
   @override
@@ -515,7 +515,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String challenge_complete_lesson_desc(Object count) {
-    return 'Completa \$count lección(es)';
+    return 'Completa $count lección(es)';
   }
 
   @override
@@ -523,7 +523,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String challenge_complete_session_desc(Object count) {
-    return 'Completa \$count sesión(es)';
+    return 'Completa $count sesión(es)';
   }
 
   @override
@@ -537,7 +537,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String challenge_correct_streak_desc(Object count) {
-    return 'Obtén \$count respuestas correctas seguidas';
+    return 'Obtén $count respuestas correctas seguidas';
   }
 
   @override
@@ -545,7 +545,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String challenge_detect_phishing_desc(Object count) {
-    return 'Detecta \$count intento(s) de phishing';
+    return 'Detecta $count intento(s) de phishing';
   }
 
   @override
@@ -553,7 +553,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String challenge_earn_xp_desc(Object xp) {
-    return 'Gana \$xp XP';
+    return 'Gana $xp XP';
   }
 
   @override
@@ -561,7 +561,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String challenge_learn_minutes_desc(Object count) {
-    return 'Aprende durante \$count minutos';
+    return 'Aprende durante $count minutos';
   }
 
   @override
@@ -569,7 +569,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String challenge_learn_topic_desc(Object count) {
-    return 'Aprende \$count tema(s)';
+    return 'Aprende $count tema(s)';
   }
 
   @override
@@ -584,7 +584,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String challenge_privacy_check_desc(Object count) {
-    return 'Revisa ajustes de privacidad \$count vez(veces)';
+    return 'Revisa ajustes de privacidad $count vez(veces)';
   }
 
   @override
@@ -592,7 +592,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String challenge_quiz_night_desc(Object count) {
-    return 'Completa \$count mini quiz';
+    return 'Completa $count mini quiz';
   }
 
   @override
@@ -600,7 +600,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String challenge_review_tips_desc(Object count) {
-    return 'Revisa \$count consejo(s) de seguridad';
+    return 'Revisa $count consejo(s) de seguridad';
   }
 
   @override
@@ -608,7 +608,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String challenge_security_audit_desc(Object count) {
-    return 'Completa \$count auditoría(s)';
+    return 'Completa $count auditoría(s)';
   }
 
   @override
@@ -616,7 +616,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String challenge_share_knowledge_desc(Object count) {
-    return 'Comparte \$count consejo(s)';
+    return 'Comparte $count consejo(s)';
   }
 
   @override
@@ -624,7 +624,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String challenge_social_awareness_desc(Object count) {
-    return 'Completa \$count desafío(s) de conciencia social';
+    return 'Completa $count desafío(s) de conciencia social';
   }
 
   @override
@@ -632,7 +632,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String challenge_streak_milestone_desc(Object count) {
-    return 'Mantén una racha de \$count días';
+    return 'Mantén una racha de $count días';
   }
 
   @override
@@ -640,7 +640,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String challenge_talk_sage_desc(Object count) {
-    return 'Charla con Sage \$count vez(veces)';
+    return 'Charla con Sage $count vez(veces)';
   }
 
   @override
@@ -648,7 +648,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String challenge_test_password_desc(Object count) {
-    return 'Prueba \$count contraseña(s)';
+    return 'Prueba $count contraseña(s)';
   }
 
   @override
@@ -695,7 +695,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get changelogV5_2 => 'Máscaras dinámicas de emociones';
 
   @override
-  String get changelogV5_3 => '19,250 preguntas de ciberseguridad';
+  String get changelogV5_3 => '17,157 preguntas de ciberseguridad';
 
   @override
   String get changelogV5_4 => 'Sociedad VIP para rachas de 30+ días';
@@ -771,7 +771,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String chestEvolvedTo(Object type) {
-    return 'Evolucionó a \$type';
+    return 'Evolucionó a $type';
   }
 
   @override
@@ -779,7 +779,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String chestOpenedTitle(Object type) {
-    return '¡Cofre \$type!';
+    return '¡Cofre $type!';
   }
 
   @override
@@ -818,17 +818,17 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String chestTitle(Object type) {
-    return 'Cofre \$type';
+    return 'Cofre $type';
   }
 
   @override
   String chestTreasure(Object type) {
-    return 'Cofre del tesoro \$type';
+    return 'Cofre del tesoro $type';
   }
 
   @override
   String chestTreasureLabel(Object type) {
-    return 'Tesoro \$type';
+    return 'Tesoro $type';
   }
 
   @override
@@ -876,12 +876,12 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String commitDays(Object days) {
-    return '\$days días';
+    return '$days días';
   }
 
   @override
   String commitGoalLabel(Object days) {
-    return 'Tu meta: \$days días';
+    return 'Tu meta: $days días';
   }
 
   @override
@@ -889,7 +889,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String commitYourGoal(Object days) {
-    return 'Tu meta: \$days días';
+    return 'Tu meta: $days días';
   }
 
   @override
@@ -900,7 +900,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String continueLesson(Object title) {
-    return 'Continuar lección: \$title';
+    return 'Continuar lección: $title';
   }
 
   @override
@@ -914,7 +914,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String correctAnswers(Object correct, Object total) {
-    return '\$correct de \$total correctas';
+    return '$correct de $total correctas';
   }
 
   @override
@@ -922,7 +922,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String cyberQuizProgress(Object current, Object total) {
-    return 'Pregunta \$current de \$total';
+    return 'Pregunta $current de $total';
   }
 
   @override
@@ -930,7 +930,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String dailyGoalMinutesPerDay(Object minutes) {
-    return '\$minutes min/día';
+    return '$minutes min/día';
   }
 
   @override
@@ -960,7 +960,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String darkModeScheduleInfo(Object end, Object start) {
-    return 'El modo oscuro estará activo de \$start:00 a \$end:00';
+    return 'El modo oscuro estará activo de $start:00 a $end:00';
   }
 
   @override
@@ -1090,7 +1090,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String dot(Object number) {
-    return 'Punto \$number';
+    return 'Punto $number';
   }
 
   @override
@@ -1388,7 +1388,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String firstLessonProgress(Object current, Object total) {
-    return 'Lección \$current de \$total';
+    return 'Lección $current de $total';
   }
 
   @override
@@ -1435,7 +1435,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String goToLesson(Object title) {
-    return 'Ir a lecciones: \$title';
+    return 'Ir a lecciones: $title';
   }
 
   @override
@@ -1493,7 +1493,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String heatmapLessons(Object count) {
-    return '\$count lecciones';
+    return '$count lecciones';
   }
 
   @override
@@ -1579,7 +1579,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String impactProgressToNext(Object count) {
-    return '\$count lecciones para el siguiente nivel';
+    return '$count lecciones para el siguiente nivel';
   }
 
   @override
@@ -1724,7 +1724,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String lessonProgress(Object percent) {
-    return 'Progreso: \$percent%';
+    return 'Progreso: $percent%';
   }
 
   @override
@@ -1732,7 +1732,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String lessonsCompleted(Object count) {
-    return '\$count lecciones completadas';
+    return '$count lecciones completadas';
   }
 
   @override
@@ -1748,12 +1748,12 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String lessonsCount(Object count) {
-    return '\$count lecciones';
+    return '$count lecciones';
   }
 
   @override
   String lessonsLevel(Object level) {
-    return 'Nivel \$level';
+    return 'Nivel $level';
   }
 
   @override
@@ -1784,7 +1784,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String levelProgress(Object percent) {
-    return 'Progreso de nivel: \$percent por ciento';
+    return 'Progreso de nivel: $percent por ciento';
   }
 
   @override
@@ -1889,12 +1889,12 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String minutes(Object min) {
-    return '\$min min';
+    return '$min min';
   }
 
   @override
   String minutesPerDay(Object count) {
-    return '\$count minutos por día';
+    return '$count minutos por día';
   }
 
   @override
@@ -1950,7 +1950,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String missionProgress(Object percent) {
-    return 'Progreso de misión: \$percent por ciento';
+    return 'Progreso de misión: $percent por ciento';
   }
 
   @override
@@ -2145,7 +2145,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String onbGoalMinPerDay(Object minutes) {
-    return '\$minutes min/día';
+    return '$minutes min/día';
   }
 
   @override
@@ -2271,7 +2271,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String onbQuizIntro(Object count) {
-    return 'Responda \$count preguntas rápidas antes de su primer entrenamiento digital';
+    return 'Responda $count preguntas rápidas antes de su primer entrenamiento digital';
   }
 
   @override
@@ -2393,16 +2393,66 @@ class AppLocalizationsEs extends AppLocalizations {
   String get owned => 'Obtenido';
 
   @override
-  String get passEarnSp => 'Gana SP completando lecciones';
+  String get passClaimFailed =>
+      'No se pudo reclamar la recompensa. Inténtalo de nuevo.';
 
   @override
-  String passLevel(Object level) {
-    return 'Nivel \$level';
+  String get passClaimedLabel => 'Reclamado';
+
+  @override
+  String passDaysLeft(Object count) {
+    return 'Quedan $count días';
   }
 
   @override
-  String passRewards(Object max, Object current) {
-    return 'Recompensas (\$current/\$max)';
+  String get passEarnSp => 'Gana SP completando lecciones';
+
+  @override
+  String get passHowToEarnDailyLimit => 'Límite diario de SP';
+
+  @override
+  String get passHowToEarnLesson => 'Completa una lección: +10 SP';
+
+  @override
+  String get passHowToEarnMission => 'Completa misiones diarias: +5 SP';
+
+  @override
+  String get passHowToEarnPerfect => 'Lección perfecta: +15 SP';
+
+  @override
+  String get passHowToEarnReview => 'Repasa una lección';
+
+  @override
+  String get passHowToEarnTitle => 'Cómo ganar SP';
+
+  @override
+  String passLevel(Object level) {
+    return 'Nivel $level';
+  }
+
+  @override
+  String get passLevelsTitle => 'Niveles';
+
+  @override
+  String get passLocked => 'Bloqueado';
+
+  @override
+  String get passMaxLevel => '¡Nivel máximo!';
+
+  @override
+  String passProgress(Object current, Object required) {
+    return 'SP: $current / $required';
+  }
+
+  @override
+  String get passReached => 'Alcanzado';
+
+  @override
+  String get passRewardClaimed => '¡Recompensa reclamada!';
+
+  @override
+  String passRewards(Object current, Object max) {
+    return 'Recompensas ($current/$max)';
   }
 
   @override
@@ -2443,17 +2493,17 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String paywallPackageAmount(Object gems) {
-    return '\$gems donaciones';
+    return '$gems donaciones';
   }
 
   @override
   String paywallPackageLabel(Object label) {
-    return 'Paquete \$label';
+    return 'Paquete $label';
   }
 
   @override
   String paywallPackageSupporter(Object level) {
-    return 'Nivel de Supporter \$level';
+    return 'Nivel de Supporter $level';
   }
 
   @override
@@ -2471,12 +2521,12 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String paywallWhatsAppError(Object link) {
-    return 'Error al abrir WhatsApp. Paga vía: \$link';
+    return 'Error al abrir WhatsApp. Paga vía: $link';
   }
 
   @override
   String paywallWhatsAppFallback(Object message) {
-    return 'Abre WhatsApp y envía: \$message';
+    return 'Abre WhatsApp y envía: $message';
   }
 
   @override
@@ -2486,7 +2536,7 @@ class AppLocalizationsEs extends AppLocalizations {
     Object price,
     Object userId,
   ) {
-    return 'Hola, quiero donar \$currencySymbol\$price a SAGEN (Supporter \$supporterLevel). Mi ID de usuario es: \$userId';
+    return 'Hola, quiero donar $currencySymbol$price a SAGEN (Supporter $supporterLevel). Mi ID de usuario es: $userId';
   }
 
   @override
@@ -2685,7 +2735,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String profileLevelValue(Object level) {
-    return 'Nivel \$level';
+    return 'Nivel $level';
   }
 
   @override
@@ -2768,12 +2818,12 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String questionProgress(Object current, Object total) {
-    return 'Pregunta \$current de \$total';
+    return 'Pregunta $current de $total';
   }
 
   @override
   String questions(Object count) {
-    return '\$count preguntas';
+    return '$count preguntas';
   }
 
   @override
@@ -2841,7 +2891,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String quizProgress(Object percent) {
-    return 'Progreso del cuestionario: \$percent por ciento';
+    return 'Progreso del cuestionario: $percent por ciento';
   }
 
   @override
@@ -2880,7 +2930,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String rankingPosition(Object rank) {
-    return 'Posición #\$rank';
+    return 'Posición #$rank';
   }
 
   @override
@@ -2900,12 +2950,12 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String rankingXpToTop50(Object xp) {
-    return 'Te faltan \$xp XP para entrar al Top 50';
+    return 'Te faltan $xp XP para entrar al Top 50';
   }
 
   @override
   String rankingYourPosition(Object xp, Object rank) {
-    return 'Tu posición: #\$rank · \$xp XP';
+    return 'Tu posición: #$rank · $xp XP';
   }
 
   @override
@@ -3147,22 +3197,22 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String rewardAdCooldown(Object seconds) {
-    return 'Disponible en \$seconds segundos';
+    return 'Disponible en $seconds segundos';
   }
 
   @override
   String rewardAdEarned(Object count) {
-    return '¡Ganaste \$count donaciones!';
+    return '¡Ganaste $count donaciones!';
   }
 
   @override
   String rewardAdEarnedGems(Object gems) {
-    return '+\$gems gemas';
+    return '+$gems gemas';
   }
 
   @override
   String rewardAdEarnedXp(Object xp) {
-    return '¡+\$xp XP ganados!';
+    return '¡+$xp XP ganados!';
   }
 
   @override
@@ -3205,12 +3255,12 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String sageAchievementUnlocked(Object name) {
-    return '\$name¡Logro desbloqueado!';
+    return '$name¡Logro desbloqueado!';
   }
 
   @override
   String sageAdvancing(Object levelHint, Object name) {
-    return '\$${name}Sigues avanzando.\$levelHint';
+    return '${name}Sigues avanzando.$levelHint';
   }
 
   @override
@@ -3225,7 +3275,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String sageCongratulations(Object name) {
-    return '\$name¡Felicidades!';
+    return '$name¡Felicidades!';
   }
 
   @override
@@ -3236,17 +3286,17 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String sageEmptyState(Object name) {
-    return '\$${name}No hay nada aquí todavía';
+    return '${name}No hay nada aquí todavía';
   }
 
   @override
   String sageGreatJob(Object name, Object extra) {
-    return '\$name¡Excelente trabajo!\$extra';
+    return '$name¡Excelente trabajo!$extra';
   }
 
   @override
   String sageHighStreakDays(Object streak) {
-    return ' \$streak días seguidos.';
+    return ' $streak días seguidos.';
   }
 
   @override
@@ -3254,12 +3304,12 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String sageImpressiveStreak(Object name, Object days) {
-    return '\$name¡Racha impresionante!\$days';
+    return '$name¡Racha impresionante!$days';
   }
 
   @override
   String sageLevelHint(Object level) {
-    return ' El nivel \$level ya está cerca.';
+    return ' El nivel $level ya está cerca.';
   }
 
   @override
@@ -3312,17 +3362,17 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String sageStreakAmazing(Object streak) {
-    return '¡Tu racha de \$streak días es increíble!';
+    return '¡Tu racha de $streak días es increíble!';
   }
 
   @override
   String sageStreakAtRisk(Object streak) {
-    return ' ¡No pierdas \$streak días de esfuerzo!';
+    return ' ¡No pierdas $streak días de esfuerzo!';
   }
 
   @override
   String sageStreakAtRiskMessage(Object urgency, Object name) {
-    return '\$name¡No pierdas tu racha!\$urgency';
+    return '$name¡No pierdas tu racha!$urgency';
   }
 
   @override
@@ -3330,12 +3380,12 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String sageStreakLostMessage(Object name, Object encouragement) {
-    return '\$${name}La racha se ha perdido.\$encouragement';
+    return '${name}La racha se ha perdido.$encouragement';
   }
 
   @override
   String sageTellMeMore(Object name) {
-    return '\$${name}Cuéntame más de ti';
+    return '${name}Cuéntame más de ti';
   }
 
   @override
@@ -3343,12 +3393,12 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String sageWelcomeBack(Object name) {
-    return '\$name¡Bienvenido de vuelta!';
+    return '$name¡Bienvenido de vuelta!';
   }
 
   @override
   String sageWhatDoYouThink(Object name) {
-    return '\$name¿Qué crees que es correcto?';
+    return '$name¿Qué crees que es correcto?';
   }
 
   @override
@@ -3418,7 +3468,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String sessionCorrectAnswer(Object answer) {
-    return 'Respuesta correcta: \$answer';
+    return 'Respuesta correcta: $answer';
   }
 
   @override
@@ -3451,7 +3501,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String sessionScore(Object correct, Object total) {
-    return '\$correct/\$total correctas';
+    return '$correct/$total correctas';
   }
 
   @override
@@ -3838,7 +3888,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String stageProgress(Object percent) {
-    return 'Progreso de etapa: \$percent por ciento';
+    return 'Progreso de etapa: $percent por ciento';
   }
 
   @override
@@ -3888,7 +3938,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String storeBuyItem(Object cost, Object item) {
-    return 'Comprar \$item por \$cost donaciones';
+    return 'Comprar $item por $cost donaciones';
   }
 
   @override
@@ -3908,7 +3958,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String storeChestExpiresIn(Object gems) {
-    return '\$gems donados — expira a medianoche';
+    return '$gems donados — expira a medianoche';
   }
 
   @override
@@ -3920,7 +3970,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String storeConfirmMessage(Object cost, Object item) {
-    return '¿Deseas comprar \$item por \$cost donaciones?';
+    return '¿Deseas comprar $item por $cost donaciones?';
   }
 
   @override
@@ -3931,7 +3981,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String storeDonateSubtitle(Object price) {
-    return 'Desde \$price';
+    return 'Desde $price';
   }
 
   @override
@@ -3975,6 +4025,20 @@ class AppLocalizationsEs extends AppLocalizations {
   String get storeProtectStreak => 'Protege tu racha';
 
   @override
+  String get storeDailyChestClaim => 'Reclamar';
+
+  @override
+  String storeDailyChestReward(Object xp) {
+    return '¡+$xp XP!';
+  }
+
+  @override
+  String get storeDailyChestSubtitle => 'Reclama tu recompensa diaria gratuita';
+
+  @override
+  String get storeDailyChestTitle => 'Cofre diario';
+
+  @override
   String get storePurchaseFailed =>
       'Error al validar la compra. Inténtalo de nuevo.';
 
@@ -4001,7 +4065,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String storeWhatsappPackages(Object price) {
-    return 'Paquetes desde \$price — Pago por WhatsApp';
+    return 'Paquetes desde $price — Pago por WhatsApp';
   }
 
   @override
@@ -4043,7 +4107,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String streakCurrentProgress(Object goal, Object current) {
-    return 'Racha actual: \$current / \$goal días';
+    return 'Racha actual: $current / $goal días';
   }
 
   @override
@@ -4075,12 +4139,12 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String streakDays(Object count) {
-    return '\$count días';
+    return '$count días';
   }
 
   @override
   String streakDaysCount(Object count) {
-    return '\$count días de racha';
+    return '$count días de racha';
   }
 
   @override
@@ -4286,7 +4350,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String summaryStreakDays(Object days) {
-    return '+\$days día(s)';
+    return '+$days día(s)';
   }
 
   @override
@@ -4363,7 +4427,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String tutorLessonsProgress(Object completed, Object required) {
-    return '\$completed / \$required lecciones';
+    return '$completed / $required lecciones';
   }
 
   @override
@@ -4375,7 +4439,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String tutorMotivationAlmost(Object count) {
-    return 'Ya casi, solo te faltan \$count lecciones. ¡Sigue así!';
+    return 'Ya casi, solo te faltan $count lecciones. ¡Sigue así!';
   }
 
   @override
@@ -4384,7 +4448,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String tutorMotivationGood(Object count) {
-    return '¡Buen ritmo! Te faltan \$count lecciones para acceder a Sage.';
+    return '¡Buen ritmo! Te faltan $count lecciones para acceder a Sage.';
   }
 
   @override
@@ -4545,7 +4609,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String verifyEmailMessage(Object email) {
-    return 'Enviamos un enlace de verificación a \$email. Haz clic en el enlace para activar tu cuenta.';
+    return 'Enviamos un enlace de verificación a $email. Haz clic en el enlace para activar tu cuenta.';
   }
 
   @override
@@ -4590,7 +4654,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String weeklyChestProgressCount(Object done, Object total) {
-    return '\$done/\$total';
+    return '$done/$total';
   }
 
   @override
@@ -4838,12 +4902,12 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String xpReward(Object xp) {
-    return '+\$xp XP';
+    return '+$xp XP';
   }
 
   @override
   String xpRewardLabel(Object gems) {
-    return '+\$gems XP';
+    return '+$gems XP';
   }
 
   @override

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../repositories/gamification_repository.dart';
+import '../services/app_logger.dart';
 import 'learning_provider.dart';
 import 'service_providers.dart';
 
@@ -72,16 +73,34 @@ class GamificationNotifier extends Notifier<GamificationState> {
   Future<int> claimDailyChest() async {
     if (_disposed || !state.hasUnclaimedChest) return 0;
     try {
-      if (_disposed) return 0;
-      await ref.read(learningProvider.notifier).addXp(10, reason: 'daily_chest');
+      final result = await ref.read(gamificationCloudServiceProvider).claimDailyChestResult();
+      if (result.isError) {
+        // Offline or server error: keep the chest unclaimed so the user can retry.
+        return 0;
+      }
+      final data = result.value ?? const <String, dynamic>{};
+      if (data['alreadyClaimed'] == true) {
+        // Server is authoritative: reconcile local state, no extra award.
+        _repo.setUnclaimedChest(false);
+        state = state.copyWith(hasUnclaimedChest: false);
+        return 0;
+      }
+      final xp = data['xp'] is int ? (data['xp'] as int) : 0;
+      if (xp > 0) {
+        // Server already credited XP in the claim transaction; apply locally only.
+        ref.read(learningProvider.notifier).applyServerXp(xp);
+      }
+      try {
+        _repo.claimDailyChest();
+      } catch (e) {
+        AppLogger().warning('Daily chest local claim record failed: $e');
+      }
+      state = state.copyWith(hasUnclaimedChest: false);
+      return xp;
     } catch (e) {
+      AppLogger().warning('Daily chest claim failed: $e');
       return 0;
     }
-    _repo.claimDailyChest();
-    state = state.copyWith(
-      hasUnclaimedChest: false,
-    );
-    return 10;
   }
 
   void incrementMission(String missionId, {int amount = 1}) {
