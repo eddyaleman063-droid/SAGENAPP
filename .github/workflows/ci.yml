@@ -46,8 +46,10 @@ jobs:
       - name: Parse test results
         if: always()
         run: |
-          PASSING=$(grep -oP '\+\K\d+(?=:.*Some tests failed)' test_results.txt || echo "0")
-          FAILING=$(grep -oP '-\K\d+(?=:.*Some tests failed)' test_results.txt || echo "0")
+          PASSING=$(grep -oP '\+\K\d+(?=: All tests passed!)' test_results.txt | tail -1 || echo "0")
+          FAILING=$(grep -oP '\-\K\d+(?=:.*Some tests failed)' test_results.txt | tail -1 || echo "0")
+          PASSING=${PASSING:-0}
+          FAILING=${FAILING:-0}
           echo "### Test Results" >> $GITHUB_STEP_SUMMARY
           echo "| Metric | Count |" >> $GITHUB_STEP_SUMMARY
           echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
