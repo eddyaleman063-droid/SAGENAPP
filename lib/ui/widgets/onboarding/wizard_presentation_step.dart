@@ -21,9 +21,11 @@ class WizardPresentationStep extends StatelessWidget {
           const Spacer(),
           Text(
             l.regWelcomeSagen,
-            style: AppTextStyle.displayMedium.copyWith(fontWeight: FontWeight.w900,
+            style: AppTextStyle.displayMedium.copyWith(
+              fontWeight: FontWeight.w900,
               color: textPrimary,
-              letterSpacing: 1),
+              letterSpacing: 1,
+            ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: AppSpacing.lg),
@@ -32,8 +34,10 @@ class WizardPresentationStep extends StatelessWidget {
             child: Text(
               l.onboardingDesc,
               textAlign: TextAlign.center,
-              style: AppTextStyle.titleSmall.copyWith(color: textSecondary,
-                height: 1.5),
+              style: AppTextStyle.titleSmall.copyWith(
+                color: textSecondary,
+                height: 1.5,
+              ),
             ),
           ),
           const Spacer(flex: 2),

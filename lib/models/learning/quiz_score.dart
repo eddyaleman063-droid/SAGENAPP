@@ -22,7 +22,10 @@ class QuizScoreCalculator {
   int get xp {
     final base = correctCount * xpPerCorrect;
     final bonus = isPerfect ? perfectBonusXp : 0;
-    final remaining = (timeBudgetSeconds - timeSpentSeconds).clamp(0, timeBudgetSeconds);
+    final remaining = (timeBudgetSeconds - timeSpentSeconds).clamp(
+      0,
+      timeBudgetSeconds,
+    );
     final timeBonus = timeBudgetSeconds > 0
         ? ((remaining / timeBudgetSeconds) * 20).round()
         : 0;

@@ -43,7 +43,9 @@ void main() {
   });
 
   group('Accessibility - Semantic Labels', () {
-    testWidgets('Icon buttons have tooltips for screen readers', (tester) async {
+    testWidgets('Icon buttons have tooltips for screen readers', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -76,9 +78,7 @@ void main() {
           home: Scaffold(
             body: Column(
               children: [
-                TextField(
-                  decoration: InputDecoration(labelText: 'Email'),
-                ),
+                TextField(decoration: InputDecoration(labelText: 'Email')),
                 TextField(
                   decoration: InputDecoration(labelText: 'Password'),
                   obscureText: true,
@@ -99,10 +99,7 @@ void main() {
           home: Scaffold(
             body: Column(
               children: [
-                ElevatedButton(
-                  onPressed: () {},
-                  child: const Text('Sign In'),
-                ),
+                ElevatedButton(onPressed: () {}, child: const Text('Sign In')),
                 TextButton(
                   onPressed: () {},
                   child: const Text('Forgot Password'),
@@ -119,14 +116,12 @@ void main() {
   });
 
   group('Performance - Animation Timing', () {
-    testWidgets('Shimmer animation completes within expected time', (tester) async {
+    testWidgets('Shimmer animation completes within expected time', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
-          ),
+          home: Scaffold(body: Center(child: CircularProgressIndicator())),
         ),
       );
 

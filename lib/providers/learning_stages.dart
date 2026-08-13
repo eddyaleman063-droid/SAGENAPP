@@ -46,12 +46,14 @@ Future<List<Stage>> loadStagesFromAssets() async {
               allLessons.add(lesson);
             }
           }
-          sessions.add(Session(
-            id: (ses['id'] as String?) ?? '',
-            title: (ses['title'] as String?) ?? '',
-            subtitle: (ses['subtitle'] as String?) ?? '',
-            lessons: lessons,
-          ));
+          sessions.add(
+            Session(
+              id: (ses['id'] as String?) ?? '',
+              title: (ses['title'] as String?) ?? '',
+              subtitle: (ses['subtitle'] as String?) ?? '',
+              lessons: lessons,
+            ),
+          );
         }
       }
 
@@ -65,9 +67,11 @@ Future<List<Stage>> loadStagesFromAssets() async {
         sessions: sessions,
       );
     }).toList();
-    AppLogger().info('Loaded ${_cachedStages.length} stages from assets '
-        '(${_cachedStages.fold(0, (s, st) => s + st.lessons.length)} lessons, '
-        '${_cachedStages.fold(0, (s, st) => s + st.sessions.length)} sessions)');
+    AppLogger().info(
+      'Loaded ${_cachedStages.length} stages from assets '
+      '(${_cachedStages.fold(0, (s, st) => s + st.lessons.length)} lessons, '
+      '${_cachedStages.fold(0, (s, st) => s + st.sessions.length)} sessions)',
+    );
     return _cachedStages;
   } catch (e) {
     AppLogger().error('Failed to load stages from assets', e);

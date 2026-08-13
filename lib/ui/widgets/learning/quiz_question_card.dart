@@ -30,9 +30,7 @@ class QuizQuestionCard extends StatelessWidget {
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(AppRadius.lg),
-        border: Border.all(
-          color: challenge.color.withValues(alpha: 0.15),
-        ),
+        border: Border.all(color: challenge.color.withValues(alpha: 0.15)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,15 +38,20 @@ class QuizQuestionCard extends StatelessWidget {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.xxs),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.md,
+                  vertical: AppSpacing.xxs,
+                ),
                 decoration: BoxDecoration(
                   color: challenge.color.withValues(alpha: 0.15),
-                    borderRadius: BorderRadius.circular(AppRadius.sm),
+                  borderRadius: BorderRadius.circular(AppRadius.sm),
                 ),
                 child: Text(
                   typeLabel,
-                  style: AppTextStyle.label.copyWith(fontWeight: FontWeight.bold,
-                    color: challenge.color),
+                  style: AppTextStyle.label.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: challenge.color,
+                  ),
                 ),
               ),
             ],
@@ -56,9 +59,11 @@ class QuizQuestionCard extends StatelessWidget {
           const SizedBox(height: AppSpacing.lg),
           Text(
             challenge.question,
-            style: AppTextStyle.bodyLg.copyWith(fontWeight: FontWeight.w600,
+            style: AppTextStyle.bodyLg.copyWith(
+              fontWeight: FontWeight.w600,
               color: Theme.of(context).colorScheme.onSurface,
-              height: 1.4),
+              height: 1.4,
+            ),
           ),
         ],
       ),
@@ -68,13 +73,20 @@ class QuizQuestionCard extends StatelessWidget {
   String _typeLabel(LessonType type, BuildContext context) {
     final l = l10n(context);
     switch (type) {
-      case LessonType.trueFalse: return l.challengeTrueFalse;
-      case LessonType.multipleChoice: return l.challengeMultiple;
-      case LessonType.completePhrase: return l.challengeComplete;
-      case LessonType.detectRisk: return l.challengeDetectRisk;
-      case LessonType.createPassword: return l.challengeCreatePassword;
-      case LessonType.whatWouldYouDo: return l.challengeWhatWouldYouDo;
-      case LessonType.miniCase: return l.challengeMiniCase;
+      case LessonType.trueFalse:
+        return l.challengeTrueFalse;
+      case LessonType.multipleChoice:
+        return l.challengeMultiple;
+      case LessonType.completePhrase:
+        return l.challengeComplete;
+      case LessonType.detectRisk:
+        return l.challengeDetectRisk;
+      case LessonType.createPassword:
+        return l.challengeCreatePassword;
+      case LessonType.whatWouldYouDo:
+        return l.challengeWhatWouldYouDo;
+      case LessonType.miniCase:
+        return l.challengeMiniCase;
     }
   }
 }

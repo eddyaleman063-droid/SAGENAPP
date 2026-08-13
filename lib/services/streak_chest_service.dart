@@ -9,11 +9,9 @@ class StreakChestService {
   final ChestRewardRoller _roller;
   final ChestEventBus _eventBus;
 
-  StreakChestService({
-    ChestRewardRoller? roller,
-    ChestEventBus? eventBus,
-  })  : _roller = roller ?? ChestRewardRoller.instance,
-        _eventBus = eventBus ?? ChestEventBus.instance;
+  StreakChestService({ChestRewardRoller? roller, ChestEventBus? eventBus})
+    : _roller = roller ?? ChestRewardRoller.instance,
+      _eventBus = eventBus ?? ChestEventBus.instance;
 
   bool _checking = false;
   final _logger = AppLogger();
@@ -27,29 +25,36 @@ class StreakChestService {
     _checking = true;
     try {
       if (newStreak <= oldStreak) return;
-      if (newStreak != 7 && newStreak != 14 && newStreak != 30 && newStreak != 100) return;
+      if (newStreak != 7 &&
+          newStreak != 14 &&
+          newStreak != 30 &&
+          newStreak != 100) {
+        return;
+      }
 
       final t = newStreak == 7
           ? ChestType.silver
           : newStreak == 14
-              ? ChestType.gold
-              : newStreak == 30
-                  ? ChestType.gold
-                  : ChestType.legendary;
+          ? ChestType.gold
+          : newStreak == 30
+          ? ChestType.gold
+          : ChestType.legendary;
 
       final reward = await _roller.roll(t);
 
       await learning.addXp(reward.xp, reason: 'streak_chest');
 
-      _eventBus.fire(ChestRewardData(
-        type: t,
-        xp: reward.xp,
-        streakShields: reward.streakShields,
-        xpBoost: reward.xpBoost,
-        specialItems: reward.specialItems,
-        cosmeticUnlocks: reward.cosmeticUnlocks,
-        source: 'streak',
-      ));
+      _eventBus.fire(
+        ChestRewardData(
+          type: t,
+          xp: reward.xp,
+          streakShields: reward.streakShields,
+          xpBoost: reward.xpBoost,
+          specialItems: reward.specialItems,
+          cosmeticUnlocks: reward.cosmeticUnlocks,
+          source: 'streak',
+        ),
+      );
     } catch (e) {
       _logger.error('StreakChestService: failed to check/reward', e);
     } finally {

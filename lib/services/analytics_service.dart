@@ -48,8 +48,7 @@ enum Achievement {
   shieldCrystal('Crystal Shield', 'Reached 30-day streak'),
   shieldLegendary('Legendary Shield', 'Reached 100-day streak'),
   firstLinkSafe('Safe Link', 'Analyzed your first safe link'),
-  firstLinkDanger('Early Alert', 'Detected your first dangerous link'),
-  ;
+  firstLinkDanger('Early Alert', 'Detected your first dangerous link');
 
   final String title;
   final String description;
@@ -111,7 +110,9 @@ class AnalyticsService {
     try {
       await _prefs?.setBool(_keyConsent, given);
     } catch (e) {
-      _logger.warning('AnalyticsService.setConsent: failed to save consent preference: $e');
+      _logger.warning(
+        'AnalyticsService.setConsent: failed to save consent preference: $e',
+      );
     }
     if (!given) {
       await _firebase?.setAnalyticsCollectionEnabled(false);
@@ -173,11 +174,13 @@ class AnalyticsService {
     try {
       final eventsJson = jsonEncode(
         _eventLog.length > _maxStoredEvents
-          ? _eventLog.sublist(_eventLog.length - _maxStoredEvents)
-          : _eventLog,
+            ? _eventLog.sublist(_eventLog.length - _maxStoredEvents)
+            : _eventLog,
       );
       final aggregatedJson = jsonEncode(_aggregated);
-      final achievementsJson = jsonEncode(_unlocked.map((a) => a.name).toList());
+      final achievementsJson = jsonEncode(
+        _unlocked.map((a) => a.name).toList(),
+      );
       await Future.wait([
         _prefs?.setString(_keyEvents, eventsJson) ?? Future.value(),
         _prefs?.setString(_keyAggregated, aggregatedJson) ?? Future.value(),
@@ -213,10 +216,14 @@ class AnalyticsService {
 
     // Evict oldest property-based keys if map grows too large
     if (_aggregated.length > _maxAggregatedKeys) {
-      final keysToRemove = _aggregated.keys
-          .where((k) => k.startsWith('${event.name}_') && !k.startsWith('count_'))
-          .toList()
-        ..sort();
+      final keysToRemove =
+          _aggregated.keys
+              .where(
+                (k) =>
+                    k.startsWith('${event.name}_') && !k.startsWith('count_'),
+              )
+              .toList()
+            ..sort();
       final removeCount = _aggregated.length - _maxAggregatedKeys;
       for (int i = 0; i < removeCount && i < keysToRemove.length; i++) {
         _aggregated.remove(keysToRemove[i]);
@@ -281,7 +288,10 @@ class AnalyticsService {
       correct ? AnalyticEvent.challengeComplete : AnalyticEvent.challengeFail,
       properties: {'challenge': challengeId},
     );
-    track(AnalyticEvent.challengeAttempt, properties: {'challenge': challengeId});
+    track(
+      AnalyticEvent.challengeAttempt,
+      properties: {'challenge': challengeId},
+    );
   }
 
   void trackLessonComplete(String lessonId) {
@@ -300,22 +310,23 @@ class AnalyticsService {
     track(AnalyticEvent.featureUsed, properties: {'feature': feature});
   }
 
-
   void trackFlexCardShared(String source) {
-    track(AnalyticEvent.featureUsed, properties: {
-      'feature': 'flex_card_shared',
-      'source': source,
-    });
+    track(
+      AnalyticEvent.featureUsed,
+      properties: {'feature': 'flex_card_shared', 'source': source},
+    );
   }
 
   int eventCount(AnalyticEvent event) =>
       _aggregated['count_${event.name}'] ?? 0;
 
   int challengeAttempts(String challengeId) =>
-      _aggregated['${AnalyticEvent.challengeAttempt.name}_challenge_$challengeId'] ?? 0;
+      _aggregated['${AnalyticEvent.challengeAttempt.name}_challenge_$challengeId'] ??
+      0;
 
   int challengeFails(String challengeId) =>
-      _aggregated['${AnalyticEvent.challengeFail.name}_challenge_$challengeId'] ?? 0;
+      _aggregated['${AnalyticEvent.challengeFail.name}_challenge_$challengeId'] ??
+      0;
 
   double challengePassRate(String challengeId) {
     final total = challengeAttempts(challengeId);
@@ -329,10 +340,10 @@ class AnalyticsService {
   void unlockAchievement(Achievement achievement) {
     if (_unlocked.contains(achievement)) return;
     _unlocked.add(achievement);
-    track(AnalyticEvent.achievementUnlocked, properties: {
-      'achievement': achievement.name,
-      'title': achievement.title,
-    });
+    track(
+      AnalyticEvent.achievementUnlocked,
+      properties: {'achievement': achievement.name, 'title': achievement.title},
+    );
   }
 
   void remove(Achievement achievement) {

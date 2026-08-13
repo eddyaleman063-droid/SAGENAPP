@@ -80,7 +80,9 @@ class _ChestWidgetState extends State<ChestWidget>
   @override
   Widget build(BuildContext context) {
     return Semantics(
-      label: AppLocalizations.of(context)?.chestTreasureLabel(widget.type.name) ?? '',
+      label:
+          AppLocalizations.of(context)?.chestTreasureLabel(widget.type.name) ??
+          '',
       child: RepaintBoundary(
         child: CustomPaint(
           size: Size(widget.size, widget.size),

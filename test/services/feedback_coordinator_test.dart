@@ -54,12 +54,14 @@ void main() {
   setUp(() {
     hapticTypes.clear();
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-        .setMockMethodCallHandler(SystemChannels.platform, (MethodCall call) async {
-      if (call.method == 'HapticFeedback.vibrate') {
-        hapticTypes.add(call.arguments as String);
-      }
-      return null;
-    });
+        .setMockMethodCallHandler(SystemChannels.platform, (
+          MethodCall call,
+        ) async {
+          if (call.method == 'HapticFeedback.vibrate') {
+            hapticTypes.add(call.arguments as String);
+          }
+          return null;
+        });
   });
 
   tearDown(() {
@@ -164,27 +166,35 @@ void main() {
   });
 
   test('lightHaptic only fires when enabled', () async {
-    FeedbackCoordinator(experience: _FakeExperience(), audio: _FakeAudio())
-        .lightHaptic();
+    FeedbackCoordinator(
+      experience: _FakeExperience(),
+      audio: _FakeAudio(),
+    ).lightHaptic();
     await Future<void>.delayed(const Duration(milliseconds: 10));
     expect(hapticTypes, contains('HapticFeedbackType.lightImpact'));
 
     hapticTypes.clear();
-    FeedbackCoordinator(experience: _FakeExperience(haptic: false), audio: _FakeAudio())
-        .lightHaptic();
+    FeedbackCoordinator(
+      experience: _FakeExperience(haptic: false),
+      audio: _FakeAudio(),
+    ).lightHaptic();
     await Future<void>.delayed(const Duration(milliseconds: 10));
     expect(hapticTypes, isEmpty);
   });
 
   test('mediumHaptic only fires when enabled', () async {
-    FeedbackCoordinator(experience: _FakeExperience(), audio: _FakeAudio())
-        .mediumHaptic();
+    FeedbackCoordinator(
+      experience: _FakeExperience(),
+      audio: _FakeAudio(),
+    ).mediumHaptic();
     await Future<void>.delayed(const Duration(milliseconds: 10));
     expect(hapticTypes, contains('HapticFeedbackType.mediumImpact'));
 
     hapticTypes.clear();
-    FeedbackCoordinator(experience: _FakeExperience(haptic: false), audio: _FakeAudio())
-        .mediumHaptic();
+    FeedbackCoordinator(
+      experience: _FakeExperience(haptic: false),
+      audio: _FakeAudio(),
+    ).mediumHaptic();
     await Future<void>.delayed(const Duration(milliseconds: 10));
     expect(hapticTypes, isEmpty);
   });

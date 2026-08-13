@@ -7,11 +7,7 @@ class LegalTextBlock extends StatelessWidget {
   final VoidCallback? onTerms;
   final VoidCallback? onPrivacy;
 
-  const LegalTextBlock({
-    super.key,
-    this.onTerms,
-    this.onPrivacy,
-  });
+  const LegalTextBlock({super.key, this.onTerms, this.onPrivacy});
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +15,10 @@ class LegalTextBlock extends StatelessWidget {
     return RichText(
       textAlign: TextAlign.center,
       text: TextSpan(
-        style: AppTextStyle.label.copyWith(color: Colors.white.withValues(alpha: 0.55),
-          height: 1.5),
+        style: AppTextStyle.label.copyWith(
+          color: Colors.white.withValues(alpha: 0.55),
+          height: 1.5,
+        ),
         children: [
           TextSpan(text: l.legalRegisterAgree),
           TextSpan(
@@ -28,8 +26,7 @@ class LegalTextBlock extends StatelessWidget {
             style: AppTextStyle.tiny.copyWith(
               color: PremiumColors.primaryAccent.withValues(alpha: 0.8),
             ),
-            recognizer: TapGestureRecognizer()
-              ..onTap = onTerms ?? () {},
+            recognizer: TapGestureRecognizer()..onTap = onTerms ?? () {},
           ),
           TextSpan(text: l.legalAnd),
           TextSpan(
@@ -37,8 +34,7 @@ class LegalTextBlock extends StatelessWidget {
             style: AppTextStyle.tiny.copyWith(
               color: PremiumColors.primaryAccent.withValues(alpha: 0.8),
             ),
-            recognizer: TapGestureRecognizer()
-              ..onTap = onPrivacy ?? () {},
+            recognizer: TapGestureRecognizer()..onTap = onPrivacy ?? () {},
           ),
         ],
       ),

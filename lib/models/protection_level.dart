@@ -16,36 +16,80 @@ class ProtectionTier {
 
   String localizedName(AppLocalizations l) {
     switch (name) {
-      case 'Basic': return l.protectionBasic;
-      case 'Protected': return l.protectionProtected;
-      case 'Guardian': return l.protectionGuardian;
-      case 'Cyber Shield': return l.protectionCyberShield;
-      case 'Secure Mind': return l.protectionSecureMind;
-      case 'Elite Protection': return l.protectionElite;
-      default: return name;
+      case 'Basic':
+        return l.protectionBasic;
+      case 'Protected':
+        return l.protectionProtected;
+      case 'Guardian':
+        return l.protectionGuardian;
+      case 'Cyber Shield':
+        return l.protectionCyberShield;
+      case 'Secure Mind':
+        return l.protectionSecureMind;
+      case 'Elite Protection':
+        return l.protectionElite;
+      default:
+        return name;
     }
   }
 
   String localizedDescription(AppLocalizations l) {
     switch (name) {
-      case 'Basic': return l.protectionBasicDesc;
-      case 'Protected': return l.protectionProtectedDesc;
-      case 'Guardian': return l.protectionGuardianDesc;
-      case 'Cyber Shield': return l.protectionCyberShieldDesc;
-      case 'Secure Mind': return l.protectionSecureMindDesc;
-      case 'Elite Protection': return l.protectionEliteDesc;
-      default: return description;
+      case 'Basic':
+        return l.protectionBasicDesc;
+      case 'Protected':
+        return l.protectionProtectedDesc;
+      case 'Guardian':
+        return l.protectionGuardianDesc;
+      case 'Cyber Shield':
+        return l.protectionCyberShieldDesc;
+      case 'Secure Mind':
+        return l.protectionSecureMindDesc;
+      case 'Elite Protection':
+        return l.protectionEliteDesc;
+      default:
+        return description;
     }
   }
 }
 
 const kProtectionTiers = [
-  ProtectionTier(level: 1, name: 'Basic', description: 'Starting to protect yourself', requiredScore: 0),
-  ProtectionTier(level: 5, name: 'Protected', description: 'Your first digital habits', requiredScore: 200),
-  ProtectionTier(level: 10, name: 'Guardian', description: 'Defending your digital identity', requiredScore: 500),
-  ProtectionTier(level: 20, name: 'Cyber Shield', description: 'An active shield', requiredScore: 1200),
-  ProtectionTier(level: 35, name: 'Secure Mind', description: 'Security is part of you', requiredScore: 2500),
-  ProtectionTier(level: 50, name: 'Elite Protection', description: 'Maximum protection level', requiredScore: 5000),
+  ProtectionTier(
+    level: 1,
+    name: 'Basic',
+    description: 'Starting to protect yourself',
+    requiredScore: 0,
+  ),
+  ProtectionTier(
+    level: 5,
+    name: 'Protected',
+    description: 'Your first digital habits',
+    requiredScore: 200,
+  ),
+  ProtectionTier(
+    level: 10,
+    name: 'Guardian',
+    description: 'Defending your digital identity',
+    requiredScore: 500,
+  ),
+  ProtectionTier(
+    level: 20,
+    name: 'Cyber Shield',
+    description: 'An active shield',
+    requiredScore: 1200,
+  ),
+  ProtectionTier(
+    level: 35,
+    name: 'Secure Mind',
+    description: 'Security is part of you',
+    requiredScore: 2500,
+  ),
+  ProtectionTier(
+    level: 50,
+    name: 'Elite Protection',
+    description: 'Maximum protection level',
+    requiredScore: 5000,
+  ),
 ];
 
 int protectionLevelForScore(int score) {

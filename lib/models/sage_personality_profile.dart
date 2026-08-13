@@ -21,7 +21,9 @@ class SagePersonalityProfile {
     caseSensitive: false,
   );
 
-  static final RegExp _topicPattern = RegExp(r'^[a-zA-Z0-9áéíóúñüÁÉÍÓÚÑÜ\s\-]+$');
+  static final RegExp _topicPattern = RegExp(
+    r'^[a-zA-Z0-9áéíóúñüÁÉÍÓÚÑÜ\s\-]+$',
+  );
 
   static List<String> _sanitizeTopics(List<String> topics) {
     return topics
@@ -38,11 +40,18 @@ class SagePersonalityProfile {
     return name;
   }
 
-  String getSystemPrompt({String userName = '', int userLevel = 1, int currentStreak = 0, List<String> weakTopics = const []}) {
+  String getSystemPrompt({
+    String userName = '',
+    int userLevel = 1,
+    int currentStreak = 0,
+    List<String> weakTopics = const [],
+  }) {
     userName = sanitizeName(userName);
-    final contextKey = '$userName|$userLevel|$currentStreak|${weakTopics.join(',')}';
+    final contextKey =
+        '$userName|$userLevel|$currentStreak|${weakTopics.join(',')}';
     final now = DateTime.now();
-    final isCacheValid = _cachedPrompt != null &&
+    final isCacheValid =
+        _cachedPrompt != null &&
         _cachedContextKey == contextKey &&
         _cacheTimestamp != null &&
         now.difference(_cacheTimestamp!) < cacheTtl;
@@ -53,18 +62,25 @@ class SagePersonalityProfile {
     final contextLines = <String>[];
     if (userName.isNotEmpty) contextLines.add('El usuario se llama $userName.');
     if (userLevel > 1) contextLines.add('Su nivel actual es $userLevel.');
-    if (currentStreak > 0) contextLines.add('Su racha actual es de $currentStreak días.');
+    if (currentStreak > 0) {
+      contextLines.add('Su racha actual es de $currentStreak días.');
+    }
     final sanitizedTopics = _sanitizeTopics(weakTopics);
     if (sanitizedTopics.isNotEmpty) {
-      contextLines.add('El usuario tiene dificultad con estos temas: ${sanitizedTopics.join(', ')}.');
-      contextLines.add('Ofrece consejos específicos para mejorar en esos áreas.');
+      contextLines.add(
+        'El usuario tiene dificultad con estos temas: ${sanitizedTopics.join(', ')}.',
+      );
+      contextLines.add(
+        'Ofrece consejos específicos para mejorar en esos áreas.',
+      );
     }
 
     final contextBlock = contextLines.isEmpty
         ? ''
         : '\nCONTEXTO DEL USUARIO:\n${contextLines.join('\n')}\n';
 
-    _cachedPrompt = '''
+    _cachedPrompt =
+        '''
 Eres Sage, el tutor de ciberseguridad de SAGEN. Eres un mentor calmado, maduro y empático.
 $contextBlock
 

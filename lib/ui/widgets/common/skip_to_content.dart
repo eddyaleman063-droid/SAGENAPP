@@ -8,11 +8,7 @@ class SkipToContent extends StatelessWidget {
   final GlobalKey targetKey;
   final String? label;
 
-  const SkipToContent({
-    super.key,
-    required this.targetKey,
-    this.label,
-  });
+  const SkipToContent({super.key, required this.targetKey, this.label});
 
   @override
   Widget build(BuildContext context) {

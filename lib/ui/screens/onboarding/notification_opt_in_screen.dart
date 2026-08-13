@@ -22,9 +22,10 @@ class NotificationOptInScreen extends StatelessWidget {
 
   Future<void> _requestPermission() async {
     final plugin = FlutterLocalNotificationsPlugin();
-    final androidPlugin =
-        plugin.resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>();
+    final androidPlugin = plugin
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >();
     await androidPlugin?.requestNotificationsPermission();
   }
 
@@ -45,7 +46,9 @@ class NotificationOptInScreen extends StatelessWidget {
                   child: IconButton(
                     icon: Icon(
                       Icons.arrow_back,
-                      color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withValues(alpha: 0.6),
                     ),
                     onPressed: () {
                       ExperienceService.instance.lightHaptic();
@@ -59,16 +62,15 @@ class NotificationOptInScreen extends StatelessWidget {
               const SizedBox(
                 width: 120,
                 height: 120,
-                child: SageEmotionWidget(
-                  emotion: SageEmotion.happy,
-                  size: 120,
-                ),
+                child: SageEmotionWidget(emotion: SageEmotion.happy, size: 120),
               ),
               const SizedBox(height: AppSpacing.xxl),
               Text(
                 AppLocalizations.of(context)!.onbNotifTitle,
                 style: AppTextStyle.headline.copyWith(
-                  color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.95),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withValues(alpha: 0.95),
                 ),
               ),
               const SizedBox(height: AppSpacing.md),
@@ -76,7 +78,9 @@ class NotificationOptInScreen extends StatelessWidget {
                 AppLocalizations.of(context)!.onbNotifDesc,
                 textAlign: TextAlign.center,
                 style: AppTextStyle.bodyMd.copyWith(
-                  color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withValues(alpha: 0.5),
                   height: 1.5,
                 ),
               ),
@@ -92,30 +96,34 @@ class NotificationOptInScreen extends StatelessWidget {
                     onContinue();
                   },
                   child: Container(
-                  width: double.infinity,
-                  height: 54,
-                  decoration: BoxDecoration(
-                    color: PremiumColors.primaryAccent,
-                    borderRadius: BorderRadius.circular(AppRadius.xl),
-                    boxShadow: [
-                      BoxShadow(
-                        color: PremiumColors.primaryDark.withValues(alpha: 0.35),
-                        blurRadius: 14,
-                        offset: const Offset(0, 5),
+                    width: double.infinity,
+                    height: 54,
+                    decoration: BoxDecoration(
+                      color: PremiumColors.primaryAccent,
+                      borderRadius: BorderRadius.circular(AppRadius.xl),
+                      boxShadow: [
+                        BoxShadow(
+                          color: PremiumColors.primaryDark.withValues(
+                            alpha: 0.35,
+                          ),
+                          blurRadius: 14,
+                          offset: const Offset(0, 5),
+                        ),
+                      ],
+                    ),
+                    child: Center(
+                      child: Text(
+                        AppLocalizations.of(
+                          context,
+                        )!.notificationsTitle.toUpperCase(),
+                        style: AppTextStyle.titleSmall.copyWith(
+                          fontWeight: FontWeight.w800,
+                          color: context.textPrimary,
+                          letterSpacing: 1,
+                        ),
                       ),
-                    ],
+                    ),
                   ),
-                  child: Center(
-                    child: Text(
-                      AppLocalizations.of(context)!.notificationsTitle.toUpperCase(),
-                      style: AppTextStyle.titleSmall.copyWith(
-                        fontWeight: FontWeight.w800,
-                        color: context.textPrimary,
-                        letterSpacing: 1,
-                  ),
-                ),
-              ),
-              ),
                 ),
               ),
               const SizedBox(height: AppSpacing.md),
@@ -131,7 +139,9 @@ class NotificationOptInScreen extends StatelessWidget {
                     AppLocalizations.of(context)!.onbNotifSkip,
                     style: AppTextStyle.bodyMd.copyWith(
                       fontWeight: FontWeight.w600,
-                      color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.4),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withValues(alpha: 0.4),
                     ),
                   ),
                 ),

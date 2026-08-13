@@ -9,7 +9,14 @@ import '../services/app_logger.dart';
 import 'prefs_provider.dart';
 import 'service_providers.dart';
 
-enum AuthStatus { uninitialized, authenticated, unauthenticated, loading, error, demo }
+enum AuthStatus {
+  uninitialized,
+  authenticated,
+  unauthenticated,
+  loading,
+  error,
+  demo,
+}
 
 class AuthState {
   final AuthStatus status;
@@ -58,7 +65,8 @@ class AuthState {
     );
   }
 
-  bool get isAuthenticated => status == AuthStatus.authenticated || status == AuthStatus.demo;
+  bool get isAuthenticated =>
+      status == AuthStatus.authenticated || status == AuthStatus.demo;
   bool get isLoading => status == AuthStatus.loading;
   bool get isUninitialized => status == AuthStatus.uninitialized;
   bool get showVerificationScreen => pendingVerification;
@@ -89,10 +97,13 @@ class AuthNotifier extends Notifier<AuthState> {
     _prefs = prefs;
     _applyUser(_authService.currentUser);
     _cancelAuthSubscription();
-    _authSub = _authService.authStateChanges.listen(_onAuthStateChanged, onError: (e) {
-      AppLogger().error('AuthStream error', e);
-      state = state.copyWith(errorMessage: () => 'Error in auth stream');
-    });
+    _authSub = _authService.authStateChanges.listen(
+      _onAuthStateChanged,
+      onError: (e) {
+        AppLogger().error('AuthStream error', e);
+        state = state.copyWith(errorMessage: () => 'Error in auth stream');
+      },
+    );
     ref.onDispose(() {
       _authSub?.cancel();
       _verificationManager.dispose();
@@ -107,7 +118,8 @@ class AuthNotifier extends Notifier<AuthState> {
 
   bool _checkRateLimit() {
     final now = DateTime.now();
-    if (_lastAuthAttempt != null && now.difference(_lastAuthAttempt ?? DateTime.now()) < _authCooldown) {
+    if (_lastAuthAttempt != null &&
+        now.difference(_lastAuthAttempt ?? DateTime.now()) < _authCooldown) {
       return false;
     }
     if (_consecutiveAuthErrors >= _maxConsecutiveErrors) {
@@ -135,7 +147,9 @@ class AuthNotifier extends Notifier<AuthState> {
   void _onAuthStateChanged(AppUser? user) {
     final wasAuthenticated = state.status == AuthStatus.authenticated;
     _applyUser(user);
-    if (state.status == AuthStatus.authenticated && !wasAuthenticated && user != null) {
+    if (state.status == AuthStatus.authenticated &&
+        !wasAuthenticated &&
+        user != null) {
       final prefs = _prefs;
       if (prefs != null) {
         _syncManager.syncAfterLogin(user.uid, prefs);
@@ -155,7 +169,9 @@ class AuthNotifier extends Notifier<AuthState> {
         photoUrl: () => user.photoUrl,
         uid: () => user.uid,
         pendingVerification: needsVerification,
-        status: user.isEmailVerified ? AuthStatus.authenticated : AuthStatus.unauthenticated,
+        status: user.isEmailVerified
+            ? AuthStatus.authenticated
+            : AuthStatus.unauthenticated,
         errorMessage: () => null,
       );
       _syncManager.cancelInflightLoads();
@@ -185,9 +201,14 @@ class AuthNotifier extends Notifier<AuthState> {
   Future<void> _loadOnboardingStatus(String uid) async {
     final epoch = ++_onboardingLoadEpoch;
     final completed = await _syncManager.loadOnboardingStatus(uid);
-    if (epoch != _onboardingLoadEpoch) return; // Stale — superseded by newer login
+    if (epoch != _onboardingLoadEpoch) {
+      return; // Stale — superseded by newer login
+    }
     if (completed != null && state.uid == uid) {
-      state = state.copyWith(onboardingCompleted: completed, profileLoaded: true);
+      state = state.copyWith(
+        onboardingCompleted: completed,
+        profileLoaded: true,
+      );
     } else if (state.uid == uid) {
       state = state.copyWith(profileLoaded: true);
     }
@@ -205,7 +226,10 @@ class AuthNotifier extends Notifier<AuthState> {
       );
       return;
     }
-    state = state.copyWith(status: AuthStatus.loading, errorMessage: () => null);
+    state = state.copyWith(
+      status: AuthStatus.loading,
+      errorMessage: () => null,
+    );
     try {
       final user = await _authService.signInWithGoogle();
       _resetAuthErrors();
@@ -215,7 +239,9 @@ class AuthNotifier extends Notifier<AuthState> {
         photoUrl: () => user.photoUrl,
         uid: () => user.uid,
         pendingVerification: !user.isEmailVerified,
-        status: user.isEmailVerified ? AuthStatus.authenticated : AuthStatus.unauthenticated,
+        status: user.isEmailVerified
+            ? AuthStatus.authenticated
+            : AuthStatus.unauthenticated,
         errorMessage: () => null,
       );
     } on AuthException catch (e) {
@@ -246,7 +272,10 @@ class AuthNotifier extends Notifier<AuthState> {
       );
       return;
     }
-    state = state.copyWith(status: AuthStatus.loading, errorMessage: () => null);
+    state = state.copyWith(
+      status: AuthStatus.loading,
+      errorMessage: () => null,
+    );
     try {
       final user = await _authService.signInWithFacebook();
       _resetAuthErrors();
@@ -256,7 +285,9 @@ class AuthNotifier extends Notifier<AuthState> {
         photoUrl: () => user.photoUrl,
         uid: () => user.uid,
         pendingVerification: !user.isEmailVerified,
-        status: user.isEmailVerified ? AuthStatus.authenticated : AuthStatus.unauthenticated,
+        status: user.isEmailVerified
+            ? AuthStatus.authenticated
+            : AuthStatus.unauthenticated,
         errorMessage: () => null,
       );
     } on AuthException catch (e) {
@@ -291,7 +322,10 @@ class AuthNotifier extends Notifier<AuthState> {
       );
       return;
     }
-    state = state.copyWith(status: AuthStatus.loading, errorMessage: () => null);
+    state = state.copyWith(
+      status: AuthStatus.loading,
+      errorMessage: () => null,
+    );
     try {
       final user = await _authService.signUpWithEmail(
         email: email,
@@ -334,7 +368,10 @@ class AuthNotifier extends Notifier<AuthState> {
       );
       return;
     }
-    state = state.copyWith(status: AuthStatus.loading, errorMessage: () => null);
+    state = state.copyWith(
+      status: AuthStatus.loading,
+      errorMessage: () => null,
+    );
     try {
       final user = await _authService.signInWithEmail(
         email: email,
@@ -347,7 +384,9 @@ class AuthNotifier extends Notifier<AuthState> {
         photoUrl: () => user.photoUrl,
         uid: () => user.uid,
         pendingVerification: !user.isEmailVerified,
-        status: user.isEmailVerified ? AuthStatus.authenticated : AuthStatus.unauthenticated,
+        status: user.isEmailVerified
+            ? AuthStatus.authenticated
+            : AuthStatus.unauthenticated,
         errorMessage: () => null,
       );
     } on AuthException catch (e) {
@@ -405,7 +444,10 @@ class AuthNotifier extends Notifier<AuthState> {
   }
 
   Future<void> sendPasswordResetEmail(String email) async {
-    state = state.copyWith(status: AuthStatus.loading, errorMessage: () => null);
+    state = state.copyWith(
+      status: AuthStatus.loading,
+      errorMessage: () => null,
+    );
     try {
       await _authService.sendPasswordResetEmail(email);
       state = state.copyWith(status: AuthStatus.unauthenticated);

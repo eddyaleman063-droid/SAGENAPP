@@ -11,13 +11,21 @@ class WeakTopic {
   final int failCount;
   final int totalAttempts;
 
-  WeakTopic({required this.id, required this.label, this.failCount = 0, this.totalAttempts = 0});
+  WeakTopic({
+    required this.id,
+    required this.label,
+    this.failCount = 0,
+    this.totalAttempts = 0,
+  });
 
   double get failRate => totalAttempts > 0 ? failCount / totalAttempts : 0;
   bool get isWeak => totalAttempts >= 2 && failRate > 0.5;
 
   Map<String, dynamic> toJson() => {
-    'id': id, 'label': label, 'failCount': failCount, 'totalAttempts': totalAttempts,
+    'id': id,
+    'label': label,
+    'failCount': failCount,
+    'totalAttempts': totalAttempts,
   };
 
   factory WeakTopic.fromJson(Map<String, dynamic> json) => WeakTopic(
@@ -55,10 +63,14 @@ class LearningMemoryState {
   }) {
     return LearningMemoryState(
       weakTopics: weakTopics != null ? weakTopics() : this.weakTopics,
-      completedChallenges: completedChallenges != null ? completedChallenges() : this.completedChallenges,
+      completedChallenges: completedChallenges != null
+          ? completedChallenges()
+          : this.completedChallenges,
       totalLessonsFailed: totalLessonsFailed ?? this.totalLessonsFailed,
       totalLessonsPassed: totalLessonsPassed ?? this.totalLessonsPassed,
-      lastSessionDate: lastSessionDate != null ? lastSessionDate() : this.lastSessionDate,
+      lastSessionDate: lastSessionDate != null
+          ? lastSessionDate()
+          : this.lastSessionDate,
       sessionsThisWeek: sessionsThisWeek ?? this.sessionsThisWeek,
     );
   }
@@ -73,10 +85,14 @@ class LearningMemoryState {
     final types = <QuickChallengeType>[];
     for (final t in weak) {
       switch (t.id) {
-        case 'phishing': types.add(QuickChallengeType.detectPhishing);
-        case 'passwords': types.add(QuickChallengeType.safePassword);
-        case 'risks': types.add(QuickChallengeType.detectRisk);
-        case 'scenarios': types.add(QuickChallengeType.whatWouldYouDo);
+        case 'phishing':
+          types.add(QuickChallengeType.detectPhishing);
+        case 'passwords':
+          types.add(QuickChallengeType.safePassword);
+        case 'risks':
+          types.add(QuickChallengeType.detectRisk);
+        case 'scenarios':
+          types.add(QuickChallengeType.whatWouldYouDo);
       }
     }
     return types;
@@ -108,13 +124,15 @@ class LearningMemoryNotifier extends Notifier<LearningMemoryState> {
   }
 
   List<WeakTopic> get weakTopics => List.unmodifiable(state.weakTopics);
-  List<String> get completedChallenges => List.unmodifiable(state.completedChallenges);
+  List<String> get completedChallenges =>
+      List.unmodifiable(state.completedChallenges);
   int get totalLessonsFailed => state.totalLessonsFailed;
   int get totalLessonsPassed => state.totalLessonsPassed;
   DateTime? get lastSessionDate => state.lastSessionDate;
   int get sessionsThisWeek => state.sessionsThisWeek;
   double get overallPassRate => state.overallPassRate;
-  List<QuickChallengeType> get recommendedChallengeTypes => state.recommendedChallengeTypes;
+  List<QuickChallengeType> get recommendedChallengeTypes =>
+      state.recommendedChallengeTypes;
   List<String> get suggestedTipTopics => state.suggestedTipTopics;
 
   void _load() {
@@ -123,7 +141,9 @@ class LearningMemoryNotifier extends Notifier<LearningMemoryState> {
     if (raw.isNotEmpty) {
       try {
         final list = jsonDecode(raw) as List;
-        weakTopics = list.map((e) => WeakTopic.fromJson(e as Map<String, dynamic>)).toList();
+        weakTopics = list
+            .map((e) => WeakTopic.fromJson(e as Map<String, dynamic>))
+            .toList();
       } catch (e) {
         AppLogger().warning('LearningMemory: failed to decode weak topics: $e');
       }
@@ -135,7 +155,9 @@ class LearningMemoryNotifier extends Notifier<LearningMemoryState> {
       try {
         completedChallenges = (jsonDecode(completed) as List).cast<String>();
       } catch (e) {
-        AppLogger().warning('LearningMemory: failed to decode completed challenges: $e');
+        AppLogger().warning(
+          'LearningMemory: failed to decode completed challenges: $e',
+        );
       }
     }
 
@@ -165,8 +187,14 @@ class LearningMemoryNotifier extends Notifier<LearningMemoryState> {
     }
     _saveInProgress = true;
     try {
-      await _storage.setString(_keyWeakTopics, jsonEncode(state.weakTopics.map((t) => t.toJson()).toList()));
-      await _storage.setString(_keyCompletedChallenges, jsonEncode(state.completedChallenges));
+      await _storage.setString(
+        _keyWeakTopics,
+        jsonEncode(state.weakTopics.map((t) => t.toJson()).toList()),
+      );
+      await _storage.setString(
+        _keyCompletedChallenges,
+        jsonEncode(state.completedChallenges),
+      );
       await _storage.setInt(_keyFailed, state.totalLessonsFailed);
       await _storage.setInt(_keyPassed, state.totalLessonsPassed);
       await _storage.setInt(_keySessionsWeek, state.sessionsThisWeek);
@@ -200,10 +228,19 @@ class LearningMemoryNotifier extends Notifier<LearningMemoryState> {
         id: existing.first.id,
         label: existing.first.label,
         totalAttempts: existing.first.totalAttempts + 1,
-        failCount: passed ? existing.first.failCount : existing.first.failCount + 1,
+        failCount: passed
+            ? existing.first.failCount
+            : existing.first.failCount + 1,
       );
     } else {
-      weakTopics.add(WeakTopic(id: topic, label: topic, totalAttempts: 1, failCount: passed ? 0 : 1));
+      weakTopics.add(
+        WeakTopic(
+          id: topic,
+          label: topic,
+          totalAttempts: 1,
+          failCount: passed ? 0 : 1,
+        ),
+      );
     }
 
     state = state.copyWith(
@@ -216,14 +253,21 @@ class LearningMemoryNotifier extends Notifier<LearningMemoryState> {
     _save();
   }
 
-  void recordChallengeAttempt({required String challengeId, required bool passed, required QuickChallengeType type}) {
+  void recordChallengeAttempt({
+    required String challengeId,
+    required bool passed,
+    required QuickChallengeType type,
+  }) {
     const maxCompletedChallenges = 500;
     final topic = _topicForType(type);
     final completedChallenges = List<String>.from(state.completedChallenges);
     if (!completedChallenges.contains(challengeId)) {
       completedChallenges.add(challengeId);
       if (completedChallenges.length > maxCompletedChallenges) {
-        completedChallenges.removeRange(0, completedChallenges.length - maxCompletedChallenges);
+        completedChallenges.removeRange(
+          0,
+          completedChallenges.length - maxCompletedChallenges,
+        );
       }
     }
 
@@ -235,10 +279,19 @@ class LearningMemoryNotifier extends Notifier<LearningMemoryState> {
         id: existing.first.id,
         label: existing.first.label,
         totalAttempts: existing.first.totalAttempts + 1,
-        failCount: passed ? existing.first.failCount : existing.first.failCount + 1,
+        failCount: passed
+            ? existing.first.failCount
+            : existing.first.failCount + 1,
       );
     } else {
-      weakTopics.add(WeakTopic(id: topic, label: topic, totalAttempts: 1, failCount: passed ? 0 : 1));
+      weakTopics.add(
+        WeakTopic(
+          id: topic,
+          label: topic,
+          totalAttempts: 1,
+          failCount: passed ? 0 : 1,
+        ),
+      );
     }
 
     state = state.copyWith(
@@ -277,11 +330,16 @@ class LearningMemoryNotifier extends Notifier<LearningMemoryState> {
 
   String _topicForType(QuickChallengeType type) {
     switch (type) {
-      case QuickChallengeType.detectPhishing: return 'phishing';
-      case QuickChallengeType.safePassword: return 'passwords';
-      case QuickChallengeType.detectRisk: return 'risks';
-      case QuickChallengeType.whatWouldYouDo: return 'scenarios';
-      case QuickChallengeType.trueFalse: return 'general';
+      case QuickChallengeType.detectPhishing:
+        return 'phishing';
+      case QuickChallengeType.safePassword:
+        return 'passwords';
+      case QuickChallengeType.detectRisk:
+        return 'risks';
+      case QuickChallengeType.whatWouldYouDo:
+        return 'scenarios';
+      case QuickChallengeType.trueFalse:
+        return 'general';
     }
   }
 }

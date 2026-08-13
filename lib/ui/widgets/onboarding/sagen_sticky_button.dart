@@ -55,9 +55,11 @@ class SagenStickyButton extends StatelessWidget {
                 child: Text(
                   label,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: enabled ? Colors.white : PremiumColors.buttonGrayLight,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    color: enabled
+                        ? Colors.white
+                        : PremiumColors.buttonGrayLight,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),

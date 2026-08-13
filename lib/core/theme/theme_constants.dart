@@ -50,8 +50,16 @@ class PremiumColors {
   static const gradientActive = [Color(0xFF0D47A1), Color(0xFF1E88E5)];
   static const gradientFrozen = [Color(0xFF64B5F6), Color(0xFFBBDEFB)];
   static const gradientAchievement = [Color(0xFFFF8F00), Color(0xFFFFB300)];
-  static const gradientHeader = [Color(0xFF0D47A1), Color(0xFF1976D2), Color(0xFF42A5F5)];
-  static const gradientSage = [Color(0xFF4C1D95), Color(0xFF6D28D9), Color(0xFF7C3AED)];
+  static const gradientHeader = [
+    Color(0xFF0D47A1),
+    Color(0xFF1976D2),
+    Color(0xFF42A5F5),
+  ];
+  static const gradientSage = [
+    Color(0xFF4C1D95),
+    Color(0xFF6D28D9),
+    Color(0xFF7C3AED),
+  ];
   static const gradientSafe = [Color(0xFF1B5E20), Color(0xFF43A047)];
   static const gradientSuspicious = [Color(0xFFBF360C), Color(0xFFFF6D00)];
   static const gradientDangerous = [Color(0xFF7F0000), Color(0xFFE53935)];
@@ -271,11 +279,43 @@ class PremiumColors {
   static const youtubeRed = Color(0xFFFF0000);
 
   // Confetti palettes
-  static const confettiFresh = [Color(0xFF4ECDC4), Color(0xFF95E1D3), Color(0xFF38B2AC), Color(0xFF2D9CDB), Color(0xFF27AE60)];
-  static const confettiWarm = [Color(0xFFFF6B6B), Color(0xFFF38181), Color(0xFFFF9F43), Color(0xFFFFC312), Color(0xFFEE5A24)];
-  static const confettiSoft = [Color(0xFFAA96DA), Color(0xFFFCBDAD), Color(0xFFA29BFE), Color(0xFF6C5CE7), Color(0xFF9B59B6)];
-  static const confettiExtra = [Color(0xFFFFE66D), Color(0xFFFDCB6E), Color(0xFFF8B500), Color(0xFFFF9F43), Color(0xFFE1B12C)];
-  static const confettiMixed = [Color(0xFFFF6B6B), Color(0xFF4ECDC4), Color(0xFFFFE66D), Color(0xFF95E1D3), Color(0xFFF38181), Color(0xFFAA96DA), Color(0xFFFCBDAD)];
+  static const confettiFresh = [
+    Color(0xFF4ECDC4),
+    Color(0xFF95E1D3),
+    Color(0xFF38B2AC),
+    Color(0xFF2D9CDB),
+    Color(0xFF27AE60),
+  ];
+  static const confettiWarm = [
+    Color(0xFFFF6B6B),
+    Color(0xFFF38181),
+    Color(0xFFFF9F43),
+    Color(0xFFFFC312),
+    Color(0xFFEE5A24),
+  ];
+  static const confettiSoft = [
+    Color(0xFFAA96DA),
+    Color(0xFFFCBDAD),
+    Color(0xFFA29BFE),
+    Color(0xFF6C5CE7),
+    Color(0xFF9B59B6),
+  ];
+  static const confettiExtra = [
+    Color(0xFFFFE66D),
+    Color(0xFFFDCB6E),
+    Color(0xFFF8B500),
+    Color(0xFFFF9F43),
+    Color(0xFFE1B12C),
+  ];
+  static const confettiMixed = [
+    Color(0xFFFF6B6B),
+    Color(0xFF4ECDC4),
+    Color(0xFFFFE66D),
+    Color(0xFF95E1D3),
+    Color(0xFFF38181),
+    Color(0xFFAA96DA),
+    Color(0xFFFCBDAD),
+  ];
 
   // Chest body colors (painter)
   static const chestBronzeBody = Color(0xFFCD7F32);
@@ -385,88 +425,88 @@ class AppGradients {
   AppGradients._();
 
   static LinearGradient shieldActive() => const LinearGradient(
-        colors: PremiumColors.gradientActive,
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-      );
+    colors: PremiumColors.gradientActive,
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
 
   static LinearGradient shieldAchievement() => const LinearGradient(
-        colors: PremiumColors.gradientAchievement,
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-      );
+    colors: PremiumColors.gradientAchievement,
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
 
   static LinearGradient shieldFrozen() => const LinearGradient(
-        colors: PremiumColors.gradientFrozen,
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-      );
+    colors: PremiumColors.gradientFrozen,
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
 
   static LinearGradient sage() => const LinearGradient(
-        colors: PremiumColors.gradientSage,
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-      );
+    colors: PremiumColors.gradientSage,
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
 
   static LinearGradient safe() => const LinearGradient(
-        colors: PremiumColors.gradientSafe,
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-      );
+    colors: PremiumColors.gradientSafe,
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
 
   static LinearGradient suspicious() => const LinearGradient(
-        colors: PremiumColors.gradientSuspicious,
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-      );
+    colors: PremiumColors.gradientSuspicious,
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
 
   static LinearGradient dangerous() => const LinearGradient(
-        colors: PremiumColors.gradientDangerous,
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-      );
+    colors: PremiumColors.gradientDangerous,
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
 
   static LinearGradient primaryHeader() => const LinearGradient(
-        colors: PremiumColors.gradientHeader,
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-      );
+    colors: PremiumColors.gradientHeader,
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
 
   static LinearGradient shieldLegendary() => const LinearGradient(
-        colors: PremiumColors.gradientShieldLegendary,
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-      );
+    colors: PremiumColors.gradientShieldLegendary,
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
 
   static LinearGradient shieldCrystal() => const LinearGradient(
-        colors: PremiumColors.gradientShieldCrystal,
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-      );
+    colors: PremiumColors.gradientShieldCrystal,
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
 
   static LinearGradient shieldGlow() => const LinearGradient(
-        colors: PremiumColors.gradientShieldGlow,
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-      );
+    colors: PremiumColors.gradientShieldGlow,
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
 
   static LinearGradient shieldBasic() => const LinearGradient(
-        colors: PremiumColors.gradientShieldBasic,
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-      );
+    colors: PremiumColors.gradientShieldBasic,
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
 }
 
 class AppShadows {
   AppShadows._();
 
   static List<BoxShadow> card({Color? color, double blurRadius = 10}) => [
-        BoxShadow(
-          color: (color ?? Colors.black).withValues(alpha: 0.08),
-          blurRadius: blurRadius,
-          offset: const Offset(0, 4),
-        ),
-      ];
+    BoxShadow(
+      color: (color ?? Colors.black).withValues(alpha: 0.08),
+      blurRadius: blurRadius,
+      offset: const Offset(0, 4),
+    ),
+  ];
 
   static List<BoxShadow> glow({
     required Color color,
@@ -474,36 +514,36 @@ class AppShadows {
     double radius = 20,
     double spread = 2,
   }) => [
-        BoxShadow(
-          color: color.withValues(alpha: intensity),
-          blurRadius: radius,
-          spreadRadius: spread,
-        ),
-      ];
+    BoxShadow(
+      color: color.withValues(alpha: intensity),
+      blurRadius: radius,
+      spreadRadius: spread,
+    ),
+  ];
 
   static List<BoxShadow> elevated({Color? color, double intensity = 0.08}) => [
-        BoxShadow(
-          color: (color ?? Colors.black).withValues(alpha: intensity),
-          blurRadius: 14,
-          offset: const Offset(0, 6),
-        ),
-      ];
+    BoxShadow(
+      color: (color ?? Colors.black).withValues(alpha: intensity),
+      blurRadius: 14,
+      offset: const Offset(0, 6),
+    ),
+  ];
 }
 
 class AppEffects {
   AppEffects._();
 
   static BoxShadow softGlow(Color color) => BoxShadow(
-        color: color.withValues(alpha: 0.15),
-        blurRadius: 20,
-        spreadRadius: 1,
-      );
+    color: color.withValues(alpha: 0.15),
+    blurRadius: 20,
+    spreadRadius: 1,
+  );
 
   static BoxShadow strongGlow(Color color) => BoxShadow(
-        color: color.withValues(alpha: 0.3),
-        blurRadius: 30,
-        spreadRadius: 4,
-      );
+    color: color.withValues(alpha: 0.3),
+    blurRadius: 30,
+    spreadRadius: 4,
+  );
 }
 
 class AppDurations {
@@ -515,10 +555,13 @@ class AppDurations {
 class AppGlassmorphism {
   AppGlassmorphism._();
   static BoxDecoration input({required bool dark}) => BoxDecoration(
-    color: (dark ? PremiumColors.textLight : PremiumColors.textDark).withValues(alpha: 0.05),
+    color: (dark ? PremiumColors.textLight : PremiumColors.textDark).withValues(
+      alpha: 0.05,
+    ),
     borderRadius: BorderRadius.circular(16),
     border: Border.all(
-      color: (dark ? PremiumColors.textLight : PremiumColors.textDark).withValues(alpha: 0.08),
+      color: (dark ? PremiumColors.textLight : PremiumColors.textDark)
+          .withValues(alpha: 0.08),
     ),
   );
 }
@@ -529,26 +572,44 @@ class AppTextStyle {
   // ── Display ──────────────────────────────────────────────
   static const heroLarge = TextStyle(fontSize: 56, fontWeight: FontWeight.bold);
   static const hero = TextStyle(fontSize: 48, fontWeight: FontWeight.bold);
-  static const displayLarge = TextStyle(fontSize: 36, fontWeight: FontWeight.bold);
+  static const displayLarge = TextStyle(
+    fontSize: 36,
+    fontWeight: FontWeight.bold,
+  );
   static const display = TextStyle(fontSize: 32, fontWeight: FontWeight.bold);
-  static const displayMedium = TextStyle(fontSize: 28, fontWeight: FontWeight.bold);
+  static const displayMedium = TextStyle(
+    fontSize: 28,
+    fontWeight: FontWeight.bold,
+  );
 
   // ── Headline ─────────────────────────────────────────────
-  static const headlineLarge = TextStyle(fontSize: 26, fontWeight: FontWeight.bold);
+  static const headlineLarge = TextStyle(
+    fontSize: 26,
+    fontWeight: FontWeight.bold,
+  );
   static const headline = TextStyle(fontSize: 24, fontWeight: FontWeight.bold);
-  static const headlineMedium = TextStyle(fontSize: 22, fontWeight: FontWeight.bold);
+  static const headlineMedium = TextStyle(
+    fontSize: 22,
+    fontWeight: FontWeight.bold,
+  );
 
   // ── Title ────────────────────────────────────────────────
   static const titleLg = TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
   static const title = TextStyle(fontSize: 18, fontWeight: FontWeight.bold);
-  static const titleSmall = TextStyle(fontSize: 16, fontWeight: FontWeight.w600);
+  static const titleSmall = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+  );
 
   // ── Body ─────────────────────────────────────────────────
   static const bodyLg = TextStyle(fontSize: 17);
   static const body = TextStyle(fontSize: 15);
   static const bodyBold = TextStyle(fontSize: 15, fontWeight: FontWeight.w600);
   static const bodyMd = TextStyle(fontSize: 14);
-  static const bodyMdBold = TextStyle(fontSize: 14, fontWeight: FontWeight.w600);
+  static const bodyMdBold = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w600,
+  );
 
   // ── Caption / Subtitle ───────────────────────────────────
   static const subtitle = TextStyle(fontSize: 13);

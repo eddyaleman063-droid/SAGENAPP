@@ -22,10 +22,7 @@ class ChestEvolutionResult {
   final ChestType finalType;
   final List<EvolutionAttempt> attempts;
 
-  const ChestEvolutionResult({
-    required this.finalType,
-    required this.attempts,
-  });
+  const ChestEvolutionResult({required this.finalType, required this.attempts});
 }
 
 /// Result of a single chest evolution roll.
@@ -33,8 +30,5 @@ class SingleEvolutionResult {
   final ChestType newTier;
   final bool evolved;
 
-  const SingleEvolutionResult({
-    required this.newTier,
-    required this.evolved,
-  });
+  const SingleEvolutionResult({required this.newTier, required this.evolved});
 }

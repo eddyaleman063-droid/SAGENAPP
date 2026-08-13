@@ -1,4 +1,4 @@
-﻿import 'dart:async';
+import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../l10n/app_localizations.dart';
@@ -100,7 +100,9 @@ class LearningNotifier extends Notifier<LearningState> {
   int xpForLesson(Lesson lesson) {
     final streakMult = ref.read(streakProvider).streakMultiplier;
     final boostActive = ref.read(shopProvider).xpBoostActive;
-    final focusElixirActive = ref.read(itemProvider.notifier).isFocusElixirActive();
+    final focusElixirActive = ref
+        .read(itemProvider.notifier)
+        .isFocusElixirActive();
     final boostMult = (boostActive || focusElixirActive) ? 2.0 : 1.0;
     return (lesson.xpReward * streakMult * boostMult).round();
   }
@@ -133,7 +135,8 @@ class LearningNotifier extends Notifier<LearningState> {
     });
 
     ref.listen<SharedPreferences>(prefsProvider, (prev, next) {
-      if (prev?.getString('preferredLanguage') != next.getString('preferredLanguage')) {
+      if (prev?.getString('preferredLanguage') !=
+          next.getString('preferredLanguage')) {
         _init();
       }
     });
@@ -162,7 +165,9 @@ class LearningNotifier extends Notifier<LearningState> {
       final rawLessons = result['lessonsCompleted'];
 
       final serverTotalXp = (xpData is Map) ? xpData['totalXp'] as int? : null;
-      final serverLevel = (levelData is Map) ? levelData['current'] as int? : null;
+      final serverLevel = (levelData is Map)
+          ? levelData['current'] as int?
+          : null;
       final serverLessonsCompleted = (rawLessons is int) ? rawLessons : null;
 
       if (serverTotalXp != null || serverLevel != null) {
@@ -180,7 +185,9 @@ class LearningNotifier extends Notifier<LearningState> {
 
   /// Handle a queue item that was dropped after max retries.
   void _onQueueItemDropped(Map<String, dynamic> item) {
-    AppLogger().warning('Queue item dropped after max retries: ${item['lessonId']}');
+    AppLogger().warning(
+      'Queue item dropped after max retries: ${item['lessonId']}',
+    );
   }
 
   Future<void> _init() async {
@@ -263,7 +270,8 @@ class LearningNotifier extends Notifier<LearningState> {
           );
         }
         // Preserve partial progress even if not yet completed
-        if (cachedLesson.correctAnswers > 0 || cachedLesson.totalQuestions > 0) {
+        if (cachedLesson.correctAnswers > 0 ||
+            cachedLesson.totalQuestions > 0) {
           return freshLesson.copyWith(
             correctAnswers: cachedLesson.correctAnswers,
             totalQuestions: cachedLesson.totalQuestions,
@@ -349,7 +357,12 @@ class LearningNotifier extends Notifier<LearningState> {
       );
     } catch (e) {
       AppLogger().warning('LearningNotifier._save failed: $e');
-      if (prevXp != null && prevStages != null && prevLevel != null && prevLessons != null && prevAchievements != null && prevTotalXp != null) {
+      if (prevXp != null &&
+          prevStages != null &&
+          prevLevel != null &&
+          prevLessons != null &&
+          prevAchievements != null &&
+          prevTotalXp != null) {
         try {
           final repo = _repo;
           repo.saveAll(
@@ -429,26 +442,32 @@ class LearningNotifier extends Notifier<LearningState> {
     final gemsBase = correctAnswers * 5;
     final gemsPerfectBonus = perfectLesson ? gemsBase : 0;
     final gemsPerfectFlat = perfectLesson ? 20 : 0;
-    final gemsFirstLesson = ref.read(gemProvider.notifier).canAwardFirstLessonOfDay ? 10 : 0;
-    final gemsEarned = gemsBase + gemsPerfectBonus + gemsPerfectFlat + gemsFirstLesson;
+    final gemsFirstLesson =
+        ref.read(gemProvider.notifier).canAwardFirstLessonOfDay ? 10 : 0;
+    final gemsEarned =
+        gemsBase + gemsPerfectBonus + gemsPerfectFlat + gemsFirstLesson;
 
     // Award gems for lesson completion
-    ref.read(gemProvider.notifier).awardLessonGems(correctAnswers, perfectLesson);
+    ref
+        .read(gemProvider.notifier)
+        .awardLessonGems(correctAnswers, perfectLesson);
     if (perfectLesson) ref.read(gemProvider.notifier).awardPerfectLessonBonus();
     ref.read(gemProvider.notifier).awardFirstLessonOfDay();
 
     _save();
 
     // Queue lesson for server-side sync (single entry point).
-    ref.read(offlineQueueServiceProvider).queueLessonCompletion(
-      lessonId: lessonId,
-      stageId: stageId,
-      gemsEarned: gemsEarned,
-      xpEarned: multipliedXp,
-      correctAnswers: correctAnswers,
-      totalQuestions: totalQuestions,
-      completedAt: DateTime.now(),
-    );
+    ref
+        .read(offlineQueueServiceProvider)
+        .queueLessonCompletion(
+          lessonId: lessonId,
+          stageId: stageId,
+          gemsEarned: gemsEarned,
+          xpEarned: multipliedXp,
+          correctAnswers: correctAnswers,
+          totalQuestions: totalQuestions,
+          completedAt: DateTime.now(),
+        );
 
     await _checkLessonChest();
     _scheduleStreakReminder();
@@ -462,12 +481,14 @@ class LearningNotifier extends Notifier<LearningState> {
 
   Future<void> _checkLessonChest() async {
     final luckActive = ref.read(itemProvider.notifier).isLuckBoostActive();
-    final data = await ref.read(learningRewardServiceProvider).rollChest(
-      lessonsCompleted: state.lessonsCompleted,
-      totalDonated: state.totalDonated,
-      xp: state.xp,
-      luckBoostActive: luckActive,
-    );
+    final data = await ref
+        .read(learningRewardServiceProvider)
+        .rollChest(
+          lessonsCompleted: state.lessonsCompleted,
+          totalDonated: state.totalDonated,
+          xp: state.xp,
+          luckBoostActive: luckActive,
+        );
     if (data == null) return;
 
     if (data.xp > 0) await addXp(data.xp, reason: 'chest_reward');
@@ -479,19 +500,35 @@ class LearningNotifier extends Notifier<LearningState> {
     if (_disposed) return;
     final lc = state.lessonsCompleted;
     final a = ref.read(achievementProvider.notifier);
-    if (lc >= 1) { a.unlockAchievement('first_lesson'); }
-    if (lc >= 5) { a.unlockAchievement('five_lessons'); }
-    if (lc >= 10) { a.unlockAchievement('ten_lessons'); }
-    if (lc >= 25) { a.unlockAchievement('twenty_five_lessons'); }
-    if (lc >= 50) { a.unlockAchievement('fifty_lessons'); }
+    if (lc >= 1) {
+      a.unlockAchievement('first_lesson');
+    }
+    if (lc >= 5) {
+      a.unlockAchievement('five_lessons');
+    }
+    if (lc >= 10) {
+      a.unlockAchievement('ten_lessons');
+    }
+    if (lc >= 25) {
+      a.unlockAchievement('twenty_five_lessons');
+    }
+    if (lc >= 50) {
+      a.unlockAchievement('fifty_lessons');
+    }
 
     final firstComplete = state.stages.any((s) => s.isComplete);
-    if (firstComplete) { a.unlockAchievement('stage_complete'); }
+    if (firstComplete) {
+      a.unlockAchievement('stage_complete');
+    }
 
     final allComplete = state.stages.every((s) => s.isComplete);
-    if (allComplete) { a.unlockAchievement('all_stages'); }
+    if (allComplete) {
+      a.unlockAchievement('all_stages');
+    }
 
-    if (perfectLesson) { a.unlockAchievement('perfect_lesson'); }
+    if (perfectLesson) {
+      a.unlockAchievement('perfect_lesson');
+    }
   }
 
   void _checkUnlocks() {
@@ -515,7 +552,10 @@ class LearningNotifier extends Notifier<LearningState> {
     return state.stages[idx].unlocked;
   }
 
-  Future<void> recordDonation({required double amount, required String method}) async {
+  Future<void> recordDonation({
+    required double amount,
+    required String method,
+  }) async {
     if (amount <= 0) return;
     final previousDonated = state.totalDonated;
     state = state.copyWith(
@@ -524,10 +564,9 @@ class LearningNotifier extends Notifier<LearningState> {
     );
 
     try {
-      await ref.read(economicFunctionsServiceProvider).recordDonation(
-        amount: amount,
-        method: method,
-      );
+      await ref
+          .read(economicFunctionsServiceProvider)
+          .recordDonation(amount: amount, method: method);
       _save();
     } catch (e) {
       state = state.copyWith(
@@ -556,10 +595,9 @@ class LearningNotifier extends Notifier<LearningState> {
 
     try {
       // Server-authoritative: amount is ignored server-side, reward based on reason
-      await ref.read(economicFunctionsServiceProvider).addXp(
-        reason: reason ?? 'lesson_reward',
-        lessonId: lessonId,
-      );
+      await ref
+          .read(economicFunctionsServiceProvider)
+          .addXp(reason: reason ?? 'lesson_reward', lessonId: lessonId);
       _repo.saveXp(state.xp);
       _repo.saveTotalXp(state.totalXpEarned);
       _repo.saveLevel(state.currentLevel);
@@ -581,7 +619,9 @@ class LearningNotifier extends Notifier<LearningState> {
     final newTotalXp = (state.totalXpEarned + amount).clamp(0, 1000000);
     final newLevel = (newTotalXp / 100).floor() + 1;
     final didLevelUp = newLevel > state.currentLevel;
-    final newXp = didLevelUp ? newTotalXp - (newLevel - 1) * 100 : state.xp + amount;
+    final newXp = didLevelUp
+        ? newTotalXp - (newLevel - 1) * 100
+        : state.xp + amount;
     state = state.copyWith(
       xp: newXp,
       totalXpEarned: newTotalXp,
@@ -614,8 +654,7 @@ class LearningNotifier extends Notifier<LearningState> {
       state = state.copyWith(errorMessage: () => null);
     } catch (e) {
       state = state.copyWith(
-        errorMessage: () =>
-            'Could not reload your progress. Please try again.',
+        errorMessage: () => 'Could not reload your progress. Please try again.',
       );
     }
   }

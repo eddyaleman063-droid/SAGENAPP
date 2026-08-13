@@ -21,18 +21,24 @@ class AuthSyncManager {
     for (var attempt = 0; attempt < maxAttempts; attempt++) {
       try {
         await _cloudSync.loadAll(uid, prefs);
-        if (epoch != _sessionEpoch) return; // Session changed — discard stale result
+        if (epoch != _sessionEpoch) {
+          return; // Session changed — discard stale result
+        }
         return;
       } catch (e) {
         if (epoch != _sessionEpoch) return; // Session changed — stop retrying
-        AppLogger().warning('AuthSyncManager: sync attempt ${attempt + 1} failed: $e');
+        AppLogger().warning(
+          'AuthSyncManager: sync attempt ${attempt + 1} failed: $e',
+        );
         if (attempt < maxAttempts - 1) {
           await Future<void>.delayed(Duration(seconds: 1 << attempt));
           if (epoch != _sessionEpoch) return; // Logged out during backoff
         }
       }
     }
-    AppLogger().warning('AuthSyncManager: all retries failed, using local data');
+    AppLogger().warning(
+      'AuthSyncManager: all retries failed, using local data',
+    );
   }
 
   /// Start cloud sync listening for real-time updates.
@@ -71,7 +77,10 @@ class AuthSyncManager {
   Future<bool?> loadOnboardingStatus(String uid) async {
     final loadId = ++_onboardingLoadId;
     try {
-      final doc = await FirebaseFirestore.instance.collection('users').doc(uid).get()
+      final doc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .get()
           .timeout(const Duration(seconds: 10));
       if (loadId != _onboardingLoadId) return null;
       if (doc.exists) {

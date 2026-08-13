@@ -31,7 +31,9 @@ class ItemRepositoryImpl implements ItemRepository {
         final map = jsonDecode(rawQ) as Map<String, dynamic>;
         _quantities = {};
         for (final entry in map.entries) {
-          final match = SpecialItemType.values.where((t) => t.name == entry.key);
+          final match = SpecialItemType.values.where(
+            (t) => t.name == entry.key,
+          );
           if (match.isNotEmpty) {
             _quantities[match.first] = (entry.value as num?)?.toInt() ?? 0;
           }
@@ -48,14 +50,19 @@ class ItemRepositoryImpl implements ItemRepository {
         final map = jsonDecode(rawA) as Map<String, dynamic>;
         _activeUntil = {};
         for (final entry in map.entries) {
-          final match = SpecialItemType.values.where((t) => t.name == entry.key);
+          final match = SpecialItemType.values.where(
+            (t) => t.name == entry.key,
+          );
           if (match.isNotEmpty) {
-            _activeUntil[match.first] =
-                entry.value != null ? DateTime.tryParse(entry.value as String) : null;
+            _activeUntil[match.first] = entry.value != null
+                ? DateTime.tryParse(entry.value as String)
+                : null;
           }
         }
       } catch (_) {
-        AppLogger().warning('ItemRepository: failed to decode active until dates');
+        AppLogger().warning(
+          'ItemRepository: failed to decode active until dates',
+        );
         _activeUntil = {};
       }
     }
@@ -83,12 +90,18 @@ class ItemRepositoryImpl implements ItemRepository {
 
   @override
   void save() {
-    _prefs.setString(_keyQuantities, jsonEncode({
-      for (final entry in _quantities.entries) entry.key.name: entry.value,
-    }));
-    _prefs.setString(_keyActiveUntil, jsonEncode({
-      for (final entry in _activeUntil.entries)
-        entry.key.name: entry.value?.toIso8601String(),
-    }));
+    _prefs.setString(
+      _keyQuantities,
+      jsonEncode({
+        for (final entry in _quantities.entries) entry.key.name: entry.value,
+      }),
+    );
+    _prefs.setString(
+      _keyActiveUntil,
+      jsonEncode({
+        for (final entry in _activeUntil.entries)
+          entry.key.name: entry.value?.toIso8601String(),
+      }),
+    );
   }
 }

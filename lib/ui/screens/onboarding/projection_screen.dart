@@ -1,4 +1,4 @@
-﻿import 'dart:math' as math;
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,11 +13,7 @@ class ProjectionScreen extends StatefulWidget {
   final VoidCallback? onContinue;
   final VoidCallback? onBack;
 
-  const ProjectionScreen({
-    super.key,
-    this.onContinue,
-    this.onBack,
-  });
+  const ProjectionScreen({super.key, this.onContinue, this.onBack});
 
   @override
   State<ProjectionScreen> createState() => _ProjectionScreenState();
@@ -56,7 +52,9 @@ class _ProjectionScreenState extends State<ProjectionScreen> {
     final dark = Theme.of(context).brightness == Brightness.dark;
     final l = AppLocalizations.of(context)!;
     return Scaffold(
-      backgroundColor: dark ? PremiumColors.deepBackground : PremiumColors.lightBg,
+      backgroundColor: dark
+          ? PremiumColors.deepBackground
+          : PremiumColors.lightBg,
       body: SafeArea(
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
@@ -64,7 +62,10 @@ class _ProjectionScreenState extends State<ProjectionScreen> {
             children: [
               // ── Header ──
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxs, vertical: AppSpacing.sm),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.xxs,
+                  vertical: AppSpacing.sm,
+                ),
                 child: Row(
                   children: [
                     Semantics(
@@ -113,7 +114,8 @@ class _ProjectionScreenState extends State<ProjectionScreen> {
               RepaintBoundary(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: AppSpacing.xxl),
+                    horizontal: AppSpacing.xxl,
+                  ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -124,7 +126,8 @@ class _ProjectionScreenState extends State<ProjectionScreen> {
                           height: 80,
                           cacheWidth: 160,
                           cacheHeight: 160,
-                          errorBuilder: (_, _, _) => const Icon(Icons.pets, size: 48),
+                          errorBuilder: (_, _, _) =>
+                              const Icon(Icons.pets, size: 48),
                         ),
                       ),
                       const SizedBox(width: AppSpacing.sm),
@@ -134,10 +137,16 @@ class _ProjectionScreenState extends State<ProjectionScreen> {
                           children: [
                             Container(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: AppSpacing.xl, vertical: AppSpacing.lg),
+                                horizontal: AppSpacing.xl,
+                                vertical: AppSpacing.lg,
+                              ),
                               decoration: BoxDecoration(
-                                color: dark ? PremiumColors.onboardingBubbleDark : Colors.white,
-                                borderRadius: BorderRadius.circular(AppRadius.xl),
+                                color: dark
+                                    ? PremiumColors.onboardingBubbleDark
+                                    : Colors.white,
+                                borderRadius: BorderRadius.circular(
+                                  AppRadius.xl,
+                                ),
                                 border: Border.all(
                                   color: dark
                                       ? Colors.white.withValues(alpha: 0.10)
@@ -162,10 +171,14 @@ class _ProjectionScreenState extends State<ProjectionScreen> {
                                     width: 12,
                                     height: 12,
                                     decoration: BoxDecoration(
-                                      color: dark ? PremiumColors.onboardingBubbleDark : Colors.white,
+                                      color: dark
+                                          ? PremiumColors.onboardingBubbleDark
+                                          : Colors.white,
                                       border: Border.all(
                                         color: dark
-                                            ? Colors.white.withValues(alpha: 0.10)
+                                            ? Colors.white.withValues(
+                                                alpha: 0.10,
+                                              )
                                             : context.borderSubtle,
                                       ),
                                     ),
@@ -185,8 +198,7 @@ class _ProjectionScreenState extends State<ProjectionScreen> {
 
               // ── Benefit items ──
               Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.xxl),
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
                 child: Column(
                   children: [
                     _BenefitItem(
@@ -218,7 +230,11 @@ class _ProjectionScreenState extends State<ProjectionScreen> {
               // ── Bottom button ──
               Padding(
                 padding: const EdgeInsets.fromLTRB(
-                    AppSpacing.xxl, 0, AppSpacing.xxl, AppSpacing.xxl),
+                  AppSpacing.xxl,
+                  0,
+                  AppSpacing.xxl,
+                  AppSpacing.xxl,
+                ),
                 child: Semantics(
                   button: true,
                   label: l.continueText,
@@ -235,8 +251,8 @@ class _ProjectionScreenState extends State<ProjectionScreen> {
                       width: double.infinity,
                       decoration: BoxDecoration(
                         color: PremiumColors.primaryAccent,
-                      borderRadius: BorderRadius.circular(AppRadius.xl),
-                      boxShadow: _isPressed
+                        borderRadius: BorderRadius.circular(AppRadius.xl),
+                        boxShadow: _isPressed
                             ? []
                             : [
                                 const BoxShadow(

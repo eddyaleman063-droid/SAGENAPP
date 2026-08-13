@@ -41,7 +41,10 @@ void main() {
   group('Offline Mode - SmartCache', () {
     test('SmartCache.get returns null when not initialized', () {
       // SmartCache._instance is null by default in tests
-      final result = SmartCache.instance.get<String>('test', (data) => data as String);
+      final result = SmartCache.instance.get<String>(
+        'test',
+        (data) => data as String,
+      );
       expect(result, isNull);
     });
 

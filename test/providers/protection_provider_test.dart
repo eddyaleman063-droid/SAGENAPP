@@ -30,9 +30,9 @@ void main() {
     setUp(() async {
       SharedPreferences.setMockInitialValues({});
       final prefs = await SharedPreferences.getInstance();
-      container = ProviderContainer(overrides: [
-        prefsProvider.overrideWithValue(prefs),
-      ]);
+      container = ProviderContainer(
+        overrides: [prefsProvider.overrideWithValue(prefs)],
+      );
     });
 
     tearDown(() => container.dispose());
@@ -91,9 +91,9 @@ void main() {
         'protection_habits': 'checkins:5',
       });
       final prefs = await SharedPreferences.getInstance();
-      final newContainer = ProviderContainer(overrides: [
-        prefsProvider.overrideWithValue(prefs),
-      ]);
+      final newContainer = ProviderContainer(
+        overrides: [prefsProvider.overrideWithValue(prefs)],
+      );
       final state = newContainer.read(protectionProvider);
       expect(state.score, 50);
       expect(state.totalCheckIns, 5);

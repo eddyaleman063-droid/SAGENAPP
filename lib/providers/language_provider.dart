@@ -22,7 +22,8 @@ class LanguageState {
       );
 
   bool get isSpanish => language == AppLanguage.es;
-  Locale get locale => language == AppLanguage.es ? const Locale('es') : const Locale('en');
+  Locale get locale =>
+      language == AppLanguage.es ? const Locale('es') : const Locale('en');
   bool get hasUserChosen => userExplicit;
 }
 
@@ -47,7 +48,9 @@ class LanguageNotifier extends Notifier<LanguageState> {
 
     final sysLocale = ui.PlatformDispatcher.instance.locale;
     return LanguageState(
-      language: sysLocale.languageCode == 'en' ? AppLanguage.en : AppLanguage.es,
+      language: sysLocale.languageCode == 'en'
+          ? AppLanguage.en
+          : AppLanguage.es,
     );
   }
 

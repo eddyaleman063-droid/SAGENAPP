@@ -34,10 +34,12 @@ void main() {
       final fakeUser = _FakeUser(uid: 'uid_1', email: 'test@test.com');
       final fakeCredential = _FakeUserCredential(user: fakeUser);
 
-      when(() => mockAuth.signInWithEmailAndPassword(
-        email: any(named: 'email'),
-        password: any(named: 'password'),
-      )).thenAnswer((_) async => fakeCredential);
+      when(
+        () => mockAuth.signInWithEmailAndPassword(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+        ),
+      ).thenAnswer((_) async => fakeCredential);
 
       final result = await mockAuth.signInWithEmailAndPassword(
         email: 'test@test.com',
@@ -52,10 +54,12 @@ void main() {
       final fakeUser = _FakeUser(uid: 'uid_new', email: 'new@test.com');
       final fakeCredential = _FakeUserCredential(user: fakeUser);
 
-      when(() => mockAuth.createUserWithEmailAndPassword(
-        email: any(named: 'email'),
-        password: any(named: 'password'),
-      )).thenAnswer((_) async => fakeCredential);
+      when(
+        () => mockAuth.createUserWithEmailAndPassword(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+        ),
+      ).thenAnswer((_) async => fakeCredential);
 
       final result = await mockAuth.createUserWithEmailAndPassword(
         email: 'new@test.com',
@@ -81,9 +85,9 @@ void main() {
     test('authStateChanges can be mocked', () {
       final mockAuth = _MockAuth();
       final fakeUser = _FakeUser(uid: 'uid_stream');
-      when(() => mockAuth.authStateChanges()).thenAnswer(
-        (_) => Stream.value(fakeUser),
-      );
+      when(
+        () => mockAuth.authStateChanges(),
+      ).thenAnswer((_) => Stream.value(fakeUser));
       expect(mockAuth.authStateChanges(), isA<Stream>());
     });
   });
@@ -160,11 +164,7 @@ class _FakeUser {
   final String? email;
   final String? displayName;
 
-  _FakeUser({
-    required this.uid,
-    this.email,
-    this.displayName,
-  });
+  _FakeUser({required this.uid, this.email, this.displayName});
 }
 
 class _FakeUserCredential {

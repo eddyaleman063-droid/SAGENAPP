@@ -10,6 +10,7 @@ import 'package:sagen/services/auth_service.dart';
 import 'package:sagen/services/cloud_sync_service.dart';
 
 class MockCloudSyncService extends Mock implements CloudSyncService {}
+
 class MockAuthService extends Mock implements AuthService {}
 
 class FakeLearningNotifier extends LearningNotifier {
@@ -26,12 +27,20 @@ class FakeLearningNotifier extends LearningNotifier {
     state = state.copyWith(
       xp: newLevel > state.currentLevel ? 0 : newXp,
       totalXpEarned: newTotalXp,
-      currentLevel: newLevel > state.currentLevel ? newLevel : state.currentLevel,
+      currentLevel: newLevel > state.currentLevel
+          ? newLevel
+          : state.currentLevel,
     );
   }
 
   @override
-  Future<void> completeLesson(String stageId, String lessonId, {bool perfectLesson = false, int correctAnswers = 0, int totalQuestions = 0}) async {
+  Future<void> completeLesson(
+    String stageId,
+    String lessonId, {
+    bool perfectLesson = false,
+    int correctAnswers = 0,
+    int totalQuestions = 0,
+  }) async {
     final stageIndex = state.stages.indexWhere((s) => s.id == stageId);
     if (stageIndex == -1) return;
 
@@ -63,21 +72,18 @@ class FakeLearningNotifier extends LearningNotifier {
       lessonsCompleted: newLessonsCompleted,
       xp: newLevel > state.currentLevel ? 0 : newXp,
       totalXpEarned: newTotalXp,
-      currentLevel: newLevel > state.currentLevel ? newLevel : state.currentLevel,
+      currentLevel: newLevel > state.currentLevel
+          ? newLevel
+          : state.currentLevel,
     );
   }
 
   void loadStages(List<Stage> stages) {
-    state = state.copyWith(
-      stages: () => stages,
-      isLoading: false,
-    );
+    state = state.copyWith(stages: () => stages, isLoading: false);
   }
 }
 
-Widget createTestApp({
-  required ProviderContainer container,
-}) {
+Widget createTestApp({required ProviderContainer container}) {
   return ProviderScope(
     overrides: container.getAllProviderElements().map((e) {
       return e.origin;
@@ -99,14 +105,19 @@ void main() {
       final prefs = await SharedPreferences.getInstance();
 
       notifier = FakeLearningNotifier();
-      container = ProviderContainer(overrides: [
-        prefsProvider.overrideWithValue(prefs),
-        cloudSyncServiceProvider.overrideWith((ref) => MockCloudSyncService()),
-        authServiceProvider.overrideWith((ref) => MockAuthService()),
-        learningProvider.overrideWith(() => notifier),
-      ]);
+      container = ProviderContainer(
+        overrides: [
+          prefsProvider.overrideWithValue(prefs),
+          cloudSyncServiceProvider.overrideWith(
+            (ref) => MockCloudSyncService(),
+          ),
+          authServiceProvider.overrideWith((ref) => MockAuthService()),
+          learningProvider.overrideWith(() => notifier),
+        ],
+      );
 
-      notifier = container.read(learningProvider.notifier) as FakeLearningNotifier;
+      notifier =
+          container.read(learningProvider.notifier) as FakeLearningNotifier;
 
       // Load initial stages with one stage and one lesson
       notifier.loadStages([
@@ -211,14 +222,17 @@ void main() {
           accent: Colors.blue,
           icon: Icons.shield,
           unlocked: true,
-          lessons: List.generate(6, (i) => Lesson(
-            id: 'lesson_$i',
-            title: 'L$i',
-            subtitle: 'D',
-            challenges: [],
-            xpReward: 20,
-            completed: false,
-          )),
+          lessons: List.generate(
+            6,
+            (i) => Lesson(
+              id: 'lesson_$i',
+              title: 'L$i',
+              subtitle: 'D',
+              challenges: [],
+              xpReward: 20,
+              completed: false,
+            ),
+          ),
         ),
       ]);
 

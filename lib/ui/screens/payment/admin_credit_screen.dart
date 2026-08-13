@@ -89,17 +89,28 @@ class _AdminCreditScreenState extends State<AdminCreditScreen> {
   Future<void> _checkAdmin() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) {
-      if (mounted) setState(() { _isAdmin = false; _checkingAdmin = false; });
+      if (mounted) {
+        setState(() {
+          _isAdmin = false;
+          _checkingAdmin = false;
+        });
+      }
       return;
     }
     try {
       final token = await user.getIdTokenResult();
       if (!mounted) return;
-      setState(() { _isAdmin = token.claims?['admin'] == true; _checkingAdmin = false; });
+      setState(() {
+        _isAdmin = token.claims?['admin'] == true;
+        _checkingAdmin = false;
+      });
     } catch (e) {
       AppLogger().error('Failed to get ID token result: $e');
       if (!mounted) return;
-      setState(() { _isAdmin = false; _checkingAdmin = false; });
+      setState(() {
+        _isAdmin = false;
+        _checkingAdmin = false;
+      });
     }
   }
 
@@ -139,7 +150,10 @@ class _AdminCreditScreenState extends State<AdminCreditScreen> {
     setState(() => _loading = false);
 
     if (ok) {
-      SagenNotification.show(context, message: l.adminCreditSuccessNotification(amount, userId));
+      SagenNotification.show(
+        context,
+        message: l.adminCreditSuccessNotification(amount, userId),
+      );
       _userIdController.clear();
       _amountController.clear();
     } else {
@@ -159,75 +173,108 @@ class _AdminCreditScreenState extends State<AdminCreditScreen> {
       body: _checkingAdmin
           ? const Center(child: CircularProgressIndicator())
           : !_isAdmin
-              ? Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(AppSpacing.xxl),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(Icons.lock_rounded, size: 48, color: PremiumColors.warning),
-                        const SizedBox(height: AppSpacing.lg),
-                        Text(
-                          l.adminVerifyingPermissions,
-                          textAlign: TextAlign.center,
-                          style: AppTextStyle.body.copyWith(color: PremiumColors.warning),
-                        ),
-                      ],
+          ? Center(
+              child: Padding(
+                padding: const EdgeInsets.all(AppSpacing.xxl),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(
+                      Icons.lock_rounded,
+                      size: 48,
+                      color: PremiumColors.warning,
+                    ),
+                    const SizedBox(height: AppSpacing.lg),
+                    Text(
+                      l.adminVerifyingPermissions,
+                      textAlign: TextAlign.center,
+                      style: AppTextStyle.body.copyWith(
+                        color: PremiumColors.warning,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )
+          : Padding(
+              padding: const EdgeInsets.all(AppSpacing.lg),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Semantics(
+                    label: l.adminFieldUserId,
+                    child: TextField(
+                      controller: _userIdController,
+                      maxLength: 128,
+                      decoration: InputDecoration(
+                        labelText: l.adminFieldUserId,
+                      ),
                     ),
                   ),
-                )
-              : Padding(
-                  padding: const EdgeInsets.all(AppSpacing.lg),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Semantics(
-                        label: l.adminFieldUserId,
-                        child: TextField(
-                          controller: _userIdController,
-                          maxLength: 128,
-                          decoration: InputDecoration(labelText: l.adminFieldUserId),
-                        ),
+                  const SizedBox(height: AppSpacing.md),
+                  Semantics(
+                    label: l.adminFieldDonationAmount,
+                    child: TextField(
+                      controller: _amountController,
+                      maxLength: 10,
+                      decoration: InputDecoration(
+                        labelText: l.adminFieldDonationAmount,
                       ),
-                      const SizedBox(height: AppSpacing.md),
-                      Semantics(
-                        label: l.adminFieldDonationAmount,
-                        child: TextField(
-                          controller: _amountController,
-                          maxLength: 10,
-                          decoration: InputDecoration(labelText: l.adminFieldDonationAmount),
-                          keyboardType: TextInputType.number,
-                        ),
+                      keyboardType: TextInputType.number,
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.md),
+                  DropdownButtonFormField<String>(
+                    initialValue: _method,
+                    decoration: InputDecoration(
+                      labelText: l.adminPaymentMethod,
+                    ),
+                    items: [
+                      DropdownMenuItem(
+                        value: 'whatsapp',
+                        child: Text(l.adminWhatsapp),
                       ),
-                      const SizedBox(height: AppSpacing.md),
-                      DropdownButtonFormField<String>(
-                        initialValue: _method,
-                        decoration: InputDecoration(labelText: l.adminPaymentMethod),
-                        items: [
-                          DropdownMenuItem(value: 'whatsapp', child: Text(l.adminWhatsapp)),
-                          DropdownMenuItem(value: 'mercadopago', child: Text(l.adminMercadoPago)),
-                        ],
-                        onChanged: (v) {
-                          if (v != null) setState(() => _method = v);
-                        },
-                      ),
-                      const SizedBox(height: AppSpacing.xxl),
-                      SizedBox(
-                        height: 52,
-                        child: Semantics(
-                          button: true,
-                          label: l.adminCreditDonationA11y,
-                          child: FilledButton(
-                            onPressed: _loading ? null : _credit,
-                            child: _loading
-                                ? SizedBox(height: 20, width: 20, child: Semantics(label: l.loading, child: const CircularProgressIndicator(strokeWidth: 2, color: Colors.white)))
-                                : Text(l.adminCreditDonationButton, style: AppTextStyle.titleSmall.copyWith(fontWeight: FontWeight.w600)),
-                          ),
-                        ),
+                      DropdownMenuItem(
+                        value: 'mercadopago',
+                        child: Text(l.adminMercadoPago),
                       ),
                     ],
+                    onChanged: (v) {
+                      if (v != null) setState(() => _method = v);
+                    },
                   ),
-                ),
+                  const SizedBox(height: AppSpacing.xxl),
+                  SizedBox(
+                    height: 52,
+                    child: Semantics(
+                      button: true,
+                      label: l.adminCreditDonationA11y,
+                      child: FilledButton(
+                        onPressed: _loading ? null : _credit,
+                        child: _loading
+                            ? SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: Semantics(
+                                  label: l.loading,
+                                  child: const CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              )
+                            : Text(
+                                l.adminCreditDonationButton,
+                                style: AppTextStyle.titleSmall.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
     );
   }
 }

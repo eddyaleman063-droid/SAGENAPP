@@ -20,7 +20,11 @@ class SageAccessory {
 
   bool get hasAsset => assetPath.isNotEmpty;
 
-  static const none = SageAccessory(id: '', slot: AccessorySlot.head, label: '');
+  static const none = SageAccessory(
+    id: '',
+    slot: AccessorySlot.head,
+    label: '',
+  );
 }
 
 /// Complete outfit configuration for the Sage mascot.
@@ -34,7 +38,8 @@ class SageOutfit {
 
   static const empty = SageOutfit();
 
-  bool get isEmpty => head == null && face == null && neck == null && body == null;
+  bool get isEmpty =>
+      head == null && face == null && neck == null && body == null;
   bool get isNotEmpty => !isEmpty;
 
   @override

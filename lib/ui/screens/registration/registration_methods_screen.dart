@@ -20,7 +20,8 @@ class RegistrationMethodsScreen extends StatefulWidget {
   });
 
   @override
-  State<RegistrationMethodsScreen> createState() => _RegistrationMethodsScreenState();
+  State<RegistrationMethodsScreen> createState() =>
+      _RegistrationMethodsScreenState();
 }
 
 class _RegistrationMethodsScreenState extends State<RegistrationMethodsScreen>
@@ -48,46 +49,50 @@ class _RegistrationMethodsScreenState extends State<RegistrationMethodsScreen>
     Color? borderColor,
     VoidCallback? onTap,
   }) {
-    return Semantics(button: true, label: label, child: GestureDetector(
-      onTap: onTap,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(AppRadius.xl),
-        child: Container(
-          height: 58,
-          decoration: BoxDecoration(
-            color: color ?? PremiumColors.authBackground,
-            border: Border(
-              top: BorderSide(
-                color: Colors.white.withValues(alpha: 0.05),
-                width: 1.5,
-              ),
-              left: BorderSide(
-                color: Colors.white.withValues(alpha: 0.05),
-                width: 1.5,
-              ),
-              right: BorderSide(
-                color: Colors.white.withValues(alpha: 0.05),
-                width: 1.5,
-              ),
-              bottom: BorderSide(
-                color: borderColor ?? PremiumColors.authCardDark,
-                width: 4,
+    return Semantics(
+      button: true,
+      label: label,
+      child: GestureDetector(
+        onTap: onTap,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(AppRadius.xl),
+          child: Container(
+            height: 58,
+            decoration: BoxDecoration(
+              color: color ?? PremiumColors.authBackground,
+              border: Border(
+                top: BorderSide(
+                  color: Colors.white.withValues(alpha: 0.05),
+                  width: 1.5,
+                ),
+                left: BorderSide(
+                  color: Colors.white.withValues(alpha: 0.05),
+                  width: 1.5,
+                ),
+                right: BorderSide(
+                  color: Colors.white.withValues(alpha: 0.05),
+                  width: 1.5,
+                ),
+                bottom: BorderSide(
+                  color: borderColor ?? PremiumColors.authCardDark,
+                  width: 4,
+                ),
               ),
             ),
-          ),
-          child: Center(
-            child: Text(
-              label,
-              style: AppTextStyle.body.copyWith(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 0.5,
+            child: Center(
+              child: Text(
+                label,
+                style: AppTextStyle.body.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 0.5,
+                ),
               ),
             ),
           ),
         ),
       ),
-    ));
+    );
   }
 
   @override
@@ -99,20 +104,26 @@ class _RegistrationMethodsScreenState extends State<RegistrationMethodsScreen>
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: Semantics(button: true, label: l.backButton, child: IconButton(
-          icon: const Icon(Icons.arrow_back_rounded, color: Colors.white70),
-          onPressed: () {
-            ExperienceService.instance.lightHaptic();
-            context.pop();
-          },
-          tooltip: l.backButton,
-        )),
+        leading: Semantics(
+          button: true,
+          label: l.backButton,
+          child: IconButton(
+            icon: const Icon(Icons.arrow_back_rounded, color: Colors.white70),
+            onPressed: () {
+              ExperienceService.instance.lightHaptic();
+              context.pop();
+            },
+            tooltip: l.backButton,
+          ),
+        ),
         title: ClipRRect(
           borderRadius: BorderRadius.circular(AppRadius.sm),
           child: const LinearProgressIndicator(
             value: 0.4,
             backgroundColor: PremiumColors.authBackground,
-            valueColor: AlwaysStoppedAnimation<Color>(PremiumColors.progressGreen),
+            valueColor: AlwaysStoppedAnimation<Color>(
+              PremiumColors.progressGreen,
+            ),
             minHeight: 12,
           ),
         ),
@@ -151,14 +162,22 @@ class _RegistrationMethodsScreenState extends State<RegistrationMethodsScreen>
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
-                            color: PremiumColors.accentCyan.withValues(alpha: 0.15),
+                            color: PremiumColors.accentCyan.withValues(
+                              alpha: 0.15,
+                            ),
                             blurRadius: 60,
                             spreadRadius: 20,
                           ),
                         ],
                       ),
                     ),
-                    const SizedBox(width: 150, height: 150, child: ExcludeSemantics(child: SageEmotionWidget(emotion: SageEmotion.neutral))),
+                    const SizedBox(
+                      width: 150,
+                      height: 150,
+                      child: ExcludeSemantics(
+                        child: SageEmotionWidget(emotion: SageEmotion.neutral),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -179,44 +198,51 @@ class _RegistrationMethodsScreenState extends State<RegistrationMethodsScreen>
                 },
               ),
               const SizedBox(height: 24),
-              Semantics(label: '${l.legalRegisterAgree} ${l.legalTerms} ${l.legalAnd} ${l.legalPrivacy}', child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: RichText(
-                  textAlign: TextAlign.center,
-                  text: TextSpan(
-                    style: AppTextStyle.subtitle.copyWith(color: Colors.white54, height: 1.4),
-                    children: [
-                      TextSpan(text: l.legalRegisterAgree),
-                      TextSpan(
-                        text: l.legalTerms,
-                        style: AppTextStyle.bodyBold.copyWith(
-                          color: Colors.white70,
-                          decoration: TextDecoration.underline,
-                        ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            ExperienceService.instance.lightHaptic();
-                            launchUrl(Uri.parse('https://sagen.app/terms'));
-                          },
+              Semantics(
+                label:
+                    '${l.legalRegisterAgree} ${l.legalTerms} ${l.legalAnd} ${l.legalPrivacy}',
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      style: AppTextStyle.subtitle.copyWith(
+                        color: Colors.white54,
+                        height: 1.4,
                       ),
-                      TextSpan(text: l.legalAnd),
-                      TextSpan(
-                        text: l.legalPrivacy,
-                        style: AppTextStyle.bodyBold.copyWith(
-                          color: Colors.white70,
-                          decoration: TextDecoration.underline,
+                      children: [
+                        TextSpan(text: l.legalRegisterAgree),
+                        TextSpan(
+                          text: l.legalTerms,
+                          style: AppTextStyle.bodyBold.copyWith(
+                            color: Colors.white70,
+                            decoration: TextDecoration.underline,
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              ExperienceService.instance.lightHaptic();
+                              launchUrl(Uri.parse('https://sagen.app/terms'));
+                            },
                         ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            ExperienceService.instance.lightHaptic();
-                            context.push('/privacy-policy');
-                          },
-                      ),
-                      const TextSpan(text: '.'),
-                    ],
+                        TextSpan(text: l.legalAnd),
+                        TextSpan(
+                          text: l.legalPrivacy,
+                          style: AppTextStyle.bodyBold.copyWith(
+                            color: Colors.white70,
+                            decoration: TextDecoration.underline,
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              ExperienceService.instance.lightHaptic();
+                              context.push('/privacy-policy');
+                            },
+                        ),
+                        const TextSpan(text: '.'),
+                      ],
+                    ),
                   ),
                 ),
-              )),
+              ),
               const SizedBox(height: 8),
             ],
           ).animate().fadeIn().slideY(begin: 0.05),

@@ -115,42 +115,101 @@ class DatabaseHelper implements IDatabaseHelper {
   Future<void> close() async {
     final pending = _pending;
     if (pending != null && !pending.isCompleted) {
-      try { await pending.future.timeout(const Duration(seconds: 5)); } catch (e) { AppLogger().error('Database pending future failed', e); }
+      try {
+        await pending.future.timeout(const Duration(seconds: 5));
+      } catch (e) {
+        AppLogger().error('Database pending future failed', e);
+      }
     }
     final db = _db;
     _db = null;
     _pending = null;
     if (db != null) {
-      try { await db.close(); } catch (e) { AppLogger().error('Database close failed', e); }
+      try {
+        await db.close();
+      } catch (e) {
+        AppLogger().error('Database close failed', e);
+      }
     }
   }
 
   @override
-  Future<int> insert(String table, Map<String, dynamic> values, {String? nullColumnHack, ConflictAlgorithm? conflictAlgorithm}) async {
+  Future<int> insert(
+    String table,
+    Map<String, dynamic> values, {
+    String? nullColumnHack,
+    ConflictAlgorithm? conflictAlgorithm,
+  }) async {
     final db = database;
-    return (await db).insert(table, values, nullColumnHack: nullColumnHack, conflictAlgorithm: conflictAlgorithm);
+    return (await db).insert(
+      table,
+      values,
+      nullColumnHack: nullColumnHack,
+      conflictAlgorithm: conflictAlgorithm,
+    );
   }
 
   @override
-  Future<List<Map<String, dynamic>>> query(String table, {bool? distinct, List<String>? columns, String? where, List<dynamic>? whereArgs, String? groupBy, String? having, String? orderBy, int? limit, int? offset}) async {
+  Future<List<Map<String, dynamic>>> query(
+    String table, {
+    bool? distinct,
+    List<String>? columns,
+    String? where,
+    List<dynamic>? whereArgs,
+    String? groupBy,
+    String? having,
+    String? orderBy,
+    int? limit,
+    int? offset,
+  }) async {
     final db = database;
-    return (await db).query(table, distinct: distinct, columns: columns, where: where, whereArgs: whereArgs, groupBy: groupBy, having: having, orderBy: orderBy, limit: limit, offset: offset);
+    return (await db).query(
+      table,
+      distinct: distinct,
+      columns: columns,
+      where: where,
+      whereArgs: whereArgs,
+      groupBy: groupBy,
+      having: having,
+      orderBy: orderBy,
+      limit: limit,
+      offset: offset,
+    );
   }
 
   @override
-  Future<int> update(String table, Map<String, dynamic> values, {String? where, List<dynamic>? whereArgs, ConflictAlgorithm? conflictAlgorithm}) async {
+  Future<int> update(
+    String table,
+    Map<String, dynamic> values, {
+    String? where,
+    List<dynamic>? whereArgs,
+    ConflictAlgorithm? conflictAlgorithm,
+  }) async {
     final db = database;
-    return (await db).update(table, values, where: where, whereArgs: whereArgs, conflictAlgorithm: conflictAlgorithm);
+    return (await db).update(
+      table,
+      values,
+      where: where,
+      whereArgs: whereArgs,
+      conflictAlgorithm: conflictAlgorithm,
+    );
   }
 
   @override
-  Future<int> delete(String table, {String? where, List<dynamic>? whereArgs}) async {
+  Future<int> delete(
+    String table, {
+    String? where,
+    List<dynamic>? whereArgs,
+  }) async {
     final db = database;
     return (await db).delete(table, where: where, whereArgs: whereArgs);
   }
 
   @override
-  Future<List<Map<String, dynamic>>> rawQuery(String sql, [List<dynamic>? arguments]) async {
+  Future<List<Map<String, dynamic>>> rawQuery(
+    String sql, [
+    List<dynamic>? arguments,
+  ]) async {
     final db = database;
     return (await db).rawQuery(sql, arguments);
   }

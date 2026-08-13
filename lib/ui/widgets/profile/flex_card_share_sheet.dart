@@ -70,7 +70,12 @@ class _FlexCardShareSheetState extends ConsumerState<FlexCardShareSheet> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(AppSpacing.xl, AppSpacing.md, AppSpacing.xl, AppSpacing.xl),
+            padding: const EdgeInsets.fromLTRB(
+              AppSpacing.xl,
+              AppSpacing.md,
+              AppSpacing.xl,
+              AppSpacing.xl,
+            ),
             child: SizedBox(
               width: double.infinity,
               height: 48,
@@ -83,15 +88,23 @@ class _FlexCardShareSheetState extends ConsumerState<FlexCardShareSheet> {
                       ? const SizedBox(
                           width: 18,
                           height: 18,
-                          child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.white,
+                          ),
                         )
                       : const Icon(Icons.share_rounded, size: 18),
-                  label: Text(_sharing ? l.rankingSharing : l.rankingShareButton),
+                  label: Text(
+                    _sharing ? l.rankingSharing : l.rankingShareButton,
+                  ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: PremiumColors.splashBlue,
                     foregroundColor: Colors.white,
-                    disabledBackgroundColor: PremiumColors.splashBlue.withValues(alpha: 0.5),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
+                    disabledBackgroundColor: PremiumColors.splashBlue
+                        .withValues(alpha: 0.5),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(AppRadius.lg),
+                    ),
                   ),
                 ),
               ),
@@ -107,7 +120,13 @@ class _FlexCardShareSheetState extends ConsumerState<FlexCardShareSheet> {
     final bytes = await _flexCardKey.currentState?.capture();
     if (bytes != null && mounted) {
       AnalyticsService.instance.trackFlexCardShared('profile');
-      await ref.read(shareServiceProvider).shareImage(bytes, text: AppLocalizations.of(context)?.flexCardJoinAlliance, source: 'profile');
+      await ref
+          .read(shareServiceProvider)
+          .shareImage(
+            bytes,
+            text: AppLocalizations.of(context)?.flexCardJoinAlliance,
+            source: 'profile',
+          );
     }
     if (mounted) {
       context.pop();

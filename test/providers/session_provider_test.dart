@@ -20,7 +20,11 @@ class MockSessionNotifier extends SessionNotifier {
   }
 
   @override
-  Future<void> startSession(String stageId, String lessonId, {int count = 5}) async {
+  Future<void> startSession(
+    String stageId,
+    String lessonId, {
+    int count = 5,
+  }) async {
     final challenges = _fakeChallenges(count);
     state = state.copyWith(
       challenges: () => challenges,
@@ -40,9 +44,9 @@ class MockSessionNotifier extends SessionNotifier {
 void main() {
   group('SessionNotifier', () {
     test('initial state is intro with 3 lives and no challenge', () {
-      final container = ProviderContainer(overrides: [
-        sessionProvider.overrideWith(() => MockSessionNotifier()),
-      ]);
+      final container = ProviderContainer(
+        overrides: [sessionProvider.overrideWith(() => MockSessionNotifier())],
+      );
       addTearDown(() => container.dispose());
       final notifier = container.read(sessionProvider.notifier);
 
@@ -54,9 +58,9 @@ void main() {
     });
 
     test('startSession initializes playing state with challenges', () async {
-      final container = ProviderContainer(overrides: [
-        sessionProvider.overrideWith(() => MockSessionNotifier()),
-      ]);
+      final container = ProviderContainer(
+        overrides: [sessionProvider.overrideWith(() => MockSessionNotifier())],
+      );
       addTearDown(() => container.dispose());
       final notifier = container.read(sessionProvider.notifier);
 
@@ -71,9 +75,9 @@ void main() {
     });
 
     test('submitAnswer handles correct and incorrect feedback', () async {
-      final container = ProviderContainer(overrides: [
-        sessionProvider.overrideWith(() => MockSessionNotifier()),
-      ]);
+      final container = ProviderContainer(
+        overrides: [sessionProvider.overrideWith(() => MockSessionNotifier())],
+      );
       addTearDown(() => container.dispose());
       final notifier = container.read(sessionProvider.notifier);
 
@@ -98,9 +102,9 @@ void main() {
     });
 
     test('gameOver when lives reach 0', () async {
-      final container = ProviderContainer(overrides: [
-        sessionProvider.overrideWith(() => MockSessionNotifier()),
-      ]);
+      final container = ProviderContainer(
+        overrides: [sessionProvider.overrideWith(() => MockSessionNotifier())],
+      );
       addTearDown(() => container.dispose());
       final notifier = container.read(sessionProvider.notifier);
 
@@ -120,9 +124,9 @@ void main() {
     });
 
     test('completed state when all questions answered', () async {
-      final container = ProviderContainer(overrides: [
-        sessionProvider.overrideWith(() => MockSessionNotifier()),
-      ]);
+      final container = ProviderContainer(
+        overrides: [sessionProvider.overrideWith(() => MockSessionNotifier())],
+      );
       addTearDown(() => container.dispose());
       final notifier = container.read(sessionProvider.notifier);
 

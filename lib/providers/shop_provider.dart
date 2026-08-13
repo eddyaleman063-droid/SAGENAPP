@@ -31,10 +31,15 @@ class ShopItem {
   });
 
   ShopItem copyWith({bool? isOwned}) => ShopItem(
-    id: id, name: name, description: description,
-    iconAsset: iconAsset, isOwned: isOwned ?? this.isOwned,
+    id: id,
+    name: name,
+    description: description,
+    iconAsset: iconAsset,
+    isOwned: isOwned ?? this.isOwned,
     supporterLevelRequired: supporterLevelRequired,
-    gemCost: gemCost, category: category, specialItemType: specialItemType,
+    gemCost: gemCost,
+    category: category,
+    specialItemType: specialItemType,
   );
 }
 
@@ -42,16 +47,12 @@ class ShopState {
   final List<ShopItem> items;
   final bool xpBoostActive;
 
-  const ShopState({
-    this.items = const [],
-    this.xpBoostActive = false,
-  });
+  const ShopState({this.items = const [], this.xpBoostActive = false});
 
-  ShopState copyWith({List<ShopItem>? items, bool? xpBoostActive}) =>
-      ShopState(
-        items: items ?? this.items,
-        xpBoostActive: xpBoostActive ?? this.xpBoostActive,
-      );
+  ShopState copyWith({List<ShopItem>? items, bool? xpBoostActive}) => ShopState(
+    items: items ?? this.items,
+    xpBoostActive: xpBoostActive ?? this.xpBoostActive,
+  );
 }
 
 class ShopNotifier extends Notifier<ShopState> {
@@ -70,33 +71,214 @@ class ShopNotifier extends Notifier<ShopState> {
   /// Complete catalog: consumables + cosmetics + themes — all purchasable with gems.
   static const _defaultItems = [
     // ── Consumables ──
-    ShopItem(id: 'focus_elixir', name: 'Focus Elixir', description: '2x EXP for 15 minutes', iconAsset: 'auto_awesome', gemCost: 30, category: ShopCategory.consumables, specialItemType: SpecialItemType.focusElixir),
-    ShopItem(id: 'xp_boost', name: 'XP Boost', description: '2x XP on your next lesson', iconAsset: 'bolt', gemCost: 40, category: ShopCategory.consumables),
-    ShopItem(id: 'luck_boost', name: 'Luck Boost', description: '+15% chest rarity for 30 min', iconAsset: 'casino', gemCost: 40, category: ShopCategory.consumables, specialItemType: SpecialItemType.luckBoost),
-    ShopItem(id: 'sage_monocle', name: "Sage's Monocle", description: 'Eliminates 2 wrong answers', iconAsset: 'visibility', gemCost: 50, category: ShopCategory.consumables, specialItemType: SpecialItemType.sageMonocle),
-    ShopItem(id: 'time_warp', name: 'Time Warp', description: 'Skip cooldown on next review', iconAsset: 'schedule', gemCost: 60, category: ShopCategory.consumables, specialItemType: SpecialItemType.timeWarp),
-    ShopItem(id: 'titanium_shield', name: 'Titanium Shield', description: 'Protects your streak if you miss 1 day', iconAsset: 'shield', gemCost: 80, category: ShopCategory.consumables, specialItemType: SpecialItemType.titaniumShield),
-    ShopItem(id: 'phoenix_feather', name: 'Phoenix Feather', description: 'Revives your streak if lost', iconAsset: 'local_fire_department', gemCost: 100, category: ShopCategory.consumables, specialItemType: SpecialItemType.phoenixFeather),
+    ShopItem(
+      id: 'focus_elixir',
+      name: 'Focus Elixir',
+      description: '2x EXP for 15 minutes',
+      iconAsset: 'auto_awesome',
+      gemCost: 30,
+      category: ShopCategory.consumables,
+      specialItemType: SpecialItemType.focusElixir,
+    ),
+    ShopItem(
+      id: 'xp_boost',
+      name: 'XP Boost',
+      description: '2x XP on your next lesson',
+      iconAsset: 'bolt',
+      gemCost: 40,
+      category: ShopCategory.consumables,
+    ),
+    ShopItem(
+      id: 'luck_boost',
+      name: 'Luck Boost',
+      description: '+15% chest rarity for 30 min',
+      iconAsset: 'casino',
+      gemCost: 40,
+      category: ShopCategory.consumables,
+      specialItemType: SpecialItemType.luckBoost,
+    ),
+    ShopItem(
+      id: 'sage_monocle',
+      name: "Sage's Monocle",
+      description: 'Eliminates 2 wrong answers',
+      iconAsset: 'visibility',
+      gemCost: 50,
+      category: ShopCategory.consumables,
+      specialItemType: SpecialItemType.sageMonocle,
+    ),
+    ShopItem(
+      id: 'time_warp',
+      name: 'Time Warp',
+      description: 'Skip cooldown on next review',
+      iconAsset: 'schedule',
+      gemCost: 60,
+      category: ShopCategory.consumables,
+      specialItemType: SpecialItemType.timeWarp,
+    ),
+    ShopItem(
+      id: 'titanium_shield',
+      name: 'Titanium Shield',
+      description: 'Protects your streak if you miss 1 day',
+      iconAsset: 'shield',
+      gemCost: 80,
+      category: ShopCategory.consumables,
+      specialItemType: SpecialItemType.titaniumShield,
+    ),
+    ShopItem(
+      id: 'phoenix_feather',
+      name: 'Phoenix Feather',
+      description: 'Revives your streak if lost',
+      iconAsset: 'local_fire_department',
+      gemCost: 100,
+      category: ShopCategory.consumables,
+      specialItemType: SpecialItemType.phoenixFeather,
+    ),
     // ── Cosmetics: Avatar Frames ──
-    ShopItem(id: 'avatar_frame_neon', name: 'Neon Frame', description: 'Animated frame with neon glow', iconAsset: 'filter_frames', gemCost: 120, category: ShopCategory.cosmetics, specialItemType: SpecialItemType.avatarFrameNeon),
-    ShopItem(id: 'avatar_frame_galaxy', name: 'Galaxy Frame', description: 'Galactic starframe', iconAsset: 'filter_frames', gemCost: 180, category: ShopCategory.cosmetics, specialItemType: SpecialItemType.avatarFrameGalaxy),
-    ShopItem(id: 'avatar_frame_dragon', name: 'Dragon Frame', description: 'Animated dragon fire frame', iconAsset: 'filter_frames', gemCost: 200, category: ShopCategory.cosmetics, specialItemType: SpecialItemType.avatarFrameDragon),
-    ShopItem(id: 'avatar_frame_crystal', name: 'Crystal Frame', description: 'Crystalline ice frame', iconAsset: 'filter_frames', gemCost: 250, category: ShopCategory.cosmetics, specialItemType: SpecialItemType.avatarFrameCrystal),
-    ShopItem(id: 'avatar_frame_skull', name: 'Skull Frame', description: 'Legendary skull flame frame', iconAsset: 'filter_frames', gemCost: 350, category: ShopCategory.cosmetics, specialItemType: SpecialItemType.avatarFrameSkull),
+    ShopItem(
+      id: 'avatar_frame_neon',
+      name: 'Neon Frame',
+      description: 'Animated frame with neon glow',
+      iconAsset: 'filter_frames',
+      gemCost: 120,
+      category: ShopCategory.cosmetics,
+      specialItemType: SpecialItemType.avatarFrameNeon,
+    ),
+    ShopItem(
+      id: 'avatar_frame_galaxy',
+      name: 'Galaxy Frame',
+      description: 'Galactic starframe',
+      iconAsset: 'filter_frames',
+      gemCost: 180,
+      category: ShopCategory.cosmetics,
+      specialItemType: SpecialItemType.avatarFrameGalaxy,
+    ),
+    ShopItem(
+      id: 'avatar_frame_dragon',
+      name: 'Dragon Frame',
+      description: 'Animated dragon fire frame',
+      iconAsset: 'filter_frames',
+      gemCost: 200,
+      category: ShopCategory.cosmetics,
+      specialItemType: SpecialItemType.avatarFrameDragon,
+    ),
+    ShopItem(
+      id: 'avatar_frame_crystal',
+      name: 'Crystal Frame',
+      description: 'Crystalline ice frame',
+      iconAsset: 'filter_frames',
+      gemCost: 250,
+      category: ShopCategory.cosmetics,
+      specialItemType: SpecialItemType.avatarFrameCrystal,
+    ),
+    ShopItem(
+      id: 'avatar_frame_skull',
+      name: 'Skull Frame',
+      description: 'Legendary skull flame frame',
+      iconAsset: 'filter_frames',
+      gemCost: 350,
+      category: ShopCategory.cosmetics,
+      specialItemType: SpecialItemType.avatarFrameSkull,
+    ),
     // ── Cosmetics: Titles ──
-    ShopItem(id: 'title_storm_breaker', name: 'Title: Storm Breaker', description: 'Rare title for your profile', iconAsset: 'title', gemCost: 120, category: ShopCategory.cosmetics, specialItemType: SpecialItemType.titleStormBreaker),
-    ShopItem(id: 'title_cyber_sage', name: 'Title: Cyber Sage', description: 'Exclusive title for your profile', iconAsset: 'title', gemCost: 150, category: ShopCategory.cosmetics, specialItemType: SpecialItemType.titleCyberSage),
-    ShopItem(id: 'title_shadow_hacker', name: 'Title: Shadow Hacker', description: 'Epic title for your profile', iconAsset: 'title', gemCost: 200, category: ShopCategory.cosmetics, specialItemType: SpecialItemType.titleShadowHacker),
-    ShopItem(id: 'title_night_guardian', name: 'Title: Night Guardian', description: 'Exclusive title for your profile', iconAsset: 'title', gemCost: 220, category: ShopCategory.cosmetics, specialItemType: SpecialItemType.titleNightGuardian),
-    ShopItem(id: 'title_digital_phoenix', name: 'Title: Digital Phoenix', description: 'Legendary title for your profile', iconAsset: 'title', gemCost: 300, category: ShopCategory.cosmetics, specialItemType: SpecialItemType.titleDigitalPhoenix),
+    ShopItem(
+      id: 'title_storm_breaker',
+      name: 'Title: Storm Breaker',
+      description: 'Rare title for your profile',
+      iconAsset: 'title',
+      gemCost: 120,
+      category: ShopCategory.cosmetics,
+      specialItemType: SpecialItemType.titleStormBreaker,
+    ),
+    ShopItem(
+      id: 'title_cyber_sage',
+      name: 'Title: Cyber Sage',
+      description: 'Exclusive title for your profile',
+      iconAsset: 'title',
+      gemCost: 150,
+      category: ShopCategory.cosmetics,
+      specialItemType: SpecialItemType.titleCyberSage,
+    ),
+    ShopItem(
+      id: 'title_shadow_hacker',
+      name: 'Title: Shadow Hacker',
+      description: 'Epic title for your profile',
+      iconAsset: 'title',
+      gemCost: 200,
+      category: ShopCategory.cosmetics,
+      specialItemType: SpecialItemType.titleShadowHacker,
+    ),
+    ShopItem(
+      id: 'title_night_guardian',
+      name: 'Title: Night Guardian',
+      description: 'Exclusive title for your profile',
+      iconAsset: 'title',
+      gemCost: 220,
+      category: ShopCategory.cosmetics,
+      specialItemType: SpecialItemType.titleNightGuardian,
+    ),
+    ShopItem(
+      id: 'title_digital_phoenix',
+      name: 'Title: Digital Phoenix',
+      description: 'Legendary title for your profile',
+      iconAsset: 'title',
+      gemCost: 300,
+      category: ShopCategory.cosmetics,
+      specialItemType: SpecialItemType.titleDigitalPhoenix,
+    ),
     // ── Cosmetics: Profile Effects ──
-    ShopItem(id: 'effect_digital_rain', name: 'Effect: Digital Rain', description: 'Animated Matrix rain effect', iconAsset: 'auto_awesome', gemCost: 250, category: ShopCategory.cosmetics, specialItemType: SpecialItemType.effectDigitalRain),
-    ShopItem(id: 'effect_fire_trail', name: 'Effect: Fire Trail', description: 'Animated fire trail effect', iconAsset: 'local_fire_department', gemCost: 350, category: ShopCategory.cosmetics, specialItemType: SpecialItemType.effectFireTrail),
+    ShopItem(
+      id: 'effect_digital_rain',
+      name: 'Effect: Digital Rain',
+      description: 'Animated Matrix rain effect',
+      iconAsset: 'auto_awesome',
+      gemCost: 250,
+      category: ShopCategory.cosmetics,
+      specialItemType: SpecialItemType.effectDigitalRain,
+    ),
+    ShopItem(
+      id: 'effect_fire_trail',
+      name: 'Effect: Fire Trail',
+      description: 'Animated fire trail effect',
+      iconAsset: 'local_fire_department',
+      gemCost: 350,
+      category: ShopCategory.cosmetics,
+      specialItemType: SpecialItemType.effectFireTrail,
+    ),
     // ── Themes ──
-    ShopItem(id: 'theme_blue', name: 'Deep Blue Theme', description: 'Premium blue appearance', iconAsset: 'palette', gemCost: 150, category: ShopCategory.themes),
-    ShopItem(id: 'theme_purple', name: 'Purple Theme', description: 'Premium purple appearance', iconAsset: 'palette', gemCost: 150, category: ShopCategory.themes),
-    ShopItem(id: 'theme_dark_fire', name: 'Dark Fire Theme', description: 'Dark fire effects theme', iconAsset: 'palette', gemCost: 250, category: ShopCategory.themes, specialItemType: SpecialItemType.themeDarkFire),
-    ShopItem(id: 'theme_cyber_neon', name: 'Cyber Neon Theme', description: 'Futuristic neon theme', iconAsset: 'palette', gemCost: 350, category: ShopCategory.themes, specialItemType: SpecialItemType.themeCyberNeon),
+    ShopItem(
+      id: 'theme_blue',
+      name: 'Deep Blue Theme',
+      description: 'Premium blue appearance',
+      iconAsset: 'palette',
+      gemCost: 150,
+      category: ShopCategory.themes,
+    ),
+    ShopItem(
+      id: 'theme_purple',
+      name: 'Purple Theme',
+      description: 'Premium purple appearance',
+      iconAsset: 'palette',
+      gemCost: 150,
+      category: ShopCategory.themes,
+    ),
+    ShopItem(
+      id: 'theme_dark_fire',
+      name: 'Dark Fire Theme',
+      description: 'Dark fire effects theme',
+      iconAsset: 'palette',
+      gemCost: 250,
+      category: ShopCategory.themes,
+      specialItemType: SpecialItemType.themeDarkFire,
+    ),
+    ShopItem(
+      id: 'theme_cyber_neon',
+      name: 'Cyber Neon Theme',
+      description: 'Futuristic neon theme',
+      iconAsset: 'palette',
+      gemCost: 350,
+      category: ShopCategory.themes,
+      specialItemType: SpecialItemType.themeCyberNeon,
+    ),
   ];
 
   ShopState _load() {
@@ -106,26 +288,33 @@ class ShopNotifier extends Notifier<ShopState> {
 
     final catalog = ref.read(remoteConfigServiceProvider).shopCatalog;
     final items = catalog.isNotEmpty
-        ? catalog.map((e) => ShopItem(
-              id: e['id'] as String? ?? '',
-              name: e['name'] as String? ?? '',
-              description: e['description'] as String? ?? '',
-              iconAsset: e['iconAsset'] as String? ?? 'shield',
-              isOwned: ownedSet.contains(e['id']),
-              supporterLevelRequired: (e['supporterLevelRequired'] as num?)?.toInt() ?? 1,
-              gemCost: (e['gemCost'] as num?)?.toInt() ?? 100,
-            )).where((i) => i.id.isNotEmpty).toList()
-        : _defaultItems.map((i) => i.copyWith(isOwned: ownedSet.contains(i.id))).toList();
+        ? catalog
+              .map(
+                (e) => ShopItem(
+                  id: e['id'] as String? ?? '',
+                  name: e['name'] as String? ?? '',
+                  description: e['description'] as String? ?? '',
+                  iconAsset: e['iconAsset'] as String? ?? 'shield',
+                  isOwned: ownedSet.contains(e['id']),
+                  supporterLevelRequired:
+                      (e['supporterLevelRequired'] as num?)?.toInt() ?? 1,
+                  gemCost: (e['gemCost'] as num?)?.toInt() ?? 100,
+                ),
+              )
+              .where((i) => i.id.isNotEmpty)
+              .toList()
+        : _defaultItems
+              .map((i) => i.copyWith(isOwned: ownedSet.contains(i.id)))
+              .toList();
 
-    return ShopState(
-      xpBoostActive: xpBoostActive,
-      items: items,
-    );
+    return ShopState(xpBoostActive: xpBoostActive, items: items);
   }
 
   bool canUnlock(ShopItem item) {
     final learning = ref.read(learningProvider.notifier);
-    final supporterLevel = _calculateSupporterLevel(learning.state.totalDonated);
+    final supporterLevel = _calculateSupporterLevel(
+      learning.state.totalDonated,
+    );
     return supporterLevel >= item.supporterLevelRequired;
   }
 
@@ -165,7 +354,10 @@ class ShopNotifier extends Notifier<ShopState> {
   }
 
   void _save() {
-    final ownedIds = state.items.where((i) => i.isOwned).map((i) => i.id).toList();
+    final ownedIds = state.items
+        .where((i) => i.isOwned)
+        .map((i) => i.id)
+        .toList();
     _storage.setStringList(_keyOwnedItems, ownedIds);
   }
 }

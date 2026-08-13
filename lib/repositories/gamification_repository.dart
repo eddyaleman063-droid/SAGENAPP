@@ -114,12 +114,16 @@ class GamificationRepositoryImpl implements GamificationRepository {
     try {
       final parsed = jsonDecode(raw);
       if (parsed is Map) {
-        _missionsCache = Map<String, int>.from(parsed.map((k, v) => MapEntry(k.toString(), (v as num).toInt())));
+        _missionsCache = Map<String, int>.from(
+          parsed.map((k, v) => MapEntry(k.toString(), (v as num).toInt())),
+        );
         return Map<String, int>.from(_missionsCache!);
       }
       return {};
     } catch (_) {
-      AppLogger().warning('GamificationRepository: failed to decode missions JSON');
+      AppLogger().warning(
+        'GamificationRepository: failed to decode missions JSON',
+      );
       return _migrateCsvMissions(raw);
     }
   }
@@ -140,7 +144,9 @@ class GamificationRepositoryImpl implements GamificationRepository {
       }
       return map;
     } catch (_) {
-      AppLogger().warning('GamificationRepository: failed to parse CSV missions');
+      AppLogger().warning(
+        'GamificationRepository: failed to parse CSV missions',
+      );
       return {};
     }
   }

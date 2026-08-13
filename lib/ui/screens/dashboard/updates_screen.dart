@@ -20,9 +20,7 @@ class UpdatesScreen extends ConsumerWidget {
         elevation: 0,
         title: Text(
           l.updatesTitle,
-          style: AppTextStyle.title.copyWith(
-            color: context.textPrimary,
-          ),
+          style: AppTextStyle.title.copyWith(color: context.textPrimary),
         ),
         centerTitle: true,
       ),
@@ -31,28 +29,46 @@ class UpdatesScreen extends ConsumerWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.update_rounded, size: 48, color: context.textTertiary),
+                  Icon(
+                    Icons.update_rounded,
+                    size: 48,
+                    color: context.textTertiary,
+                  ),
                   const SizedBox(height: AppSpacing.lg),
                   Text(
                     l.emptyUpdates,
-                    style: AppTextStyle.body.copyWith(color: context.textSecondary),
+                    style: AppTextStyle.body.copyWith(
+                      color: context.textSecondary,
+                    ),
                   ),
                 ],
               ),
             )
           : ListView.builder(
-        padding: const EdgeInsets.fromLTRB(AppSpacing.lg, AppSpacing.sm, AppSpacing.lg, 80),
-        itemCount: grouped.length,
-        itemBuilder: (context, i) {
-          final month = grouped.keys.elementAt(i);
-          final items = grouped[month]!;
-          return _MonthSection(key: ValueKey('update_$i'), month: month, entries: items);
-        },
-      ).animate().fadeIn().slideY(begin: 0.05),
+              padding: const EdgeInsets.fromLTRB(
+                AppSpacing.lg,
+                AppSpacing.sm,
+                AppSpacing.lg,
+                80,
+              ),
+              itemCount: grouped.length,
+              itemBuilder: (context, i) {
+                final month = grouped.keys.elementAt(i);
+                final items = grouped[month]!;
+                return _MonthSection(
+                  key: ValueKey('update_$i'),
+                  month: month,
+                  entries: items,
+                );
+              },
+            ).animate().fadeIn().slideY(begin: 0.05),
     );
   }
 
-  Map<String, List<UpdateEntry>> _groupByMonth(List<UpdateEntry> entries, AppLocalizations l) {
+  Map<String, List<UpdateEntry>> _groupByMonth(
+    List<UpdateEntry> entries,
+    AppLocalizations l,
+  ) {
     final map = <String, List<UpdateEntry>>{};
     for (final e in entries) {
       final key = _monthKey(e.date, l);
@@ -63,8 +79,18 @@ class UpdatesScreen extends ConsumerWidget {
 
   String _monthKey(DateTime d, AppLocalizations l) {
     final months = [
-      l.monthJan, l.monthFeb, l.monthMar, l.monthApr, l.monthMay, l.monthJun,
-      l.monthJul, l.monthAug, l.monthSep, l.monthOct, l.monthNov, l.monthDec,
+      l.monthJan,
+      l.monthFeb,
+      l.monthMar,
+      l.monthApr,
+      l.monthMay,
+      l.monthJun,
+      l.monthJul,
+      l.monthAug,
+      l.monthSep,
+      l.monthOct,
+      l.monthNov,
+      l.monthDec,
     ];
     return '${months[d.month - 1]} ${d.year}';
   }
@@ -82,7 +108,10 @@ class _MonthSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg, horizontal: AppSpacing.xxs),
+          padding: const EdgeInsets.symmetric(
+            vertical: AppSpacing.lg,
+            horizontal: AppSpacing.xxs,
+          ),
           child: Text(
             month,
             style: AppTextStyle.title.copyWith(
@@ -137,8 +166,13 @@ class _UpdateCard extends StatelessWidget {
 
   String _formattedDate(AppLocalizations l) {
     final days = [
-      l.dayAbbrMon, l.dayAbbrTue, l.dayAbbrWed,
-      l.dayAbbrThu, l.dayAbbrFri, l.dayAbbrSat, l.dayAbbrSun,
+      l.dayAbbrMon,
+      l.dayAbbrTue,
+      l.dayAbbrWed,
+      l.dayAbbrThu,
+      l.dayAbbrFri,
+      l.dayAbbrSat,
+      l.dayAbbrSun,
     ];
     return '${days[entry.date.weekday - 1]}, ${entry.date.day}';
   }
@@ -153,9 +187,7 @@ class _UpdateCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surfaceContainerHigh,
         borderRadius: BorderRadius.circular(AppRadius.lg),
-        border: Border.all(
-          color: context.shimmerBase,
-        ),
+        border: Border.all(color: context.shimmerBase),
       ),
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.lg),
@@ -192,7 +224,8 @@ class _UpdateCard extends StatelessWidget {
                       if (entry.isNew)
                         Container(
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 7, vertical: 3,
+                            horizontal: 7,
+                            vertical: 3,
                           ),
                           decoration: BoxDecoration(
                             color: typeColor.withValues(alpha: 0.15),
@@ -212,9 +245,9 @@ class _UpdateCard extends StatelessWidget {
                   const SizedBox(height: AppSpacing.xxs),
                   Text(
                     entry.description,
-                      style: AppTextStyle.subtitle.copyWith(
-                        color: context.textSecondary,
-                        height: 1.4,
+                    style: AppTextStyle.subtitle.copyWith(
+                      color: context.textSecondary,
+                      height: 1.4,
                     ),
                   ),
                   const SizedBox(height: AppSpacing.sm),

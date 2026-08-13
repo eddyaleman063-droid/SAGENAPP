@@ -53,7 +53,10 @@ class _MemoryFlipScreenState extends ConsumerState<MemoryFlipScreen> {
     _rewarded = false;
     _timeRemaining = widget.config.timeLimit.inSeconds;
     _timer = Timer.periodic(const Duration(seconds: 1), (t) {
-      if (!mounted) { t.cancel(); return; }
+      if (!mounted) {
+        t.cancel();
+        return;
+      }
       if (_timeRemaining <= 0) {
         t.cancel();
         _completeGame();
@@ -79,9 +82,13 @@ class _MemoryFlipScreenState extends ConsumerState<MemoryFlipScreen> {
       final xp = _matches * 10;
       await ref.read(learningProvider.notifier).addXp(xp, reason: 'mini_game');
       if (!mounted) return;
-      setState(() { _completing = false; });
+      setState(() {
+        _completing = false;
+      });
     } else {
-      setState(() { _completing = false; });
+      setState(() {
+        _completing = false;
+      });
     }
   }
 
@@ -123,13 +130,20 @@ class _MemoryFlipScreenState extends ConsumerState<MemoryFlipScreen> {
 
   IconData _iconFor(String name) {
     switch (name) {
-      case 'lock': return Icons.lock_rounded;
-      case 'shield': return Icons.shield_rounded;
-      case 'key': return Icons.key_rounded;
-      case 'eye': return Icons.visibility_rounded;
-      case 'bug': return Icons.bug_report_rounded;
-      case 'globe': return Icons.language_rounded;
-      default: return Icons.help_rounded;
+      case 'lock':
+        return Icons.lock_rounded;
+      case 'shield':
+        return Icons.shield_rounded;
+      case 'key':
+        return Icons.key_rounded;
+      case 'eye':
+        return Icons.visibility_rounded;
+      case 'bug':
+        return Icons.bug_report_rounded;
+      case 'globe':
+        return Icons.language_rounded;
+      default:
+        return Icons.help_rounded;
     }
   }
 
@@ -146,9 +160,19 @@ class _MemoryFlipScreenState extends ConsumerState<MemoryFlipScreen> {
             title: Text(l.miniGameExitTitle),
             content: Text(l.miniGameExitContent),
             actions: [
-              TextButton(onPressed: () { HapticFeedback.lightImpact(); Navigator.pop(ctx); }, child: Text(l.cancel)),
               TextButton(
-                onPressed: () { HapticFeedback.lightImpact(); Navigator.pop(ctx); Navigator.pop(context); },
+                onPressed: () {
+                  HapticFeedback.lightImpact();
+                  Navigator.pop(ctx);
+                },
+                child: Text(l.cancel),
+              ),
+              TextButton(
+                onPressed: () {
+                  HapticFeedback.lightImpact();
+                  Navigator.pop(ctx);
+                  Navigator.pop(context);
+                },
                 child: Text(l.exitText),
               ),
             ],
@@ -156,44 +180,66 @@ class _MemoryFlipScreenState extends ConsumerState<MemoryFlipScreen> {
         );
       },
       child: Scaffold(
-      appBar: AppBar(
-        title: Text(l.miniGameMemory),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(AppSpacing.lg),
-            child: Row(children: [
-              Icon(Icons.timer_rounded, size: 18, color: _timeRemaining < 10 ? PremiumColors.error : context.textPrimary),
-              const SizedBox(width: AppSpacing.xxs),
-              Text('$_timeRemaining', style: AppTextStyle.titleSmall.copyWith(fontWeight: FontWeight.bold, color: context.textPrimary)),
-            ]),
-          ),
-        ],
-      ),
-      body: _gameComplete
-          ? _buildResult(l)
-          : Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(AppSpacing.lg),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      StatChip(label: l.miniGameMoves, value: '$_moves'),
-                      StatChip(label: l.miniGameMatches, value: '$_matches/6'),
-                    ],
+        appBar: AppBar(
+          title: Text(l.miniGameMemory),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(AppSpacing.lg),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.timer_rounded,
+                    size: 18,
+                    color: _timeRemaining < 10
+                        ? PremiumColors.error
+                        : context.textPrimary,
                   ),
-                ),
-                Expanded(
-                  child: GridView.builder(
-                    padding: const EdgeInsets.all(AppSpacing.lg),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4, mainAxisSpacing: 8, crossAxisSpacing: 8),
-                    itemCount: 12,
-                    itemBuilder: (ctx, i) => _buildCard(i),
-                  ).animate().fadeIn(duration: 300.ms),
-                ),
-              ],
+                  const SizedBox(width: AppSpacing.xxs),
+                  Text(
+                    '$_timeRemaining',
+                    style: AppTextStyle.titleSmall.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: context.textPrimary,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
+          ],
+        ),
+        body: _gameComplete
+            ? _buildResult(l)
+            : Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(AppSpacing.lg),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        StatChip(label: l.miniGameMoves, value: '$_moves'),
+                        StatChip(
+                          label: l.miniGameMatches,
+                          value: '$_matches/6',
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: GridView.builder(
+                      padding: const EdgeInsets.all(AppSpacing.lg),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 4,
+                            mainAxisSpacing: 8,
+                            crossAxisSpacing: 8,
+                          ),
+                      itemCount: 12,
+                      itemBuilder: (ctx, i) => _buildCard(i),
+                    ).animate().fadeIn(duration: 300.ms),
+                  ),
+                ],
+              ),
+      ),
     );
   }
 
@@ -201,7 +247,9 @@ class _MemoryFlipScreenState extends ConsumerState<MemoryFlipScreen> {
     final isRevealed = _flipped[index] || _matched[index];
     return Semantics(
       button: true,
-      label: isRevealed ? _cards[index] : AppLocalizations.of(context)!.miniGameHiddenCard,
+      label: isRevealed
+          ? _cards[index]
+          : AppLocalizations.of(context)!.miniGameHiddenCard,
       child: GestureDetector(
         onTap: () {
           HapticFeedback.lightImpact();
@@ -214,18 +262,30 @@ class _MemoryFlipScreenState extends ConsumerState<MemoryFlipScreen> {
             color: _matched[index]
                 ? PremiumColors.success.withValues(alpha: 0.2)
                 : isRevealed
-                    ? context.surfaceTinted
-                    : PremiumColors.primary.withValues(alpha: 0.1),
+                ? context.surfaceTinted
+                : PremiumColors.primary.withValues(alpha: 0.1),
             border: Border.all(
-              color: _matched[index] ? PremiumColors.success : PremiumColors.primary.withValues(alpha: 0.3),
+              color: _matched[index]
+                  ? PremiumColors.success
+                  : PremiumColors.primary.withValues(alpha: 0.3),
             ),
           ),
           child: Center(
             child: AnimatedSwitcher(
               duration: const Duration(milliseconds: 300),
               child: isRevealed
-                  ? Icon(_iconFor(_cards[index]), key: ValueKey('revealed_$index'), size: 32, color: PremiumColors.primary)
-                  : Icon(Icons.question_mark_rounded, key: ValueKey('hidden_$index'), size: 24, color: context.textTertiary),
+                  ? Icon(
+                      _iconFor(_cards[index]),
+                      key: ValueKey('revealed_$index'),
+                      size: 32,
+                      color: PremiumColors.primary,
+                    )
+                  : Icon(
+                      Icons.question_mark_rounded,
+                      key: ValueKey('hidden_$index'),
+                      size: 24,
+                      color: context.textTertiary,
+                    ),
             ),
           ),
         ),
@@ -246,14 +306,30 @@ class _MemoryFlipScreenState extends ConsumerState<MemoryFlipScreen> {
               alignment: Alignment.center,
               children: [
                 const ConfettiWidget(type: ConfettiType.level),
-                ExcludeSemantics(child: Icon(_matches >= 6 ? Icons.emoji_events_rounded : Icons.star_rounded, size: 64, color: _matches >= 6 ? PremiumColors.accentYellow : PremiumColors.primary)).animate().fadeIn().scale(begin: const Offset(0.8, 0.8)),
+                ExcludeSemantics(
+                  child: Icon(
+                    _matches >= 6
+                        ? Icons.emoji_events_rounded
+                        : Icons.star_rounded,
+                    size: 64,
+                    color: _matches >= 6
+                        ? PremiumColors.accentYellow
+                        : PremiumColors.primary,
+                  ),
+                ).animate().fadeIn().scale(begin: const Offset(0.8, 0.8)),
               ],
             ),
           ),
           const SizedBox(height: AppSpacing.lg),
-          Text(_matches >= 6 ? l.miniGameComplete : l.miniGameOver, style: AppTextStyle.headline),
+          Text(
+            _matches >= 6 ? l.miniGameComplete : l.miniGameOver,
+            style: AppTextStyle.headline,
+          ),
           const SizedBox(height: AppSpacing.sm),
-          Text('${l.miniGameMoves}: $_moves', style: AppTextStyle.body.copyWith(color: context.textSecondary)),
+          Text(
+            '${l.miniGameMoves}: $_moves',
+            style: AppTextStyle.body.copyWith(color: context.textSecondary),
+          ),
           const SizedBox(height: AppSpacing.lg),
           if (_completing)
             const Padding(
@@ -266,13 +342,38 @@ class _MemoryFlipScreenState extends ConsumerState<MemoryFlipScreen> {
               duration: const Duration(milliseconds: 1500),
               curve: Curves.easeOut,
               builder: (context, value, _) => Container(
-                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl, vertical: 10),
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(AppRadius.pill), gradient: const LinearGradient(colors: [PremiumColors.primary, PremiumColors.primaryAccent])),
-                child: Row(mainAxisSize: MainAxisSize.min, children: [
-                  const ExcludeSemantics(child: Icon(Icons.star_rounded, size: 18, color: Colors.white)),
-                  const SizedBox(width: AppSpacing.xs),
-                  Text('$value XP', style: AppTextStyle.bodyBold.copyWith(color: Colors.white)),
-                ]),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.xl,
+                  vertical: 10,
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(AppRadius.pill),
+                  gradient: const LinearGradient(
+                    colors: [
+                      PremiumColors.primary,
+                      PremiumColors.primaryAccent,
+                    ],
+                  ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const ExcludeSemantics(
+                      child: Icon(
+                        Icons.star_rounded,
+                        size: 18,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(width: AppSpacing.xs),
+                    Text(
+                      '$value XP',
+                      style: AppTextStyle.bodyBold.copyWith(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
             const SizedBox(height: AppSpacing.xxl),
@@ -280,12 +381,16 @@ class _MemoryFlipScreenState extends ConsumerState<MemoryFlipScreen> {
           Semantics(
             button: true,
             label: l.miniGamePlayAgain,
-            child: FilledButton(onPressed: () { HapticFeedback.lightImpact(); setState(() => _initGame()); }, child: Text(l.miniGamePlayAgain)),
+            child: FilledButton(
+              onPressed: () {
+                HapticFeedback.lightImpact();
+                setState(() => _initGame());
+              },
+              child: Text(l.miniGamePlayAgain),
+            ),
           ),
         ],
       ),
     );
   }
 }
-
-

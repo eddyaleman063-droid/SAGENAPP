@@ -32,7 +32,11 @@ class _SyncCoordinatorState extends ConsumerState<SyncCoordinator> {
           } catch (e) {
             AppLogger().error('SyncCoordinator: streak reload failed', e);
             if (context.mounted) {
-              SagenNotification.show(context, message: AppLocalizations.of(context)?.errorGeneric ?? '', type: NotificationType.error);
+              SagenNotification.show(
+                context,
+                message: AppLocalizations.of(context)?.errorGeneric ?? '',
+                type: NotificationType.error,
+              );
             }
           }
           try {
@@ -40,7 +44,11 @@ class _SyncCoordinatorState extends ConsumerState<SyncCoordinator> {
           } catch (e) {
             AppLogger().error('SyncCoordinator: learning reload failed', e);
             if (context.mounted) {
-              SagenNotification.show(context, message: AppLocalizations.of(context)?.errorGeneric ?? '', type: NotificationType.error);
+              SagenNotification.show(
+                context,
+                message: AppLocalizations.of(context)?.errorGeneric ?? '',
+                type: NotificationType.error,
+              );
             }
           }
           try {
@@ -48,7 +56,11 @@ class _SyncCoordinatorState extends ConsumerState<SyncCoordinator> {
           } catch (e) {
             AppLogger().error('SyncCoordinator: protection reload failed', e);
             if (context.mounted) {
-              SagenNotification.show(context, message: AppLocalizations.of(context)?.errorGeneric ?? '', type: NotificationType.error);
+              SagenNotification.show(
+                context,
+                message: AppLocalizations.of(context)?.errorGeneric ?? '',
+                type: NotificationType.error,
+              );
             }
           }
           try {
@@ -56,7 +68,11 @@ class _SyncCoordinatorState extends ConsumerState<SyncCoordinator> {
           } catch (e) {
             AppLogger().error('SyncCoordinator: mission reload failed', e);
             if (context.mounted) {
-              SagenNotification.show(context, message: AppLocalizations.of(context)?.errorGeneric ?? '', type: NotificationType.error);
+              SagenNotification.show(
+                context,
+                message: AppLocalizations.of(context)?.errorGeneric ?? '',
+                type: NotificationType.error,
+              );
             }
           }
         });

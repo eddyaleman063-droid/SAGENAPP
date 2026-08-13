@@ -21,7 +21,8 @@ class SageChatScreen extends ConsumerStatefulWidget {
   ConsumerState<SageChatScreen> createState() => _SageChatScreenState();
 }
 
-class _SageChatScreenState extends ConsumerState<SageChatScreen> with AutomaticKeepAliveClientMixin {
+class _SageChatScreenState extends ConsumerState<SageChatScreen>
+    with AutomaticKeepAliveClientMixin {
   final _textCtrl = TextEditingController();
   final _focusNode = FocusNode();
   final _scrollCtrl = ScrollController();
@@ -37,7 +38,11 @@ class _SageChatScreenState extends ConsumerState<SageChatScreen> with AutomaticK
   void _scrollDown() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_scrollCtrl.hasClients && mounted) {
-        _scrollCtrl.animateTo(_scrollCtrl.position.maxScrollExtent, duration: const Duration(milliseconds: 200), curve: Curves.easeOut);
+        _scrollCtrl.animateTo(
+          _scrollCtrl.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeOut,
+        );
       }
     });
   }
@@ -45,7 +50,10 @@ class _SageChatScreenState extends ConsumerState<SageChatScreen> with AutomaticK
   void _send(String text) {
     if (text.trim().isEmpty) return;
     ref.read(experienceServiceProvider).lightHaptic();
-    AnalyticsService.instance.track(AnalyticEvent.tutorQuery, properties: {'query': text});
+    AnalyticsService.instance.track(
+      AnalyticEvent.tutorQuery,
+      properties: {'query': text},
+    );
     ref.read(sageAiProvider.notifier).sendMessage(text);
     _textCtrl.clear();
     _focusNode.unfocus();
@@ -88,7 +96,8 @@ class _SageChatScreenState extends ConsumerState<SageChatScreen> with AutomaticK
               SageChatHeader(
                 dark: dark,
                 sage: sageState,
-                onClear: () => ref.read(sageAiProvider.notifier).clearMessages(),
+                onClear: () =>
+                    ref.read(sageAiProvider.notifier).clearMessages(),
               ),
               Expanded(
                 child: MessageList(
@@ -99,8 +108,7 @@ class _SageChatScreenState extends ConsumerState<SageChatScreen> with AutomaticK
               ),
               if (sageState.errorMessage != null)
                 _ErrorBanner(message: sageState.errorMessage!, dark: dark),
-              if (sageState.isLoading)
-                const TypingIndicator(),
+              if (sageState.isLoading) const TypingIndicator(),
               if (sageState.suggestionChips.isNotEmpty)
                 QuickChips(
                   chips: sageState.suggestionChips,
@@ -131,19 +139,28 @@ class _ErrorBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.sm),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg,
+        vertical: AppSpacing.sm,
+      ),
       color: PremiumColors.error.withValues(alpha: 0.1),
       child: Row(
         children: [
           Semantics(
             label: AppLocalizations.of(context)?.errorGeneric ?? '',
-            child: const Icon(Icons.warning_amber_rounded, size: 16, color: PremiumColors.error),
+            child: const Icon(
+              Icons.warning_amber_rounded,
+              size: 16,
+              color: PremiumColors.error,
+            ),
           ),
           const SizedBox(width: AppSpacing.sm),
           Expanded(
             child: Text(
               message,
-              style: AppTextStyle.caption.copyWith(color: context.textSecondary),
+              style: AppTextStyle.caption.copyWith(
+                color: context.textSecondary,
+              ),
             ),
           ),
         ],
@@ -151,5 +168,3 @@ class _ErrorBanner extends StatelessWidget {
     );
   }
 }
-
-

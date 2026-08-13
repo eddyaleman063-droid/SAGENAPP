@@ -44,12 +44,20 @@ void main() {
 
   setUp(() {
     mockCloudSync = MockCloudSyncService();
-    when(() => mockCloudSync.startListening(any(), any())).thenAnswer((_) async {});
+    when(
+      () => mockCloudSync.startListening(any(), any()),
+    ).thenAnswer((_) async {});
     when(() => mockCloudSync.stopListening()).thenReturn(null);
-    when(() => mockCloudSync.saveAll(any(), any())).thenAnswer((_) async => true);
+    when(
+      () => mockCloudSync.saveAll(any(), any()),
+    ).thenAnswer((_) async => true);
     when(() => mockCloudSync.clearLocal(any())).thenAnswer((_) async {});
-    when(() => mockCloudSync.loadAll(any(), any())).thenAnswer((_) async => true);
-    when(() => mockCloudSync.deleteCloudData(any())).thenAnswer((_) async => true);
+    when(
+      () => mockCloudSync.loadAll(any(), any()),
+    ).thenAnswer((_) async => true);
+    when(
+      () => mockCloudSync.deleteCloudData(any()),
+    ).thenAnswer((_) async => true);
   });
 
   group('AuthState', () {
@@ -119,12 +127,16 @@ void main() {
       final prefs = await SharedPreferences.getInstance();
       mockAuth = MockAuthService();
       when(() => mockAuth.currentUser).thenReturn(null);
-      when(() => mockAuth.authStateChanges).thenAnswer((_) => const Stream.empty());
-      container = ProviderContainer(overrides: [
-        authServiceProvider.overrideWith((ref) => mockAuth),
-        cloudSyncServiceProvider.overrideWithValue(mockCloudSync),
-        prefsProvider.overrideWithValue(prefs),
-      ]);
+      when(
+        () => mockAuth.authStateChanges,
+      ).thenAnswer((_) => const Stream.empty());
+      container = ProviderContainer(
+        overrides: [
+          authServiceProvider.overrideWith((ref) => mockAuth),
+          cloudSyncServiceProvider.overrideWithValue(mockCloudSync),
+          prefsProvider.overrideWithValue(prefs),
+        ],
+      );
     });
 
     tearDown(() => container.dispose());
@@ -138,7 +150,9 @@ void main() {
     group('signInWithGoogle', () {
       test('sets loading then authenticated on success', () async {
         final fakeUser = FakeAppUser(uid: 'google-uid', isEmailVerified: true);
-        when(() => mockAuth.signInWithGoogle()).thenAnswer((_) async => fakeUser);
+        when(
+          () => mockAuth.signInWithGoogle(),
+        ).thenAnswer((_) async => fakeUser);
 
         final notifier = container.read(authProvider.notifier);
         await notifier.signInWithGoogle();
@@ -151,8 +165,9 @@ void main() {
       });
 
       test('sets unauthenticated on canceled exception', () async {
-        when(() => mockAuth.signInWithGoogle())
-            .thenThrow(const AuthException('canceled'));
+        when(
+          () => mockAuth.signInWithGoogle(),
+        ).thenThrow(const AuthException('canceled'));
 
         final notifier = container.read(authProvider.notifier);
         await notifier.signInWithGoogle();
@@ -162,8 +177,9 @@ void main() {
       });
 
       test('sets error state on non-canceled AuthException', () async {
-        when(() => mockAuth.signInWithGoogle())
-            .thenThrow(const AuthException('network_error'));
+        when(
+          () => mockAuth.signInWithGoogle(),
+        ).thenThrow(const AuthException('network_error'));
 
         final notifier = container.read(authProvider.notifier);
         await notifier.signInWithGoogle();
@@ -174,8 +190,9 @@ void main() {
       });
 
       test('sets error state on generic exception', () async {
-        when(() => mockAuth.signInWithGoogle())
-            .thenThrow(Exception('network error'));
+        when(
+          () => mockAuth.signInWithGoogle(),
+        ).thenThrow(Exception('network error'));
 
         final notifier = container.read(authProvider.notifier);
         await notifier.signInWithGoogle();
@@ -189,11 +206,13 @@ void main() {
     group('signUpWithEmail', () {
       test('sets authenticated state on success', () async {
         final fakeUser = FakeAppUser(uid: 'new-uid', isEmailVerified: false);
-        when(() => mockAuth.signUpWithEmail(
-              email: any(named: 'email'),
-              password: any(named: 'password'),
-              displayName: any(named: 'displayName'),
-            )).thenAnswer((_) async => fakeUser);
+        when(
+          () => mockAuth.signUpWithEmail(
+            email: any(named: 'email'),
+            password: any(named: 'password'),
+            displayName: any(named: 'displayName'),
+          ),
+        ).thenAnswer((_) async => fakeUser);
 
         final notifier = container.read(authProvider.notifier);
         await notifier.signUpWithEmail(
@@ -209,11 +228,13 @@ void main() {
       });
 
       test('sets error state on AuthException', () async {
-        when(() => mockAuth.signUpWithEmail(
-              email: any(named: 'email'),
-              password: any(named: 'password'),
-              displayName: any(named: 'displayName'),
-            )).thenThrow(const AuthException('email_in_use'));
+        when(
+          () => mockAuth.signUpWithEmail(
+            email: any(named: 'email'),
+            password: any(named: 'password'),
+            displayName: any(named: 'displayName'),
+          ),
+        ).thenThrow(const AuthException('email_in_use'));
 
         final notifier = container.read(authProvider.notifier);
         await notifier.signUpWithEmail(
@@ -231,10 +252,12 @@ void main() {
     group('signInWithEmail', () {
       test('sets loading then authenticated on success', () async {
         final fakeUser = FakeAppUser(uid: 'email-uid', isEmailVerified: true);
-        when(() => mockAuth.signInWithEmail(
-              email: any(named: 'email'),
-              password: any(named: 'password'),
-            )).thenAnswer((_) async => fakeUser);
+        when(
+          () => mockAuth.signInWithEmail(
+            email: any(named: 'email'),
+            password: any(named: 'password'),
+          ),
+        ).thenAnswer((_) async => fakeUser);
 
         final notifier = container.read(authProvider.notifier);
         await notifier.signInWithEmail(
@@ -248,10 +271,12 @@ void main() {
       });
 
       test('sets error on wrong password', () async {
-        when(() => mockAuth.signInWithEmail(
-              email: any(named: 'email'),
-              password: any(named: 'password'),
-            )).thenThrow(const AuthException('wrong_password'));
+        when(
+          () => mockAuth.signInWithEmail(
+            email: any(named: 'email'),
+            password: any(named: 'password'),
+          ),
+        ).thenThrow(const AuthException('wrong_password'));
 
         final notifier = container.read(authProvider.notifier);
         await notifier.signInWithEmail(
@@ -265,11 +290,16 @@ void main() {
       });
 
       test('sets unauthenticated when email not verified', () async {
-        final fakeUser = FakeAppUser(uid: 'unverified-uid', isEmailVerified: false);
-        when(() => mockAuth.signInWithEmail(
-              email: any(named: 'email'),
-              password: any(named: 'password'),
-            )).thenAnswer((_) async => fakeUser);
+        final fakeUser = FakeAppUser(
+          uid: 'unverified-uid',
+          isEmailVerified: false,
+        );
+        when(
+          () => mockAuth.signInWithEmail(
+            email: any(named: 'email'),
+            password: any(named: 'password'),
+          ),
+        ).thenAnswer((_) async => fakeUser);
 
         final notifier = container.read(authProvider.notifier);
         await notifier.signInWithEmail(
@@ -309,8 +339,9 @@ void main() {
 
     group('sendPasswordResetEmail', () {
       test('sets unauthenticated on success', () async {
-        when(() => mockAuth.sendPasswordResetEmail('user@example.com'))
-            .thenAnswer((_) async {});
+        when(
+          () => mockAuth.sendPasswordResetEmail('user@example.com'),
+        ).thenAnswer((_) async {});
 
         final notifier = container.read(authProvider.notifier);
         await notifier.sendPasswordResetEmail('user@example.com');
@@ -320,8 +351,9 @@ void main() {
       });
 
       test('sets error on failure', () async {
-        when(() => mockAuth.sendPasswordResetEmail('user@example.com'))
-            .thenThrow(const AuthException('not_found'));
+        when(
+          () => mockAuth.sendPasswordResetEmail('user@example.com'),
+        ).thenThrow(const AuthException('not_found'));
 
         final notifier = container.read(authProvider.notifier);
         await notifier.sendPasswordResetEmail('user@example.com');
@@ -334,8 +366,9 @@ void main() {
 
     group('clearError', () {
       test('clears error message', () async {
-        when(() => mockAuth.signInWithGoogle())
-            .thenThrow(const AuthException('network_error'));
+        when(
+          () => mockAuth.signInWithGoogle(),
+        ).thenThrow(const AuthException('network_error'));
 
         final notifier = container.read(authProvider.notifier);
         await notifier.signInWithGoogle();
@@ -391,19 +424,25 @@ void main() {
     group('authStateChanges stream', () {
       test('updates state when stream emits authenticated user', () async {
         final controller = StreamController<AppUser?>();
-        when(() => mockAuth.authStateChanges).thenAnswer((_) => controller.stream);
+        when(
+          () => mockAuth.authStateChanges,
+        ).thenAnswer((_) => controller.stream);
 
         container.dispose();
         SharedPreferences.setMockInitialValues({});
         final prefs = await SharedPreferences.getInstance();
         final newMockAuth = MockAuthService();
         when(() => newMockAuth.currentUser).thenReturn(null);
-        when(() => newMockAuth.authStateChanges).thenAnswer((_) => controller.stream);
-        container = ProviderContainer(overrides: [
-          authServiceProvider.overrideWith((ref) => newMockAuth),
-          cloudSyncServiceProvider.overrideWithValue(mockCloudSync),
-          prefsProvider.overrideWithValue(prefs),
-        ]);
+        when(
+          () => newMockAuth.authStateChanges,
+        ).thenAnswer((_) => controller.stream);
+        container = ProviderContainer(
+          overrides: [
+            authServiceProvider.overrideWith((ref) => newMockAuth),
+            cloudSyncServiceProvider.overrideWithValue(mockCloudSync),
+            prefsProvider.overrideWithValue(prefs),
+          ],
+        );
 
         container.read(authProvider);
         await Future<void>.delayed(Duration.zero);
@@ -421,19 +460,25 @@ void main() {
 
       test('sets unauthenticated when stream emits null', () async {
         final controller = StreamController<AppUser?>();
-        when(() => mockAuth.authStateChanges).thenAnswer((_) => controller.stream);
+        when(
+          () => mockAuth.authStateChanges,
+        ).thenAnswer((_) => controller.stream);
 
         container.dispose();
         SharedPreferences.setMockInitialValues({});
         final prefs = await SharedPreferences.getInstance();
         final newMockAuth = MockAuthService();
         when(() => newMockAuth.currentUser).thenReturn(null);
-        when(() => newMockAuth.authStateChanges).thenAnswer((_) => controller.stream);
-        container = ProviderContainer(overrides: [
-          authServiceProvider.overrideWith((ref) => newMockAuth),
-          cloudSyncServiceProvider.overrideWithValue(mockCloudSync),
-          prefsProvider.overrideWithValue(prefs),
-        ]);
+        when(
+          () => newMockAuth.authStateChanges,
+        ).thenAnswer((_) => controller.stream);
+        container = ProviderContainer(
+          overrides: [
+            authServiceProvider.overrideWith((ref) => newMockAuth),
+            cloudSyncServiceProvider.overrideWithValue(mockCloudSync),
+            prefsProvider.overrideWithValue(prefs),
+          ],
+        );
 
         controller.add(null);
         await Future<void>.delayed(Duration.zero);

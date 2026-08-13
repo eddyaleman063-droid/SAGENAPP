@@ -15,7 +15,7 @@ class AppLifecycleNotifier extends StateNotifier<AppLifecycleState>
   Timer? _syncDebounce;
 
   AppLifecycleNotifier(this._cloudSync, this._authService, this._ref)
-      : super(AppLifecycleState.resumed) {
+    : super(AppLifecycleState.resumed) {
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -59,7 +59,7 @@ class AppLifecycleNotifier extends StateNotifier<AppLifecycleState>
 
 final appLifecycleProvider =
     StateNotifierProvider<AppLifecycleNotifier, AppLifecycleState>((ref) {
-  final cloudSync = ref.read(cloudSyncServiceProvider);
-  final authService = ref.read(authServiceProvider);
-  return AppLifecycleNotifier(cloudSync, authService, ref);
-});
+      final cloudSync = ref.read(cloudSyncServiceProvider);
+      final authService = ref.read(authServiceProvider);
+      return AppLifecycleNotifier(cloudSync, authService, ref);
+    });

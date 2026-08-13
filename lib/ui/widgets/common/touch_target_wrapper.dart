@@ -6,19 +6,12 @@ class TouchTargetWrapper extends StatelessWidget {
   final Widget child;
   final double minSize;
 
-  const TouchTargetWrapper({
-    super.key,
-    required this.child,
-    this.minSize = 48,
-  });
+  const TouchTargetWrapper({super.key, required this.child, this.minSize = 48});
 
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-      constraints: BoxConstraints(
-        minWidth: minSize,
-        minHeight: minSize,
-      ),
+      constraints: BoxConstraints(minWidth: minSize, minHeight: minSize),
       child: child,
     );
   }

@@ -43,7 +43,9 @@ class _HabitTransitionScreenState extends State<HabitTransitionScreen>
       if (!mounted) return;
       final l = AppLocalizations.of(context)!;
       setState(() {
-        _message = _buildMessages(l)[Random().nextInt(_buildMessages(l).length)];
+        _message = _buildMessages(
+          l,
+        )[Random().nextInt(_buildMessages(l).length)];
       });
     });
 
@@ -56,13 +58,13 @@ class _HabitTransitionScreenState extends State<HabitTransitionScreen>
       parent: _ctrl,
       curve: const Interval(0.0, 0.5, curve: Curves.easeOutCubic),
     );
-    _sageSlide = Tween<Offset>(
-      begin: const Offset(0, 0.3),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: _ctrl,
-      curve: const Interval(0.0, 0.5, curve: Curves.easeOutCubic),
-    ));
+    _sageSlide = Tween<Offset>(begin: const Offset(0, 0.3), end: Offset.zero)
+        .animate(
+          CurvedAnimation(
+            parent: _ctrl,
+            curve: const Interval(0.0, 0.5, curve: Curves.easeOutCubic),
+          ),
+        );
 
     _bubbleFade = CurvedAnimation(
       parent: _ctrl,
@@ -296,11 +298,11 @@ class _ContinueButton extends StatelessWidget {
               alignment: Alignment.center,
               child: Text(
                 AppLocalizations.of(context)!.continueText,
-                  style: AppTextStyle.titleSmall.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1.5,
-                  ),
+                style: AppTextStyle.titleSmall.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1.5,
+                ),
               ),
             ),
           ),

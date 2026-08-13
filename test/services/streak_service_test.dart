@@ -39,8 +39,9 @@ void main() {
         when(() => repo.currentStreak).thenReturn(5);
         when(() => repo.longestStreak).thenReturn(10);
         when(() => repo.streakFreezes).thenReturn(2);
-        when(() => repo.lastActivityDate)
-            .thenReturn(yesterday.toIso8601String());
+        when(
+          () => repo.lastActivityDate,
+        ).thenReturn(yesterday.toIso8601String());
 
         final status = service.load();
 
@@ -56,8 +57,9 @@ void main() {
         when(() => repo.currentStreak).thenReturn(5);
         when(() => repo.longestStreak).thenReturn(10);
         when(() => repo.streakFreezes).thenReturn(0);
-        when(() => repo.lastActivityDate)
-            .thenReturn(threeDaysAgo.toIso8601String());
+        when(
+          () => repo.lastActivityDate,
+        ).thenReturn(threeDaysAgo.toIso8601String());
 
         final status = service.load();
 
@@ -71,8 +73,9 @@ void main() {
         when(() => repo.currentStreak).thenReturn(5);
         when(() => repo.longestStreak).thenReturn(10);
         when(() => repo.streakFreezes).thenReturn(1);
-        when(() => repo.lastActivityDate)
-            .thenReturn(twoDaysAgo.toIso8601String());
+        when(
+          () => repo.lastActivityDate,
+        ).thenReturn(twoDaysAgo.toIso8601String());
 
         final status = service.checkIn();
 
@@ -101,8 +104,9 @@ void main() {
         when(() => repo.currentStreak).thenReturn(3);
         when(() => repo.longestStreak).thenReturn(5);
         when(() => repo.streakFreezes).thenReturn(0);
-        when(() => repo.lastActivityDate)
-            .thenReturn(yesterday.toIso8601String());
+        when(
+          () => repo.lastActivityDate,
+        ).thenReturn(yesterday.toIso8601String());
 
         final status = service.checkIn();
 
@@ -115,8 +119,7 @@ void main() {
         when(() => repo.currentStreak).thenReturn(3);
         when(() => repo.longestStreak).thenReturn(5);
         when(() => repo.streakFreezes).thenReturn(0);
-        when(() => repo.lastActivityDate)
-            .thenReturn(today.toIso8601String());
+        when(() => repo.lastActivityDate).thenReturn(today.toIso8601String());
 
         final status = service.checkIn();
 
@@ -128,8 +131,9 @@ void main() {
         when(() => repo.currentStreak).thenReturn(5);
         when(() => repo.longestStreak).thenReturn(10);
         when(() => repo.streakFreezes).thenReturn(0);
-        when(() => repo.lastActivityDate)
-            .thenReturn(threeDaysAgo.toIso8601String());
+        when(
+          () => repo.lastActivityDate,
+        ).thenReturn(threeDaysAgo.toIso8601String());
 
         final status = service.checkIn();
 
@@ -142,17 +146,20 @@ void main() {
         when(() => repo.currentStreak).thenReturn(5);
         when(() => repo.longestStreak).thenReturn(10);
         when(() => repo.streakFreezes).thenReturn(7);
-        when(() => repo.lastActivityDate)
-            .thenReturn(yesterday.toIso8601String());
+        when(
+          () => repo.lastActivityDate,
+        ).thenReturn(yesterday.toIso8601String());
 
         service.checkIn();
 
-        verify(() => repo.saveAll(
-          currentStreak: 6,
-          longestStreak: 10,
-          lastActivityDate: any(named: 'lastActivityDate'),
-          streakFreezes: 7,
-        )).called(1);
+        verify(
+          () => repo.saveAll(
+            currentStreak: 6,
+            longestStreak: 10,
+            lastActivityDate: any(named: 'lastActivityDate'),
+            streakFreezes: 7,
+          ),
+        ).called(1);
       });
     });
 
@@ -255,12 +262,14 @@ void main() {
         verify(() => repo.longestStreak).called(1);
         verify(() => repo.streakFreezes).called(1);
         verify(() => repo.lastActivityDate).called(1);
-        verify(() => repo.saveAll(
-          currentStreak: any(named: 'currentStreak'),
-          longestStreak: any(named: 'longestStreak'),
-          lastActivityDate: any(named: 'lastActivityDate'),
-          streakFreezes: any(named: 'streakFreezes'),
-        )).called(1);
+        verify(
+          () => repo.saveAll(
+            currentStreak: any(named: 'currentStreak'),
+            longestStreak: any(named: 'longestStreak'),
+            lastActivityDate: any(named: 'lastActivityDate'),
+            streakFreezes: any(named: 'streakFreezes'),
+          ),
+        ).called(1);
       });
 
       test('load calls repo getters without saving', () {
@@ -275,12 +284,14 @@ void main() {
         verify(() => repo.longestStreak).called(1);
         verify(() => repo.streakFreezes).called(1);
         verify(() => repo.lastActivityDate).called(1);
-        verifyNever(() => repo.saveAll(
-          currentStreak: any(named: 'currentStreak'),
-          longestStreak: any(named: 'longestStreak'),
-          lastActivityDate: any(named: 'lastActivityDate'),
-          streakFreezes: any(named: 'streakFreezes'),
-        ));
+        verifyNever(
+          () => repo.saveAll(
+            currentStreak: any(named: 'currentStreak'),
+            longestStreak: any(named: 'longestStreak'),
+            lastActivityDate: any(named: 'lastActivityDate'),
+            streakFreezes: any(named: 'streakFreezes'),
+          ),
+        );
       });
     });
   });

@@ -64,9 +64,12 @@ class DashboardState {
       currentStreak: currentStreak ?? this.currentStreak,
       longestStreak: longestStreak ?? this.longestStreak,
       dailyGoalMinutes: dailyGoalMinutes ?? this.dailyGoalMinutes,
-      lessonsCompletedToday: lessonsCompletedToday ?? this.lessonsCompletedToday,
+      lessonsCompletedToday:
+          lessonsCompletedToday ?? this.lessonsCompletedToday,
       nextLesson: nextLesson != null ? nextLesson() : this.nextLesson,
-      nextLessonStageTitle: nextLessonStageTitle != null ? nextLessonStageTitle() : this.nextLessonStageTitle,
+      nextLessonStageTitle: nextLessonStageTitle != null
+          ? nextLessonStageTitle()
+          : this.nextLessonStageTitle,
       isLoading: isLoading ?? this.isLoading,
       activeTab: activeTab ?? this.activeTab,
     );
@@ -74,7 +77,8 @@ class DashboardState {
 
   double get dailyProgress {
     if (dailyGoalMinutes <= 0) return 0;
-    return (lessonsCompletedToday * _defaultLessonMinutes / dailyGoalMinutes).clamp(0, 1);
+    return (lessonsCompletedToday * _defaultLessonMinutes / dailyGoalMinutes)
+        .clamp(0, 1);
   }
 }
 

@@ -20,14 +20,20 @@ import 'app_logger.dart';
 ///   - specialItems: from ChestSpecialDropService (client-side)
 ///   - cosmeticUnlocks: from ChestSpecialDropService (client-side)
 class ChestRewardRoller {
-  ChestRewardRoller._({ChestDropService? dropService, ChestSpecialDropService? specialDropService})
-      : _dropService = dropService ?? ChestDropService.instance,
-        _specialDropService = specialDropService ?? ChestSpecialDropService.instance;
+  ChestRewardRoller._({
+    ChestDropService? dropService,
+    ChestSpecialDropService? specialDropService,
+  }) : _dropService = dropService ?? ChestDropService.instance,
+       _specialDropService =
+           specialDropService ?? ChestSpecialDropService.instance;
 
   @visibleForTesting
-  ChestRewardRoller({ChestDropService? dropService, ChestSpecialDropService? specialDropService})
-      : _dropService = dropService ?? ChestDropService.instance,
-        _specialDropService = specialDropService ?? ChestSpecialDropService.instance;
+  ChestRewardRoller({
+    ChestDropService? dropService,
+    ChestSpecialDropService? specialDropService,
+  }) : _dropService = dropService ?? ChestDropService.instance,
+       _specialDropService =
+           specialDropService ?? ChestSpecialDropService.instance;
   static final ChestRewardRoller instance = ChestRewardRoller._();
 
   final ChestDropService _dropService;
@@ -36,14 +42,21 @@ class ChestRewardRoller {
 
   static int _fallbackXp(ChestType type) {
     switch (type) {
-      case ChestType.bronze: return 15;
-      case ChestType.silver: return 25;
-      case ChestType.gold: return 35;
-      case ChestType.legendary: return 50;
+      case ChestType.bronze:
+        return 15;
+      case ChestType.silver:
+        return 25;
+      case ChestType.gold:
+        return 35;
+      case ChestType.legendary:
+        return 50;
     }
   }
 
-  Future<ChestReward> roll(ChestType type, {bool luckBoostActive = false}) async {
+  Future<ChestReward> roll(
+    ChestType type, {
+    bool luckBoostActive = false,
+  }) async {
     while (_rollMutex != null) {
       await _rollMutex?.future;
     }
@@ -53,11 +66,16 @@ class ChestRewardRoller {
       try {
         serverReward = await _dropService.roll(type);
       } catch (e) {
-        AppLogger().warning('ChestRewardRoller: server roll failed, using minimal reward: $e');
+        AppLogger().warning(
+          'ChestRewardRoller: server roll failed, using minimal reward: $e',
+        );
         serverReward = ChestReward(xp: _fallbackXp(type));
       }
 
-      final specialDrop = _specialDropService.roll(type, luckBoostActive: luckBoostActive);
+      final specialDrop = _specialDropService.roll(
+        type,
+        luckBoostActive: luckBoostActive,
+      );
 
       return ChestReward(
         xp: serverReward.xp,

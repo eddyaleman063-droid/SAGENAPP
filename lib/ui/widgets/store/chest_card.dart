@@ -7,7 +7,12 @@ class ChestCard extends StatelessWidget {
   final bool dark;
   final bool hasUnclaimed;
   final VoidCallback onClaim;
-  const ChestCard({super.key, required this.dark, required this.hasUnclaimed, required this.onClaim});
+  const ChestCard({
+    super.key,
+    required this.dark,
+    required this.hasUnclaimed,
+    required this.onClaim,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +38,11 @@ class ChestCard extends StatelessWidget {
               color: Colors.white.withValues(alpha: 0.2),
             ),
             child: const ExcludeSemantics(
-              child: Icon(Icons.inventory_2_rounded, color: Colors.white, size: 24),
+              child: Icon(
+                Icons.inventory_2_rounded,
+                color: Colors.white,
+                size: 24,
+              ),
             ),
           ),
           const SizedBox(width: AppSpacing.lg),
@@ -43,13 +52,17 @@ class ChestCard extends StatelessWidget {
               children: [
                 Text(
                   hasUnclaimed ? l.storeChestAvailable : l.storeChestComeBack,
-                  style: AppTextStyle.body.copyWith(fontWeight: FontWeight.bold,
-                    color: Colors.white),
+                  style: AppTextStyle.body.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                 ),
                 const SizedBox(height: AppSpacing.xxs),
                 Text(
                   hasUnclaimed ? l.storeChestExpiresIn(2) : l.storeChestRenews,
-                  style: AppTextStyle.caption.copyWith(color: Colors.white.withValues(alpha: 0.7)),
+                  style: AppTextStyle.caption.copyWith(
+                    color: Colors.white.withValues(alpha: 0.7),
+                  ),
                 ),
               ],
             ),
@@ -64,15 +77,20 @@ class ChestCard extends StatelessWidget {
                   onClaim();
                 },
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.lg),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.lg,
+                    vertical: AppSpacing.lg,
+                  ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(AppRadius.md),
                     color: Colors.white.withValues(alpha: 0.25),
                   ),
                   child: Text(
                     l.storeOpen,
-                    style: AppTextStyle.subtitle.copyWith(fontWeight: FontWeight.w600,
-                      color: Colors.white),
+                    style: AppTextStyle.subtitle.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),

@@ -1,4 +1,4 @@
-﻿import 'dart:math' as math;
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,21 +24,33 @@ class DailyGoalConfig {
 }
 
 List<DailyGoalConfig> dailyGoalOptions(AppLocalizations l) => [
-  DailyGoalConfig(label: l.dailyGoalRelaxed, minutes: 3, questionsPerSession: 5),
-  DailyGoalConfig(label: l.dailyGoalNormal, minutes: 10, questionsPerSession: 12),
-  DailyGoalConfig(label: l.dailyGoalSerious, minutes: 15, questionsPerSession: 18),
-  DailyGoalConfig(label: l.dailyGoalIntense, minutes: 30, questionsPerSession: 35),
+  DailyGoalConfig(
+    label: l.dailyGoalRelaxed,
+    minutes: 3,
+    questionsPerSession: 5,
+  ),
+  DailyGoalConfig(
+    label: l.dailyGoalNormal,
+    minutes: 10,
+    questionsPerSession: 12,
+  ),
+  DailyGoalConfig(
+    label: l.dailyGoalSerious,
+    minutes: 15,
+    questionsPerSession: 18,
+  ),
+  DailyGoalConfig(
+    label: l.dailyGoalIntense,
+    minutes: 30,
+    questionsPerSession: 35,
+  ),
 ];
 
 class DailyGoalScreen extends ConsumerStatefulWidget {
   final VoidCallback? onContinue;
   final VoidCallback? onBack;
 
-  const DailyGoalScreen({
-    super.key,
-    this.onContinue,
-    this.onBack,
-  });
+  const DailyGoalScreen({super.key, this.onContinue, this.onBack});
 
   @override
   ConsumerState<DailyGoalScreen> createState() => _DailyGoalScreenState();
@@ -78,13 +90,18 @@ class _DailyGoalScreenState extends ConsumerState<DailyGoalScreen> {
     final dark = Theme.of(context).brightness == Brightness.dark;
     _goals = dailyGoalOptions(l);
     return Scaffold(
-      backgroundColor: dark ? PremiumColors.deepBackground : PremiumColors.lightBg,
+      backgroundColor: dark
+          ? PremiumColors.deepBackground
+          : PremiumColors.lightBg,
       body: SafeArea(
         child: Column(
           children: [
             // ── Header ──
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxs, vertical: AppSpacing.sm),
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.xxs,
+                vertical: AppSpacing.sm,
+              ),
               child: Row(
                 children: [
                   Semantics(
@@ -129,8 +146,7 @@ class _DailyGoalScreenState extends ConsumerState<DailyGoalScreen> {
             // ── Mascot row ──
             RepaintBoundary(
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -141,7 +157,8 @@ class _DailyGoalScreenState extends ConsumerState<DailyGoalScreen> {
                         height: 80,
                         cacheWidth: 160,
                         cacheHeight: 160,
-                        errorBuilder: (_, _, _) => const Icon(Icons.pets, size: 48),
+                        errorBuilder: (_, _, _) =>
+                            const Icon(Icons.pets, size: 48),
                       ),
                     ),
                     const SizedBox(width: AppSpacing.sm),
@@ -151,9 +168,13 @@ class _DailyGoalScreenState extends ConsumerState<DailyGoalScreen> {
                         children: [
                           Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: AppSpacing.xl, vertical: AppSpacing.lg),
+                              horizontal: AppSpacing.xl,
+                              vertical: AppSpacing.lg,
+                            ),
                             decoration: BoxDecoration(
-                              color: dark ? PremiumColors.onboardingBubbleDark : Colors.white,
+                              color: dark
+                                  ? PremiumColors.onboardingBubbleDark
+                                  : Colors.white,
                               borderRadius: BorderRadius.circular(AppRadius.xl),
                               border: Border.all(
                                 color: dark
@@ -179,7 +200,9 @@ class _DailyGoalScreenState extends ConsumerState<DailyGoalScreen> {
                                   width: 12,
                                   height: 12,
                                   decoration: BoxDecoration(
-                                    color: dark ? PremiumColors.onboardingBubbleDark : Colors.white,
+                                    color: dark
+                                        ? PremiumColors.onboardingBubbleDark
+                                        : Colors.white,
                                     border: Border.all(
                                       color: dark
                                           ? Colors.white.withValues(alpha: 0.10)
@@ -204,8 +227,7 @@ class _DailyGoalScreenState extends ConsumerState<DailyGoalScreen> {
             Expanded(
               child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
                 itemCount: _goals.length,
                 itemBuilder: (context, index) {
                   final goal = _goals[index];
@@ -223,20 +245,23 @@ class _DailyGoalScreenState extends ConsumerState<DailyGoalScreen> {
                       child: AnimatedContainer(
                         duration: const Duration(milliseconds: 200),
                         height: 60,
-                        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppSpacing.lg,
+                        ),
                         margin: const EdgeInsets.only(bottom: AppSpacing.md),
                         decoration: BoxDecoration(
                           color: isSelected
-                              ? PremiumColors.primaryAccent
-                                  .withValues(alpha: 0.08)
+                              ? PremiumColors.primaryAccent.withValues(
+                                  alpha: 0.08,
+                                )
                               : context.subtle,
                           borderRadius: BorderRadius.circular(AppRadius.xl),
                           border: Border.all(
                             color: isSelected
                                 ? PremiumColors.primaryAccent
                                 : (dark
-                                    ? Colors.white.withValues(alpha: 0.10)
-                                    : context.borderSubtle),
+                                      ? Colors.white.withValues(alpha: 0.10)
+                                      : context.borderSubtle),
                             width: isSelected ? 2.5 : 1,
                           ),
                         ),
@@ -271,7 +296,11 @@ class _DailyGoalScreenState extends ConsumerState<DailyGoalScreen> {
             // ── Bottom button ──
             Padding(
               padding: const EdgeInsets.fromLTRB(
-                  AppSpacing.xxl, 0, AppSpacing.xxl, AppSpacing.xxl),
+                AppSpacing.xxl,
+                0,
+                AppSpacing.xxl,
+                AppSpacing.xxl,
+              ),
               child: Semantics(
                 button: true,
                 label: AppLocalizations.of(context)!.onboardingCommitButton,

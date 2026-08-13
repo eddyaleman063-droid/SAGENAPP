@@ -31,18 +31,32 @@ extension AppColorsX on BuildContext {
   Color get textDisabled => isDark ? Colors.white38 : Colors.black38;
 
   Color get surfaceCard => isDark ? PremiumColors.darkCard : Colors.white;
-  Color get surfaceBackground => isDark ? PremiumColors.darkBg : PremiumColors.lightBg;
+  Color get surfaceBackground =>
+      isDark ? PremiumColors.darkBg : PremiumColors.lightBg;
 
   Color get subtle => isDark ? Colors.white12 : Colors.black12;
-  Color get subtleBorder => isDark ? Colors.white.withValues(alpha: 0.08) : Colors.black.withValues(alpha: 0.06);
-  Color get surfaceTinted => isDark ? Colors.white.withValues(alpha: 0.06) : Colors.black.withValues(alpha: 0.04);
-  Color get borderSubtle => isDark ? Colors.white.withValues(alpha: 0.12) : Colors.black.withValues(alpha: 0.08);
+  Color get subtleBorder => isDark
+      ? Colors.white.withValues(alpha: 0.08)
+      : Colors.black.withValues(alpha: 0.06);
+  Color get surfaceTinted => isDark
+      ? Colors.white.withValues(alpha: 0.06)
+      : Colors.black.withValues(alpha: 0.04);
+  Color get borderSubtle => isDark
+      ? Colors.white.withValues(alpha: 0.12)
+      : Colors.black.withValues(alpha: 0.08);
 
-  Color get shimmerBase => isDark ? Colors.white.withValues(alpha: 0.06) : Colors.black.withValues(alpha: 0.06);
-  Color get shimmerHighlight => isDark ? Colors.white.withValues(alpha: 0.12) : Colors.black.withValues(alpha: 0.12);
+  Color get shimmerBase => isDark
+      ? Colors.white.withValues(alpha: 0.06)
+      : Colors.black.withValues(alpha: 0.06);
+  Color get shimmerHighlight => isDark
+      ? Colors.white.withValues(alpha: 0.12)
+      : Colors.black.withValues(alpha: 0.12);
 
-  Color get disabledBg => isDark ? Colors.white.withValues(alpha: 0.12) : Colors.black.withValues(alpha: 0.12);
-  Color get surfaceDeep => isDark ? PremiumColors.deepBackground : PremiumColors.lightBg;
+  Color get disabledBg => isDark
+      ? Colors.white.withValues(alpha: 0.12)
+      : Colors.black.withValues(alpha: 0.12);
+  Color get surfaceDeep =>
+      isDark ? PremiumColors.deepBackground : PremiumColors.lightBg;
   Color get textHighEmphasis => isDark ? Colors.white : PremiumColors.textDark;
   Color get iconSecondary {
     if (isHighContrast) return isDark ? Colors.white : Colors.black87;

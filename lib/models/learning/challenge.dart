@@ -21,7 +21,8 @@ class Challenge with _$Challenge {
     @Default(1) int difficulty,
   }) = _Challenge;
 
-  factory Challenge.fromJson(Map<String, dynamic> json) => _$ChallengeFromJson(json);
+  factory Challenge.fromJson(Map<String, dynamic> json) =>
+      _$ChallengeFromJson(json);
 
   Color get color {
     switch (type) {
@@ -42,5 +43,6 @@ class Challenge with _$Challenge {
     }
   }
 
-  bool get isCorrectIndexValid => correctIndex >= 0 && correctIndex < options.length;
+  bool get isCorrectIndexValid =>
+      correctIndex >= 0 && correctIndex < options.length;
 }

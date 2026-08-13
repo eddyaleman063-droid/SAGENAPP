@@ -12,7 +12,12 @@ void main() {
     });
 
     test('stores optional statusCode and host', () {
-      const e = ApiException(ApiErrorType.server, 'error', statusCode: 500, host: 'example.com');
+      const e = ApiException(
+        ApiErrorType.server,
+        'error',
+        statusCode: 500,
+        host: 'example.com',
+      );
       expect(e.statusCode, 500);
       expect(e.host, 'example.com');
     });
@@ -38,7 +43,6 @@ void main() {
       );
       expect(request.host, 'api.example.com');
     });
-
   });
 
   group('ApiResponse', () {
@@ -75,14 +79,20 @@ void main() {
     });
 
     test('stores headers', () {
-      const response = ApiResponse(statusCode: 200, body: '', headers: {'content-type': 'application/json'});
+      const response = ApiResponse(
+        statusCode: 200,
+        body: '',
+        headers: {'content-type': 'application/json'},
+      );
       expect(response.headers['content-type'], 'application/json');
     });
   });
 
   group('ApiClient singleton', () {
     tearDown(() {
-      try { ApiClient.instance.dispose(); } catch (_) {}
+      try {
+        ApiClient.instance.dispose();
+      } catch (_) {}
     });
 
     test('throws StateError before init', () {
@@ -108,7 +118,9 @@ void main() {
     });
 
     tearDown(() {
-      try { ApiClient.instance.dispose(); } catch (_) {}
+      try {
+        ApiClient.instance.dispose();
+      } catch (_) {}
     });
 
     test('rejects HTTP (non-HTTPS) requests', () async {
@@ -118,7 +130,13 @@ void main() {
       );
       expect(
         () => ApiClient.instance.send(request),
-        throwsA(isA<ApiException>().having((e) => e.type, 'type', ApiErrorType.validation)),
+        throwsA(
+          isA<ApiException>().having(
+            (e) => e.type,
+            'type',
+            ApiErrorType.validation,
+          ),
+        ),
       );
     });
 
@@ -129,7 +147,13 @@ void main() {
       );
       expect(
         () => ApiClient.instance.send(request),
-        throwsA(isA<ApiException>().having((e) => e.type, 'type', ApiErrorType.validation)),
+        throwsA(
+          isA<ApiException>().having(
+            (e) => e.type,
+            'type',
+            ApiErrorType.validation,
+          ),
+        ),
       );
     });
 
@@ -140,7 +164,13 @@ void main() {
       );
       expect(
         () => ApiClient.instance.send(request),
-        throwsA(isA<ApiException>().having((e) => e.type, 'type', ApiErrorType.validation)),
+        throwsA(
+          isA<ApiException>().having(
+            (e) => e.type,
+            'type',
+            ApiErrorType.validation,
+          ),
+        ),
       );
     });
   });

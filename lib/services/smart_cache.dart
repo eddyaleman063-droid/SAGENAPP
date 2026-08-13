@@ -19,7 +19,10 @@ class CacheEntry<T> {
     'ttlMs': ttl.inMilliseconds,
   };
 
-  factory CacheEntry.fromJson(Map<String, dynamic> json, T Function(dynamic) fromData) {
+  factory CacheEntry.fromJson(
+    Map<String, dynamic> json,
+    T Function(dynamic) fromData,
+  ) {
     final ttl = Duration(milliseconds: json['ttlMs'] as int? ?? 300000);
     return CacheEntry(
       data: fromData(json['data']),
@@ -36,7 +39,11 @@ class _NoOpCache extends SmartCache {
   T? get<T>(String key, T Function(dynamic) fromData) => null;
 
   @override
-  Future<void> set<T>(String key, T data, {Duration ttl = const Duration(minutes: 5)}) async {}
+  Future<void> set<T>(
+    String key,
+    T data, {
+    Duration ttl = const Duration(minutes: 5),
+  }) async {}
 
   @override
   Future<void> invalidate(String key) async {}
@@ -63,7 +70,10 @@ class SmartCache {
 
   SmartCache._(this._prefs, {this.maxMemoryEntries = 100});
 
-  static Future<void> init(SharedPreferences prefs, {int maxMemoryEntries = 100}) async {
+  static Future<void> init(
+    SharedPreferences prefs, {
+    int maxMemoryEntries = 100,
+  }) async {
     _instance = SmartCache._(prefs, maxMemoryEntries: maxMemoryEntries);
   }
 
@@ -73,14 +83,19 @@ class SmartCache {
       try {
         if (!mem.isExpired) return fromData(mem.data);
       } catch (e) {
-        AppLogger().warning('SmartCache.get: failed to deserialize cached data: $e');
+        AppLogger().warning(
+          'SmartCache.get: failed to deserialize cached data: $e',
+        );
       }
       _memory.remove(key);
     }
     final raw = _prefs?.getString('$_prefix$key');
     if (raw == null) return null;
     try {
-      final entry = CacheEntry.fromJson(jsonDecode(raw) as Map<String, dynamic>, fromData);
+      final entry = CacheEntry.fromJson(
+        jsonDecode(raw) as Map<String, dynamic>,
+        fromData,
+      );
       if (entry.isExpired) {
         _prefs?.remove('$_prefix$key');
         return null;
@@ -96,14 +111,23 @@ class SmartCache {
   static const int _maxPrefsEntries = 200;
   static int _prefsWriteCount = 0;
 
-  Future<void> set<T>(String key, T data, {Duration ttl = const Duration(minutes: 5)}) async {
+  Future<void> set<T>(
+    String key,
+    T data, {
+    Duration ttl = const Duration(minutes: 5),
+  }) async {
     final entry = CacheEntry(data: data, cachedAt: DateTime.now(), ttl: ttl);
     _memory[key] = entry;
     if (_memory.length > maxMemoryEntries) {
       final oldest = _memory.entries
           .where((e) => e.key != key)
-          .fold<MapEntry<String, CacheEntry>?>(null, (prev, e) =>
-              prev == null || e.value.cachedAt.isBefore(prev.value.cachedAt) ? e : prev);
+          .fold<MapEntry<String, CacheEntry>?>(
+            null,
+            (prev, e) =>
+                prev == null || e.value.cachedAt.isBefore(prev.value.cachedAt)
+                ? e
+                : prev,
+          );
       if (oldest != null) _memory.remove(oldest.key);
     }
     // Batch SharedPreferences writes
@@ -134,19 +158,29 @@ class SmartCache {
       final raw = _prefs.getString(k);
       if (raw == null) continue;
       try {
-        final entry = CacheEntry.fromJson(jsonDecode(raw) as Map<String, dynamic>, (d) => d);
+        final entry = CacheEntry.fromJson(
+          jsonDecode(raw) as Map<String, dynamic>,
+          (d) => d,
+        );
         if (entry.isExpired) {
           await _prefs.remove(k);
         }
-    } catch (e) {
-      AppLogger().warning('[SmartCache] _evictExpiredPrefs error: $e');
-      await _prefs.remove(k);
+      } catch (e) {
+        AppLogger().warning('[SmartCache] _evictExpiredPrefs error: $e');
+        await _prefs.remove(k);
       }
     }
-    final remaining = _prefs.getKeys().where((k) => k.startsWith(_prefix)).length;
+    final remaining = _prefs
+        .getKeys()
+        .where((k) => k.startsWith(_prefix))
+        .length;
     if (remaining > _maxPrefsEntries) {
-      final allKeys = _prefs.getKeys().where((k) => k.startsWith(_prefix)).toList()
-        ..sort((a, b) => (_prefs.getString(a) ?? '').compareTo(_prefs.getString(b) ?? ''));
+      final allKeys =
+          _prefs.getKeys().where((k) => k.startsWith(_prefix)).toList()..sort(
+            (a, b) => (_prefs.getString(a) ?? '').compareTo(
+              _prefs.getString(b) ?? '',
+            ),
+          );
       final toRemove = allKeys.take(remaining - _maxPrefsEntries);
       for (final k in toRemove) {
         await _prefs.remove(k);
@@ -171,8 +205,12 @@ class SmartCache {
     }
   }
 
-  static String Function(dynamic) get stringData => (d) => d is String ? d : d?.toString() ?? '';
-  static int Function(dynamic) get intData => (d) => d is int ? d : int.tryParse(d.toString()) ?? 0;
-  static double Function(dynamic) get doubleData => (d) => d is double ? d : double.tryParse(d.toString()) ?? 0.0;
-  static List<String> Function(dynamic) get stringListData => (d) => d is List ? (d).map((e) => e.toString()).toList() : [];
+  static String Function(dynamic) get stringData =>
+      (d) => d is String ? d : d?.toString() ?? '';
+  static int Function(dynamic) get intData =>
+      (d) => d is int ? d : int.tryParse(d.toString()) ?? 0;
+  static double Function(dynamic) get doubleData =>
+      (d) => d is double ? d : double.tryParse(d.toString()) ?? 0.0;
+  static List<String> Function(dynamic) get stringListData =>
+      (d) => d is List ? (d).map((e) => e.toString()).toList() : [];
 }

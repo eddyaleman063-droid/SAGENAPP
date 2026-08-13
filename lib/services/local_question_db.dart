@@ -109,16 +109,26 @@ class LocalQuestionDB {
   }
 
   Future<String?> _getStoredChecksum(Database db, String key) async {
-    final rows = await db.query('_meta', columns: ['value'], where: 'key = ?', whereArgs: [key]);
+    final rows = await db.query(
+      '_meta',
+      columns: ['value'],
+      where: 'key = ?',
+      whereArgs: [key],
+    );
     if (rows.isEmpty) return null;
     return rows.first['value'] as String?;
   }
 
   Future<void> _storeChecksum(Database db, String key, String checksum) async {
-    await db.insert('_meta', {'key': key, 'value': checksum}, conflictAlgorithm: ConflictAlgorithm.replace);
+    await db.insert('_meta', {
+      'key': key,
+      'value': checksum,
+    }, conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  static final _questionIdPattern = RegExp(r'^ac_s(\d+)_ses(\d+)_l(\d+)_q(\d+)$');
+  static final _questionIdPattern = RegExp(
+    r'^ac_s(\d+)_ses(\d+)_l(\d+)_q(\d+)$',
+  );
 
   /// Maps a runtime stage id ('ac_st1') to the generated question prefix
   /// ('ac_s1') used by the question bank lessonIds.
@@ -147,7 +157,10 @@ class LocalQuestionDB {
     final correctIndex = q['correctIndex'];
 
     // Basic required fields
-    if (qId.isEmpty || qType == null || qType.isEmpty || qQuestion.trim().isEmpty) {
+    if (qId.isEmpty ||
+        qType == null ||
+        qType.isEmpty ||
+        qQuestion.trim().isEmpty) {
       return false;
     }
 
@@ -172,7 +185,9 @@ class LocalQuestionDB {
     }
 
     // correctIndex must be valid
-    if (correctIndex is! int || correctIndex < 0 || correctIndex >= options.length) {
+    if (correctIndex is! int ||
+        correctIndex < 0 ||
+        correctIndex >= options.length) {
       return false;
     }
 
@@ -195,7 +210,9 @@ class LocalQuestionDB {
     _seedingCompleter = Completer<void>();
     try {
       final db = await database;
-      final jsonStr = await rootBundle.loadString('assets/content/questions_$stageId.json');
+      final jsonStr = await rootBundle.loadString(
+        'assets/content/questions_$stageId.json',
+      );
       final currentChecksum = _computeChecksum(jsonStr);
       final storedChecksum = await _getStoredChecksum(db, 'stage_$stageId');
 
@@ -211,18 +228,27 @@ class LocalQuestionDB {
 
       // Clear old data for this stage if checksum changed
       if (storedChecksum != null) {
-        await db.delete('questions', where: 'lessonId LIKE ?', whereArgs: ['${_stagePrefix(stageId)}_%']);
+        await db.delete(
+          'questions',
+          where: 'lessonId LIKE ?',
+          whereArgs: ['${_stagePrefix(stageId)}_%'],
+        );
         _idCacheByLesson.clear();
         _idCacheByType.clear();
         _idCacheByStage.clear();
-        AppLogger().info('Cleared old data for stage $stageId (checksum changed)');
+        AppLogger().info(
+          'Cleared old data for stage $stageId (checksum changed)',
+        );
       }
 
       var validCount = 0;
       var skippedCount = 0;
       const batchSize = 500;
       for (var i = 0; i < decoded.length; i += batchSize) {
-        final chunk = decoded.sublist(i, (i + batchSize).clamp(0, decoded.length));
+        final chunk = decoded.sublist(
+          i,
+          (i + batchSize).clamp(0, decoded.length),
+        );
         final batch = db.batch();
         for (final q in chunk) {
           // Comprehensive validation
@@ -258,11 +284,11 @@ class LocalQuestionDB {
       await _storeChecksum(db, 'stage_$stageId', currentChecksum);
       if (skippedCount > 0) {
         AppLogger().warning(
-            'Seeded $validCount questions for stage $stageId '
-            '(skipped $skippedCount with invalid schema)');
+          'Seeded $validCount questions for stage $stageId '
+          '(skipped $skippedCount with invalid schema)',
+        );
       } else {
-        AppLogger()
-            .info('Seeded $validCount questions for stage $stageId');
+        AppLogger().info('Seeded $validCount questions for stage $stageId');
       }
       await _ensurePoolsSeeded(db);
     } catch (e) {
@@ -287,7 +313,9 @@ class LocalQuestionDB {
         if (lid.isNotEmpty) occupiedLessons.add(lid);
       }
 
-      final stagesStr = await rootBundle.loadString('assets/content/stages.json');
+      final stagesStr = await rootBundle.loadString(
+        'assets/content/stages.json',
+      );
       final stagesList = jsonDecode(stagesStr) as List;
       final emptyLessonsByStage = <String, List<String>>{};
       for (final stage in stagesList) {
@@ -306,7 +334,10 @@ class LocalQuestionDB {
         emptyLessonsByStage[stageId] = empty;
       }
 
-      int totalEmpty = emptyLessonsByStage.values.fold(0, (s, l) => s + l.length);
+      int totalEmpty = emptyLessonsByStage.values.fold(
+        0,
+        (s, l) => s + l.length,
+      );
       AppLogger().info('Found $totalEmpty empty lessons across all stages');
 
       int idCounter = 90000;
@@ -331,7 +362,10 @@ class LocalQuestionDB {
             'type': (q['type'] as String?) ?? 'multipleChoice',
             'options': jsonEncode(q['options']),
             'correctIndex': (q['correctIndex'] as int?) ?? 0,
-          'explanation': (q['explanation'] as String?) ?? (q['explanationCorrect'] as String?) ?? '',
+            'explanation':
+                (q['explanation'] as String?) ??
+                (q['explanationCorrect'] as String?) ??
+                '',
             'lessonId': targetLesson,
           }, conflictAlgorithm: ConflictAlgorithm.replace);
           idCounter++;
@@ -412,7 +446,9 @@ class LocalQuestionDB {
           await batch.commit(noResult: true);
         }
       }
-      AppLogger().info('Seeded 372 pool questions into $totalEmpty empty lessons');
+      AppLogger().info(
+        'Seeded 372 pool questions into $totalEmpty empty lessons',
+      );
 
       await _ensureTypeDiversity(db, pools);
       _poolsSeeded = true;
@@ -422,11 +458,25 @@ class LocalQuestionDB {
     }
   }
 
-  Future<void> _ensureTypeDiversity(Database db, Map<String, dynamic> pools) async {
+  Future<void> _ensureTypeDiversity(
+    Database db,
+    Map<String, dynamic> pools,
+  ) async {
     try {
-      const requiredTypes = ['multipleChoice', 'trueFalse', 'miniCase', 'completePhrase', 'detectRisk', 'createPassword', 'whatWouldYouDo'];
+      const requiredTypes = [
+        'multipleChoice',
+        'trueFalse',
+        'miniCase',
+        'completePhrase',
+        'detectRisk',
+        'createPassword',
+        'whatWouldYouDo',
+      ];
       final rows = await db.rawQuery('SELECT DISTINCT lessonId FROM questions');
-      final allLessonIds = rows.map((r) => r['lessonId'] as String? ?? '').where((l) => l.isNotEmpty).toList();
+      final allLessonIds = rows
+          .map((r) => r['lessonId'] as String? ?? '')
+          .where((l) => l.isNotEmpty)
+          .toList();
 
       final byType = pools['questionsByType'] as Map<String, dynamic>? ?? {};
       final poolByType = <String, List<Map<String, dynamic>>>{};
@@ -439,7 +489,9 @@ class LocalQuestionDB {
       int idCounter = 95000;
       int added = 0;
 
-      final allTypeRows = await db.rawQuery('SELECT DISTINCT lessonId, type FROM questions');
+      final allTypeRows = await db.rawQuery(
+        'SELECT DISTINCT lessonId, type FROM questions',
+      );
       final existingByLesson = <String, Set<String>>{};
       for (final row in allTypeRows) {
         final lid = row['lessonId'] as String? ?? '';
@@ -473,7 +525,9 @@ class LocalQuestionDB {
 
       await batch.commit(noResult: true);
       if (added > 0) {
-        AppLogger().info('Added $added diversity questions across ${allLessonIds.length} lessons');
+        AppLogger().info(
+          'Added $added diversity questions across ${allLessonIds.length} lessons',
+        );
       }
     } catch (e) {
       AppLogger().error('Failed to ensure type diversity', e);
@@ -509,7 +563,10 @@ class LocalQuestionDB {
       if (ids.isEmpty) return [];
 
       final selectedIds = _pickRandomIds(ids, count, seed: lessonId.hashCode);
-      final placeholders = List.generate(selectedIds.length, (_) => '?').join(',');
+      final placeholders = List.generate(
+        selectedIds.length,
+        (_) => '?',
+      ).join(',');
       final maps = await db.query(
         'questions',
         where: 'id IN ($placeholders)',
@@ -522,7 +579,10 @@ class LocalQuestionDB {
     }
   }
 
-  Future<List<Challenge>> getRandomByType(LessonType type, {int count = 1}) async {
+  Future<List<Challenge>> getRandomByType(
+    LessonType type, {
+    int count = 1,
+  }) async {
     try {
       if (_seededStages.isEmpty) {
         await _ensureStageSeeded('ac_st1');
@@ -536,8 +596,15 @@ class LocalQuestionDB {
       final ids = _idCacheByType[type.name];
       if (ids == null || ids.isEmpty) return [];
 
-      final selectedIds = _pickRandomIds(ids, count, seed: type.name.hashCode + DateTime.now().microsecondsSinceEpoch);
-      final placeholders = List.generate(selectedIds.length, (_) => '?').join(',');
+      final selectedIds = _pickRandomIds(
+        ids,
+        count,
+        seed: type.name.hashCode + DateTime.now().microsecondsSinceEpoch,
+      );
+      final placeholders = List.generate(
+        selectedIds.length,
+        (_) => '?',
+      ).join(',');
       final maps = await db.query(
         'questions',
         where: 'id IN ($placeholders)',
@@ -588,8 +655,9 @@ class LocalQuestionDB {
     try {
       final db = await database;
       return Sqflite.firstIntValue(
-        await db.rawQuery('SELECT COUNT(*) FROM questions'),
-      ) ?? 0;
+            await db.rawQuery('SELECT COUNT(*) FROM questions'),
+          ) ??
+          0;
     } catch (e) {
       AppLogger().error('LocalQuestionDB.getQuestionCount failed', e);
       return 0;
@@ -599,7 +667,9 @@ class LocalQuestionDB {
   Future<int> getLessonCount() async {
     try {
       final db = await database;
-      final result = await db.rawQuery('SELECT COUNT(DISTINCT lessonId) FROM questions');
+      final result = await db.rawQuery(
+        'SELECT COUNT(DISTINCT lessonId) FROM questions',
+      );
       return Sqflite.firstIntValue(result) ?? 0;
     } catch (e) {
       AppLogger().error('LocalQuestionDB.getLessonCount failed', e);
@@ -613,7 +683,9 @@ class LocalQuestionDB {
     try {
       options = (jsonDecode(optionsRaw) as List).cast<String>();
     } catch (e) {
-      AppLogger().warning('[LocalQuestionDB] _rowToChallenge JSON decode error: $e');
+      AppLogger().warning(
+        '[LocalQuestionDB] _rowToChallenge JSON decode error: $e',
+      );
       options = [];
     }
     if (options.isEmpty) {
@@ -625,7 +697,8 @@ class LocalQuestionDB {
             (t) => t.name == rawType,
             orElse: () {
               AppLogger().warning(
-                  'LocalQuestionDB: unknown type "$rawType", defaulting to multipleChoice');
+                'LocalQuestionDB: unknown type "$rawType", defaulting to multipleChoice',
+              );
               return LessonType.multipleChoice;
             },
           )
@@ -660,7 +733,12 @@ class LocalQuestionDB {
   /// Rebuilds the in-memory ID cache for a given lessonId from the database.
   Future<void> _rebuildIdCache(Database db, {String? lessonId}) async {
     if (lessonId != null) {
-      final rows = await db.query('questions', columns: ['id'], where: 'lessonId = ?', whereArgs: [lessonId]);
+      final rows = await db.query(
+        'questions',
+        columns: ['id'],
+        where: 'lessonId = ?',
+        whereArgs: [lessonId],
+      );
       _idCacheByLesson[lessonId] = rows.map((r) => r['id'] as String).toList();
     }
   }
@@ -668,28 +746,48 @@ class LocalQuestionDB {
   /// Rebuilds the in-memory ID cache for a given type from the database.
   Future<void> _rebuildIdCacheByType(Database db, {String? type}) async {
     if (type != null) {
-      final rows = await db.query('questions', columns: ['id'], where: 'type = ?', whereArgs: [type]);
+      final rows = await db.query(
+        'questions',
+        columns: ['id'],
+        where: 'type = ?',
+        whereArgs: [type],
+      );
       _idCacheByType[type] = rows.map((r) => r['id'] as String).toList();
     }
   }
 
   /// Rebuilds the in-memory ID cache for an entire stage (all lessons
   /// whose lessonId starts with the stage's question prefix).
-  Future<List<String>?> _rebuildStageCache(Database db, {required String stageId, required String prefix}) async {
-    final rows = await db.query('questions', columns: ['id'], where: 'lessonId LIKE ?', whereArgs: ['$prefix%']);
+  Future<List<String>?> _rebuildStageCache(
+    Database db, {
+    required String stageId,
+    required String prefix,
+  }) async {
+    final rows = await db.query(
+      'questions',
+      columns: ['id'],
+      where: 'lessonId LIKE ?',
+      whereArgs: ['$prefix%'],
+    );
     final ids = rows.map((r) => r['id'] as String).toList();
     _idCacheByStage[stageId] = ids;
     return ids;
   }
 
   /// Picks [count] random IDs from [pool] without shuffling the entire list.
-  List<String> _pickRandomIds(List<String> pool, int count, {required int seed}) {
+  List<String> _pickRandomIds(
+    List<String> pool,
+    int count, {
+    required int seed,
+  }) {
     if (pool.isEmpty) return [];
     if (pool.length <= count) return List.from(pool);
     // Deduplicate pool to avoid infinite loop with duplicate IDs
     final uniquePool = pool.toSet().toList();
     if (uniquePool.length <= count) return List.from(uniquePool);
-    final rng = seed >= 0 ? _SecureRandom(seed) : _SecureRandom(DateTime.now().microsecondsSinceEpoch);
+    final rng = seed >= 0
+        ? _SecureRandom(seed)
+        : _SecureRandom(DateTime.now().microsecondsSinceEpoch);
     final selected = <String>{};
     while (selected.length < count && selected.length < uniquePool.length) {
       selected.add(uniquePool[rng.nextInt(uniquePool.length)]);

@@ -16,7 +16,8 @@ class Session with _$Session {
     @Default(false) bool completed,
   }) = _Session;
 
-  factory Session.fromJson(Map<String, dynamic> json) => _$SessionFromJson(json);
+  factory Session.fromJson(Map<String, dynamic> json) =>
+      _$SessionFromJson(json);
 
   double get progress {
     if (lessons.isEmpty) return 0;

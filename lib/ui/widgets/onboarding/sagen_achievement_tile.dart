@@ -16,10 +16,7 @@ class AchievementItem {
 class SagenAchievementTile extends StatelessWidget {
   final AchievementItem item;
 
-  const SagenAchievementTile({
-    super.key,
-    required this.item,
-  });
+  const SagenAchievementTile({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {
@@ -48,19 +45,18 @@ class SagenAchievementTile extends StatelessWidget {
                 Text(
                   item.title,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.onSurface,
-                      ),
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                 ),
                 const SizedBox(height: 2),
                 Text(
                   item.subtitle,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSurface
-                            .withValues(alpha: 0.55),
-                      ),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.55),
+                  ),
                 ),
               ],
             ),

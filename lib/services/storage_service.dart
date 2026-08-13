@@ -22,16 +22,14 @@ class StorageService implements IStorageService {
       _prefs.getInt(key) ?? defaultValue;
 
   @override
-  Future<bool> setInt(String key, int value) =>
-      _prefs.setInt(key, value);
+  Future<bool> setInt(String key, int value) => _prefs.setInt(key, value);
 
   @override
   bool getBool(String key, [bool defaultValue = false]) =>
       _prefs.getBool(key) ?? defaultValue;
 
   @override
-  Future<bool> setBool(String key, bool value) =>
-      _prefs.setBool(key, value);
+  Future<bool> setBool(String key, bool value) => _prefs.setBool(key, value);
 
   @override
   List<Map<String, dynamic>> getJsonList(String key) {
@@ -70,8 +68,7 @@ class StorageService implements IStorageService {
       _prefs.setString(key, jsonEncode(value));
 
   @override
-  List<String> getStringList(String key) =>
-      _prefs.getStringList(key) ?? [];
+  List<String> getStringList(String key) => _prefs.getStringList(key) ?? [];
 
   @override
   Future<bool> setStringList(String key, List<String> value) =>

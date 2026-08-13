@@ -111,7 +111,9 @@ class ServiceInitializer {
     }
 
     try {
-      FirebaseFirestore.instance.settings = const Settings(persistenceEnabled: true);
+      FirebaseFirestore.instance.settings = const Settings(
+        persistenceEnabled: true,
+      );
     } catch (e) {
       logger.error('Firestore settings failed', e);
     }
@@ -130,14 +132,19 @@ class ServiceInitializer {
 
     if (kReleaseMode) {
       try {
-        await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+        await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
+          true,
+        );
       } catch (e) {
         logger.error('Crashlytics init failed', e);
       }
     }
   }
 
-  static Future<void> _initAuthService(AuthService authService, AppLogger logger) async {
+  static Future<void> _initAuthService(
+    AuthService authService,
+    AppLogger logger,
+  ) async {
     try {
       await authService.init();
       logger.info('AuthService initialized');
@@ -165,11 +172,20 @@ class ServiceInitializer {
     await _initSafe('ApiClient', () => ApiClient.init(), logger);
   }
 
-  static Future<void> _initRemainingServices(SharedPreferences prefs, AppLogger logger) async {
+  static Future<void> _initRemainingServices(
+    SharedPreferences prefs,
+    AppLogger logger,
+  ) async {
     await Future.wait([
       _initSafe('Analytics', () => AnalyticsService.instance.init(), logger),
-      _initSafe('Connectivity', () async { ConnectivityService.instance.start(); }, logger),
-      _initSafe('Experience', () => ExperienceService.instance.init(prefs), logger),
+      _initSafe('Connectivity', () async {
+        ConnectivityService.instance.start();
+      }, logger),
+      _initSafe(
+        'Experience',
+        () => ExperienceService.instance.init(prefs),
+        logger,
+      ),
       _initSafe('SmartCache', () => SmartCache.init(prefs), logger),
       _initSafe('Notifications', () async {
         await NotificationService.instance.init();
@@ -179,9 +195,17 @@ class ServiceInitializer {
         await AudioService.instance.init();
         AudioService.instance.prewarm();
       }, logger),
-      _initSafe('DeviceIntegrity', () => DeviceIntegrityService.instance.check(), logger),
+      _initSafe(
+        'DeviceIntegrity',
+        () => DeviceIntegrityService.instance.check(),
+        logger,
+      ),
       _initSafe('DeepLink', () => DeepLinkService.instance.init(), logger),
-      _initSafe('AppLock', () => AppLockService.instance.handleAppStart(), logger),
+      _initSafe(
+        'AppLock',
+        () => AppLockService.instance.handleAppStart(),
+        logger,
+      ),
       _initSafe('SmartPromo', () => SmartPromoService.instance.init(), logger),
     ]);
   }

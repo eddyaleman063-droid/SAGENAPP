@@ -32,7 +32,8 @@ class LearningSessionScreen extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<LearningSessionScreen> createState() => _LearningSessionScreenState();
+  ConsumerState<LearningSessionScreen> createState() =>
+      _LearningSessionScreenState();
 }
 
 class _LearningSessionScreenState extends ConsumerState<LearningSessionScreen> {
@@ -44,7 +45,11 @@ class _LearningSessionScreenState extends ConsumerState<LearningSessionScreen> {
   @override
   void initState() {
     super.initState();
-    ref.read(loggerProvider).info('LearningSessionScreen: loading questions for ${widget.lessonId}');
+    ref
+        .read(loggerProvider)
+        .info(
+          'LearningSessionScreen: loading questions for ${widget.lessonId}',
+        );
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadQuestions();
     });
@@ -57,14 +62,18 @@ class _LearningSessionScreenState extends ConsumerState<LearningSessionScreen> {
         widget.lessonId,
         count: widget.questionCount,
       );
-      ref.read(loggerProvider).info('LearningSessionScreen: loaded ${questions.length} questions');
+      ref
+          .read(loggerProvider)
+          .info('LearningSessionScreen: loaded ${questions.length} questions');
       if (!mounted) return;
       setState(() {
         _challenges = questions;
         _loading = false;
       });
     } catch (e) {
-      ref.read(loggerProvider).error('LearningSessionScreen: failed to load questions: $e');
+      ref
+          .read(loggerProvider)
+          .error('LearningSessionScreen: failed to load questions: $e');
       if (!mounted) return;
       setState(() {
         _loading = false;
@@ -74,20 +83,26 @@ class _LearningSessionScreenState extends ConsumerState<LearningSessionScreen> {
   }
 
   void _onComplete(QuizResult result) {
-    ref.read(learningProvider.notifier).completeLesson(
-      widget.stageId,
-      widget.lessonId,
-      perfectLesson: result.perfect,
-      correctAnswers: result.correctAnswers,
-      totalQuestions: result.totalQuestions,
-    );
+    ref
+        .read(learningProvider.notifier)
+        .completeLesson(
+          widget.stageId,
+          widget.lessonId,
+          perfectLesson: result.perfect,
+          correctAnswers: result.correctAnswers,
+          totalQuestions: result.totalQuestions,
+        );
     ref.read(streakProvider.notifier).checkIn();
     ref.read(energyProvider.notifier).consumeForLesson();
 
     if (!mounted) return;
     context.pushReplacement(
       '/quiz-summary',
-      extra: _SummaryWrapper(result: result, stageId: widget.stageId, lessonId: widget.lessonId),
+      extra: _SummaryWrapper(
+        result: result,
+        stageId: widget.stageId,
+        lessonId: widget.lessonId,
+      ),
     );
   }
 
@@ -109,8 +124,11 @@ class _LearningSessionScreenState extends ConsumerState<LearningSessionScreen> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Semantics(
-                          label: AppLocalizations.of(context)?.errorGeneric ?? '',
-                          child: const SageEmotionWidget(emotion: SageEmotion.worried),
+                          label:
+                              AppLocalizations.of(context)?.errorGeneric ?? '',
+                          child: const SageEmotionWidget(
+                            emotion: SageEmotion.worried,
+                          ),
                         ),
                         const SizedBox(height: AppSpacing.lg),
                         Text(
@@ -152,14 +170,22 @@ class _LearningSessionScreenState extends ConsumerState<LearningSessionScreen> {
                       context: context,
                       builder: (ctx) => AlertDialog(
                         title: Text(l.closeButton),
-                        content: Text('${l.sessionReadyToLearn} — ${widget.lessonTitle}'),
+                        content: Text(
+                          '${l.sessionReadyToLearn} — ${widget.lessonTitle}',
+                        ),
                         actions: [
                           TextButton(
-                            onPressed: () { HapticFeedback.lightImpact(); Navigator.of(ctx).pop(false); },
+                            onPressed: () {
+                              HapticFeedback.lightImpact();
+                              Navigator.of(ctx).pop(false);
+                            },
                             child: Text(l.cancel),
                           ),
                           TextButton(
-                            onPressed: () { HapticFeedback.lightImpact(); Navigator.of(ctx).pop(true); },
+                            onPressed: () {
+                              HapticFeedback.lightImpact();
+                              Navigator.of(ctx).pop(true);
+                            },
                             child: Text(l.closeButton),
                           ),
                         ],
@@ -176,43 +202,45 @@ class _LearningSessionScreenState extends ConsumerState<LearningSessionScreen> {
                   },
                 )
               : _challenges != null && _challenges!.isNotEmpty
-                  ? QuizSession(
-                      challenges: _challenges!,
-                      stageId: widget.stageId,
-                      lessonId: widget.lessonId,
-                      lessonTitle: widget.lessonTitle,
-                      onComplete: _onComplete,
-                    )
-                  : Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(AppSpacing.xxxl),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const ExcludeSemantics(
-                              child: SageEmotionWidget(emotion: SageEmotion.thinking),
-                            ),
-                            const SizedBox(height: AppSpacing.lg),
-                            Text(
-                              l.lessonNoQuestions,
-                              textAlign: TextAlign.center,
-                              style: AppTextStyle.bodyMd.copyWith(
-                                color: context.textTertiary,
-                              ),
-                            ),
-                            const SizedBox(height: AppSpacing.xxl),
-                            Semantics(
-                              button: true,
-                              label: l.back,
-                              child: ElevatedButton(
-                                onPressed: () => context.pop(),
-                                child: Text(l.back),
-                              ),
-                            ),
-                          ],
-                        ).animate().fadeIn(duration: 300.ms),
-                      ),
-                    ),
+              ? QuizSession(
+                  challenges: _challenges!,
+                  stageId: widget.stageId,
+                  lessonId: widget.lessonId,
+                  lessonTitle: widget.lessonTitle,
+                  onComplete: _onComplete,
+                )
+              : Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(AppSpacing.xxxl),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const ExcludeSemantics(
+                          child: SageEmotionWidget(
+                            emotion: SageEmotion.thinking,
+                          ),
+                        ),
+                        const SizedBox(height: AppSpacing.lg),
+                        Text(
+                          l.lessonNoQuestions,
+                          textAlign: TextAlign.center,
+                          style: AppTextStyle.bodyMd.copyWith(
+                            color: context.textTertiary,
+                          ),
+                        ),
+                        const SizedBox(height: AppSpacing.xxl),
+                        Semantics(
+                          button: true,
+                          label: l.back,
+                          child: ElevatedButton(
+                            onPressed: () => context.pop(),
+                            child: Text(l.back),
+                          ),
+                        ),
+                      ],
+                    ).animate().fadeIn(duration: 300.ms),
+                  ),
+                ),
         ),
       ),
     );
@@ -266,24 +294,18 @@ class _PreTestWelcome extends StatelessWidget {
             const SizedBox(height: AppSpacing.xl),
             Text(
               l.sessionReadyToLearn,
-              style: AppTextStyle.headline.copyWith(
-                color: context.textPrimary,
-              ),
+              style: AppTextStyle.headline.copyWith(color: context.textPrimary),
             ),
             const SizedBox(height: AppSpacing.md),
             Text(
               lessonTitle,
               textAlign: TextAlign.center,
-              style: AppTextStyle.title.copyWith(
-                color: PremiumColors.primary,
-              ),
+              style: AppTextStyle.title.copyWith(color: PremiumColors.primary),
             ),
             const SizedBox(height: AppSpacing.sm),
             Text(
               '$questionCount ${l.sessionQuestionsToAnswer}',
-              style: AppTextStyle.body.copyWith(
-                color: context.textTertiary,
-              ),
+              style: AppTextStyle.body.copyWith(color: context.textTertiary),
             ),
             const Spacer(flex: 3),
             Semantics(
@@ -307,7 +329,10 @@ class _PreTestWelcome extends StatelessWidget {
                   ),
                   child: Text(
                     l.sessionStartQuiz,
-                    style: AppTextStyle.titleSmall.copyWith(fontWeight: FontWeight.bold, letterSpacing: 1.2),
+                    style: AppTextStyle.titleSmall.copyWith(
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.2,
+                    ),
                   ),
                 ),
               ),
@@ -344,10 +369,7 @@ class _SummaryWrapper extends StatelessWidget {
           onRetry: () {
             context.goNamed(
               'learning-session',
-              pathParameters: {
-                'stageId': stageId,
-                'lessonId': lessonId,
-              },
+              pathParameters: {'stageId': stageId, 'lessonId': lessonId},
               extra: '',
             );
           },

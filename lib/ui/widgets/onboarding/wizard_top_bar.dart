@@ -20,7 +20,12 @@ class WizardTopBar extends ConsumerWidget {
     final cs = Theme.of(context).colorScheme;
     final progress = (currentIndex + 1) / OnboardingWizardConfig.totalSteps;
     return Padding(
-      padding: const EdgeInsets.fromLTRB(AppSpacing.xs, AppSpacing.sm, AppSpacing.lg, AppSpacing.sm),
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.xs,
+        AppSpacing.sm,
+        AppSpacing.lg,
+        AppSpacing.sm,
+      ),
       child: Row(
         children: [
           Semantics(

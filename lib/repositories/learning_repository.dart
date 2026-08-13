@@ -59,10 +59,8 @@ class LearningRepositoryImpl implements LearningRepository {
   bool _isSupporter = false;
   bool _needsServerReconciliation = false;
 
-  LearningRepositoryImpl(
-    this._prefs, [
-    LearningStageService? stageService,
-  ]) : _stageService = stageService ?? const LearningStageService();
+  LearningRepositoryImpl(this._prefs, [LearningStageService? stageService])
+    : _stageService = stageService ?? const LearningStageService();
 
   int _computeChecksum() => Object.hashAll([
     _totalDonated,
@@ -134,7 +132,8 @@ class LearningRepositoryImpl implements LearningRepository {
     if (snapshotRaw != null && snapshotRaw.isNotEmpty) {
       try {
         final snapshot = jsonDecode(snapshotRaw) as Map<String, dynamic>;
-        _totalDonated = (snapshot['learning_total_donated'] as num?)?.toDouble() ?? 0.0;
+        _totalDonated =
+            (snapshot['learning_total_donated'] as num?)?.toDouble() ?? 0.0;
         _xp = snapshot['learning_xp'] as int? ?? 0;
         _currentLevel = snapshot['learning_level'] as int? ?? 1;
         _lessonsCompleted = snapshot['learning_lessons_completed'] as int? ?? 0;
@@ -144,27 +143,38 @@ class LearningRepositoryImpl implements LearningRepository {
 
         final stagesList = snapshot['learning_stages'] as List?;
         if (stagesList != null) {
-          _stages..clear()..addAll(stagesList.map((j) => Stage.fromJson(j as Map<String, dynamic>)));
+          _stages
+            ..clear()
+            ..addAll(
+              stagesList.map((j) => Stage.fromJson(j as Map<String, dynamic>)),
+            );
         } else {
           _stages.clear();
         }
 
         final ach = snapshot['learning_achievements'] as String? ?? '';
-        _achievements..clear()..addAll(ach.split(',').where((s) => s.isNotEmpty));
+        _achievements
+          ..clear()
+          ..addAll(ach.split(',').where((s) => s.isNotEmpty));
       } catch (e) {
-        AppLogger().warning('learning_snapshot corrupted, falling back to legacy keys: $e');
+        AppLogger().warning(
+          'learning_snapshot corrupted, falling back to legacy keys: $e',
+        );
         _loadLegacy();
       }
     } else {
       _loadLegacy();
     }
 
-    final needsRechecksum = _prefs.getBool('learning_needs_rechecksum') ?? false;
+    final needsRechecksum =
+        _prefs.getBool('learning_needs_rechecksum') ?? false;
     if (needsRechecksum) {
       await _prefs.setBool('learning_needs_rechecksum', false);
       _saveChecksum();
     } else if (!_verifyChecksum()) {
-      AppLogger().warning('Integrity check failed — possible data tampering, flagging for server reconciliation');
+      AppLogger().warning(
+        'Integrity check failed — possible data tampering, flagging for server reconciliation',
+      );
       _needsServerReconciliation = true;
     }
   }
@@ -182,9 +192,13 @@ class LearningRepositoryImpl implements LearningRepository {
     if (raw != null && raw.isNotEmpty) {
       try {
         final list = jsonDecode(raw) as List;
-        _stages..clear()..addAll(list.map((j) => Stage.fromJson(j as Map<String, dynamic>)));
+        _stages
+          ..clear()
+          ..addAll(list.map((j) => Stage.fromJson(j as Map<String, dynamic>)));
       } catch (_) {
-        AppLogger().warning('LearningRepository: failed to parse legacy stages JSON');
+        AppLogger().warning(
+          'LearningRepository: failed to parse legacy stages JSON',
+        );
         _stages.clear();
       }
     } else {
@@ -192,7 +206,9 @@ class LearningRepositoryImpl implements LearningRepository {
     }
 
     final ach = _prefs.getString('learning_achievements') ?? '';
-    _achievements..clear()..addAll(ach.split(',').where((s) => s.isNotEmpty));
+    _achievements
+      ..clear()
+      ..addAll(ach.split(',').where((s) => s.isNotEmpty));
   }
 
   @override
@@ -279,12 +295,16 @@ class LearningRepositoryImpl implements LearningRepository {
     required int sageTalks,
     required bool isSupporter,
   }) {
-    _stages..clear()..addAll(stages);
+    _stages
+      ..clear()
+      ..addAll(stages);
     _totalDonated = totalDonated;
     _xp = xp;
     _currentLevel = level;
     _lessonsCompleted = lessonsCompleted;
-    _achievements..clear()..addAll(achievements);
+    _achievements
+      ..clear()
+      ..addAll(achievements);
     _totalXpEarned = totalXp;
     _sageTalks = sageTalks;
     _isSupporter = isSupporter;
@@ -309,5 +329,4 @@ class LearningRepositoryImpl implements LearningRepository {
   void saveIntegrity() {
     _saveChecksum();
   }
-
 }

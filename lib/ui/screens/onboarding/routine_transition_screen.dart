@@ -1,4 +1,4 @@
-﻿import 'dart:math' as math;
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,11 +13,7 @@ class RoutineTransitionScreen extends StatefulWidget {
   final VoidCallback? onContinue;
   final VoidCallback? onBack;
 
-  const RoutineTransitionScreen({
-    super.key,
-    this.onContinue,
-    this.onBack,
-  });
+  const RoutineTransitionScreen({super.key, this.onContinue, this.onBack});
 
   @override
   State<RoutineTransitionScreen> createState() =>
@@ -56,7 +52,9 @@ class _RoutineTransitionScreenState extends State<RoutineTransitionScreen> {
   Widget build(BuildContext context) {
     final dark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: dark ? PremiumColors.deepBackground : PremiumColors.lightBg,
+      backgroundColor: dark
+          ? PremiumColors.deepBackground
+          : PremiumColors.lightBg,
       body: SafeArea(
         child: Column(
           children: [
@@ -110,8 +108,7 @@ class _RoutineTransitionScreenState extends State<RoutineTransitionScreen> {
             // ── Mascot row ──
             RepaintBoundary(
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -122,7 +119,8 @@ class _RoutineTransitionScreenState extends State<RoutineTransitionScreen> {
                         height: 80,
                         cacheWidth: 160,
                         cacheHeight: 160,
-                        errorBuilder: (_, _, _) => const Icon(Icons.pets, size: 48),
+                        errorBuilder: (_, _, _) =>
+                            const Icon(Icons.pets, size: 48),
                       ),
                     ),
                     const SizedBox(width: 8),
@@ -132,9 +130,13 @@ class _RoutineTransitionScreenState extends State<RoutineTransitionScreen> {
                         children: [
                           Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 16),
+                              horizontal: 20,
+                              vertical: 16,
+                            ),
                             decoration: BoxDecoration(
-                              color: dark ? PremiumColors.onboardingBubbleDark : Colors.white,
+                              color: dark
+                                  ? PremiumColors.onboardingBubbleDark
+                                  : Colors.white,
                               borderRadius: BorderRadius.circular(AppRadius.xl),
                               border: Border.all(
                                 color: dark
@@ -160,7 +162,9 @@ class _RoutineTransitionScreenState extends State<RoutineTransitionScreen> {
                                   width: 12,
                                   height: 12,
                                   decoration: BoxDecoration(
-                                    color: dark ? PremiumColors.onboardingBubbleDark : Colors.white,
+                                    color: dark
+                                        ? PremiumColors.onboardingBubbleDark
+                                        : Colors.white,
                                     border: Border.all(
                                       color: dark
                                           ? Colors.white.withValues(alpha: 0.10)
@@ -184,7 +188,11 @@ class _RoutineTransitionScreenState extends State<RoutineTransitionScreen> {
             // ── Bottom button ──
             Padding(
               padding: const EdgeInsets.fromLTRB(
-                  AppSpacing.xxl, 0, AppSpacing.xxl, AppSpacing.xxl),
+                AppSpacing.xxl,
+                0,
+                AppSpacing.xxl,
+                AppSpacing.xxl,
+              ),
               child: Semantics(
                 button: true,
                 label: AppLocalizations.of(context)!.continueText,

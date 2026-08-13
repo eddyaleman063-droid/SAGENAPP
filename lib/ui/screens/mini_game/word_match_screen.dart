@@ -80,7 +80,10 @@ class _WordMatchScreenState extends ConsumerState<WordMatchScreen> {
     _rewarded = false;
     _timeRemaining = widget.config.timeLimit.inSeconds;
     _timer = Timer.periodic(const Duration(seconds: 1), (t) {
-      if (!mounted) { t.cancel(); return; }
+      if (!mounted) {
+        t.cancel();
+        return;
+      }
       if (_timeRemaining <= 0) {
         t.cancel();
         _completeGame();
@@ -137,9 +140,13 @@ class _WordMatchScreenState extends ConsumerState<WordMatchScreen> {
       final xp = _matches * 15;
       await ref.read(learningProvider.notifier).addXp(xp, reason: 'mini_game');
       if (!mounted) return;
-      setState(() { _completing = false; });
+      setState(() {
+        _completing = false;
+      });
     } else {
-      setState(() { _completing = false; });
+      setState(() {
+        _completing = false;
+      });
     }
   }
 
@@ -163,9 +170,19 @@ class _WordMatchScreenState extends ConsumerState<WordMatchScreen> {
             title: Text(l.miniGameExitTitle),
             content: Text(l.miniGameExitContent),
             actions: [
-              TextButton(onPressed: () { HapticFeedback.lightImpact(); Navigator.pop(ctx); }, child: Text(l.cancel)),
               TextButton(
-                onPressed: () { HapticFeedback.lightImpact(); Navigator.pop(ctx); Navigator.pop(context); },
+                onPressed: () {
+                  HapticFeedback.lightImpact();
+                  Navigator.pop(ctx);
+                },
+                child: Text(l.cancel),
+              ),
+              TextButton(
+                onPressed: () {
+                  HapticFeedback.lightImpact();
+                  Navigator.pop(ctx);
+                  Navigator.pop(context);
+                },
                 child: Text(l.exitText),
               ),
             ],
@@ -173,44 +190,70 @@ class _WordMatchScreenState extends ConsumerState<WordMatchScreen> {
         );
       },
       child: Scaffold(
-      appBar: AppBar(
-        title: Text(l.miniGameWord),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(AppSpacing.lg),
-            child: Row(children: [
-              Icon(Icons.timer_rounded, size: 18, color: _timeRemaining < 10 ? PremiumColors.error : context.textPrimary),
-              const SizedBox(width: AppSpacing.xxs),
-              Text('$_timeRemaining', style: AppTextStyle.titleSmall.copyWith(fontWeight: FontWeight.bold, color: context.textPrimary)),
-            ]),
-          ),
-        ],
-      ),
-      body: _gameComplete
-          ? _buildResult(l)
-          : Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(AppSpacing.lg),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      StatChip(label: l.miniGameMatches, value: '$_matches/$_totalPairs'),
-                      StatChip(label: l.miniGameMistakes, value: '$_mistakes'),
-                    ],
+        appBar: AppBar(
+          title: Text(l.miniGameWord),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(AppSpacing.lg),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.timer_rounded,
+                    size: 18,
+                    color: _timeRemaining < 10
+                        ? PremiumColors.error
+                        : context.textPrimary,
                   ),
-                ),
-                Expanded(
-                  child: GridView.builder(
-                    padding: const EdgeInsets.all(AppSpacing.lg),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, mainAxisSpacing: 8, crossAxisSpacing: 8, childAspectRatio: 2.5),
-                    itemCount: _items.length,
-                    itemBuilder: (ctx, i) => _buildItem(i),
-                  ).animate().fadeIn(duration: 300.ms),
-                ),
-              ],
+                  const SizedBox(width: AppSpacing.xxs),
+                  Text(
+                    '$_timeRemaining',
+                    style: AppTextStyle.titleSmall.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: context.textPrimary,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
+          ],
+        ),
+        body: _gameComplete
+            ? _buildResult(l)
+            : Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(AppSpacing.lg),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        StatChip(
+                          label: l.miniGameMatches,
+                          value: '$_matches/$_totalPairs',
+                        ),
+                        StatChip(
+                          label: l.miniGameMistakes,
+                          value: '$_mistakes',
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: GridView.builder(
+                      padding: const EdgeInsets.all(AppSpacing.lg),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 8,
+                            crossAxisSpacing: 8,
+                            childAspectRatio: 2.5,
+                          ),
+                      itemCount: _items.length,
+                      itemBuilder: (ctx, i) => _buildItem(i),
+                    ).animate().fadeIn(duration: 300.ms),
+                  ),
+                ],
+              ),
+      ),
     );
   }
 
@@ -235,18 +278,18 @@ class _WordMatchScreenState extends ConsumerState<WordMatchScreen> {
             color: item.matched
                 ? PremiumColors.success.withValues(alpha: 0.15)
                 : isWrong
-                    ? PremiumColors.error.withValues(alpha: 0.15)
-                    : isSelected
-                        ? PremiumColors.primary.withValues(alpha: 0.2)
-                        : context.surfaceTinted,
+                ? PremiumColors.error.withValues(alpha: 0.15)
+                : isSelected
+                ? PremiumColors.primary.withValues(alpha: 0.2)
+                : context.surfaceTinted,
             border: Border.all(
               color: item.matched
                   ? PremiumColors.success
                   : isWrong
-                      ? PremiumColors.error
-                      : isSelected
-                          ? PremiumColors.primary
-                          : context.borderSubtle,
+                  ? PremiumColors.error
+                  : isSelected
+                  ? PremiumColors.primary
+                  : context.borderSubtle,
             ),
           ),
           child: Center(
@@ -255,7 +298,9 @@ class _WordMatchScreenState extends ConsumerState<WordMatchScreen> {
               textAlign: TextAlign.center,
               style: AppTextStyle.subtitle.copyWith(
                 fontWeight: item.isTerm ? FontWeight.w600 : FontWeight.normal,
-                color: item.matched ? PremiumColors.success : context.textPrimary,
+                color: item.matched
+                    ? PremiumColors.success
+                    : context.textPrimary,
               ),
             ),
           ),
@@ -277,14 +322,30 @@ class _WordMatchScreenState extends ConsumerState<WordMatchScreen> {
               alignment: Alignment.center,
               children: [
                 const ConfettiWidget(type: ConfettiType.level),
-                ExcludeSemantics(child: Icon(_matches >= _totalPairs ? Icons.emoji_events_rounded : Icons.star_rounded, size: 64, color: _matches >= _totalPairs ? PremiumColors.accentYellow : PremiumColors.primary)).animate().fadeIn().scale(begin: const Offset(0.8, 0.8)),
+                ExcludeSemantics(
+                  child: Icon(
+                    _matches >= _totalPairs
+                        ? Icons.emoji_events_rounded
+                        : Icons.star_rounded,
+                    size: 64,
+                    color: _matches >= _totalPairs
+                        ? PremiumColors.accentYellow
+                        : PremiumColors.primary,
+                  ),
+                ).animate().fadeIn().scale(begin: const Offset(0.8, 0.8)),
               ],
             ),
           ),
           const SizedBox(height: AppSpacing.lg),
-          Text(_matches >= _totalPairs ? l.miniGameComplete : l.miniGameOver, style: AppTextStyle.headline),
+          Text(
+            _matches >= _totalPairs ? l.miniGameComplete : l.miniGameOver,
+            style: AppTextStyle.headline,
+          ),
           const SizedBox(height: AppSpacing.sm),
-          Text('${l.miniGameMatches}: $_matches/$_totalPairs  |  ${l.miniGameMistakes}: $_mistakes', style: AppTextStyle.body.copyWith(color: context.textSecondary)),
+          Text(
+            '${l.miniGameMatches}: $_matches/$_totalPairs  |  ${l.miniGameMistakes}: $_mistakes',
+            style: AppTextStyle.body.copyWith(color: context.textSecondary),
+          ),
           const SizedBox(height: AppSpacing.lg),
           if (_completing)
             const Padding(
@@ -297,13 +358,38 @@ class _WordMatchScreenState extends ConsumerState<WordMatchScreen> {
               duration: const Duration(milliseconds: 1500),
               curve: Curves.easeOut,
               builder: (context, value, _) => Container(
-                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl, vertical: 10),
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(AppRadius.pill), gradient: const LinearGradient(colors: [PremiumColors.primary, PremiumColors.primaryAccent])),
-                child: Row(mainAxisSize: MainAxisSize.min, children: [
-                  const ExcludeSemantics(child: Icon(Icons.star_rounded, size: 18, color: Colors.white)),
-                  const SizedBox(width: AppSpacing.xs),
-                  Text('$value XP', style: AppTextStyle.bodyBold.copyWith(color: Colors.white)),
-                ]),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.xl,
+                  vertical: 10,
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(AppRadius.pill),
+                  gradient: const LinearGradient(
+                    colors: [
+                      PremiumColors.primary,
+                      PremiumColors.primaryAccent,
+                    ],
+                  ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const ExcludeSemantics(
+                      child: Icon(
+                        Icons.star_rounded,
+                        size: 18,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(width: AppSpacing.xs),
+                    Text(
+                      '$value XP',
+                      style: AppTextStyle.bodyBold.copyWith(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
             const SizedBox(height: AppSpacing.xxl),
@@ -311,7 +397,13 @@ class _WordMatchScreenState extends ConsumerState<WordMatchScreen> {
           Semantics(
             button: true,
             label: l.miniGamePlayAgain,
-            child: FilledButton(onPressed: () { HapticFeedback.lightImpact(); setState(() => _initGame(_pairs)); }, child: Text(l.miniGamePlayAgain)),
+            child: FilledButton(
+              onPressed: () {
+                HapticFeedback.lightImpact();
+                setState(() => _initGame(_pairs));
+              },
+              child: Text(l.miniGamePlayAgain),
+            ),
           ),
         ],
       ),
@@ -325,5 +417,3 @@ class _MatchItem {
   bool matched = false;
   _MatchItem({required this.text, required this.isTerm});
 }
-
-

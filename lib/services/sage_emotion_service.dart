@@ -48,44 +48,82 @@ extension SageEmotionX on SageEmotion {
 
   String get _fileName {
     switch (this) {
-      case SageEmotion.calm: return 'sage_calm';
-      case SageEmotion.happy: return 'sage_happy_wings';
-      case SageEmotion.curious: return 'sage_curious';
-      case SageEmotion.thinking: return 'sage_thinking';
-      case SageEmotion.reading: return 'sage_reading';
-      case SageEmotion.serious: return 'sage_serious';
-      case SageEmotion.neutral: return 'sage_neutral';
-      case SageEmotion.excited: return 'sage_excited_wave';
-      case SageEmotion.confused: return 'sage_confused';
-      case SageEmotion.worried: return 'sage_worried';
-      case SageEmotion.sadSoft: return 'sage_sad_soft';
-      case SageEmotion.sad: return 'sage_sad';
-      case SageEmotion.crying: return 'sage_crying';
-      case SageEmotion.depressed: return 'sage_depressed';
-      case SageEmotion.angry: return 'sage_angry';
-      case SageEmotion.furious: return 'sage_furious_1';
-      case SageEmotion.shocked: return 'sage_shocked';
-      case SageEmotion.sleepy: return 'sage_sleeping';
-      case SageEmotion.whistling: return 'sage_whistling';
-      case SageEmotion.pointLeft: return 'sage_point_left';
-      case SageEmotion.pointRight: return 'sage_point_right';
-      case SageEmotion.wink: return 'sage_wink';
-      case SageEmotion.shy: return 'sage_shy';
-      case SageEmotion.laughing: return 'sage_laughing';
-      case SageEmotion.singing: return 'sage_singing';
-      case SageEmotion.scared: return 'sage_scared';
-      case SageEmotion.embarrassed: return 'sage_embarrassed';
-      case SageEmotion.annoyed: return 'sage_annoyed';
-      case SageEmotion.unmotivated: return 'sage_unmotivated';
-      case SageEmotion.distressed: return 'sage_distressed';
-      case SageEmotion.aggressive: return 'sage_aggressive';
-      case SageEmotion.lol: return 'sage_lol';
-      case SageEmotion.happyWings: return 'sage_happy_wings';
-      case SageEmotion.excitedWave: return 'sage_excited_wave';
-      case SageEmotion.surprisedWings: return 'sage_surprised_wings';
-      case SageEmotion.celebrating: return 'sage_celebrating';
-      case SageEmotion.proud: return 'sage_proud';
-      case SageEmotion.panic: return 'sage_panic';
+      case SageEmotion.calm:
+        return 'sage_calm';
+      case SageEmotion.happy:
+        return 'sage_happy_wings';
+      case SageEmotion.curious:
+        return 'sage_curious';
+      case SageEmotion.thinking:
+        return 'sage_thinking';
+      case SageEmotion.reading:
+        return 'sage_reading';
+      case SageEmotion.serious:
+        return 'sage_serious';
+      case SageEmotion.neutral:
+        return 'sage_neutral';
+      case SageEmotion.excited:
+        return 'sage_excited_wave';
+      case SageEmotion.confused:
+        return 'sage_confused';
+      case SageEmotion.worried:
+        return 'sage_worried';
+      case SageEmotion.sadSoft:
+        return 'sage_sad_soft';
+      case SageEmotion.sad:
+        return 'sage_sad';
+      case SageEmotion.crying:
+        return 'sage_crying';
+      case SageEmotion.depressed:
+        return 'sage_depressed';
+      case SageEmotion.angry:
+        return 'sage_angry';
+      case SageEmotion.furious:
+        return 'sage_furious_1';
+      case SageEmotion.shocked:
+        return 'sage_shocked';
+      case SageEmotion.sleepy:
+        return 'sage_sleeping';
+      case SageEmotion.whistling:
+        return 'sage_whistling';
+      case SageEmotion.pointLeft:
+        return 'sage_point_left';
+      case SageEmotion.pointRight:
+        return 'sage_point_right';
+      case SageEmotion.wink:
+        return 'sage_wink';
+      case SageEmotion.shy:
+        return 'sage_shy';
+      case SageEmotion.laughing:
+        return 'sage_laughing';
+      case SageEmotion.singing:
+        return 'sage_singing';
+      case SageEmotion.scared:
+        return 'sage_scared';
+      case SageEmotion.embarrassed:
+        return 'sage_embarrassed';
+      case SageEmotion.annoyed:
+        return 'sage_annoyed';
+      case SageEmotion.unmotivated:
+        return 'sage_unmotivated';
+      case SageEmotion.distressed:
+        return 'sage_distressed';
+      case SageEmotion.aggressive:
+        return 'sage_aggressive';
+      case SageEmotion.lol:
+        return 'sage_lol';
+      case SageEmotion.happyWings:
+        return 'sage_happy_wings';
+      case SageEmotion.excitedWave:
+        return 'sage_excited_wave';
+      case SageEmotion.surprisedWings:
+        return 'sage_surprised_wings';
+      case SageEmotion.celebrating:
+        return 'sage_celebrating';
+      case SageEmotion.proud:
+        return 'sage_proud';
+      case SageEmotion.panic:
+        return 'sage_panic';
     }
   }
 }
@@ -187,61 +225,107 @@ class SageEmotionService {
 
   SageContext forHome({SageUserContext? ctx, AppLocalizations? l10n}) {
     final name = _greeting(ctx);
-    return SageContext(emotion: SageEmotion.calm, message: l10n?.sageWelcomeBack(name) ?? '$name Welcome back!');
+    return SageContext(
+      emotion: SageEmotion.calm,
+      message: l10n?.sageWelcomeBack(name) ?? '$name Welcome back!',
+    );
   }
 
   SageContext forTaskComplete({SageUserContext? ctx, AppLocalizations? l10n}) {
     final name = _greeting(ctx);
     final extra = ctx != null && ctx.currentStreak > 5
-        ? (l10n?.sageStreakAmazing(ctx.currentStreak) ?? ' Your ${ctx.currentStreak}-day streak is amazing!')
+        ? (l10n?.sageStreakAmazing(ctx.currentStreak) ??
+              ' Your ${ctx.currentStreak}-day streak is amazing!')
         : '';
-    return SageContext(emotion: SageEmotion.excited, message: l10n?.sageGreatJob(extra, name) ?? '$name Great job!$extra');
+    return SageContext(
+      emotion: SageEmotion.excited,
+      message: l10n?.sageGreatJob(extra, name) ?? '$name Great job!$extra',
+    );
   }
 
   SageContext forXpGain({SageUserContext? ctx, AppLocalizations? l10n}) {
     final name = _greeting(ctx);
     final levelHint = ctx != null && ctx.userLevel > 1
-        ? (l10n?.sageLevelHint(ctx.userLevel) ?? ' Level ${ctx.userLevel} is near.')
+        ? (l10n?.sageLevelHint(ctx.userLevel) ??
+              ' Level ${ctx.userLevel} is near.')
         : '';
-    return SageContext(emotion: SageEmotion.happy, message: l10n?.sageAdvancing(levelHint, name) ?? '${name}Keep progressing.$levelHint');
+    return SageContext(
+      emotion: SageEmotion.happy,
+      message:
+          l10n?.sageAdvancing(levelHint, name) ??
+          '${name}Keep progressing.$levelHint',
+    );
   }
 
-  SageContext forLearningQuestion({SageUserContext? ctx, AppLocalizations? l10n}) {
+  SageContext forLearningQuestion({
+    SageUserContext? ctx,
+    AppLocalizations? l10n,
+  }) {
     final name = _greeting(ctx);
-    return SageContext(emotion: SageEmotion.thinking, message: l10n?.sageWhatDoYouThink(name) ?? '$name What do you think is correct?');
+    return SageContext(
+      emotion: SageEmotion.thinking,
+      message:
+          l10n?.sageWhatDoYouThink(name) ??
+          '$name What do you think is correct?',
+    );
   }
 
   SageContext forOnboarding({SageUserContext? ctx, AppLocalizations? l10n}) {
     final name = _greeting(ctx);
-    return SageContext(emotion: SageEmotion.curious, message: l10n?.sageTellMeMore(name) ?? '${name}Tell me more about yourself');
+    return SageContext(
+      emotion: SageEmotion.curious,
+      message:
+          l10n?.sageTellMeMore(name) ?? '${name}Tell me more about yourself',
+    );
   }
 
   SageContext forExplanation({SageUserContext? ctx, AppLocalizations? l10n}) {
-    return SageContext(emotion: SageEmotion.serious, message: l10n?.sageImportant ?? 'This is very important');
+    return SageContext(
+      emotion: SageEmotion.serious,
+      message: l10n?.sageImportant ?? 'This is very important',
+    );
   }
 
   SageContext forLoading({SageUserContext? ctx, AppLocalizations? l10n}) {
-    return SageContext(emotion: SageEmotion.thinking, message: l10n?.sageLoading ?? 'Give me a second...');
+    return SageContext(
+      emotion: SageEmotion.thinking,
+      message: l10n?.sageLoading ?? 'Give me a second...',
+    );
   }
 
   SageContext forInitializing({SageUserContext? ctx, AppLocalizations? l10n}) {
-    return SageContext(emotion: SageEmotion.calm, message: l10n?.sagePreparing ?? 'Preparing everything for you');
+    return SageContext(
+      emotion: SageEmotion.calm,
+      message: l10n?.sagePreparing ?? 'Preparing everything for you',
+    );
   }
 
   SageContext forHighStreak({SageUserContext? ctx, AppLocalizations? l10n}) {
     final name = _greeting(ctx);
     final days = ctx != null && ctx.currentStreak > 0
-        ? (l10n?.sageHighStreakDays(ctx.currentStreak) ?? ' ${ctx.currentStreak} days in a row.')
+        ? (l10n?.sageHighStreakDays(ctx.currentStreak) ??
+              ' ${ctx.currentStreak} days in a row.')
         : '';
-    return SageContext(emotion: SageEmotion.excited, message: l10n?.sageImpressiveStreak(days, name) ?? '$name Impressive streak!$days');
+    return SageContext(
+      emotion: SageEmotion.excited,
+      message:
+          l10n?.sageImpressiveStreak(days, name) ??
+          '$name Impressive streak!$days',
+    );
   }
 
   SageContext forStreakAtRisk({SageUserContext? ctx, AppLocalizations? l10n}) {
     final name = _greeting(ctx);
     final urgency = ctx != null && ctx.currentStreak >= 7
-        ? (l10n?.sageStreakAtRisk(ctx.currentStreak) ?? " Don't lose ${ctx.currentStreak} days of effort!")
+        ? (l10n?.sageStreakAtRisk(ctx.currentStreak) ??
+              " Don't lose ${ctx.currentStreak} days of effort!")
         : '';
-    return SageContext(emotion: SageEmotion.worried, message: l10n?.sageStreakAtRiskMessage(name, urgency) ?? "$name Don't lose your streak!$urgency");
+    return SageContext(
+      emotion: SageEmotion.worried,
+      message:
+          l10n?.sageStreakAtRiskMessage(name, urgency) ??
+          "$name Don't lose your streak!$urgency",
+    );
   }
 
   SageContext forStreakLost({SageUserContext? ctx, AppLocalizations? l10n}) {
@@ -249,20 +333,36 @@ class SageEmotionService {
     final encouragement = ctx != null && ctx.lessonsCompleted > 10
         ? (l10n?.sageStreakLost ?? " You have the knowledge to start again.")
         : '';
-    return SageContext(emotion: SageEmotion.sadSoft, message: l10n?.sageStreakLostMessage(encouragement, name) ?? '$name The streak has been lost.$encouragement');
+    return SageContext(
+      emotion: SageEmotion.sadSoft,
+      message:
+          l10n?.sageStreakLostMessage(encouragement, name) ??
+          '$name The streak has been lost.$encouragement',
+    );
   }
 
   SageContext forAchievement({SageUserContext? ctx, AppLocalizations? l10n}) {
     final name = _greeting(ctx);
-    return SageContext(emotion: SageEmotion.excited, message: l10n?.sageAchievementUnlocked(name) ?? '$name Achievement unlocked!');
+    return SageContext(
+      emotion: SageEmotion.excited,
+      message:
+          l10n?.sageAchievementUnlocked(name) ?? '$name Achievement unlocked!',
+    );
   }
 
   SageContext forCelebration({SageUserContext? ctx, AppLocalizations? l10n}) {
     final name = _greeting(ctx);
-    return SageContext(emotion: SageEmotion.excitedWave, message: l10n?.sageCongratulations(name) ?? '$name Congratulations!');
+    return SageContext(
+      emotion: SageEmotion.excitedWave,
+      message: l10n?.sageCongratulations(name) ?? '$name Congratulations!',
+    );
   }
 
-  SageContext forError(String? detail, {SageUserContext? ctx, AppLocalizations? l10n}) {
+  SageContext forError(
+    String? detail, {
+    SageUserContext? ctx,
+    AppLocalizations? l10n,
+  }) {
     return SageContext(
       emotion: SageEmotion.worried,
       message: detail ?? l10n?.sageSomethingWrong ?? 'Something went wrong',
@@ -270,33 +370,57 @@ class SageEmotionService {
   }
 
   SageContext forCriticalError({SageUserContext? ctx, AppLocalizations? l10n}) {
-    return SageContext(emotion: SageEmotion.serious, message: l10n?.sageCriticalError ?? 'Critical error');
+    return SageContext(
+      emotion: SageEmotion.serious,
+      message: l10n?.sageCriticalError ?? 'Critical error',
+    );
   }
 
   SageContext forEasterEgg({SageUserContext? ctx, AppLocalizations? l10n}) {
-    return SageContext(emotion: SageEmotion.wink, message: l10n?.sageEasterEgg ?? 'Did you see that?');
+    return SageContext(
+      emotion: SageEmotion.wink,
+      message: l10n?.sageEasterEgg ?? 'Did you see that?',
+    );
   }
 
   SageContext forEmptyState({SageUserContext? ctx, AppLocalizations? l10n}) {
     final name = _greeting(ctx);
-    return SageContext(emotion: SageEmotion.calm, message: l10n?.sageEmptyState(name) ?? '$name Nothing here yet');
+    return SageContext(
+      emotion: SageEmotion.calm,
+      message: l10n?.sageEmptyState(name) ?? '$name Nothing here yet',
+    );
   }
 
   SageContext forRetry({SageUserContext? ctx, AppLocalizations? l10n}) {
-    return SageContext(emotion: SageEmotion.curious, message: l10n?.sageTryAgain ?? 'Shall we try again?');
+    return SageContext(
+      emotion: SageEmotion.curious,
+      message: l10n?.sageTryAgain ?? 'Shall we try again?',
+    );
   }
 
   SageContext forSuccess({SageUserContext? ctx, AppLocalizations? l10n}) {
-    return SageContext(emotion: SageEmotion.happy, message: l10n?.sagePerfect ?? 'Perfect!');
+    return SageContext(
+      emotion: SageEmotion.happy,
+      message: l10n?.sagePerfect ?? 'Perfect!',
+    );
   }
 
   SageContext forReading({SageUserContext? ctx, AppLocalizations? l10n}) {
-    return SageContext(emotion: SageEmotion.reading, message: l10n?.sageReadCarefully ?? 'Read carefully');
+    return SageContext(
+      emotion: SageEmotion.reading,
+      message: l10n?.sageReadCarefully ?? 'Read carefully',
+    );
   }
 
   double emotionSize(SageEmotion emotion) {
-    if (emotion == SageEmotion.reading || emotion == SageEmotion.thinking) return 100;
-    if (emotion == SageEmotion.excited || emotion == SageEmotion.excitedWave || emotion == SageEmotion.happyWings) return 110;
+    if (emotion == SageEmotion.reading || emotion == SageEmotion.thinking) {
+      return 100;
+    }
+    if (emotion == SageEmotion.excited ||
+        emotion == SageEmotion.excitedWave ||
+        emotion == SageEmotion.happyWings) {
+      return 110;
+    }
     return 90;
   }
 
@@ -304,16 +428,28 @@ class SageEmotionService {
     if (old == next) return false;
     if (old == SageEmotion.crying || next == SageEmotion.crying) return true;
     if (old == SageEmotion.furious || next == SageEmotion.furious) return true;
-    final neutralSet = {SageEmotion.calm, SageEmotion.neutral, SageEmotion.happy};
+    final neutralSet = {
+      SageEmotion.calm,
+      SageEmotion.neutral,
+      SageEmotion.happy,
+    };
     if (neutralSet.contains(old) && neutralSet.contains(next)) return false;
     final closeSet = {
-      SageEmotion.happy, SageEmotion.happyWings, SageEmotion.excited, SageEmotion.excitedWave,
-      SageEmotion.laughing, SageEmotion.lol,
+      SageEmotion.happy,
+      SageEmotion.happyWings,
+      SageEmotion.excited,
+      SageEmotion.excitedWave,
+      SageEmotion.laughing,
+      SageEmotion.lol,
     };
     if (closeSet.contains(old) && closeSet.contains(next)) return false;
     final negativeSet = {
-      SageEmotion.worried, SageEmotion.sadSoft, SageEmotion.crying,
-      SageEmotion.depressed, SageEmotion.angry, SageEmotion.annoyed,
+      SageEmotion.worried,
+      SageEmotion.sadSoft,
+      SageEmotion.crying,
+      SageEmotion.depressed,
+      SageEmotion.angry,
+      SageEmotion.annoyed,
     };
     if (negativeSet.contains(old) && negativeSet.contains(next)) return false;
     return true;
@@ -321,9 +457,14 @@ class SageEmotionService {
 
   bool isSignificantMoodShift(SageEmotion old, SageEmotion next) {
     final intense = {
-      SageEmotion.furious, SageEmotion.aggressive, SageEmotion.crying,
-      SageEmotion.depressed, SageEmotion.shocked,
-      SageEmotion.angry, SageEmotion.scared, SageEmotion.distressed,
+      SageEmotion.furious,
+      SageEmotion.aggressive,
+      SageEmotion.crying,
+      SageEmotion.depressed,
+      SageEmotion.shocked,
+      SageEmotion.angry,
+      SageEmotion.scared,
+      SageEmotion.distressed,
     };
     return intense.contains(old) || intense.contains(next);
   }

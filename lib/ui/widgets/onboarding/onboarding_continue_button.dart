@@ -18,7 +18,8 @@ class OnboardingContinueButton extends StatefulWidget {
   });
 
   @override
-  State<OnboardingContinueButton> createState() => _OnboardingContinueButtonState();
+  State<OnboardingContinueButton> createState() =>
+      _OnboardingContinueButtonState();
 }
 
 class _OnboardingContinueButtonState extends State<OnboardingContinueButton> {
@@ -73,11 +74,13 @@ class _OnboardingContinueButtonState extends State<OnboardingContinueButton> {
           child: Center(
             child: Text(
               widget.label,
-              style: AppTextStyle.titleSmall.copyWith(color: widget.enabled
+              style: AppTextStyle.titleSmall.copyWith(
+                color: widget.enabled
                     ? context.textPrimary
                     : context.textDisabled,
                 fontWeight: FontWeight.w700,
-                letterSpacing: 1.5),
+                letterSpacing: 1.5,
+              ),
             ),
           ),
         ),

@@ -1,4 +1,4 @@
-﻿import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_core_platform_interface/test.dart'
     show CoreFirebaseOptions, CoreInitializeResponse, TestFirebaseCoreHostApi;
 import 'package:flutter/services.dart';
@@ -15,14 +15,22 @@ const _cloudFunctionsChannel = BasicMessageChannel<Object?>(
 
 void mockFunctionsResult(Object? payload) {
   TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-      .setMockDecodedMessageHandler<Object?>(_cloudFunctionsChannel,
-          (Object? message) async => <Object?>[payload]);
+      .setMockDecodedMessageHandler<Object?>(
+        _cloudFunctionsChannel,
+        (Object? message) async => <Object?>[payload],
+      );
 }
 
 void mockFunctionsError(PlatformException error) {
   TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-      .setMockDecodedMessageHandler<Object?>(_cloudFunctionsChannel,
-          (Object? message) async => <Object?>[error.code, error.message, error.details]);
+      .setMockDecodedMessageHandler<Object?>(
+        _cloudFunctionsChannel,
+        (Object? message) async => <Object?>[
+          error.code,
+          error.message,
+          error.details,
+        ],
+      );
 }
 
 void resetFunctionsMock() {
@@ -35,7 +43,8 @@ class _FakeCoreHostApi extends TestFirebaseCoreHostApi {
   Future<List<CoreInitializeResponse>> initializeCore() async => [];
 
   @override
-  Future<CoreFirebaseOptions> optionsFromResource() async => CoreFirebaseOptions(
+  Future<CoreFirebaseOptions> optionsFromResource() async =>
+      CoreFirebaseOptions(
         apiKey: 'test-api-key',
         appId: 'test-app-id',
         messagingSenderId: 'test-sender-id',
@@ -46,13 +55,12 @@ class _FakeCoreHostApi extends TestFirebaseCoreHostApi {
   Future<CoreInitializeResponse> initializeApp(
     String appName,
     CoreFirebaseOptions initializeAppRequest,
-  ) async =>
-      CoreInitializeResponse(
-        name: appName,
-        options: initializeAppRequest,
-        isAutomaticDataCollectionEnabled: true,
-        pluginConstants: <String, Object?>{},
-      );
+  ) async => CoreInitializeResponse(
+    name: appName,
+    options: initializeAppRequest,
+    isAutomaticDataCollectionEnabled: true,
+    pluginConstants: <String, Object?>{},
+  );
 }
 
 void main() {
@@ -71,17 +79,28 @@ void main() {
   });
 
   group('claimDailyChestResult', () {
-    test('returns default rewards when response is not already claimed', () async {
-      mockFunctionsResult({'xp': 25, 'chestType': 'silver'});
-      final result = await service.claimDailyChestResult();
-      expect(result.isOk, isTrue);
-      expect(result.value, {'xp': 25, 'chestType': 'silver', 'alreadyClaimed': false});
-    });
+    test(
+      'returns default rewards when response is not already claimed',
+      () async {
+        mockFunctionsResult({'xp': 25, 'chestType': 'silver'});
+        final result = await service.claimDailyChestResult();
+        expect(result.isOk, isTrue);
+        expect(result.value, {
+          'xp': 25,
+          'chestType': 'silver',
+          'alreadyClaimed': false,
+        });
+      },
+    );
 
     test('falls back to defaults when xp/chestType are missing', () async {
       mockFunctionsResult(<String, Object?>{});
       final result = await service.claimDailyChestResult();
-      expect(result.value, {'xp': 10, 'chestType': 'bronze', 'alreadyClaimed': false});
+      expect(result.value, {
+        'xp': 10,
+        'chestType': 'bronze',
+        'alreadyClaimed': false,
+      });
     });
 
     test('handles non-map response as already claimed', () async {
@@ -103,11 +122,13 @@ void main() {
     });
 
     test('returns error when function throws', () async {
-      mockFunctionsError(PlatformException(
-        code: 'unavailable',
-        message: 'down',
-        details: {'code': 'functions/unavailable'},
-      ));
+      mockFunctionsError(
+        PlatformException(
+          code: 'unavailable',
+          message: 'down',
+          details: {'code': 'functions/unavailable'},
+        ),
+      );
       final result = await service.claimDailyChestResult();
       expect(result.isError, isTrue);
       expect(result.error, isA<NetworkError>());
@@ -159,13 +180,14 @@ void main() {
     test('passes through the reason and does not send an amount', () async {
       Map? captured;
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-          .setMockDecodedMessageHandler<Object?>(_cloudFunctionsChannel,
-              (Object? message) async {
-        captured = ((message as List)[0] as Map)['parameters'] as Map?;
-        return <Object?>[
-          <String, Object?>{'sp': 5, 'level': 1},
-        ];
-      });
+          .setMockDecodedMessageHandler<Object?>(_cloudFunctionsChannel, (
+            Object? message,
+          ) async {
+            captured = ((message as List)[0] as Map)['parameters'] as Map?;
+            return <Object?>[
+              <String, Object?>{'sp': 5, 'level': 1},
+            ];
+          });
       await service.earnSPResult(reason: 'challenge');
       expect(captured?['amount'], isNull);
       expect(captured?['reason'], 'challenge');
@@ -174,13 +196,14 @@ void main() {
     test('defaults reason to lesson', () async {
       Map? captured;
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-          .setMockDecodedMessageHandler<Object?>(_cloudFunctionsChannel,
-              (Object? message) async {
-        captured = ((message as List)[0] as Map)['parameters'] as Map?;
-        return <Object?>[
-          <String, Object?>{'sp': 5, 'level': 1},
-        ];
-      });
+          .setMockDecodedMessageHandler<Object?>(_cloudFunctionsChannel, (
+            Object? message,
+          ) async {
+            captured = ((message as List)[0] as Map)['parameters'] as Map?;
+            return <Object?>[
+              <String, Object?>{'sp': 5, 'level': 1},
+            ];
+          });
       await service.earnSPResult();
       expect(captured?['reason'], 'lesson');
     });
@@ -193,11 +216,13 @@ void main() {
     });
 
     test('returns error when function throws', () async {
-      mockFunctionsError(PlatformException(
-        code: 'unavailable',
-        message: 'down',
-        details: {'code': 'functions/unavailable'},
-      ));
+      mockFunctionsError(
+        PlatformException(
+          code: 'unavailable',
+          message: 'down',
+          details: {'code': 'functions/unavailable'},
+        ),
+      );
       final result = await service.earnSPResult();
       expect(result.isError, isTrue);
       expect(result.error, isA<NetworkError>());
@@ -233,11 +258,13 @@ void main() {
     });
 
     test('returns error when function throws', () async {
-      mockFunctionsError(PlatformException(
-        code: 'unavailable',
-        message: 'down',
-        details: {'code': 'functions/unavailable'},
-      ));
+      mockFunctionsError(
+        PlatformException(
+          code: 'unavailable',
+          message: 'down',
+          details: {'code': 'functions/unavailable'},
+        ),
+      );
       final result = await service.claimPassRewardResult(1);
       expect(result.isError, isTrue);
       expect(result.error, isA<NetworkError>());
@@ -246,7 +273,12 @@ void main() {
 
   group('getSagenPassSeasonResult', () {
     test('returns season data', () async {
-      mockFunctionsResult({'seasonStart': 42, 'level': 4, 'sp': 9, 'claimed': [1, 2]});
+      mockFunctionsResult({
+        'seasonStart': 42,
+        'level': 4,
+        'sp': 9,
+        'claimed': [1, 2],
+      });
       final result = await service.getSagenPassSeasonResult();
       expect(result.isOk, isTrue);
       expect(result.value?['seasonStart'], 42);

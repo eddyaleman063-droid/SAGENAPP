@@ -30,10 +30,12 @@ void main() {
       SharedPreferences.setMockInitialValues({});
       final prefs = await SharedPreferences.getInstance();
       mockLearning = MockLearningNotifier();
-      container = ProviderContainer(overrides: [
-        prefsProvider.overrideWithValue(prefs),
-        learningProvider.overrideWith(() => mockLearning),
-      ]);
+      container = ProviderContainer(
+        overrides: [
+          prefsProvider.overrideWithValue(prefs),
+          learningProvider.overrideWith(() => mockLearning),
+        ],
+      );
     });
 
     tearDown(() => container.dispose());
@@ -43,12 +45,15 @@ void main() {
       expect(state.dailyMissionsCompleted, 0);
     });
 
-    test('claimDailyChest keeps chest unclaimed when cloud claim fails', () async {
-      final notifier = container.read(gamificationProvider.notifier);
-      final xp = await notifier.claimDailyChest();
-      expect(xp, 0);
-      expect(container.read(gamificationProvider).hasUnclaimedChest, true);
-    });
+    test(
+      'claimDailyChest keeps chest unclaimed when cloud claim fails',
+      () async {
+        final notifier = container.read(gamificationProvider.notifier);
+        final xp = await notifier.claimDailyChest();
+        expect(xp, 0);
+        expect(container.read(gamificationProvider).hasUnclaimedChest, true);
+      },
+    );
 
     test('incrementMission increments mission completed count', () {
       final notifier = container.read(gamificationProvider.notifier);

@@ -7,6 +7,7 @@ import 'package:sagen/providers/providers.dart';
 import 'package:sagen/services/connectivity_service.dart';
 
 import '../../core/theme/theme_constants.dart';
+
 /// Animated offline banner that drops elastically from the top of the screen
 /// when connectivity is lost, with a blurred backdrop effect.
 class OfflineBanner extends ConsumerStatefulWidget {
@@ -77,7 +78,11 @@ class _OfflineBannerState extends ConsumerState<OfflineBanner>
         content: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.cloud_upload_rounded, size: 16, color: Colors.white),
+            const Icon(
+              Icons.cloud_upload_rounded,
+              size: 16,
+              color: Colors.white,
+            ),
             const SizedBox(width: 8),
             Text(
               AppLocalizations.of(context)!.offlineSavedForLater,
@@ -102,7 +107,11 @@ class _OfflineBannerState extends ConsumerState<OfflineBanner>
         content: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.check_circle_rounded, size: 16, color: Colors.white),
+            const Icon(
+              Icons.check_circle_rounded,
+              size: 16,
+              color: Colors.white,
+            ),
             const SizedBox(width: 8),
             Text(
               AppLocalizations.of(context)!.offlineSyncComplete,
@@ -142,7 +151,7 @@ class _OfflineBannerState extends ConsumerState<OfflineBanner>
             height: _bannerHeight,
             child: child!,
           ),
-              child: ClipRRect(
+          child: ClipRRect(
             child: BackdropFilter(
               filter: ImageFilter.blur(
                 sigmaX: _online ? 0 : 4,
@@ -154,13 +163,14 @@ class _OfflineBannerState extends ConsumerState<OfflineBanner>
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.wifi_off_rounded,
-                        size: 16, color: cs.onError),
+                    Icon(Icons.wifi_off_rounded, size: 16, color: cs.onError),
                     const SizedBox(width: 8),
                     Text(
                       AppLocalizations.of(context)!.offlineNoConnection,
-                      style: AppTextStyle.subtitle.copyWith(color: cs.onError,
-                        fontWeight: FontWeight.w600),
+                      style: AppTextStyle.subtitle.copyWith(
+                        color: cs.onError,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                     const SizedBox(width: 12),
                     Semantics(
@@ -172,15 +182,20 @@ class _OfflineBannerState extends ConsumerState<OfflineBanner>
                           await _cs.checkConnectivity();
                         },
                         child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 4,
+                          ),
                           decoration: BoxDecoration(
                             color: cs.onError.withValues(alpha: 0.2),
                             borderRadius: BorderRadius.circular(AppRadius.md),
                           ),
                           child: Text(
                             AppLocalizations.of(context)!.retry,
-                            style: AppTextStyle.caption.copyWith(color: cs.onError,
-                              fontWeight: FontWeight.w600),
+                            style: AppTextStyle.caption.copyWith(
+                              color: cs.onError,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
                       ),

@@ -9,11 +9,8 @@ import 'package:sagen/ui/screens/dashboard/sagen_pass_screen.dart';
 
 class _MockPassNotifier extends SagenPassNotifier {
   @override
-  SagenPass build() => SagenPass(
-        currentLevel: 5,
-        currentSP: 30,
-        claimedLevels: const [1],
-      );
+  SagenPass build() =>
+      SagenPass(currentLevel: 5, currentSP: 30, claimedLevels: const [1]);
 
   @override
   Future<PassLevel?> claimLevel(int level) async {
@@ -25,9 +22,7 @@ class _MockPassNotifier extends SagenPassNotifier {
 
 Widget createTestApp() {
   return ProviderScope(
-    overrides: [
-      sagenPassProvider.overrideWith(() => _MockPassNotifier()),
-    ],
+    overrides: [sagenPassProvider.overrideWith(() => _MockPassNotifier())],
     child: MaterialApp(
       theme: ThemeData(),
       locale: const Locale('es'),
@@ -48,7 +43,9 @@ void main() {
       await tester.pumpAndSettle();
     }
 
-    testWidgets('renders season header with level and progress', (tester) async {
+    testWidgets('renders season header with level and progress', (
+      tester,
+    ) async {
       await pumpScreen(tester);
 
       expect(find.text('Pase SAGEN'), findsOneWidget);
@@ -71,8 +68,9 @@ void main() {
       await tester.pump(const Duration(seconds: 5));
     });
 
-    testWidgets('claiming a reached level shows success notification',
-        (tester) async {
+    testWidgets('claiming a reached level shows success notification', (
+      tester,
+    ) async {
       await pumpScreen(tester);
 
       // Level 5 is reached (5 <= currentLevel) and not yet claimed.

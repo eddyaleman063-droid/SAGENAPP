@@ -73,13 +73,10 @@ class DeepLinkService {
       if (_initialLink != null) {
         _actionController.add(handleDeepLink(_initialLink!));
       }
-      _sub = _appLinks.uriLinkStream.listen(
-        (uri) {
-          _logger.info('DeepLink received: $uri');
-          _actionController.add(handleDeepLink(uri));
-        },
-        onError: (e) => _logger.error('DeepLink stream error', e),
-      );
+      _sub = _appLinks.uriLinkStream.listen((uri) {
+        _logger.info('DeepLink received: $uri');
+        _actionController.add(handleDeepLink(uri));
+      }, onError: (e) => _logger.error('DeepLink stream error', e));
       _logger.info('DeepLinkService initialized');
     } catch (e) {
       _logger.error('DeepLinkService init failed', e);
@@ -115,8 +112,13 @@ class DeepLinkService {
         switch (path) {
           case '/success':
             final amountParam = params['amount'];
-            final donationAmount = amountParam != null ? double.tryParse(amountParam) : null;
-            return PaymentSuccessDeepLink(params['external_reference'], donationAmount);
+            final donationAmount = amountParam != null
+                ? double.tryParse(amountParam)
+                : null;
+            return PaymentSuccessDeepLink(
+              params['external_reference'],
+              donationAmount,
+            );
           case '/failure':
             return const PaymentFailureDeepLink();
           case '/pending':
@@ -132,8 +134,7 @@ class DeepLinkService {
     }
   }
 
-  Uri buildProfileDeepLink(String uid) =>
-      Uri.parse('sagen://profile?uid=$uid');
+  Uri buildProfileDeepLink(String uid) => Uri.parse('sagen://profile?uid=$uid');
   Uri buildRankingDeepLink() => Uri.parse('sagen://ranking');
   Uri buildLessonDeepLink(String stageId) =>
       Uri.parse('sagen://lesson?stageId=$stageId');

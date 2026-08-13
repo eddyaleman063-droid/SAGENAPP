@@ -8,9 +8,9 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   ProviderContainer createContainer(SharedPreferences prefs) {
-    final container = ProviderContainer(overrides: [
-      prefsProvider.overrideWithValue(prefs),
-    ]);
+    final container = ProviderContainer(
+      overrides: [prefsProvider.overrideWithValue(prefs)],
+    );
     addTearDown(container.dispose);
     return container;
   }
@@ -160,9 +160,9 @@ void main() {
       final prefs = await SharedPreferences.getInstance();
 
       fakeAsync((async) {
-        final container = ProviderContainer(overrides: [
-          prefsProvider.overrideWithValue(prefs),
-        ]);
+        final container = ProviderContainer(
+          overrides: [prefsProvider.overrideWithValue(prefs)],
+        );
         addTearDown(container.dispose);
 
         final notifier = container.read(energyProvider.notifier);

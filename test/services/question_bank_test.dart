@@ -33,10 +33,17 @@ void main() {
     });
 
     group('getQuestionsForLesson', () {
-      test('returns empty list when no DB data (no hardcoded fallback)', () async {
-        final result = await qb.getQuestionsForLesson('unknown_stage', 'unknown_lesson', count: 10);
-        expect(result, isEmpty);
-      });
+      test(
+        'returns empty list when no DB data (no hardcoded fallback)',
+        () async {
+          final result = await qb.getQuestionsForLesson(
+            'unknown_stage',
+            'unknown_lesson',
+            count: 10,
+          );
+          expect(result, isEmpty);
+        },
+      );
     });
 
     group('getById', () {

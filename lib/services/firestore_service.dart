@@ -70,9 +70,13 @@ class FirestoreService implements IFirestoreService {
   int _listenerCount = 0;
 
   // Delegated to FirestoreFieldConfig for single source of truth.
-  static Set<String> get allowedUpdateFields => FirestoreFieldConfig.profileFields;
+  static Set<String> get allowedUpdateFields =>
+      FirestoreFieldConfig.profileFields;
 
-  static final RegExp _urlRegex = RegExp(r'(https?|ftp)://[^\s/$.?#].[^\s]*', caseSensitive: false);
+  static final RegExp _urlRegex = RegExp(
+    r'(https?|ftp)://[^\s/$.?#].[^\s]*',
+    caseSensitive: false,
+  );
 
   static Future<String> sanitize(String value) async {
     if (value.isEmpty) return value;
@@ -99,9 +103,13 @@ class FirestoreService implements IFirestoreService {
   }) async {
     try {
       final sanitizedFirst = await sanitize(firstName);
-      final safeFirst = sanitizedFirst.length > 50 ? sanitizedFirst.substring(0, 50) : sanitizedFirst;
+      final safeFirst = sanitizedFirst.length > 50
+          ? sanitizedFirst.substring(0, 50)
+          : sanitizedFirst;
       final sanitizedLast = await sanitize(lastName);
-      final safeLast = sanitizedLast.length > 50 ? sanitizedLast.substring(0, 50) : sanitizedLast;
+      final safeLast = sanitizedLast.length > 50
+          ? sanitizedLast.substring(0, 50)
+          : sanitizedLast;
       final safeEmail = email.trim().toLowerCase();
       final safeAge = age.clamp(13, 120);
 
@@ -109,25 +117,33 @@ class FirestoreService implements IFirestoreService {
         throw ArgumentError('Invalid profile data');
       }
 
-      await _db.collection(_collection).doc(uid).set({
-        'firstName': safeFirst,
-        'lastName': safeLast,
-        'email': safeEmail,
-        'age': safeAge,
-        'lastLoginDate': FieldValue.serverTimestamp(),
-        'onboardingCompleted': true,
-        'photoUrl': '',
-        'dailyGoalMinutes': 30,
-        'dailyLessonsGoal': 3,
-        'preferredLanguage': 'es',
-        'referralSource': '',
-        'routeType': '',
-        'motivation': '',
-        'updatedAt': FieldValue.serverTimestamp(),
-      }).timeout(const Duration(seconds: 10));
+      await _db
+          .collection(_collection)
+          .doc(uid)
+          .set({
+            'firstName': safeFirst,
+            'lastName': safeLast,
+            'email': safeEmail,
+            'age': safeAge,
+            'lastLoginDate': FieldValue.serverTimestamp(),
+            'onboardingCompleted': true,
+            'photoUrl': '',
+            'dailyGoalMinutes': 30,
+            'dailyLessonsGoal': 3,
+            'preferredLanguage': 'es',
+            'referralSource': '',
+            'routeType': '',
+            'motivation': '',
+            'updatedAt': FieldValue.serverTimestamp(),
+          })
+          .timeout(const Duration(seconds: 10));
     } catch (e, stack) {
       _logger.error('FirestoreService: createUserProfile failed: $e');
-      FirebaseCrashlytics.instance.recordError(e, stack, reason: 'createUserProfile failed');
+      FirebaseCrashlytics.instance.recordError(
+        e,
+        stack,
+        reason: 'createUserProfile failed',
+      );
       rethrow;
     }
   }
@@ -135,7 +151,9 @@ class FirestoreService implements IFirestoreService {
   @override
   Future<void> updateField(String uid, String field, Object? value) async {
     if (!FirestoreFieldConfig.isProfileField(field)) {
-      _logger.warning('FirestoreService: blocked update to disallowed field "$field"');
+      _logger.warning(
+        'FirestoreService: blocked update to disallowed field "$field"',
+      );
       return;
     }
     if (!FirestoreFieldConfig.validateFieldType(field, value)) {
@@ -146,7 +164,8 @@ class FirestoreService implements IFirestoreService {
       return;
     }
     // Validate string length if applicable
-    if (value is String && !FirestoreFieldConfig.validateStringLength(field, value)) {
+    if (value is String &&
+        !FirestoreFieldConfig.validateStringLength(field, value)) {
       _logger.warning(
         'FirestoreService: string too long for field "$field" — '
         'max ${FirestoreFieldConfig.stringFieldMaxLengths[field]}, got ${value.length}',
@@ -163,11 +182,18 @@ class FirestoreService implements IFirestoreService {
       return;
     }
     try {
-      await _db.collection(_collection).doc(uid).update({field: value})
+      await _db
+          .collection(_collection)
+          .doc(uid)
+          .update({field: value})
           .timeout(const Duration(seconds: 10));
     } catch (e, stack) {
       _logger.error('FirestoreService: updateField($field) failed: $e');
-      FirebaseCrashlytics.instance.recordError(e, stack, reason: 'updateField($field) failed');
+      FirebaseCrashlytics.instance.recordError(
+        e,
+        stack,
+        reason: 'updateField($field) failed',
+      );
       rethrow;
     }
   }
@@ -198,11 +224,18 @@ class FirestoreService implements IFirestoreService {
     }
     if (sanitized.isEmpty) return;
     try {
-      await _db.collection(_collection).doc(uid).update(sanitized)
+      await _db
+          .collection(_collection)
+          .doc(uid)
+          .update(sanitized)
           .timeout(const Duration(seconds: 10));
     } catch (e, stack) {
       _logger.error('FirestoreService: updateFields failed: $e');
-      FirebaseCrashlytics.instance.recordError(e, stack, reason: 'updateFields failed');
+      FirebaseCrashlytics.instance.recordError(
+        e,
+        stack,
+        reason: 'updateFields failed',
+      );
       rethrow;
     }
   }
@@ -210,7 +243,9 @@ class FirestoreService implements IFirestoreService {
   @override
   Stream<DocumentSnapshot> streamUserDoc(String uid) {
     if (_listenerCount >= _maxConcurrentListeners) {
-      _logger.warning('FirestoreService: listener limit reached ($_listenerCount/$_maxConcurrentListeners)');
+      _logger.warning(
+        'FirestoreService: listener limit reached ($_listenerCount/$_maxConcurrentListeners)',
+      );
       return const Stream.empty();
     }
 
@@ -221,22 +256,32 @@ class FirestoreService implements IFirestoreService {
     controller = StreamController<DocumentSnapshot>.broadcast(
       onListen: () {
         _listenerCount++;
-        subscription = _db.collection(_collection).doc(uid).snapshots().listen(
-          (snap) => controller.add(snap),
-          onError: (e) {
-            _logger.error('FirestoreService: streamUserDoc error: $e');
-            _activeListeners.remove(subKey);
-            _listenerCount = (_listenerCount - 1).clamp(0, _maxConcurrentListeners);
-            controller.close();
-          },
-        );
+        subscription = _db
+            .collection(_collection)
+            .doc(uid)
+            .snapshots()
+            .listen(
+              (snap) => controller.add(snap),
+              onError: (e) {
+                _logger.error('FirestoreService: streamUserDoc error: $e');
+                _activeListeners.remove(subKey);
+                _listenerCount = (_listenerCount - 1).clamp(
+                  0,
+                  _maxConcurrentListeners,
+                );
+                controller.close();
+              },
+            );
         _activeListeners[subKey] = subscription!;
       },
       onCancel: () {
         subscription?.cancel();
         final removed = _activeListeners.remove(subKey);
         if (removed != null) {
-          _listenerCount = (_listenerCount - 1).clamp(0, _maxConcurrentListeners);
+          _listenerCount = (_listenerCount - 1).clamp(
+            0,
+            _maxConcurrentListeners,
+          );
         }
         controller.close();
       },

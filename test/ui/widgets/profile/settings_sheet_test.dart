@@ -10,11 +10,11 @@ import 'package:sagen/ui/widgets/profile/theme_selector.dart';
 class _MockAuthNotifier extends AuthNotifier {
   @override
   AuthState build() => const AuthState(
-        uid: 'test-uid',
-        displayName: 'Test User',
-        email: 'test@test.com',
-        status: AuthStatus.authenticated,
-      );
+    uid: 'test-uid',
+    displayName: 'Test User',
+    email: 'test@test.com',
+    status: AuthStatus.authenticated,
+  );
 }
 
 class _MockThemeNotifier extends ThemeNotifier {
@@ -36,22 +36,20 @@ class _MockLanguageNotifier extends LanguageNotifier {
 }
 
 Widget createTestApp(SharedPreferences prefs) => ProviderScope(
-    overrides: [
-      prefsProvider.overrideWithValue(prefs),
-      authProvider.overrideWith(_MockAuthNotifier.new),
-      themeProvider.overrideWith(_MockThemeNotifier.new),
-      languageProvider.overrideWith(_MockLanguageNotifier.new),
-    ],
-    child: MaterialApp(
-      theme: ThemeData(),
-      locale: const Locale('es'),
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      home: const Scaffold(
-        body: SettingsSheet(),
-      ),
-    ),
-  );
+  overrides: [
+    prefsProvider.overrideWithValue(prefs),
+    authProvider.overrideWith(_MockAuthNotifier.new),
+    themeProvider.overrideWith(_MockThemeNotifier.new),
+    languageProvider.overrideWith(_MockLanguageNotifier.new),
+  ],
+  child: MaterialApp(
+    theme: ThemeData(),
+    locale: const Locale('es'),
+    localizationsDelegates: AppLocalizations.localizationsDelegates,
+    supportedLocales: AppLocalizations.supportedLocales,
+    home: const Scaffold(body: SettingsSheet()),
+  ),
+);
 
 void main() {
   group('SettingsSheet', () {

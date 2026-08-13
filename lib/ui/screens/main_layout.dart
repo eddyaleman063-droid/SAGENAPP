@@ -31,11 +31,26 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
   StreamSubscription<int>? _levelUpSub;
 
   static List<_TabItem> tabs(BuildContext context) => [
-    _TabItem(label: AppLocalizations.of(context)!.navHome, icon: Icons.home_rounded),
-    _TabItem(label: AppLocalizations.of(context)!.navChest, icon: Icons.card_giftcard_rounded),
-    _TabItem(label: AppLocalizations.of(context)!.navSage, icon: Icons.auto_awesome_rounded),
-    _TabItem(label: AppLocalizations.of(context)!.navRanking, icon: Icons.leaderboard_rounded),
-    _TabItem(label: AppLocalizations.of(context)!.navProfile, icon: Icons.person_rounded),
+    _TabItem(
+      label: AppLocalizations.of(context)!.navHome,
+      icon: Icons.home_rounded,
+    ),
+    _TabItem(
+      label: AppLocalizations.of(context)!.navChest,
+      icon: Icons.card_giftcard_rounded,
+    ),
+    _TabItem(
+      label: AppLocalizations.of(context)!.navSage,
+      icon: Icons.auto_awesome_rounded,
+    ),
+    _TabItem(
+      label: AppLocalizations.of(context)!.navRanking,
+      icon: Icons.leaderboard_rounded,
+    ),
+    _TabItem(
+      label: AppLocalizations.of(context)!.navProfile,
+      icon: Icons.person_rounded,
+    ),
   ];
 
   @override
@@ -45,7 +60,9 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
     _tabSub = ref.read(deepLinkServiceProvider).tabSwitchStream.listen((tab) {
       if (mounted) _onTabTap(tab);
     });
-    _levelUpSub = ref.read(learningProvider.notifier).onLevelUp.listen((newLevel) {
+    _levelUpSub = ref.read(learningProvider.notifier).onLevelUp.listen((
+      newLevel,
+    ) {
       if (!mounted) return;
       AudioService.instance.playLevelUp();
       showLevelUpCelebration(context, newLevel);
@@ -67,21 +84,25 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
     AnalyticsService.instance.trackScreen(tabNames[index]);
     setState(() => _animating = true);
     ref.read(dashboardProvider.notifier).setActiveTab(index);
-    _pageCtrl.animateToPage(
-      index,
-      duration: const Duration(milliseconds: 200),
-      curve: Curves.easeOut,
-    ).then((_) {
-      if (!mounted) return;
-      setState(() => _animating = false);
-    });
+    _pageCtrl
+        .animateToPage(
+          index,
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeOut,
+        )
+        .then((_) {
+          if (!mounted) return;
+          setState(() => _animating = false);
+        });
   }
 
   @override
   Widget build(BuildContext context) {
     final activeTab = ref.watch(dashboardProvider.select((d) => d.activeTab));
     final isDemo = ref.watch(authProvider.select((a) => a.isDemoMode));
-    final hasUnclaimedChest = ref.watch(gamificationProvider.select((g) => g.hasUnclaimedChest));
+    final hasUnclaimedChest = ref.watch(
+      gamificationProvider.select((g) => g.hasUnclaimedChest),
+    );
 
     return Scaffold(
       backgroundColor: context.surfaceBackground,
@@ -99,7 +120,11 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(Icons.wifi_off_rounded, size: 14, color: Colors.white),
+                        const Icon(
+                          Icons.wifi_off_rounded,
+                          size: 14,
+                          color: Colors.white,
+                        ),
                         const SizedBox(width: AppSpacing.xs),
                         Text(
                           AppLocalizations.of(context)?.demoModeOffline ?? '',
@@ -170,9 +195,7 @@ class _PremiumNavBar extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppRadius.xl),
         color: context.surfaceCard,
-        border: Border.all(
-          color: context.subtleBorder,
-        ),
+        border: Border.all(color: context.subtleBorder),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: dark ? 0.3 : 0.08),
@@ -195,7 +218,10 @@ class _PremiumNavBar extends StatelessWidget {
                   onTap(i);
                 },
                 child: Container(
-                  margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+                  margin: const EdgeInsets.symmetric(
+                    vertical: 8,
+                    horizontal: 4,
+                  ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(AppRadius.md),
                     border: Border.all(
@@ -226,7 +252,9 @@ class _PremiumNavBar extends StatelessWidget {
                         item.label,
                         style: AppTextStyle.bodyMd.copyWith(
                           fontSize: 12,
-                          fontWeight: selected ? FontWeight.w600 : FontWeight.normal,
+                          fontWeight: selected
+                              ? FontWeight.w600
+                              : FontWeight.normal,
                           color: selected
                               ? PremiumColors.splashBlue
                               : context.textSecondary,

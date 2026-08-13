@@ -56,14 +56,19 @@ class FirstLessonState {
   int get totalQuestions => questions.length;
   bool get isComplete => currentIndex >= totalQuestions && totalQuestions > 0;
   bool get isPerfect => correctCount == totalQuestions && correctCount > 0;
-  double get accuracy => (correctCount + wrongCount) > 0 ? correctCount / (correctCount + wrongCount) : 0;
+  double get accuracy => (correctCount + wrongCount) > 0
+      ? correctCount / (correctCount + wrongCount)
+      : 0;
   int get earnedXp => QuizScoreCalculator(
-        correctCount: correctCount,
-        totalQuestions: totalQuestions,
-        timeSpentSeconds: 0,
-      ).xp;
-  Duration? get elapsedTime => startTime != null ? DateTime.now().difference(startTime ?? DateTime.now()) : null;
-  Challenge? get currentChallenge => currentIndex < questions.length ? questions[currentIndex] : null;
+    correctCount: correctCount,
+    totalQuestions: totalQuestions,
+    timeSpentSeconds: 0,
+  ).xp;
+  Duration? get elapsedTime => startTime != null
+      ? DateTime.now().difference(startTime ?? DateTime.now())
+      : null;
+  Challenge? get currentChallenge =>
+      currentIndex < questions.length ? questions[currentIndex] : null;
 
   int get recommendedStage {
     if (path == DiagnosticPath.beginner) return 1;
@@ -77,25 +82,63 @@ class FirstLessonNotifier extends AutoDisposeNotifier<FirstLessonState> {
   @override
   FirstLessonState build() => const FirstLessonState();
 
-  Future<void> startLesson({DiagnosticPath path = DiagnosticPath.beginner}) async {
+  Future<void> startLesson({
+    DiagnosticPath path = DiagnosticPath.beginner,
+  }) async {
     final questionCount = path == DiagnosticPath.beginner ? 30 : 60;
 
     List<Challenge> allQuestions = [];
 
     if (path == DiagnosticPath.beginner) {
       allQuestions = [
-        ...await QuestionBank.instance.getQuestionsForLesson('ac_st1', 'default', count: 20),
-        ...await QuestionBank.instance.getQuestionsForLesson('ac_st1', 'ac_s1_ses1_l1', count: 10),
+        ...await QuestionBank.instance.getQuestionsForLesson(
+          'ac_st1',
+          'default',
+          count: 20,
+        ),
+        ...await QuestionBank.instance.getQuestionsForLesson(
+          'ac_st1',
+          'ac_s1_ses1_l1',
+          count: 10,
+        ),
       ];
     } else {
       allQuestions = [
-        ...await QuestionBank.instance.getQuestionsForLesson('ac_st1', 'default', count: 15),
-        ...await QuestionBank.instance.getQuestionsForLesson('ac_st1', 'ac_s1_ses1_l1', count: 10),
-        ...await QuestionBank.instance.getQuestionsForLesson('ac_st2', 'ac_s2_ses1_l1', count: 10),
-        ...await QuestionBank.instance.getQuestionsForLesson('ac_st3', 'ac_s3_ses1_l1', count: 10),
-        ...await QuestionBank.instance.getQuestionsForLesson('ac_st4', 'ac_s4_ses1_l1', count: 5),
-        ...await QuestionBank.instance.getQuestionsForLesson('ac_st5', 'ac_s5_ses1_l1', count: 5),
-        ...await QuestionBank.instance.getQuestionsForLesson('ac_st6', 'ac_s6_ses1_l1', count: 5),
+        ...await QuestionBank.instance.getQuestionsForLesson(
+          'ac_st1',
+          'default',
+          count: 15,
+        ),
+        ...await QuestionBank.instance.getQuestionsForLesson(
+          'ac_st1',
+          'ac_s1_ses1_l1',
+          count: 10,
+        ),
+        ...await QuestionBank.instance.getQuestionsForLesson(
+          'ac_st2',
+          'ac_s2_ses1_l1',
+          count: 10,
+        ),
+        ...await QuestionBank.instance.getQuestionsForLesson(
+          'ac_st3',
+          'ac_s3_ses1_l1',
+          count: 10,
+        ),
+        ...await QuestionBank.instance.getQuestionsForLesson(
+          'ac_st4',
+          'ac_s4_ses1_l1',
+          count: 5,
+        ),
+        ...await QuestionBank.instance.getQuestionsForLesson(
+          'ac_st5',
+          'ac_s5_ses1_l1',
+          count: 5,
+        ),
+        ...await QuestionBank.instance.getQuestionsForLesson(
+          'ac_st6',
+          'ac_s6_ses1_l1',
+          count: 5,
+        ),
       ];
     }
 
@@ -144,8 +187,11 @@ class FirstLessonNotifier extends AutoDisposeNotifier<FirstLessonState> {
   }
 }
 
-final firstLessonProvider = NotifierProvider.autoDispose<FirstLessonNotifier, FirstLessonState>(
-  FirstLessonNotifier.new,
-);
+final firstLessonProvider =
+    NotifierProvider.autoDispose<FirstLessonNotifier, FirstLessonState>(
+      FirstLessonNotifier.new,
+    );
 
-final diagnosticPathProvider = StateProvider.autoDispose<DiagnosticPath>((ref) => DiagnosticPath.beginner);
+final diagnosticPathProvider = StateProvider.autoDispose<DiagnosticPath>(
+  (ref) => DiagnosticPath.beginner,
+);

@@ -71,7 +71,8 @@ class FirebaseAuthClient implements AuthClient {
   AppUser appUserFromFirebase(firebase.User user) {
     return AppUser(
       uid: user.uid,
-      displayName: user.displayName ?? user.email?.split('@').first ?? 'Estudiante',
+      displayName:
+          user.displayName ?? user.email?.split('@').first ?? 'Estudiante',
       email: user.email ?? '',
       photoUrl: user.photoURL,
       isEmailVerified: user.emailVerified,
@@ -120,7 +121,9 @@ class FirebaseAuthClient implements AuthClient {
       throw const AuthException('firebase_unavailable');
     }
     try {
-      final result = await FacebookAuth.instance.login(permissions: ['email', 'public_profile']);
+      final result = await FacebookAuth.instance.login(
+        permissions: ['email', 'public_profile'],
+      );
       if (result.status == LoginStatus.cancelled) {
         throw const AuthException('canceled');
       }
@@ -133,7 +136,9 @@ class FirebaseAuthClient implements AuthClient {
       }
       final auth = _auth;
       if (auth == null) throw const AuthException('firebase_unavailable');
-      final credential = firebase.FacebookAuthProvider.credential(accessToken.tokenString);
+      final credential = firebase.FacebookAuthProvider.credential(
+        accessToken.tokenString,
+      );
       final fbResult = await auth.signInWithCredential(credential);
       final fbUser = fbResult.user;
       if (fbUser == null) {

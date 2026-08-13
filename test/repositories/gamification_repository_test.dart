@@ -35,7 +35,10 @@ void main() {
       repo.canClaimDailyChest; // creates chest for today
       // Simulate midnight by changing stored date
       final yesterday = DateTime.now().subtract(const Duration(days: 1));
-      prefs.setString('gamification_last_claim_date', yesterday.toIso8601String().substring(0, 10));
+      prefs.setString(
+        'gamification_last_claim_date',
+        yesterday.toIso8601String().substring(0, 10),
+      );
       repo.checkMidnightReset();
       // Chest should be expired
       repo = GamificationRepositoryImpl(prefs);
@@ -50,7 +53,10 @@ void main() {
       repo.canClaimDailyChest;
       // Simulate clock manipulation by setting a future date
       final tomorrow = DateTime.now().add(const Duration(days: 1));
-      prefs.setString('gamification_last_claim_date', tomorrow.toIso8601String().substring(0, 10));
+      prefs.setString(
+        'gamification_last_claim_date',
+        tomorrow.toIso8601String().substring(0, 10),
+      );
       repo = GamificationRepositoryImpl(prefs);
       repo.canClaimDailyChest; // re-evaluates
       expect(() => repo.claimDailyChest(), throwsA(isA<Exception>()));

@@ -14,7 +14,10 @@ class ChestEvolutionService implements IChestEvolutionService {
   /// Single server-side gacha roll. Used by the gacha widget per-tap.
   Future<SingleEvolutionResult> rollSingleEvolution(ChestType current) async {
     if (current == ChestType.legendary) {
-      return const SingleEvolutionResult(newTier: ChestType.legendary, evolved: false);
+      return const SingleEvolutionResult(
+        newTier: ChestType.legendary,
+        evolved: false,
+      );
     }
 
     try {
@@ -51,13 +54,15 @@ class ChestEvolutionService implements IChestEvolutionService {
         final typeBefore = currentType;
 
         if (currentType == ChestType.legendary) {
-          attempts.add(EvolutionAttempt(
-            index: i,
-            typeBefore: typeBefore,
-            typeAfter: currentType,
-            upgraded: false,
-            isFinal: i == 2,
-          ));
+          attempts.add(
+            EvolutionAttempt(
+              index: i,
+              typeBefore: typeBefore,
+              typeAfter: currentType,
+              upgraded: false,
+              isFinal: i == 2,
+            ),
+          );
           continue;
         }
 
@@ -76,31 +81,37 @@ class ChestEvolutionService implements IChestEvolutionService {
 
         if (evolved) currentType = newType;
 
-        attempts.add(EvolutionAttempt(
-          index: i,
-          typeBefore: typeBefore,
-          typeAfter: currentType,
-          upgraded: evolved,
-          isFinal: i == 2,
-        ));
+        attempts.add(
+          EvolutionAttempt(
+            index: i,
+            typeBefore: typeBefore,
+            typeAfter: currentType,
+            upgraded: evolved,
+            isFinal: i == 2,
+          ),
+        );
       }
     } catch (e) {
       _logger.error('Gacha Cloud Function error', e);
       // Preserve partial progress on error — add failed attempt for current index
       final failedIndex = attempts.isEmpty ? 0 : attempts.last.index + 1;
       if (failedIndex < 3) {
-        attempts.add(EvolutionAttempt(
-          index: failedIndex,
-          typeBefore: currentType,
-          typeAfter: currentType,
-          upgraded: false,
-          isFinal: failedIndex == 2,
-        ));
+        attempts.add(
+          EvolutionAttempt(
+            index: failedIndex,
+            typeBefore: currentType,
+            typeAfter: currentType,
+            upgraded: false,
+            isFinal: failedIndex == 2,
+          ),
+        );
       }
     }
 
-    _logger.info('Gacha: $initialType → $currentType '
-        '(${attempts.where((a) => a.upgraded).length} upgrades)');
+    _logger.info(
+      'Gacha: $initialType → $currentType '
+      '(${attempts.where((a) => a.upgraded).length} upgrades)',
+    );
     return ChestEvolutionResult(finalType: currentType, attempts: attempts);
   }
 }

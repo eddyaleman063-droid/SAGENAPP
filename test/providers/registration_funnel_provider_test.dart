@@ -17,7 +17,11 @@ void main() {
 
     test('copyWith updates only specified fields', () {
       const state = RegistrationFunnelState();
-      final updated = state.copyWith(age: 25, name: 'Juan', authMethod: 'google');
+      final updated = state.copyWith(
+        age: 25,
+        name: 'Juan',
+        authMethod: 'google',
+      );
       expect(updated.age, 25);
       expect(updated.name, 'Juan');
       expect(updated.authMethod, 'google');
@@ -62,7 +66,10 @@ void main() {
       final notifier = container.read(registrationFunnelProvider.notifier);
       notifier.setEmail('test@example.com');
       notifier.setPassword('secret123');
-      expect(container.read(registrationFunnelProvider).email, 'test@example.com');
+      expect(
+        container.read(registrationFunnelProvider).email,
+        'test@example.com',
+      );
       expect(container.read(registrationFunnelProvider).password, 'secret123');
     });
 
@@ -109,19 +116,28 @@ void main() {
       expect(container.read(funnelEmailValidProvider), isFalse);
       container.read(registrationFunnelProvider.notifier).setEmail('test');
       expect(container.read(funnelEmailValidProvider), isFalse);
-      container.read(registrationFunnelProvider.notifier).setEmail('test@example.com');
+      container
+          .read(registrationFunnelProvider.notifier)
+          .setEmail('test@example.com');
       expect(container.read(funnelEmailValidProvider), isTrue);
     });
 
-    test('funnelPasswordValidProvider checks minimum length and complexity', () {
-      expect(container.read(funnelPasswordValidProvider), isFalse);
-      container.read(registrationFunnelProvider.notifier).setPassword('abc');
-      expect(container.read(funnelPasswordValidProvider), isFalse);
-      container.read(registrationFunnelProvider.notifier).setPassword('abcdef');
-      expect(container.read(funnelPasswordValidProvider), isFalse);
-      container.read(registrationFunnelProvider.notifier).setPassword('Abcdef12');
-      expect(container.read(funnelPasswordValidProvider), isTrue);
-    });
+    test(
+      'funnelPasswordValidProvider checks minimum length and complexity',
+      () {
+        expect(container.read(funnelPasswordValidProvider), isFalse);
+        container.read(registrationFunnelProvider.notifier).setPassword('abc');
+        expect(container.read(funnelPasswordValidProvider), isFalse);
+        container
+            .read(registrationFunnelProvider.notifier)
+            .setPassword('abcdef');
+        expect(container.read(funnelPasswordValidProvider), isFalse);
+        container
+            .read(registrationFunnelProvider.notifier)
+            .setPassword('Abcdef12');
+        expect(container.read(funnelPasswordValidProvider), isTrue);
+      },
+    );
 
     test('funnelNameValidProvider requires both name and surname', () {
       expect(container.read(funnelNameValidProvider), isFalse);

@@ -27,7 +27,10 @@ class _FakeRoller extends ChestRewardRoller {
   final Completer<void>? gate;
 
   @override
-  Future<ChestReward> roll(ChestType type, {bool luckBoostActive = false}) async {
+  Future<ChestReward> roll(
+    ChestType type, {
+    bool luckBoostActive = false,
+  }) async {
     if (gate != null) await gate!.future;
     return _result;
   }
@@ -35,7 +38,10 @@ class _FakeRoller extends ChestRewardRoller {
 
 class _ThrowingRoller extends ChestRewardRoller {
   @override
-  Future<ChestReward> roll(ChestType type, {bool luckBoostActive = false}) async {
+  Future<ChestReward> roll(
+    ChestType type, {
+    bool luckBoostActive = false,
+  }) async {
     throw Exception('boom');
   }
 }
@@ -62,22 +68,40 @@ void main() {
   Future<void> flush() => pumpEventQueue();
 
   test('does not reward when new streak is lower than old', () async {
-    final service = StreakChestService(roller: _FakeRoller(const ChestReward(xp: 25)));
-    await service.checkAndReward(oldStreak: 7, newStreak: 3, learning: learning);
+    final service = StreakChestService(
+      roller: _FakeRoller(const ChestReward(xp: 25)),
+    );
+    await service.checkAndReward(
+      oldStreak: 7,
+      newStreak: 3,
+      learning: learning,
+    );
     expect(learning.xp, 0);
     expect(events, isEmpty);
   });
 
   test('does not reward on non-milestone streaks', () async {
-    final service = StreakChestService(roller: _FakeRoller(const ChestReward(xp: 25)));
-    await service.checkAndReward(oldStreak: 3, newStreak: 8, learning: learning);
+    final service = StreakChestService(
+      roller: _FakeRoller(const ChestReward(xp: 25)),
+    );
+    await service.checkAndReward(
+      oldStreak: 3,
+      newStreak: 8,
+      learning: learning,
+    );
     expect(learning.xp, 0);
     expect(events, isEmpty);
   });
 
   test('rewards silver chest at streak 7', () async {
-    final service = StreakChestService(roller: _FakeRoller(const ChestReward(xp: 30, streakShields: 1)));
-    await service.checkAndReward(oldStreak: 6, newStreak: 7, learning: learning);
+    final service = StreakChestService(
+      roller: _FakeRoller(const ChestReward(xp: 30, streakShields: 1)),
+    );
+    await service.checkAndReward(
+      oldStreak: 6,
+      newStreak: 7,
+      learning: learning,
+    );
     await flush();
     expect(learning.xp, 30);
     expect(learning.lastReason, 'streak_chest');
@@ -88,36 +112,60 @@ void main() {
   });
 
   test('rewards gold chest at streak 14', () async {
-    final service = StreakChestService(roller: _FakeRoller(const ChestReward(xp: 40)));
-    await service.checkAndReward(oldStreak: 13, newStreak: 14, learning: learning);
+    final service = StreakChestService(
+      roller: _FakeRoller(const ChestReward(xp: 40)),
+    );
+    await service.checkAndReward(
+      oldStreak: 13,
+      newStreak: 14,
+      learning: learning,
+    );
     await flush();
     expect(singleEvent()?.type, ChestType.gold);
   });
 
   test('rewards gold chest at streak 30', () async {
-    final service = StreakChestService(roller: _FakeRoller(const ChestReward(xp: 45)));
-    await service.checkAndReward(oldStreak: 29, newStreak: 30, learning: learning);
+    final service = StreakChestService(
+      roller: _FakeRoller(const ChestReward(xp: 45)),
+    );
+    await service.checkAndReward(
+      oldStreak: 29,
+      newStreak: 30,
+      learning: learning,
+    );
     await flush();
     expect(singleEvent()?.type, ChestType.gold);
   });
 
   test('rewards legendary chest at streak 100', () async {
-    final service = StreakChestService(roller: _FakeRoller(const ChestReward(xp: 60)));
-    await service.checkAndReward(oldStreak: 99, newStreak: 100, learning: learning);
+    final service = StreakChestService(
+      roller: _FakeRoller(const ChestReward(xp: 60)),
+    );
+    await service.checkAndReward(
+      oldStreak: 99,
+      newStreak: 100,
+      learning: learning,
+    );
     await flush();
     expect(singleEvent()?.type, ChestType.legendary);
   });
 
   test('propagates special drops in the event', () async {
     final service = StreakChestService(
-      roller: _FakeRoller(const ChestReward(
-        xp: 35,
-        xpBoost: true,
-        specialItems: [SpecialItemType.phoenixFeather],
-        cosmeticUnlocks: [SpecialItemType.focusElixir],
-      )),
+      roller: _FakeRoller(
+        const ChestReward(
+          xp: 35,
+          xpBoost: true,
+          specialItems: [SpecialItemType.phoenixFeather],
+          cosmeticUnlocks: [SpecialItemType.focusElixir],
+        ),
+      ),
     );
-    await service.checkAndReward(oldStreak: 13, newStreak: 14, learning: learning);
+    await service.checkAndReward(
+      oldStreak: 13,
+      newStreak: 14,
+      learning: learning,
+    );
     await flush();
     final event = singleEvent();
     expect(event?.xpBoost, isTrue);
@@ -127,7 +175,11 @@ void main() {
 
   test('does not crash when roller throws', () async {
     final service = StreakChestService(roller: _ThrowingRoller());
-    await service.checkAndReward(oldStreak: 6, newStreak: 7, learning: learning);
+    await service.checkAndReward(
+      oldStreak: 6,
+      newStreak: 7,
+      learning: learning,
+    );
     expect(learning.xp, 0);
     expect(events, isEmpty);
   });
@@ -137,8 +189,16 @@ void main() {
     final service = StreakChestService(
       roller: _FakeRoller(const ChestReward(xp: 30), gate: gate),
     );
-    final first = service.checkAndReward(oldStreak: 6, newStreak: 7, learning: learning);
-    await service.checkAndReward(oldStreak: 6, newStreak: 7, learning: learning);
+    final first = service.checkAndReward(
+      oldStreak: 6,
+      newStreak: 7,
+      learning: learning,
+    );
+    await service.checkAndReward(
+      oldStreak: 6,
+      newStreak: 7,
+      learning: learning,
+    );
     gate.complete();
     await first;
     expect(learning.xp, 30);

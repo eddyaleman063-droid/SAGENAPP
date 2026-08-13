@@ -226,11 +226,13 @@ class MissionNotifier extends Notifier<MissionState> {
     ];
 
     final startIdx = combinedSeed % allMissions.length;
-    state = state.copyWith(missions: [
-      allMissions[startIdx % allMissions.length],
-      allMissions[(startIdx + 3) % allMissions.length],
-      allMissions[(startIdx + 6) % allMissions.length],
-    ]);
+    state = state.copyWith(
+      missions: [
+        allMissions[startIdx % allMissions.length],
+        allMissions[(startIdx + 3) % allMissions.length],
+        allMissions[(startIdx + 6) % allMissions.length],
+      ],
+    );
   }
 
   void advanceMission(MissionType type, {int amount = 1}) {
@@ -280,17 +282,23 @@ class MissionNotifier extends Notifier<MissionState> {
 
     if (chestType != null) {
       final reward = await ref.read(chestRewardRollerProvider).roll(chestType);
-      await ref.read(learningProvider.notifier).addXp(reward.xp, reason: 'mission_reward');
+      await ref
+          .read(learningProvider.notifier)
+          .addXp(reward.xp, reason: 'mission_reward');
       ref.read(gemProvider.notifier).awardMissionGems();
-      ref.read(chestEventBusProvider).fire(ChestRewardData(
-        type: chestType,
-        xp: reward.xp,
-        streakShields: reward.streakShields,
-        xpBoost: reward.xpBoost,
-        specialItems: reward.specialItems,
-        cosmeticUnlocks: reward.cosmeticUnlocks,
-        source: 'mission',
-      ));
+      ref
+          .read(chestEventBusProvider)
+          .fire(
+            ChestRewardData(
+              type: chestType,
+              xp: reward.xp,
+              streakShields: reward.streakShields,
+              xpBoost: reward.xpBoost,
+              specialItems: reward.specialItems,
+              cosmeticUnlocks: reward.cosmeticUnlocks,
+              source: 'mission',
+            ),
+          );
     }
   }
 

@@ -47,7 +47,11 @@ class _SkeletonWidgetState extends State<SkeletonWidget>
               end: Alignment.bottomRight,
               colors: [
                 context.shimmerBase,
-                Color.lerp(context.shimmerBase, context.shimmerHighlight, shimmerValue)!,
+                Color.lerp(
+                  context.shimmerBase,
+                  context.shimmerHighlight,
+                  shimmerValue,
+                )!,
                 context.shimmerBase,
               ],
               stops: [0.0, shimmerValue, 1.0],
@@ -87,13 +91,16 @@ class SkeletonCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
-              children: List.generate(lines, (i) => Padding(
-                padding: EdgeInsets.only(bottom: i < lines - 1 ? spacing : 0),
-                child: SkeletonWidget(
-                  height: 14,
-                  width: i == 0 ? 0.6 : (i == 1 ? 0.85 : 0.4),
+              children: List.generate(
+                lines,
+                (i) => Padding(
+                  padding: EdgeInsets.only(bottom: i < lines - 1 ? spacing : 0),
+                  child: SkeletonWidget(
+                    height: 14,
+                    width: i == 0 ? 0.6 : (i == 1 ? 0.85 : 0.4),
+                  ),
                 ),
-              )),
+              ),
             ),
           ),
           if (trailing != null) ...[

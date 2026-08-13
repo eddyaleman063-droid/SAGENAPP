@@ -24,7 +24,8 @@ class GamificationState {
     return GamificationState(
       hasUnclaimedChest: hasUnclaimedChest ?? this.hasUnclaimedChest,
       secondsUntilMidnight: secondsUntilMidnight ?? this.secondsUntilMidnight,
-      dailyMissionsCompleted: dailyMissionsCompleted ?? this.dailyMissionsCompleted,
+      dailyMissionsCompleted:
+          dailyMissionsCompleted ?? this.dailyMissionsCompleted,
     );
   }
 }
@@ -63,9 +64,7 @@ class GamificationNotifier extends Notifier<GamificationState> {
         _repo.checkMidnightReset();
         _countedMissions.clear();
         _repo.saveCountedMissions(_countedMissions);
-        state = state.copyWith(
-          hasUnclaimedChest: _repo.canClaimDailyChest,
-        );
+        state = state.copyWith(hasUnclaimedChest: _repo.canClaimDailyChest);
       }
     });
   }
@@ -73,7 +72,9 @@ class GamificationNotifier extends Notifier<GamificationState> {
   Future<int> claimDailyChest() async {
     if (_disposed || !state.hasUnclaimedChest) return 0;
     try {
-      final result = await ref.read(gamificationCloudServiceProvider).claimDailyChestResult();
+      final result = await ref
+          .read(gamificationCloudServiceProvider)
+          .claimDailyChestResult();
       if (result.isError) {
         // Offline or server error: keep the chest unclaimed so the user can retry.
         return 0;
@@ -116,4 +117,7 @@ class GamificationNotifier extends Notifier<GamificationState> {
   }
 }
 
-final gamificationProvider = NotifierProvider<GamificationNotifier, GamificationState>(GamificationNotifier.new);
+final gamificationProvider =
+    NotifierProvider<GamificationNotifier, GamificationState>(
+      GamificationNotifier.new,
+    );

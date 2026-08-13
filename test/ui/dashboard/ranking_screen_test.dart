@@ -8,18 +8,36 @@ import 'package:sagen/ui/screens/dashboard/ranking_screen.dart';
 
 class _MockAuthNotifier extends AuthNotifier {
   @override
-  AuthState build() => const AuthState(
-        uid: 'user-2',
-        displayName: 'Carlos Mtz',
-      );
+  AuthState build() =>
+      const AuthState(uid: 'user-2', displayName: 'Carlos Mtz');
 }
 
 final _mockEntries = [
-  const LeaderboardEntry(uid: 'user-1', displayName: 'Ariana Reyes', totalXp: 3200),
-  const LeaderboardEntry(uid: 'user-2', displayName: 'Carlos Mtz', totalXp: 2850),
-  const LeaderboardEntry(uid: 'user-3', displayName: 'Luisa Fernanda', totalXp: 2410),
-  const LeaderboardEntry(uid: 'user-4', displayName: 'Pedro Ramirez', totalXp: 2100),
-  const LeaderboardEntry(uid: 'user-5', displayName: 'Sofia Torres', totalXp: 1890),
+  const LeaderboardEntry(
+    uid: 'user-1',
+    displayName: 'Ariana Reyes',
+    totalXp: 3200,
+  ),
+  const LeaderboardEntry(
+    uid: 'user-2',
+    displayName: 'Carlos Mtz',
+    totalXp: 2850,
+  ),
+  const LeaderboardEntry(
+    uid: 'user-3',
+    displayName: 'Luisa Fernanda',
+    totalXp: 2410,
+  ),
+  const LeaderboardEntry(
+    uid: 'user-4',
+    displayName: 'Pedro Ramirez',
+    totalXp: 2100,
+  ),
+  const LeaderboardEntry(
+    uid: 'user-5',
+    displayName: 'Sofia Torres',
+    totalXp: 1890,
+  ),
 ];
 
 Widget createTestApp(SharedPreferences prefs) {
@@ -65,8 +83,7 @@ void main() {
       await tester.pumpAndSettle();
     });
 
-    testWidgets('renders remaining entries in scrollable list',
-        (tester) async {
+    testWidgets('renders remaining entries in scrollable list', (tester) async {
       SharedPreferences.setMockInitialValues({});
       final prefs = await SharedPreferences.getInstance();
       await tester.pumpWidget(createTestApp(prefs));
@@ -88,7 +105,9 @@ void main() {
         overrides: [
           prefsProvider.overrideWithValue(prefs),
           authProvider.overrideWith(() => _MockAuthNotifier()),
-          leaderboardProvider.overrideWith((ref) => Stream.value(<LeaderboardEntry>[])),
+          leaderboardProvider.overrideWith(
+            (ref) => Stream.value(<LeaderboardEntry>[]),
+          ),
         ],
         child: MaterialApp(
           theme: ThemeData(),

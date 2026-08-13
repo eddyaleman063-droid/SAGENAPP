@@ -34,10 +34,17 @@ void main() {
     test('consumables have higher limits than cosmetics', () {
       for (final type in SpecialItemType.values) {
         if (type.isCosmetic) {
-          expect(type.maxLimit, 1, reason: 'cosmetic ${type.name} must be unique');
+          expect(
+            type.maxLimit,
+            1,
+            reason: 'cosmetic ${type.name} must be unique',
+          );
         } else {
-          expect(type.maxLimit, greaterThanOrEqualTo(3),
-              reason: 'consumable ${type.name} should allow stock');
+          expect(
+            type.maxLimit,
+            greaterThanOrEqualTo(3),
+            reason: 'consumable ${type.name} should allow stock',
+          );
         }
       }
     });
@@ -49,7 +56,9 @@ void main() {
     });
 
     test('all consumables are the six utility items', () {
-      final consumables = SpecialItemType.values.where((t) => t.isConsumable).toSet();
+      final consumables = SpecialItemType.values
+          .where((t) => t.isConsumable)
+          .toSet();
       expect(consumables, {
         SpecialItemType.focusElixir,
         SpecialItemType.phoenixFeather,
@@ -61,7 +70,9 @@ void main() {
     });
 
     test('legendary items exist', () {
-      final legendary = SpecialItemType.values.where((t) => t.rarityTier == 4).toSet();
+      final legendary = SpecialItemType.values
+          .where((t) => t.rarityTier == 4)
+          .toSet();
       expect(legendary, isNotEmpty);
     });
   });
@@ -82,8 +93,20 @@ void main() {
     test('isActive depends on activeUntil vs now', () {
       final future = DateTime.now().add(const Duration(days: 1));
       final past = DateTime.now().subtract(const Duration(days: 1));
-      expect(SpecialItem(type: SpecialItemType.focusElixir, activeUntil: future).isActive, isTrue);
-      expect(SpecialItem(type: SpecialItemType.focusElixir, activeUntil: past).isActive, isFalse);
+      expect(
+        SpecialItem(
+          type: SpecialItemType.focusElixir,
+          activeUntil: future,
+        ).isActive,
+        isTrue,
+      );
+      expect(
+        SpecialItem(
+          type: SpecialItemType.focusElixir,
+          activeUntil: past,
+        ).isActive,
+        isFalse,
+      );
     });
 
     test('copyWith replaces quantity', () {

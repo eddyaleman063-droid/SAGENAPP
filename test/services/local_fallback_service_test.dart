@@ -5,17 +5,14 @@ import 'package:sagen/services/local_fallback_service.dart';
 void main() {
   final service = LocalFallbackService();
 
-  ChatMessage userMsg(String text) => ChatMessage(
-        role: ChatRole.user,
-        text: text,
-        time: DateTime(2026, 1, 1),
-      );
+  ChatMessage userMsg(String text) =>
+      ChatMessage(role: ChatRole.user, text: text, time: DateTime(2026, 1, 1));
 
   ChatMessage assistantMsg(String text) => ChatMessage(
-        role: ChatRole.assistant,
-        text: text,
-        time: DateTime(2026, 1, 1),
-      );
+    role: ChatRole.assistant,
+    text: text,
+    time: DateTime(2026, 1, 1),
+  );
 
   group('LocalFallbackService — availability', () {
     test('isAvailable is always true', () {
@@ -77,7 +74,9 @@ void main() {
     });
 
     test('social media privacy', () async {
-      final r = await service.generate([userMsg('privacidad en redes sociales')]);
+      final r = await service.generate([
+        userMsg('privacidad en redes sociales'),
+      ]);
       expect(r, isNotEmpty);
     });
 

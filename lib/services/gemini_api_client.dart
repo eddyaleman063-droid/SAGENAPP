@@ -17,20 +17,21 @@ class GeminiApiClient {
   final SagePromptBuilder _promptBuilder = SagePromptBuilder();
   final Random _jitter = Random();
   FirebaseFunctions? _functions;
-  
+
   // Client-side rate limiting: max 10 requests per minute
   static const int _maxRequestsPerMinute = 10;
   final List<DateTime> _requestTimestamps = [];
 
   GeminiApiClient({AppLogger? logger, ApiClient? apiClient})
-      : _logger = logger ?? AppLogger(),
-        _apiClient = apiClient ?? ApiClient.instance;
+    : _logger = logger ?? AppLogger(),
+      _apiClient = apiClient ?? ApiClient.instance;
 
   bool get isAvailable => true;
 
   int get _maxRetries => AppConfig.geminiMaxRetries;
 
-  FirebaseFunctions get _getFunctions => _functions ??= FirebaseFunctions.instance;
+  FirebaseFunctions get _getFunctions =>
+      _functions ??= FirebaseFunctions.instance;
 
   void init() {
     _logger.info('GeminiApiClient: initialized via Cloud Function proxy');
@@ -53,7 +54,7 @@ class GeminiApiClient {
       );
     }
     _requestTimestamps.add(now);
-    
+
     for (int attempt = 0; attempt <= _maxRetries; attempt++) {
       try {
         final systemPrompt = _promptBuilder.buildSystemInstruction(
@@ -65,10 +66,7 @@ class GeminiApiClient {
 
         final result = await _getFunctions
             .httpsCallable('generateContent')
-            .call({
-              'contents': contents,
-              'systemInstruction': systemPrompt,
-            })
+            .call({'contents': contents, 'systemInstruction': systemPrompt})
             .timeout(AppConfig.geminiTimeout);
 
         final text = result.data['text'] as String?;
@@ -138,10 +136,9 @@ class GeminiApiClient {
         }
         final token = await user.getIdToken();
 
-        final projectId = FirebaseFunctions.instanceFor(region: 'us-central1')
-            .app
-            .options
-            .projectId;
+        final projectId = FirebaseFunctions.instanceFor(
+          region: 'us-central1',
+        ).app.options.projectId;
         final url = Uri.parse(
           'https://us-central1-$projectId.cloudfunctions.net/generateContentStream',
         );
@@ -177,7 +174,9 @@ class GeminiApiClient {
                   yield text;
                 }
               } catch (e) {
-                _logger.warning('GeminiApiClient: failed to parse SSE data line: $e');
+                _logger.warning(
+                  'GeminiApiClient: failed to parse SSE data line: $e',
+                );
               }
             }
           }
@@ -193,7 +192,9 @@ class GeminiApiClient {
                 yield text;
               }
             } catch (e) {
-              _logger.warning('GeminiApiClient: failed to parse final SSE buffer: $e');
+              _logger.warning(
+                'GeminiApiClient: failed to parse final SSE buffer: $e',
+              );
             }
           }
         }
@@ -233,13 +234,25 @@ class GeminiApiClient {
       case 'unauthenticated':
         return const AiException(AiErrorType.auth, 'Invalid session.');
       case 'resource-exhausted':
-        return const AiException(AiErrorType.rateLimit, 'Too many requests. Wait a moment.');
+        return const AiException(
+          AiErrorType.rateLimit,
+          'Too many requests. Wait a moment.',
+        );
       case 'invalid-argument':
-        return const AiException(AiErrorType.invalidResponse, 'Invalid request.');
+        return const AiException(
+          AiErrorType.invalidResponse,
+          'Invalid request.',
+        );
       case 'failed-precondition':
-        return const AiException(AiErrorType.apiKey, 'Gemini is not configured.');
+        return const AiException(
+          AiErrorType.apiKey,
+          'Gemini is not configured.',
+        );
       case 'internal':
-        return const AiException(AiErrorType.server, 'Gemini server is unavailable.');
+        return const AiException(
+          AiErrorType.server,
+          'Gemini server is unavailable.',
+        );
       default:
         return AiException(AiErrorType.unknown, 'Gemini error: ${e.message}');
     }

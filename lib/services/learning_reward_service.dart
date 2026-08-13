@@ -17,10 +17,10 @@ class LearningRewardService {
     ChestEventBus? eventBus,
     AudioService? audio,
     EmotionEventBus? emotionBus,
-  })  : _roller = roller ?? ChestRewardRoller.instance,
-        _eventBus = eventBus ?? ChestEventBus.instance,
-        _audio = audio ?? AudioService.instance,
-        _emotionBus = emotionBus ?? EmotionEventBus.instance;
+  }) : _roller = roller ?? ChestRewardRoller.instance,
+       _eventBus = eventBus ?? ChestEventBus.instance,
+       _audio = audio ?? AudioService.instance,
+       _emotionBus = emotionBus ?? EmotionEventBus.instance;
 
   static final LearningRewardService instance = LearningRewardService();
 

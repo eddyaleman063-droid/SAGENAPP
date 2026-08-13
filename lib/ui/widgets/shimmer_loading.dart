@@ -34,7 +34,10 @@ class _ShimmerLoadingState extends State<ShimmerLoading>
     super.initState();
     _sharedCtrl = ShimmerScope.maybeOf(context);
     if (_sharedCtrl == null) {
-      _ownCtrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 1500));
+      _ownCtrl = AnimationController(
+        vsync: this,
+        duration: const Duration(milliseconds: 1500),
+      );
       _ownCtrl!.repeat();
     }
   }
@@ -47,9 +50,10 @@ class _ShimmerLoadingState extends State<ShimmerLoading>
 
   @override
   Widget build(BuildContext context) {
-    final anim = Tween<double>(begin: -2.0, end: 2.0).animate(
-      CurvedAnimation(parent: _ctrl, curve: Curves.easeInOutSine),
-    );
+    final anim = Tween<double>(
+      begin: -2.0,
+      end: 2.0,
+    ).animate(CurvedAnimation(parent: _ctrl, curve: Curves.easeInOutSine));
 
     final base = widget.baseColor ?? context.surfaceTinted;
     final highlight = widget.highlightColor ?? context.borderSubtle;

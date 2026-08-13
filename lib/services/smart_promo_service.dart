@@ -42,7 +42,10 @@ class SmartPromoService {
   }
 
   Future<void> recordPromoShown() async {
-    await _prefs?.setString(_keyLastPromoShown, DateTime.now().toIso8601String());
+    await _prefs?.setString(
+      _keyLastPromoShown,
+      DateTime.now().toIso8601String(),
+    );
     await _prefs?.setInt(_keyLessonsSincePromo, 0);
   }
 

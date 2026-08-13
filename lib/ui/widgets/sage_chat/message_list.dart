@@ -9,7 +9,12 @@ class MessageList extends StatefulWidget {
   final SageAiChatState sage;
   final ScrollController scrollCtrl;
   final bool dark;
-  const MessageList({super.key, required this.sage, required this.scrollCtrl, required this.dark});
+  const MessageList({
+    super.key,
+    required this.sage,
+    required this.scrollCtrl,
+    required this.dark,
+  });
 
   @override
   State<MessageList> createState() => _MessageListState();
@@ -33,8 +38,11 @@ class _MessageListState extends State<MessageList> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollScheduled = false;
       if (mounted && widget.scrollCtrl.hasClients) {
-        widget.scrollCtrl.animateTo(0,
-            duration: const Duration(milliseconds: 100), curve: Curves.easeOut);
+        widget.scrollCtrl.animateTo(
+          0,
+          duration: const Duration(milliseconds: 100),
+          curve: Curves.easeOut,
+        );
       }
     });
   }
@@ -49,14 +57,20 @@ class _MessageListState extends State<MessageList> {
 
     _scheduleScroll();
 
-    final showStreaming = widget.sage.isStreaming && widget.sage.streamingText.isNotEmpty;
+    final showStreaming =
+        widget.sage.isStreaming && widget.sage.streamingText.isNotEmpty;
     final extraItem = showStreaming ? 1 : 0;
 
     return RepaintBoundary(
       child: ListView.builder(
         controller: widget.scrollCtrl,
         reverse: true,
-        padding: const EdgeInsets.fromLTRB(AppSpacing.xxl, AppSpacing.lg, AppSpacing.xxl, AppSpacing.md),
+        padding: const EdgeInsets.fromLTRB(
+          AppSpacing.xxl,
+          AppSpacing.lg,
+          AppSpacing.xxl,
+          AppSpacing.md,
+        ),
         itemCount: messages.length + extraItem,
         itemBuilder: (_, i) {
           if (showStreaming && i == 0) {
@@ -132,10 +146,7 @@ class _AnimatedMessageBubbleState extends State<_AnimatedMessageBubble>
   Widget build(BuildContext context) {
     return SlideTransition(
       position: _slideAnim,
-      child: FadeTransition(
-        opacity: _fadeAnim,
-        child: widget.child,
-      ),
+      child: FadeTransition(opacity: _fadeAnim, child: widget.child),
     );
   }
 }

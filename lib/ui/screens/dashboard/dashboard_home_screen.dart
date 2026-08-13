@@ -21,10 +21,12 @@ class DashboardHomeScreen extends ConsumerStatefulWidget {
   const DashboardHomeScreen({super.key});
 
   @override
-  ConsumerState<DashboardHomeScreen> createState() => _DashboardHomeScreenState();
+  ConsumerState<DashboardHomeScreen> createState() =>
+      _DashboardHomeScreenState();
 }
 
-class _DashboardHomeScreenState extends ConsumerState<DashboardHomeScreen> with AutomaticKeepAliveClientMixin {
+class _DashboardHomeScreenState extends ConsumerState<DashboardHomeScreen>
+    with AutomaticKeepAliveClientMixin {
   Map<String, Stage>? _lessonStageCache;
   int _lastStagesHashCode = 0;
   final _contentKey = GlobalKey();
@@ -75,26 +77,35 @@ class _DashboardHomeScreenState extends ConsumerState<DashboardHomeScreen> with 
                 children: [
                   Semantics(
                     label: l.errorGeneric,
-                    child: Icon(Icons.cloud_off_rounded, size: 64, color: context.subtle),
+                    child: Icon(
+                      Icons.cloud_off_rounded,
+                      size: 64,
+                      color: context.subtle,
+                    ),
                   ),
                   const SizedBox(height: AppSpacing.lg),
                   Text(
                     learning.errorMessage!,
                     textAlign: TextAlign.center,
-                    style: AppTextStyle.body.copyWith(color: context.textTertiary),
+                    style: AppTextStyle.body.copyWith(
+                      color: context.textTertiary,
+                    ),
                   ),
                   const SizedBox(height: AppSpacing.xl),
                   Semantics(
                     button: true,
                     label: l.retry,
                     child: ElevatedButton.icon(
-                      onPressed: () => ref.read(learningProvider.notifier).reload(),
+                      onPressed: () =>
+                          ref.read(learningProvider.notifier).reload(),
                       icon: const Icon(Icons.refresh_rounded, size: 18),
                       label: Text(l.tryAgain),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: PremiumColors.primary,
                         foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(AppRadius.lg),
+                        ),
                       ),
                     ),
                   ),
@@ -129,131 +140,171 @@ class _DashboardHomeScreenState extends ConsumerState<DashboardHomeScreen> with 
                     ref.invalidate(dashboardProvider);
                   },
                   child: CustomScrollView(
-                key: const ValueKey('dashboard_scroll'),
-                slivers: [
-                  SliverToBoxAdapter(
-                    child: SkipToContent(targetKey: _contentKey),
-                  ),
-                  SliverToBoxAdapter(
-                    key: _contentKey,
-                    child: HomeHeader(
-                      displayName: dash.displayName,
-                      streak: dash.currentStreak,
-                      greeting: greeting,
-                      totalDonated: learning.totalDonated,
-                      gems: ref.watch(gemProvider.select((g) => g.balance)),
-                    ).animate().fadeIn(duration: 350.ms, curve: Curves.easeOut).slideY(
-                      begin: -0.05,
-                      end: 0,
-                      duration: 350.ms,
-                      curve: Curves.easeOut,
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: AppSpacing.sm, bottom: AppSpacing.xxl),
-                      child: Semantics(
-                        button: true,
-                        label: dash.nextLesson != null
-                            ? l.continueLesson(dash.nextLesson!.title)
-                            : l.viewAchievements,
-                        child: HeroMissionCard(
-                          title: dash.nextLesson != null
-                              ? dash.nextLesson!.title
-                              : l.homeAllComplete,
-                          subtitle: dash.nextLesson != null
-                              ? '${dash.nextLessonStageTitle ?? ''} · ${l.minutes(dash.nextLesson!.estimatedMinutes)}'
-                              : l.homeAllCompleteDesc,
-                          actionLabel: dash.nextLesson != null ? l.homeContinue : l.homeViewAchievements,
-                          onAction: () {
-                            ref.read(experienceServiceProvider).lightHaptic();
-                            if (dash.nextLesson != null) {
-                              final lesson = dash.nextLesson!;
-                              final stage = _findStage(learning.stages, lesson.id);
-                              if (stage != null) {
-                                ref.read(sessionProvider.notifier).startSession(stage.id, lesson.id);
-                                context.pushNamed(
-                                  'lesson-session',
-                                  pathParameters: {
-                                    'stageId': stage.id,
-                                    'lessonId': lesson.id,
-                                  },
-                                  extra: lesson.title,
-                                );
-                              }
-                            } else {
-                              context.pushNamed('achievements');
-                            }
-                          },
-                        ),
+                    key: const ValueKey('dashboard_scroll'),
+                    slivers: [
+                      SliverToBoxAdapter(
+                        child: SkipToContent(targetKey: _contentKey),
                       ),
-                    ),
-                  ),
-                  SliverPadding(
-                    padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
-                    sliver: SliverToBoxAdapter(
-                      child: Text(
-                        l.homeLearningPath,
-                        style: AppTextStyle.body.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: context.textSecondary,
-                        ),
-                      ).animate(delay: 200.ms).fadeIn(
-                        duration: 300.ms,
-                        curve: Curves.easeOut,
-                      ).slideX(begin: -0.03, end: 0, duration: 300.ms),
-                    ),
-                  ),
-                  if (learning.stages.isEmpty)
-                    SliverFillRemaining(
-                      hasScrollBody: false,
-                      child: Center(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            ExcludeSemantics(
-                              child: Icon(Icons.school_rounded, size: 48, color: context.subtle),
-                            ),
-                            const SizedBox(height: AppSpacing.md),
-                            Text(
-                              l.noLessonsAvailable,
-                              style: AppTextStyle.bodyMd.copyWith(color: context.textTertiary),
-                            ),
-                          ],
-                        ),
+                      SliverToBoxAdapter(
+                        key: _contentKey,
+                        child:
+                            HomeHeader(
+                                  displayName: dash.displayName,
+                                  streak: dash.currentStreak,
+                                  greeting: greeting,
+                                  totalDonated: learning.totalDonated,
+                                  gems: ref.watch(
+                                    gemProvider.select((g) => g.balance),
+                                  ),
+                                )
+                                .animate()
+                                .fadeIn(duration: 350.ms, curve: Curves.easeOut)
+                                .slideY(
+                                  begin: -0.05,
+                                  end: 0,
+                                  duration: 350.ms,
+                                  curve: Curves.easeOut,
+                                ),
                       ),
-                    )
-                  else SliverPadding(
-                    padding: const EdgeInsets.fromLTRB(
-                      AppSpacing.xxl, AppSpacing.md, AppSpacing.xxl, _kBottomNavPadding,
-                    ),
-                    sliver: SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                          final stage = learning.stages[index];
-                          final status = _stageStatus(stage);
-                          return Semantics(
+                      SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            top: AppSpacing.sm,
+                            bottom: AppSpacing.xxl,
+                          ),
+                          child: Semantics(
                             button: true,
-                            label: l.goToLesson(stage.title),
-                            child: LearningTrackTile(
-                              stage: stage,
-                              status: status,
-                              index: index,
-                              isLast: index == learning.stages.length - 1,
-                              onTap: () {
-                                ref.read(experienceServiceProvider).lightHaptic();
-                                context.pushNamed('lessons');
+                            label: dash.nextLesson != null
+                                ? l.continueLesson(dash.nextLesson!.title)
+                                : l.viewAchievements,
+                            child: HeroMissionCard(
+                              title: dash.nextLesson != null
+                                  ? dash.nextLesson!.title
+                                  : l.homeAllComplete,
+                              subtitle: dash.nextLesson != null
+                                  ? '${dash.nextLessonStageTitle ?? ''} · ${l.minutes(dash.nextLesson!.estimatedMinutes)}'
+                                  : l.homeAllCompleteDesc,
+                              actionLabel: dash.nextLesson != null
+                                  ? l.homeContinue
+                                  : l.homeViewAchievements,
+                              onAction: () {
+                                ref
+                                    .read(experienceServiceProvider)
+                                    .lightHaptic();
+                                if (dash.nextLesson != null) {
+                                  final lesson = dash.nextLesson!;
+                                  final stage = _findStage(
+                                    learning.stages,
+                                    lesson.id,
+                                  );
+                                  if (stage != null) {
+                                    ref
+                                        .read(sessionProvider.notifier)
+                                        .startSession(stage.id, lesson.id);
+                                    context.pushNamed(
+                                      'lesson-session',
+                                      pathParameters: {
+                                        'stageId': stage.id,
+                                        'lessonId': lesson.id,
+                                      },
+                                      extra: lesson.title,
+                                    );
+                                  }
+                                } else {
+                                  context.pushNamed('achievements');
+                                }
                               },
                             ),
-                          );
-                        },
-                        childCount: learning.stages.length,
+                          ),
+                        ),
                       ),
-                    ),
+                      SliverPadding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppSpacing.xxl,
+                        ),
+                        sliver: SliverToBoxAdapter(
+                          child:
+                              Text(
+                                    l.homeLearningPath,
+                                    style: AppTextStyle.body.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                      color: context.textSecondary,
+                                    ),
+                                  )
+                                  .animate(delay: 200.ms)
+                                  .fadeIn(
+                                    duration: 300.ms,
+                                    curve: Curves.easeOut,
+                                  )
+                                  .slideX(
+                                    begin: -0.03,
+                                    end: 0,
+                                    duration: 300.ms,
+                                  ),
+                        ),
+                      ),
+                      if (learning.stages.isEmpty)
+                        SliverFillRemaining(
+                          hasScrollBody: false,
+                          child: Center(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                ExcludeSemantics(
+                                  child: Icon(
+                                    Icons.school_rounded,
+                                    size: 48,
+                                    color: context.subtle,
+                                  ),
+                                ),
+                                const SizedBox(height: AppSpacing.md),
+                                Text(
+                                  l.noLessonsAvailable,
+                                  style: AppTextStyle.bodyMd.copyWith(
+                                    color: context.textTertiary,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      else
+                        SliverPadding(
+                          padding: const EdgeInsets.fromLTRB(
+                            AppSpacing.xxl,
+                            AppSpacing.md,
+                            AppSpacing.xxl,
+                            _kBottomNavPadding,
+                          ),
+                          sliver: SliverList(
+                            delegate: SliverChildBuilderDelegate((
+                              context,
+                              index,
+                            ) {
+                              final stage = learning.stages[index];
+                              final status = _stageStatus(stage);
+                              return Semantics(
+                                button: true,
+                                label: l.goToLesson(stage.title),
+                                child: LearningTrackTile(
+                                  stage: stage,
+                                  status: status,
+                                  index: index,
+                                  isLast: index == learning.stages.length - 1,
+                                  onTap: () {
+                                    ref
+                                        .read(experienceServiceProvider)
+                                        .lightHaptic();
+                                    context.pushNamed('lessons');
+                                  },
+                                ),
+                              );
+                            }, childCount: learning.stages.length),
+                          ),
+                        ),
+                    ],
                   ),
-                ],
-              ),
-              ),
+                ),
               ),
             ),
     );
@@ -278,7 +329,11 @@ class _DashboardShimmer extends StatelessWidget {
               ),
               child: const Row(
                 children: [
-                  ShimmerLoading(width: 44, height: 44, borderRadius: AppRadius.pill),
+                  ShimmerLoading(
+                    width: 44,
+                    height: 44,
+                    borderRadius: AppRadius.pill,
+                  ),
                   SizedBox(width: AppSpacing.md),
                   Expanded(
                     child: Column(
@@ -290,25 +345,55 @@ class _DashboardShimmer extends StatelessWidget {
                       ],
                     ),
                   ),
-                  ShimmerLoading(width: 60, height: 28, borderRadius: AppRadius.pill),
+                  ShimmerLoading(
+                    width: 60,
+                    height: 28,
+                    borderRadius: AppRadius.pill,
+                  ),
                   SizedBox(width: AppSpacing.sm),
-                  ShimmerLoading(width: 60, height: 28, borderRadius: AppRadius.pill),
+                  ShimmerLoading(
+                    width: 60,
+                    height: 28,
+                    borderRadius: AppRadius.pill,
+                  ),
                   SizedBox(width: AppSpacing.sm),
-                  ShimmerLoading(width: 60, height: 28, borderRadius: AppRadius.pill),
+                  ShimmerLoading(
+                    width: 60,
+                    height: 28,
+                    borderRadius: AppRadius.pill,
+                  ),
                 ],
               ),
             ),
           ),
           const SliverPadding(
-            padding: EdgeInsets.fromLTRB(AppSpacing.xxl, 0, AppSpacing.xxl, AppSpacing.xxl),
+            padding: EdgeInsets.fromLTRB(
+              AppSpacing.xxl,
+              0,
+              AppSpacing.xxl,
+              AppSpacing.xxl,
+            ),
             sliver: SliverToBoxAdapter(
-              child: ShimmerLoading(width: double.infinity, height: 140, borderRadius: AppRadius.xl),
+              child: ShimmerLoading(
+                width: double.infinity,
+                height: 140,
+                borderRadius: AppRadius.xl,
+              ),
             ),
           ),
           const SliverPadding(
-            padding: EdgeInsets.fromLTRB(AppSpacing.xxl, 0, AppSpacing.xxl, _kBottomNavPadding),
+            padding: EdgeInsets.fromLTRB(
+              AppSpacing.xxl,
+              0,
+              AppSpacing.xxl,
+              _kBottomNavPadding,
+            ),
             sliver: SliverToBoxAdapter(
-              child: ShimmerLoading(width: double.infinity, height: 200, borderRadius: AppRadius.xl),
+              child: ShimmerLoading(
+                width: double.infinity,
+                height: 200,
+                borderRadius: AppRadius.xl,
+              ),
             ),
           ),
         ],

@@ -31,9 +31,21 @@ class _SpeedSortScreenState extends ConsumerState<SpeedSortScreen> {
   int _timeRemaining = 45;
 
   Map<String, List<String>> _buildCategoryValues(AppLocalizations l) => {
-    l.speedSortScamCategory: [l.speedSortFakeEmail, l.speedSortFraudulentCall, l.speedSortSmsLink],
-    l.speedSortSecurityCategory: [l.speedSortStrongPassword, l.speedSort2fa, l.speedSortDataEncryption],
-    l.speedSortProtectionCategory: [l.speedSortFirewall, l.speedSortVpn, l.speedSortAntivirus],
+    l.speedSortScamCategory: [
+      l.speedSortFakeEmail,
+      l.speedSortFraudulentCall,
+      l.speedSortSmsLink,
+    ],
+    l.speedSortSecurityCategory: [
+      l.speedSortStrongPassword,
+      l.speedSort2fa,
+      l.speedSortDataEncryption,
+    ],
+    l.speedSortProtectionCategory: [
+      l.speedSortFirewall,
+      l.speedSortVpn,
+      l.speedSortAntivirus,
+    ],
   };
 
   @override
@@ -48,13 +60,25 @@ class _SpeedSortScreenState extends ConsumerState<SpeedSortScreen> {
     final categories = _buildCategoryValues(AppLocalizations.of(context)!);
     final entries = categories.entries.toList()..shuffle(random);
     final selectedCategory = entries.first;
-    final correctItems = List<String>.from(selectedCategory.value)..shuffle(random);
+    final correctItems = List<String>.from(selectedCategory.value)
+      ..shuffle(random);
     final wrongCategory = entries[1];
-    final wrongItem = wrongCategory.value[random.nextInt(wrongCategory.value.length)];
+    final wrongItem =
+        wrongCategory.value[random.nextInt(wrongCategory.value.length)];
 
     _items = [
-      ...correctItems.map((text) => _SortItem(text: text, category: selectedCategory.key, isCorrect: true)),
-      _SortItem(text: wrongItem, category: selectedCategory.key, isCorrect: false),
+      ...correctItems.map(
+        (text) => _SortItem(
+          text: text,
+          category: selectedCategory.key,
+          isCorrect: true,
+        ),
+      ),
+      _SortItem(
+        text: wrongItem,
+        category: selectedCategory.key,
+        isCorrect: false,
+      ),
     ]..shuffle(random);
 
     _correct = 0;
@@ -63,7 +87,10 @@ class _SpeedSortScreenState extends ConsumerState<SpeedSortScreen> {
     _rewarded = false;
     _timeRemaining = widget.config.timeLimit.inSeconds;
     _timer = Timer.periodic(const Duration(seconds: 1), (t) {
-      if (!mounted) { t.cancel(); return; }
+      if (!mounted) {
+        t.cancel();
+        return;
+      }
       if (_timeRemaining <= 0) {
         t.cancel();
         _completeGame();
@@ -108,9 +135,13 @@ class _SpeedSortScreenState extends ConsumerState<SpeedSortScreen> {
       final xp = _correct * 20;
       await ref.read(learningProvider.notifier).addXp(xp, reason: 'mini_game');
       if (!mounted) return;
-      setState(() { _completing = false; });
+      setState(() {
+        _completing = false;
+      });
     } else {
-      setState(() { _completing = false; });
+      setState(() {
+        _completing = false;
+      });
     }
   }
 
@@ -127,9 +158,19 @@ class _SpeedSortScreenState extends ConsumerState<SpeedSortScreen> {
             title: Text(l.miniGameExitTitle),
             content: Text(l.miniGameExitContent),
             actions: [
-              TextButton(onPressed: () { HapticFeedback.lightImpact(); Navigator.pop(ctx); }, child: Text(l.cancel)),
               TextButton(
-                onPressed: () { HapticFeedback.lightImpact(); Navigator.pop(ctx); Navigator.pop(context); },
+                onPressed: () {
+                  HapticFeedback.lightImpact();
+                  Navigator.pop(ctx);
+                },
+                child: Text(l.cancel),
+              ),
+              TextButton(
+                onPressed: () {
+                  HapticFeedback.lightImpact();
+                  Navigator.pop(ctx);
+                  Navigator.pop(context);
+                },
                 child: Text(l.exitText),
               ),
             ],
@@ -137,48 +178,77 @@ class _SpeedSortScreenState extends ConsumerState<SpeedSortScreen> {
         );
       },
       child: Scaffold(
-      appBar: AppBar(
-        title: Text(l.miniGameSpeed),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(AppSpacing.lg),
-            child: Row(children: [
-              Icon(Icons.timer_rounded, size: 18, color: _timeRemaining < 10 ? PremiumColors.error : context.textPrimary),
-              const SizedBox(width: AppSpacing.xxs),
-              Text('$_timeRemaining', style: AppTextStyle.titleSmall.copyWith(fontWeight: FontWeight.bold, color: context.textPrimary)),
-            ]),
-          ),
-        ],
-      ),
-      body: _gameComplete
-          ? _buildResult(l)
-          : Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(AppSpacing.lg),
-                  child: Text(l.miniGameSortInstruction, style: AppTextStyle.bodyMd.copyWith(color: context.textSecondary)),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                  child: Row(
-                    children: [
-                      _SortZone(label: l.miniGameCorrect, color: PremiumColors.success, icon: Icons.check_rounded),
-                      const SizedBox(width: AppSpacing.lg),
-                      _SortZone(label: l.miniGameWrong, color: PremiumColors.error, icon: Icons.close_rounded),
-                    ],
+        appBar: AppBar(
+          title: Text(l.miniGameSpeed),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(AppSpacing.lg),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.timer_rounded,
+                    size: 18,
+                    color: _timeRemaining < 10
+                        ? PremiumColors.error
+                        : context.textPrimary,
                   ),
-                ),
-                const SizedBox(height: AppSpacing.lg),
-                Expanded(
-                  child: ListView.builder(
-                    padding: const EdgeInsets.all(AppSpacing.lg),
-                    itemCount: _items.length,
-                    itemBuilder: (ctx, i) => _buildItem(i),
-                  ).animate().fadeIn(duration: 300.ms),
-                ),
-              ],
+                  const SizedBox(width: AppSpacing.xxs),
+                  Text(
+                    '$_timeRemaining',
+                    style: AppTextStyle.titleSmall.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: context.textPrimary,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
+          ],
+        ),
+        body: _gameComplete
+            ? _buildResult(l)
+            : Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(AppSpacing.lg),
+                    child: Text(
+                      l.miniGameSortInstruction,
+                      style: AppTextStyle.bodyMd.copyWith(
+                        color: context.textSecondary,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.lg,
+                    ),
+                    child: Row(
+                      children: [
+                        _SortZone(
+                          label: l.miniGameCorrect,
+                          color: PremiumColors.success,
+                          icon: Icons.check_rounded,
+                        ),
+                        const SizedBox(width: AppSpacing.lg),
+                        _SortZone(
+                          label: l.miniGameWrong,
+                          color: PremiumColors.error,
+                          icon: Icons.close_rounded,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.lg),
+                  Expanded(
+                    child: ListView.builder(
+                      padding: const EdgeInsets.all(AppSpacing.lg),
+                      itemCount: _items.length,
+                      itemBuilder: (ctx, i) => _buildItem(i),
+                    ).animate().fadeIn(duration: 300.ms),
+                  ),
+                ],
+              ),
+      ),
     );
   }
 
@@ -191,14 +261,35 @@ class _SpeedSortScreenState extends ConsumerState<SpeedSortScreen> {
           padding: const EdgeInsets.all(AppSpacing.md),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppRadius.md),
-            color: (item.accepted == true ? PremiumColors.success : PremiumColors.error).withValues(alpha: 0.1),
-            border: Border.all(color: item.accepted == true ? PremiumColors.success : PremiumColors.error),
+            color:
+                (item.accepted == true
+                        ? PremiumColors.success
+                        : PremiumColors.error)
+                    .withValues(alpha: 0.1),
+            border: Border.all(
+              color: item.accepted == true
+                  ? PremiumColors.success
+                  : PremiumColors.error,
+            ),
           ),
           child: Row(
             children: [
-              Icon(item.accepted == true ? Icons.check_rounded : Icons.close_rounded, size: 18, color: item.accepted == true ? PremiumColors.success : PremiumColors.error),
+              Icon(
+                item.accepted == true
+                    ? Icons.check_rounded
+                    : Icons.close_rounded,
+                size: 18,
+                color: item.accepted == true
+                    ? PremiumColors.success
+                    : PremiumColors.error,
+              ),
               const SizedBox(width: AppSpacing.sm),
-              Expanded(child: Text(item.text, style: AppTextStyle.body.copyWith(color: context.textPrimary))),
+              Expanded(
+                child: Text(
+                  item.text,
+                  style: AppTextStyle.body.copyWith(color: context.textPrimary),
+                ),
+              ),
             ],
           ),
         ),
@@ -211,8 +302,14 @@ class _SpeedSortScreenState extends ConsumerState<SpeedSortScreen> {
           Expanded(
             child: Container(
               padding: const EdgeInsets.all(AppSpacing.md),
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(AppRadius.md), color: context.surfaceTinted),
-              child: Text(item.text, style: AppTextStyle.body.copyWith(color: context.textPrimary)),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(AppRadius.md),
+                color: context.surfaceTinted,
+              ),
+              child: Text(
+                item.text,
+                style: AppTextStyle.body.copyWith(color: context.textPrimary),
+              ),
             ),
           ),
           const SizedBox(width: AppSpacing.sm),
@@ -224,8 +321,19 @@ class _SpeedSortScreenState extends ConsumerState<SpeedSortScreen> {
                 HapticFeedback.lightImpact();
                 _onSort(index, true);
               },
-                  child: Container(width: 48, height: 48, decoration: BoxDecoration(shape: BoxShape.circle, color: PremiumColors.success.withValues(alpha: 0.1), border: Border.all(color: PremiumColors.success)),
-                child: const Icon(Icons.check_rounded, color: PremiumColors.success)),
+              child: Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: PremiumColors.success.withValues(alpha: 0.1),
+                  border: Border.all(color: PremiumColors.success),
+                ),
+                child: const Icon(
+                  Icons.check_rounded,
+                  color: PremiumColors.success,
+                ),
+              ),
             ),
           ),
           const SizedBox(width: AppSpacing.sm),
@@ -237,8 +345,19 @@ class _SpeedSortScreenState extends ConsumerState<SpeedSortScreen> {
                 HapticFeedback.lightImpact();
                 _onSort(index, false);
               },
-              child: Container(width: 48, height: 48, decoration: BoxDecoration(shape: BoxShape.circle, color: PremiumColors.error.withValues(alpha: 0.1), border: Border.all(color: PremiumColors.error)),
-                child: const Icon(Icons.close_rounded, color: PremiumColors.error)),
+              child: Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: PremiumColors.error.withValues(alpha: 0.1),
+                  border: Border.all(color: PremiumColors.error),
+                ),
+                child: const Icon(
+                  Icons.close_rounded,
+                  color: PremiumColors.error,
+                ),
+              ),
             ),
           ),
         ],
@@ -259,14 +378,30 @@ class _SpeedSortScreenState extends ConsumerState<SpeedSortScreen> {
               alignment: Alignment.center,
               children: [
                 const ConfettiWidget(type: ConfettiType.level),
-                ExcludeSemantics(child: Icon(_correct >= 3 ? Icons.emoji_events_rounded : Icons.star_rounded, size: 64, color: _correct >= 3 ? PremiumColors.accentYellow : PremiumColors.primary)).animate().fadeIn().scale(begin: const Offset(0.8, 0.8)),
+                ExcludeSemantics(
+                  child: Icon(
+                    _correct >= 3
+                        ? Icons.emoji_events_rounded
+                        : Icons.star_rounded,
+                    size: 64,
+                    color: _correct >= 3
+                        ? PremiumColors.accentYellow
+                        : PremiumColors.primary,
+                  ),
+                ).animate().fadeIn().scale(begin: const Offset(0.8, 0.8)),
               ],
             ),
           ),
           const SizedBox(height: AppSpacing.lg),
-          Text(_correct >= 3 ? l.miniGameComplete : l.miniGameOver, style: AppTextStyle.headline),
+          Text(
+            _correct >= 3 ? l.miniGameComplete : l.miniGameOver,
+            style: AppTextStyle.headline,
+          ),
           const SizedBox(height: AppSpacing.sm),
-          Text('${l.miniGameCorrect}: $_correct  |  ${l.miniGameMistakes}: $_mistakes', style: AppTextStyle.body.copyWith(color: context.textSecondary)),
+          Text(
+            '${l.miniGameCorrect}: $_correct  |  ${l.miniGameMistakes}: $_mistakes',
+            style: AppTextStyle.body.copyWith(color: context.textSecondary),
+          ),
           const SizedBox(height: AppSpacing.lg),
           if (_completing)
             const Padding(
@@ -279,13 +414,38 @@ class _SpeedSortScreenState extends ConsumerState<SpeedSortScreen> {
               duration: const Duration(milliseconds: 1500),
               curve: Curves.easeOut,
               builder: (context, value, _) => Container(
-                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl, vertical: 10),
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(AppRadius.pill), gradient: const LinearGradient(colors: [PremiumColors.primary, PremiumColors.primaryAccent])),
-                child: Row(mainAxisSize: MainAxisSize.min, children: [
-                  const ExcludeSemantics(child: Icon(Icons.star_rounded, size: 18, color: Colors.white)),
-                  const SizedBox(width: AppSpacing.xs),
-                  Text('$value XP', style: AppTextStyle.bodyBold.copyWith(color: Colors.white)),
-                ]),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.xl,
+                  vertical: 10,
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(AppRadius.pill),
+                  gradient: const LinearGradient(
+                    colors: [
+                      PremiumColors.primary,
+                      PremiumColors.primaryAccent,
+                    ],
+                  ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const ExcludeSemantics(
+                      child: Icon(
+                        Icons.star_rounded,
+                        size: 18,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(width: AppSpacing.xs),
+                    Text(
+                      '$value XP',
+                      style: AppTextStyle.bodyBold.copyWith(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
             const SizedBox(height: AppSpacing.xxl),
@@ -293,7 +453,13 @@ class _SpeedSortScreenState extends ConsumerState<SpeedSortScreen> {
           Semantics(
             button: true,
             label: l.miniGamePlayAgain,
-            child: FilledButton(onPressed: () { HapticFeedback.lightImpact(); setState(() => _initGame()); }, child: Text(l.miniGamePlayAgain)),
+            child: FilledButton(
+              onPressed: () {
+                HapticFeedback.lightImpact();
+                setState(() => _initGame());
+              },
+              child: Text(l.miniGamePlayAgain),
+            ),
           ),
         ],
       ),
@@ -307,29 +473,42 @@ class _SortItem {
   final bool isCorrect;
   bool sorted = false;
   bool? accepted;
-  _SortItem({required this.text, required this.category, required this.isCorrect});
+  _SortItem({
+    required this.text,
+    required this.category,
+    required this.isCorrect,
+  });
 }
 
 class _SortZone extends StatelessWidget {
   final String label;
   final Color color;
   final IconData icon;
-  const _SortZone({required this.label, required this.color, required this.icon});
+  const _SortZone({
+    required this.label,
+    required this.color,
+    required this.icon,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
         padding: const EdgeInsets.all(AppSpacing.md),
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(AppRadius.md), color: color.withValues(alpha: 0.05), border: Border.all(color: color.withValues(alpha: 0.3))),
-        child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Icon(icon, size: 18, color: color),
-          const SizedBox(width: AppSpacing.xs),
-          Text(label, style: AppTextStyle.bodyBold.copyWith(color: color)),
-        ]),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(AppRadius.md),
+          color: color.withValues(alpha: 0.05),
+          border: Border.all(color: color.withValues(alpha: 0.3)),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 18, color: color),
+            const SizedBox(width: AppSpacing.xs),
+            Text(label, style: AppTextStyle.bodyBold.copyWith(color: color)),
+          ],
+        ),
       ),
     );
   }
 }
-
-

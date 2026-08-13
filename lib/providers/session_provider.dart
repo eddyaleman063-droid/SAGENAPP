@@ -42,7 +42,9 @@ class SessionState {
     SessionPhase? phase,
   }) {
     return SessionState(
-      currentChallenge: currentChallenge != null ? currentChallenge() : this.currentChallenge,
+      currentChallenge: currentChallenge != null
+          ? currentChallenge()
+          : this.currentChallenge,
       challenges: challenges != null ? challenges() : this.challenges,
       currentIndex: currentIndex ?? this.currentIndex,
       lives: lives ?? this.lives,
@@ -95,12 +97,24 @@ class SessionNotifier extends AutoDisposeNotifier<SessionState> {
   String _lastStageId = '';
   String _lastLessonId = '';
 
-  Future<void> startSession(String stageId, String lessonId, {int count = 5}) async {
+  Future<void> startSession(
+    String stageId,
+    String lessonId, {
+    int count = 5,
+  }) async {
     _lastStageId = stageId;
     _lastLessonId = lessonId;
-    var challenges = await QuestionBank.instance.getQuestionsForLesson(stageId, lessonId, count: count);
+    var challenges = await QuestionBank.instance.getQuestionsForLesson(
+      stageId,
+      lessonId,
+      count: count,
+    );
     if (challenges.isEmpty) {
-      challenges = await QuestionBank.instance.getQuestionsForLesson(stageId, lessonId, count: 3);
+      challenges = await QuestionBank.instance.getQuestionsForLesson(
+        stageId,
+        lessonId,
+        count: 3,
+      );
     }
     final totalQuestions = challenges.length;
     state = state.copyWith(
@@ -118,7 +132,9 @@ class SessionNotifier extends AutoDisposeNotifier<SessionState> {
   }
 
   void submitAnswer(int selectedIndex) {
-    if (state.phase != SessionPhase.playing || state.currentChallenge == null) return;
+    if (state.phase != SessionPhase.playing || state.currentChallenge == null) {
+      return;
+    }
     final challenge = state.currentChallenge;
     if (challenge == null) return;
     final feedbackCorrect = selectedIndex == challenge.correctIndex;
@@ -128,7 +144,9 @@ class SessionNotifier extends AutoDisposeNotifier<SessionState> {
     state = state.copyWith(
       feedbackSelected: selectedIndex,
       feedbackCorrect: feedbackCorrect,
-      correctCount: feedbackCorrect ? state.correctCount + 1 : state.correctCount,
+      correctCount: feedbackCorrect
+          ? state.correctCount + 1
+          : state.correctCount,
       wrongCount: feedbackCorrect ? state.wrongCount : state.wrongCount + 1,
       lives: newLives,
       phase: SessionPhase.feedback,

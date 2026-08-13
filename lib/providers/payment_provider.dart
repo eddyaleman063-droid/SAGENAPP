@@ -110,7 +110,8 @@ class PaymentNotifier extends AutoDisposeNotifier<PaymentState> {
     }
 
     // PAY-003: Reuse existing preference for same product within 5 minutes
-    if (state.preferenceId != null && state.selectedProduct?.id == product?.id) {
+    if (state.preferenceId != null &&
+        state.selectedProduct?.id == product?.id) {
       final created = state.preferenceCreatedAt;
       if (created != null && DateTime.now().difference(created).inMinutes < 5) {
         return state.initPoint;
@@ -186,10 +187,13 @@ class PaymentNotifier extends AutoDisposeNotifier<PaymentState> {
     try {
       final idToken = await authNotifier.getIdToken();
       if (idToken == null || idToken.isEmpty) {
-        _logger.warning('registerPendingPayment: no idToken, skipping server registration');
+        _logger.warning(
+          'registerPendingPayment: no idToken, skipping server registration',
+        );
         return;
       }
-      final opId = 'wa_${DateTime.now().millisecondsSinceEpoch}_${Random().nextInt(999999)}';
+      final opId =
+          'wa_${DateTime.now().millisecondsSinceEpoch}_${Random().nextInt(999999)}';
       final result = await _mpService.registerPendingPayment(
         paymentMethod: 'whatsapp',
         operationId: opId,
@@ -213,7 +217,10 @@ class PaymentNotifier extends AutoDisposeNotifier<PaymentState> {
 
   void _startPolling(String pendingPaymentId) {
     _pollTimer?.cancel();
-    _pollTimer = Timer.periodic(const Duration(seconds: 5), (_) => _pollPaymentStatus(pendingPaymentId));
+    _pollTimer = Timer.periodic(
+      const Duration(seconds: 5),
+      (_) => _pollPaymentStatus(pendingPaymentId),
+    );
   }
 
   Future<void> _pollPaymentStatus(String pendingPaymentId) async {
@@ -222,7 +229,8 @@ class PaymentNotifier extends AutoDisposeNotifier<PaymentState> {
       _pollTimer?.cancel();
       state = state.copyWith(
         status: PaymentStatus.failed,
-        errorMessage: 'Payment verification timed out. Check your payment history or try again.',
+        errorMessage:
+            'Payment verification timed out. Check your payment history or try again.',
         pendingPaymentId: null,
       );
       return;
@@ -284,6 +292,7 @@ class PaymentNotifier extends AutoDisposeNotifier<PaymentState> {
   }
 }
 
-final paymentProvider = NotifierProvider.autoDispose<PaymentNotifier, PaymentState>(
-  PaymentNotifier.new,
-);
+final paymentProvider =
+    NotifierProvider.autoDispose<PaymentNotifier, PaymentState>(
+      PaymentNotifier.new,
+    );

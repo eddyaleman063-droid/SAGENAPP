@@ -72,7 +72,9 @@ class SyncQueueService {
     if (stored != null && stored.isNotEmpty) {
       try {
         final list = jsonDecode(stored) as List;
-        _queue.addAll(list.map((e) => SyncOperation.fromJson(e as Map<String, dynamic>)));
+        _queue.addAll(
+          list.map((e) => SyncOperation.fromJson(e as Map<String, dynamic>)),
+        );
         _logger.debug('SyncQueue: loaded ${_queue.length} pending operations');
       } catch (e) {
         _logger.error('SyncQueue: failed to load queue', e);
@@ -87,12 +89,16 @@ class SyncQueueService {
 
   void enqueue(SyncOperationType type, Map<String, dynamic> data) {
     if (_processing) {
-      _queue.add(SyncOperation(
-        id: '${type.name}_${DateTime.now().millisecondsSinceEpoch}_${_queue.length}',
-        type: type,
-        data: data,
-      ));
-      _logger.debug('SyncQueue: enqueued ${type.name} (${_queue.length} pending) [deferred]');
+      _queue.add(
+        SyncOperation(
+          id: '${type.name}_${DateTime.now().millisecondsSinceEpoch}_${_queue.length}',
+          type: type,
+          data: data,
+        ),
+      );
+      _logger.debug(
+        'SyncQueue: enqueued ${type.name} (${_queue.length} pending) [deferred]',
+      );
       return;
     }
     final op = SyncOperation(
@@ -101,7 +107,9 @@ class SyncQueueService {
       data: data,
     );
     _queue.add(op);
-    _logger.debug('SyncQueue: enqueued ${type.name} (${_queue.length} pending)');
+    _logger.debug(
+      'SyncQueue: enqueued ${type.name} (${_queue.length} pending)',
+    );
     final prefs = _prefs;
     if (prefs != null) _save(prefs);
   }
@@ -127,7 +135,9 @@ class SyncQueueService {
         if (op.retryCount >= _maxRetries) {
           _queue.removeAt(0);
           await _save(prefs);
-          _logger.warning('SyncQueue: dropping operation ${op.id} after $_maxRetries retries');
+          _logger.warning(
+            'SyncQueue: dropping operation ${op.id} after $_maxRetries retries',
+          );
           continue;
         }
 
@@ -142,7 +152,9 @@ class SyncQueueService {
             _queue.removeAt(0);
             _queue.add(op);
             await _save(prefs);
-            _logger.warning('SyncQueue: failed ${op.id}, retry ${op.retryCount}/$_maxRetries');
+            _logger.warning(
+              'SyncQueue: failed ${op.id}, retry ${op.retryCount}/$_maxRetries',
+            );
             break;
           }
         } catch (e) {

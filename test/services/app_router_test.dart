@@ -12,9 +12,7 @@ void main() {
       SharedPreferences.setMockInitialValues({});
       final prefs = await SharedPreferences.getInstance();
       container = ProviderContainer(
-        overrides: [
-          prefsProvider.overrideWithValue(prefs),
-        ],
+        overrides: [prefsProvider.overrideWithValue(prefs)],
       );
     });
 

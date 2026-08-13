@@ -35,7 +35,9 @@ class QuizOptionButton extends ConsumerWidget {
     if (disabled) {
       bgColor = Theme.of(context).colorScheme.surfaceContainerHigh;
       borderColor = Colors.transparent;
-      textColor = Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.55);
+      textColor = Theme.of(
+        context,
+      ).colorScheme.onSurface.withValues(alpha: 0.55);
       prefix = '—';
     } else if (revealed) {
       if (correct) {
@@ -50,12 +52,18 @@ class QuizOptionButton extends ConsumerWidget {
         prefix = '✗';
       } else {
         bgColor = Theme.of(context).colorScheme.surfaceContainerHigh;
-        borderColor = Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.12);
-        textColor = Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.54);
+        borderColor = Theme.of(
+          context,
+        ).colorScheme.onSurface.withValues(alpha: 0.12);
+        textColor = Theme.of(
+          context,
+        ).colorScheme.onSurface.withValues(alpha: 0.54);
       }
     } else {
       bgColor = Theme.of(context).colorScheme.surfaceContainerHigh;
-      borderColor = Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.12);
+      borderColor = Theme.of(
+        context,
+      ).colorScheme.onSurface.withValues(alpha: 0.12);
       textColor = context.textPrimary;
     }
 
@@ -63,7 +71,9 @@ class QuizOptionButton extends ConsumerWidget {
     final letters = ['A', 'B', 'C', 'D', 'E', 'F'];
     final baseLabel = '${letters[index % letters.length]}: $text';
     final stateLabel = revealed
-        ? (correct ? ', ${l.correctAnswer}' : (selected ? ', ${l.incorrectAnswer}' : ''))
+        ? (correct
+              ? ', ${l.correctAnswer}'
+              : (selected ? ', ${l.incorrectAnswer}' : ''))
         : (selected ? ', ${l.selectedAnswer}' : '');
 
     return Padding(
@@ -76,54 +86,70 @@ class QuizOptionButton extends ConsumerWidget {
           label: '$baseLabel$stateLabel',
           enabled: !revealed && !disabled,
           child: InkWell(
-          onTap: (revealed || disabled) ? null : () {
-            ref.read(experienceServiceProvider).lightHaptic();
-            onTap?.call();
-          },
-          borderRadius: BorderRadius.circular(AppRadius.lg),
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md),
-            decoration: BoxDecoration(
-              color: bgColor,
-              borderRadius: BorderRadius.circular(AppRadius.lg),
-              border: Border.all(color: borderColor, width: revealed && (correct || (selected && !correct)) ? 1.5 : 1),
-            ),
-            child: Row(
-              children: [
-                Container(
-                  width: 28,
-                  height: 28,
-                  decoration: BoxDecoration(
-                    color: selected && revealed && correct
-                        ? PremiumColors.success
-                        : selected && revealed && !correct
-                            ? PremiumColors.error
-                            : Theme.of(context).colorScheme.surfaceContainerHighest,
-                    borderRadius: BorderRadius.circular(AppRadius.sm),
-                  ),
-                  child: Center(
-                    child: Text(
-                      prefix ?? letters[index % letters.length],
-                      style: AppTextStyle.caption.copyWith(fontWeight: FontWeight.bold,
-                        color: selected && revealed
-                            ? Colors.white
-                            : textColor),
+            onTap: (revealed || disabled)
+                ? null
+                : () {
+                    ref.read(experienceServiceProvider).lightHaptic();
+                    onTap?.call();
+                  },
+            borderRadius: BorderRadius.circular(AppRadius.lg),
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.lg,
+                vertical: AppSpacing.md,
+              ),
+              decoration: BoxDecoration(
+                color: bgColor,
+                borderRadius: BorderRadius.circular(AppRadius.lg),
+                border: Border.all(
+                  color: borderColor,
+                  width: revealed && (correct || (selected && !correct))
+                      ? 1.5
+                      : 1,
+                ),
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    width: 28,
+                    height: 28,
+                    decoration: BoxDecoration(
+                      color: selected && revealed && correct
+                          ? PremiumColors.success
+                          : selected && revealed && !correct
+                          ? PremiumColors.error
+                          : Theme.of(
+                              context,
+                            ).colorScheme.surfaceContainerHighest,
+                      borderRadius: BorderRadius.circular(AppRadius.sm),
+                    ),
+                    child: Center(
+                      child: Text(
+                        prefix ?? letters[index % letters.length],
+                        style: AppTextStyle.caption.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: selected && revealed
+                              ? Colors.white
+                              : textColor,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(width: AppSpacing.md),
-                Expanded(
-                  child: Text(
-                    text,
-                    style: AppTextStyle.bodyMd.copyWith(color: textColor,
-                      height: 1.3),
+                  const SizedBox(width: AppSpacing.md),
+                  Expanded(
+                    child: Text(
+                      text,
+                      style: AppTextStyle.bodyMd.copyWith(
+                        color: textColor,
+                        height: 1.3,
+                      ),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
-      ),
       ),
     );
   }

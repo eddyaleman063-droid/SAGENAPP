@@ -20,27 +20,32 @@ class AuthMethodScreen extends ConsumerWidget {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(AppSpacing.xxl),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Spacer(flex: 2),
-                Text(
-                  l.regHowContinue,
-                  style: AppTextStyle.headline.copyWith(
-                    color: context.textPrimary,
-                  ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Spacer(flex: 2),
+              Text(
+                l.regHowContinue,
+                style: AppTextStyle.headline.copyWith(
+                  color: context.textPrimary,
                 ),
-                const SizedBox(height: AppSpacing.sm),
-                Text(
-                  l.regChooseMethod,
-                  style: AppTextStyle.bodyMd.copyWith(
-                    color: context.textTertiary,
-                  ),
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              Text(
+                l.regChooseMethod,
+                style: AppTextStyle.bodyMd.copyWith(
+                  color: context.textTertiary,
                 ),
-                const SizedBox(height: AppSpacing.xxl),
-                Semantics(button: true, label: l.authGoogleButton, child: GestureDetector(
+              ),
+              const SizedBox(height: AppSpacing.xxl),
+              Semantics(
+                button: true,
+                label: l.authGoogleButton,
+                child: GestureDetector(
                   onTap: () {
-                    ref.read(registrationFunnelProvider.notifier).setAuthMethod('google');
+                    ref
+                        .read(registrationFunnelProvider.notifier)
+                        .setAuthMethod('google');
                     onContinue();
                   },
                   child: Container(
@@ -48,13 +53,21 @@ class AuthMethodScreen extends ConsumerWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(AppRadius.xl),
                       color: context.surfaceTinted,
-                      border: Border.all(
-                        color: context.subtleBorder,
-                      ),
+                      border: Border.all(color: context.subtleBorder),
                     ),
                     child: Row(
                       children: [
-                        ExcludeSemantics(child: Image.asset('assets/ui/google_logo.png', width: 24, height: 24, cacheWidth: 48, cacheHeight: 48, errorBuilder: (_, _, _) => const Icon(Icons.g_mobiledata, size: 24))),
+                        ExcludeSemantics(
+                          child: Image.asset(
+                            'assets/ui/google_logo.png',
+                            width: 24,
+                            height: 24,
+                            cacheWidth: 48,
+                            cacheHeight: 48,
+                            errorBuilder: (_, _, _) =>
+                                const Icon(Icons.g_mobiledata, size: 24),
+                          ),
+                        ),
                         const SizedBox(width: AppSpacing.lg),
                         Text(
                           l.authGoogleButton,
@@ -66,11 +79,17 @@ class AuthMethodScreen extends ConsumerWidget {
                       ],
                     ),
                   ),
-                )),
-                const SizedBox(height: AppSpacing.md),
-                Semantics(button: true, label: l.regEmailOption, child: GestureDetector(
+                ),
+              ),
+              const SizedBox(height: AppSpacing.md),
+              Semantics(
+                button: true,
+                label: l.regEmailOption,
+                child: GestureDetector(
                   onTap: () {
-                    ref.read(registrationFunnelProvider.notifier).setAuthMethod('email');
+                    ref
+                        .read(registrationFunnelProvider.notifier)
+                        .setAuthMethod('email');
                     onContinue();
                   },
                   child: Container(
@@ -78,13 +97,15 @@ class AuthMethodScreen extends ConsumerWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(AppRadius.xl),
                       color: context.surfaceTinted,
-                      border: Border.all(
-                        color: context.subtleBorder,
-                      ),
+                      border: Border.all(color: context.subtleBorder),
                     ),
                     child: Row(
                       children: [
-                        const Icon(Icons.email_rounded, size: 24, color: PremiumColors.primary),
+                        const Icon(
+                          Icons.email_rounded,
+                          size: 24,
+                          color: PremiumColors.primary,
+                        ),
                         const SizedBox(width: AppSpacing.lg),
                         Text(
                           l.regEmailOption,
@@ -96,10 +117,11 @@ class AuthMethodScreen extends ConsumerWidget {
                       ],
                     ),
                   ),
-                )),
-                const Spacer(flex: 3),
-              ],
-            ).animate().fadeIn().slideY(begin: 0.1),
+                ),
+              ),
+              const Spacer(flex: 3),
+            ],
+          ).animate().fadeIn().slideY(begin: 0.1),
         ),
       ),
     );

@@ -5,7 +5,9 @@ void main() {
   group('FirestoreService Security', () {
     group('sanitize', () {
       test('removes angle brackets', () async {
-        final result = await FirestoreService.sanitize('test<script>alert</script>');
+        final result = await FirestoreService.sanitize(
+          'test<script>alert</script>',
+        );
         expect(result, isNot(contains('<')));
         expect(result, isNot(contains('>')));
         expect(result, isNot(contains('"')));
@@ -13,7 +15,9 @@ void main() {
       });
 
       test('removes quotes', () async {
-        final result = await FirestoreService.sanitize('say "hello" and \'bye\'');
+        final result = await FirestoreService.sanitize(
+          'say "hello" and \'bye\'',
+        );
         expect(result, isNot(contains('"')));
         expect(result, isNot(contains("'")));
       });
@@ -39,8 +43,14 @@ void main() {
 
       test('does not contain dangerous fields', () {
         expect(FirestoreService.allowedUpdateFields, isNot(contains('role')));
-        expect(FirestoreService.allowedUpdateFields, isNot(contains('isAdmin')));
-        expect(FirestoreService.allowedUpdateFields, isNot(contains('password')));
+        expect(
+          FirestoreService.allowedUpdateFields,
+          isNot(contains('isAdmin')),
+        );
+        expect(
+          FirestoreService.allowedUpdateFields,
+          isNot(contains('password')),
+        );
         expect(FirestoreService.allowedUpdateFields, isNot(contains('uid')));
       });
     });

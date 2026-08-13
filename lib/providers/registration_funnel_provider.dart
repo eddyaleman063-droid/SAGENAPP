@@ -42,7 +42,8 @@ class RegistrationFunnelState {
   }
 }
 
-class RegistrationFunnelNotifier extends AutoDisposeNotifier<RegistrationFunnelState> {
+class RegistrationFunnelNotifier
+    extends AutoDisposeNotifier<RegistrationFunnelState> {
   @override
   RegistrationFunnelState build() => const RegistrationFunnelState();
 
@@ -79,16 +80,15 @@ class RegistrationFunnelNotifier extends AutoDisposeNotifier<RegistrationFunnelS
   }
 
   void clearSensitiveData() {
-    state = state.copyWith(
-      password: '',
-      email: '',
-    );
+    state = state.copyWith(password: '', email: '');
   }
 }
 
-final registrationFunnelProvider = NotifierProvider.autoDispose<RegistrationFunnelNotifier, RegistrationFunnelState>(
-  RegistrationFunnelNotifier.new,
-);
+final registrationFunnelProvider =
+    NotifierProvider.autoDispose<
+      RegistrationFunnelNotifier,
+      RegistrationFunnelState
+    >(RegistrationFunnelNotifier.new);
 
 final funnelAgeValidProvider = Provider.autoDispose<bool>((ref) {
   final state = ref.watch(registrationFunnelProvider);
@@ -97,18 +97,20 @@ final funnelAgeValidProvider = Provider.autoDispose<bool>((ref) {
 
 final funnelEmailValidProvider = Provider.autoDispose<bool>((ref) {
   final state = ref.watch(registrationFunnelProvider);
-  final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+  final emailRegex = RegExp(
+    r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+  );
   return emailRegex.hasMatch(state.email);
 });
 
 final funnelPasswordValidProvider = Provider.autoDispose<bool>((ref) {
   final state = ref.watch(registrationFunnelProvider);
-  return RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$').hasMatch(state.password);
+  return RegExp(
+    r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$',
+  ).hasMatch(state.password);
 });
 
 final funnelNameValidProvider = Provider.autoDispose<bool>((ref) {
   final state = ref.watch(registrationFunnelProvider);
   return state.name.trim().isNotEmpty && state.surname.trim().isNotEmpty;
 });
-
-

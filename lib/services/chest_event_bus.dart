@@ -27,7 +27,8 @@ class ChestRewardData {
     this.cosmeticUnlocks = const [],
   });
 
-  bool get hasSpecialRewards => specialItems.isNotEmpty || cosmeticUnlocks.isNotEmpty;
+  bool get hasSpecialRewards =>
+      specialItems.isNotEmpty || cosmeticUnlocks.isNotEmpty;
 }
 
 /// Singleton event bus for chest reward notifications.

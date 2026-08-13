@@ -36,7 +36,9 @@ class ChestRepositoryImpl implements ChestRepository {
       final list = jsonDecode(raw) as List;
       return list.cast<Map<String, dynamic>>();
     } catch (_) {
-      AppLogger().warning('ChestRepository: failed to decode evolution history');
+      AppLogger().warning(
+        'ChestRepository: failed to decode evolution history',
+      );
       return [];
     }
   }
@@ -55,14 +57,18 @@ class ChestRepositoryImpl implements ChestRepository {
       final map = jsonDecode(raw) as Map<String, dynamic>;
       final result = <ChestType, int>{};
       for (final entry in map.entries) {
-        final ct = ChestType.values.where((t) => t.name == entry.key).firstOrNull;
+        final ct = ChestType.values
+            .where((t) => t.name == entry.key)
+            .firstOrNull;
         if (ct != null && entry.value is int) {
           result[ct] = entry.value;
         }
       }
       return result;
     } catch (_) {
-      AppLogger().warning('ChestRepository: failed to decode chest type counts');
+      AppLogger().warning(
+        'ChestRepository: failed to decode chest type counts',
+      );
       return {};
     }
   }
@@ -91,9 +97,10 @@ class ChestRepositoryImpl implements ChestRepository {
   void incrementChestCount(ChestType type) {
     final counts = chestTypeCounts;
     counts[type] = (counts[type] ?? 0) + 1;
-    _prefs.setString(_keyTypeCounts, jsonEncode(
-      counts.map((k, v) => MapEntry(k.name, v)),
-    ));
+    _prefs.setString(
+      _keyTypeCounts,
+      jsonEncode(counts.map((k, v) => MapEntry(k.name, v))),
+    );
   }
 
   @override

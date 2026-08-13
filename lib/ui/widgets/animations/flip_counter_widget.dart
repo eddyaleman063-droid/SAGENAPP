@@ -32,7 +32,12 @@ class _FlipCounterWidgetState extends State<FlipCounterWidget>
   late List<AnimationController> _controllers;
 
   List<int> _digitsOf(int n) {
-    return n.toString().padLeft(widget.digitCount, '0').split('').map(int.parse).toList();
+    return n
+        .toString()
+        .padLeft(widget.digitCount, '0')
+        .split('')
+        .map(int.parse)
+        .toList();
   }
 
   @override
@@ -49,7 +54,9 @@ class _FlipCounterWidgetState extends State<FlipCounterWidget>
   void didUpdateWidget(FlipCounterWidget old) {
     super.didUpdateWidget(old);
     if (old.digitCount != widget.digitCount) {
-      setState(() { _displayed = _digitsOf(widget.value); });
+      setState(() {
+        _displayed = _digitsOf(widget.value);
+      });
       return;
     }
     if (old.value == widget.value) return;

@@ -28,7 +28,9 @@ class SettingsActions extends ConsumerWidget {
               style: OutlinedButton.styleFrom(
                 foregroundColor: context.textSecondary,
                 side: BorderSide(color: context.subtleBorder),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(AppRadius.lg),
+                ),
                 padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
               ),
             ),
@@ -44,8 +46,12 @@ class SettingsActions extends ConsumerWidget {
               label: Text(l.settingsLogout),
               style: OutlinedButton.styleFrom(
                 foregroundColor: PremiumColors.danger,
-                side: BorderSide(color: PremiumColors.danger.withValues(alpha: 0.3)),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
+                side: BorderSide(
+                  color: PremiumColors.danger.withValues(alpha: 0.3),
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(AppRadius.lg),
+                ),
                 padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
               ),
             ),
@@ -71,7 +77,9 @@ class SettingsActions extends ConsumerWidget {
       builder: (ctx) {
         final l = AppLocalizations.of(ctx)!;
         return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.xl)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppRadius.xl),
+          ),
           title: Text(l.settingsLogout),
           content: Text(l.settingsLogoutConfirm),
           actions: [
@@ -79,7 +87,10 @@ class SettingsActions extends ConsumerWidget {
               button: true,
               label: l.cancel,
               child: TextButton(
-                onPressed: () { ExperienceService.instance.lightHaptic(); context.pop(); },
+                onPressed: () {
+                  ExperienceService.instance.lightHaptic();
+                  context.pop();
+                },
                 child: Text(l.cancel),
               ),
             ),
@@ -96,7 +107,12 @@ class SettingsActions extends ConsumerWidget {
                     ctx.goNamed('welcome');
                   }
                 },
-                child: Text(l.settingsLogout, style: AppTextStyle.body.copyWith(color: PremiumColors.danger)),
+                child: Text(
+                  l.settingsLogout,
+                  style: AppTextStyle.body.copyWith(
+                    color: PremiumColors.danger,
+                  ),
+                ),
               ),
             ),
           ],

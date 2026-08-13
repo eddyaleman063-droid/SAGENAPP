@@ -74,9 +74,11 @@ class ReviewNotifier extends Notifier<ReviewState> {
   }
 
   Map<String, int> get topicScores => Map.unmodifiable(state.topicScores);
-  bool get hasWeakTopics => state.topicScores.values.any((s) => s > weakThreshold);
+  bool get hasWeakTopics =>
+      state.topicScores.values.any((s) => s > weakThreshold);
   bool get hasReviewableQuestions =>
-      state.questionFailures.isNotEmpty || getQuestionsDueForReview().isNotEmpty;
+      state.questionFailures.isNotEmpty ||
+      getQuestionsDueForReview().isNotEmpty;
   List<String> get weakTopics => state.topicScores.entries
       .where((e) => e.value > weakThreshold)
       .map((e) => e.key)
@@ -87,8 +89,11 @@ class ReviewNotifier extends Notifier<ReviewState> {
     ids.addAll(getQuestionsDueForReview().map((e) => e));
     return ids.toList();
   }
-  String? getTopicForQuestion(String questionId) => state.questionTopics[questionId];
-  int failureCountFor(String questionId) => state.questionFailures[questionId] ?? 0;
+
+  String? getTopicForQuestion(String questionId) =>
+      state.questionTopics[questionId];
+  int failureCountFor(String questionId) =>
+      state.questionFailures[questionId] ?? 0;
   int scoreFor(String topic) => state.topicScores[topic] ?? 0;
 
   List<String> getQuestionsDueForReview() {
@@ -261,7 +266,9 @@ class ReviewNotifier extends Notifier<ReviewState> {
     );
     _storage.setJson(
       _keyNextReviewDate,
-      s.nextReviewDate.map((k, v) => MapEntry<String, dynamic>(k, v.toIso8601String())),
+      s.nextReviewDate.map(
+        (k, v) => MapEntry<String, dynamic>(k, v.toIso8601String()),
+      ),
     );
   }
 
@@ -269,7 +276,12 @@ class ReviewNotifier extends Notifier<ReviewState> {
     try {
       final qf = _storage.getJson(_keyQuestionFailures);
       final qfMap = qf != null
-          ? qf.map((k, v) => MapEntry(k, v is num ? v.toInt() : (int.tryParse(v.toString()) ?? 0)))
+          ? qf.map(
+              (k, v) => MapEntry(
+                k,
+                v is num ? v.toInt() : (int.tryParse(v.toString()) ?? 0),
+              ),
+            )
           : <String, int>{};
 
       final qt = _storage.getJson(_keyQuestionTopics);
@@ -277,24 +289,46 @@ class ReviewNotifier extends Notifier<ReviewState> {
 
       final ts = _storage.getJson(_keyTopicScores);
       final tsMap = ts != null
-          ? ts.map((k, v) => MapEntry(k, v is num ? v.toInt() : (int.tryParse(v.toString()) ?? 0)))
+          ? ts.map(
+              (k, v) => MapEntry(
+                k,
+                v is num ? v.toInt() : (int.tryParse(v.toString()) ?? 0),
+              ),
+            )
           : <String, int>{};
 
       final total = _storage.getInt(_keyTotalReviews);
 
       final efRaw = _storage.getJson(_keyEaseFactor);
       final efMap = efRaw != null
-          ? efRaw.map((k, v) => MapEntry(k, v is num ? v.toDouble() : (double.tryParse(v.toString()) ?? _defaultEaseFactor)))
+          ? efRaw.map(
+              (k, v) => MapEntry(
+                k,
+                v is num
+                    ? v.toDouble()
+                    : (double.tryParse(v.toString()) ?? _defaultEaseFactor),
+              ),
+            )
           : <String, double>{};
 
       final ivRaw = _storage.getJson(_keyInterval);
       final ivMap = ivRaw != null
-          ? ivRaw.map((k, v) => MapEntry(k, v is num ? v.toInt() : (int.tryParse(v.toString()) ?? 0)))
+          ? ivRaw.map(
+              (k, v) => MapEntry(
+                k,
+                v is num ? v.toInt() : (int.tryParse(v.toString()) ?? 0),
+              ),
+            )
           : <String, int>{};
 
       final repRaw = _storage.getJson(_keyRepetition);
       final repMap = repRaw != null
-          ? repRaw.map((k, v) => MapEntry(k, v is num ? v.toInt() : (int.tryParse(v.toString()) ?? 0)))
+          ? repRaw.map(
+              (k, v) => MapEntry(
+                k,
+                v is num ? v.toInt() : (int.tryParse(v.toString()) ?? 0),
+              ),
+            )
           : <String, int>{};
 
       final nrRaw = _storage.getJson(_keyNextReviewDate);

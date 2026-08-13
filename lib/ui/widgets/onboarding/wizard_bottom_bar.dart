@@ -27,16 +27,17 @@ class WizardBottomBar extends ConsumerWidget {
     final cs = Theme.of(context).colorScheme;
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(AppSpacing.lg, AppSpacing.sm, AppSpacing.lg, AppSpacing.lg),
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.lg,
+        AppSpacing.sm,
+        AppSpacing.lg,
+        AppSpacing.lg,
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           if (currentIndex == 0)
-            WizardButton(
-              label: l.startText,
-              enabled: true,
-              onPressed: onNext,
-            )
+            WizardButton(label: l.startText, enabled: true, onPressed: onNext)
           else if (currentIndex == OnboardingWizardConfig.totalSteps - 1) ...[
             WizardButton(
               label: l.onboardingCommitButton,
@@ -50,11 +51,16 @@ class WizardBottomBar extends ConsumerWidget {
               child: TextButton(
                 onPressed: () {
                   exp.lightHaptic();
-                  context.goNamed('login', queryParameters: {'onboarding': 'true'});
+                  context.goNamed(
+                    'login',
+                    queryParameters: {'onboarding': 'true'},
+                  );
                 },
                 child: Text(
                   l.onboardingHaveAccount,
-                  style: AppTextStyle.caption.copyWith(color: cs.onSurface.withValues(alpha: 0.55)),
+                  style: AppTextStyle.caption.copyWith(
+                    color: cs.onSurface.withValues(alpha: 0.55),
+                  ),
                 ),
               ),
             ),
@@ -75,7 +81,9 @@ class WizardBottomBar extends ConsumerWidget {
                 },
                 child: Text(
                   l.skipText,
-                  style: AppTextStyle.caption.copyWith(color: cs.onSurface.withValues(alpha: 0.55)),
+                  style: AppTextStyle.caption.copyWith(
+                    color: cs.onSurface.withValues(alpha: 0.55),
+                  ),
                 ),
               ),
             ),
@@ -102,7 +110,8 @@ class WizardButton extends ConsumerStatefulWidget {
   ConsumerState<WizardButton> createState() => _WizardButtonState();
 }
 
-class _WizardButtonState extends ConsumerState<WizardButton> with SingleTickerProviderStateMixin {
+class _WizardButtonState extends ConsumerState<WizardButton>
+    with SingleTickerProviderStateMixin {
   late AnimationController _shimmerCtrl;
   late Animation<double> _shimmerAnim;
 
@@ -151,7 +160,9 @@ class _WizardButtonState extends ConsumerState<WizardButton> with SingleTickerPr
                     end: Alignment(_shimmerAnim.value + 1, 0),
                   )
                 : null,
-            color: widget.enabled ? null : cs.outlineVariant.withValues(alpha: 0.3),
+            color: widget.enabled
+                ? null
+                : cs.outlineVariant.withValues(alpha: 0.3),
             boxShadow: widget.enabled && !exp.reduceShadows
                 ? [
                     BoxShadow(
@@ -168,24 +179,26 @@ class _WizardButtonState extends ConsumerState<WizardButton> with SingleTickerPr
               button: true,
               label: widget.label,
               child: InkWell(
-              borderRadius: BorderRadius.circular(AppRadius.lg),
-              onTap: widget.enabled
-                  ? () {
-                      exp.lightHaptic();
-                      widget.onPressed();
-                    }
-                  : null,
-              child: Center(
-                child: AnimatedDefaultTextStyle(
-                  duration: AppMotion.fast,
-                  style: AppTextStyle.titleSmall.copyWith(fontWeight: FontWeight.bold,
-                    color: widget.enabled
-                        ? Colors.white
-                        : cs.onSurface.withValues(alpha: 0.25)),
-                  child: Text(widget.label),
+                borderRadius: BorderRadius.circular(AppRadius.lg),
+                onTap: widget.enabled
+                    ? () {
+                        exp.lightHaptic();
+                        widget.onPressed();
+                      }
+                    : null,
+                child: Center(
+                  child: AnimatedDefaultTextStyle(
+                    duration: AppMotion.fast,
+                    style: AppTextStyle.titleSmall.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: widget.enabled
+                          ? Colors.white
+                          : cs.onSurface.withValues(alpha: 0.25),
+                    ),
+                    child: Text(widget.label),
+                  ),
                 ),
               ),
-            ),
             ),
           ),
         );

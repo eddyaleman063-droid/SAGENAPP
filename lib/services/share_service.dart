@@ -9,15 +9,22 @@ import 'app_logger.dart';
 class ShareService {
   static final ShareService _instance = ShareService._();
   static ShareService get instance => _instance;
-  ShareService._({AnalyticsService? analytics}) : _analytics = analytics ?? AnalyticsService.instance, _logger = AppLogger();
+  ShareService._({AnalyticsService? analytics})
+    : _analytics = analytics ?? AnalyticsService.instance,
+      _logger = AppLogger();
   final AppLogger _logger;
   final AnalyticsService _analytics;
 
-  Future<bool> shareImage(Uint8List imageBytes, {String? text, String? source}) async {
+  Future<bool> shareImage(
+    Uint8List imageBytes, {
+    String? text,
+    String? source,
+  }) async {
     File? file;
     try {
       final dir = await getTemporaryDirectory();
-      final fileName = 'sagen_flex_card_${DateTime.now().millisecondsSinceEpoch}.png';
+      final fileName =
+          'sagen_flex_card_${DateTime.now().millisecondsSinceEpoch}.png';
       file = File('${dir.path}/$fileName');
       await file.writeAsBytes(imageBytes);
 

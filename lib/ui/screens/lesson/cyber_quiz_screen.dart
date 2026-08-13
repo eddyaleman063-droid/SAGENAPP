@@ -57,12 +57,21 @@ class _CyberQuizScreenState extends State<CyberQuizScreen>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    _shakeCtrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 400));
-    _pulseCtrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 600));
+    _shakeCtrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 400),
+    );
+    _pulseCtrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 600),
+    );
     _sessionStart = DateTime.now();
     _timeRemaining = widget.timeBudgetSeconds;
     _quizTimer = Timer.periodic(const Duration(seconds: 1), (t) {
-      if (!mounted) { t.cancel(); return; }
+      if (!mounted) {
+        t.cancel();
+        return;
+      }
       if (_timeRemaining <= 0) {
         t.cancel();
         _finishQuiz();
@@ -84,7 +93,8 @@ class _CyberQuizScreenState extends State<CyberQuizScreen>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.paused || state == AppLifecycleState.inactive) {
+    if (state == AppLifecycleState.paused ||
+        state == AppLifecycleState.inactive) {
       _saveProgress();
     }
   }
@@ -119,7 +129,8 @@ class _CyberQuizScreenState extends State<CyberQuizScreen>
       final data = jsonDecode(raw) as Map<String, dynamic>;
 
       final savedTime = DateTime.tryParse(data['timestamp'] as String? ?? '');
-      if (savedTime != null && DateTime.now().difference(savedTime) > _progressExpiry) {
+      if (savedTime != null &&
+          DateTime.now().difference(savedTime) > _progressExpiry) {
         await prefs.remove(_progressKey);
         if (!mounted) return;
         SagenNotification.show(
@@ -132,7 +143,8 @@ class _CyberQuizScreenState extends State<CyberQuizScreen>
 
       final savedIndex = data['currentIndex'] as int? ?? 0;
       final savedScore = data['score'] as int? ?? 0;
-      final savedTimeRemaining = data['timeRemaining'] as int? ?? widget.timeBudgetSeconds;
+      final savedTimeRemaining =
+          data['timeRemaining'] as int? ?? widget.timeBudgetSeconds;
 
       if (savedIndex > 0 && savedIndex < widget.questions.length) {
         if (!mounted) return;
@@ -147,15 +159,11 @@ class _CyberQuizScreenState extends State<CyberQuizScreen>
               ),
               title: Text(
                 l10n(context).resumeQuiz,
-                style: AppTextStyle.titleLg.copyWith(
-                  color: ctx.textPrimary,
-                ),
+                style: AppTextStyle.titleLg.copyWith(color: ctx.textPrimary),
               ),
               content: Text(
                 l10n(context).savedQuizProgress,
-                style: AppTextStyle.bodyMd.copyWith(
-                  color: ctx.textSecondary,
-                ),
+                style: AppTextStyle.bodyMd.copyWith(color: ctx.textSecondary),
               ),
               actions: [
                 Semantics(
@@ -163,7 +171,7 @@ class _CyberQuizScreenState extends State<CyberQuizScreen>
                   label: l10n(context).quizStartOver,
                   child: TextButton(
                     onPressed: () => context.pop(false),
-                      child: Text(
+                    child: Text(
                       l10n(context).quizStartOver,
                       style: AppTextStyle.bodyBold.copyWith(
                         color: PremiumColors.error,
@@ -176,7 +184,7 @@ class _CyberQuizScreenState extends State<CyberQuizScreen>
                   label: l10n(context).quizResumeButton,
                   child: TextButton(
                     onPressed: () => context.pop(true),
-                      child: Text(
+                    child: Text(
                       l10n(context).quizResumeButton,
                       style: AppTextStyle.bodyBold.copyWith(
                         color: PremiumColors.primaryAccent,
@@ -195,7 +203,10 @@ class _CyberQuizScreenState extends State<CyberQuizScreen>
             _timeRemaining = savedTimeRemaining;
           });
           _quizTimer = Timer.periodic(const Duration(seconds: 1), (t) {
-            if (!mounted) { t.cancel(); return; }
+            if (!mounted) {
+              t.cancel();
+              return;
+            }
             if (_timeRemaining <= 0) {
               t.cancel();
               _finishQuiz();
@@ -223,7 +234,8 @@ class _CyberQuizScreenState extends State<CyberQuizScreen>
 
   Challenge get _question => widget.questions[_currentIndex];
   bool get _isLast => _currentIndex >= widget.questions.length - 1;
-  bool get _canCheck => _selectedAnswer >= 0 && _answerState == _AnswerState.idle;
+  bool get _canCheck =>
+      _selectedAnswer >= 0 && _answerState == _AnswerState.idle;
   bool get _isCorrect => _answerState == _AnswerState.correct;
 
   void _onSelect(int index) {
@@ -281,35 +293,55 @@ class _CyberQuizScreenState extends State<CyberQuizScreen>
   }
 
   Future<bool> _onWillPop() async {
-    if (_answerState != _AnswerState.idle || _currentIndex > 0 || _selectedAnswer >= 0) {
+    if (_answerState != _AnswerState.idle ||
+        _currentIndex > 0 ||
+        _selectedAnswer >= 0) {
       final l = l10n(context);
       final result = await showDialog<bool>(
         context: context,
         builder: (ctx) {
           return AlertDialog(
-          backgroundColor: ctx.surfaceCard,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.xl)),
-          title: Text(l.quizAbandonTitle, style: AppTextStyle.titleLg.copyWith(color: ctx.textPrimary)),
-          content: Text(l.quizAbandonContent, style: AppTextStyle.bodyMd.copyWith(color: ctx.textSecondary)),
-           actions: [
-            Semantics(
-              button: true,
-              label: l.quizAbandonStay,
-              child: TextButton(
-                onPressed: () => context.pop(false),
-                child: Text(l.quizAbandonStay, style: AppTextStyle.bodyBold.copyWith(color: PremiumColors.primaryAccent)),
-              ),
+            backgroundColor: ctx.surfaceCard,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(AppRadius.xl),
             ),
-            Semantics(
-              button: true,
-              label: l.quizAbandonExit,
-              child: TextButton(
-                onPressed: () => context.pop(true),
-                child: Text(l.quizAbandonExit, style: AppTextStyle.bodyBold.copyWith(color: PremiumColors.error)),
-              ),
+            title: Text(
+              l.quizAbandonTitle,
+              style: AppTextStyle.titleLg.copyWith(color: ctx.textPrimary),
             ),
-          ],
-        );
+            content: Text(
+              l.quizAbandonContent,
+              style: AppTextStyle.bodyMd.copyWith(color: ctx.textSecondary),
+            ),
+            actions: [
+              Semantics(
+                button: true,
+                label: l.quizAbandonStay,
+                child: TextButton(
+                  onPressed: () => context.pop(false),
+                  child: Text(
+                    l.quizAbandonStay,
+                    style: AppTextStyle.bodyBold.copyWith(
+                      color: PremiumColors.primaryAccent,
+                    ),
+                  ),
+                ),
+              ),
+              Semantics(
+                button: true,
+                label: l.quizAbandonExit,
+                child: TextButton(
+                  onPressed: () => context.pop(true),
+                  child: Text(
+                    l.quizAbandonExit,
+                    style: AppTextStyle.bodyBold.copyWith(
+                      color: PremiumColors.error,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
         },
       );
       if (result == true) {
@@ -327,7 +359,7 @@ class _CyberQuizScreenState extends State<CyberQuizScreen>
       onPopInvokedWithResult: (didPop, _) async {
         if (didPop) return;
         final shouldPop = await _onWillPop();
-                  if (shouldPop && context.mounted) context.pop();
+        if (shouldPop && context.mounted) context.pop();
       },
       child: Scaffold(
         backgroundColor: context.surfaceBackground,
@@ -340,14 +372,12 @@ class _CyberQuizScreenState extends State<CyberQuizScreen>
                 title: widget.lessonTitle,
                 onClose: () async {
                   final shouldPop = await _onWillPop();
-        if (shouldPop && context.mounted) context.pop();
+                  if (shouldPop && context.mounted) context.pop();
                 },
                 shakeValue: _shakeCtrl,
                 timeRemaining: _timeRemaining,
               ),
-              Expanded(
-                child: _buildBody(),
-              ),
+              Expanded(child: _buildBody()),
               _buildFooter(),
             ],
           ),
@@ -362,7 +392,12 @@ class _CyberQuizScreenState extends State<CyberQuizScreen>
     return Transform.translate(
       offset: Offset(shakeX, 0),
       child: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(AppSpacing.xxl, AppSpacing.xl, AppSpacing.xxl, AppSpacing.md),
+        padding: const EdgeInsets.fromLTRB(
+          AppSpacing.xxl,
+          AppSpacing.xl,
+          AppSpacing.xxl,
+          AppSpacing.md,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -392,8 +427,12 @@ class _CyberQuizScreenState extends State<CyberQuizScreen>
                 borderColor = isSelected
                     ? PremiumColors.primaryAccent.withValues(alpha: 0.8)
                     : Colors.white.withValues(alpha: 0.06);
-                textColor = isSelected ? context.textPrimary : context.textSecondary;
-                icon = isSelected ? Icons.radio_button_checked_rounded : Icons.radio_button_unchecked_rounded;
+                textColor = isSelected
+                    ? context.textPrimary
+                    : context.textSecondary;
+                icon = isSelected
+                    ? Icons.radio_button_checked_rounded
+                    : Icons.radio_button_unchecked_rounded;
               } else {
                 if (isCorrectAnswer) {
                   bgColor = PremiumColors.success.withValues(alpha: 0.15);
@@ -419,14 +458,27 @@ class _CyberQuizScreenState extends State<CyberQuizScreen>
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: AppSpacing.md),
                   child: GestureDetector(
-                    onTap: _answerState == _AnswerState.idle ? () => _onSelect(i) : null,
+                    onTap: _answerState == _AnswerState.idle
+                        ? () => _onSelect(i)
+                        : null,
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 200),
-                      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md + 2),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.lg,
+                        vertical: AppSpacing.md + 2,
+                      ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(AppRadius.lg),
                         color: bgColor,
-                        border: Border.all(color: borderColor, width: _answerState != _AnswerState.idle && (isCorrectAnswer || (isSelected && !isCorrectAnswer)) ? 2.5 : 1.5),
+                        border: Border.all(
+                          color: borderColor,
+                          width:
+                              _answerState != _AnswerState.idle &&
+                                  (isCorrectAnswer ||
+                                      (isSelected && !isCorrectAnswer))
+                              ? 2.5
+                              : 1.5,
+                        ),
                       ),
                       child: Row(
                         children: [
@@ -435,7 +487,10 @@ class _CyberQuizScreenState extends State<CyberQuizScreen>
                           Expanded(
                             child: Text(
                               opt,
-                              style: AppTextStyle.body.copyWith(color: textColor, height: 1.3),
+                              style: AppTextStyle.body.copyWith(
+                                color: textColor,
+                                height: 1.3,
+                              ),
                             ),
                           ),
                         ],
@@ -444,7 +499,7 @@ class _CyberQuizScreenState extends State<CyberQuizScreen>
                   ),
                 ),
               );
-          }),
+            }),
           ],
         ).animate().fadeIn(duration: 200.ms),
       ),
@@ -471,11 +526,16 @@ class _CyberQuizScreenState extends State<CyberQuizScreen>
       button: true,
       label: label,
       child: Container(
-        padding: const EdgeInsets.fromLTRB(AppSpacing.xxl, AppSpacing.md, AppSpacing.xxl, AppSpacing.xxl),
+        padding: const EdgeInsets.fromLTRB(
+          AppSpacing.xxl,
+          AppSpacing.md,
+          AppSpacing.xxl,
+          AppSpacing.xxl,
+        ),
         child: SizedBox(
           width: double.infinity,
           height: 52,
-            child: AnimatedContainer(
+          child: AnimatedContainer(
             duration: const Duration(milliseconds: 250),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(AppRadius.lg),
@@ -488,18 +548,25 @@ class _CyberQuizScreenState extends State<CyberQuizScreen>
               ],
             ),
             child: ElevatedButton(
-              onPressed: _answerState == _AnswerState.idle ? _onCheck : _onContinue,
+              onPressed: _answerState == _AnswerState.idle
+                  ? _onCheck
+                  : _onContinue,
               style: ElevatedButton.styleFrom(
                 backgroundColor: bgColor,
                 disabledBackgroundColor: Colors.white.withValues(alpha: 0.06),
                 disabledForegroundColor: Colors.white.withValues(alpha: 0.25),
                 foregroundColor: Colors.white,
                 elevation: 0,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(AppRadius.lg),
+                ),
               ),
               child: Text(
                 label,
-                style: AppTextStyle.body.copyWith(fontWeight: FontWeight.bold, letterSpacing: 1.2),
+                style: AppTextStyle.body.copyWith(
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1.2,
+                ),
               ),
             ),
           ),
@@ -530,7 +597,12 @@ class _HudBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = l10n(context);
     return Container(
-      padding: const EdgeInsets.fromLTRB(AppSpacing.lg, AppSpacing.md, AppSpacing.lg, AppSpacing.md),
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.lg,
+        AppSpacing.md,
+        AppSpacing.lg,
+        AppSpacing.md,
+      ),
       decoration: BoxDecoration(
         color: context.surfaceCard,
         boxShadow: [
@@ -552,14 +624,18 @@ class _HudBar extends StatelessWidget {
                 child: GestureDetector(
                   onTap: onClose,
                   child: Container(
-                  padding: const EdgeInsets.all(AppSpacing.md),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: context.surfaceTinted,
+                    padding: const EdgeInsets.all(AppSpacing.md),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: context.surfaceTinted,
+                    ),
+                    child: Icon(
+                      Icons.close_rounded,
+                      size: 18,
+                      color: context.textTertiary,
+                    ),
                   ),
-                   child: Icon(Icons.close_rounded, size: 18, color: context.textTertiary),
                 ),
-              ),
               ),
               Text(
                 title,
@@ -571,13 +647,23 @@ class _HudBar extends StatelessWidget {
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  ExcludeSemantics(child: Icon(Icons.timer_rounded, size: 16, color: timeRemaining < _lowTimeThresholdSeconds ? PremiumColors.error: context.textTertiary)),
+                  ExcludeSemantics(
+                    child: Icon(
+                      Icons.timer_rounded,
+                      size: 16,
+                      color: timeRemaining < _lowTimeThresholdSeconds
+                          ? PremiumColors.error
+                          : context.textTertiary,
+                    ),
+                  ),
                   const SizedBox(width: 4),
                   Text(
                     '${timeRemaining ~/ 60}:${(timeRemaining % 60).toString().padLeft(2, '0')}',
                     style: AppTextStyle.bodyMd.copyWith(
                       fontWeight: FontWeight.w600,
-                      color: timeRemaining < _lowTimeThresholdSeconds ? PremiumColors.error: context.textSecondary,
+                      color: timeRemaining < _lowTimeThresholdSeconds
+                          ? PremiumColors.error
+                          : context.textSecondary,
                     ),
                   ),
                 ],
@@ -590,13 +676,18 @@ class _HudBar extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(AppRadius.pill),
               child: TweenAnimationBuilder<double>(
-                tween: Tween(begin: 0, end: total > 0 ? (currentIndex + 1) / total : 0),
+                tween: Tween(
+                  begin: 0,
+                  end: total > 0 ? (currentIndex + 1) / total : 0,
+                ),
                 duration: const Duration(milliseconds: 400),
                 curve: Curves.easeOutCubic,
                 builder: (context, value, _) => LinearProgressIndicator(
                   value: value,
                   backgroundColor: context.surfaceTinted,
-                  valueColor: const AlwaysStoppedAnimation<Color>(PremiumColors.splashBlue),
+                  valueColor: const AlwaysStoppedAnimation<Color>(
+                    PremiumColors.splashBlue,
+                  ),
                   minHeight: 4,
                 ),
               ),

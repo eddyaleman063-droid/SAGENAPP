@@ -8,7 +8,7 @@ class AuthSessionManager {
   final AppLogger _logger = AppLogger();
 
   AuthSessionManager({SecureStorageService? secureStorage})
-      : _secureStorage = secureStorage ?? SecureStorageService.instance;
+    : _secureStorage = secureStorage ?? SecureStorageService.instance;
 
   static const _keyUid = 'auth_fb_uid';
   static const _keyName = 'auth_fb_name';

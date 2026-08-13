@@ -24,18 +24,23 @@ void main() {
       await tester.binding.setSurfaceSize(const Size(1080, 1920));
       addTearDown(() => tester.binding.setSurfaceSize(null));
 
-      await tester.pumpWidget(wrapInApp(
-        const GlassCard(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text('Glass Card Content', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              SizedBox(height: 8),
-              Text('This is a real app widget'),
-            ],
+      await tester.pumpWidget(
+        wrapInApp(
+          const GlassCard(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Glass Card Content',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 8),
+                Text('This is a real app widget'),
+              ],
+            ),
           ),
         ),
-      ));
+      );
 
       await tester.pump(const Duration(milliseconds: 500));
 
@@ -51,12 +56,14 @@ void main() {
       await tester.binding.setSurfaceSize(const Size(1080, 1920));
       addTearDown(() => tester.binding.setSurfaceSize(null));
 
-      await tester.pumpWidget(wrapInApp(
-        const ErrorRetryWidget(
-          message: 'No se pudo cargar',
-          details: 'Verifica tu conexión a internet',
+      await tester.pumpWidget(
+        wrapInApp(
+          const ErrorRetryWidget(
+            message: 'No se pudo cargar',
+            details: 'Verifica tu conexión a internet',
+          ),
         ),
-      ));
+      );
 
       await tester.pump(const Duration(milliseconds: 500));
 
@@ -72,13 +79,9 @@ void main() {
       await tester.binding.setSurfaceSize(const Size(1080, 1920));
       addTearDown(() => tester.binding.setSurfaceSize(null));
 
-      await tester.pumpWidget(wrapInApp(
-        BuyButton(
-          cost: 150,
-          canBuy: true,
-          onBuy: () {},
-        ),
-      ));
+      await tester.pumpWidget(
+        wrapInApp(BuyButton(cost: 150, canBuy: true, onBuy: () {})),
+      );
 
       await tester.pump(const Duration(milliseconds: 500));
 
@@ -92,13 +95,9 @@ void main() {
       await tester.binding.setSurfaceSize(const Size(1080, 1920));
       addTearDown(() => tester.binding.setSurfaceSize(null));
 
-      await tester.pumpWidget(wrapInApp(
-        BuyButton(
-          cost: 150,
-          canBuy: false,
-          onBuy: () {},
-        ),
-      ));
+      await tester.pumpWidget(
+        wrapInApp(BuyButton(cost: 150, canBuy: false, onBuy: () {})),
+      );
 
       await tester.pump(const Duration(milliseconds: 500));
 
@@ -114,11 +113,9 @@ void main() {
       await tester.binding.setSurfaceSize(const Size(1080, 1920));
       addTearDown(() => tester.binding.setSurfaceSize(null));
 
-      await tester.pumpWidget(wrapInApp(
-        const OnboardingProgressBar(
-          progress: 0.4,
-        ),
-      ));
+      await tester.pumpWidget(
+        wrapInApp(const OnboardingProgressBar(progress: 0.4)),
+      );
 
       await tester.pump(const Duration(milliseconds: 500));
 

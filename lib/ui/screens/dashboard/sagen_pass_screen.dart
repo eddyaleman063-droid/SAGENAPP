@@ -26,7 +26,9 @@ class _SagenPassScreenState extends ConsumerState<SagenPassScreen> {
     final haptics = ref.read(experienceServiceProvider);
     setState(() => _claiming.add(level));
     try {
-      final rewarded = await ref.read(sagenPassProvider.notifier).claimLevel(level);
+      final rewarded = await ref
+          .read(sagenPassProvider.notifier)
+          .claimLevel(level);
       if (!mounted) return;
       if (rewarded != null) {
         haptics.successHaptic();
@@ -81,14 +83,28 @@ class _SagenPassScreenState extends ConsumerState<SagenPassScreen> {
               ),
             ),
             SliverToBoxAdapter(
-              child: _HowToEarnCard().animate().fadeIn(delay: 100.ms, duration: 350.ms),
+              child: _HowToEarnCard().animate().fadeIn(
+                delay: 100.ms,
+                duration: 350.ms,
+              ),
             ),
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(AppSpacing.xxl, AppSpacing.xl, AppSpacing.xxl, AppSpacing.md),
+                padding: const EdgeInsets.fromLTRB(
+                  AppSpacing.xxl,
+                  AppSpacing.xl,
+                  AppSpacing.xxl,
+                  AppSpacing.md,
+                ),
                 child: Row(
                   children: [
-                    const ExcludeSemantics(child: Icon(Icons.card_giftcard_rounded, size: 18, color: PremiumColors.accentYellow)),
+                    const ExcludeSemantics(
+                      child: Icon(
+                        Icons.card_giftcard_rounded,
+                        size: 18,
+                        color: PremiumColors.accentYellow,
+                      ),
+                    ),
                     const SizedBox(width: AppSpacing.sm),
                     Expanded(
                       child: Text(
@@ -100,8 +116,13 @@ class _SagenPassScreenState extends ConsumerState<SagenPassScreen> {
                       ),
                     ),
                     Text(
-                      l.passRewards(pass.claimedLevels.length, SagenPass.maxLevel),
-                      style: AppTextStyle.subtitle.copyWith(color: context.textTertiary),
+                      l.passRewards(
+                        pass.claimedLevels.length,
+                        SagenPass.maxLevel,
+                      ),
+                      style: AppTextStyle.subtitle.copyWith(
+                        color: context.textTertiary,
+                      ),
                     ),
                   ],
                 ),
@@ -109,13 +130,16 @@ class _SagenPassScreenState extends ConsumerState<SagenPassScreen> {
             ),
             SliverPadding(
               padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
-              sliver: SliverToBoxAdapter(
-                child: _LegendRow(),
-              ),
+              sliver: SliverToBoxAdapter(child: _LegendRow()),
             ),
             const SliverPadding(padding: EdgeInsets.only(top: AppSpacing.md)),
             SliverPadding(
-              padding: const EdgeInsets.fromLTRB(AppSpacing.xxl, 0, AppSpacing.xxl, 100),
+              padding: const EdgeInsets.fromLTRB(
+                AppSpacing.xxl,
+                0,
+                AppSpacing.xxl,
+                100,
+              ),
               sliver: SliverGrid(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 5,
@@ -158,7 +182,9 @@ class _PassHeader extends StatelessWidget {
     final required = pass.spForNextLevel;
     final progress = isMax ? 1.0 : pass.progressFraction;
     final now = DateTime.now();
-    final seasonEnd = pass.seasonStart.add(Duration(days: pass.seasonDurationDays));
+    final seasonEnd = pass.seasonStart.add(
+      Duration(days: pass.seasonDurationDays),
+    );
     final daysLeft = seasonEnd.difference(now).inDays.clamp(0, 9999);
 
     return Container(
@@ -167,14 +193,25 @@ class _PassHeader extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: dark
-              ? [PremiumColors.gradientPromoDark1, PremiumColors.gradientPromoDark2]
-              : [PremiumColors.gradientSupportLight1, PremiumColors.gradientSupportLight2],
+              ? [
+                  PremiumColors.gradientPromoDark1,
+                  PremiumColors.gradientPromoDark2,
+                ]
+              : [
+                  PremiumColors.gradientSupportLight1,
+                  PremiumColors.gradientSupportLight2,
+                ],
         ),
       ),
       child: SafeArea(
         bottom: false,
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(AppSpacing.xxl, AppSpacing.xs, AppSpacing.xxl, AppSpacing.xl),
+          padding: const EdgeInsets.fromLTRB(
+            AppSpacing.xxl,
+            AppSpacing.xs,
+            AppSpacing.xxl,
+            AppSpacing.xl,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -187,7 +224,11 @@ class _PassHeader extends StatelessWidget {
                       color: Colors.white.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(AppRadius.lg),
                     ),
-                    child: const Icon(Icons.diamond_rounded, color: Colors.white, size: 26),
+                    child: const Icon(
+                      Icons.diamond_rounded,
+                      color: Colors.white,
+                      size: 26,
+                    ),
                   ),
                   const SizedBox(width: AppSpacing.md),
                   Expanded(
@@ -203,7 +244,9 @@ class _PassHeader extends StatelessWidget {
                         ),
                         Text(
                           l.passEarnSp,
-                          style: AppTextStyle.bodyMd.copyWith(color: Colors.white.withValues(alpha: 0.85)),
+                          style: AppTextStyle.bodyMd.copyWith(
+                            color: Colors.white.withValues(alpha: 0.85),
+                          ),
                         ),
                       ],
                     ),
@@ -225,8 +268,12 @@ class _PassHeader extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 6),
                     child: Text(
-                      isMax ? l.passMaxLevel : l.passLevel(pass.currentLevel + 1),
-                      style: AppTextStyle.bodyMd.copyWith(color: Colors.white.withValues(alpha: 0.85)),
+                      isMax
+                          ? l.passMaxLevel
+                          : l.passLevel(pass.currentLevel + 1),
+                      style: AppTextStyle.bodyMd.copyWith(
+                        color: Colors.white.withValues(alpha: 0.85),
+                      ),
                     ),
                   ),
                   const Spacer(),
@@ -250,13 +297,17 @@ class _PassHeader extends StatelessWidget {
                   value: progress,
                   minHeight: 10,
                   backgroundColor: Colors.white.withValues(alpha: 0.25),
-                  valueColor: const AlwaysStoppedAnimation<Color>(PremiumColors.accentYellow),
+                  valueColor: const AlwaysStoppedAnimation<Color>(
+                    PremiumColors.accentYellow,
+                  ),
                 ),
               ),
               const SizedBox(height: AppSpacing.sm),
               Text(
                 l.passDaysLeft(daysLeft),
-                style: AppTextStyle.caption.copyWith(color: Colors.white.withValues(alpha: 0.8)),
+                style: AppTextStyle.caption.copyWith(
+                  color: Colors.white.withValues(alpha: 0.8),
+                ),
               ),
             ],
           ),
@@ -271,7 +322,12 @@ class _HowToEarnCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
     return Padding(
-      padding: const EdgeInsets.fromLTRB(AppSpacing.xxl, AppSpacing.xl, AppSpacing.xxl, 0),
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.xxl,
+        AppSpacing.xl,
+        AppSpacing.xxl,
+        0,
+      ),
       child: Container(
         padding: const EdgeInsets.all(AppSpacing.lg),
         decoration: BoxDecoration(
@@ -284,7 +340,13 @@ class _HowToEarnCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                const ExcludeSemantics(child: Icon(Icons.bolt_rounded, size: 18, color: PremiumColors.accentYellow)),
+                const ExcludeSemantics(
+                  child: Icon(
+                    Icons.bolt_rounded,
+                    size: 18,
+                    color: PremiumColors.accentYellow,
+                  ),
+                ),
                 const SizedBox(width: AppSpacing.sm),
                 Expanded(
                   child: Text(
@@ -303,7 +365,10 @@ class _HowToEarnCard extends StatelessWidget {
             _TipRow(icon: Icons.replay_rounded, text: l.passHowToEarnReview),
             _TipRow(icon: Icons.task_alt_rounded, text: l.passHowToEarnMission),
             const Divider(height: AppSpacing.xl),
-            _TipRow(icon: Icons.info_outline_rounded, text: l.passHowToEarnDailyLimit),
+            _TipRow(
+              icon: Icons.info_outline_rounded,
+              text: l.passHowToEarnDailyLimit,
+            ),
           ],
         ),
       ),
@@ -371,7 +436,10 @@ class _LegendDot extends StatelessWidget {
           decoration: BoxDecoration(color: color, shape: BoxShape.circle),
         ),
         const SizedBox(width: AppSpacing.xs),
-        Text(label, style: AppTextStyle.caption.copyWith(color: context.textTertiary)),
+        Text(
+          label,
+          style: AppTextStyle.caption.copyWith(color: context.textTertiary),
+        ),
       ],
     );
   }
@@ -427,7 +495,10 @@ class _PassLevelTile extends StatelessWidget {
                 ? const LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
-                    colors: [PremiumColors.primary, PremiumColors.primaryAccent],
+                    colors: [
+                      PremiumColors.primary,
+                      PremiumColors.primaryAccent,
+                    ],
                   )
                 : null,
             color: reached && !claimed ? null : background,
@@ -449,8 +520,12 @@ class _PassLevelTile extends StatelessWidget {
                     Text(
                       '${level.level}',
                       style: AppTextStyle.label.copyWith(
-                        color: claimed || !reached ? contentColor : Colors.white,
-                        fontWeight: reached && !claimed ? FontWeight.bold : FontWeight.w600,
+                        color: claimed || !reached
+                            ? contentColor
+                            : Colors.white,
+                        fontWeight: reached && !claimed
+                            ? FontWeight.bold
+                            : FontWeight.w600,
                       ),
                     ),
                     ExcludeSemantics(
@@ -460,8 +535,8 @@ class _PassLevelTile extends StatelessWidget {
                         color: claimed
                             ? context.textTertiary
                             : reached
-                                ? Colors.white
-                                : context.subtle,
+                            ? Colors.white
+                            : context.subtle,
                       ),
                     ),
                   ],
@@ -477,7 +552,11 @@ class _PassLevelTile extends StatelessWidget {
                       color: PremiumColors.success,
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(Icons.check_rounded, size: 10, color: Colors.white),
+                    child: const Icon(
+                      Icons.check_rounded,
+                      size: 10,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               if (isLoading)

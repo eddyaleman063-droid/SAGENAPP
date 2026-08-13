@@ -58,7 +58,9 @@ class PaymentRepositoryImpl implements PaymentRepository {
       final list = jsonDecode(raw) as List;
       return list.cast<Map<String, dynamic>>();
     } catch (_) {
-      AppLogger().warning('PaymentRepository: failed to decode pending payments');
+      AppLogger().warning(
+        'PaymentRepository: failed to decode pending payments',
+      );
       return [];
     }
   }
@@ -71,7 +73,9 @@ class PaymentRepositoryImpl implements PaymentRepository {
       final list = jsonDecode(raw) as List;
       return list.cast<Map<String, dynamic>>();
     } catch (_) {
-      AppLogger().warning('PaymentRepository: failed to decode purchase history');
+      AppLogger().warning(
+        'PaymentRepository: failed to decode purchase history',
+      );
       return [];
     }
   }

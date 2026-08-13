@@ -8,15 +8,9 @@ class EnergyState {
   final int energy;
   final DateTime lastRegen;
 
-  const EnergyState({
-    required this.energy,
-    required this.lastRegen,
-  });
+  const EnergyState({required this.energy, required this.lastRegen});
 
-  EnergyState copyWith({
-    int? energy,
-    DateTime? lastRegen,
-  }) {
+  EnergyState copyWith({int? energy, DateTime? lastRegen}) {
     return EnergyState(
       energy: energy ?? this.energy,
       lastRegen: lastRegen ?? this.lastRegen,
@@ -69,7 +63,9 @@ class EnergyNotifier extends Notifier<EnergyState> {
         if (minutes >= _regenInterval.inMinutes) {
           final regenCycles = minutes ~/ _regenInterval.inMinutes;
           energy = (energy + regenCycles * _regenAmount).clamp(0, _maxEnergy);
-          lastRegen = parsedLast.add(Duration(minutes: regenCycles * _regenInterval.inMinutes));
+          lastRegen = parsedLast.add(
+            Duration(minutes: regenCycles * _regenInterval.inMinutes),
+          );
         }
       }
     }
@@ -127,7 +123,9 @@ class EnergyNotifier extends Notifier<EnergyState> {
     _storage.setInt(_keyEnergy, state.energy);
     // Only update lastRegen on actual regen events, not on every save
     // The lastRegen is already set correctly in _load() and _startRegen()
-    if (state.lastRegen.isAfter(DateTime.now().subtract(const Duration(seconds: 5)))) {
+    if (state.lastRegen.isAfter(
+      DateTime.now().subtract(const Duration(seconds: 5)),
+    )) {
       _storage.setString(_keyLastRegen, state.lastRegen.toIso8601String());
     }
   }

@@ -17,7 +17,12 @@ class SagenSupportCard extends ConsumerWidget {
     final dark = Theme.of(context).brightness == Brightness.dark;
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(AppSpacing.xxl, 0, AppSpacing.xxl, AppSpacing.md),
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.xxl,
+        0,
+        AppSpacing.xxl,
+        AppSpacing.md,
+      ),
       child: Semantics(
         button: true,
         label: l.sagenPassSupportTitle,
@@ -28,80 +33,84 @@ class SagenSupportCard extends ConsumerWidget {
             PaywallBottomSheet.show(context);
           },
           child: Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(AppSpacing.lg),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: dark
-                  ? [
-                      PremiumColors.sageWidgetDarkBg,
-                      PremiumColors.chatLockedDarkSurface,
-                      PremiumColors.gradientSageDark3,
-                    ]
-                  : [
-                      PremiumColors.gradientSupportLight1,
-                      PremiumColors.gradientSupportLight2,
-                    ],
+            width: double.infinity,
+            padding: const EdgeInsets.all(AppSpacing.lg),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: dark
+                    ? [
+                        PremiumColors.sageWidgetDarkBg,
+                        PremiumColors.chatLockedDarkSurface,
+                        PremiumColors.gradientSageDark3,
+                      ]
+                    : [
+                        PremiumColors.gradientSupportLight1,
+                        PremiumColors.gradientSupportLight2,
+                      ],
+              ),
+              borderRadius: BorderRadius.circular(AppRadius.xl),
+              boxShadow: [
+                BoxShadow(
+                  color:
+                      (context.isDark
+                              ? PremiumColors.shadowDark
+                              : PremiumColors.shadowSupportLight)
+                          .withValues(alpha: 0.3),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
+                ),
+              ],
             ),
-            borderRadius: BorderRadius.circular(AppRadius.xl),
-            boxShadow: [
-              BoxShadow(
-                color: (context.isDark ? PremiumColors.shadowDark : PremiumColors.shadowSupportLight).withValues(alpha: 0.3),
-                blurRadius: 12,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: Row(
-            children: [
-              Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(AppRadius.lg),
+            child: Row(
+              children: [
+                Container(
+                  width: 48,
+                  height: 48,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(AppRadius.lg),
+                  ),
+                  child: const Icon(
+                    Icons.diamond_rounded,
+                    color: Colors.white,
+                    size: 28,
+                  ),
                 ),
-                child: const Icon(
-                  Icons.diamond_rounded,
-                  color: Colors.white,
-                  size: 28,
-                ),
-              ),
-              const SizedBox(width: AppSpacing.md),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      l.sagenPassSupportTitle,
-                      style: AppTextStyle.titleSmall.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
+                const SizedBox(width: AppSpacing.md),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        l.sagenPassSupportTitle,
+                        style: AppTextStyle.titleSmall.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      l.sagenPassSupportSubtitle,
-                      style: AppTextStyle.bodyMd.copyWith(
-                        color: Colors.white.withValues(alpha: 0.8),
+                      const SizedBox(height: 2),
+                      Text(
+                        l.sagenPassSupportSubtitle,
+                        style: AppTextStyle.bodyMd.copyWith(
+                          color: Colors.white.withValues(alpha: 0.8),
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              Icon(
-                Icons.arrow_forward_ios_rounded,
-                color: Colors.white.withValues(alpha: 0.7),
-                size: 16,
-              ),
-            ],
+                Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  color: Colors.white.withValues(alpha: 0.7),
+                  size: 16,
+                ),
+              ],
+            ),
           ),
-        ),
-      ).animate().fadeIn(delay: 300.ms, duration: 400.ms).slideX(begin: 0.05),
+        ).animate().fadeIn(delay: 300.ms, duration: 400.ms).slideX(begin: 0.05),
       ),
     );
   }

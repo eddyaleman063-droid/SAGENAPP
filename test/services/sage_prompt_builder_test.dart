@@ -23,7 +23,11 @@ void main() {
 
     test('buildContents maps assistant message to model role', () {
       final messages = [
-        ChatMessage(role: ChatRole.assistant, text: 'Hi there', time: DateTime.now()),
+        ChatMessage(
+          role: ChatRole.assistant,
+          text: 'Hi there',
+          time: DateTime.now(),
+        ),
       ];
       final contents = builder.buildContents(messages);
       expect(contents[0]['role'], 'model');

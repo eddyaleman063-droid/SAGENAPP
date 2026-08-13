@@ -4,7 +4,10 @@ import 'package:sagen/services/economic_functions_service.dart';
 void main() {
   group('EconomicFunctionsService', () {
     test('singleton instance exists', () {
-      expect(EconomicFunctionsService.instance, isA<EconomicFunctionsService>());
+      expect(
+        EconomicFunctionsService.instance,
+        isA<EconomicFunctionsService>(),
+      );
     });
 
     test('singleton returns same instance', () {

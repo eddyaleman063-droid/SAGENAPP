@@ -17,8 +17,7 @@ class MockAiService extends AiService {
     int userLevel = 1,
     int currentStreak = 0,
     List<String> weakTopics = const [],
-  }) async =>
-      '';
+  }) async => '';
 
   @override
   Stream<String> generateStream(
@@ -27,8 +26,7 @@ class MockAiService extends AiService {
     int userLevel = 1,
     int currentStreak = 0,
     List<String> weakTopics = const [],
-  }) =>
-      const Stream.empty();
+  }) => const Stream.empty();
 
   @override
   void dispose() {}

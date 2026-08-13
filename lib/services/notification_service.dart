@@ -10,17 +10,20 @@ class NotificationService {
   NotificationService._() : _logger = AppLogger();
   final AppLogger _logger;
 
-  final FlutterLocalNotificationsPlugin _plugin = FlutterLocalNotificationsPlugin();
+  final FlutterLocalNotificationsPlugin _plugin =
+      FlutterLocalNotificationsPlugin();
   bool _initialized = false;
 
   static const String _channelId = 'chest_reminder';
   static const String _channelName = 'Daily Reminder';
-  static const String _channelDesc = 'Reminder to open your daily chest in SAGEN';
+  static const String _channelDesc =
+      'Reminder to open your daily chest in SAGEN';
   static const int _reminderId = 2000;
 
   static const String _retentionChannelId = 'streak_retention';
   static const String _retentionChannelName = 'Streak Retention';
-  static const String _retentionChannelDesc = 'Alerts to keep your streak active in SAGEN';
+  static const String _retentionChannelDesc =
+      'Alerts to keep your streak active in SAGEN';
   static const int _streakReminderId = 2001;
 
   Future<void> init() async {
@@ -33,9 +36,13 @@ class NotificationService {
         tz.setLocalLocation(tz.getLocation(name));
         _logger.info('Local timezone set: $name');
       } catch (e) {
-        _logger.warning('Could not resolve local timezone, falling back to UTC: $e');
+        _logger.warning(
+          'Could not resolve local timezone, falling back to UTC: $e',
+        );
       }
-      const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
+      const androidSettings = AndroidInitializationSettings(
+        '@mipmap/ic_launcher',
+      );
       const iosSettings = DarwinInitializationSettings(
         requestAlertPermission: true,
         requestBadgePermission: true,
@@ -70,9 +77,18 @@ class NotificationService {
         presentBadge: true,
         presentSound: true,
       );
-      const details = NotificationDetails(android: androidDetails, iOS: iosDetails);
+      const details = NotificationDetails(
+        android: androidDetails,
+        iOS: iosDetails,
+      );
       final now = tz.TZDateTime.now(tz.local);
-      var scheduledDate = tz.TZDateTime(tz.local, now.year, now.month, now.day, 20);
+      var scheduledDate = tz.TZDateTime(
+        tz.local,
+        now.year,
+        now.month,
+        now.day,
+        20,
+      );
       if (scheduledDate.isBefore(now)) {
         scheduledDate = scheduledDate.add(const Duration(days: 1));
       }
@@ -83,7 +99,8 @@ class NotificationService {
         scheduledDate,
         details,
         androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
-        uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
         matchDateTimeComponents: DateTimeComponents.time,
       );
       _logger.info('Daily chest reminder scheduled at 20:00');
@@ -97,16 +114,24 @@ class NotificationService {
     try {
       await _plugin.cancel(_streakReminderId);
       final now = tz.TZDateTime.now(tz.local);
-      final scheduledDate = tz.TZDateTime(tz.local, now.year, now.month, now.day + 1, 18);
+      final scheduledDate = tz.TZDateTime(
+        tz.local,
+        now.year,
+        now.month,
+        now.day + 1,
+        18,
+      );
 
       String title;
       String body;
       if (currentStreak > 0) {
         title = 'Your fire is fading';
-        body = 'You\'re about to lose your $currentStreak-day streak. Enter now and defend your rank.';
+        body =
+            'You\'re about to lose your $currentStreak-day streak. Enter now and defend your rank.';
       } else {
         title = 'The Arena awaits';
-        body = 'Your next cybersecurity lesson is ready. Do you accept the challenge?';
+        body =
+            'Your next cybersecurity lesson is ready. Do you accept the challenge?';
       }
 
       const androidDetails = AndroidNotificationDetails(
@@ -122,7 +147,10 @@ class NotificationService {
         presentBadge: true,
         presentSound: true,
       );
-      const details = NotificationDetails(android: androidDetails, iOS: iosDetails);
+      const details = NotificationDetails(
+        android: androidDetails,
+        iOS: iosDetails,
+      );
       await _plugin.zonedSchedule(
         _streakReminderId,
         title,
@@ -130,7 +158,8 @@ class NotificationService {
         scheduledDate,
         details,
         androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
-        uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
       );
       _logger.info('Streak reminder scheduled for 24h from now');
     } catch (e) {
@@ -172,7 +201,10 @@ class NotificationService {
         presentBadge: true,
         presentSound: true,
       );
-      const details = NotificationDetails(android: androidDetails, iOS: iosDetails);
+      const details = NotificationDetails(
+        android: androidDetails,
+        iOS: iosDetails,
+      );
       await _plugin.show(
         _streakReminderId + 2,
         'Streak shield used',

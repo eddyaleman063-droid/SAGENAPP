@@ -2,12 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
 
-enum ConfettiType {
-  level,
-  streak,
-  chest,
-  achievement,
-}
+enum ConfettiType { level, streak, chest, achievement }
 
 class ConfettiWidget extends StatefulWidget {
   final Duration duration;
@@ -97,7 +92,10 @@ class _ConfettiWidgetState extends State<ConfettiWidget>
           builder: (context, _) {
             return CustomPaint(
               size: Size.infinite,
-              painter: _ConfettiPainter(particles: _particles, progress: _ctrl.value),
+              painter: _ConfettiPainter(
+                particles: _particles,
+                progress: _ctrl.value,
+              ),
             );
           },
         ),

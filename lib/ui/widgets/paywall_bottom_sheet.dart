@@ -18,10 +18,14 @@ class DonationPackage {
 
   String localizedLabel(AppLocalizations l) {
     switch (labelKey) {
-      case 'paywallBasic': return l.paywallBasic;
-      case 'paywallPopular': return l.paywallPopular;
-      case 'paywallPremium': return l.paywallPremium;
-      default: return labelKey;
+      case 'paywallBasic':
+        return l.paywallBasic;
+      case 'paywallPopular':
+        return l.paywallPopular;
+      case 'paywallPremium':
+        return l.paywallPremium;
+      default:
+        return labelKey;
     }
   }
 }
@@ -48,10 +52,19 @@ class PaywallBottomSheet extends ConsumerWidget {
     );
   }
 
-  Future<void> _processLocalPayment(BuildContext context, DonationPackage pkg, String? uid) async {
+  Future<void> _processLocalPayment(
+    BuildContext context,
+    DonationPackage pkg,
+    String? uid,
+  ) async {
     final l = AppLocalizations.of(context)!;
     final userId = uid ?? 'guest_${DateTime.now().millisecondsSinceEpoch}';
-    final message = l.paywallWhatsAppMessage(l.currencySymbol, pkg.supporterLevel, pkg.price.toStringAsFixed(2), userId);
+    final message = l.paywallWhatsAppMessage(
+      l.currencySymbol,
+      pkg.supporterLevel,
+      pkg.price.toStringAsFixed(2),
+      userId,
+    );
 
     try {
       final uri = Uri.https('wa.me', '/$_whatsAppNumber', {'text': message});
@@ -59,21 +72,31 @@ class PaywallBottomSheet extends ConsumerWidget {
         await launchUrl(uri, mode: LaunchMode.externalApplication);
       } else {
         if (context.mounted) {
-          SagenNotification.show(context, message: l.paywallWhatsAppFallback(message));
+          SagenNotification.show(
+            context,
+            message: l.paywallWhatsAppFallback(message),
+          );
         }
       }
     } catch (e) {
       if (context.mounted) {
-        SagenNotification.show(context, message: l.paywallWhatsAppError(AppConfig.mercadopagoLink));
+        SagenNotification.show(
+          context,
+          message: l.paywallWhatsAppError(AppConfig.mercadopagoLink),
+        );
       }
     }
   }
 
-  Future<void> _processMpPayment(BuildContext context, WidgetRef ref, DonationPackage pkg) async {
+  Future<void> _processMpPayment(
+    BuildContext context,
+    WidgetRef ref,
+    DonationPackage pkg,
+  ) async {
     final l = AppLocalizations.of(context)!;
-    final initPoint = await ref.read(paymentProvider.notifier).initiateMercadoPago(
-      price: pkg.price,
-    );
+    final initPoint = await ref
+        .read(paymentProvider.notifier)
+        .initiateMercadoPago(price: pkg.price);
 
     if (initPoint == null) {
       if (context.mounted) {
@@ -87,7 +110,10 @@ class PaywallBottomSheet extends ConsumerWidget {
     }
 
     try {
-      await launchUrl(Uri.parse(initPoint), mode: LaunchMode.externalApplication);
+      await launchUrl(
+        Uri.parse(initPoint),
+        mode: LaunchMode.externalApplication,
+      );
     } catch (e) {
       if (context.mounted) {
         SagenNotification.show(
@@ -106,80 +132,97 @@ class PaywallBottomSheet extends ConsumerWidget {
     return Container(
       decoration: BoxDecoration(
         color: context.surfaceBackground,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(AppRadius.xxl)),
+        borderRadius: const BorderRadius.vertical(
+          top: Radius.circular(AppRadius.xxl),
+        ),
       ),
       padding: const EdgeInsets.all(AppSpacing.xxl),
       child: SingleChildScrollView(
         child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Center(
-            child: Container(
-              width: 40,
-              height: 4,
-              decoration: BoxDecoration(
-                color: context.subtle,
-                borderRadius: BorderRadius.circular(2),
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: context.subtle,
+                  borderRadius: BorderRadius.circular(2),
+                ),
               ),
             ),
-          ),
-          const SizedBox(height: AppSpacing.xl),
-          Text(
-            l.paywallSupportUs,
-            style: AppTextStyle.titleLg.copyWith(fontWeight: FontWeight.bold,
-              color: context.textPrimary),
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          Text(
-            l.paywallDescription,
-            style: AppTextStyle.subtitle.copyWith(color: context.textTertiary),
-          ),
-          const SizedBox(height: AppSpacing.xl),
-          ...donationPackages.map((pkg) => Padding(
-            padding: const EdgeInsets.only(bottom: AppSpacing.md),
-            child: Column(
-              children: [
-                _PackageCard(
-                  pkg: pkg,
-                  onTap: () => _processLocalPayment(context, pkg, userId),
-                ),
-                const SizedBox(height: AppSpacing.xs),
-                SizedBox(
-                  width: double.infinity,
-                  child: TextButton.icon(
-                    onPressed: paymentState.status == PaymentStatus.creatingPreference
-                        ? null
-                        : () => _processMpPayment(context, ref, pkg),
-                    icon: paymentState.status == PaymentStatus.creatingPreference
-                        ? const SizedBox(
-                            width: 16, height: 16,
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          )
-                        : const Icon(Icons.payment_rounded, size: 18),
-                    label: Text(
-                      l.paywallMercadoPago,
-                      style: AppTextStyle.subtitle.copyWith(color: PremiumColors.accentCyan),
-                    ),
-                    style: TextButton.styleFrom(
-                      foregroundColor: PremiumColors.accentCyan,
-                      padding: const EdgeInsets.symmetric(vertical: 4),
-                    ),
-                  ),
-                ),
-              ],
+            const SizedBox(height: AppSpacing.xl),
+            Text(
+              l.paywallSupportUs,
+              style: AppTextStyle.titleLg.copyWith(
+                fontWeight: FontWeight.bold,
+                color: context.textPrimary,
+              ),
             ),
-          )),
-          const SizedBox(height: AppSpacing.md),
-          Center(
-            child: Text(
-              l.paywallPaymentMethods,
-              style: AppTextStyle.label.copyWith(color: context.textTertiary),
+            const SizedBox(height: AppSpacing.sm),
+            Text(
+              l.paywallDescription,
+              style: AppTextStyle.subtitle.copyWith(
+                color: context.textTertiary,
+              ),
             ),
-          ),
-          const SizedBox(height: AppSpacing.lg),
-        ],
-      ),
+            const SizedBox(height: AppSpacing.xl),
+            ...donationPackages.map(
+              (pkg) => Padding(
+                padding: const EdgeInsets.only(bottom: AppSpacing.md),
+                child: Column(
+                  children: [
+                    _PackageCard(
+                      pkg: pkg,
+                      onTap: () => _processLocalPayment(context, pkg, userId),
+                    ),
+                    const SizedBox(height: AppSpacing.xs),
+                    SizedBox(
+                      width: double.infinity,
+                      child: TextButton.icon(
+                        onPressed:
+                            paymentState.status ==
+                                PaymentStatus.creatingPreference
+                            ? null
+                            : () => _processMpPayment(context, ref, pkg),
+                        icon:
+                            paymentState.status ==
+                                PaymentStatus.creatingPreference
+                            ? const SizedBox(
+                                width: 16,
+                                height: 16,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : const Icon(Icons.payment_rounded, size: 18),
+                        label: Text(
+                          l.paywallMercadoPago,
+                          style: AppTextStyle.subtitle.copyWith(
+                            color: PremiumColors.accentCyan,
+                          ),
+                        ),
+                        style: TextButton.styleFrom(
+                          foregroundColor: PremiumColors.accentCyan,
+                          padding: const EdgeInsets.symmetric(vertical: 4),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: AppSpacing.md),
+            Center(
+              child: Text(
+                l.paywallPaymentMethods,
+                style: AppTextStyle.label.copyWith(color: context.textTertiary),
+              ),
+            ),
+            const SizedBox(height: AppSpacing.lg),
+          ],
+        ),
       ),
     );
   }
@@ -213,52 +256,70 @@ class _PackageCard extends StatelessWidget {
             ),
           ),
           child: Row(
-          children: [
-            Container(
-              width: 48,
-              height: 48,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(AppRadius.md),
-                gradient: const LinearGradient(
-                  colors: [PremiumColors.primary, PremiumColors.primaryAccent],
+            children: [
+              Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(AppRadius.md),
+                  gradient: const LinearGradient(
+                    colors: [
+                      PremiumColors.primary,
+                      PremiumColors.primaryAccent,
+                    ],
+                  ),
+                ),
+                child: const ExcludeSemantics(
+                  child: Icon(
+                    Icons.favorite_rounded,
+                    color: Colors.white,
+                    size: 24,
+                  ),
                 ),
               ),
-              child: const ExcludeSemantics(
-                child: Icon(Icons.favorite_rounded, color: Colors.white, size: 24),
+              const SizedBox(width: AppSpacing.lg),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l.paywallPackageSupporter(pkg.supporterLevel),
+                      style: AppTextStyle.titleSmall.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: context.textPrimary,
+                      ),
+                    ),
+                    Text(
+                      l.paywallPackageLabel(
+                        pkg.localizedLabel(l).toLowerCase(),
+                      ),
+                      style: AppTextStyle.caption.copyWith(
+                        color: context.textTertiary,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(width: AppSpacing.lg),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    l.paywallPackageSupporter(pkg.supporterLevel),
-                    style: AppTextStyle.titleSmall.copyWith(fontWeight: FontWeight.bold,
-                      color: context.textPrimary),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.lg,
+                  vertical: AppSpacing.sm,
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(AppRadius.pill),
+                  color: PremiumColors.primary,
+                ),
+                child: Text(
+                  '${l.currencySymbol}${pkg.price.toStringAsFixed(2)}',
+                  style: AppTextStyle.bodyMd.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
-                  Text(
-                    l.paywallPackageLabel(pkg.localizedLabel(l).toLowerCase()),
-                    style: AppTextStyle.caption.copyWith(color: context.textTertiary),
-                  ),
-                ],
+                ),
               ),
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.sm),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(AppRadius.pill),
-                color: PremiumColors.primary,
-              ),
-              child: Text(
-                '${l.currencySymbol}${pkg.price.toStringAsFixed(2)}',
-                style: AppTextStyle.bodyMd.copyWith(fontWeight: FontWeight.bold,
-                  color: Colors.white),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
       ),
     );
   }

@@ -22,8 +22,14 @@ class LockedGatekeeper extends StatelessWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: dark
-              ? [PremiumColors.chatLockedDark, PremiumColors.chatLockedDarkSurface]
-              : [PremiumColors.chatLockedLight, PremiumColors.chatLockedLightSurface],
+              ? [
+                  PremiumColors.chatLockedDark,
+                  PremiumColors.chatLockedDarkSurface,
+                ]
+              : [
+                  PremiumColors.chatLockedLight,
+                  PremiumColors.chatLockedLightSurface,
+                ],
         ),
       ),
       child: SafeArea(
@@ -49,8 +55,10 @@ class LockedGatekeeper extends StatelessWidget {
             const SizedBox(height: AppSpacing.xxl),
             Text(
               l.tutorLocked,
-              style: AppTextStyle.headlineMedium.copyWith(fontWeight: FontWeight.bold,
-                color: context.textPrimary),
+              style: AppTextStyle.headlineMedium.copyWith(
+                fontWeight: FontWeight.bold,
+                color: context.textPrimary,
+              ),
             ),
             const SizedBox(height: AppSpacing.sm),
             Padding(
@@ -58,12 +66,16 @@ class LockedGatekeeper extends StatelessWidget {
               child: Text(
                 l.tutorLockedDescription,
                 textAlign: TextAlign.center,
-                style: AppTextStyle.bodyMd.copyWith(color: context.textTertiary),
+                style: AppTextStyle.bodyMd.copyWith(
+                  color: context.textTertiary,
+                ),
               ),
             ),
             const SizedBox(height: AppSpacing.xxl),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl * 2),
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.xxl * 2,
+              ),
               child: Column(
                 children: [
                   ClipRRect(
@@ -71,27 +83,38 @@ class LockedGatekeeper extends StatelessWidget {
                     child: LinearProgressIndicator(
                       value: sage.progress,
                       backgroundColor: context.subtleBorder,
-                      valueColor: const AlwaysStoppedAnimation<Color>(PremiumColors.primaryAccent),
+                      valueColor: const AlwaysStoppedAnimation<Color>(
+                        PremiumColors.primaryAccent,
+                      ),
                       minHeight: 6,
                     ),
                   ),
                   const SizedBox(height: AppSpacing.sm),
                   Text(
-                    l.tutorLessonsProgress(sage.lessonsCompleted, sage.lessonsRequired),
-                    style: AppTextStyle.subtitle.copyWith(fontWeight: FontWeight.w600,
-                      color: PremiumColors.primaryAccent),
+                    l.tutorLessonsProgress(
+                      sage.lessonsCompleted,
+                      sage.lessonsRequired,
+                    ),
+                    style: AppTextStyle.subtitle.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: PremiumColors.primaryAccent,
+                    ),
                   ),
                 ],
               ),
             ),
             const SizedBox(height: AppSpacing.lg),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl * 2),
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.xxl * 2,
+              ),
               child: Text(
                 _motivationalMessage(l),
                 textAlign: TextAlign.center,
-                style: AppTextStyle.caption.copyWith(fontStyle: FontStyle.italic,
-                  color: context.textTertiary),
+                style: AppTextStyle.caption.copyWith(
+                  fontStyle: FontStyle.italic,
+                  color: context.textTertiary,
+                ),
               ),
             ),
             const Spacer(flex: 3),
@@ -101,19 +124,21 @@ class LockedGatekeeper extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(AppSpacing.lg),
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: context.isDark ? 0.05 : 0.7),
-                  borderRadius: BorderRadius.circular(AppRadius.lg),
-                  border: Border.all(
-                    color: context.subtleBorder,
+                  color: Colors.white.withValues(
+                    alpha: context.isDark ? 0.05 : 0.7,
                   ),
+                  borderRadius: BorderRadius.circular(AppRadius.lg),
+                  border: Border.all(color: context.subtleBorder),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       l.tutorSampleTitle,
-                      style: AppTextStyle.caption.copyWith(fontWeight: FontWeight.w600,
-                        color: context.textSecondary),
+                      style: AppTextStyle.caption.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: context.textSecondary,
+                      ),
                     ),
                     const SizedBox(height: AppSpacing.sm),
                     _SampleMessage(
@@ -158,12 +183,18 @@ class _SampleMessage extends StatelessWidget {
   final String text;
   final bool isUser;
   final bool dark;
-  const _SampleMessage({required this.text, required this.isUser, required this.dark});
+  const _SampleMessage({
+    required this.text,
+    required this.isUser,
+    required this.dark,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+      mainAxisAlignment: isUser
+          ? MainAxisAlignment.end
+          : MainAxisAlignment.start,
       children: [
         Flexible(
           child: Container(
@@ -176,7 +207,9 @@ class _SampleMessage extends StatelessWidget {
             ),
             child: Text(
               text,
-              style: AppTextStyle.subtitle.copyWith(color: isUser ? Colors.white : context.textSecondary),
+              style: AppTextStyle.subtitle.copyWith(
+                color: isUser ? Colors.white : context.textSecondary,
+              ),
             ),
           ),
         ),

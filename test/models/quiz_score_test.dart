@@ -24,16 +24,19 @@ void main() {
       expect(score.xp, 8 * 15 + timeBonus);
     });
 
-    test('xp gives full time bonus + perfect bonus when perfect and no time spent', () {
-      const score = QuizScoreCalculator(
-        correctCount: 5,
-        totalQuestions: 5,
-        timeSpentSeconds: 0,
-        timeBudgetSeconds: 60,
-      );
-      // perfect bonus (30) + time bonus (20)
-      expect(score.xp, 5 * 15 + 30 + 20);
-    });
+    test(
+      'xp gives full time bonus + perfect bonus when perfect and no time spent',
+      () {
+        const score = QuizScoreCalculator(
+          correctCount: 5,
+          totalQuestions: 5,
+          timeSpentSeconds: 0,
+          timeBudgetSeconds: 60,
+        );
+        // perfect bonus (30) + time bonus (20)
+        expect(score.xp, 5 * 15 + 30 + 20);
+      },
+    );
 
     test('xp gives perfect bonus but zero time bonus when all time used', () {
       const score = QuizScoreCalculator(
@@ -119,6 +122,5 @@ void main() {
       );
       expect(score.isPerfect, false);
     });
-
   });
 }

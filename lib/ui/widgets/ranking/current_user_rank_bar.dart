@@ -19,16 +19,25 @@ class CurrentUserRankBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg,
+        vertical: AppSpacing.md,
+      ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppRadius.md),
         color: context.surfaceCard,
-        border: Border.all(color: PremiumColors.splashBlue.withValues(alpha: 0.2)),
+        border: Border.all(
+          color: PremiumColors.splashBlue.withValues(alpha: 0.2),
+        ),
       ),
       child: Row(
         children: [
           const ExcludeSemantics(
-            child: Icon(Icons.person_rounded, size: 20, color: PremiumColors.splashBlue),
+            child: Icon(
+              Icons.person_rounded,
+              size: 20,
+              color: PremiumColors.splashBlue,
+            ),
           ),
           const SizedBox(width: AppSpacing.sm),
           Column(
@@ -37,12 +46,17 @@ class CurrentUserRankBar extends StatelessWidget {
             children: [
               Text(
                 l.rankingYourPosition(rank, _formatXp(totalXp)),
-                style: AppTextStyle.subtitle.copyWith(color: context.textSecondary, fontWeight: FontWeight.w600),
+                style: AppTextStyle.subtitle.copyWith(
+                  color: context.textSecondary,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               if (xpToNext > 0)
                 Text(
                   l.rankingXpToTop50(_formatXp(xpToNext)),
-                  style: AppTextStyle.label.copyWith(color: context.textTertiary),
+                  style: AppTextStyle.label.copyWith(
+                    color: context.textTertiary,
+                  ),
                 ),
             ],
           ),

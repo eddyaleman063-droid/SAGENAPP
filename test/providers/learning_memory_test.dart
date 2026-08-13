@@ -12,9 +12,9 @@ void main() {
   });
   group('LearningMemoryNotifier', () {
     test('starts with empty weak topics', () {
-      final container = ProviderContainer(overrides: [
-        prefsProvider.overrideWithValue(prefs),
-      ]);
+      final container = ProviderContainer(
+        overrides: [prefsProvider.overrideWithValue(prefs)],
+      );
       addTearDown(() => container.dispose());
       final notifier = container.read(learningMemoryProvider.notifier);
 
@@ -22,9 +22,9 @@ void main() {
       expect(notifier.completedChallenges, isEmpty);
     });
     test('records lesson pass', () {
-      final container = ProviderContainer(overrides: [
-        prefsProvider.overrideWithValue(prefs),
-      ]);
+      final container = ProviderContainer(
+        overrides: [prefsProvider.overrideWithValue(prefs)],
+      );
       addTearDown(() => container.dispose());
       final notifier = container.read(learningMemoryProvider.notifier);
 
@@ -33,9 +33,9 @@ void main() {
       expect(notifier.totalLessonsFailed, 0);
     });
     test('records lesson fail', () {
-      final container = ProviderContainer(overrides: [
-        prefsProvider.overrideWithValue(prefs),
-      ]);
+      final container = ProviderContainer(
+        overrides: [prefsProvider.overrideWithValue(prefs)],
+      );
       addTearDown(() => container.dispose());
       final notifier = container.read(learningMemoryProvider.notifier);
 
@@ -44,9 +44,9 @@ void main() {
       expect(notifier.totalLessonsFailed, 1);
     });
     test('identifies weak topics after repeated failures', () {
-      final container = ProviderContainer(overrides: [
-        prefsProvider.overrideWithValue(prefs),
-      ]);
+      final container = ProviderContainer(
+        overrides: [prefsProvider.overrideWithValue(prefs)],
+      );
       addTearDown(() => container.dispose());
       final notifier = container.read(learningMemoryProvider.notifier);
 
@@ -58,9 +58,9 @@ void main() {
       expect(notifier.weakTopics.first.failRate, 1.0);
     });
     test('does not flag topics with few attempts as weak', () {
-      final container = ProviderContainer(overrides: [
-        prefsProvider.overrideWithValue(prefs),
-      ]);
+      final container = ProviderContainer(
+        overrides: [prefsProvider.overrideWithValue(prefs)],
+      );
       addTearDown(() => container.dispose());
       final notifier = container.read(learningMemoryProvider.notifier);
 
@@ -69,9 +69,9 @@ void main() {
       expect(notifier.weakTopics.first.isWeak, isFalse);
     });
     test('recommends challenge types for weak phishing topic', () {
-      final container = ProviderContainer(overrides: [
-        prefsProvider.overrideWithValue(prefs),
-      ]);
+      final container = ProviderContainer(
+        overrides: [prefsProvider.overrideWithValue(prefs)],
+      );
       addTearDown(() => container.dispose());
       final notifier = container.read(learningMemoryProvider.notifier);
 
@@ -82,9 +82,9 @@ void main() {
       expect(types, contains(QuickChallengeType.detectPhishing));
     });
     test('recommends challenge types for weak passwords topic', () {
-      final container = ProviderContainer(overrides: [
-        prefsProvider.overrideWithValue(prefs),
-      ]);
+      final container = ProviderContainer(
+        overrides: [prefsProvider.overrideWithValue(prefs)],
+      );
       addTearDown(() => container.dispose());
       final notifier = container.read(learningMemoryProvider.notifier);
 
@@ -95,9 +95,9 @@ void main() {
       expect(types, contains(QuickChallengeType.safePassword));
     });
     test('records challenge attempt', () {
-      final container = ProviderContainer(overrides: [
-        prefsProvider.overrideWithValue(prefs),
-      ]);
+      final container = ProviderContainer(
+        overrides: [prefsProvider.overrideWithValue(prefs)],
+      );
       addTearDown(() => container.dispose());
       final notifier = container.read(learningMemoryProvider.notifier);
 
@@ -109,9 +109,9 @@ void main() {
       expect(notifier.completedChallenges, contains('qc1'));
     });
     test('tracks sessions this week', () {
-      final container = ProviderContainer(overrides: [
-        prefsProvider.overrideWithValue(prefs),
-      ]);
+      final container = ProviderContainer(
+        overrides: [prefsProvider.overrideWithValue(prefs)],
+      );
       addTearDown(() => container.dispose());
       final notifier = container.read(learningMemoryProvider.notifier);
 
@@ -119,9 +119,9 @@ void main() {
       expect(notifier.sessionsThisWeek, greaterThan(0));
     });
     test('calculates overall pass rate', () {
-      final container = ProviderContainer(overrides: [
-        prefsProvider.overrideWithValue(prefs),
-      ]);
+      final container = ProviderContainer(
+        overrides: [prefsProvider.overrideWithValue(prefs)],
+      );
       addTearDown(() => container.dispose());
       final notifier = container.read(learningMemoryProvider.notifier);
 

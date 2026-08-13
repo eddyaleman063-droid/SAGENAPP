@@ -11,7 +11,8 @@ class TypingIndicator extends StatefulWidget {
   State<TypingIndicator> createState() => _TypingIndicatorState();
 }
 
-class _TypingIndicatorState extends State<TypingIndicator> with SingleTickerProviderStateMixin {
+class _TypingIndicatorState extends State<TypingIndicator>
+    with SingleTickerProviderStateMixin {
   late AnimationController _ctrl;
   bool _visible = false;
   Timer? _debounce;
@@ -19,7 +20,10 @@ class _TypingIndicatorState extends State<TypingIndicator> with SingleTickerProv
   @override
   void initState() {
     super.initState();
-    _ctrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 1200));
+    _ctrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1200),
+    );
     // Debounce: show after 300ms to prevent flash
     _debounce = Timer(const Duration(milliseconds: 300), () {
       if (mounted) {
@@ -42,7 +46,12 @@ class _TypingIndicatorState extends State<TypingIndicator> with SingleTickerProv
     return Semantics(
       label: AppLocalizations.of(context)?.chatTypingIndicator ?? '',
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(AppSpacing.xxl + 36, 0, AppSpacing.xxl, AppSpacing.sm),
+        padding: const EdgeInsets.fromLTRB(
+          AppSpacing.xxl + 36,
+          0,
+          AppSpacing.xxl,
+          AppSpacing.sm,
+        ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: List.generate(3, (i) {

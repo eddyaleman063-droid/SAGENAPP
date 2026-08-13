@@ -116,7 +116,10 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen>
       _FeedbackState.speed => _pickRandom(_speedAssets),
       _FeedbackState.standard => _pickRandom(_standardAssets),
     };
-    _glowCtrl = AnimationController(vsync: this, duration: const Duration(seconds: 3));
+    _glowCtrl = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 3),
+    );
     _glowCtrl.forward();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ExperienceService.instance.mediumHaptic();
@@ -153,58 +156,66 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen>
         context.go('/home');
       },
       child: Scaffold(
-      backgroundColor: dark ? PremiumColors.darkBg : PremiumColors.lightBg,
-      body: Stack(
-        children: [
-          if (isPerfect)
-            const Positioned.fill(
-              child: ConfettiWidget(type: ConfettiType.level, particleCount: 80),
-            )
-          else if (isGood)
-            const Positioned.fill(
-              child: ConfettiWidget(type: ConfettiType.streak, particleCount: 40),
-            ),
-          SafeArea(
-            child: AnimatedBuilder(
-              animation: _glowCtrl,
-              builder: (context, _) {
-                return Container(
-                  decoration: BoxDecoration(
-                    gradient: RadialGradient(
-                      center: Alignment.topCenter,
-                      radius: 1.2,
-                      colors: [
-                        _primaryColor.withValues(alpha: 0.06 + _glowCtrl.value * 0.04),
-                        dark ? PremiumColors.darkBg : PremiumColors.lightBg,
-                        dark ? PremiumColors.darkBg : PremiumColors.lightBg,
-                      ],
-                    ),
-                  ),
-                  child: Column(
-                    children: [
-                      const Spacer(flex: 2),
-                      _buildMascot(),
-                      const SizedBox(height: AppSpacing.lg),
-                      _buildDynamicText(),
-                      const SizedBox(height: AppSpacing.xxl),
-                      _StatsGrid(
-                        totalXp: _totalXp,
-                        accuracyPercent: widget.score.accuracyPercent,
-                        timeSeconds: widget.score.timeSpentSeconds,
-                        primaryColor: _primaryColor,
+        backgroundColor: dark ? PremiumColors.darkBg : PremiumColors.lightBg,
+        body: Stack(
+          children: [
+            if (isPerfect)
+              const Positioned.fill(
+                child: ConfettiWidget(
+                  type: ConfettiType.level,
+                  particleCount: 80,
+                ),
+              )
+            else if (isGood)
+              const Positioned.fill(
+                child: ConfettiWidget(
+                  type: ConfettiType.streak,
+                  particleCount: 40,
+                ),
+              ),
+            SafeArea(
+              child: AnimatedBuilder(
+                animation: _glowCtrl,
+                builder: (context, _) {
+                  return Container(
+                    decoration: BoxDecoration(
+                      gradient: RadialGradient(
+                        center: Alignment.topCenter,
+                        radius: 1.2,
+                        colors: [
+                          _primaryColor.withValues(
+                            alpha: 0.06 + _glowCtrl.value * 0.04,
+                          ),
+                          dark ? PremiumColors.darkBg : PremiumColors.lightBg,
+                          dark ? PremiumColors.darkBg : PremiumColors.lightBg,
+                        ],
                       ),
-                      const Spacer(flex: 3),
-                      _buildButton(),
-                      const SizedBox(height: AppSpacing.xl),
-                    ],
-                  ).animate().fadeIn(),
-                );
-              },
+                    ),
+                    child: Column(
+                      children: [
+                        const Spacer(flex: 2),
+                        _buildMascot(),
+                        const SizedBox(height: AppSpacing.lg),
+                        _buildDynamicText(),
+                        const SizedBox(height: AppSpacing.xxl),
+                        _StatsGrid(
+                          totalXp: _totalXp,
+                          accuracyPercent: widget.score.accuracyPercent,
+                          timeSeconds: widget.score.timeSpentSeconds,
+                          primaryColor: _primaryColor,
+                        ),
+                        const Spacer(flex: 3),
+                        _buildButton(),
+                        const SizedBox(height: AppSpacing.xl),
+                      ],
+                    ).animate().fadeIn(),
+                  );
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
     );
   }
 
@@ -222,14 +233,16 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen>
               duration: const Duration(milliseconds: 800),
             ),
           ),
-        ExcludeSemantics(child: Image.asset(
-          _sageAsset,
-          height: 120,
-          cacheWidth: 240,
-          cacheHeight: 240,
-          fit: BoxFit.contain,
-          errorBuilder: (_, _, _) => const SizedBox(height: 120, width: 120),
-        )),
+        ExcludeSemantics(
+          child: Image.asset(
+            _sageAsset,
+            height: 120,
+            cacheWidth: 240,
+            cacheHeight: 240,
+            fit: BoxFit.contain,
+            errorBuilder: (_, _, _) => const SizedBox(height: 120, width: 120),
+          ),
+        ),
       ],
     );
   }
@@ -283,10 +296,17 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen>
               children: [
                 Text(
                   l10n.sessionSummaryReceiveReward,
-                  style: AppTextStyle.body.copyWith(fontWeight: FontWeight.bold, letterSpacing: 1.2),
+                  style: AppTextStyle.body.copyWith(
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1.2,
+                  ),
                 ),
                 const SizedBox(width: AppSpacing.sm),
-                Icon(Icons.arrow_forward_rounded, size: 20, color: Colors.white.withValues(alpha: 0.8)),
+                Icon(
+                  Icons.arrow_forward_rounded,
+                  size: 20,
+                  color: Colors.white.withValues(alpha: 0.8),
+                ),
               ],
             ),
           ),
@@ -320,57 +340,74 @@ class _StatsGrid extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
       child: Row(
         children: [
-          Expanded(child: Semantics(
-            label: AppLocalizations.of(context)!.xpGainedLabel(totalXp),
-            container: true,
-            child: _StatBlock(
-              icon: Icons.bolt_rounded,
-              label: AppLocalizations.of(context)!.sessionSummaryExp,
-              color: PremiumColors.streakOrange,
-              child: TweenAnimationBuilder<double>(
-                tween: Tween(begin: 0, end: totalXp.toDouble()),
-                duration: const Duration(milliseconds: 1000),
-                curve: Curves.easeOutCubic,
-                builder: (context, val, _) => Text(
-                  '+${val.toInt()}',
-                  style: AppTextStyle.titleLg.copyWith(fontWeight: FontWeight.bold, color: valColor),
+          Expanded(
+            child: Semantics(
+              label: AppLocalizations.of(context)!.xpGainedLabel(totalXp),
+              container: true,
+              child: _StatBlock(
+                icon: Icons.bolt_rounded,
+                label: AppLocalizations.of(context)!.sessionSummaryExp,
+                color: PremiumColors.streakOrange,
+                child: TweenAnimationBuilder<double>(
+                  tween: Tween(begin: 0, end: totalXp.toDouble()),
+                  duration: const Duration(milliseconds: 1000),
+                  curve: Curves.easeOutCubic,
+                  builder: (context, val, _) => Text(
+                    '+${val.toInt()}',
+                    style: AppTextStyle.titleLg.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: valColor,
+                    ),
+                  ),
                 ),
               ),
             ),
-          )),
+          ),
           const SizedBox(width: AppSpacing.md),
-          Expanded(child: Semantics(
-            label: AppLocalizations.of(context)!.accuracyPercentLabel(accuracyPercent.toStringAsFixed(0)),
-            container: true,
-            child: _StatBlock(
-              icon: Icons.gps_fixed_rounded,
-              label: AppLocalizations.of(context)!.sessionSummaryAccuracy,
-              color: PremiumColors.success,
-              child: TweenAnimationBuilder<double>(
-                tween: Tween(begin: 0, end: accuracyPercent),
-                duration: const Duration(milliseconds: 800),
-                curve: Curves.easeOutCubic,
-                builder: (context, val, _) => Text(
-                  '${val.toStringAsFixed(0)}%',
-                  style: AppTextStyle.titleLg.copyWith(fontWeight: FontWeight.bold, color: valColor),
+          Expanded(
+            child: Semantics(
+              label: AppLocalizations.of(
+                context,
+              )!.accuracyPercentLabel(accuracyPercent.toStringAsFixed(0)),
+              container: true,
+              child: _StatBlock(
+                icon: Icons.gps_fixed_rounded,
+                label: AppLocalizations.of(context)!.sessionSummaryAccuracy,
+                color: PremiumColors.success,
+                child: TweenAnimationBuilder<double>(
+                  tween: Tween(begin: 0, end: accuracyPercent),
+                  duration: const Duration(milliseconds: 800),
+                  curve: Curves.easeOutCubic,
+                  builder: (context, val, _) => Text(
+                    '${val.toStringAsFixed(0)}%',
+                    style: AppTextStyle.titleLg.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: valColor,
+                    ),
+                  ),
                 ),
               ),
             ),
-          )),
+          ),
           const SizedBox(width: AppSpacing.md),
-          Expanded(child: Semantics(
-            label: AppLocalizations.of(context)!.timeLabel(timeFormatted),
-            container: true,
-            child: _StatBlock(
-              icon: Icons.timer_outlined,
-              label: AppLocalizations.of(context)!.sessionSummaryTime,
-              color: PremiumColors.splashBlue,
-              child: Text(
-                timeFormatted,
-                style: AppTextStyle.title.copyWith(fontWeight: FontWeight.bold, color: valColor),
+          Expanded(
+            child: Semantics(
+              label: AppLocalizations.of(context)!.timeLabel(timeFormatted),
+              container: true,
+              child: _StatBlock(
+                icon: Icons.timer_outlined,
+                label: AppLocalizations.of(context)!.sessionSummaryTime,
+                color: PremiumColors.splashBlue,
+                child: Text(
+                  timeFormatted,
+                  style: AppTextStyle.title.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: valColor,
+                  ),
+                ),
               ),
             ),
-          )),
+          ),
         ],
       ),
     );
@@ -393,7 +430,10 @@ class _StatBlock extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg, horizontal: AppSpacing.xs),
+      padding: const EdgeInsets.symmetric(
+        vertical: AppSpacing.lg,
+        horizontal: AppSpacing.xs,
+      ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppRadius.xl),
         color: context.surfaceCard,

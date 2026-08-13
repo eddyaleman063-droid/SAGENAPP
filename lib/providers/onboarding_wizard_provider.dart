@@ -21,7 +21,8 @@ class OnboardingWizardState {
   }
 }
 
-class OnboardingWizardNotifier extends AutoDisposeNotifier<OnboardingWizardState> {
+class OnboardingWizardNotifier
+    extends AutoDisposeNotifier<OnboardingWizardState> {
   @override
   OnboardingWizardState build() => const OnboardingWizardState();
 
@@ -65,9 +66,10 @@ class OnboardingWizardNotifier extends AutoDisposeNotifier<OnboardingWizardState
 }
 
 final onboardingWizardProvider =
-    NotifierProvider.autoDispose<OnboardingWizardNotifier, OnboardingWizardState>(
-  OnboardingWizardNotifier.new,
-);
+    NotifierProvider.autoDispose<
+      OnboardingWizardNotifier,
+      OnboardingWizardState
+    >(OnboardingWizardNotifier.new);
 
 final onboardingCanContinueProvider = Provider.autoDispose<bool>((ref) {
   final state = ref.watch(onboardingWizardProvider);
@@ -94,8 +96,7 @@ final onboardingCanContinueProvider = Provider.autoDispose<bool>((ref) {
   }
 });
 
-final onboardingWizardSelectionsProvider =
-    Provider.autoDispose<int>((ref) {
+final onboardingWizardSelectionsProvider = Provider.autoDispose<int>((ref) {
   final state = ref.watch(onboardingWizardProvider);
   final data = state.sectionData[7];
   if (data is List) return data.length;

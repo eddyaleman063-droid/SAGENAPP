@@ -35,13 +35,12 @@ void main() {
     test('error with exception and stack records correctly', () {
       final logger = AppLogger();
       final initialCount = logger.recentErrors.length;
-      logger.error(
-        'test error',
-        Exception('bad'),
-        StackTrace.current,
-      );
+      logger.error('test error', Exception('bad'), StackTrace.current);
 
-      expect(logger.recentErrors.length, greaterThanOrEqualTo(initialCount + 1));
+      expect(
+        logger.recentErrors.length,
+        greaterThanOrEqualTo(initialCount + 1),
+      );
       expect(logger.recentErrors.last['message'], contains('test error'));
     });
 
@@ -50,7 +49,10 @@ void main() {
       final initialCount = logger.recentErrors.length;
       logger.error('simple error');
 
-      expect(logger.recentErrors.length, greaterThanOrEqualTo(initialCount + 1));
+      expect(
+        logger.recentErrors.length,
+        greaterThanOrEqualTo(initialCount + 1),
+      );
     });
 
     test('recentErrors returns immutable list', () {

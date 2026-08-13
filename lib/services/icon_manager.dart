@@ -45,11 +45,19 @@ class IconManager {
   }
 
   @visibleForTesting
-  SageAppIcon evaluateIconForTesting(StreakState streak, SagenPass pass, {DateTime? now}) {
+  SageAppIcon evaluateIconForTesting(
+    StreakState streak,
+    SagenPass pass, {
+    DateTime? now,
+  }) {
     return _evaluateIcon(streak, pass, now: now);
   }
 
-  SageAppIcon _evaluateIcon(StreakState streak, SagenPass pass, {DateTime? now}) {
+  SageAppIcon _evaluateIcon(
+    StreakState streak,
+    SagenPass pass, {
+    DateTime? now,
+  }) {
     final current = now ?? DateTime.now();
     final hour = current.hour;
 
@@ -102,7 +110,9 @@ class IconManager {
       }
     } catch (e) {
       // Icon changes can fail on certain Android OEMs — log but don't crash
-      AppLogger().warning('IconManager: icon change failed for ${_iconNames[icon]}: $e');
+      AppLogger().warning(
+        'IconManager: icon change failed for ${_iconNames[icon]}: $e',
+      );
     }
   }
 

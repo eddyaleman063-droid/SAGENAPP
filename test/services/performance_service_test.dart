@@ -47,7 +47,11 @@ void main() {
     test('reportNetworkRequest does not throw', () {
       final service = PerformanceService.instance;
       expect(
-        () => service.reportNetworkRequest('https://example.com', 200, responseCode: 200),
+        () => service.reportNetworkRequest(
+          'https://example.com',
+          200,
+          responseCode: 200,
+        ),
         returnsNormally,
       );
     });

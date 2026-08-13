@@ -13,7 +13,12 @@ class StoreHeader extends ConsumerWidget {
     final l = AppLocalizations.of(context)!;
     final gemBalance = ref.watch(gemProvider.select((g) => g.balance));
     return Container(
-      padding: const EdgeInsets.fromLTRB(AppSpacing.xxl, AppSpacing.lg, AppSpacing.xxl, AppSpacing.xl),
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.xxl,
+        AppSpacing.lg,
+        AppSpacing.xxl,
+        AppSpacing.xl,
+      ),
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           colors: PremiumColors.gradientHeader,
@@ -33,14 +38,20 @@ class StoreHeader extends ConsumerWidget {
               Expanded(
                 child: Text(
                   l.storeTitle,
-                  style: AppTextStyle.headlineMedium.copyWith(fontWeight: FontWeight.bold, color: Colors.white),
+                  style: AppTextStyle.headlineMedium.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                 ),
               ),
-               Semantics(
+              Semantics(
                 label: 'Saldo de gemas: $gemBalance',
                 container: true,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.xs),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.md,
+                    vertical: AppSpacing.xs,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.white.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(AppRadius.pill),
@@ -55,7 +66,10 @@ class StoreHeader extends ConsumerWidget {
                           height: 12,
                           decoration: BoxDecoration(
                             gradient: const LinearGradient(
-                              colors: [PremiumColors.accentCyan, PremiumColors.deepPurple],
+                              colors: [
+                                PremiumColors.accentCyan,
+                                PremiumColors.deepPurple,
+                              ],
                             ),
                             borderRadius: BorderRadius.circular(2),
                           ),

@@ -11,9 +11,9 @@ void main() {
     MethodCall? captured;
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(_channel, (MethodCall call) async {
-      captured = call;
-      return null;
-    });
+          captured = call;
+          return null;
+        });
     await ScreenshotProtectionService().enableSecure();
     expect(captured?.method, 'setSecure');
     expect(captured?.arguments, {'secure': true});
@@ -23,9 +23,9 @@ void main() {
     MethodCall? captured;
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(_channel, (MethodCall call) async {
-      captured = call;
-      return null;
-    });
+          captured = call;
+          return null;
+        });
     await ScreenshotProtectionService().disableSecure();
     expect(captured?.method, 'setSecure');
     expect(captured?.arguments, {'secure': false});
@@ -34,23 +34,17 @@ void main() {
   test('enableSecure swallows platform errors', () async {
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(_channel, (MethodCall call) async {
-      throw PlatformException(code: 'not_implemented');
-    });
-    await expectLater(
-      ScreenshotProtectionService().enableSecure(),
-      completes,
-    );
+          throw PlatformException(code: 'not_implemented');
+        });
+    await expectLater(ScreenshotProtectionService().enableSecure(), completes);
   });
 
   test('disableSecure swallows platform errors', () async {
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(_channel, (MethodCall call) async {
-      throw PlatformException(code: 'not_implemented');
-    });
-    await expectLater(
-      ScreenshotProtectionService().disableSecure(),
-      completes,
-    );
+          throw PlatformException(code: 'not_implemented');
+        });
+    await expectLater(ScreenshotProtectionService().disableSecure(), completes);
   });
 
   tearDown(() {

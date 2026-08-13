@@ -23,7 +23,11 @@ class _MockSessionNotifier extends SessionNotifier {
   SessionState build() => const SessionState();
 
   @override
-  Future<void> startSession(String stageId, String lessonId, {int count = 5}) async {
+  Future<void> startSession(
+    String stageId,
+    String lessonId, {
+    int count = 5,
+  }) async {
     lastStageId = stageId;
     lastLessonId = lessonId;
   }
@@ -39,57 +43,57 @@ class _MockLearningNotifier extends LearningNotifier {
 }
 
 List<Stage> _createTestStages() => [
-    Stage(
-      id: 'ac_st1',
-      title: 'Fundamentos',
-      subtitle: 'Aprende lo básico',
-      accent: Colors.blue,
-      icon: Icons.shield_rounded,
-      unlocked: true,
-      lessons: [
-        Lesson(
-          id: 'lesson_1_1',
-          title: 'Introducción a la seguridad',
-          subtitle: 'Primeros pasos',
-          challenges: const [
-            Challenge(
-              id: 'ch_1',
-              question: '¿Qué es la seguridad digital?',
-              type: LessonType.multipleChoice,
-              options: ['Proteger datos', 'Navegar web', 'Usar redes', 'Enviar'],
-              correctIndex: 0,
-              explanation: 'Protege nuestros datos.',
-            ),
-          ],
-          estimatedMinutes: 5,
-        ),
-        Lesson(
-          id: 'lesson_1_2',
-          title: 'Contraseñas seguras',
-          subtitle: 'Protege tus cuentas',
-          challenges: const [],
-          estimatedMinutes: 10,
-        ),
-      ],
-    ),
-    Stage(
-      id: 'ac_st2',
-      title: 'Nivel Avanzado',
-      subtitle: 'Contenido avanzado',
-      accent: Colors.green,
-      icon: Icons.shield_rounded,
-      unlocked: false,
-      lessons: [
-        Lesson(
-          id: 'lesson_2_1',
-          title: 'Phishing',
-          subtitle: 'Identifica estafas',
-          challenges: const [],
-          estimatedMinutes: 8,
-        ),
-      ],
-    ),
-  ];
+  Stage(
+    id: 'ac_st1',
+    title: 'Fundamentos',
+    subtitle: 'Aprende lo básico',
+    accent: Colors.blue,
+    icon: Icons.shield_rounded,
+    unlocked: true,
+    lessons: [
+      Lesson(
+        id: 'lesson_1_1',
+        title: 'Introducción a la seguridad',
+        subtitle: 'Primeros pasos',
+        challenges: const [
+          Challenge(
+            id: 'ch_1',
+            question: '¿Qué es la seguridad digital?',
+            type: LessonType.multipleChoice,
+            options: ['Proteger datos', 'Navegar web', 'Usar redes', 'Enviar'],
+            correctIndex: 0,
+            explanation: 'Protege nuestros datos.',
+          ),
+        ],
+        estimatedMinutes: 5,
+      ),
+      Lesson(
+        id: 'lesson_1_2',
+        title: 'Contraseñas seguras',
+        subtitle: 'Protege tus cuentas',
+        challenges: const [],
+        estimatedMinutes: 10,
+      ),
+    ],
+  ),
+  Stage(
+    id: 'ac_st2',
+    title: 'Nivel Avanzado',
+    subtitle: 'Contenido avanzado',
+    accent: Colors.green,
+    icon: Icons.shield_rounded,
+    unlocked: false,
+    lessons: [
+      Lesson(
+        id: 'lesson_2_1',
+        title: 'Phishing',
+        subtitle: 'Identifica estafas',
+        challenges: const [],
+        estimatedMinutes: 8,
+      ),
+    ],
+  ),
+];
 
 Widget createTestApp({
   required SharedPreferences prefs,
@@ -205,7 +209,10 @@ void main() {
 
     testWidgets('tapping lesson starts session and navigates', (tester) async {
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-          .setMockMethodCallHandler(SystemChannels.platform, (call) async => null);
+          .setMockMethodCallHandler(
+            SystemChannels.platform,
+            (call) async => null,
+          );
 
       SharedPreferences.setMockInitialValues({});
       final prefs = await SharedPreferences.getInstance();
@@ -214,11 +221,9 @@ void main() {
       );
       final session = _MockSessionNotifier();
 
-      await tester.pumpWidget(createTestApp(
-        prefs: prefs,
-        learning: learning,
-        session: session,
-      ));
+      await tester.pumpWidget(
+        createTestApp(prefs: prefs, learning: learning, session: session),
+      );
       await tester.pumpAndSettle();
 
       await tester.tap(find.text('Introducción a la seguridad'));

@@ -18,9 +18,9 @@ class CloudSyncService implements ICloudSyncService {
     required AuthService authService,
     FirestoreService? firestoreService,
     AppLogger? logger,
-  })  : _authService = authService,
-        _firestoreService = firestoreService ?? FirestoreService.instance,
-        _logger = logger ?? AppLogger();
+  }) : _authService = authService,
+       _firestoreService = firestoreService ?? FirestoreService.instance,
+       _logger = logger ?? AppLogger();
 
   final AuthService _authService;
   final FirestoreService _firestoreService;
@@ -90,11 +90,18 @@ class CloudSyncService implements ICloudSyncService {
   @override
   void notifyFieldChanged(String spKey, Object? value) {
     // Accept all primitive types that Firestore supports
-    if (value is! int && value is! String && value is! bool && value is! double) return;
+    if (value is! int &&
+        value is! String &&
+        value is! bool &&
+        value is! double) {
+      return;
+    }
 
     // Economic fields must go through Cloud Functions, not direct Firestore writes
     if (FirestoreFieldConfig.isServerOnlyField(spKey)) {
-      _logger.info('CloudSync: server-only field "$spKey" — use EconomicFunctionsService');
+      _logger.info(
+        'CloudSync: server-only field "$spKey" — use EconomicFunctionsService',
+      );
       return;
     }
 
@@ -137,9 +144,7 @@ class CloudSyncService implements ICloudSyncService {
 
     if (validUpdates.isEmpty) return;
 
-    _firestoreService
-        .updateFields(uid, validUpdates)
-        .catchError((e) {
+    _firestoreService.updateFields(uid, validUpdates).catchError((e) {
       _logger.warning('CloudSync: _flushPendingWrites failed: $e');
       // Re-queue only fields that haven't been superseded by a newer write
       for (final entry in validUpdates.entries) {
@@ -242,7 +247,9 @@ class CloudSyncService implements ICloudSyncService {
         } else if (val is DateTime) {
           futures.add(prefs.setString(entry.key, val.toIso8601String()));
         } else if (val is Timestamp) {
-          futures.add(prefs.setString(entry.key, val.toDate().toIso8601String()));
+          futures.add(
+            prefs.setString(entry.key, val.toDate().toIso8601String()),
+          );
         } else if (val is List) {
           futures.add(prefs.setString(entry.key, jsonEncode(val)));
         } else if (val is Map) {
@@ -328,41 +335,49 @@ class CloudSyncService implements ICloudSyncService {
       return false;
     }
     try {
-      return await retry<bool>(() async {
-        _isSyncing = true;
-        try {
-          final data = <String, dynamic>{};
-          final keysToSync = _dirtyKeys.isEmpty ? _keysToSync : _dirtyKeys.toList();
-          for (final key in keysToSync) {
-            final val = _getPrefValue(prefs, key);
-            if (val != null) {
-              data[key] = val;
+      return await retry<bool>(
+        () async {
+          _isSyncing = true;
+          try {
+            final data = <String, dynamic>{};
+            final keysToSync = _dirtyKeys.isEmpty
+                ? _keysToSync
+                : _dirtyKeys.toList();
+            for (final key in keysToSync) {
+              final val = _getPrefValue(prefs, key);
+              if (val != null) {
+                data[key] = val;
+              }
             }
-          }
 
-          if (data.isEmpty) {
+            if (data.isEmpty) {
+              _dirtyKeys.clear();
+              return true;
+            }
+
+            await _firestore
+                .collection('users')
+                .doc(uid)
+                .set(data, SetOptions(merge: true))
+                .timeout(const Duration(seconds: 10));
+            await prefs.setString(
+              _lastSyncKey,
+              DateTime.now().toIso8601String(),
+            );
+            _lastSync = DateTime.now();
             _dirtyKeys.clear();
+            _logger.info('CloudSync: saved ${data.length} keys for $uid');
             return true;
+          } finally {
+            _isSyncing = false;
           }
-
-          await _firestore
-              .collection('users')
-              .doc(uid)
-              .set(data, SetOptions(merge: true))
-              .timeout(const Duration(seconds: 10));
-          await prefs.setString(_lastSyncKey, DateTime.now().toIso8601String());
-          _lastSync = DateTime.now();
-          _dirtyKeys.clear();
-          _logger.info('CloudSync: saved ${data.length} keys for $uid');
-          return true;
-        } finally {
-          _isSyncing = false;
-        }
-      }, config: const RetryConfig(
-        maxRetries: 3,
-        baseDelay: Duration(seconds: 1),
-        policy: RetryPolicy.exponentialBackoff,
-      ));
+        },
+        config: const RetryConfig(
+          maxRetries: 3,
+          baseDelay: Duration(seconds: 1),
+          policy: RetryPolicy.exponentialBackoff,
+        ),
+      );
     } catch (e) {
       _logger.error('CloudSync: saveAll failed after retries: $e');
       return false;
@@ -377,29 +392,35 @@ class CloudSyncService implements ICloudSyncService {
     if (!_initialized) return false;
 
     try {
-      return await retry<bool>(() async {
-        _isSyncing = true;
-        try {
-          final doc = await _firestore.collection('users').doc(uid).get()
-              .timeout(const Duration(seconds: 10));
-          if (!doc.exists) {
-            _logger.info('CloudSync: no cloud data for $uid');
-            return false;
-          }
+      return await retry<bool>(
+        () async {
+          _isSyncing = true;
+          try {
+            final doc = await _firestore
+                .collection('users')
+                .doc(uid)
+                .get()
+                .timeout(const Duration(seconds: 10));
+            if (!doc.exists) {
+              _logger.info('CloudSync: no cloud data for $uid');
+              return false;
+            }
 
-          final data = doc.data();
-          if (data == null) return false;
-          await _applyDocumentData(data, prefs, isInitialLoad: true);
-          _logger.info('CloudSync: loaded ${data.length} keys for $uid');
-          return true;
-        } finally {
-          _isSyncing = false;
-        }
-      }, config: const RetryConfig(
-        maxRetries: 3,
-        baseDelay: Duration(seconds: 1),
-        policy: RetryPolicy.exponentialBackoff,
-      ));
+            final data = doc.data();
+            if (data == null) return false;
+            await _applyDocumentData(data, prefs, isInitialLoad: true);
+            _logger.info('CloudSync: loaded ${data.length} keys for $uid');
+            return true;
+          } finally {
+            _isSyncing = false;
+          }
+        },
+        config: const RetryConfig(
+          maxRetries: 3,
+          baseDelay: Duration(seconds: 1),
+          policy: RetryPolicy.exponentialBackoff,
+        ),
+      );
     } catch (e) {
       _logger.error('CloudSync: loadAll failed after retries: $e');
       return false;
@@ -420,7 +441,10 @@ class CloudSyncService implements ICloudSyncService {
   Future<bool> deleteCloudData(String uid) async {
     if (!_initialized) return false;
     try {
-      await _firestore.collection('users').doc(uid).delete()
+      await _firestore
+          .collection('users')
+          .doc(uid)
+          .delete()
           .timeout(const Duration(seconds: 10));
       _logger.info('CloudSync: deleted cloud data for $uid');
       return true;
@@ -441,15 +465,22 @@ class CloudSyncService implements ICloudSyncService {
         final val = entry.value;
         if (val is Timestamp) {
           serializable[entry.key] = val.toDate().toIso8601String();
-        } else if (val is int || val is String || val is bool || val is double || val is List || val is Map) {
+        } else if (val is int ||
+            val is String ||
+            val is bool ||
+            val is double ||
+            val is List ||
+            val is Map) {
           serializable[entry.key] = val;
         }
       }
-      SharedPreferences.getInstance().then((prefs) {
-        prefs.setString(_pendingWritesKey, jsonEncode(serializable));
-      }).catchError((e) {
-        _logger.warning('Failed to persist pending writes: $e');
-      });
+      SharedPreferences.getInstance()
+          .then((prefs) {
+            prefs.setString(_pendingWritesKey, jsonEncode(serializable));
+          })
+          .catchError((e) {
+            _logger.warning('Failed to persist pending writes: $e');
+          });
     } catch (e) {
       _logger.warning('CloudSync: _persistPendingWrites failed: $e');
     }
@@ -469,7 +500,9 @@ class CloudSyncService implements ICloudSyncService {
         }
       }
       if (_pendingWrites.isNotEmpty) {
-        _logger.info('CloudSync: loaded ${_pendingWrites.length} pending writes from local storage');
+        _logger.info(
+          'CloudSync: loaded ${_pendingWrites.length} pending writes from local storage',
+        );
       }
     } catch (e) {
       _logger.warning('CloudSync: _loadPendingWrites failed: $e');
@@ -477,11 +510,13 @@ class CloudSyncService implements ICloudSyncService {
   }
 
   void _clearPersistedPendingWrites() {
-    SharedPreferences.getInstance().then((prefs) {
-      prefs.remove(_pendingWritesKey);
-    }).catchError((e) {
-      _logger.warning('Failed to clear persisted pending writes: $e');
-    });
+    SharedPreferences.getInstance()
+        .then((prefs) {
+          prefs.remove(_pendingWritesKey);
+        })
+        .catchError((e) {
+          _logger.warning('Failed to clear persisted pending writes: $e');
+        });
   }
 
   dynamic _getPrefValue(SharedPreferences prefs, String key) {

@@ -15,10 +15,12 @@ class CommitmentSelectionScreen extends ConsumerStatefulWidget {
   const CommitmentSelectionScreen({super.key, required this.onCommit});
 
   @override
-  ConsumerState<CommitmentSelectionScreen> createState() => _CommitmentSelectionScreenState();
+  ConsumerState<CommitmentSelectionScreen> createState() =>
+      _CommitmentSelectionScreenState();
 }
 
-class _CommitmentSelectionScreenState extends ConsumerState<CommitmentSelectionScreen> {
+class _CommitmentSelectionScreenState
+    extends ConsumerState<CommitmentSelectionScreen> {
   int? _selectedDays;
   late final Map<String, bool> _weekDays;
 
@@ -37,7 +39,8 @@ class _CommitmentSelectionScreenState extends ConsumerState<CommitmentSelectionS
     final result = <String, bool>{};
     for (int i = 0; i < 7; i++) {
       final date = startOfWeek.add(Duration(days: i));
-      final key = '${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+      final key =
+          '${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
       result[key] = date.isBefore(today);
     }
     return result;
@@ -56,7 +59,9 @@ class _CommitmentSelectionScreenState extends ConsumerState<CommitmentSelectionS
     final l = AppLocalizations.of(context)!;
 
     return Scaffold(
-      backgroundColor: dark ? PremiumColors.deepBackground : PremiumColors.lightBg,
+      backgroundColor: dark
+          ? PremiumColors.deepBackground
+          : PremiumColors.lightBg,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(AppSpacing.xxl),
@@ -90,95 +95,104 @@ class _CommitmentSelectionScreenState extends ConsumerState<CommitmentSelectionS
                 ),
               ),
               const SizedBox(height: AppSpacing.xxl),
-              ..._options.map((days) => Padding(
-                    padding: const EdgeInsets.only(bottom: AppSpacing.md),
-                    child: Semantics(
-                      button: true,
-                      label: l.commitDays(days),
-                      child: GestureDetector(
-                        onTap: () {
-                          ref.read(experienceServiceProvider).lightHaptic();
-                          setState(() => _selectedDays = days);
-                        },
-                        child: AnimatedContainer(
-                          duration: const Duration(milliseconds: 200),
-                          padding: const EdgeInsets.all(AppSpacing.lg),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(AppRadius.xl),
+              ..._options.map(
+                (days) => Padding(
+                  padding: const EdgeInsets.only(bottom: AppSpacing.md),
+                  child: Semantics(
+                    button: true,
+                    label: l.commitDays(days),
+                    child: GestureDetector(
+                      onTap: () {
+                        ref.read(experienceServiceProvider).lightHaptic();
+                        setState(() => _selectedDays = days);
+                      },
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        padding: const EdgeInsets.all(AppSpacing.lg),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(AppRadius.xl),
+                          color: _selectedDays == days
+                              ? PremiumColors.streakOrange.withValues(
+                                  alpha: 0.1,
+                                )
+                              : dark
+                              ? Colors.white.withValues(alpha: 0.04)
+                              : Colors.black.withValues(alpha: 0.03),
+                          border: Border.all(
                             color: _selectedDays == days
-                                ? PremiumColors.streakOrange.withValues(alpha: 0.1)
+                                ? PremiumColors.streakOrange
                                 : dark
-                                    ? Colors.white.withValues(alpha: 0.04)
-                                    : Colors.black.withValues(alpha: 0.03),
-                            border: Border.all(
+                                ? Colors.white.withValues(alpha: 0.08)
+                                : Colors.black.withValues(alpha: 0.06),
+                            width: _selectedDays == days ? 2 : 1,
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              _selectedDays == days
+                                  ? Icons.check_circle_rounded
+                                  : Icons.circle_outlined,
+                              size: 22,
                               color: _selectedDays == days
                                   ? PremiumColors.streakOrange
                                   : dark
-                                      ? Colors.white.withValues(alpha: 0.08)
-                                      : Colors.black.withValues(alpha: 0.06),
-                              width: _selectedDays == days ? 2 : 1,
+                                  ? Colors.white.withValues(alpha: 0.3)
+                                  : Colors.black.withValues(alpha: 0.2),
                             ),
-                          ),
-                          child: Row(
-                            children: [
-                              Icon(
-                                _selectedDays == days
-                                    ? Icons.check_circle_rounded
-                                    : Icons.circle_outlined,
-                                size: 22,
-                                color: _selectedDays == days
-                                    ? PremiumColors.streakOrange
-                                    : dark
-                                        ? Colors.white.withValues(alpha: 0.3)
-                                        : Colors.black.withValues(alpha: 0.2),
-                              ),
-                              const SizedBox(width: AppSpacing.lg),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      l.commitDays(days),
-                                      style: AppTextStyle.titleSmall.copyWith(
-                                        fontWeight: FontWeight.bold,
-                                        color: _selectedDays == days
-                                            ? PremiumColors.streakOrange
-                                            : dark
-                                                ? Colors.white.withValues(alpha: 0.85)
-                                                : Colors.black87,
-                                      ),
-                                    ),
-                                    Text(
-                                      _goalText(days, l),
-                                      style: AppTextStyle.caption.copyWith(
-                                        color: context.textTertiary,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              if (_selectedDays == days)
-                                Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 2),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(AppRadius.pill),
-                                    color: PremiumColors.streakOrange,
-                                  ),
-                                  child: Text(
-                                    l.commitSelected,
-                                    style: AppTextStyle.micro.copyWith(
+                            const SizedBox(width: AppSpacing.lg),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    l.commitDays(days),
+                                    style: AppTextStyle.titleSmall.copyWith(
                                       fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                      letterSpacing: 1,
+                                      color: _selectedDays == days
+                                          ? PremiumColors.streakOrange
+                                          : dark
+                                          ? Colors.white.withValues(alpha: 0.85)
+                                          : Colors.black87,
                                     ),
                                   ),
+                                  Text(
+                                    _goalText(days, l),
+                                    style: AppTextStyle.caption.copyWith(
+                                      color: context.textTertiary,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            if (_selectedDays == days)
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: AppSpacing.sm,
+                                  vertical: 2,
                                 ),
-                            ],
-                          ),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(
+                                    AppRadius.pill,
+                                  ),
+                                  color: PremiumColors.streakOrange,
+                                ),
+                                child: Text(
+                                  l.commitSelected,
+                                  style: AppTextStyle.micro.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                    letterSpacing: 1,
+                                  ),
+                                ),
+                              ),
+                          ],
                         ),
                       ),
                     ),
-                  )),
+                  ),
+                ),
+              ),
               if (_selectedDays != null) ...[
                 const SizedBox(height: AppSpacing.xl),
                 Container(
@@ -186,9 +200,7 @@ class _CommitmentSelectionScreenState extends ConsumerState<CommitmentSelectionS
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(AppRadius.xl),
                     color: context.surfaceTinted,
-                    border: Border.all(
-                      color: context.subtleBorder,
-                    ),
+                    border: Border.all(color: context.subtleBorder),
                   ),
                   child: Column(
                     children: [
@@ -224,12 +236,17 @@ class _CommitmentSelectionScreenState extends ConsumerState<CommitmentSelectionS
                       foregroundColor: Colors.white,
                       disabledBackgroundColor: context.surfaceTinted,
                       disabledForegroundColor: context.textDisabled,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(AppRadius.lg),
+                      ),
                       elevation: _selectedDays != null ? 4 : 0,
                     ),
                     child: Text(
                       l.commitButton,
-                      style: AppTextStyle.bodyMd.copyWith(fontWeight: FontWeight.bold, letterSpacing: 0.5),
+                      style: AppTextStyle.bodyMd.copyWith(
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 0.5,
+                      ),
                     ),
                   ),
                 ),

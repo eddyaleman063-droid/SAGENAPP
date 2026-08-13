@@ -24,7 +24,8 @@ class TapScale extends StatefulWidget {
   State<TapScale> createState() => _TapScaleState();
 }
 
-class _TapScaleState extends State<TapScale> with SingleTickerProviderStateMixin {
+class _TapScaleState extends State<TapScale>
+    with SingleTickerProviderStateMixin {
   late AnimationController _ctrl;
   late Animation<double> _anim;
 
@@ -33,11 +34,15 @@ class _TapScaleState extends State<TapScale> with SingleTickerProviderStateMixin
     super.initState();
     _ctrl = AnimationController(
       vsync: this,
-      duration: AppMotion.resolve(widget.duration, reduceAnimations: widget.reduceAnimations),
+      duration: AppMotion.resolve(
+        widget.duration,
+        reduceAnimations: widget.reduceAnimations,
+      ),
     );
-    _anim = Tween<double>(begin: 1.0, end: widget.scale).animate(
-      CurvedAnimation(parent: _ctrl, curve: Curves.easeInOut),
-    );
+    _anim = Tween<double>(
+      begin: 1.0,
+      end: widget.scale,
+    ).animate(CurvedAnimation(parent: _ctrl, curve: Curves.easeInOut));
   }
 
   @override
@@ -45,7 +50,10 @@ class _TapScaleState extends State<TapScale> with SingleTickerProviderStateMixin
     super.didUpdateWidget(oldWidget);
     if (widget.reduceAnimations != oldWidget.reduceAnimations ||
         widget.duration != oldWidget.duration) {
-      _ctrl.duration = AppMotion.resolve(widget.duration, reduceAnimations: widget.reduceAnimations);
+      _ctrl.duration = AppMotion.resolve(
+        widget.duration,
+        reduceAnimations: widget.reduceAnimations,
+      );
     }
   }
 
@@ -71,7 +79,8 @@ class _TapScaleState extends State<TapScale> with SingleTickerProviderStateMixin
         onTap: widget.onTap,
         child: AnimatedBuilder(
           animation: _anim,
-          builder: (context, child) => Transform.scale(scale: _anim.value, child: child),
+          builder: (context, child) =>
+              Transform.scale(scale: _anim.value, child: child),
           child: widget.child,
         ),
       ),

@@ -43,7 +43,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       ),
       body: StreamBuilder<DocumentSnapshot>(
         key: ValueKey(_retryKey),
-        stream: FirebaseFirestore.instance.collection('users').doc(widget.uid).snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection('users')
+            .doc(widget.uid)
+            .snapshots(),
         builder: (context, snapshot) {
           final l = AppLocalizations.of(context)!;
           if (snapshot.hasError) {
@@ -112,13 +115,25 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           }
 
           final raw = snapshot.data!.data();
-          if (raw == null || raw is! Map<String, dynamic>) return const _ProfileShimmer();
+          if (raw == null || raw is! Map<String, dynamic>) {
+            return const _ProfileShimmer();
+          }
           final data = raw;
-          final firstName = (data['firstName'] is String) ? data['firstName'] as String : l.profileDefaultFirstName;
-          final lastName = (data['lastName'] is String) ? data['lastName'] as String : l.profileDefaultLastName;
-          final totalXp = (data['learning_total_xp'] is int) ? data['learning_total_xp'] as int : 0;
-          final currentStreak = (data['currentStreak'] is int) ? data['currentStreak'] as int : 0;
-          final level = (data['learning_level'] is int) ? data['learning_level'] as int : (totalXp ~/ 100) + 1;
+          final firstName = (data['firstName'] is String)
+              ? data['firstName'] as String
+              : l.profileDefaultFirstName;
+          final lastName = (data['lastName'] is String)
+              ? data['lastName'] as String
+              : l.profileDefaultLastName;
+          final totalXp = (data['learning_total_xp'] is int)
+              ? data['learning_total_xp'] as int
+              : 0;
+          final currentStreak = (data['currentStreak'] is int)
+              ? data['currentStreak'] as int
+              : 0;
+          final level = (data['learning_level'] is int)
+              ? data['learning_level'] as int
+              : (totalXp ~/ 100) + 1;
 
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
@@ -130,7 +145,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   height: 88,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    border: Border.all(color: PremiumColors.splashBlue, width: 3),
+                    border: Border.all(
+                      color: PremiumColors.splashBlue,
+                      width: 3,
+                    ),
                     boxShadow: [
                       BoxShadow(
                         color: PremiumColors.splashBlue.withValues(alpha: 0.25),
@@ -159,7 +177,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 const SizedBox(height: AppSpacing.xl),
                 _StatRow(label: l.profileLevel, value: '$level'),
                 _StatRow(label: l.profileTotalXp, value: '$totalXp'),
-                _StatRow(label: l.profileStreak, value: l.streakDays(currentStreak)),
+                _StatRow(
+                  label: l.profileStreak,
+                  value: l.streakDays(currentStreak),
+                ),
               ],
             ).animate().fadeIn().slideY(begin: 0.05),
           );
@@ -181,8 +202,17 @@ class _StatRow extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: AppTextStyle.body.copyWith(color: context.textTertiary)),
-          Text(value, style: AppTextStyle.body.copyWith(fontWeight: FontWeight.w600, color: context.textPrimary)),
+          Text(
+            label,
+            style: AppTextStyle.body.copyWith(color: context.textTertiary),
+          ),
+          Text(
+            value,
+            style: AppTextStyle.body.copyWith(
+              fontWeight: FontWeight.w600,
+              color: context.textPrimary,
+            ),
+          ),
         ],
       ),
     );

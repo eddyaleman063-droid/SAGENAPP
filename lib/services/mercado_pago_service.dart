@@ -18,13 +18,14 @@ class MercadoPagoPreference {
 /// MercadoPago integration for payment processing.
 class MercadoPagoService {
   MercadoPagoService({ApiSender? sender, AppLogger? logger})
-      : _sender = sender ?? ApiClient.instance,
-        _logger = logger ?? AppLogger();
+    : _sender = sender ?? ApiClient.instance,
+      _logger = logger ?? AppLogger();
 
   final ApiSender _sender;
   final AppLogger _logger;
 
-  String get _baseUrl => AppConfig.mercadopagoFunctionsUrl.replaceAll(RegExp(r'/+$'), '');
+  String get _baseUrl =>
+      AppConfig.mercadopagoFunctionsUrl.replaceAll(RegExp(r'/+$'), '');
 
   Future<MercadoPagoPreference> createPreference({
     required int amount,
@@ -35,19 +36,21 @@ class MercadoPagoService {
     final url = Uri.parse('$_baseUrl/api/createPaymentPreference');
 
     try {
-      final response = await _sender.send(ApiRequest(
-        method: 'POST',
-        uri: url,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $idToken',
-        },
-        body: {
-          'amount': amount,
-          'productId': productId,
-          'price': price ?? 0.0,
-        },
-      ));
+      final response = await _sender.send(
+        ApiRequest(
+          method: 'POST',
+          uri: url,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $idToken',
+          },
+          body: {
+            'amount': amount,
+            'productId': productId,
+            'price': price ?? 0.0,
+          },
+        ),
+      );
 
       final decoded = response.jsonMap;
       if (decoded == null) {
@@ -66,7 +69,9 @@ class MercadoPagoService {
       final externalRef = result['externalRef'] as String?;
       if (preferenceId == null || initPoint == null) {
         _logger.error('MP createPreference: missing fields', result);
-        throw const MercadoPagoException('Invalid server response: missing fields');
+        throw const MercadoPagoException(
+          'Invalid server response: missing fields',
+        );
       }
       return MercadoPagoPreference(
         preferenceId: preferenceId,
@@ -92,10 +97,7 @@ class MercadoPagoService {
   Future<bool> checkHealth() async {
     try {
       final url = Uri.parse('$_baseUrl/api/health');
-      final response = await _sender.send(ApiRequest(
-        method: 'GET',
-        uri: url,
-      ));
+      final response = await _sender.send(ApiRequest(method: 'GET', uri: url));
       return response.statusCode >= 200 && response.statusCode < 300;
     } catch (e) {
       _logger.warning('[MercadoPagoService] checkHealth error: $e');
@@ -112,20 +114,22 @@ class MercadoPagoService {
   }) async {
     final url = Uri.parse('$_baseUrl/api/registerPendingPayment');
     try {
-      final response = await _sender.send(ApiRequest(
-        method: 'POST',
-        uri: url,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $idToken',
-        },
-        body: {
-          'paymentMethod': paymentMethod,
-          'operationId': operationId,
-          'amount': amount,
-          'productId': productId,
-        },
-      ));
+      final response = await _sender.send(
+        ApiRequest(
+          method: 'POST',
+          uri: url,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $idToken',
+          },
+          body: {
+            'paymentMethod': paymentMethod,
+            'operationId': operationId,
+            'amount': amount,
+            'productId': productId,
+          },
+        ),
+      );
       final decoded = response.jsonMap;
       return decoded?['result'] as Map<String, dynamic>? ?? {};
     } on ApiException catch (e) {
@@ -144,18 +148,17 @@ class MercadoPagoService {
   }) async {
     final url = Uri.parse('$_baseUrl/api/validatePurchase');
     try {
-      final response = await _sender.send(ApiRequest(
-        method: 'POST',
-        uri: url,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $idToken',
-        },
-        body: {
-          'cost': cost,
-          'itemId': itemId,
-        },
-      ));
+      final response = await _sender.send(
+        ApiRequest(
+          method: 'POST',
+          uri: url,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $idToken',
+          },
+          body: {'cost': cost, 'itemId': itemId},
+        ),
+      );
       final decoded = response.jsonMap;
       return decoded?['result'] as Map<String, dynamic>? ?? {};
     } on ApiException catch (e) {
@@ -173,17 +176,17 @@ class MercadoPagoService {
   }) async {
     final url = Uri.parse('$_baseUrl/api/checkPendingPaymentStatus');
     try {
-      final response = await _sender.send(ApiRequest(
-        method: 'POST',
-        uri: url,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $idToken',
-        },
-        body: {
-          'pendingPaymentId': pendingPaymentId,
-        },
-      ));
+      final response = await _sender.send(
+        ApiRequest(
+          method: 'POST',
+          uri: url,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $idToken',
+          },
+          body: {'pendingPaymentId': pendingPaymentId},
+        ),
+      );
       final decoded = response.jsonMap;
       return decoded?['result'] as Map<String, dynamic>? ?? {};
     } on ApiException catch (e) {
@@ -194,7 +197,6 @@ class MercadoPagoService {
       rethrow;
     }
   }
-
 }
 
 class MercadoPagoException implements Exception {

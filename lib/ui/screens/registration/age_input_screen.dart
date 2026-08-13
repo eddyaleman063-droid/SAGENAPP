@@ -34,33 +34,40 @@ class AgeInputScreen extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: AppSpacing.xxl),
-              Semantics(label: l.regAgeQuestion, child: TextField(
-                keyboardType: TextInputType.number,
-                maxLength: 2,
-                style: AppTextStyle.display.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: context.textPrimary,
-                ),
-                textAlign: TextAlign.center,
-                decoration: InputDecoration(
-                  counterText: '',
-                  hintText: '0',
-                  hintStyle: AppTextStyle.display.copyWith(
-                    color: context.subtle,
+              Semantics(
+                label: l.regAgeQuestion,
+                child: TextField(
+                  keyboardType: TextInputType.number,
+                  maxLength: 2,
+                  style: AppTextStyle.display.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: context.textPrimary,
                   ),
-                  filled: true,
-                  fillColor: context.surfaceTinted,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(AppRadius.xl),
-                    borderSide: BorderSide.none,
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                    counterText: '',
+                    hintText: '0',
+                    hintStyle: AppTextStyle.display.copyWith(
+                      color: context.subtle,
+                    ),
+                    filled: true,
+                    fillColor: context.surfaceTinted,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(AppRadius.xl),
+                      borderSide: BorderSide.none,
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      vertical: AppSpacing.lg,
+                    ),
                   ),
-                  contentPadding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
+                  onChanged: (value) {
+                    final parsed = int.tryParse(value) ?? 0;
+                    ref
+                        .read(registrationFunnelProvider.notifier)
+                        .setAge(parsed);
+                  },
                 ),
-                onChanged: (value) {
-                  final parsed = int.tryParse(value) ?? 0;
-                  ref.read(registrationFunnelProvider.notifier).setAge(parsed);
-                },
-              )),
+              ),
               if (state.age > 0 && !ageValid)
                 Padding(
                   padding: const EdgeInsets.only(top: AppSpacing.sm),
@@ -76,18 +83,29 @@ class AgeInputScreen extends ConsumerWidget {
               SizedBox(
                 width: double.infinity,
                 height: 54,
-                child: Semantics(button: true, label: l.continueText, child: ElevatedButton(
-                  onPressed: ageValid ? onContinue : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: PremiumColors.primary,
-                    foregroundColor: Colors.white,
-                    disabledBackgroundColor: context.surfaceTinted,
-                    disabledForegroundColor: context.textDisabled,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
-                    elevation: ageValid ? 4 : 0,
+                child: Semantics(
+                  button: true,
+                  label: l.continueText,
+                  child: ElevatedButton(
+                    onPressed: ageValid ? onContinue : null,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: PremiumColors.primary,
+                      foregroundColor: Colors.white,
+                      disabledBackgroundColor: context.surfaceTinted,
+                      disabledForegroundColor: context.textDisabled,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(AppRadius.lg),
+                      ),
+                      elevation: ageValid ? 4 : 0,
+                    ),
+                    child: Text(
+                      l.continueText,
+                      style: AppTextStyle.titleSmall.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
-                  child: Text(l.continueText, style: AppTextStyle.titleSmall.copyWith(fontWeight: FontWeight.bold)),
-                )),
+                ),
               ),
               const SizedBox(height: AppSpacing.md),
             ],

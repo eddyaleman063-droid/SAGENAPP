@@ -42,9 +42,9 @@ void main() {
     setUp(() async {
       SharedPreferences.setMockInitialValues({});
       final prefs = await SharedPreferences.getInstance();
-      container = ProviderContainer(overrides: [
-        prefsProvider.overrideWithValue(prefs),
-      ]);
+      container = ProviderContainer(
+        overrides: [prefsProvider.overrideWithValue(prefs)],
+      );
     });
 
     tearDown(() => container.dispose());
@@ -85,13 +85,16 @@ void main() {
       expect(state.mode, ThemeMode.system);
     });
 
-    test('setScheduleHours updates start and end hours clamped to valid range', () {
-      final notifier = container.read(themeProvider.notifier);
-      notifier.setScheduleHours(start: 22, end: 6);
-      final state = container.read(themeProvider);
-      expect(state.scheduleStartHour, 22);
-      expect(state.scheduleEndHour, 6);
-    });
+    test(
+      'setScheduleHours updates start and end hours clamped to valid range',
+      () {
+        final notifier = container.read(themeProvider.notifier);
+        notifier.setScheduleHours(start: 22, end: 6);
+        final state = container.read(themeProvider);
+        expect(state.scheduleStartHour, 22);
+        expect(state.scheduleEndHour, 6);
+      },
+    );
 
     test('setScheduleHours clamps out of range values', () {
       final notifier = container.read(themeProvider.notifier);

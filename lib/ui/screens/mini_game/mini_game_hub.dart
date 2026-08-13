@@ -21,8 +21,18 @@ class MiniGameHub extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
-    final labels = [l.miniGameMemory, l.miniGameWord, l.miniGameSpeed, l.miniGamePattern];
-    final descriptions = [l.miniGameMemoryDesc, l.miniGameWordDesc, l.miniGameSpeedDesc, l.miniGamePatternDesc];
+    final labels = [
+      l.miniGameMemory,
+      l.miniGameWord,
+      l.miniGameSpeed,
+      l.miniGamePattern,
+    ];
+    final descriptions = [
+      l.miniGameMemoryDesc,
+      l.miniGameWordDesc,
+      l.miniGameSpeedDesc,
+      l.miniGamePatternDesc,
+    ];
 
     return Scaffold(
       appBar: AppBar(title: Text(l.miniGameTitle)),
@@ -31,7 +41,10 @@ class MiniGameHub extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(l.miniGameSubtitle, style: AppTextStyle.bodyMd.copyWith(color: context.textSecondary)),
+            Text(
+              l.miniGameSubtitle,
+              style: AppTextStyle.bodyMd.copyWith(color: context.textSecondary),
+            ),
             const SizedBox(height: AppSpacing.xl),
             Expanded(
               child: LayoutBuilder(
@@ -45,16 +58,20 @@ class MiniGameHub extends StatelessWidget {
                       childAspectRatio: 1.2,
                     ),
                     itemCount: 4,
-                    itemBuilder: (ctx, i) => _GameCard(
-                      icon: _games[i].$2,
-                      color: _games[i].$3,
-                      title: labels[i],
-                      description: descriptions[i],
-                      onTap: () {
-                        ExperienceService.instance.mediumHaptic();
-                        context.push('/mini-game/${_games[i].$1.name}');
-                      },
-                    ).animate().fadeIn(delay: (i * 100).ms, duration: 400.ms).scale(begin: const Offset(0.9, 0.9)),
+                    itemBuilder: (ctx, i) =>
+                        _GameCard(
+                              icon: _games[i].$2,
+                              color: _games[i].$3,
+                              title: labels[i],
+                              description: descriptions[i],
+                              onTap: () {
+                                ExperienceService.instance.mediumHaptic();
+                                context.push('/mini-game/${_games[i].$1.name}');
+                              },
+                            )
+                            .animate()
+                            .fadeIn(delay: (i * 100).ms, duration: 400.ms)
+                            .scale(begin: const Offset(0.9, 0.9)),
                   );
                 },
               ),
@@ -73,7 +90,13 @@ class _GameCard extends StatelessWidget {
   final String description;
   final VoidCallback onTap;
 
-  const _GameCard({required this.icon, required this.color, required this.title, required this.description, required this.onTap});
+  const _GameCard({
+    required this.icon,
+    required this.color,
+    required this.title,
+    required this.description,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -99,13 +122,29 @@ class _GameCard extends StatelessWidget {
               Container(
                 width: 48,
                 height: 48,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(AppRadius.md), color: color.withValues(alpha: 0.1)),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(AppRadius.md),
+                  color: color.withValues(alpha: 0.1),
+                ),
                 child: Icon(icon, color: color, size: 24),
               ),
               const Spacer(),
-              Text(title, style: AppTextStyle.titleSmall.copyWith(fontWeight: FontWeight.bold, color: context.textPrimary)),
+              Text(
+                title,
+                style: AppTextStyle.titleSmall.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: context.textPrimary,
+                ),
+              ),
               const SizedBox(height: AppSpacing.xxs),
-              Text(description, style: AppTextStyle.caption.copyWith(color: context.textTertiary), maxLines: 2, overflow: TextOverflow.ellipsis),
+              Text(
+                description,
+                style: AppTextStyle.caption.copyWith(
+                  color: context.textTertiary,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
             ],
           ),
         ),

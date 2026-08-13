@@ -8,7 +8,10 @@ void main() {
 
   group('OnboardingWizardConfig', () {
     test('totalSteps matches localizedSteps length', () {
-      expect(OnboardingWizardConfig.localizedSteps(l), hasLength(OnboardingWizardConfig.totalSteps));
+      expect(
+        OnboardingWizardConfig.localizedSteps(l),
+        hasLength(OnboardingWizardConfig.totalSteps),
+      );
       expect(OnboardingWizardConfig.totalSteps, 9);
     });
 
@@ -29,7 +32,11 @@ void main() {
       final steps = OnboardingWizardConfig.localizedSteps(l);
       for (final step in steps) {
         expect(step.question, isNotEmpty, reason: 'question must not be empty');
-        expect(step.sageMessage, isNotEmpty, reason: 'sageMessage must not be empty');
+        expect(
+          step.sageMessage,
+          isNotEmpty,
+          reason: 'sageMessage must not be empty',
+        );
         expect(step.emotion, isNotNull);
       }
     });
@@ -41,7 +48,11 @@ void main() {
             step.type == WizardStepType.multi ||
             step.type == WizardStepType.level ||
             step.type == WizardStepType.goal) {
-          expect(step.options, isNotEmpty, reason: '${step.type} step must have options');
+          expect(
+            step.options,
+            isNotEmpty,
+            reason: '${step.type} step must have options',
+          );
         }
       }
     });
@@ -61,8 +72,11 @@ void main() {
       final steps = OnboardingWizardConfig.localizedSteps(l);
       for (final step in steps) {
         final values = step.options.map((o) => o.value).toSet();
-        expect(values, hasLength(step.options.length),
-            reason: '${step.question} has duplicated option values');
+        expect(
+          values,
+          hasLength(step.options.length),
+          reason: '${step.question} has duplicated option values',
+        );
       }
     });
 
@@ -85,7 +99,11 @@ void main() {
       expect(withExtras.color, Colors.blue);
       expect(withExtras.subtitle, 'sub');
 
-      const minimal = WizardOption(label: 'x', value: 'y', icon: Icons.star_rounded);
+      const minimal = WizardOption(
+        label: 'x',
+        value: 'y',
+        icon: Icons.star_rounded,
+      );
       expect(minimal.color, isNull);
       expect(minimal.subtitle, isNull);
     });

@@ -17,16 +17,41 @@ void main() {
     });
 
     test('totalQuestions returns length', () {
-      const state = FirstLessonState(questions: [
-        Challenge(id: '1', question: 'Q1', type: LessonType.multipleChoice, options: ['A', 'B'], correctIndex: 0, explanation: 'E'),
-        Challenge(id: '2', question: 'Q2', type: LessonType.trueFalse, options: ['T', 'F'], correctIndex: 0, explanation: 'E'),
-      ]);
+      const state = FirstLessonState(
+        questions: [
+          Challenge(
+            id: '1',
+            question: 'Q1',
+            type: LessonType.multipleChoice,
+            options: ['A', 'B'],
+            correctIndex: 0,
+            explanation: 'E',
+          ),
+          Challenge(
+            id: '2',
+            question: 'Q2',
+            type: LessonType.trueFalse,
+            options: ['T', 'F'],
+            correctIndex: 0,
+            explanation: 'E',
+          ),
+        ],
+      );
       expect(state.totalQuestions, 2);
     });
 
     test('isComplete is true when past last question', () {
       const state = FirstLessonState(
-        questions: [Challenge(id: '1', question: 'Q', type: LessonType.multipleChoice, options: ['A', 'B'], correctIndex: 0, explanation: 'E')],
+        questions: [
+          Challenge(
+            id: '1',
+            question: 'Q',
+            type: LessonType.multipleChoice,
+            options: ['A', 'B'],
+            correctIndex: 0,
+            explanation: 'E',
+          ),
+        ],
         currentIndex: 1,
       );
       expect(state.isComplete, true);
@@ -35,8 +60,22 @@ void main() {
     test('isPerfect when all correct', () {
       const state = FirstLessonState(
         questions: [
-          Challenge(id: '1', question: 'Q1', type: LessonType.multipleChoice, options: ['A', 'B'], correctIndex: 0, explanation: 'E'),
-          Challenge(id: '2', question: 'Q2', type: LessonType.trueFalse, options: ['T', 'F'], correctIndex: 0, explanation: 'E'),
+          Challenge(
+            id: '1',
+            question: 'Q1',
+            type: LessonType.multipleChoice,
+            options: ['A', 'B'],
+            correctIndex: 0,
+            explanation: 'E',
+          ),
+          Challenge(
+            id: '2',
+            question: 'Q2',
+            type: LessonType.trueFalse,
+            options: ['T', 'F'],
+            correctIndex: 0,
+            explanation: 'E',
+          ),
         ],
         correctCount: 2,
       );
@@ -50,9 +89,9 @@ void main() {
     setUp(() async {
       SharedPreferences.setMockInitialValues({});
       final prefs = await SharedPreferences.getInstance();
-      container = ProviderContainer(overrides: [
-        prefsProvider.overrideWithValue(prefs),
-      ]);
+      container = ProviderContainer(
+        overrides: [prefsProvider.overrideWithValue(prefs)],
+      );
     });
 
     tearDown(() => container.dispose());

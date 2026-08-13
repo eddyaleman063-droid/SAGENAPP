@@ -66,13 +66,16 @@ class SagenPassRepositoryImpl implements SagenPassRepository {
   @override
   void save(int level, int sp, List<int> claimedLevels, DateTime seasonStart) {
     _invalidateCache();
-    _prefs.setString(_keyPass, jsonEncode({
-      'level': level,
-      'sp': sp,
-      'claimed': claimedLevels,
-      'seasonStart': seasonStart.toIso8601String(),
-      'duration': seasonDurationDays,
-    }));
+    _prefs.setString(
+      _keyPass,
+      jsonEncode({
+        'level': level,
+        'sp': sp,
+        'claimed': claimedLevels,
+        'seasonStart': seasonStart.toIso8601String(),
+        'duration': seasonDurationDays,
+      }),
+    );
   }
 
   @override

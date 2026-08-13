@@ -47,7 +47,7 @@ class StreakService implements IStreakService {
   final AppLogger _logger = AppLogger();
 
   StreakService(this._repo, {RemoteConfigService? remoteConfig})
-      : _remoteConfig = remoteConfig ?? RemoteConfigService.instance;
+    : _remoteConfig = remoteConfig ?? RemoteConfigService.instance;
 
   @override
   StreakStatus load() {
@@ -88,7 +88,9 @@ class StreakService implements IStreakService {
 
   void _save(int current, int longest, DateTime? lastDate, int freezes) {
     // Normalize to midnight for consistent date comparisons
-    final normalized = lastDate != null ? DateTime(lastDate.year, lastDate.month, lastDate.day) : null;
+    final normalized = lastDate != null
+        ? DateTime(lastDate.year, lastDate.month, lastDate.day)
+        : null;
     _repo.saveAll(
       currentStreak: current,
       longestStreak: longest,
@@ -97,7 +99,13 @@ class StreakService implements IStreakService {
     );
   }
 
-  StreakStatus _evaluate(int current, int longest, DateTime? lastDate, int freezes, {bool freezeConsumed = false}) {
+  StreakStatus _evaluate(
+    int current,
+    int longest,
+    DateTime? lastDate,
+    int freezes, {
+    bool freezeConsumed = false,
+  }) {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
 
@@ -115,14 +123,28 @@ class StreakService implements IStreakService {
       }
     }
 
-    final atRisk = updatedCurrent > 0 && updatedLast != null &&
-        today.difference(DateTime(updatedLast.year, updatedLast.month, updatedLast.day)).inDays >= 1;
+    final atRisk =
+        updatedCurrent > 0 &&
+        updatedLast != null &&
+        today
+                .difference(
+                  DateTime(
+                    updatedLast.year,
+                    updatedLast.month,
+                    updatedLast.day,
+                  ),
+                )
+                .inDays >=
+            1;
 
     final message = _buildMessage(updatedCurrent, atRisk);
     final tier = _tierFor(updatedCurrent);
 
     final newLongest = max(updatedCurrent, longest);
-    if (updatedCurrent != current || newLongest != longest || updatedLast != lastDate || updatedFreezes != freezes) {
+    if (updatedCurrent != current ||
+        newLongest != longest ||
+        updatedLast != lastDate ||
+        updatedFreezes != freezes) {
       _save(updatedCurrent, newLongest, updatedLast, updatedFreezes);
     }
 
@@ -174,14 +196,22 @@ class StreakService implements IStreakService {
         newCurrent = 1;
       }
 
-      if (newCurrent > 0 && newCurrent % 7 == 0 && newFreezes < _remoteConfig.streakMaxFreezes) {
+      if (newCurrent > 0 &&
+          newCurrent % 7 == 0 &&
+          newFreezes < _remoteConfig.streakMaxFreezes) {
         newFreezes = newFreezes + 1;
       }
 
       final newLongest = max(newCurrent, longest);
       _save(newCurrent, newLongest, now, newFreezes);
 
-      return _evaluate(newCurrent, newLongest, now, newFreezes, freezeConsumed: freezeConsumed);
+      return _evaluate(
+        newCurrent,
+        newLongest,
+        now,
+        newFreezes,
+        freezeConsumed: freezeConsumed,
+      );
     } catch (e) {
       _logger.error('StreakService: checkIn failed: $e');
       return _evaluate(0, 0, null, 0);
@@ -213,6 +243,7 @@ class StreakService implements IStreakService {
   bool shouldSendReminder(StreakStatus status) {
     if (!status.hasStreak) return false;
     if (!status.isAtRisk) return false;
-    return status.timeUntilMidnight.inHours <= 4 && status.timeUntilMidnight.inHours > 0;
+    return status.timeUntilMidnight.inHours <= 4 &&
+        status.timeUntilMidnight.inHours > 0;
   }
 }

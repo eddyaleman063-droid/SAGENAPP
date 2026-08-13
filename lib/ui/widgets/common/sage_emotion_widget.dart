@@ -41,7 +41,9 @@ class _StaticSageImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ProviderScope.containerOf(context).read(sageEmotionServiceProvider).ensurePrecached(emotion);
+    ProviderScope.containerOf(
+      context,
+    ).read(sageEmotionServiceProvider).ensurePrecached(emotion);
     final dpr = MediaQuery.devicePixelRatioOf(context);
     final decodeSize = (size * dpr).round().clamp(0, 600);
     return Image.asset(
@@ -66,11 +68,7 @@ class _StaticSageImage extends StatelessWidget {
         color: PremiumColors.sagePlaceholder,
         shape: BoxShape.circle,
       ),
-      child: Icon(
-        Icons.pets,
-        color: Colors.white54,
-        size: size * 0.5,
-      ),
+      child: Icon(Icons.pets, color: Colors.white54, size: size * 0.5),
     );
   }
 }
@@ -127,7 +125,9 @@ class _LiveSageImageState extends ConsumerState<_LiveSageImage>
   }
 
   void _updateBreathing() {
-    final shouldBreathe = ref.read(sageEmotionServiceProvider).canIdleBreathe(_displayed);
+    final shouldBreathe = ref
+        .read(sageEmotionServiceProvider)
+        .canIdleBreathe(_displayed);
     if (shouldBreathe == _idleBreathe) return;
     _idleBreathe = shouldBreathe;
     _breatheCtrl?.dispose();
@@ -157,7 +157,9 @@ class _LiveSageImageState extends ConsumerState<_LiveSageImage>
   }
 
   Listenable get _listenable {
-    if (_breatheCtrl != null) return Listenable.merge([_transCtrl, _breatheCtrl!]);
+    if (_breatheCtrl != null) {
+      return Listenable.merge([_transCtrl, _breatheCtrl!]);
+    }
     return _transCtrl;
   }
 
@@ -176,10 +178,7 @@ class _LiveSageImageState extends ConsumerState<_LiveSageImage>
             transitionBuilder: (child, animation) {
               return ScaleTransition(
                 scale: animation,
-                child: FadeTransition(
-                  opacity: animation,
-                  child: child,
-                ),
+                child: FadeTransition(opacity: animation, child: child),
               );
             },
             child: Image.asset(
@@ -211,11 +210,7 @@ class _LiveSageImageState extends ConsumerState<_LiveSageImage>
         color: PremiumColors.sagePlaceholder,
         shape: BoxShape.circle,
       ),
-      child: Icon(
-        Icons.pets,
-        color: Colors.white54,
-        size: widget.size * 0.5,
-      ),
+      child: Icon(Icons.pets, color: Colors.white54, size: widget.size * 0.5),
     );
   }
 }

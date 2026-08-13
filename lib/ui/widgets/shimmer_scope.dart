@@ -11,7 +11,9 @@ class ShimmerScope extends StatefulWidget {
   });
 
   static AnimationController? maybeOf(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<_ShimmerInherited>()?.controller;
+    return context
+        .dependOnInheritedWidgetOfExactType<_ShimmerInherited>()
+        ?.controller;
   }
 
   @override

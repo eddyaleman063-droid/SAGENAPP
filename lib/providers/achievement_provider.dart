@@ -70,7 +70,9 @@ class AchievementNotifier extends Notifier<AchievementState> {
         progress: service.progress,
       );
       // Deliver XP reward through the learning provider
-      ref.read(learningProvider.notifier).addXp(xpReward, reason: 'achievement');
+      ref
+          .read(learningProvider.notifier)
+          .addXp(xpReward, reason: 'achievement');
       // Award gems from achievement
       ref.read(gemProvider.notifier).awardAchievementGems(xpReward);
     }

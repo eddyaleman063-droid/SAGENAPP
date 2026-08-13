@@ -38,25 +38,20 @@ class _ReviewScreenState extends ConsumerState<ReviewScreen>
   @override
   void initState() {
     super.initState();
-    _entryCtrl = AnimationController(
-      vsync: this,
-      duration: AppMotion.normal,
-    );
+    _entryCtrl = AnimationController(vsync: this, duration: AppMotion.normal);
     _fadeAnim = CurvedAnimation(parent: _entryCtrl, curve: AppEasing.entrance);
     _slideAnim = Tween<Offset>(
       begin: const Offset(0, 0.2),
       end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: _entryCtrl,
-      curve: AppEasing.entrance,
-    ));
+    ).animate(CurvedAnimation(parent: _entryCtrl, curve: AppEasing.entrance));
     _streakCtrl = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 600),
     );
-    _streakGlow = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _streakCtrl, curve: Curves.easeOut),
-    );
+    _streakGlow = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _streakCtrl, curve: Curves.easeOut));
     _loadQuestions();
   }
 
@@ -117,7 +112,9 @@ class _ReviewScreenState extends ConsumerState<ReviewScreen>
     } else {
       final review = ref.read(reviewProvider.notifier);
       review.markReviewCompleted();
-      await ref.read(learningProvider.notifier).addXp(Math.min(_correctCount * 5, 25), reason: 'review');
+      await ref
+          .read(learningProvider.notifier)
+          .addXp(Math.min(_correctCount * 5, 25), reason: 'review');
       ref.read(gemProvider.notifier).awardReviewGems();
       if (!mounted) return;
       setState(() => _completed = true);
@@ -187,12 +184,13 @@ class _ReviewScreenState extends ConsumerState<ReviewScreen>
 
     final accuracy = _questions.isEmpty
         ? 1.0
-        : _correctCount / ((_currentIndex + (_showResult ? 1 : 0)).clamp(1, 9999));
+        : _correctCount /
+              ((_currentIndex + (_showResult ? 1 : 0)).clamp(1, 9999));
     final sageEmotion = accuracy >= 0.8
         ? SageEmotion.excited
         : accuracy >= 0.5
-            ? SageEmotion.happy
-            : SageEmotion.calm;
+        ? SageEmotion.happy
+        : SageEmotion.calm;
 
     return AmbientBackground(
       child: Scaffold(
@@ -224,7 +222,9 @@ class _ReviewScreenState extends ConsumerState<ReviewScreen>
               label: l.questionProgress(_currentIndex + 1, _questions.length),
               child: LinearProgressIndicator(
                 value: (_currentIndex + 1) / _questions.length,
-                backgroundColor: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.15),
+                backgroundColor: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.15),
                 valueColor: const AlwaysStoppedAnimation(PremiumColors.primary),
               ),
             ),
@@ -235,7 +235,12 @@ class _ReviewScreenState extends ConsumerState<ReviewScreen>
           child: SlideTransition(
             position: _slideAnim,
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(AppSpacing.xl, AppSpacing.lg, AppSpacing.xl, AppSpacing.xl),
+              padding: const EdgeInsets.fromLTRB(
+                AppSpacing.xl,
+                AppSpacing.lg,
+                AppSpacing.xl,
+                AppSpacing.xl,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -251,7 +256,9 @@ class _ReviewScreenState extends ConsumerState<ReviewScreen>
                           borderRadius: BorderRadius.circular(AppRadius.sm),
                         ),
                         child: Text(
-                          _currentTopic.isNotEmpty ? _currentTopic : _current.type.label,
+                          _currentTopic.isNotEmpty
+                              ? _currentTopic
+                              : _current.type.label,
                           style: AppTextStyle.tiny.copyWith(
                             color: _current.color,
                             fontWeight: FontWeight.bold,
@@ -283,8 +290,9 @@ class _ReviewScreenState extends ConsumerState<ReviewScreen>
                           boxShadow: _streakGlow.value > 0.01
                               ? [
                                   BoxShadow(
-                                    color: PremiumColors.success
-                                        .withValues(alpha: 0.15 * _streakGlow.value),
+                                    color: PremiumColors.success.withValues(
+                                      alpha: 0.15 * _streakGlow.value,
+                                    ),
                                     blurRadius: 20 * _streakGlow.value,
                                     spreadRadius: 2 * _streakGlow.value,
                                   ),
@@ -303,11 +311,15 @@ class _ReviewScreenState extends ConsumerState<ReviewScreen>
 
                         if (_showResult) {
                           if (idx == _current.correctIndex) {
-                            bgColor = PremiumColors.success.withValues(alpha: 0.1);
+                            bgColor = PremiumColors.success.withValues(
+                              alpha: 0.1,
+                            );
                             borderColor = PremiumColors.success;
                           } else if (idx == _selectedOption &&
                               _selectedOption != _current.correctIndex) {
-                            bgColor = PremiumColors.error.withValues(alpha: 0.1);
+                            bgColor = PremiumColors.error.withValues(
+                              alpha: 0.1,
+                            );
                             borderColor = PremiumColors.error;
                           }
                         }
@@ -320,63 +332,107 @@ class _ReviewScreenState extends ConsumerState<ReviewScreen>
                             child: Material(
                               color: Colors.transparent,
                               child: InkWell(
-                                borderRadius: BorderRadius.circular(AppRadius.lg),
-                                onTap: _showResult ? null : () => _selectOption(idx),
-                                child: AnimatedContainer(
-                                duration: AppMotion.fast,
-                                padding: const EdgeInsets.all(AppSpacing.lg),
-                                decoration: BoxDecoration(
-                                  color: bgColor ??
-                                      context.surfaceCard,
-                                  borderRadius: BorderRadius.circular(AppRadius.lg),
-                                  border: Border.all(
-                                    color: borderColor ??
-                                        Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.15),
-                                    width: borderColor != null ? 2 : 1,
-                                  ),
+                                borderRadius: BorderRadius.circular(
+                                  AppRadius.lg,
                                 ),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 28,
-                                      height: 28,
-                                      decoration: BoxDecoration(
-                                        color: _selectedOption == idx
-                                            ? (_showResult && idx == _current.correctIndex
-                                                ? PremiumColors.success
-                                                : _showResult && idx != _current.correctIndex
+                                onTap: _showResult
+                                    ? null
+                                    : () => _selectOption(idx),
+                                child: AnimatedContainer(
+                                  duration: AppMotion.fast,
+                                  padding: const EdgeInsets.all(AppSpacing.lg),
+                                  decoration: BoxDecoration(
+                                    color: bgColor ?? context.surfaceCard,
+                                    borderRadius: BorderRadius.circular(
+                                      AppRadius.lg,
+                                    ),
+                                    border: Border.all(
+                                      color:
+                                          borderColor ??
+                                          Theme.of(context)
+                                              .colorScheme
+                                              .onSurface
+                                              .withValues(alpha: 0.15),
+                                      width: borderColor != null ? 2 : 1,
+                                    ),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 28,
+                                        height: 28,
+                                        decoration: BoxDecoration(
+                                          color: _selectedOption == idx
+                                              ? (_showResult &&
+                                                        idx ==
+                                                            _current
+                                                                .correctIndex
+                                                    ? PremiumColors.success
+                                                    : _showResult &&
+                                                          idx !=
+                                                              _current
+                                                                  .correctIndex
                                                     ? PremiumColors.error
                                                     : PremiumColors.primary)
-                                            :                                         Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.1),
-                                        borderRadius: BorderRadius.circular(AppRadius.sm),
-                                      ),
-                                      child: Center(
-                                        child: _showResult && idx == _current.correctIndex
-                                            ? const Icon(Icons.check_rounded, color: Colors.white, size: 16)
-                                            : _showResult && idx == _selectedOption
-                                                ? const Icon(Icons.close_rounded, color: Colors.white, size: 16)
-                                                : Text('${idx + 1}',
-                                                    style: AppTextStyle.caption.copyWith(
-                                                      fontWeight: FontWeight.bold,
-                                                       color: _selectedOption == idx ? Colors.white : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.4),
-                                                    )),
-                                      ),
-                                    ),
-                                    const SizedBox(width: AppSpacing.md),
-                                    Expanded(
-                                      child: Text(
-                                        opt,
-                                        style: AppTextStyle.body.copyWith(
-                                           color: context.textPrimary,
+                                              : Theme.of(context)
+                                                    .colorScheme
+                                                    .onSurface
+                                                    .withValues(alpha: 0.1),
+                                          borderRadius: BorderRadius.circular(
+                                            AppRadius.sm,
+                                          ),
+                                        ),
+                                        child: Center(
+                                          child:
+                                              _showResult &&
+                                                  idx == _current.correctIndex
+                                              ? const Icon(
+                                                  Icons.check_rounded,
+                                                  color: Colors.white,
+                                                  size: 16,
+                                                )
+                                              : _showResult &&
+                                                    idx == _selectedOption
+                                              ? const Icon(
+                                                  Icons.close_rounded,
+                                                  color: Colors.white,
+                                                  size: 16,
+                                                )
+                                              : Text(
+                                                  '${idx + 1}',
+                                                  style: AppTextStyle.caption
+                                                      .copyWith(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color:
+                                                            _selectedOption ==
+                                                                idx
+                                                            ? Colors.white
+                                                            : Theme.of(context)
+                                                                  .colorScheme
+                                                                  .onSurface
+                                                                  .withValues(
+                                                                    alpha: 0.4,
+                                                                  ),
+                                                      ),
+                                                ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                      const SizedBox(width: AppSpacing.md),
+                                      Expanded(
+                                        child: Text(
+                                          opt,
+                                          style: AppTextStyle.body.copyWith(
+                                            color: context.textPrimary,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
                         );
                       }).toList(),
                     ),
@@ -419,11 +475,13 @@ class _ReviewScreenState extends ConsumerState<ReviewScreen>
                     const SizedBox(height: AppSpacing.lg),
                     Semantics(
                       button: true,
-                      label: _currentIndex < _questions.length - 1 ? l.nextText : l.reviewFinish,
+                      label: _currentIndex < _questions.length - 1
+                          ? l.nextText
+                          : l.reviewFinish,
                       child: SizedBox(
                         width: double.infinity,
                         height: 48,
-                          child: ElevatedButton.icon(
+                        child: ElevatedButton.icon(
                           onPressed: () {
                             ExperienceService.instance.lightHaptic();
                             _next();
@@ -494,25 +552,32 @@ class _ReviewScreenState extends ConsumerState<ReviewScreen>
                 children: [
                   SageEmotionWidget(emotion: emotion, size: 80, animated: true),
                   const SizedBox(height: AppSpacing.xl),
-                  Text(title,
-                      style: AppTextStyle.display.copyWith(
-                        fontWeight: FontWeight.bold,
-                      )),
+                  Text(
+                    title,
+                    style: AppTextStyle.display.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                   const SizedBox(height: AppSpacing.sm),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.xl,
+                    ),
                     child: Text(
                       sageMessage,
                       textAlign: TextAlign.center,
                       style: AppTextStyle.subtitle.copyWith(
-                    color: context.textSecondary,
+                        color: context.textSecondary,
                         height: 1.4,
                       ),
                     ),
                   ),
                   const SizedBox(height: AppSpacing.xxl),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.sm),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.lg,
+                      vertical: AppSpacing.sm,
+                    ),
                     decoration: BoxDecoration(
                       color: PremiumColors.primary.withValues(alpha: 0.08),
                       borderRadius: BorderRadius.circular(AppRadius.xxl),
@@ -527,8 +592,7 @@ class _ReviewScreenState extends ConsumerState<ReviewScreen>
                           ),
                         ),
                         const SizedBox(width: AppSpacing.xxs),
-                        Text(l.reviewCorrect,
-                            style: AppTextStyle.caption),
+                        Text(l.reviewCorrect, style: AppTextStyle.caption),
                       ],
                     ),
                   ),
@@ -539,8 +603,11 @@ class _ReviewScreenState extends ConsumerState<ReviewScreen>
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(Icons.auto_awesome_rounded,
-                            size: 18, color: PremiumColors.primary),
+                        const Icon(
+                          Icons.auto_awesome_rounded,
+                          size: 18,
+                          color: PremiumColors.primary,
+                        ),
                         const SizedBox(width: AppSpacing.xxs),
                         Text(
                           '+$xpEarned XP',
@@ -559,7 +626,7 @@ class _ReviewScreenState extends ConsumerState<ReviewScreen>
                       width: double.infinity,
                       height: 50,
                       child: ElevatedButton.icon(
-                onPressed: () => context.pop(),
+                        onPressed: () => context.pop(),
                         icon: const Icon(Icons.check_rounded, size: 18),
                         label: Text(l.back, style: AppTextStyle.bodyBold),
                         style: ElevatedButton.styleFrom(

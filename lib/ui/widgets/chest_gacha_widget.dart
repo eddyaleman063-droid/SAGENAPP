@@ -73,7 +73,8 @@ class _ChestGachaWidgetState extends ConsumerState<ChestGachaWidget>
 
     try {
       // Call server-side gacha roll
-      final result = await ref.read(chestEvolutionServiceProvider)
+      final result = await ref
+          .read(chestEvolutionServiceProvider)
           .rollSingleEvolution(_displayType);
 
       if (!mounted) return;
@@ -87,8 +88,9 @@ class _ChestGachaWidgetState extends ConsumerState<ChestGachaWidget>
         ref.read(experienceServiceProvider).chestFailHaptic();
       }
 
-      _orbStates[_currentAttempt] =
-          upgraded ? _OrbState.success : _OrbState.fail;
+      _orbStates[_currentAttempt] = upgraded
+          ? _OrbState.success
+          : _OrbState.fail;
 
       final attempt = EvolutionAttempt(
         index: _currentAttempt,
@@ -122,10 +124,9 @@ class _ChestGachaWidgetState extends ConsumerState<ChestGachaWidget>
         // If roll failed, end early — server idempotency means subsequent
         // rolls on the same tier return the same result (misleading to user)
         if (_currentAttempt >= 3 || !upgraded) {
-          widget.onComplete(ChestEvolutionResult(
-            finalType: _displayType,
-            attempts: _attempts,
-          ));
+          widget.onComplete(
+            ChestEvolutionResult(finalType: _displayType, attempts: _attempts),
+          );
         } else {
           setState(() {
             _isProcessing = false;
@@ -136,13 +137,15 @@ class _ChestGachaWidgetState extends ConsumerState<ChestGachaWidget>
     } catch (e) {
       // On error, treat as no upgrade but notify user
       _orbStates[_currentAttempt] = _OrbState.fail;
-      _attempts.add(EvolutionAttempt(
-        index: _currentAttempt,
-        typeBefore: _displayType,
-        typeAfter: _displayType,
-        upgraded: false,
-        isFinal: _currentAttempt == 2,
-      ));
+      _attempts.add(
+        EvolutionAttempt(
+          index: _currentAttempt,
+          typeBefore: _displayType,
+          typeAfter: _displayType,
+          upgraded: false,
+          isFinal: _currentAttempt == 2,
+        ),
+      );
       _currentAttempt++;
       _statusKey = AppLocalizations.of(context)!.connectionErrorRetry;
       setState(() {
@@ -153,10 +156,9 @@ class _ChestGachaWidgetState extends ConsumerState<ChestGachaWidget>
       Future.delayed(const Duration(milliseconds: 1200), () {
         if (!mounted) return;
         // End gacha on error — no point retrying same tier
-        widget.onComplete(ChestEvolutionResult(
-          finalType: _displayType,
-          attempts: _attempts,
-        ));
+        widget.onComplete(
+          ChestEvolutionResult(finalType: _displayType, attempts: _attempts),
+        );
       });
     }
   }
@@ -242,13 +244,16 @@ class _ChestGachaWidgetState extends ConsumerState<ChestGachaWidget>
   Widget _buildOrbs() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(3, (i) => _OrbWidget(
-        index: i,
-        state: _orbStates[i],
-        isCurrent: i == _currentAttempt && !_isProcessing,
-        color: _displayType.color,
-        pulseAnim: _chestPulse,
-      )),
+      children: List.generate(
+        3,
+        (i) => _OrbWidget(
+          index: i,
+          state: _orbStates[i],
+          isCurrent: i == _currentAttempt && !_isProcessing,
+          color: _displayType.color,
+          pulseAnim: _chestPulse,
+        ),
+      ),
     );
   }
 }
@@ -282,10 +287,7 @@ class _OrbWidget extends StatelessWidget {
             final opacity = isCurrent ? 0.8 + pulseAnim.value * 0.2 : 0.4;
             return Transform.scale(
               scale: scale,
-              child: Opacity(
-                opacity: opacity,
-                child: child,
-              ),
+              child: Opacity(opacity: opacity, child: child),
             );
           },
           child: _circle(
@@ -298,7 +300,11 @@ class _OrbWidget extends StatelessWidget {
           color: PremiumColors.success,
           child: Semantics(
             label: AppLocalizations.of(context)!.gachaOrbSuccess,
-            child: const Icon(Icons.check_rounded, color: Colors.white, size: 16),
+            child: const Icon(
+              Icons.check_rounded,
+              color: Colors.white,
+              size: 16,
+            ),
           ),
         );
       case _OrbState.fail:
@@ -306,7 +312,11 @@ class _OrbWidget extends StatelessWidget {
           color: context.textSecondary,
           child: Semantics(
             label: AppLocalizations.of(context)!.gachaOrbFail,
-            child: const Icon(Icons.close_rounded, color: Colors.white54, size: 16),
+            child: const Icon(
+              Icons.close_rounded,
+              color: Colors.white54,
+              size: 16,
+            ),
           ),
         );
     }
@@ -362,10 +372,7 @@ class _StatusBadge extends StatelessWidget {
       tween: Tween(begin: 0.0, end: 1.0),
       duration: const Duration(milliseconds: 300),
       curve: Curves.elasticOut,
-      builder: (_, scale, child) => Transform.scale(
-        scale: scale,
-        child: child,
-      ),
+      builder: (_, scale, child) => Transform.scale(scale: scale, child: child),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
         decoration: BoxDecoration(

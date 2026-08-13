@@ -11,7 +11,11 @@ class WizardGoalStep extends ConsumerWidget {
   final int stepIndex;
   final WizardStepConfig stepConfig;
 
-  const WizardGoalStep({super.key, required this.stepIndex, required this.stepConfig});
+  const WizardGoalStep({
+    super.key,
+    required this.stepIndex,
+    required this.stepConfig,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -35,9 +39,11 @@ class WizardGoalStep extends ConsumerWidget {
           const SizedBox(height: AppSpacing.sm),
           Text(
             config.question,
-            style: AppTextStyle.title.copyWith(fontWeight: FontWeight.bold,
+            style: AppTextStyle.title.copyWith(
+              fontWeight: FontWeight.bold,
               color: textPrimary,
-              height: 1.3),
+              height: 1.3,
+            ),
           ),
           const SizedBox(height: AppSpacing.lg),
           ...config.options.map((opt) {
@@ -53,79 +59,100 @@ class WizardGoalStep extends ConsumerWidget {
                 child: GestureDetector(
                   onTap: () {
                     exp.lightHaptic();
-                    ref.read(onboardingWizardProvider.notifier).setSectionData(stepIndex, opt.value);
+                    ref
+                        .read(onboardingWizardProvider.notifier)
+                        .setSectionData(stepIndex, opt.value);
                   },
-                child: AnimatedContainer(
-                  duration: exp.fast,
-                  curve: AppEasing.entrance,
-                  padding: const EdgeInsets.all(AppSpacing.lg),
-                  decoration: BoxDecoration(
-                    gradient: isSel
-                        ? LinearGradient(
-                            colors: [accentColor.withValues(alpha: 0.15), accentColor.withValues(alpha: 0.05)],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          )
-                        : null,
-                    color: isSel ? null : cardBg,
-                    borderRadius: BorderRadius.circular(AppRadius.lg),
-                    border: Border.all(
-                      color: isSel ? accentColor.withValues(alpha: 0.5) : cardBorder,
-                      width: isSel ? 1.5 : 1.0,
+                  child: AnimatedContainer(
+                    duration: exp.fast,
+                    curve: AppEasing.entrance,
+                    padding: const EdgeInsets.all(AppSpacing.lg),
+                    decoration: BoxDecoration(
+                      gradient: isSel
+                          ? LinearGradient(
+                              colors: [
+                                accentColor.withValues(alpha: 0.15),
+                                accentColor.withValues(alpha: 0.05),
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            )
+                          : null,
+                      color: isSel ? null : cardBg,
+                      borderRadius: BorderRadius.circular(AppRadius.lg),
+                      border: Border.all(
+                        color: isSel
+                            ? accentColor.withValues(alpha: 0.5)
+                            : cardBorder,
+                        width: isSel ? 1.5 : 1.0,
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 52,
+                          height: 52,
+                          decoration: BoxDecoration(
+                            color: isSel
+                                ? accentColor.withValues(alpha: 0.2)
+                                : context.shimmerBase,
+                            borderRadius: BorderRadius.circular(AppRadius.md),
+                          ),
+                          child: ExcludeSemantics(
+                            child: Icon(opt.icon, size: 26, color: accentColor),
+                          ),
+                        ),
+                        const SizedBox(width: AppSpacing.lg),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                opt.label,
+                                style: AppTextStyle.title.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: isSel ? textPrimary : textSecondary,
+                                ),
+                              ),
+                              if (opt.subtitle != null) ...[
+                                const SizedBox(height: 2),
+                                Text(
+                                  opt.subtitle!,
+                                  style: AppTextStyle.subtitle.copyWith(
+                                    color: isSel
+                                        ? textSecondary.withValues(alpha: 0.7)
+                                        : subTitleColor,
+                                  ),
+                                ),
+                              ],
+                            ],
+                          ),
+                        ),
+                        Container(
+                          width: 26,
+                          height: 26,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: isSel
+                                  ? accentColor
+                                  : cs.onSurface.withValues(alpha: 0.2),
+                              width: 2,
+                            ),
+                            color: isSel ? accentColor : Colors.transparent,
+                          ),
+                          child: isSel
+                              ? const Icon(
+                                  Icons.check_rounded,
+                                  size: 16,
+                                  color: Colors.white,
+                                )
+                              : null,
+                        ),
+                      ],
                     ),
                   ),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 52,
-                        height: 52,
-                        decoration: BoxDecoration(
-                          color: isSel ? accentColor.withValues(alpha: 0.2) : context.shimmerBase,
-                          borderRadius: BorderRadius.circular(AppRadius.md),
-                        ),
-                        child: ExcludeSemantics(
-                          child: Icon(opt.icon, size: 26, color: accentColor),
-                        ),
-                      ),
-                      const SizedBox(width: AppSpacing.lg),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              opt.label,
-                              style: AppTextStyle.title.copyWith(fontWeight: FontWeight.bold,
-                                color: isSel ? textPrimary : textSecondary),
-                            ),
-                            if (opt.subtitle != null) ...[
-                              const SizedBox(height: 2),
-                              Text(
-                                opt.subtitle!,
-                                style: AppTextStyle.subtitle.copyWith(color: isSel ? textSecondary.withValues(alpha: 0.7) : subTitleColor),
-                              ),
-                            ],
-                          ],
-                        ),
-                      ),
-                      Container(
-                        width: 26,
-                        height: 26,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: isSel ? accentColor : cs.onSurface.withValues(alpha: 0.2),
-                            width: 2,
-                          ),
-                          color: isSel ? accentColor : Colors.transparent,
-                        ),
-                        child: isSel
-                            ? const Icon(Icons.check_rounded, size: 16, color: Colors.white)
-                            : null,
-                      ),
-                    ],
-                  ),
                 ),
-              ),
               ),
             );
           }),

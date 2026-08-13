@@ -29,7 +29,10 @@ class MascotReactionNotifier extends AutoDisposeNotifier<MascotReactionState> {
     return const MascotReactionState();
   }
 
-  void triggerReaction(SageEmotion emotion, {Duration duration = const Duration(seconds: 5)}) {
+  void triggerReaction(
+    SageEmotion emotion, {
+    Duration duration = const Duration(seconds: 5),
+  }) {
     _clearTimer?.cancel();
     state = MascotReactionState(overrideEmotion: emotion);
     _clearTimer = Timer(duration, () {
@@ -37,15 +40,23 @@ class MascotReactionNotifier extends AutoDisposeNotifier<MascotReactionState> {
     });
   }
 
-  void triggerOverlay(SageEmotion emotion, {Duration duration = const Duration(seconds: 8), double strength = 0.3}) {
+  void triggerOverlay(
+    SageEmotion emotion, {
+    Duration duration = const Duration(seconds: 8),
+    double strength = 0.3,
+  }) {
     _clearTimer?.cancel();
-    state = MascotReactionState(overlayEmotion: emotion, overlayStrength: strength);
+    state = MascotReactionState(
+      overlayEmotion: emotion,
+      overlayStrength: strength,
+    );
     _clearTimer = Timer(duration, () {
       if (!_disposed) state = const MascotReactionState();
     });
   }
 }
 
-final mascotReactionProvider = NotifierProvider.autoDispose<MascotReactionNotifier, MascotReactionState>(
-  MascotReactionNotifier.new,
-);
+final mascotReactionProvider =
+    NotifierProvider.autoDispose<MascotReactionNotifier, MascotReactionState>(
+      MascotReactionNotifier.new,
+    );

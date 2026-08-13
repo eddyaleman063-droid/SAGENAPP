@@ -24,7 +24,10 @@ void main() {
 
     test('copyWith updates language', () {
       const state = LanguageState();
-      final updated = state.copyWith(language: AppLanguage.en, userExplicit: true);
+      final updated = state.copyWith(
+        language: AppLanguage.en,
+        userExplicit: true,
+      );
       expect(updated.language, AppLanguage.en);
       expect(updated.hasUserChosen, true);
     });
@@ -36,9 +39,9 @@ void main() {
     setUp(() async {
       SharedPreferences.setMockInitialValues({});
       final prefs = await SharedPreferences.getInstance();
-      container = ProviderContainer(overrides: [
-        prefsProvider.overrideWithValue(prefs),
-      ]);
+      container = ProviderContainer(
+        overrides: [prefsProvider.overrideWithValue(prefs)],
+      );
     });
 
     tearDown(() => container.dispose());

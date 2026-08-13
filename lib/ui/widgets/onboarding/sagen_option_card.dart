@@ -22,9 +22,7 @@ class SagenOptionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final accentColor = Theme.of(context).colorScheme.primary;
-    final borderColor = isSelected
-        ? accentColor
-        : context.subtle;
+    final borderColor = isSelected ? accentColor : context.subtle;
     final bgColor = isSelected
         ? accentColor.withValues(alpha: 0.10)
         : Colors.transparent;
@@ -60,11 +58,7 @@ class SagenOptionCard extends StatelessWidget {
               child: Row(
                 children: [
                   ExcludeSemantics(
-                    child: SizedBox(
-                      width: 24,
-                      height: 24,
-                      child: leading,
-                    ),
+                    child: SizedBox(width: 24, height: 24, child: leading),
                   ),
                   const SizedBox(width: AppSpacing.md),
                   Expanded(
@@ -73,7 +67,8 @@ class SagenOptionCard extends StatelessWidget {
                       children: [
                         Text(
                           title,
-                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          style: Theme.of(context).textTheme.bodyLarge
+                              ?.copyWith(
                                 color: titleColor,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -82,10 +77,9 @@ class SagenOptionCard extends StatelessWidget {
                           const SizedBox(height: 2),
                           Text(
                             subtitle!,
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onSurface
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(
+                                  color: Theme.of(context).colorScheme.onSurface
                                       .withValues(alpha: 0.6),
                                 ),
                           ),

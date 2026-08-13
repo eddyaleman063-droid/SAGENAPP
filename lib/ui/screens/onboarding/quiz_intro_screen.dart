@@ -13,11 +13,7 @@ class QuizIntroScreen extends StatefulWidget {
   final VoidCallback? onContinue;
   final VoidCallback? onBack;
 
-  const QuizIntroScreen({
-    super.key,
-    this.onContinue,
-    this.onBack,
-  });
+  const QuizIntroScreen({super.key, this.onContinue, this.onBack});
 
   @override
   State<QuizIntroScreen> createState() => _QuizIntroScreenState();
@@ -39,7 +35,9 @@ class _QuizIntroScreenState extends State<QuizIntroScreen> {
     final dark = Theme.of(context).brightness == Brightness.dark;
     final l = l10n(context);
     return Scaffold(
-      backgroundColor: dark ? PremiumColors.deepBackground : PremiumColors.lightBg,
+      backgroundColor: dark
+          ? PremiumColors.deepBackground
+          : PremiumColors.lightBg,
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -76,12 +74,17 @@ class _QuizIntroScreenState extends State<QuizIntroScreen> {
                   children: [
                     // Speech bubble with RichText
                     Container(
-                      margin:
-                          const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.xxl,
+                      ),
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 16),
+                        horizontal: 20,
+                        vertical: 16,
+                      ),
                       decoration: BoxDecoration(
-                        color: dark ? PremiumColors.onboardingBubbleDark : Colors.white,
+                        color: dark
+                            ? PremiumColors.onboardingBubbleDark
+                            : Colors.white,
                         borderRadius: BorderRadius.circular(AppRadius.xl),
                         border: Border.all(
                           color: dark
@@ -102,9 +105,7 @@ class _QuizIntroScreenState extends State<QuizIntroScreen> {
                               text: l.quizIntroFastQuestions,
                               style: AppTextStyle.bodyBold,
                             ),
-                            TextSpan(
-                              text: l.quizIntroBeforeTraining,
-                            ),
+                            TextSpan(text: l.quizIntroBeforeTraining),
                           ],
                         ),
                       ),
@@ -118,11 +119,13 @@ class _QuizIntroScreenState extends State<QuizIntroScreen> {
                         width: 12,
                         height: 12,
                         decoration: BoxDecoration(
-                        color: dark ? PremiumColors.onboardingBubbleDark : Colors.white,
-                        border: Border.all(
                           color: dark
-                              ? Colors.white.withValues(alpha: 0.10)
-                              : context.borderSubtle,
+                              ? PremiumColors.onboardingBubbleDark
+                              : Colors.white,
+                          border: Border.all(
+                            color: dark
+                                ? Colors.white.withValues(alpha: 0.10)
+                                : context.borderSubtle,
                           ),
                         ),
                       ),
@@ -138,7 +141,8 @@ class _QuizIntroScreenState extends State<QuizIntroScreen> {
                         height: 180,
                         cacheWidth: 360,
                         cacheHeight: 360,
-                        errorBuilder: (_, _, _) => const Icon(Icons.pets, size: 48),
+                        errorBuilder: (_, _, _) =>
+                            const Icon(Icons.pets, size: 48),
                       ),
                     ),
                   ],
@@ -149,7 +153,11 @@ class _QuizIntroScreenState extends State<QuizIntroScreen> {
             // ── Bottom 3D button ──
             Padding(
               padding: const EdgeInsets.fromLTRB(
-                  AppSpacing.xxl, 0, AppSpacing.xxl, AppSpacing.xxl),
+                AppSpacing.xxl,
+                0,
+                AppSpacing.xxl,
+                AppSpacing.xxl,
+              ),
               child: Semantics(
                 button: true,
                 label: l.continueText,

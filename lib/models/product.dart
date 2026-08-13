@@ -44,10 +44,74 @@ class Product {
 }
 
 List<Product> allProductsLocalized(AppLocalizations l) => [
-  Product(id: 'donation_basic', title: l.productDonationBasic, description: l.productDonationDesc, price: 3.00, supporterLevel: 1, badge: l.productSupporter),
-  Product(id: 'donation_standard', title: l.productDonationStandard, description: l.productDonationDesc, price: 5.00, supporterLevel: 2, badge: l.productPopular),
-  Product(id: 'donation_premium', title: l.productDonationPremium, description: l.productDonationDesc, price: 10.00, supporterLevel: 3, badge: l.productBestOffer),
-  Product(id: 'bundle_protector', title: l.productProtectorPack, description: l.productProtectorPackDesc, price: 12.00, supporterLevel: 2, bonuses: [ProductBonus(type: ProductBonusType.streakProtector, quantity: 1, label: l.productStreakProtectorDesc)], discount: 0.20, badge: l.productProtector),
-  Product(id: 'bundle_xp', title: l.productBoostPack, description: l.productBoostPackDesc, price: 20.00, supporterLevel: 3, bonuses: [ProductBonus(type: ProductBonusType.xpBoost, quantity: 1, label: l.productXpBoostDesc)], badge: l.productBoost),
-  Product(id: 'bundle_luck', title: l.productLuckPack, description: l.productLuckPackDesc, price: 24.00, supporterLevel: 3, bonuses: [ProductBonus(type: ProductBonusType.luckBoost, quantity: 1, label: l.productLuckBoostDesc)], badge: l.productLuck),
+  Product(
+    id: 'donation_basic',
+    title: l.productDonationBasic,
+    description: l.productDonationDesc,
+    price: 3.00,
+    supporterLevel: 1,
+    badge: l.productSupporter,
+  ),
+  Product(
+    id: 'donation_standard',
+    title: l.productDonationStandard,
+    description: l.productDonationDesc,
+    price: 5.00,
+    supporterLevel: 2,
+    badge: l.productPopular,
+  ),
+  Product(
+    id: 'donation_premium',
+    title: l.productDonationPremium,
+    description: l.productDonationDesc,
+    price: 10.00,
+    supporterLevel: 3,
+    badge: l.productBestOffer,
+  ),
+  Product(
+    id: 'bundle_protector',
+    title: l.productProtectorPack,
+    description: l.productProtectorPackDesc,
+    price: 12.00,
+    supporterLevel: 2,
+    bonuses: [
+      ProductBonus(
+        type: ProductBonusType.streakProtector,
+        quantity: 1,
+        label: l.productStreakProtectorDesc,
+      ),
+    ],
+    discount: 0.20,
+    badge: l.productProtector,
+  ),
+  Product(
+    id: 'bundle_xp',
+    title: l.productBoostPack,
+    description: l.productBoostPackDesc,
+    price: 20.00,
+    supporterLevel: 3,
+    bonuses: [
+      ProductBonus(
+        type: ProductBonusType.xpBoost,
+        quantity: 1,
+        label: l.productXpBoostDesc,
+      ),
+    ],
+    badge: l.productBoost,
+  ),
+  Product(
+    id: 'bundle_luck',
+    title: l.productLuckPack,
+    description: l.productLuckPackDesc,
+    price: 24.00,
+    supporterLevel: 3,
+    bonuses: [
+      ProductBonus(
+        type: ProductBonusType.luckBoost,
+        quantity: 1,
+        label: l.productLuckBoostDesc,
+      ),
+    ],
+    badge: l.productLuck,
+  ),
 ];

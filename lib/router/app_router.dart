@@ -60,9 +60,14 @@ final routerProvider = Provider<GoRouter>((ref) {
         }
         if (location == '/') return '/welcome';
         final publicRoutes = <String>{
-          '/welcome', '/login', '/forgot-password',
-          '/onboarding', '/onboarding/flow',
-          '/payment/success', '/payment/failure', '/payment/pending',
+          '/welcome',
+          '/login',
+          '/forgot-password',
+          '/onboarding',
+          '/onboarding/flow',
+          '/payment/success',
+          '/payment/failure',
+          '/payment/pending',
         };
         if (!publicRoutes.contains(location)) return '/welcome';
         return null;
@@ -71,8 +76,13 @@ final routerProvider = Provider<GoRouter>((ref) {
       if (auth.isAuthenticated) {
         if (!auth.profileLoaded) return null;
         final authRoutes = <String>{
-          '/', '/welcome', '/login', '/forgot-password', '/verify-email',
-          '/onboarding', '/onboarding/flow',
+          '/',
+          '/welcome',
+          '/login',
+          '/forgot-password',
+          '/verify-email',
+          '/onboarding',
+          '/onboarding/flow',
         };
         if (authRoutes.contains(location)) {
           return auth.onboardingCompleted ? '/main' : '/onboarding/flow';
@@ -105,16 +115,26 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/login',
         name: 'login',
         pageBuilder: (context, state) {
-          final isOnboarding = state.uri.queryParameters['onboarding'] == 'true';
+          final isOnboarding =
+              state.uri.queryParameters['onboarding'] == 'true';
           return CustomTransitionPage<void>(
             key: state.pageKey,
             child: LoginScreen(isOnboarding: isOnboarding),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-                SlideTransition(
-                  position: Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero)
-                      .animate(CurvedAnimation(parent: animation, curve: Curves.easeOut)),
-                  child: child,
-                ),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) =>
+                    SlideTransition(
+                      position:
+                          Tween<Offset>(
+                            begin: const Offset(1, 0),
+                            end: Offset.zero,
+                          ).animate(
+                            CurvedAnimation(
+                              parent: animation,
+                              curve: Curves.easeOut,
+                            ),
+                          ),
+                      child: child,
+                    ),
           );
         },
       ),
@@ -146,8 +166,13 @@ final routerProvider = Provider<GoRouter>((ref) {
           child: const OnboardingWizardScreen(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) =>
               SlideTransition(
-                position: Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero)
-                    .animate(CurvedAnimation(parent: animation, curve: Curves.easeOut)),
+                position:
+                    Tween<Offset>(
+                      begin: const Offset(1, 0),
+                      end: Offset.zero,
+                    ).animate(
+                      CurvedAnimation(parent: animation, curve: Curves.easeOut),
+                    ),
                 child: child,
               ),
         ),
@@ -180,8 +205,13 @@ final routerProvider = Provider<GoRouter>((ref) {
           child: const LessonsScreen(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) =>
               SlideTransition(
-                position: Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero)
-                    .animate(CurvedAnimation(parent: animation, curve: Curves.easeOut)),
+                position:
+                    Tween<Offset>(
+                      begin: const Offset(1, 0),
+                      end: Offset.zero,
+                    ).animate(
+                      CurvedAnimation(parent: animation, curve: Curves.easeOut),
+                    ),
                 child: child,
               ),
         ),
@@ -198,8 +228,13 @@ final routerProvider = Provider<GoRouter>((ref) {
           ),
           transitionsBuilder: (context, animation, secondaryAnimation, child) =>
               SlideTransition(
-                position: Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero)
-                    .animate(CurvedAnimation(parent: animation, curve: Curves.easeOut)),
+                position:
+                    Tween<Offset>(
+                      begin: const Offset(1, 0),
+                      end: Offset.zero,
+                    ).animate(
+                      CurvedAnimation(parent: animation, curve: Curves.easeOut),
+                    ),
                 child: child,
               ),
         ),
@@ -215,8 +250,13 @@ final routerProvider = Provider<GoRouter>((ref) {
           ),
           transitionsBuilder: (context, animation, secondaryAnimation, child) =>
               SlideTransition(
-                position: Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero)
-                    .animate(CurvedAnimation(parent: animation, curve: Curves.easeOut)),
+                position:
+                    Tween<Offset>(
+                      begin: const Offset(1, 0),
+                      end: Offset.zero,
+                    ).animate(
+                      CurvedAnimation(parent: animation, curve: Curves.easeOut),
+                    ),
                 child: child,
               ),
         ),
@@ -233,8 +273,13 @@ final routerProvider = Provider<GoRouter>((ref) {
           ),
           transitionsBuilder: (context, animation, secondaryAnimation, child) =>
               SlideTransition(
-                position: Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero)
-                    .animate(CurvedAnimation(parent: animation, curve: Curves.easeOut)),
+                position:
+                    Tween<Offset>(
+                      begin: const Offset(1, 0),
+                      end: Offset.zero,
+                    ).animate(
+                      CurvedAnimation(parent: animation, curve: Curves.easeOut),
+                    ),
                 child: child,
               ),
         ),
@@ -243,21 +288,25 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/quiz-summary',
         name: 'quiz-summary',
         pageBuilder: (context, state) {
-          final score = state.extra is QuizScoreCalculator ? state.extra as QuizScoreCalculator : null;
+          final score = state.extra is QuizScoreCalculator
+              ? state.extra as QuizScoreCalculator
+              : null;
           if (score == null) {
             final l = AppLocalizations.of(context);
             return CustomTransitionPage<void>(
               key: state.pageKey,
               child: Scaffold(body: Center(child: Text(l?.errorGeneric ?? ''))),
-              transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-                  FadeTransition(opacity: animation, child: child),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) =>
+                      FadeTransition(opacity: animation, child: child),
             );
           }
           return CustomTransitionPage<void>(
             key: state.pageKey,
             child: SessionSummaryScreen(score: score),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-                FadeTransition(opacity: animation, child: child),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) =>
+                    FadeTransition(opacity: animation, child: child),
           );
         },
       ),
@@ -289,8 +338,13 @@ final routerProvider = Provider<GoRouter>((ref) {
           child: const SagenPassScreen(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) =>
               SlideTransition(
-                position: Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero)
-                    .animate(CurvedAnimation(parent: animation, curve: Curves.easeOut)),
+                position:
+                    Tween<Offset>(
+                      begin: const Offset(1, 0),
+                      end: Offset.zero,
+                    ).animate(
+                      CurvedAnimation(parent: animation, curve: Curves.easeOut),
+                    ),
                 child: child,
               ),
         ),
@@ -303,8 +357,13 @@ final routerProvider = Provider<GoRouter>((ref) {
           child: const MiniGameHub(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) =>
               SlideTransition(
-                position: Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero)
-                    .animate(CurvedAnimation(parent: animation, curve: Curves.easeOut)),
+                position:
+                    Tween<Offset>(
+                      begin: const Offset(1, 0),
+                      end: Offset.zero,
+                    ).animate(
+                      CurvedAnimation(parent: animation, curve: Curves.easeOut),
+                    ),
                 child: child,
               ),
         ),
@@ -321,23 +380,40 @@ final routerProvider = Provider<GoRouter>((ref) {
           Widget child;
           switch (miniGameType) {
             case MiniGameType.memoryFlip:
-              child = const MemoryFlipScreen(config: MiniGameConfig(type: MiniGameType.memoryFlip));
+              child = const MemoryFlipScreen(
+                config: MiniGameConfig(type: MiniGameType.memoryFlip),
+              );
             case MiniGameType.wordMatch:
-              child = const WordMatchScreen(config: MiniGameConfig(type: MiniGameType.wordMatch));
+              child = const WordMatchScreen(
+                config: MiniGameConfig(type: MiniGameType.wordMatch),
+              );
             case MiniGameType.speedSort:
-              child = const SpeedSortScreen(config: MiniGameConfig(type: MiniGameType.speedSort));
+              child = const SpeedSortScreen(
+                config: MiniGameConfig(type: MiniGameType.speedSort),
+              );
             case MiniGameType.patternTrace:
-              child = const PatternTraceScreen(config: MiniGameConfig(type: MiniGameType.patternTrace));
+              child = const PatternTraceScreen(
+                config: MiniGameConfig(type: MiniGameType.patternTrace),
+              );
           }
           return CustomTransitionPage<void>(
             key: state.pageKey,
             child: child,
-            transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-                SlideTransition(
-                  position: Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero)
-                      .animate(CurvedAnimation(parent: animation, curve: Curves.easeOut)),
-                  child: child,
-                ),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) =>
+                    SlideTransition(
+                      position:
+                          Tween<Offset>(
+                            begin: const Offset(1, 0),
+                            end: Offset.zero,
+                          ).animate(
+                            CurvedAnimation(
+                              parent: animation,
+                              curve: Curves.easeOut,
+                            ),
+                          ),
+                      child: child,
+                    ),
           );
         },
       ),
@@ -346,13 +422,16 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: 'profile',
         pageBuilder: (context, state) => CustomTransitionPage<void>(
           key: state.pageKey,
-          child: UserProfileScreen(
-            uid: state.pathParameters['uid']!,
-          ),
+          child: UserProfileScreen(uid: state.pathParameters['uid']!),
           transitionsBuilder: (context, animation, secondaryAnimation, child) =>
               SlideTransition(
-                position: Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero)
-                    .animate(CurvedAnimation(parent: animation, curve: Curves.easeOut)),
+                position:
+                    Tween<Offset>(
+                      begin: const Offset(1, 0),
+                      end: Offset.zero,
+                    ).animate(
+                      CurvedAnimation(parent: animation, curve: Curves.easeOut),
+                    ),
                 child: child,
               ),
         ),
@@ -366,11 +445,21 @@ final routerProvider = Provider<GoRouter>((ref) {
           return CustomTransitionPage<void>(
             key: state.pageKey,
             child: PaymentSuccessScreen(donationAmount: donationAmount),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) => SlideTransition(
-              position: Tween<Offset>(begin: const Offset(0, 0.4), end: Offset.zero)
-                  .animate(CurvedAnimation(parent: animation, curve: Curves.easeOut)),
-              child: FadeTransition(opacity: animation, child: child),
-            ),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) =>
+                    SlideTransition(
+                      position:
+                          Tween<Offset>(
+                            begin: const Offset(0, 0.4),
+                            end: Offset.zero,
+                          ).animate(
+                            CurvedAnimation(
+                              parent: animation,
+                              curve: Curves.easeOut,
+                            ),
+                          ),
+                      child: FadeTransition(opacity: animation, child: child),
+                    ),
           );
         },
       ),
@@ -382,11 +471,21 @@ final routerProvider = Provider<GoRouter>((ref) {
           return CustomTransitionPage<void>(
             key: state.pageKey,
             child: PaymentFailedScreen(error: error),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) => SlideTransition(
-              position: Tween<Offset>(begin: const Offset(0, 0.4), end: Offset.zero)
-                  .animate(CurvedAnimation(parent: animation, curve: Curves.easeOut)),
-              child: FadeTransition(opacity: animation, child: child),
-            ),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) =>
+                    SlideTransition(
+                      position:
+                          Tween<Offset>(
+                            begin: const Offset(0, 0.4),
+                            end: Offset.zero,
+                          ).animate(
+                            CurvedAnimation(
+                              parent: animation,
+                              curve: Curves.easeOut,
+                            ),
+                          ),
+                      child: FadeTransition(opacity: animation, child: child),
+                    ),
           );
         },
       ),
@@ -398,8 +497,13 @@ final routerProvider = Provider<GoRouter>((ref) {
           child: const PrivacyPolicyScreen(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) =>
               SlideTransition(
-                position: Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero)
-                    .animate(CurvedAnimation(parent: animation, curve: Curves.easeOut)),
+                position:
+                    Tween<Offset>(
+                      begin: const Offset(1, 0),
+                      end: Offset.zero,
+                    ).animate(
+                      CurvedAnimation(parent: animation, curve: Curves.easeOut),
+                    ),
                 child: child,
               ),
         ),
@@ -410,60 +514,70 @@ final routerProvider = Provider<GoRouter>((ref) {
         pageBuilder: (context, state) => CustomTransitionPage<void>(
           key: state.pageKey,
           child: const PaymentPendingScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) => SlideTransition(
-            position: Tween<Offset>(begin: const Offset(0, 0.4), end: Offset.zero)
-                .animate(CurvedAnimation(parent: animation, curve: Curves.easeOut)),
-            child: FadeTransition(opacity: animation, child: child),
-          ),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              SlideTransition(
+                position:
+                    Tween<Offset>(
+                      begin: const Offset(0, 0.4),
+                      end: Offset.zero,
+                    ).animate(
+                      CurvedAnimation(parent: animation, curve: Curves.easeOut),
+                    ),
+                child: FadeTransition(opacity: animation, child: child),
+              ),
         ),
       ),
     ],
     errorBuilder: (context, state) {
       final l = AppLocalizations.of(context)!;
       return Scaffold(
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(32),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.error_outline_rounded,
-                size: 80,
-                color: Theme.of(context).colorScheme.error,
-              ),
-              const SizedBox(height: 24),
-              Text(
-                '404',
-                style: AppTextStyle.hero.copyWith(
-                  color: Theme.of(context).colorScheme.onSurface,
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(32),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.error_outline_rounded,
+                  size: 80,
+                  color: Theme.of(context).colorScheme.error,
                 ),
-              ),
-              const SizedBox(height: 12),
-              Text(
-                l.notFoundTitle,
-                style: AppTextStyle.title.copyWith(
-                  color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                const SizedBox(height: 24),
+                Text(
+                  '404',
+                  style: AppTextStyle.hero.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                l.notFoundDescription,
-                textAlign: TextAlign.center,
-                style: AppTextStyle.bodyMd.copyWith(
-                  color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
+                const SizedBox(height: 12),
+                Text(
+                  l.notFoundTitle,
+                  style: AppTextStyle.title.copyWith(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.7),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 32),
-              ElevatedButton(
-                onPressed: () => context.goNamed('welcome'),
-                child: Text(l.notFoundBackHome),
-              ),
-            ],
+                const SizedBox(height: 8),
+                Text(
+                  l.notFoundDescription,
+                  textAlign: TextAlign.center,
+                  style: AppTextStyle.bodyMd.copyWith(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.5),
+                  ),
+                ),
+                const SizedBox(height: 32),
+                ElevatedButton(
+                  onPressed: () => context.goNamed('welcome'),
+                  child: Text(l.notFoundBackHome),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
     },
   );
 

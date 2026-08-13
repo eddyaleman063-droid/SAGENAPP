@@ -74,73 +74,79 @@ class _PostLessonPromoState extends ConsumerState<PostLessonPromo> {
                   SmartPromoService.instance.dismissForCooldown();
                 },
                 child: Container(
-                margin: const EdgeInsets.all(AppSpacing.lg),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppSpacing.lg,
-                  vertical: AppSpacing.md,
-                ),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: dark
-                        ? [PremiumColors.gradientPromoDark1, PremiumColors.gradientPromoDark2]
-                        : [PremiumColors.gradientSupportLight1, PremiumColors.gradientSupportLight2],
+                  margin: const EdgeInsets.all(AppSpacing.lg),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.lg,
+                    vertical: AppSpacing.md,
                   ),
-                  borderRadius: BorderRadius.circular(AppRadius.xl),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.3),
-                      blurRadius: 12,
-                      offset: const Offset(0, 4),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: dark
+                          ? [
+                              PremiumColors.gradientPromoDark1,
+                              PremiumColors.gradientPromoDark2,
+                            ]
+                          : [
+                              PremiumColors.gradientSupportLight1,
+                              PremiumColors.gradientSupportLight2,
+                            ],
                     ),
-                  ],
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.2),
-                        borderRadius: BorderRadius.circular(AppRadius.md),
+                    borderRadius: BorderRadius.circular(AppRadius.xl),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.3),
+                        blurRadius: 12,
+                        offset: const Offset(0, 4),
                       ),
-                      child: const Icon(
-                        Icons.diamond_rounded,
-                        color: Colors.white,
-                        size: 22,
+                    ],
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.2),
+                          borderRadius: BorderRadius.circular(AppRadius.md),
+                        ),
+                        child: const Icon(
+                          Icons.diamond_rounded,
+                          color: Colors.white,
+                          size: 22,
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: AppSpacing.md),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            l.promoPostLessonTitle,
-                            style: AppTextStyle.titleSmall.copyWith(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
+                      const SizedBox(width: AppSpacing.md),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              l.promoPostLessonTitle,
+                              style: AppTextStyle.titleSmall.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                          Text(
-                            l.promoPostLessonSubtitle,
-                            style: AppTextStyle.bodyMd.copyWith(
-                              color: Colors.white.withValues(alpha: 0.85),
+                            Text(
+                              l.promoPostLessonSubtitle,
+                              style: AppTextStyle.bodyMd.copyWith(
+                                color: Colors.white.withValues(alpha: 0.85),
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    Icon(
-                      Icons.arrow_forward_ios_rounded,
-                      color: Colors.white.withValues(alpha: 0.7),
-                      size: 14,
-                    ),
-                  ],
-                ),
-              ).animate().fadeIn(duration: 300.ms).slideY(begin: 0.3),
+                      Icon(
+                        Icons.arrow_forward_ios_rounded,
+                        color: Colors.white.withValues(alpha: 0.7),
+                        size: 14,
+                      ),
+                    ],
+                  ),
+                ).animate().fadeIn(duration: 300.ms).slideY(begin: 0.3),
               ),
             ),
           ),

@@ -27,10 +27,12 @@ import 'ui/widgets/common/sync_coordinator.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent,
-    statusBarIconBrightness: Brightness.light,
-  ));
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.light,
+    ),
+  );
 
   final logger = AppLogger();
   logger.setProductionMode(kReleaseMode);
@@ -48,7 +50,11 @@ void main() async {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(Icons.shield_rounded, size: 48, color: PremiumColors.primary),
+                  const Icon(
+                    Icons.shield_rounded,
+                    size: 48,
+                    color: PremiumColors.primary,
+                  ),
                   const SizedBox(height: AppSpacing.lg),
                   Text(
                     'SAGEN',
@@ -58,18 +64,29 @@ void main() async {
                   Text(
                     'Something went wrong.\nReturning to a safe state...',
                     textAlign: TextAlign.center,
-                    style: AppTextStyle.bodyMd.copyWith(color: Colors.white54, height: 1.5),
+                    style: AppTextStyle.bodyMd.copyWith(
+                      color: Colors.white54,
+                      height: 1.5,
+                    ),
                   ),
                   const SizedBox(height: AppSpacing.xxl),
                   ConstrainedBox(
-                    constraints: const BoxConstraints(minWidth: 80, minHeight: 80),
+                    constraints: const BoxConstraints(
+                      minWidth: 80,
+                      minHeight: 80,
+                    ),
                     child: GestureDetector(
                       onTap: () {
                         HapticFeedback.lightImpact();
-                        rootNavigatorKey.currentState?.popUntil((route) => route.isFirst);
+                        rootNavigatorKey.currentState?.popUntil(
+                          (route) => route.isFirst,
+                        );
                       },
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 16,
+                        ),
                         decoration: BoxDecoration(
                           color: PremiumColors.primaryAccent,
                           borderRadius: BorderRadius.circular(AppRadius.md),
@@ -77,11 +94,19 @@ void main() async {
                         child: const Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(Icons.home_rounded, color: Colors.white, size: 24),
+                            Icon(
+                              Icons.home_rounded,
+                              color: Colors.white,
+                              size: 24,
+                            ),
                             SizedBox(width: 12),
                             Text(
                               'Back to home',
-                              style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ],
                         ),
@@ -104,7 +129,10 @@ void main() async {
   // Shared service instances — created here to guarantee a single instance
   // shared between the Riverpod tree and deferred initialization.
   final authService = AuthService(logger: logger);
-  final cloudSyncService = CloudSyncService(authService: authService, logger: logger);
+  final cloudSyncService = CloudSyncService(
+    authService: authService,
+    logger: logger,
+  );
 
   runApp(
     ProviderScope(
@@ -119,12 +147,14 @@ void main() async {
   );
 
   // Deferred initialization via centralized service initializer
-  Future.microtask(() => ServiceInitializer.initialize(
-    prefs: prefs,
-    logger: logger,
-    authService: authService,
-    cloudSyncService: cloudSyncService,
-  ));
+  Future.microtask(
+    () => ServiceInitializer.initialize(
+      prefs: prefs,
+      logger: logger,
+      authService: authService,
+      cloudSyncService: cloudSyncService,
+    ),
+  );
 
   BackgroundSyncService.instance.init().catchError((e) {
     logger.warning('BackgroundSyncService init failed (non-critical): $e');
@@ -138,7 +168,11 @@ void _setupErrorHandlers(AppLogger logger) {
         if (Firebase.apps.isNotEmpty) {
           FirebaseCrashlytics.instance.recordFlutterFatalError(details);
         }
-        logger.error('FlutterError: ${details.exception}', details.exception, details.stack);
+        logger.error(
+          'FlutterError: ${details.exception}',
+          details.exception,
+          details.stack,
+        );
       };
       PlatformDispatcher.instance.onError = (error, stack) {
         if (Firebase.apps.isNotEmpty) {
@@ -152,7 +186,11 @@ void _setupErrorHandlers(AppLogger logger) {
     }
   } else {
     FlutterError.onError = (details) {
-      logger.error('FlutterError: ${details.exception}', details.exception, details.stack);
+      logger.error(
+        'FlutterError: ${details.exception}',
+        details.exception,
+        details.stack,
+      );
     };
     PlatformDispatcher.instance.onError = (error, stack) {
       logger.error('PlatformDispatcher error', error, stack);
@@ -175,10 +213,13 @@ class _SagenAppState extends ConsumerState<SagenApp> {
   void initState() {
     super.initState();
     ref.read(appLifecycleProvider.notifier);
-    _deepLinkSub = ref.read(deepLinkServiceProvider).actionStream.listen(
-      _handleDeepLinkAction,
-      onError: (e) => AppLogger().warning('Deep link stream error: $e'),
-    );
+    _deepLinkSub = ref
+        .read(deepLinkServiceProvider)
+        .actionStream
+        .listen(
+          _handleDeepLinkAction,
+          onError: (e) => AppLogger().warning('Deep link stream error: $e'),
+        );
     BackgroundSyncService.instance.registerPeriodicSync();
   }
 
@@ -203,7 +244,9 @@ class _SagenAppState extends ConsumerState<SagenApp> {
         router.goNamed('lessons', queryParameters: {'stageId': stageId});
       case PaymentSuccessDeepLink(:final externalRef, :final donationAmount):
         final params = <String, String>{};
-        if (donationAmount != null) params['amount'] = donationAmount.toString();
+        if (donationAmount != null) {
+          params['amount'] = donationAmount.toString();
+        }
         if (externalRef != null) params['external_reference'] = externalRef;
         router.goNamed('payment-success', queryParameters: params);
       case PaymentFailureDeepLink():
@@ -224,14 +267,16 @@ class _SagenAppState extends ConsumerState<SagenApp> {
     return ErrorBoundary(
       child: SyncCoordinator(
         child: AmbientBackground(
-            child: MaterialApp.router(
+          child: MaterialApp.router(
             builder: (context, child) {
-              final fontScale = ref.watch(experienceServiceProvider).fontSizeScale;
+              final fontScale = ref
+                  .watch(experienceServiceProvider)
+                  .fontSizeScale;
               final safeScale = fontScale.clamp(0.8, 1.5);
               return MediaQuery(
-                data: MediaQuery.of(context).copyWith(
-                  textScaler: TextScaler.linear(safeScale),
-                ),
+                data: MediaQuery.of(
+                  context,
+                ).copyWith(textScaler: TextScaler.linear(safeScale)),
                 child: ChestListener(child: child ?? const SizedBox.shrink()),
               );
             },

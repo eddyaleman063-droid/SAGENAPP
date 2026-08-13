@@ -18,7 +18,8 @@ class _FakeCoreHostApi extends TestFirebaseCoreHostApi {
   Future<List<CoreInitializeResponse>> initializeCore() async => [];
 
   @override
-  Future<CoreFirebaseOptions> optionsFromResource() async => CoreFirebaseOptions(
+  Future<CoreFirebaseOptions> optionsFromResource() async =>
+      CoreFirebaseOptions(
         apiKey: 'test-api-key',
         appId: 'test-app-id',
         messagingSenderId: 'test-sender-id',
@@ -29,13 +30,12 @@ class _FakeCoreHostApi extends TestFirebaseCoreHostApi {
   Future<CoreInitializeResponse> initializeApp(
     String appName,
     CoreFirebaseOptions initializeAppRequest,
-  ) async =>
-      CoreInitializeResponse(
-        name: appName,
-        options: initializeAppRequest,
-        isAutomaticDataCollectionEnabled: true,
-        pluginConstants: <String, Object?>{},
-      );
+  ) async => CoreInitializeResponse(
+    name: appName,
+    options: initializeAppRequest,
+    isAutomaticDataCollectionEnabled: true,
+    pluginConstants: <String, Object?>{},
+  );
 }
 
 void main() {
@@ -50,24 +50,26 @@ void main() {
       ..clear()
       ..addAll(responses);
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-        .setMockDecodedMessageHandler<Object?>(_cloudFunctionsChannel,
-            (Object? message) async {
-      requests.add(((message as List)[0] as Map)['parameters'] as Map?);
-      return <Object?>[queue.removeAt(0)];
-    });
+        .setMockDecodedMessageHandler<Object?>(_cloudFunctionsChannel, (
+          Object? message,
+        ) async {
+          requests.add(((message as List)[0] as Map)['parameters'] as Map?);
+          return <Object?>[queue.removeAt(0)];
+        });
   }
 
   void setError() {
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-        .setMockDecodedMessageHandler<Object?>(_cloudFunctionsChannel,
-            (Object? message) async {
-      requests.add(((message as List)[0] as Map)['parameters'] as Map?);
-      return <Object?>[
-        'unavailable',
-        'down',
-        <String, Object?>{'code': 'functions/unavailable'},
-      ];
-    });
+        .setMockDecodedMessageHandler<Object?>(_cloudFunctionsChannel, (
+          Object? message,
+        ) async {
+          requests.add(((message as List)[0] as Map)['parameters'] as Map?);
+          return <Object?>[
+            'unavailable',
+            'down',
+            <String, Object?>{'code': 'functions/unavailable'},
+          ];
+        });
   }
 
   void clearMock() {

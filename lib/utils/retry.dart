@@ -45,7 +45,9 @@ Duration _computeDelay(RetryConfig cfg, int attempt) {
     case RetryPolicy.exponentialBackoff:
       // Add jitter: base * 2^(attempt-1) + random [0, base]
       final exponentialDelay = cfg.baseDelay * (1 << (attempt - 1));
-      final jitter = Duration(milliseconds: Random().nextInt(cfg.baseDelay.inMilliseconds + 1));
+      final jitter = Duration(
+        milliseconds: Random().nextInt(cfg.baseDelay.inMilliseconds + 1),
+      );
       return exponentialDelay + jitter;
   }
 }

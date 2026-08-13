@@ -37,15 +37,31 @@ void main() {
   });
 
   test('messages with equal fields are equal', () {
-    final a = ChatMessage(role: ChatRole.user, text: 'x', time: DateTime(2026, 1, 1));
-    final b = ChatMessage(role: ChatRole.user, text: 'x', time: DateTime(2026, 1, 1));
+    final a = ChatMessage(
+      role: ChatRole.user,
+      text: 'x',
+      time: DateTime(2026, 1, 1),
+    );
+    final b = ChatMessage(
+      role: ChatRole.user,
+      text: 'x',
+      time: DateTime(2026, 1, 1),
+    );
     expect(a, b);
     expect(a.hashCode, b.hashCode);
   });
 
   test('messages with different fields are not equal', () {
-    final a = ChatMessage(role: ChatRole.user, text: 'x', time: DateTime(2026, 1, 1));
-    final b = ChatMessage(role: ChatRole.user, text: 'y', time: DateTime(2026, 1, 1));
+    final a = ChatMessage(
+      role: ChatRole.user,
+      text: 'x',
+      time: DateTime(2026, 1, 1),
+    );
+    final b = ChatMessage(
+      role: ChatRole.user,
+      text: 'y',
+      time: DateTime(2026, 1, 1),
+    );
     expect(a, isNot(b));
   });
 }

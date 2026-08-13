@@ -31,7 +31,10 @@ class SagenProgressBar extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(right: AppSpacing.md),
               child: IconButton(
-                icon: Icon(Icons.close, color: Theme.of(context).colorScheme.onSurface),
+                icon: Icon(
+                  Icons.close,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
                 onPressed: onExit,
                 tooltip: l.exitText,
               ),

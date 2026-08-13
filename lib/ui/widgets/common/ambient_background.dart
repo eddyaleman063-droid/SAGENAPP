@@ -28,11 +28,19 @@ class _AmbientBackgroundState extends ConsumerState<AmbientBackground>
     final reduce = ref.read(reduceAnimationsProvider);
     if (!reduce && !_initialized) {
       _initialized = true;
-      _ctrl = AnimationController(vsync: this, duration: const Duration(seconds: 8));
-      _fadeAnim = Tween<double>(begin: 0.0, end: 1.0).animate(
-        CurvedAnimation(parent: _ctrl!, curve: Curves.easeInOutSine),
+      _ctrl = AnimationController(
+        vsync: this,
+        duration: const Duration(seconds: 8),
       );
-      try { _ctrl!.repeat(reverse: true); } catch (e) { AppLogger().warning('AmbientBackground: failed to start animation: $e'); }
+      _fadeAnim = Tween<double>(
+        begin: 0.0,
+        end: 1.0,
+      ).animate(CurvedAnimation(parent: _ctrl!, curve: Curves.easeInOutSine));
+      try {
+        _ctrl!.repeat(reverse: true);
+      } catch (e) {
+        AppLogger().warning('AmbientBackground: failed to start animation: $e');
+      }
     } else if (reduce && _initialized) {
       _initialized = false;
       _ctrl?.stop();

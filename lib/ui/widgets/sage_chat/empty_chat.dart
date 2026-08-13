@@ -14,26 +14,34 @@ class EmptyChat extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-            const ExcludeSemantics(
-              child: SageEmotionWidget(
-                emotion: SageEmotion.curious,
-                size: 80,
-                animated: true,
-              ),
+          const ExcludeSemantics(
+            child: SageEmotionWidget(
+              emotion: SageEmotion.curious,
+              size: 80,
+              animated: true,
             ),
+          ),
           const SizedBox(height: AppSpacing.xl),
           Text(
-            AppLocalizations.of(context)?.chatEmptyTitle ?? AppLocalizations.of(context)?.chatFallbackTitle ?? '',
-            style: AppTextStyle.title.copyWith(fontWeight: FontWeight.bold,
-              color: context.textPrimary),
+            AppLocalizations.of(context)?.chatEmptyTitle ??
+                AppLocalizations.of(context)?.chatFallbackTitle ??
+                '',
+            style: AppTextStyle.title.copyWith(
+              fontWeight: FontWeight.bold,
+              color: context.textPrimary,
+            ),
           ),
           const SizedBox(height: AppSpacing.sm),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl * 2),
             child: Text(
-              AppLocalizations.of(context)?.emptyChatSubtitle ?? AppLocalizations.of(context)?.chatFallbackSubtitle ?? '',
+              AppLocalizations.of(context)?.emptyChatSubtitle ??
+                  AppLocalizations.of(context)?.chatFallbackSubtitle ??
+                  '',
               textAlign: TextAlign.center,
-              style: AppTextStyle.subtitle.copyWith(color: context.textTertiary),
+              style: AppTextStyle.subtitle.copyWith(
+                color: context.textTertiary,
+              ),
             ),
           ),
         ],

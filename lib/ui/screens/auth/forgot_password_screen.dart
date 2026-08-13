@@ -17,7 +17,8 @@ class ForgotPasswordScreen extends ConsumerStatefulWidget {
   const ForgotPasswordScreen({super.key});
 
   @override
-  ConsumerState<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
+  ConsumerState<ForgotPasswordScreen> createState() =>
+      _ForgotPasswordScreenState();
 }
 
 class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
@@ -35,11 +36,19 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
     HapticFeedback.lightImpact();
     final email = _emailCtrl.text.trim();
     if (email.isEmpty) {
-      SagenNotification.show(context, message: AppLocalizations.of(context)!.authEnterEmailError, type: NotificationType.warning);
+      SagenNotification.show(
+        context,
+        message: AppLocalizations.of(context)!.authEnterEmailError,
+        type: NotificationType.warning,
+      );
       return;
     }
     if (!RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(email)) {
-      SagenNotification.show(context, message: AppLocalizations.of(context)!.authEmailInvalid, type: NotificationType.warning);
+      SagenNotification.show(
+        context,
+        message: AppLocalizations.of(context)!.authEmailInvalid,
+        type: NotificationType.warning,
+      );
       return;
     }
     setState(() => _isLoading = true);
@@ -47,13 +56,25 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
       await ref.read(authServiceProvider).sendPasswordResetEmail(email);
       if (!mounted) return;
       setState(() => _sent = true);
-      SagenNotification.show(context, message: AppLocalizations.of(context)!.authRecoveryEmailSentMessage, type: NotificationType.success);
+      SagenNotification.show(
+        context,
+        message: AppLocalizations.of(context)!.authRecoveryEmailSentMessage,
+        type: NotificationType.success,
+      );
     } on AuthException catch (e) {
       if (!mounted) return;
-      SagenNotification.show(context, message: e.localizedMessage(AppLocalizations.of(context)!), type: NotificationType.error);
+      SagenNotification.show(
+        context,
+        message: e.localizedMessage(AppLocalizations.of(context)!),
+        type: NotificationType.error,
+      );
     } catch (_) {
       if (!mounted) return;
-      SagenNotification.show(context, message: AppLocalizations.of(context)!.authSendEmailError, type: NotificationType.error);
+      SagenNotification.show(
+        context,
+        message: AppLocalizations.of(context)!.authSendEmailError,
+        type: NotificationType.error,
+      );
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -65,7 +86,9 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
     return PopScope(
       canPop: true,
       child: Scaffold(
-        backgroundColor: dark ? PremiumColors.deepBackground : PremiumColors.lightBg,
+        backgroundColor: dark
+            ? PremiumColors.deepBackground
+            : PremiumColors.lightBg,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -77,14 +100,18 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
             ),
           ),
           centerTitle: false,
-          leading: Semantics(button: true, label: AppLocalizations.of(context)!.backButton, child: IconButton(
-            icon: Icon(Icons.arrow_back_rounded, color: context.textPrimary),
-            onPressed: () {
-              ExperienceService.instance.lightHaptic();
-              context.pop();
-            },
-            tooltip: AppLocalizations.of(context)!.backButton,
-          )),
+          leading: Semantics(
+            button: true,
+            label: AppLocalizations.of(context)!.backButton,
+            child: IconButton(
+              icon: Icon(Icons.arrow_back_rounded, color: context.textPrimary),
+              onPressed: () {
+                ExperienceService.instance.lightHaptic();
+                context.pop();
+              },
+              tooltip: AppLocalizations.of(context)!.backButton,
+            ),
+          ),
         ),
         body: KeyboardAwareLayout(
           child: Padding(
@@ -93,30 +120,56 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                 ? Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.check_circle_rounded, size: 64, color: PremiumColors.success.withValues(alpha: 0.8)),
+                      Icon(
+                        Icons.check_circle_rounded,
+                        size: 64,
+                        color: PremiumColors.success.withValues(alpha: 0.8),
+                      ),
                       const SizedBox(height: AppSpacing.xxl),
                       Text(
-                        AppLocalizations.of(context)!.authRecoveryEmailSentTitle,
-                        style: AppTextStyle.headlineMedium.copyWith(fontWeight: FontWeight.bold, color: context.textPrimary),
+                        AppLocalizations.of(
+                          context,
+                        )!.authRecoveryEmailSentTitle,
+                        style: AppTextStyle.headlineMedium.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: context.textPrimary,
+                        ),
                       ),
                       const SizedBox(height: AppSpacing.md),
                       Text(
                         AppLocalizations.of(context)!.authRecoveryEmailSentDesc,
                         textAlign: TextAlign.center,
-                        style: AppTextStyle.bodyMd.copyWith(color: context.textSecondary, height: 1.5),
+                        style: AppTextStyle.bodyMd.copyWith(
+                          color: context.textSecondary,
+                          height: 1.5,
+                        ),
                       ),
                       const SizedBox(height: AppSpacing.xxl),
                       SizedBox(
                         width: double.infinity,
                         height: 52,
-                        child: Semantics(button: true, label: AppLocalizations.of(context)!.authBack, child: ElevatedButton(
-                          onPressed: () => context.pop(),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: PremiumColors.primary,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.md)),
+                        child: Semantics(
+                          button: true,
+                          label: AppLocalizations.of(context)!.authBack,
+                          child: ElevatedButton(
+                            onPressed: () => context.pop(),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: PremiumColors.primary,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                  AppRadius.md,
+                                ),
+                              ),
+                            ),
+                            child: Text(
+                              AppLocalizations.of(context)!.authBack,
+                              style: AppTextStyle.body.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: context.textPrimary,
+                              ),
+                            ),
                           ),
-                          child: Text(AppLocalizations.of(context)!.authBack, style: AppTextStyle.body.copyWith(fontWeight: FontWeight.bold, color: context.textPrimary)),
-                        )),
+                        ),
                       ),
                     ],
                   )
@@ -126,12 +179,18 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                       const SizedBox(height: AppSpacing.xxl),
                       Text(
                         AppLocalizations.of(context)!.authForgotPasswordTitle,
-                        style: AppTextStyle.headlineMedium.copyWith(fontWeight: FontWeight.bold, color: context.textPrimary),
+                        style: AppTextStyle.headlineMedium.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: context.textPrimary,
+                        ),
                       ),
                       const SizedBox(height: AppSpacing.md),
                       Text(
                         AppLocalizations.of(context)!.authForgotPasswordDesc,
-                        style: AppTextStyle.bodyMd.copyWith(color: context.textSecondary, height: 1.5),
+                        style: AppTextStyle.bodyMd.copyWith(
+                          color: context.textSecondary,
+                          height: 1.5,
+                        ),
                       ),
                       const SizedBox(height: AppSpacing.xxxl),
                       Container(
@@ -140,38 +199,76 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                           borderRadius: BorderRadius.circular(AppRadius.md),
                           border: Border.all(color: context.borderSubtle),
                         ),
-                        child: Semantics(label: AppLocalizations.of(context)!.regEmailTitle, child: TextField(
-                          controller: _emailCtrl,
-                          maxLength: 254,
-                          keyboardType: TextInputType.emailAddress,
-                          textInputAction: TextInputAction.done,
-                          onSubmitted: (_) => _sendReset(),
-                          style: AppTextStyle.body.copyWith(color: context.textPrimary),
-                          decoration: InputDecoration(
-                            hintText: AppLocalizations.of(context)!.authEmailLabel,
-                            hintStyle: AppTextStyle.body.copyWith(color: context.textSecondary),
-                            prefixIcon: Icon(Icons.mail_outline, size: 20, color: context.textSecondary),
-                            border: InputBorder.none,
-                            contentPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.xl),
+                        child: Semantics(
+                          label: AppLocalizations.of(context)!.regEmailTitle,
+                          child: TextField(
+                            controller: _emailCtrl,
+                            maxLength: 254,
+                            keyboardType: TextInputType.emailAddress,
+                            textInputAction: TextInputAction.done,
+                            onSubmitted: (_) => _sendReset(),
+                            style: AppTextStyle.body.copyWith(
+                              color: context.textPrimary,
+                            ),
+                            decoration: InputDecoration(
+                              hintText: AppLocalizations.of(
+                                context,
+                              )!.authEmailLabel,
+                              hintStyle: AppTextStyle.body.copyWith(
+                                color: context.textSecondary,
+                              ),
+                              prefixIcon: Icon(
+                                Icons.mail_outline,
+                                size: 20,
+                                color: context.textSecondary,
+                              ),
+                              border: InputBorder.none,
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: AppSpacing.lg,
+                                vertical: AppSpacing.xl,
+                              ),
+                            ),
                           ),
-                        )),
+                        ),
                       ),
                       const SizedBox(height: AppSpacing.xxl),
                       SizedBox(
                         width: double.infinity,
                         height: 52,
-                        child: Semantics(button: true, label: AppLocalizations.of(context)!.authSendLink, child: ElevatedButton(
-                          onPressed: _isLoading ? null : _sendReset,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: PremiumColors.primary,
-                            foregroundColor: context.textPrimary,
-                            disabledBackgroundColor: context.textDisabled,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.md)),
+                        child: Semantics(
+                          button: true,
+                          label: AppLocalizations.of(context)!.authSendLink,
+                          child: ElevatedButton(
+                            onPressed: _isLoading ? null : _sendReset,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: PremiumColors.primary,
+                              foregroundColor: context.textPrimary,
+                              disabledBackgroundColor: context.textDisabled,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                  AppRadius.md,
+                                ),
+                              ),
+                            ),
+                            child: _isLoading
+                                ? SizedBox(
+                                    width: 22,
+                                    height: 22,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2.5,
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                        context.textPrimary,
+                                      ),
+                                    ),
+                                  )
+                                : Text(
+                                    AppLocalizations.of(context)!.authSendLink,
+                                    style: AppTextStyle.body.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                           ),
-                          child: _isLoading
-                              ? SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2.5, valueColor: AlwaysStoppedAnimation<Color>(context.textPrimary)))
-                              : Text(AppLocalizations.of(context)!.authSendLink, style: AppTextStyle.body.copyWith(fontWeight: FontWeight.bold)),
-                        )),
+                        ),
                       ),
                     ],
                   ),

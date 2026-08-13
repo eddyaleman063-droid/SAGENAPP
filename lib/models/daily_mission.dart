@@ -5,7 +5,15 @@ part 'daily_mission.freezed.dart';
 part 'daily_mission.g.dart';
 
 @JsonEnum()
-enum MissionType { completeLesson, talkToSage, analyzeLink, perfectLesson, maintainStreak, quickChallenge, detectPhishing }
+enum MissionType {
+  completeLesson,
+  talkToSage,
+  analyzeLink,
+  perfectLesson,
+  maintainStreak,
+  quickChallenge,
+  detectPhishing,
+}
 
 @JsonEnum()
 enum MissionDifficulty { easy, medium, hard }
@@ -14,7 +22,14 @@ enum MissionDifficulty { easy, medium, hard }
 enum MissionRarity { common, rare, epic }
 
 @JsonEnum()
-enum MissionCategory { learning, protection, consistency, awareness, privacy, safeHabits }
+enum MissionCategory {
+  learning,
+  protection,
+  consistency,
+  awareness,
+  privacy,
+  safeHabits,
+}
 
 @unfreezed
 class DailyMission with _$DailyMission {
@@ -36,31 +51,47 @@ class DailyMission with _$DailyMission {
     @Default(false) bool completed,
   }) = _DailyMission;
 
-  factory DailyMission.fromJson(Map<String, dynamic> json) => _$DailyMissionFromJson(json);
+  factory DailyMission.fromJson(Map<String, dynamic> json) =>
+      _$DailyMissionFromJson(json);
 
-  double get progressFraction => target > 0 ? (progress / target).clamp(0.0, 1.0) : 0.0;
+  double get progressFraction =>
+      target > 0 ? (progress / target).clamp(0.0, 1.0) : 0.0;
 
   String localizedTitle(AppLocalizations l) {
     switch (type) {
-      case MissionType.perfectLesson: return l.missionPerfectLessonTitle;
-      case MissionType.completeLesson: return l.missionActiveLearnerTitle;
-      case MissionType.analyzeLink: return l.missionDigitalDetectiveTitle;
-      case MissionType.talkToSage: return l.missionChatWithSageTitle;
-      case MissionType.maintainStreak: return l.missionActiveStreakTitle;
-      case MissionType.quickChallenge: return l.missionExpressChallengeTitle;
-      case MissionType.detectPhishing: return l.missionPhishingHunterTitle;
+      case MissionType.perfectLesson:
+        return l.missionPerfectLessonTitle;
+      case MissionType.completeLesson:
+        return l.missionActiveLearnerTitle;
+      case MissionType.analyzeLink:
+        return l.missionDigitalDetectiveTitle;
+      case MissionType.talkToSage:
+        return l.missionChatWithSageTitle;
+      case MissionType.maintainStreak:
+        return l.missionActiveStreakTitle;
+      case MissionType.quickChallenge:
+        return l.missionExpressChallengeTitle;
+      case MissionType.detectPhishing:
+        return l.missionPhishingHunterTitle;
     }
   }
 
   String localizedDescription(AppLocalizations l) {
     switch (type) {
-      case MissionType.perfectLesson: return l.missionPerfectLessonDesc;
-      case MissionType.completeLesson: return l.missionActiveLearnerDesc;
-      case MissionType.analyzeLink: return l.missionDigitalDetectiveDesc;
-      case MissionType.talkToSage: return l.missionChatWithSageDesc;
-      case MissionType.maintainStreak: return l.missionActiveStreakDesc;
-      case MissionType.quickChallenge: return l.missionExpressChallengeDesc;
-      case MissionType.detectPhishing: return l.missionPhishingHunterDesc;
+      case MissionType.perfectLesson:
+        return l.missionPerfectLessonDesc;
+      case MissionType.completeLesson:
+        return l.missionActiveLearnerDesc;
+      case MissionType.analyzeLink:
+        return l.missionDigitalDetectiveDesc;
+      case MissionType.talkToSage:
+        return l.missionChatWithSageDesc;
+      case MissionType.maintainStreak:
+        return l.missionActiveStreakDesc;
+      case MissionType.quickChallenge:
+        return l.missionExpressChallengeDesc;
+      case MissionType.detectPhishing:
+        return l.missionPhishingHunterDesc;
     }
   }
 }

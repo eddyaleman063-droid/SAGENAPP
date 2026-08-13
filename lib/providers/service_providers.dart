@@ -80,7 +80,9 @@ final firestoreServiceProvider = Provider<FirestoreService>((ref) {
 });
 
 /// EconomicFunctionsService — singleton wrapper.
-final economicFunctionsServiceProvider = Provider<EconomicFunctionsService>((ref) {
+final economicFunctionsServiceProvider = Provider<EconomicFunctionsService>((
+  ref,
+) {
   return EconomicFunctionsService.instance;
 });
 
@@ -151,9 +153,10 @@ final appRatingServiceProvider = Provider<AppRatingService>((ref) {
   return AppRatingService();
 });
 
-final screenshotProtectionServiceProvider = Provider<ScreenshotProtectionService>((ref) {
-  return ScreenshotProtectionService();
-});
+final screenshotProtectionServiceProvider =
+    Provider<ScreenshotProtectionService>((ref) {
+      return ScreenshotProtectionService();
+    });
 
 final whatsNewServiceProvider = Provider<WhatsNewService>((ref) {
   return WhatsNewService(ref.read(prefsProvider));
@@ -180,7 +183,6 @@ final connectivityServiceProvider = Provider<ConnectivityService>((ref) {
   return ConnectivityService.instance;
 });
 
-
 final shareServiceProvider = Provider<ShareService>((ref) {
   return ShareService.instance;
 });
@@ -201,7 +203,9 @@ final remoteConfigServiceProvider = Provider<RemoteConfigService>((ref) {
   return RemoteConfigService.instance;
 });
 
-final gamificationCloudServiceProvider = Provider<GamificationCloudService>((ref) {
+final gamificationCloudServiceProvider = Provider<GamificationCloudService>((
+  ref,
+) {
   return GamificationCloudService.instance;
 });
 
@@ -229,7 +233,9 @@ final chestEvolutionServiceProvider = Provider<ChestEvolutionService>((ref) {
   return ChestEvolutionService.instance;
 });
 
-final motivationalQuotesServiceProvider = Provider<MotivationalQuotesService>((ref) {
+final motivationalQuotesServiceProvider = Provider<MotivationalQuotesService>((
+  ref,
+) {
   return MotivationalQuotesService.instance;
 });
 

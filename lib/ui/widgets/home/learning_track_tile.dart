@@ -60,137 +60,149 @@ class _LearningTrackTileState extends ConsumerState<LearningTrackTile>
     final glowColor = inProgress
         ? PremiumColors.splashBlue
         : completed
-            ? PremiumColors.achievementEnd
-            : Colors.transparent;
+        ? PremiumColors.achievementEnd
+        : Colors.transparent;
 
     final tile = Semantics(
       button: !locked,
       enabled: !locked,
-      label: '${widget.stage.title}. ${widget.stage.subtitle}. ${AppLocalizations.of(context)!.stageProgress((widget.stage.progress * 100).round())}',
+      label:
+          '${widget.stage.title}. ${widget.stage.subtitle}. ${AppLocalizations.of(context)!.stageProgress((widget.stage.progress * 100).round())}',
       child: Opacity(
         opacity: locked ? 0.5 : 1.0,
         child: Padding(
-        padding: EdgeInsets.only(bottom: widget.isLast ? 0 : AppSpacing.md),
-        child: GestureDetector(
-          onTapDown: locked ? null : (_) => _pressCtrl.reverse(),
-          onTapUp: locked ? null : (_) => _pressCtrl.forward(),
-          onTapCancel: locked ? null : () => _pressCtrl.forward(),
-          onTap: locked ? null : () {
-            ref.read(experienceServiceProvider).lightHaptic();
-            widget.onTap?.call();
-          },
-          child: ScaleTransition(
-            scale: _pressCtrl,
-            child: Container(
-              padding: const EdgeInsets.all(AppSpacing.lg),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(AppRadius.xl),
-                color: context.surfaceCard,
-                border: Border.all(
-                      color: completed
-                          ? PremiumColors.achievementEnd
-                          : inProgress
-                              ? PremiumColors.splashBlue
-                              : context.borderSubtle,
-                  width: inProgress ? 1.5 : 1.0,
-                ),
-                boxShadow: inProgress || completed
-                    ? [
-                        BoxShadow(
-                          color: glowColor.withValues(alpha: 0.15),
-                          blurRadius: 12,
-                          spreadRadius: 1,
-                        ),
-                      ]
-                    : null,
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(AppRadius.sm),
-                      color: completed
-                          ? PremiumColors.achievementEnd.withValues(alpha: 0.15)
-                          : inProgress
-                              ? PremiumColors.splashBlue.withValues(alpha: 0.15)
-                              : context.subtle,
-                    ),
-                    child: Icon(
-                      locked ? Icons.lock_rounded : widget.stage.icon,
-                      size: 20,
-                      color: completed
-                          ? PremiumColors.achievementEnd
-                          : inProgress
-                              ? PremiumColors.splashBlue
-                              : context.iconSecondary,
-                    ),
+          padding: EdgeInsets.only(bottom: widget.isLast ? 0 : AppSpacing.md),
+          child: GestureDetector(
+            onTapDown: locked ? null : (_) => _pressCtrl.reverse(),
+            onTapUp: locked ? null : (_) => _pressCtrl.forward(),
+            onTapCancel: locked ? null : () => _pressCtrl.forward(),
+            onTap: locked
+                ? null
+                : () {
+                    ref.read(experienceServiceProvider).lightHaptic();
+                    widget.onTap?.call();
+                  },
+            child: ScaleTransition(
+              scale: _pressCtrl,
+              child: Container(
+                padding: const EdgeInsets.all(AppSpacing.lg),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(AppRadius.xl),
+                  color: context.surfaceCard,
+                  border: Border.all(
+                    color: completed
+                        ? PremiumColors.achievementEnd
+                        : inProgress
+                        ? PremiumColors.splashBlue
+                        : context.borderSubtle,
+                    width: inProgress ? 1.5 : 1.0,
                   ),
-                  const SizedBox(width: AppSpacing.md),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.stage.title,
-                          style: AppTextStyle.body.copyWith(fontWeight: FontWeight.w600,
-                            color: completed
-                                ? PremiumColors.achievementEnd
-                                : context.textPrimary),
-                        ),
-                        const SizedBox(height: AppSpacing.xxs),
-                        Text(
-                          widget.stage.subtitle,
-                          style: AppTextStyle.label.copyWith(color: context.textTertiary),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        const SizedBox(height: AppSpacing.sm),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(AppRadius.pill),
-                          child: Semantics(
-                            label: AppLocalizations.of(context)!.stageProgress((widget.stage.progress * 100).round()),
-                            value: '${(widget.stage.progress * 100).round()}',
-                            child: LinearProgressIndicator(
-                              value: widget.stage.progress,
-                              backgroundColor: context.subtle,
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                completed
-                                    ? PremiumColors.achievementEnd
-                                    : inProgress
-                                        ? PremiumColors.splashBlue
-                                        : Colors.white24,
-                              ),
-                              minHeight: 3,
+                  boxShadow: inProgress || completed
+                      ? [
+                          BoxShadow(
+                            color: glowColor.withValues(alpha: 0.15),
+                            blurRadius: 12,
+                            spreadRadius: 1,
+                          ),
+                        ]
+                      : null,
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(AppRadius.sm),
+                        color: completed
+                            ? PremiumColors.achievementEnd.withValues(
+                                alpha: 0.15,
+                              )
+                            : inProgress
+                            ? PremiumColors.splashBlue.withValues(alpha: 0.15)
+                            : context.subtle,
+                      ),
+                      child: Icon(
+                        locked ? Icons.lock_rounded : widget.stage.icon,
+                        size: 20,
+                        color: completed
+                            ? PremiumColors.achievementEnd
+                            : inProgress
+                            ? PremiumColors.splashBlue
+                            : context.iconSecondary,
+                      ),
+                    ),
+                    const SizedBox(width: AppSpacing.md),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.stage.title,
+                            style: AppTextStyle.body.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: completed
+                                  ? PremiumColors.achievementEnd
+                                  : context.textPrimary,
                             ),
                           ),
-                        ),
-                      ],
+                          const SizedBox(height: AppSpacing.xxs),
+                          Text(
+                            widget.stage.subtitle,
+                            style: AppTextStyle.label.copyWith(
+                              color: context.textTertiary,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: AppSpacing.sm),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(AppRadius.pill),
+                            child: Semantics(
+                              label: AppLocalizations.of(context)!
+                                  .stageProgress(
+                                    (widget.stage.progress * 100).round(),
+                                  ),
+                              value: '${(widget.stage.progress * 100).round()}',
+                              child: LinearProgressIndicator(
+                                value: widget.stage.progress,
+                                backgroundColor: context.subtle,
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  completed
+                                      ? PremiumColors.achievementEnd
+                                      : inProgress
+                                      ? PremiumColors.splashBlue
+                                      : Colors.white24,
+                                ),
+                                minHeight: 3,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: AppSpacing.sm),
-                  Icon(
-                    completed
-                        ? Icons.check_circle_rounded
-                        : Icons.chevron_right_rounded,
-                    size: 22,
-                     color: completed
-                        ? PremiumColors.achievementEnd
-                        : context.textTertiary,
-                  ),
-                ],
+                    const SizedBox(width: AppSpacing.sm),
+                    Icon(
+                      completed
+                          ? Icons.check_circle_rounded
+                          : Icons.chevron_right_rounded,
+                      size: 22,
+                      color: completed
+                          ? PremiumColors.achievementEnd
+                          : context.textTertiary,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
         ),
       ),
-      ),
     );
 
-    return tile.animate(delay: (widget.index * 60).ms).fadeIn(
-        duration: 350.ms,
-        curve: Curves.easeOut,
-      ).slideX(begin: 0.08, end: 0, duration: 350.ms, curve: Curves.easeOut);
+    return tile
+        .animate(delay: (widget.index * 60).ms)
+        .fadeIn(duration: 350.ms, curve: Curves.easeOut)
+        .slideX(begin: 0.08, end: 0, duration: 350.ms, curve: Curves.easeOut);
   }
 }

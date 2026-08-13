@@ -33,13 +33,23 @@ class _PremiumLoaderState extends ConsumerState<PremiumLoader>
   void initState() {
     super.initState();
     _currentQuote = ref.read(motivationalQuotesServiceProvider).random();
-    _pulseCtrl = AnimationController(vsync: this, duration: const Duration(seconds: 3));
+    _pulseCtrl = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 3),
+    );
     _pulseCtrl.repeat(reverse: true);
-    _fadeCtrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 300));
+    _fadeCtrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
     if (widget.loading) _fadeCtrl.forward();
     _quoteTimer = Timer.periodic(const Duration(seconds: 6), (_) {
       if (!mounted) return;
-      setState(() => _currentQuote = ref.read(motivationalQuotesServiceProvider).random());
+      setState(
+        () => _currentQuote = ref
+            .read(motivationalQuotesServiceProvider)
+            .random(),
+      );
     });
   }
 
@@ -75,7 +85,9 @@ class _PremiumLoaderState extends ConsumerState<PremiumLoader>
             FadeTransition(
               opacity: _fadeCtrl,
               child: Container(
-                color: (dark ? PremiumColors.darkBg : Colors.white).withValues(alpha: 0.92),
+                color: (dark ? PremiumColors.darkBg : Colors.white).withValues(
+                  alpha: 0.92,
+                ),
                 child: Center(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -102,7 +114,11 @@ class _PremiumLoaderState extends ConsumerState<PremiumLoader>
                               ),
                             ],
                           ),
-                          child: const SageEmotionWidget(emotion: SageEmotion.thinking, size: 76, animated: false),
+                          child: const SageEmotionWidget(
+                            emotion: SageEmotion.thinking,
+                            size: 76,
+                            animated: false,
+                          ),
                         ),
                       ),
                       if (widget.message != null) ...[

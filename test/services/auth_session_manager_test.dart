@@ -28,10 +28,7 @@ void main() {
     });
 
     test('clearSession does not throw', () async {
-      await expectLater(
-        () => sessionManager.clearSession(),
-        returnsNormally,
-      );
+      await expectLater(() => sessionManager.clearSession(), returnsNormally);
     });
 
     test('save -> restore -> clear cycle handles gracefully', () async {

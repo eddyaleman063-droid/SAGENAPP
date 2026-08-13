@@ -8,6 +8,7 @@ import 'package:sagen/services/auth_service.dart';
 import 'package:sagen/services/cloud_sync_service.dart';
 
 class MockCloudSyncService extends Mock implements CloudSyncService {}
+
 class MockAuthService extends Mock implements AuthService {}
 
 class TestLearningNotifier extends LearningNotifier {
@@ -24,7 +25,9 @@ class TestLearningNotifier extends LearningNotifier {
     state = state.copyWith(
       xp: newLevel > state.currentLevel ? 0 : newXp,
       totalXpEarned: newTotalXp,
-      currentLevel: newLevel > state.currentLevel ? newLevel : state.currentLevel,
+      currentLevel: newLevel > state.currentLevel
+          ? newLevel
+          : state.currentLevel,
     );
   }
 }
@@ -38,7 +41,9 @@ void main() {
       container = ProviderContainer(
         overrides: [
           prefsProvider.overrideWithValue(prefs),
-          cloudSyncServiceProvider.overrideWith((ref) => MockCloudSyncService()),
+          cloudSyncServiceProvider.overrideWith(
+            (ref) => MockCloudSyncService(),
+          ),
           authServiceProvider.overrideWith((ref) => MockAuthService()),
           learningProvider.overrideWith(() => TestLearningNotifier()),
         ],
@@ -69,7 +74,9 @@ void main() {
       final mission = state.missions.first;
       notifier.advanceMission(mission.type, amount: 1);
       final updated = container.read(missionProvider);
-      final updatedMission = updated.missions.firstWhere((m) => m.id == mission.id);
+      final updatedMission = updated.missions.firstWhere(
+        (m) => m.id == mission.id,
+      );
       expect(updatedMission.progress, greaterThan(0));
       await Future.delayed(const Duration(milliseconds: 100));
     });
@@ -79,7 +86,9 @@ void main() {
       final mission = state.missions.first;
       notifier.advanceMission(mission.type, amount: mission.target);
       final updated = container.read(missionProvider);
-      final updatedMission = updated.missions.firstWhere((m) => m.id == mission.id);
+      final updatedMission = updated.missions.firstWhere(
+        (m) => m.id == mission.id,
+      );
       expect(updatedMission.completed, true);
       await Future.delayed(const Duration(milliseconds: 100));
     });

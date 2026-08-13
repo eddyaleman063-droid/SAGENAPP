@@ -51,7 +51,9 @@ class _FirstLessonScreenState extends ConsumerState<FirstLessonScreen> {
       if (!mounted) return;
       final updated = ref.read(firstLessonProvider);
       if (updated.questions.isEmpty && mounted) {
-        setState(() => _loadError = AppLocalizations.of(context)!.errorLoadQuestions);
+        setState(
+          () => _loadError = AppLocalizations.of(context)!.errorLoadQuestions,
+        );
       }
     });
   }
@@ -71,7 +73,9 @@ class _FirstLessonScreenState extends ConsumerState<FirstLessonScreen> {
 
     if (_loadError != null) {
       return Scaffold(
-        backgroundColor: dark ? PremiumColors.deepBackground : PremiumColors.lightBg,
+        backgroundColor: dark
+            ? PremiumColors.deepBackground
+            : PremiumColors.lightBg,
         body: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -91,7 +95,9 @@ class _FirstLessonScreenState extends ConsumerState<FirstLessonScreen> {
               ElevatedButton(
                 onPressed: () {
                   HapticFeedback.lightImpact();
-                  setState(() { _loadError = null; });
+                  setState(() {
+                    _loadError = null;
+                  });
                   _startLessonWithTimeout();
                 },
                 child: Text(AppLocalizations.of(context)!.retry),
@@ -104,7 +110,9 @@ class _FirstLessonScreenState extends ConsumerState<FirstLessonScreen> {
 
     if (lesson.questions.isEmpty) {
       return Scaffold(
-        backgroundColor: dark ? PremiumColors.deepBackground : PremiumColors.lightBg,
+        backgroundColor: dark
+            ? PremiumColors.deepBackground
+            : PremiumColors.lightBg,
         body: const _FirstLessonShimmer(),
       );
     }
@@ -114,7 +122,9 @@ class _FirstLessonScreenState extends ConsumerState<FirstLessonScreen> {
         loading: true,
         message: AppLocalizations.of(context)!.loading,
         child: Scaffold(
-          backgroundColor: dark ? PremiumColors.deepBackground : PremiumColors.lightBg,
+          backgroundColor: dark
+              ? PremiumColors.deepBackground
+              : PremiumColors.lightBg,
         ),
       );
     }
@@ -132,7 +142,13 @@ class _FirstLessonScreenState extends ConsumerState<FirstLessonScreen> {
             title: Text(l.exitText),
             content: Text(l.exitQuizTitle),
             actions: [
-              TextButton(onPressed: () { HapticFeedback.lightImpact(); Navigator.pop(ctx); }, child: Text(l.cancel)),
+              TextButton(
+                onPressed: () {
+                  HapticFeedback.lightImpact();
+                  Navigator.pop(ctx);
+                },
+                child: Text(l.cancel),
+              ),
               TextButton(
                 onPressed: () {
                   HapticFeedback.lightImpact();
@@ -146,7 +162,9 @@ class _FirstLessonScreenState extends ConsumerState<FirstLessonScreen> {
         );
       },
       child: Scaffold(
-        backgroundColor: dark ? PremiumColors.deepBackground : PremiumColors.lightBg,
+        backgroundColor: dark
+            ? PremiumColors.deepBackground
+            : PremiumColors.lightBg,
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(AppSpacing.xxl),
@@ -155,10 +173,19 @@ class _FirstLessonScreenState extends ConsumerState<FirstLessonScreen> {
               children: [
                 Row(
                   children: [
-                    const ExcludeSemantics(child: Icon(Icons.school_rounded, color: PremiumColors.splashBlue, size: 20)),
+                    const ExcludeSemantics(
+                      child: Icon(
+                        Icons.school_rounded,
+                        color: PremiumColors.splashBlue,
+                        size: 20,
+                      ),
+                    ),
                     const SizedBox(width: AppSpacing.sm),
                     Text(
-                      l.firstLessonProgress(lesson.currentIndex + 1, lesson.totalQuestions),
+                      l.firstLessonProgress(
+                        lesson.currentIndex + 1,
+                        lesson.totalQuestions,
+                      ),
                       style: AppTextStyle.subtitle.copyWith(
                         fontWeight: FontWeight.w600,
                         color: context.textTertiary,
@@ -176,13 +203,20 @@ class _FirstLessonScreenState extends ConsumerState<FirstLessonScreen> {
                 ),
                 const SizedBox(height: AppSpacing.sm),
                 Semantics(
-                  label: l.firstLessonProgress(lesson.currentIndex + 1, lesson.totalQuestions),
+                  label: l.firstLessonProgress(
+                    lesson.currentIndex + 1,
+                    lesson.totalQuestions,
+                  ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(AppRadius.pill),
                     child: LinearProgressIndicator(
-                      value: lesson.totalQuestions > 0 ? lesson.currentIndex / lesson.totalQuestions : 0.0,
+                      value: lesson.totalQuestions > 0
+                          ? lesson.currentIndex / lesson.totalQuestions
+                          : 0.0,
                       backgroundColor: context.surfaceTinted,
-                      valueColor: const AlwaysStoppedAnimation(PremiumColors.splashBlue),
+                      valueColor: const AlwaysStoppedAnimation(
+                        PremiumColors.splashBlue,
+                      ),
                       minHeight: 4,
                     ),
                   ),
@@ -197,7 +231,8 @@ class _FirstLessonScreenState extends ConsumerState<FirstLessonScreen> {
                       showFeedback: lesson.showFeedback,
                       selectedAnswer: lesson.selectedAnswer,
                       answeredCorrectly: lesson.answeredCorrectly,
-                      isLastQuestion: lesson.currentIndex + 1 >= lesson.totalQuestions,
+                      isLastQuestion:
+                          lesson.currentIndex + 1 >= lesson.totalQuestions,
                       onSelect: (index) => notifier.submitAnswer(index),
                       onNext: () => notifier.nextQuestion(),
                     ),
@@ -223,11 +258,23 @@ class _FirstLessonShimmer extends StatelessWidget {
         children: [
           ShimmerLoading(width: 280, height: 20),
           SizedBox(height: AppSpacing.xxl),
-          ShimmerLoading(width: double.infinity, height: 56, borderRadius: AppRadius.lg),
+          ShimmerLoading(
+            width: double.infinity,
+            height: 56,
+            borderRadius: AppRadius.lg,
+          ),
           SizedBox(height: AppSpacing.md),
-          ShimmerLoading(width: double.infinity, height: 56, borderRadius: AppRadius.lg),
+          ShimmerLoading(
+            width: double.infinity,
+            height: 56,
+            borderRadius: AppRadius.lg,
+          ),
           SizedBox(height: AppSpacing.md),
-          ShimmerLoading(width: double.infinity, height: 56, borderRadius: AppRadius.lg),
+          ShimmerLoading(
+            width: double.infinity,
+            height: 56,
+            borderRadius: AppRadius.lg,
+          ),
         ],
       ),
     );
@@ -262,11 +309,11 @@ class _QuestionBody extends StatelessWidget {
       children: [
         Text(
           question.question,
-            style: AppTextStyle.title.copyWith(
-              fontWeight: FontWeight.w600,
-              color: context.textPrimary,
-              height: 1.4,
-            ),
+          style: AppTextStyle.title.copyWith(
+            fontWeight: FontWeight.w600,
+            color: context.textPrimary,
+            height: 1.4,
+          ),
         ),
         const SizedBox(height: AppSpacing.xxl),
         ...List.generate(question.options.length, (i) {
@@ -298,47 +345,49 @@ class _QuestionBody extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(bottom: AppSpacing.md),
               child: GestureDetector(
-                onTap: showFeedback ? null : () {
-                  HapticFeedback.lightImpact();
-                  onSelect(i);
-                },
+                onTap: showFeedback
+                    ? null
+                    : () {
+                        HapticFeedback.lightImpact();
+                        onSelect(i);
+                      },
                 child: AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                padding: const EdgeInsets.all(AppSpacing.lg),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(AppRadius.lg),
-                  color: tileColor,
-                  border: Border.all(color: borderColor),
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      showFeedback && isCorrect
-                          ? Icons.check_circle_rounded
-                          : showFeedback && isSelected && !isCorrect
-                              ? Icons.cancel_rounded
-                              : Icons.radio_button_unchecked_rounded,
-                      size: 20,
-                      color: showFeedback && isCorrect
-                          ? PremiumColors.success
-                          : showFeedback && isSelected && !isCorrect
-                              ? PremiumColors.error
-                              : context.textTertiary,
-                    ),
-                    const SizedBox(width: AppSpacing.md),
-                    Expanded(
-                      child: Text(
-                        opt,
-                        style: AppTextStyle.body.copyWith(
-                          color: context.textPrimary,
+                  duration: const Duration(milliseconds: 200),
+                  padding: const EdgeInsets.all(AppSpacing.lg),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(AppRadius.lg),
+                    color: tileColor,
+                    border: Border.all(color: borderColor),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        showFeedback && isCorrect
+                            ? Icons.check_circle_rounded
+                            : showFeedback && isSelected && !isCorrect
+                            ? Icons.cancel_rounded
+                            : Icons.radio_button_unchecked_rounded,
+                        size: 20,
+                        color: showFeedback && isCorrect
+                            ? PremiumColors.success
+                            : showFeedback && isSelected && !isCorrect
+                            ? PremiumColors.error
+                            : context.textTertiary,
+                      ),
+                      const SizedBox(width: AppSpacing.md),
+                      Expanded(
+                        child: Text(
+                          opt,
+                          style: AppTextStyle.body.copyWith(
+                            color: context.textPrimary,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
           );
         }),
         if (showFeedback) ...[
@@ -359,9 +408,13 @@ class _QuestionBody extends StatelessWidget {
             child: Row(
               children: [
                 Icon(
-                  answeredCorrectly ? Icons.check_circle_rounded : Icons.info_rounded,
+                  answeredCorrectly
+                      ? Icons.check_circle_rounded
+                      : Icons.info_rounded,
                   size: 18,
-                  color: answeredCorrectly ? PremiumColors.success : PremiumColors.error,
+                  color: answeredCorrectly
+                      ? PremiumColors.success
+                      : PremiumColors.error,
                 ),
                 const SizedBox(width: AppSpacing.md),
                 Expanded(
@@ -369,7 +422,9 @@ class _QuestionBody extends StatelessWidget {
                     question.explanation,
                     style: AppTextStyle.subtitle.copyWith(
                       color: answeredCorrectly
-                          ? (context.isDark ? PremiumColors.successLight : PremiumColors.success)
+                          ? (context.isDark
+                                ? PremiumColors.successLight
+                                : PremiumColors.success)
                           : context.textSecondary,
                       height: 1.4,
                     ),
@@ -393,11 +448,17 @@ class _QuestionBody extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: PremiumColors.primary,
                   foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(AppRadius.lg),
+                  ),
                 ),
                 child: Text(
-                  isLastQuestion ? l.firstLessonSeeResults : l.nextText.toUpperCase(),
-                  style: AppTextStyle.body.copyWith(fontWeight: FontWeight.bold),
+                  isLastQuestion
+                      ? l.firstLessonSeeResults
+                      : l.nextText.toUpperCase(),
+                  style: AppTextStyle.body.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
@@ -405,5 +466,5 @@ class _QuestionBody extends StatelessWidget {
         ],
       ],
     ).animate().fadeIn(duration: 300.ms);
-    }
   }
+}

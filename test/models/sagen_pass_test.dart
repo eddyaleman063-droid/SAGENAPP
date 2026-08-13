@@ -29,10 +29,7 @@ void main() {
     });
 
     test('clamps at 1.0 when sp exceeds requirement', () {
-      expect(
-        SagenPass(currentLevel: 1, currentSP: 100).progressFraction,
-        1.0,
-      );
+      expect(SagenPass(currentLevel: 1, currentSP: 100).progressFraction, 1.0);
     });
 
     test('returns 1.0 at maxLevel', () {

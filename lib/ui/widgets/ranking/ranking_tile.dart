@@ -18,8 +18,12 @@ class RankingTileWidget extends StatelessWidget {
 
   String get _initials {
     final parts = entry.displayName.trim().split(RegExp(r'\s+'));
-    if (parts.length >= 2) return '${parts.first[0]}${parts.last[0]}'.toUpperCase();
-    if (parts.length == 1 && parts.first.isNotEmpty) return parts.first[0].toUpperCase();
+    if (parts.length >= 2) {
+      return '${parts.first[0]}${parts.last[0]}'.toUpperCase();
+    }
+    if (parts.length == 1 && parts.first.isNotEmpty) {
+      return parts.first[0].toUpperCase();
+    }
     return '?';
   }
 
@@ -32,7 +36,9 @@ class RankingTileWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppRadius.md),
         color: context.surfaceCard,
         border: Border.all(
-          color: isCurrentUser ? PremiumColors.splashBlue.withValues(alpha: 0.3) : context.borderSubtle,
+          color: isCurrentUser
+              ? PremiumColors.splashBlue.withValues(alpha: 0.3)
+              : context.borderSubtle,
         ),
       ),
       child: ListTile(
@@ -43,37 +49,67 @@ class RankingTileWidget extends StatelessWidget {
               width: 32,
               child: Text(
                 '#$rank',
-                style: AppTextStyle.subtitle.copyWith(color: isCurrentUser ? PremiumColors.splashBlue : context.textTertiary,
-                  fontWeight: FontWeight.w700),
+                style: AppTextStyle.subtitle.copyWith(
+                  color: isCurrentUser
+                      ? PremiumColors.splashBlue
+                      : context.textTertiary,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
             const SizedBox(width: AppSpacing.sm),
             CircleAvatar(
               radius: 16,
-              backgroundColor: isCurrentUser ? PremiumColors.splashBlue.withValues(alpha: 0.2) : dark ? PremiumColors.darkSurface : context.surfaceCard,
-              child: Text(_initials, style: AppTextStyle.label.copyWith(fontWeight: FontWeight.bold, color: context.textSecondary)),
+              backgroundColor: isCurrentUser
+                  ? PremiumColors.splashBlue.withValues(alpha: 0.2)
+                  : dark
+                  ? PremiumColors.darkSurface
+                  : context.surfaceCard,
+              child: Text(
+                _initials,
+                style: AppTextStyle.label.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: context.textSecondary,
+                ),
+              ),
             ),
           ],
         ),
         title: Text(
-          entry.displayName.isNotEmpty ? entry.displayName : AppLocalizations.of(context)!.unknownLabel,
-          style: AppTextStyle.bodyMd.copyWith(color: isCurrentUser ? PremiumColors.splashBlue : context.textSecondary,
-            fontWeight: isCurrentUser ? FontWeight.w600 : FontWeight.normal),
+          entry.displayName.isNotEmpty
+              ? entry.displayName
+              : AppLocalizations.of(context)!.unknownLabel,
+          style: AppTextStyle.bodyMd.copyWith(
+            color: isCurrentUser
+                ? PremiumColors.splashBlue
+                : context.textSecondary,
+            fontWeight: isCurrentUser ? FontWeight.w600 : FontWeight.normal,
+          ),
         ),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             ExcludeSemantics(
-              child: Icon(Icons.bolt_rounded, size: 16, color: PremiumColors.streakOrange.withValues(alpha: 0.8)),
+              child: Icon(
+                Icons.bolt_rounded,
+                size: 16,
+                color: PremiumColors.streakOrange.withValues(alpha: 0.8),
+              ),
             ),
             const SizedBox(width: AppSpacing.xxs),
             Text(
               _formatXp(entry.totalXp),
-              style: AppTextStyle.subtitle.copyWith(color: context.textTertiary, fontWeight: FontWeight.w600),
+              style: AppTextStyle.subtitle.copyWith(
+                color: context.textTertiary,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ],
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: 0),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.md,
+          vertical: 0,
+        ),
         dense: true,
       ),
     );

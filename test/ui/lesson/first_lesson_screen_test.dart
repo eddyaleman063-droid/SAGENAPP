@@ -17,7 +17,9 @@ class _MockFirstLessonNotifier extends FirstLessonNotifier {
   FirstLessonState build() => initialState;
 
   @override
-  Future<void> startLesson({DiagnosticPath path = DiagnosticPath.beginner}) async {}
+  Future<void> startLesson({
+    DiagnosticPath path = DiagnosticPath.beginner,
+  }) async {}
 }
 
 Challenge _createChallenge({int id = 0}) {
@@ -66,7 +68,10 @@ void main() {
 
     testWidgets('renders question text and answer options', (tester) async {
       final questions = [_createChallenge()];
-      final state = FirstLessonState(questions: questions, startTime: DateTime.now());
+      final state = FirstLessonState(
+        questions: questions,
+        startTime: DateTime.now(),
+      );
       await tester.pumpWidget(buildApp(state));
       await tester.pump();
 
@@ -78,9 +83,14 @@ void main() {
       await tester.pump(const Duration(seconds: 5));
     });
 
-    testWidgets('shows progress bar, step counter, and percentage', (tester) async {
+    testWidgets('shows progress bar, step counter, and percentage', (
+      tester,
+    ) async {
       final questions = [_createChallenge(), _createChallenge(id: 1)];
-      final state = FirstLessonState(questions: questions, startTime: DateTime.now());
+      final state = FirstLessonState(
+        questions: questions,
+        startTime: DateTime.now(),
+      );
       await tester.pumpWidget(buildApp(state));
       await tester.pump();
       await tester.pump();
@@ -90,10 +100,14 @@ void main() {
       await tester.pump(const Duration(seconds: 5));
     });
 
-    testWidgets('selecting correct answer shows feedback and continue button',
-        (tester) async {
+    testWidgets('selecting correct answer shows feedback and continue button', (
+      tester,
+    ) async {
       final questions = [_createChallenge(), _createChallenge(id: 1)];
-      final state = FirstLessonState(questions: questions, startTime: DateTime.now());
+      final state = FirstLessonState(
+        questions: questions,
+        startTime: DateTime.now(),
+      );
       await tester.pumpWidget(buildApp(state));
       await tester.pump();
 
@@ -101,14 +115,20 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 350));
 
-      expect(find.text('El phishing es un correo electrónico fraudulento.'), findsOneWidget);
+      expect(
+        find.text('El phishing es un correo electrónico fraudulento.'),
+        findsOneWidget,
+      );
       expect(find.text('SIGUIENTE'), findsOneWidget);
       await tester.pump(const Duration(seconds: 5));
     });
 
     testWidgets('continue button advances to next question', (tester) async {
       final questions = [_createChallenge(), _createChallenge(id: 1)];
-      final state = FirstLessonState(questions: questions, startTime: DateTime.now());
+      final state = FirstLessonState(
+        questions: questions,
+        startTime: DateTime.now(),
+      );
       await tester.pumpWidget(buildApp(state));
       await tester.pump();
 

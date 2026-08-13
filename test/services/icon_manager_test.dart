@@ -7,11 +7,7 @@ import 'package:sagen/services/streak_service.dart';
 
 const _iconChannel = MethodChannel('flutter_dynamic_icon_plus');
 
-StreakState streak({
-  int current = 5,
-  int freezes = 0,
-  bool atRisk = false,
-}) {
+StreakState streak({int current = 5, int freezes = 0, bool atRisk = false}) {
   return StreakState(
     status: StreakStatus(
       currentStreak: current,
@@ -43,10 +39,10 @@ void main() {
     IconManager.instance.reset();
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(_iconChannel, (MethodCall call) async {
-      calls.add(call.method);
-      if (call.method == 'supportsAlternateIcons') return true;
-      return null;
-    });
+          calls.add(call.method);
+          if (call.method == 'supportsAlternateIcons') return true;
+          return null;
+        });
   });
 
   tearDown(() {

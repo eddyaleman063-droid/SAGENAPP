@@ -12,10 +12,14 @@ class SupporterTiersSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: donationPackages.map((pkg) => Padding(
-        padding: const EdgeInsets.only(bottom: AppSpacing.md),
-        child: _TierCard(pkg: pkg, dark: dark),
-      )).toList(),
+      children: donationPackages
+          .map(
+            (pkg) => Padding(
+              padding: const EdgeInsets.only(bottom: AppSpacing.md),
+              child: _TierCard(pkg: pkg, dark: dark),
+            ),
+          )
+          .toList(),
     );
   }
 }
@@ -37,48 +41,66 @@ class _TierCard extends StatelessWidget {
           PaywallBottomSheet.show(context);
         },
         child: Container(
-        padding: const EdgeInsets.all(AppSpacing.lg),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(AppRadius.xl),
-          color: context.surfaceCard,
-          boxShadow: AppShadows.card(),
-          border: Border.all(color: PremiumColors.primary.withValues(alpha: 0.2)),
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(AppRadius.md),
-                gradient: const LinearGradient(
-                  colors: [PremiumColors.primary, PremiumColors.primaryAccent],
+          padding: const EdgeInsets.all(AppSpacing.lg),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(AppRadius.xl),
+            color: context.surfaceCard,
+            boxShadow: AppShadows.card(),
+            border: Border.all(
+              color: PremiumColors.primary.withValues(alpha: 0.2),
+            ),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(AppRadius.md),
+                  gradient: const LinearGradient(
+                    colors: [
+                      PremiumColors.primary,
+                      PremiumColors.primaryAccent,
+                    ],
+                  ),
+                ),
+                child: const Icon(
+                  Icons.favorite_rounded,
+                  color: Colors.white,
+                  size: 20,
                 ),
               ),
-              child: const Icon(Icons.favorite_rounded, color: Colors.white, size: 20),
-            ),
-            const SizedBox(width: AppSpacing.lg),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    pkg.localizedLabel(l),
-                    style: AppTextStyle.body.copyWith(fontWeight: FontWeight.w600,
-                      color: context.textPrimary),
-                  ),
-                  Text(
-                    '${l.currencySymbol}${pkg.price.toStringAsFixed(2)}',
-                    style: AppTextStyle.caption.copyWith(color: context.textTertiary),
-                  ),
-                ],
+              const SizedBox(width: AppSpacing.lg),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      pkg.localizedLabel(l),
+                      style: AppTextStyle.body.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: context.textPrimary,
+                      ),
+                    ),
+                    Text(
+                      '${l.currencySymbol}${pkg.price.toStringAsFixed(2)}',
+                      style: AppTextStyle.caption.copyWith(
+                        color: context.textTertiary,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            ExcludeSemantics(child: Icon(Icons.arrow_forward_ios_rounded,
-              size: 16, color: context.subtle)),
-          ],
+              ExcludeSemantics(
+                child: Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  size: 16,
+                  color: context.subtle,
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
       ),
     );
   }

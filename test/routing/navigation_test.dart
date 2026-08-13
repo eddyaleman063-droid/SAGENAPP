@@ -14,9 +14,7 @@ void main() {
       SharedPreferences.setMockInitialValues({});
       final prefs = await SharedPreferences.getInstance();
       container = ProviderContainer(
-        overrides: [
-          prefsProvider.overrideWithValue(prefs),
-        ],
+        overrides: [prefsProvider.overrideWithValue(prefs)],
       );
       router = container.read(routerProvider);
     });
@@ -41,12 +39,18 @@ void main() {
 
     test('/forgot-password route resolves correctly', () {
       router.go('/forgot-password');
-      expect(router.routeInformationProvider.value.uri.toString(), '/forgot-password');
+      expect(
+        router.routeInformationProvider.value.uri.toString(),
+        '/forgot-password',
+      );
     });
 
     test('/onboarding route resolves correctly', () {
       router.go('/onboarding');
-      expect(router.routeInformationProvider.value.uri.toString(), '/onboarding');
+      expect(
+        router.routeInformationProvider.value.uri.toString(),
+        '/onboarding',
+      );
     });
 
     test('/review route resolves correctly', () {

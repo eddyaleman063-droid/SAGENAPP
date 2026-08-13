@@ -42,7 +42,10 @@ class WizardSingleChoiceTile extends ConsumerWidget {
         child: AnimatedContainer(
           duration: ref.read(experienceServiceProvider).fast,
           curve: AppEasing.entrance,
-          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.lg,
+            vertical: AppSpacing.md,
+          ),
           decoration: BoxDecoration(
             color: isSelected ? cardSelectedBg : cardBg,
             borderRadius: BorderRadius.circular(AppRadius.md),
@@ -54,14 +57,22 @@ class WizardSingleChoiceTile extends ConsumerWidget {
           child: Row(
             children: [
               ExcludeSemantics(
-                child: Icon(option.icon, size: 22, color: isSelected ? iconSelectedColor : iconColor),
+                child: Icon(
+                  option.icon,
+                  size: 22,
+                  color: isSelected ? iconSelectedColor : iconColor,
+                ),
               ),
               const SizedBox(width: AppSpacing.md),
               Expanded(
                 child: Text(
                   option.label,
-                  style: AppTextStyle.bodyMd.copyWith(fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-                    color: isSelected ? textPrimary : textSecondary),
+                  style: AppTextStyle.bodyMd.copyWith(
+                    fontWeight: isSelected
+                        ? FontWeight.w600
+                        : FontWeight.normal,
+                    color: isSelected ? textPrimary : textSecondary,
+                  ),
                 ),
               ),
             ],
@@ -108,7 +119,10 @@ class WizardMultiChoiceTile extends ConsumerWidget {
         child: AnimatedContainer(
           duration: ref.read(experienceServiceProvider).fast,
           curve: AppEasing.entrance,
-          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.lg,
+            vertical: AppSpacing.md,
+          ),
           decoration: BoxDecoration(
             color: isSelected ? cardSelectedBg : cardBg,
             borderRadius: BorderRadius.circular(AppRadius.md),
@@ -120,18 +134,28 @@ class WizardMultiChoiceTile extends ConsumerWidget {
           child: Row(
             children: [
               ExcludeSemantics(
-                child: Icon(option.icon, size: 22, color: isSelected ? iconSelectedColor : iconColor),
+                child: Icon(
+                  option.icon,
+                  size: 22,
+                  color: isSelected ? iconSelectedColor : iconColor,
+                ),
               ),
               const SizedBox(width: AppSpacing.md),
               Expanded(
                 child: Text(
                   option.label,
-                  style: AppTextStyle.bodyMd.copyWith(fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-                    color: isSelected ? textPrimary : textSecondary),
+                  style: AppTextStyle.bodyMd.copyWith(
+                    fontWeight: isSelected
+                        ? FontWeight.w600
+                        : FontWeight.normal,
+                    color: isSelected ? textPrimary : textSecondary,
+                  ),
                 ),
               ),
               Icon(
-                isSelected ? Icons.check_box_rounded : Icons.check_box_outline_blank_rounded,
+                isSelected
+                    ? Icons.check_box_rounded
+                    : Icons.check_box_outline_blank_rounded,
                 size: 22,
                 color: isSelected ? iconSelectedColor : iconColor,
               ),

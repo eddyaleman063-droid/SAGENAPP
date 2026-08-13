@@ -20,14 +20,22 @@ class GamificationCloudService {
   }
 
   /// Safely extracts a bool from a map, returning defaultValue if missing or wrong type.
-  static bool _safeBool(Map<String, dynamic> data, String key, [bool defaultValue = false]) {
+  static bool _safeBool(
+    Map<String, dynamic> data,
+    String key, [
+    bool defaultValue = false,
+  ]) {
     final val = data[key];
     if (val is bool) return val;
     return defaultValue;
   }
 
   /// Safely extracts an int from a map, returning defaultValue if missing or wrong type.
-  static int _safeInt(Map<String, dynamic> data, String key, [int defaultValue = 0]) {
+  static int _safeInt(
+    Map<String, dynamic> data,
+    String key, [
+    int defaultValue = 0,
+  ]) {
     final val = data[key];
     if (val is int) return val;
     if (val is num) return val.toInt();
@@ -35,7 +43,11 @@ class GamificationCloudService {
   }
 
   /// Safely extracts a String from a map, returning defaultValue if missing or wrong type.
-  static String _safeString(Map<String, dynamic> data, String key, [String defaultValue = '']) {
+  static String _safeString(
+    Map<String, dynamic> data,
+    String key, [
+    String defaultValue = '',
+  ]) {
     final val = data[key];
     if (val is String) return val;
     return defaultValue;
@@ -49,18 +61,25 @@ class GamificationCloudService {
       final result = await _functions.httpsCallable('claimDailyChest').call();
       final data = _validateResponse(result.data);
       if (data == null) return AppResult.ok({'alreadyClaimed': true});
-      if (_safeBool(data, 'alreadyClaimed')) return AppResult.ok({'alreadyClaimed': true});
+      if (_safeBool(data, 'alreadyClaimed')) {
+        return AppResult.ok({'alreadyClaimed': true});
+      }
       return AppResult.ok({
         'xp': _safeInt(data, 'xp', 10),
         'chestType': _safeString(data, 'chestType', 'bronze'),
         'alreadyClaimed': false,
       });
     } on FirebaseFunctionsException catch (e) {
-      _logger.error('GamificationCloudService.claimDailyChest failed: ${e.code}', e);
+      _logger.error(
+        'GamificationCloudService.claimDailyChest failed: ${e.code}',
+        e,
+      );
       return AppResult.error(NetworkError(message: e.code, originalError: e));
     } catch (e) {
       _logger.error('GamificationCloudService.claimDailyChest failed', e);
-      return AppResult.error(NetworkError(message: 'unknown', originalError: e));
+      return AppResult.error(
+        NetworkError(message: 'unknown', originalError: e),
+      );
     }
   }
 
@@ -70,17 +89,24 @@ class GamificationCloudService {
       final result = await _functions.httpsCallable('claimAdReward').call();
       final data = _validateResponse(result.data);
       if (data == null) return AppResult.ok({'limitReached': true});
-      if (_safeBool(data, 'limitReached')) return AppResult.ok({'limitReached': true});
+      if (_safeBool(data, 'limitReached')) {
+        return AppResult.ok({'limitReached': true});
+      }
       return AppResult.ok({
         'xp': _safeInt(data, 'xp', 50),
         'limitReached': false,
       });
     } on FirebaseFunctionsException catch (e) {
-      _logger.error('GamificationCloudService.claimAdReward failed: ${e.code}', e);
+      _logger.error(
+        'GamificationCloudService.claimAdReward failed: ${e.code}',
+        e,
+      );
       return AppResult.error(NetworkError(message: e.code, originalError: e));
     } catch (e) {
       _logger.error('GamificationCloudService.claimAdReward failed', e);
-      return AppResult.error(NetworkError(message: 'unknown', originalError: e));
+      return AppResult.error(
+        NetworkError(message: 'unknown', originalError: e),
+      );
     }
   }
 
@@ -92,7 +118,9 @@ class GamificationCloudService {
         'reason': reason ?? 'lesson',
       });
       final data = _validateResponse(result.data);
-      if (data == null) return AppResult.error(const SyncError('null response'));
+      if (data == null) {
+        return AppResult.error(const SyncError('null response'));
+      }
       return AppResult.ok({
         'sp': _safeInt(data, 'sp'),
         'level': _safeInt(data, 'level', 1),
@@ -102,19 +130,25 @@ class GamificationCloudService {
       return AppResult.error(NetworkError(message: e.code, originalError: e));
     } catch (e) {
       _logger.error('GamificationCloudService.earnSP failed', e);
-      return AppResult.error(NetworkError(message: 'unknown', originalError: e));
+      return AppResult.error(
+        NetworkError(message: 'unknown', originalError: e),
+      );
     }
   }
 
   /// Claims a Sagen Pass level reward with explicit error handling.
-  Future<AppResult<Map<String, dynamic>>> claimPassRewardResult(int level) async {
+  Future<AppResult<Map<String, dynamic>>> claimPassRewardResult(
+    int level,
+  ) async {
     try {
-      final result = await _functions.httpsCallable('claimSagenPassReward').call({
-        'level': level,
-      });
+      final result = await _functions
+          .httpsCallable('claimSagenPassReward')
+          .call({'level': level});
       final data = _validateResponse(result.data);
       if (data == null) return AppResult.ok({'alreadyClaimed': true});
-      if (_safeBool(data, 'alreadyClaimed')) return AppResult.ok({'alreadyClaimed': true});
+      if (_safeBool(data, 'alreadyClaimed')) {
+        return AppResult.ok({'alreadyClaimed': true});
+      }
       return AppResult.ok({
         'reward': _safeString(data, 'reward', 'xp'),
         'amount': _safeInt(data, 'amount'),
@@ -123,20 +157,29 @@ class GamificationCloudService {
         'seasonStart': data['seasonStart'],
       });
     } on FirebaseFunctionsException catch (e) {
-      _logger.error('GamificationCloudService.claimPassReward failed: ${e.code}', e);
+      _logger.error(
+        'GamificationCloudService.claimPassReward failed: ${e.code}',
+        e,
+      );
       return AppResult.error(NetworkError(message: e.code, originalError: e));
     } catch (e) {
       _logger.error('GamificationCloudService.claimPassReward failed', e);
-      return AppResult.error(NetworkError(message: 'unknown', originalError: e));
+      return AppResult.error(
+        NetworkError(message: 'unknown', originalError: e),
+      );
     }
   }
 
   /// Fetches Sagen Pass season data with explicit error handling.
   Future<AppResult<Map<String, dynamic>>> getSagenPassSeasonResult() async {
     try {
-      final result = await _functions.httpsCallable('getSagenPassSeason').call();
+      final result = await _functions
+          .httpsCallable('getSagenPassSeason')
+          .call();
       final data = _validateResponse(result.data);
-      if (data == null) return AppResult.error(const SyncError('null response'));
+      if (data == null) {
+        return AppResult.error(const SyncError('null response'));
+      }
       return AppResult.ok({
         'seasonStart': data['seasonStart'],
         'level': _safeInt(data, 'level', 1),
@@ -144,11 +187,16 @@ class GamificationCloudService {
         'claimed': data['claimed'],
       });
     } on FirebaseFunctionsException catch (e) {
-      _logger.error('GamificationCloudService.getSagenPassSeason failed: ${e.code}', e);
+      _logger.error(
+        'GamificationCloudService.getSagenPassSeason failed: ${e.code}',
+        e,
+      );
       return AppResult.error(NetworkError(message: e.code, originalError: e));
     } catch (e) {
       _logger.error('GamificationCloudService.getSagenPassSeason failed', e);
-      return AppResult.error(NetworkError(message: 'unknown', originalError: e));
+      return AppResult.error(
+        NetworkError(message: 'unknown', originalError: e),
+      );
     }
   }
 

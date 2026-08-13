@@ -27,21 +27,26 @@ class _TiltWidgetState extends State<TiltWidget> {
   @override
   void initState() {
     super.initState();
-    _sub = accelerometerEventStream().listen((event) {
-      final now = DateTime.now();
-      if (now.difference(_lastUpdate).inMilliseconds < 33) return; // ~30fps throttle
-      _lastUpdate = now;
-      final clampedX = (-event.y / 10).clamp(-1.0, 1.0) * widget.sensitivity;
-      final clampedY = (event.x / 10).clamp(-1.0, 1.0) * widget.sensitivity;
-      if (!mounted) return;
-      setState(() {
-        _tiltX = clampedX * widget.maxTilt;
-        _tiltY = clampedY * widget.maxTilt;
-      });
-    }, onError: (_) {
-      _tiltX = 0;
-      _tiltY = 0;
-    });
+    _sub = accelerometerEventStream().listen(
+      (event) {
+        final now = DateTime.now();
+        if (now.difference(_lastUpdate).inMilliseconds < 33) {
+          return; // ~30fps throttle
+        }
+        _lastUpdate = now;
+        final clampedX = (-event.y / 10).clamp(-1.0, 1.0) * widget.sensitivity;
+        final clampedY = (event.x / 10).clamp(-1.0, 1.0) * widget.sensitivity;
+        if (!mounted) return;
+        setState(() {
+          _tiltX = clampedX * widget.maxTilt;
+          _tiltY = clampedY * widget.maxTilt;
+        });
+      },
+      onError: (_) {
+        _tiltX = 0;
+        _tiltY = 0;
+      },
+    );
   }
 
   @override

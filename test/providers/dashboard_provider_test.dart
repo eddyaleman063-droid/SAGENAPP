@@ -23,18 +23,28 @@ void main() {
     });
 
     test('dailyProgress clamps between 0 and 1', () {
-      const state = DashboardState(dailyGoalMinutes: 10, lessonsCompletedToday: 5);
+      const state = DashboardState(
+        dailyGoalMinutes: 10,
+        lessonsCompletedToday: 5,
+      );
       expect(state.dailyProgress, 1.0);
     });
 
     test('dailyProgress returns proportional value', () {
-      const state = DashboardState(dailyGoalMinutes: 20, lessonsCompletedToday: 1);
+      const state = DashboardState(
+        dailyGoalMinutes: 20,
+        lessonsCompletedToday: 1,
+      );
       expect(state.dailyProgress, 0.5);
     });
 
     test('copyWith updates only specified fields', () {
       const state = DashboardState();
-      final updated = state.copyWith(displayName: 'Test', totalDonated: 50.0, level: 3);
+      final updated = state.copyWith(
+        displayName: 'Test',
+        totalDonated: 50.0,
+        level: 3,
+      );
       expect(updated.displayName, 'Test');
       expect(updated.totalDonated, 50.0);
       expect(updated.level, 3);
@@ -49,9 +59,9 @@ void main() {
     setUp(() async {
       SharedPreferences.setMockInitialValues({});
       final prefs = await SharedPreferences.getInstance();
-      container = ProviderContainer(overrides: [
-        prefsProvider.overrideWithValue(prefs),
-      ]);
+      container = ProviderContainer(
+        overrides: [prefsProvider.overrideWithValue(prefs)],
+      );
     });
 
     tearDown(() => container.dispose());

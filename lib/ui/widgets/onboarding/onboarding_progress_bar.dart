@@ -12,11 +12,7 @@ class OnboardingProgressBar extends ConsumerWidget {
   final double progress;
   final VoidCallback? onBack;
 
-  const OnboardingProgressBar({
-    super.key,
-    required this.progress,
-    this.onBack,
-  });
+  const OnboardingProgressBar({super.key, required this.progress, this.onBack});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,10 +21,7 @@ class OnboardingProgressBar extends ConsumerWidget {
       child: Row(
         children: [
           IconButton(
-            icon: Icon(
-              Icons.arrow_back,
-              color: context.iconSecondary,
-            ),
+            icon: Icon(Icons.arrow_back, color: context.iconSecondary),
             onPressed: () {
               ref.read(experienceServiceProvider).lightHaptic();
               (onBack ?? () => context.pop())();

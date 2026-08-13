@@ -8,8 +8,8 @@ import 'app_logger.dart';
 class AudioService {
   static final AudioService instance = AudioService._();
   AudioService._({ExperienceService? experienceService})
-      : _experienceService = experienceService ?? ExperienceService.instance,
-        _logger = AppLogger();
+    : _experienceService = experienceService ?? ExperienceService.instance,
+      _logger = AppLogger();
   final AppLogger _logger;
   final ExperienceService _experienceService;
 
@@ -46,7 +46,18 @@ class AudioService {
 
   Future<void> _prewarmSounds() async {
     try {
-      final assets = [_clankAsset, _successAsset, _errorAsset, _chestOpenAsset, _milestoneAsset, _uiTapAsset, _levelUpAsset, _streakMilestoneAsset, _chestRareAsset, _purchaseSuccessAsset];
+      final assets = [
+        _clankAsset,
+        _successAsset,
+        _errorAsset,
+        _chestOpenAsset,
+        _milestoneAsset,
+        _uiTapAsset,
+        _levelUpAsset,
+        _streakMilestoneAsset,
+        _chestRareAsset,
+        _purchaseSuccessAsset,
+      ];
       for (final a in assets) {
         try {
           await _player?.setSource(AssetSource(a));
@@ -63,7 +74,11 @@ class AudioService {
     _audioQueue.clear();
     _isPlaying = false;
     _lastPlayTime = null;
-    try { await _player?.stop(); } catch (e) { _logger.warning('AudioService.dispose: failed to stop player: $e'); }
+    try {
+      await _player?.stop();
+    } catch (e) {
+      _logger.warning('AudioService.dispose: failed to stop player: $e');
+    }
     _player?.dispose();
     _player = null;
     _prewarmed = false;
@@ -94,7 +109,8 @@ class AudioService {
       try {
         // Debounce between sounds
         final now = DateTime.now();
-        if (_lastPlayTime != null && now.difference(_lastPlayTime!) < _minInterval) {
+        if (_lastPlayTime != null &&
+            now.difference(_lastPlayTime!) < _minInterval) {
           await Future.delayed(_minInterval);
         }
         _lastPlayTime = DateTime.now();
@@ -107,7 +123,10 @@ class AudioService {
             if (!completer.isCompleted) completer.complete();
           });
           await _player?.play(AssetSource(next.asset));
-          await completer.future.timeout(const Duration(seconds: 5), onTimeout: () {});
+          await completer.future.timeout(
+            const Duration(seconds: 5),
+            onTimeout: () {},
+          );
         } finally {
           await sub?.cancel();
         }
@@ -137,11 +156,13 @@ class AudioService {
 
   Future<void> playLevelUp() async => _play(_levelUpAsset, volume: 0.7);
 
-  Future<void> playStreakMilestone() async => _play(_streakMilestoneAsset, volume: 0.7);
+  Future<void> playStreakMilestone() async =>
+      _play(_streakMilestoneAsset, volume: 0.7);
 
   Future<void> playChestRare() async => _play(_chestRareAsset, volume: 0.8);
 
-  Future<void> playPurchaseSuccess() async => _play(_purchaseSuccessAsset, volume: 0.6);
+  Future<void> playPurchaseSuccess() async =>
+      _play(_purchaseSuccessAsset, volume: 0.6);
 }
 
 class _QueuedAudio {

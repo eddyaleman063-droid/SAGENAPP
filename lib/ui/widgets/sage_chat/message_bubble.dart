@@ -8,18 +8,16 @@ import 'package:sagen/models/chat_message.dart';
 class MessageBubble extends StatelessWidget {
   final ChatMessage message;
   final bool isUser;
-  const MessageBubble({
-    super.key,
-    required this.message,
-    required this.isUser,
-  });
+  const MessageBubble({super.key, required this.message, required this.isUser});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: AppSpacing.md),
       child: Row(
-        mainAxisAlignment: isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+        mainAxisAlignment: isUser
+            ? MainAxisAlignment.end
+            : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           if (!isUser) ...[
@@ -31,27 +29,40 @@ class MessageBubble extends StatelessWidget {
                   shape: BoxShape.circle,
                   gradient: LinearGradient(colors: PremiumColors.gradientSage),
                 ),
-                child: const Icon(Icons.auto_awesome_rounded, size: 14, color: Colors.white),
+                child: const Icon(
+                  Icons.auto_awesome_rounded,
+                  size: 14,
+                  color: Colors.white,
+                ),
               ),
             ),
             const SizedBox(width: AppSpacing.sm),
           ],
           Flexible(
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md),
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.lg,
+                vertical: AppSpacing.md,
+              ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(isUser ? AppRadius.xl : AppRadius.sm),
+                  topLeft: Radius.circular(
+                    isUser ? AppRadius.xl : AppRadius.sm,
+                  ),
                   topRight: const Radius.circular(AppRadius.xl),
                   bottomLeft: const Radius.circular(AppRadius.xl),
-                  bottomRight: Radius.circular(isUser ? AppRadius.sm : AppRadius.xl),
+                  bottomRight: Radius.circular(
+                    isUser ? AppRadius.sm : AppRadius.xl,
+                  ),
                 ),
                 gradient: isUser
-                    ? const LinearGradient(colors: PremiumColors.gradientSage, begin: Alignment.topLeft, end: Alignment.bottomRight)
+                    ? const LinearGradient(
+                        colors: PremiumColors.gradientSage,
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      )
                     : null,
-                color: isUser
-                    ? null
-                    : context.surfaceCard,
+                color: isUser ? null : context.surfaceCard,
               ),
               child: isUser
                   ? Text(
@@ -61,23 +72,38 @@ class MessageBubble extends StatelessWidget {
                   : MarkdownBody(
                       data: message.text,
                       styleSheet: MarkdownStyleSheet(
-                        p: AppTextStyle.body.copyWith(color: context.textPrimary),
-                        strong: AppTextStyle.body.copyWith(fontWeight: FontWeight.bold,
-                          color: context.textPrimary),
-                        em: AppTextStyle.body.copyWith(fontStyle: FontStyle.italic,
-                          color: context.textPrimary),
-                        code: AppTextStyle.subtitle.copyWith(fontFamily: 'monospace',
-                          color: context.isDark ? PremiumColors.codeTextDark : PremiumColors.codeTextLight,
-                          backgroundColor: context.subtle),
+                        p: AppTextStyle.body.copyWith(
+                          color: context.textPrimary,
+                        ),
+                        strong: AppTextStyle.body.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: context.textPrimary,
+                        ),
+                        em: AppTextStyle.body.copyWith(
+                          fontStyle: FontStyle.italic,
+                          color: context.textPrimary,
+                        ),
+                        code: AppTextStyle.subtitle.copyWith(
+                          fontFamily: 'monospace',
+                          color: context.isDark
+                              ? PremiumColors.codeTextDark
+                              : PremiumColors.codeTextLight,
+                          backgroundColor: context.subtle,
+                        ),
                         codeblockDecoration: BoxDecoration(
                           color: context.surfaceTinted,
                           borderRadius: BorderRadius.circular(AppRadius.sm),
                         ),
-                        listBullet: AppTextStyle.body.copyWith(color: context.textPrimary),
+                        listBullet: AppTextStyle.body.copyWith(
+                          color: context.textPrimary,
+                        ),
                       ),
                       onTapLink: (text, href, title) {
                         if (href != null) {
-                          launchUrl(Uri.parse(href), mode: LaunchMode.externalApplication);
+                          launchUrl(
+                            Uri.parse(href),
+                            mode: LaunchMode.externalApplication,
+                          );
                         }
                       },
                     ),

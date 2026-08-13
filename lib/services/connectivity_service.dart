@@ -29,10 +29,12 @@ class ConnectivityService {
   }
 
   void _onConnectivityChanged(List<ConnectivityResult> results) {
-    _online.value = results.any((r) =>
-        r == ConnectivityResult.wifi ||
-        r == ConnectivityResult.mobile ||
-        r == ConnectivityResult.ethernet);
+    _online.value = results.any(
+      (r) =>
+          r == ConnectivityResult.wifi ||
+          r == ConnectivityResult.mobile ||
+          r == ConnectivityResult.ethernet,
+    );
   }
 
   void stop() {
@@ -56,10 +58,12 @@ class ConnectivityService {
   Future<void> checkConnectivity() async {
     try {
       final results = await _connectivity.checkConnectivity();
-      _online.value = results.any((r) =>
-          r == ConnectivityResult.wifi ||
-          r == ConnectivityResult.mobile ||
-          r == ConnectivityResult.ethernet);
+      _online.value = results.any(
+        (r) =>
+            r == ConnectivityResult.wifi ||
+            r == ConnectivityResult.mobile ||
+            r == ConnectivityResult.ethernet,
+      );
     } catch (e) {
       _logger.warning('ConnectivityService: checkConnectivity failed: $e');
     }

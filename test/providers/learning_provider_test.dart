@@ -7,6 +7,7 @@ import 'package:sagen/services/cloud_sync_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MockCloudSyncService extends Mock implements CloudSyncService {}
+
 class MockAuthService extends Mock implements AuthService {}
 
 class TestLearningNotifier extends LearningNotifier {
@@ -23,7 +24,9 @@ class TestLearningNotifier extends LearningNotifier {
     state = state.copyWith(
       xp: newLevel > state.currentLevel ? 0 : newXp,
       totalXpEarned: newTotalXp,
-      currentLevel: newLevel > state.currentLevel ? newLevel : state.currentLevel,
+      currentLevel: newLevel > state.currentLevel
+          ? newLevel
+          : state.currentLevel,
     );
   }
 }
@@ -35,12 +38,16 @@ void main() {
     setUp(() async {
       SharedPreferences.setMockInitialValues({});
       final prefs = await SharedPreferences.getInstance();
-      container = ProviderContainer(overrides: [
-        prefsProvider.overrideWithValue(prefs),
-        cloudSyncServiceProvider.overrideWith((ref) => MockCloudSyncService()),
-        authServiceProvider.overrideWith((ref) => MockAuthService()),
-        learningProvider.overrideWith(() => TestLearningNotifier()),
-      ]);
+      container = ProviderContainer(
+        overrides: [
+          prefsProvider.overrideWithValue(prefs),
+          cloudSyncServiceProvider.overrideWith(
+            (ref) => MockCloudSyncService(),
+          ),
+          authServiceProvider.overrideWith((ref) => MockAuthService()),
+          learningProvider.overrideWith(() => TestLearningNotifier()),
+        ],
+      );
     });
 
     tearDown(() => container.dispose());

@@ -18,8 +18,13 @@ class WeeklyCalendarWidget extends StatelessWidget {
   });
 
   static List<String> dayLabels(AppLocalizations l) => [
-    l.dayShortMon, l.dayShortTue, l.dayShortWed, l.dayShortThu,
-    l.dayShortFri, l.dayShortSat, l.dayShortSun,
+    l.dayShortMon,
+    l.dayShortTue,
+    l.dayShortWed,
+    l.dayShortThu,
+    l.dayShortFri,
+    l.dayShortSat,
+    l.dayShortSun,
   ];
 
   @override
@@ -36,9 +41,13 @@ class WeeklyCalendarWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: List.generate(7, (i) {
             final date = startOfWeek.add(Duration(days: i));
-            final key = '${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+            final key =
+                '${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
             final isCompleted = weekDays[key] ?? false;
-            final isToday = date.year == today.year && date.month == today.month && date.day == today.day;
+            final isToday =
+                date.year == today.year &&
+                date.month == today.month &&
+                date.day == today.day;
 
             return _DayCircle(
               label: dayLabels(l)[i],
@@ -52,8 +61,10 @@ class WeeklyCalendarWidget extends StatelessWidget {
         const SizedBox(height: AppSpacing.md),
         Text(
           l.streakCurrentProgress(currentStreak, streakGoal),
-          style: AppTextStyle.bodyMd.copyWith(fontWeight: FontWeight.w600,
-            color: context.textSecondary),
+          style: AppTextStyle.bodyMd.copyWith(
+            fontWeight: FontWeight.w600,
+            color: context.textSecondary,
+          ),
         ),
       ],
     );
@@ -88,8 +99,8 @@ class _DayCircle extends StatelessWidget {
             color: isCompleted
                 ? PremiumColors.streakOrange
                 : isToday
-                    ? PremiumColors.splashBlue.withValues(alpha: 0.2)
-                    : Colors.transparent,
+                ? PremiumColors.splashBlue.withValues(alpha: 0.2)
+                : Colors.transparent,
             border: isToday && !isCompleted
                 ? Border.all(color: PremiumColors.splashBlue, width: 2)
                 : null,
@@ -101,10 +112,12 @@ class _DayCircle extends StatelessWidget {
               : Center(
                   child: Text(
                     label,
-                    style: AppTextStyle.caption.copyWith(fontWeight: isToday ? FontWeight.bold : FontWeight.normal,
+                    style: AppTextStyle.caption.copyWith(
+                      fontWeight: isToday ? FontWeight.bold : FontWeight.normal,
                       color: isToday
                           ? PremiumColors.splashBlue
-                          : context.textTertiary),
+                          : context.textTertiary,
+                    ),
                   ),
                 ),
         ),

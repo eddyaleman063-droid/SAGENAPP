@@ -58,18 +58,29 @@ class PasswordInputScreen extends ConsumerWidget {
               SizedBox(
                 width: double.infinity,
                 height: 54,
-                child: Semantics(button: true, label: l.continueText, child: ElevatedButton(
-                  onPressed: passwordValid ? onContinue : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: PremiumColors.primary,
-                    foregroundColor: Colors.white,
-                    disabledBackgroundColor: context.surfaceTinted,
-                    disabledForegroundColor: context.textDisabled,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
-                    elevation: passwordValid ? 4 : 0,
+                child: Semantics(
+                  button: true,
+                  label: l.continueText,
+                  child: ElevatedButton(
+                    onPressed: passwordValid ? onContinue : null,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: PremiumColors.primary,
+                      foregroundColor: Colors.white,
+                      disabledBackgroundColor: context.surfaceTinted,
+                      disabledForegroundColor: context.textDisabled,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(AppRadius.lg),
+                      ),
+                      elevation: passwordValid ? 4 : 0,
+                    ),
+                    child: Text(
+                      l.continueText,
+                      style: AppTextStyle.titleSmall.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
-                  child: Text(l.continueText, style: AppTextStyle.titleSmall.copyWith(fontWeight: FontWeight.bold)),
-                )),
+                ),
               ),
               const SizedBox(height: AppSpacing.md),
             ],
@@ -92,37 +103,51 @@ class _PasswordFieldState extends ConsumerState<_PasswordField> {
 
   @override
   Widget build(BuildContext context) {
-    return Semantics(label: AppLocalizations.of(context)!.regPasswordTitle, child: TextField(
-      maxLength: 128,
-      obscureText: _obscured,
-      style: AppTextStyle.titleSmall.copyWith(
-        color: context.textPrimary,
-      ),
-      decoration: InputDecoration(
-        hintText: '••••••',
-          hintStyle: AppTextStyle.titleSmall.copyWith(
-            color: context.subtle,
+    return Semantics(
+      label: AppLocalizations.of(context)!.regPasswordTitle,
+      child: TextField(
+        maxLength: 128,
+        obscureText: _obscured,
+        style: AppTextStyle.titleSmall.copyWith(color: context.textPrimary),
+        decoration: InputDecoration(
+          hintText: '••••••',
+          hintStyle: AppTextStyle.titleSmall.copyWith(color: context.subtle),
+          filled: true,
+          fillColor: context.surfaceTinted,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(AppRadius.xl),
+            borderSide: BorderSide.none,
           ),
-        filled: true,
-        fillColor: context.surfaceTinted,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppRadius.xl),
-          borderSide: BorderSide.none,
-        ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.lg),
-        prefixIcon: const Icon(Icons.lock_rounded, color: PremiumColors.primary, size: 20),
-        suffixIcon: Semantics(button: true, label: _obscured ? AppLocalizations.of(context)!.showPassword : AppLocalizations.of(context)!.hidePassword, child: GestureDetector(
-          onTap: () => setState(() => _obscured = !_obscured),
-          child: Icon(
-            _obscured ? Icons.visibility_off_rounded : Icons.visibility_rounded,
-            color: context.textTertiary,
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.lg,
+            vertical: AppSpacing.lg,
+          ),
+          prefixIcon: const Icon(
+            Icons.lock_rounded,
+            color: PremiumColors.primary,
             size: 20,
           ),
-        )),
+          suffixIcon: Semantics(
+            button: true,
+            label: _obscured
+                ? AppLocalizations.of(context)!.showPassword
+                : AppLocalizations.of(context)!.hidePassword,
+            child: GestureDetector(
+              onTap: () => setState(() => _obscured = !_obscured),
+              child: Icon(
+                _obscured
+                    ? Icons.visibility_off_rounded
+                    : Icons.visibility_rounded,
+                color: context.textTertiary,
+                size: 20,
+              ),
+            ),
+          ),
+        ),
+        onChanged: (value) {
+          ref.read(registrationFunnelProvider.notifier).setPassword(value);
+        },
       ),
-      onChanged: (value) {
-        ref.read(registrationFunnelProvider.notifier).setPassword(value);
-      },
-    ));
+    );
   }
 }

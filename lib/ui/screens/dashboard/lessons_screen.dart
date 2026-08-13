@@ -19,16 +19,19 @@ import 'package:go_router/go_router.dart';
 class LessonsScreen extends ConsumerWidget {
   const LessonsScreen({super.key});
 
-  void _openLesson(WidgetRef ref, BuildContext context, String stageId, String lessonId, String title) {
+  void _openLesson(
+    WidgetRef ref,
+    BuildContext context,
+    String stageId,
+    String lessonId,
+    String title,
+  ) {
     final exp = ref.read(experienceServiceProvider);
     exp.lightHaptic();
     ref.read(sessionProvider.notifier).startSession(stageId, lessonId);
     context.pushNamed(
       'lesson-session',
-      pathParameters: {
-        'stageId': stageId,
-        'lessonId': lessonId,
-      },
+      pathParameters: {'stageId': stageId, 'lessonId': lessonId},
       extra: title,
     );
   }
@@ -47,7 +50,12 @@ class LessonsScreen extends ConsumerWidget {
             slivers: [
               SliverToBoxAdapter(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(AppSpacing.xxl, AppSpacing.lg, AppSpacing.xxl, AppSpacing.lg),
+                  padding: const EdgeInsets.fromLTRB(
+                    AppSpacing.xxl,
+                    AppSpacing.lg,
+                    AppSpacing.xxl,
+                    AppSpacing.lg,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -57,12 +65,23 @@ class LessonsScreen extends ConsumerWidget {
                       const SizedBox(height: AppSpacing.xs),
                       const ShimmerLoading(width: 50, height: 28),
                       const SizedBox(height: AppSpacing.md),
-                      const ShimmerLoading(width: double.infinity, height: 4, borderRadius: AppRadius.pill),
+                      const ShimmerLoading(
+                        width: double.infinity,
+                        height: 4,
+                        borderRadius: AppRadius.pill,
+                      ),
                       const SizedBox(height: AppSpacing.xxl),
-                      ...List.generate(3, (_) => const Padding(
-                        padding: EdgeInsets.only(bottom: AppSpacing.md),
-                        child: ShimmerLoading(width: double.infinity, height: 120, borderRadius: AppRadius.xl),
-                      )),
+                      ...List.generate(
+                        3,
+                        (_) => const Padding(
+                          padding: EdgeInsets.only(bottom: AppSpacing.md),
+                          child: ShimmerLoading(
+                            width: double.infinity,
+                            height: 120,
+                            borderRadius: AppRadius.xl,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -99,13 +118,16 @@ class LessonsScreen extends ConsumerWidget {
                     button: true,
                     label: l.retry,
                     child: ElevatedButton.icon(
-                      onPressed: () => ref.read(learningProvider.notifier).reload(),
+                      onPressed: () =>
+                          ref.read(learningProvider.notifier).reload(),
                       icon: const Icon(Icons.refresh_rounded, size: 18),
                       label: Text(l.tryAgain),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: PremiumColors.primary,
                         foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(AppRadius.lg),
+                        ),
                       ),
                     ),
                   ),
@@ -153,10 +175,21 @@ class LessonsScreen extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(AppSpacing.xxl, AppSpacing.lg, AppSpacing.xxl, 0),
+              padding: const EdgeInsets.fromLTRB(
+                AppSpacing.xxl,
+                AppSpacing.lg,
+                AppSpacing.xxl,
+                0,
+              ),
               child: Row(
                 children: [
-                  ExcludeSemantics(child: Icon(Icons.map_rounded, size: 20, color: context.iconSecondary)),
+                  ExcludeSemantics(
+                    child: Icon(
+                      Icons.map_rounded,
+                      size: 20,
+                      color: context.iconSecondary,
+                    ),
+                  ),
                   const SizedBox(width: AppSpacing.sm),
                   Text(
                     l.lessonsYourPath,
@@ -197,14 +230,18 @@ class LessonsScreen extends ConsumerWidget {
             ),
             const SizedBox(height: AppSpacing.md),
             Semantics(
-              label: l.courseProgressLabel((learning.overallProgress * 100).toInt()),
+              label: l.courseProgressLabel(
+                (learning.overallProgress * 100).toInt(),
+              ),
               container: true,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(AppRadius.pill),
                 child: LinearProgressIndicator(
                   value: learning.overallProgress,
                   backgroundColor: context.subtleBorder,
-                  valueColor: const AlwaysStoppedAnimation<Color>(PremiumColors.success),
+                  valueColor: const AlwaysStoppedAnimation<Color>(
+                    PremiumColors.success,
+                  ),
                   minHeight: 4,
                 ),
               ),
@@ -216,16 +253,23 @@ class LessonsScreen extends ConsumerWidget {
                   ref.invalidate(learningProvider);
                 },
                 child: ListView.separated(
-                  padding: const EdgeInsets.fromLTRB(AppSpacing.xxl, 0, AppSpacing.xxl, 100),
+                  padding: const EdgeInsets.fromLTRB(
+                    AppSpacing.xxl,
+                    0,
+                    AppSpacing.xxl,
+                    100,
+                  ),
                   itemCount: stages.length,
-                  separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.md),
+                  separatorBuilder: (_, _) =>
+                      const SizedBox(height: AppSpacing.md),
                   itemBuilder: (ctx, i) => KeyedSubtree(
                     key: ValueKey('stage_${stages[i].id}'),
                     child: _StageNode(
                       stage: stages[i],
                       index: i,
                       isLast: i == stages.length - 1,
-                      onLessonTap: (sid, lid, title) => _openLesson(ref, context, sid, lid, title),
+                      onLessonTap: (sid, lid, title) =>
+                          _openLesson(ref, context, sid, lid, title),
                     ),
                   ),
                 ),
@@ -242,12 +286,19 @@ class _StatChip extends StatelessWidget {
   final IconData icon;
   final String label;
   final Color color;
-  const _StatChip({required this.icon, required this.label, required this.color});
+  const _StatChip({
+    required this.icon,
+    required this.label,
+    required this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.xs),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.md,
+        vertical: AppSpacing.xs,
+      ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppRadius.pill),
         color: color.withValues(alpha: 0.1),
@@ -259,7 +310,10 @@ class _StatChip extends StatelessWidget {
           const SizedBox(width: AppSpacing.xxs),
           Text(
             label,
-            style: AppTextStyle.caption.copyWith(fontWeight: FontWeight.w500, color: color),
+            style: AppTextStyle.caption.copyWith(
+              fontWeight: FontWeight.w500,
+              color: color,
+            ),
           ),
         ],
       ),
@@ -267,14 +321,20 @@ class _StatChip extends StatelessWidget {
   }
 }
 
-typedef _LessonTapCallback = void Function(String stageId, String lessonId, String title);
+typedef _LessonTapCallback =
+    void Function(String stageId, String lessonId, String title);
 
 class _StageNode extends StatelessWidget {
   final Stage stage;
   final int index;
   final bool isLast;
   final _LessonTapCallback? onLessonTap;
-  const _StageNode({required this.stage, required this.index, required this.isLast, this.onLessonTap});
+  const _StageNode({
+    required this.stage,
+    required this.index,
+    required this.isLast,
+    this.onLessonTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -298,21 +358,32 @@ class _StageNode extends StatelessWidget {
                     color: completed
                         ? PremiumColors.success
                         : unlocked
-                            ? PremiumColors.primaryAccent
-                            : context.subtle,
+                        ? PremiumColors.primaryAccent
+                        : context.subtle,
                     boxShadow: unlocked && !completed
-                        ? [BoxShadow(color: PremiumColors.primaryAccent.withValues(alpha: 0.3), blurRadius: 8)]
+                        ? [
+                            BoxShadow(
+                              color: PremiumColors.primaryAccent.withValues(
+                                alpha: 0.3,
+                              ),
+                              blurRadius: 8,
+                            ),
+                          ]
                         : null,
                   ),
-                  child: ExcludeSemantics(child: Icon(
-                    completed
-                        ? Icons.check_rounded
-                        : unlocked
-                            ? Icons.play_arrow_rounded
-                            : Icons.lock_rounded,
-                    size: 16,
-                    color: completed || unlocked ? Colors.white : context.subtle,
-                  )),
+                  child: ExcludeSemantics(
+                    child: Icon(
+                      completed
+                          ? Icons.check_rounded
+                          : unlocked
+                          ? Icons.play_arrow_rounded
+                          : Icons.lock_rounded,
+                      size: 16,
+                      color: completed || unlocked
+                          ? Colors.white
+                          : context.subtle,
+                    ),
+                  ),
                 ),
                 if (!isLast)
                   Expanded(
@@ -333,18 +404,20 @@ class _StageNode extends StatelessWidget {
               padding: const EdgeInsets.all(AppSpacing.lg),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(AppRadius.xl),
-                color: unlocked
-                    ? context.surfaceCard
-                    : context.surfaceTinted,
+                color: unlocked ? context.surfaceCard : context.surfaceTinted,
                 border: Border.all(
                   color: completed
                       ? PremiumColors.success.withValues(alpha: 0.3)
                       : unlocked
-                          ? PremiumColors.primaryAccent.withValues(alpha: 0.2)
-                          : context.subtle,
+                      ? PremiumColors.primaryAccent.withValues(alpha: 0.2)
+                      : context.subtle,
                 ),
                 boxShadow: unlocked && !completed
-                    ? AppShadows.glow(color: PremiumColors.primaryAccent, intensity: 0.06, radius: 12)
+                    ? AppShadows.glow(
+                        color: PremiumColors.primaryAccent,
+                        intensity: 0.06,
+                        radius: 12,
+                      )
                     : null,
               ),
               child: Column(
@@ -366,32 +439,44 @@ class _StageNode extends StatelessWidget {
                       if (hasProgress)
                         Text(
                           '${stage.completedCount}/${stage.lessons.length}',
-                          style: AppTextStyle.caption.copyWith(color: PremiumColors.primaryAccent.withValues(alpha: 0.7)),
+                          style: AppTextStyle.caption.copyWith(
+                            color: PremiumColors.primaryAccent.withValues(
+                              alpha: 0.7,
+                            ),
+                          ),
                         ),
                       if (completed)
-                        const ExcludeSemantics(child: Icon(Icons.check_circle_rounded, size: 18, color: PremiumColors.success)),
+                        const ExcludeSemantics(
+                          child: Icon(
+                            Icons.check_circle_rounded,
+                            size: 18,
+                            color: PremiumColors.success,
+                          ),
+                        ),
                     ],
                   ),
                   const SizedBox(height: AppSpacing.xxs),
                   Text(
                     stage.subtitle,
                     style: AppTextStyle.caption.copyWith(
-                      color: unlocked
-                          ? context.textTertiary
-                          : context.subtle,
+                      color: unlocked ? context.textTertiary : context.subtle,
                     ),
                   ),
                   if (!completed && unlocked && stage.completedCount > 0) ...[
                     const SizedBox(height: AppSpacing.sm),
                     Semantics(
-                      label: AppLocalizations.of(context)!.stageProgressLabel((stage.progress * 100).toInt()),
+                      label: AppLocalizations.of(
+                        context,
+                      )!.stageProgressLabel((stage.progress * 100).toInt()),
                       container: true,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(AppRadius.pill),
                         child: LinearProgressIndicator(
                           value: stage.progress,
                           backgroundColor: context.surfaceTinted,
-                          valueColor: const AlwaysStoppedAnimation<Color>(PremiumColors.primaryAccent),
+                          valueColor: const AlwaysStoppedAnimation<Color>(
+                            PremiumColors.primaryAccent,
+                          ),
                           minHeight: 3,
                         ),
                       ),
@@ -400,18 +485,26 @@ class _StageNode extends StatelessWidget {
                   if (unlocked) ...[
                     const SizedBox(height: AppSpacing.md),
                     if (stage.sessions.isNotEmpty)
-                      ...stage.sessions.map((session) => _SessionGroup(
-                        session: session,
-                        onLessonTap: onLessonTap,
-                        stageId: stage.id,
-                      ))
+                      ...stage.sessions.map(
+                        (session) => _SessionGroup(
+                          session: session,
+                          onLessonTap: onLessonTap,
+                          stageId: stage.id,
+                        ),
+                      )
                     else
-                      ...stage.lessons.map((lesson) => _LessonRow(
-                        lesson: lesson,
-                        onTap: stage.unlocked && !lesson.completed
-                            ? () => onLessonTap?.call(stage.id, lesson.id, lesson.title)
-                            : null,
-                      )),
+                      ...stage.lessons.map(
+                        (lesson) => _LessonRow(
+                          lesson: lesson,
+                          onTap: stage.unlocked && !lesson.completed
+                              ? () => onLessonTap?.call(
+                                  stage.id,
+                                  lesson.id,
+                                  lesson.title,
+                                )
+                              : null,
+                        ),
+                      ),
                   ],
                 ],
               ),
@@ -423,10 +516,10 @@ class _StageNode extends StatelessWidget {
 
     return Hero(
       tag: 'stage_${stage.id}',
-      child: node.animate(delay: (index * 60).ms).fadeIn(
-        duration: 350.ms,
-        curve: Curves.easeOut,
-      ).slideX(begin: 0.08, end: 0, duration: 350.ms, curve: Curves.easeOut),
+      child: node
+          .animate(delay: (index * 60).ms)
+          .fadeIn(duration: 350.ms, curve: Curves.easeOut)
+          .slideX(begin: 0.08, end: 0, duration: 350.ms, curve: Curves.easeOut),
     );
   }
 }
@@ -441,43 +534,53 @@ class _LessonRow extends ConsumerWidget {
     final l = AppLocalizations.of(context)!;
     return Semantics(
       button: onTap != null,
-      label: lesson.completed ? '${lesson.title}, ${l.statusCompleted}' : lesson.title,
+      label: lesson.completed
+          ? '${lesson.title}, ${l.statusCompleted}'
+          : lesson.title,
       child: GestureDetector(
-        onTap: onTap != null ? () {
-          ref.read(experienceServiceProvider).lightHaptic();
-          onTap?.call();
-        } : null,
+        onTap: onTap != null
+            ? () {
+                ref.read(experienceServiceProvider).lightHaptic();
+                onTap?.call();
+              }
+            : null,
         child: Padding(
-        padding: const EdgeInsets.only(bottom: AppSpacing.xs),
-        child: Row(
-          children: [
-            ExcludeSemantics(child: Icon(
-              lesson.completed ? Icons.check_circle_rounded : Icons.radio_button_unchecked_rounded,
-              size: 16,
-              color: lesson.completed
-                  ? PremiumColors.success
-                  : context.subtle,
-            )),
-            const SizedBox(width: AppSpacing.sm),
-            Expanded(
-              child: Text(
-                lesson.title,
+          padding: const EdgeInsets.only(bottom: AppSpacing.xs),
+          child: Row(
+            children: [
+              ExcludeSemantics(
+                child: Icon(
+                  lesson.completed
+                      ? Icons.check_circle_rounded
+                      : Icons.radio_button_unchecked_rounded,
+                  size: 16,
+                  color: lesson.completed
+                      ? PremiumColors.success
+                      : context.subtle,
+                ),
+              ),
+              const SizedBox(width: AppSpacing.sm),
+              Expanded(
+                child: Text(
+                  lesson.title,
                   style: AppTextStyle.subtitle.copyWith(
                     color: lesson.completed
                         ? context.textSecondary
                         : context.textPrimary,
-                    decoration: lesson.completed ? TextDecoration.lineThrough : null,
+                    decoration: lesson.completed
+                        ? TextDecoration.lineThrough
+                        : null,
                     decorationColor: context.textTertiary,
                   ),
+                ),
               ),
-            ),
-            Text(
-              l.minutes(lesson.estimatedMinutes),
-              style: AppTextStyle.label.copyWith(color: context.textTertiary),
-            ),
-          ],
+              Text(
+                l.minutes(lesson.estimatedMinutes),
+                style: AppTextStyle.label.copyWith(color: context.textTertiary),
+              ),
+            ],
+          ),
         ),
-      ),
       ),
     );
   }
@@ -487,7 +590,11 @@ class _SessionGroup extends StatefulWidget {
   final Session session;
   final _LessonTapCallback? onLessonTap;
   final String stageId;
-  const _SessionGroup({required this.session, this.onLessonTap, required this.stageId});
+  const _SessionGroup({
+    required this.session,
+    this.onLessonTap,
+    required this.stageId,
+  });
 
   @override
   State<_SessionGroup> createState() => _SessionGroupState();
@@ -498,7 +605,9 @@ class _SessionGroupState extends State<_SessionGroup> {
 
   @override
   Widget build(BuildContext context) {
-    final completedCount = widget.session.lessons.where((l) => l.completed).length;
+    final completedCount = widget.session.lessons
+        .where((l) => l.completed)
+        .length;
     final totalCount = widget.session.lessons.length;
     final isComplete = completedCount == totalCount && totalCount > 0;
 
@@ -513,65 +622,92 @@ class _SessionGroupState extends State<_SessionGroup> {
         children: [
           Semantics(
             button: true,
-            label: _expanded ? AppLocalizations.of(context)!.collapseSession(widget.session.title) : AppLocalizations.of(context)!.expandSession(widget.session.title),
+            label: _expanded
+                ? AppLocalizations.of(
+                    context,
+                  )!.collapseSession(widget.session.title)
+                : AppLocalizations.of(
+                    context,
+                  )!.expandSession(widget.session.title),
             child: GestureDetector(
               onTap: () {
                 HapticFeedback.lightImpact();
                 setState(() => _expanded = !_expanded);
               },
               child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
-              child: Row(
-                children: [
-                  ExcludeSemantics(child: Icon(
-                    isComplete ? Icons.check_circle_rounded : Icons.play_circle_outline_rounded,
-                    size: 16,
-                    color: isComplete
-                        ? PremiumColors.success
-                        : context.textTertiary,
-                  )),
-                  const SizedBox(width: AppSpacing.sm),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.session.title,
-                          style: AppTextStyle.subtitle.copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: context.textPrimary,
-                          ),
-                        ),
-                        if (widget.session.subtitle.isNotEmpty)
-                          Text(
-                            widget.session.subtitle,
-                            style: AppTextStyle.label.copyWith(color: context.textTertiary),
-                          ),
-                      ],
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.md,
+                  vertical: AppSpacing.sm,
+                ),
+                child: Row(
+                  children: [
+                    ExcludeSemantics(
+                      child: Icon(
+                        isComplete
+                            ? Icons.check_circle_rounded
+                            : Icons.play_circle_outline_rounded,
+                        size: 16,
+                        color: isComplete
+                            ? PremiumColors.success
+                            : context.textTertiary,
+                      ),
                     ),
-                  ),
-                  Text(
-                    '$completedCount/$totalCount',
-                    style: AppTextStyle.label.copyWith(color: context.textTertiary),
-                  ),
-                  const SizedBox(width: AppSpacing.xs),
-                  ExcludeSemantics(child: Icon(
-                    _expanded ? Icons.expand_less_rounded : Icons.expand_more_rounded,
-                    size: 18,
-                    color: context.textTertiary,
-                  )),
-                ],
-              ),
+                    const SizedBox(width: AppSpacing.sm),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.session.title,
+                            style: AppTextStyle.subtitle.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: context.textPrimary,
+                            ),
+                          ),
+                          if (widget.session.subtitle.isNotEmpty)
+                            Text(
+                              widget.session.subtitle,
+                              style: AppTextStyle.label.copyWith(
+                                color: context.textTertiary,
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                    Text(
+                      '$completedCount/$totalCount',
+                      style: AppTextStyle.label.copyWith(
+                        color: context.textTertiary,
+                      ),
+                    ),
+                    const SizedBox(width: AppSpacing.xs),
+                    ExcludeSemantics(
+                      child: Icon(
+                        _expanded
+                            ? Icons.expand_less_rounded
+                            : Icons.expand_more_rounded,
+                        size: 18,
+                        color: context.textTertiary,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
           if (_expanded) ...[
-            ...widget.session.lessons.map((lesson) => _LessonRow(
-              lesson: lesson,
-              onTap: !lesson.completed
-                  ? () => widget.onLessonTap?.call(widget.stageId, lesson.id, lesson.title)
-                  : null,
-            )),
+            ...widget.session.lessons.map(
+              (lesson) => _LessonRow(
+                lesson: lesson,
+                onTap: !lesson.completed
+                    ? () => widget.onLessonTap?.call(
+                        widget.stageId,
+                        lesson.id,
+                        lesson.title,
+                      )
+                    : null,
+              ),
+            ),
             const SizedBox(height: AppSpacing.xs),
           ],
         ],

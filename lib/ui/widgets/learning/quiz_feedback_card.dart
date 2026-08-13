@@ -53,15 +53,25 @@ class QuizFeedbackCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  correct ? l10n(context).sessionCorrect : l10n(context).sessionIncorrect,
-                  style: AppTextStyle.bodyMd.copyWith(fontWeight: FontWeight.bold,
-                    color: correct ? PremiumColors.success : PremiumColors.error),
+                  correct
+                      ? l10n(context).sessionCorrect
+                      : l10n(context).sessionIncorrect,
+                  style: AppTextStyle.bodyMd.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: correct
+                        ? PremiumColors.success
+                        : PremiumColors.error,
+                  ),
                 ),
                 const SizedBox(height: AppSpacing.xxs),
                 Text(
                   explanation,
-                  style: AppTextStyle.caption.copyWith(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.54),
-                    height: 1.4),
+                  style: AppTextStyle.caption.copyWith(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.54),
+                    height: 1.4,
+                  ),
                 ),
               ],
             ),

@@ -54,50 +54,59 @@ class _ChestListenerState extends ConsumerState<ChestListener> {
       AppLogger().error('ChestListener: haptic failed: $e');
     }
 
-    ChestRewardDialog.show(context, data).then((_) {
-      _deliverRewards(data);
-      _bus.consume();
-      _dialogOpen = false;
+    ChestRewardDialog.show(context, data)
+        .then((_) {
+          _deliverRewards(data);
+          _bus.consume();
+          _dialogOpen = false;
 
-      if (_pendingRewards.isNotEmpty) {
-        final next = _pendingRewards.removeAt(0);
-        if (mounted) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (mounted) _processEvent(next);
-          });
-        }
-      }
-    }).catchError((e) {
-      AppLogger().error('ChestListener: dialog failed: $e');
-      _bus.consume();
-      _dialogOpen = false;
+          if (_pendingRewards.isNotEmpty) {
+            final next = _pendingRewards.removeAt(0);
+            if (mounted) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                if (mounted) _processEvent(next);
+              });
+            }
+          }
+        })
+        .catchError((e) {
+          AppLogger().error('ChestListener: dialog failed: $e');
+          _bus.consume();
+          _dialogOpen = false;
 
-      if (_pendingRewards.isNotEmpty) {
-        final next = _pendingRewards.removeAt(0);
-        if (mounted) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (mounted) _processEvent(next);
-          });
-        }
-      }
-    });
+          if (_pendingRewards.isNotEmpty) {
+            final next = _pendingRewards.removeAt(0);
+            if (mounted) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                if (mounted) _processEvent(next);
+              });
+            }
+          }
+        });
   }
 
   void _deliverRewards(ChestRewardData data) {
     try {
       ref.read(inventoryProvider.notifier).recordChestOpened(data);
-      ref.read(analyticsServiceProvider).track(AnalyticEvent.chestOpened, properties: {
-        'type': data.type.name,
-        'source': data.source,
-        'xp': data.xp,
-        'specialItems': data.specialItems.length,
-        'cosmetics': data.cosmeticUnlocks.length,
-      });
+      ref
+          .read(analyticsServiceProvider)
+          .track(
+            AnalyticEvent.chestOpened,
+            properties: {
+              'type': data.type.name,
+              'source': data.source,
+              'xp': data.xp,
+              'specialItems': data.specialItems.length,
+              'cosmetics': data.cosmeticUnlocks.length,
+            },
+          );
 
       if (data.streakShields != null && data.streakShields! > 0) {
         final streakNotifier = ref.read(streakProvider.notifier);
         final currentFreezes = streakNotifier.streakFreezes;
-        final maxFreezes = ref.read(remoteConfigServiceProvider).streakMaxFreezes;
+        final maxFreezes = ref
+            .read(remoteConfigServiceProvider)
+            .streakMaxFreezes;
         final shields = data.streakShields ?? 0;
         final newFreezes = (currentFreezes + shields).clamp(0, maxFreezes);
         streakNotifier.setFreezes(newFreezes);

@@ -22,7 +22,9 @@ class SagenPassNotifier extends Notifier<SagenPass> {
 
   void _checkSeasonReset(SagenPass pass) {
     final now = DateTime.now();
-    final seasonEnd = pass.seasonStart.add(Duration(days: pass.seasonDurationDays));
+    final seasonEnd = pass.seasonStart.add(
+      Duration(days: pass.seasonDurationDays),
+    );
     if (now.isAfter(seasonEnd)) {
       // Season expired - reset to level 1 with fresh state
       state = SagenPass(
@@ -48,7 +50,9 @@ class SagenPassNotifier extends Notifier<SagenPass> {
   /// Reconcile local state with server-side authoritative season data.
   Future<void> _reconcileWithServer() async {
     try {
-      final serverData = await ref.read(gamificationCloudServiceProvider).getSagenPassSeason();
+      final serverData = await ref
+          .read(gamificationCloudServiceProvider)
+          .getSagenPassSeason();
       if (serverData == null) return;
 
       final serverSeasonStart = serverData['seasonStart'];
@@ -80,7 +84,9 @@ class SagenPassNotifier extends Notifier<SagenPass> {
       );
       _save();
     } catch (e) {
-      AppLogger().warning('SagenPass: server reconciliation failed, using local: $e');
+      AppLogger().warning(
+        'SagenPass: server reconciliation failed, using local: $e',
+      );
     }
   }
 
@@ -98,7 +104,9 @@ class SagenPassNotifier extends Notifier<SagenPass> {
   /// Server response is validated to prevent crashes from malformed data.
   Future<void> addSP({String? reason}) async {
     if (state.isMaxLevel) return;
-    final result = await ref.read(gamificationCloudServiceProvider).earnSP(reason: reason);
+    final result = await ref
+        .read(gamificationCloudServiceProvider)
+        .earnSP(reason: reason);
     if (result == null) return;
 
     // Validate server response types before applying
@@ -110,14 +118,13 @@ class SagenPassNotifier extends Notifier<SagenPass> {
 
     // Sanity check: server values should not be negative
     if (safeSP < 0 || safeLevel < 1) {
-      AppLogger().warning('SagenPass: invalid server response — sp=$safeSP, level=$safeLevel');
+      AppLogger().warning(
+        'SagenPass: invalid server response — sp=$safeSP, level=$safeLevel',
+      );
       return;
     }
 
-    state = state.copyWith(
-      currentSP: safeSP,
-      currentLevel: safeLevel,
-    );
+    state = state.copyWith(currentSP: safeSP, currentLevel: safeLevel);
     _save();
   }
 
@@ -127,7 +134,9 @@ class SagenPassNotifier extends Notifier<SagenPass> {
     if (state.isLevelClaimed(level)) return null;
     if (level > state.currentLevel) return null;
 
-    final result = await ref.read(gamificationCloudServiceProvider).claimPassReward(level);
+    final result = await ref
+        .read(gamificationCloudServiceProvider)
+        .claimPassReward(level);
     if (result == null) return null;
 
     // Validate claimedLevels from server response

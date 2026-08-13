@@ -21,7 +21,8 @@ class ProfileHeaderWidget extends StatelessWidget {
     this.hasGoldFrame = false,
   });
 
-  double get _levelProgress => nextLevelXp > 0 ? (xp % nextLevelXp) / nextLevelXp : 0.0;
+  double get _levelProgress =>
+      nextLevelXp > 0 ? (xp % nextLevelXp) / nextLevelXp : 0.0;
   int get _xpInLevel => xp % nextLevelXp;
 
   String _rank(AppLocalizations l) {
@@ -38,7 +39,11 @@ class ProfileHeaderWidget extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          colors: [PremiumColors.primaryDark, PremiumColors.deepBackground, PremiumColors.deepBackground],
+          colors: [
+            PremiumColors.primaryDark,
+            PremiumColors.deepBackground,
+            PremiumColors.deepBackground,
+          ],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
         ),
@@ -49,7 +54,12 @@ class ProfileHeaderWidget extends StatelessWidget {
       ),
       child: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(AppSpacing.xxl, AppSpacing.xl, AppSpacing.xxl, AppSpacing.xxl),
+          padding: const EdgeInsets.fromLTRB(
+            AppSpacing.xxl,
+            AppSpacing.xl,
+            AppSpacing.xxl,
+            AppSpacing.xxl,
+          ),
           child: Column(
             children: [
               _buildAvatar(),
@@ -80,7 +90,11 @@ class ProfileHeaderWidget extends StatelessWidget {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: const LinearGradient(
-                    colors: [PremiumColors.gold, PremiumColors.goldDark, PremiumColors.gold],
+                    colors: [
+                      PremiumColors.gold,
+                      PremiumColors.goldDark,
+                      PremiumColors.gold,
+                    ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
@@ -102,7 +116,7 @@ class ProfileHeaderWidget extends StatelessWidget {
               hasGoldFrame ? PremiumColors.gold : PremiumColors.splashBlue,
             ),
           ),
-              Semantics(
+          Semantics(
             label: 'Foto de perfil',
             excludeSemantics: true,
             child: Center(
@@ -111,9 +125,12 @@ class ProfileHeaderWidget extends StatelessWidget {
                 height: 78,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  border: Border.all(color: Colors.white.withValues(alpha: 0.25), width: 2),
+                  border: Border.all(
+                    color: Colors.white.withValues(alpha: 0.25),
+                    width: 2,
+                  ),
                 ),
-                  child: ClipOval(
+                child: ClipOval(
                   child: photoUrl != null && photoUrl!.isNotEmpty
                       ? CachedNetworkImage(
                           imageUrl: photoUrl!,
@@ -141,8 +158,10 @@ class ProfileHeaderWidget extends StatelessWidget {
               child: Center(
                 child: Text(
                   '$currentLevel',
-                  style: AppTextStyle.caption.copyWith(fontWeight: FontWeight.bold,
-                    color: Colors.white),
+                  style: AppTextStyle.caption.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
@@ -156,7 +175,11 @@ class ProfileHeaderWidget extends StatelessWidget {
     return ExcludeSemantics(
       child: Container(
         color: Colors.white.withValues(alpha: 0.1),
-        child: const Icon(Icons.shield_rounded, size: 40, color: Colors.white54),
+        child: const Icon(
+          Icons.shield_rounded,
+          size: 40,
+          color: Colors.white54,
+        ),
       ),
     );
   }
@@ -164,21 +187,28 @@ class ProfileHeaderWidget extends StatelessWidget {
   Widget _buildName(AppLocalizations l) {
     return Text(
       displayName.isNotEmpty ? displayName : l.profileDefaultName,
-      style: AppTextStyle.headlineMedium.copyWith(fontWeight: FontWeight.bold,
-        color: Colors.white),
+      style: AppTextStyle.headlineMedium.copyWith(
+        fontWeight: FontWeight.bold,
+        color: Colors.white,
+      ),
     );
   }
 
   Widget _buildRank(AppLocalizations l) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.xxs),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg,
+        vertical: AppSpacing.xxs,
+      ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppRadius.pill),
         color: Colors.white.withValues(alpha: 0.1),
       ),
       child: Text(
         _rank(l),
-        style: AppTextStyle.caption.copyWith(color: Colors.white.withValues(alpha: 0.7)),
+        style: AppTextStyle.caption.copyWith(
+          color: Colors.white.withValues(alpha: 0.7),
+        ),
       ),
     );
   }
@@ -197,11 +227,16 @@ class ProfileHeaderWidget extends StatelessWidget {
             children: [
               Text(
                 l.profileLevelValue(currentLevel),
-                style: AppTextStyle.subtitle.copyWith(fontWeight: FontWeight.w600, color: Colors.white),
+                style: AppTextStyle.subtitle.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
               ),
               Text(
                 '$_xpInLevel / $nextLevelXp XP',
-                style: AppTextStyle.label.copyWith(color: Colors.white.withValues(alpha: 0.6)),
+                style: AppTextStyle.label.copyWith(
+                  color: Colors.white.withValues(alpha: 0.6),
+                ),
               ),
             ],
           ),
@@ -214,7 +249,9 @@ class ProfileHeaderWidget extends StatelessWidget {
               child: LinearProgressIndicator(
                 value: _levelProgress.clamp(0.0, 1.0),
                 backgroundColor: Colors.white.withValues(alpha: 0.1),
-                valueColor: const AlwaysStoppedAnimation<Color>(PremiumColors.splashBlue),
+                valueColor: const AlwaysStoppedAnimation<Color>(
+                  PremiumColors.splashBlue,
+                ),
                 minHeight: 5,
               ),
             ),

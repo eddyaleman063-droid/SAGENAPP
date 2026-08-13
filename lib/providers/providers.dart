@@ -51,37 +51,74 @@ export 'gem_provider.dart';
 
 // ── Notifier providers ─────────────────────────────────────────────
 
-final themeProvider = NotifierProvider<ThemeNotifier, ThemeState>(ThemeNotifier.new);
+final themeProvider = NotifierProvider<ThemeNotifier, ThemeState>(
+  ThemeNotifier.new,
+);
 
-final authProvider = NotifierProvider<AuthNotifier, AuthState>(AuthNotifier.new);
+final authProvider = NotifierProvider<AuthNotifier, AuthState>(
+  AuthNotifier.new,
+);
 
-final streakProvider = NotifierProvider<StreakNotifier, StreakState>(StreakNotifier.new);
+final streakProvider = NotifierProvider<StreakNotifier, StreakState>(
+  StreakNotifier.new,
+);
 
-final protectionProvider = NotifierProvider<ProtectionNotifier, ProtectionState>(ProtectionNotifier.new);
+final protectionProvider =
+    NotifierProvider<ProtectionNotifier, ProtectionState>(
+      ProtectionNotifier.new,
+    );
 
-final achievementProvider = NotifierProvider<AchievementNotifier, AchievementState>(AchievementNotifier.new);
+final achievementProvider =
+    NotifierProvider<AchievementNotifier, AchievementState>(
+      AchievementNotifier.new,
+    );
 
-final inventoryProvider = NotifierProvider<InventoryNotifier, InventoryState>(InventoryNotifier.new);
+final inventoryProvider = NotifierProvider<InventoryNotifier, InventoryState>(
+  InventoryNotifier.new,
+);
 
-final reviewProvider = NotifierProvider<ReviewNotifier, ReviewState>(ReviewNotifier.new);
+final reviewProvider = NotifierProvider<ReviewNotifier, ReviewState>(
+  ReviewNotifier.new,
+);
 
-final languageProvider = NotifierProvider<LanguageNotifier, LanguageState>(LanguageNotifier.new);
+final languageProvider = NotifierProvider<LanguageNotifier, LanguageState>(
+  LanguageNotifier.new,
+);
 
-final learningMemoryProvider = NotifierProvider<LearningMemoryNotifier, LearningMemoryState>(LearningMemoryNotifier.new);
+final learningMemoryProvider =
+    NotifierProvider<LearningMemoryNotifier, LearningMemoryState>(
+      LearningMemoryNotifier.new,
+    );
 
-final missionProvider = NotifierProvider<MissionNotifier, MissionState>(MissionNotifier.new);
+final missionProvider = NotifierProvider<MissionNotifier, MissionState>(
+  MissionNotifier.new,
+);
 
-final shopProvider = NotifierProvider<ShopNotifier, ShopState>(ShopNotifier.new);
+final shopProvider = NotifierProvider<ShopNotifier, ShopState>(
+  ShopNotifier.new,
+);
 
-final energyProvider = NotifierProvider<EnergyNotifier, EnergyState>(EnergyNotifier.new);
+final energyProvider = NotifierProvider<EnergyNotifier, EnergyState>(
+  EnergyNotifier.new,
+);
 
-final sageAiProvider = NotifierProvider.autoDispose<SageAiNotifier, SageAiChatState>(SageAiNotifier.new);
+final sageAiProvider =
+    NotifierProvider.autoDispose<SageAiNotifier, SageAiChatState>(
+      SageAiNotifier.new,
+    );
 
-final dashboardProvider = NotifierProvider<DashboardNotifier, DashboardState>(DashboardNotifier.new);
+final dashboardProvider = NotifierProvider<DashboardNotifier, DashboardState>(
+  DashboardNotifier.new,
+);
 
-final sessionProvider = NotifierProvider.autoDispose<SessionNotifier, SessionState>(SessionNotifier.new);
+final sessionProvider =
+    NotifierProvider.autoDispose<SessionNotifier, SessionState>(
+      SessionNotifier.new,
+    );
 
-final itemProvider = NotifierProvider<ItemNotifier, ItemState>(ItemNotifier.new);
+final itemProvider = NotifierProvider<ItemNotifier, ItemState>(
+  ItemNotifier.new,
+);
 
 final gemProvider = NotifierProvider<GemNotifier, GemState>(GemNotifier.new);
 

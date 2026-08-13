@@ -11,14 +11,13 @@ void main() {
     int xp = 10,
     List<SpecialItemType> specialItems = const [],
     List<SpecialItemType> cosmetics = const [],
-  }) =>
-      ChestRewardData(
-        type: type,
-        xp: xp,
-        source: 'test',
-        specialItems: specialItems,
-        cosmeticUnlocks: cosmetics,
-      );
+  }) => ChestRewardData(
+    type: type,
+    xp: xp,
+    source: 'test',
+    specialItems: specialItems,
+    cosmeticUnlocks: cosmetics,
+  );
 
   group('ChestRewardData', () {
     test('defaults apply', () {
@@ -34,8 +33,14 @@ void main() {
     });
 
     test('hasSpecialRewards with special items', () {
-      expect(reward(specialItems: [SpecialItemType.focusElixir]).hasSpecialRewards, isTrue);
-      expect(reward(cosmetics: [SpecialItemType.avatarFrameNeon]).hasSpecialRewards, isTrue);
+      expect(
+        reward(specialItems: [SpecialItemType.focusElixir]).hasSpecialRewards,
+        isTrue,
+      );
+      expect(
+        reward(cosmetics: [SpecialItemType.avatarFrameNeon]).hasSpecialRewards,
+        isTrue,
+      );
     });
 
     test('exposes all fields', () {

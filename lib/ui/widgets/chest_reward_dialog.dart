@@ -95,80 +95,86 @@ class _ChestRewardDialogState extends State<ChestRewardDialog>
       child: PopScope(
         canPop: !_dismissed,
         child: Scaffold(
-        backgroundColor: (dark ? PremiumColors.darkBg : Colors.white).withValues(alpha: 0.96),
-        body: SafeArea(
-          child: Semantics(
-            button: true,
-            label: l.chestCollect,
-            child: GestureDetector(
-              onTap: _showRewards ? _dismiss : null,
-              child: Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SizedBox(
-                      height: 220,
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          ChestWidget(
-                            key: ValueKey('chest_${r.type.name}'),
-                            type: r.type,
-                            size: 180,
-                            animate: true,
-                            onOpenComplete: _onChestOpened,
-                          ),
-                          if (!_showRewards && !ProviderScope.containerOf(context).read(lowEndDeviceDetectorProvider).reduceAnimations)
-                            SizedBox(
-                              width: 200,
-                              height: 200,
-                              child: Lottie.asset(
-                                'assets/animations/sparkle.json',
-                                repeat: true,
-                                animate: true,
-                                fit: BoxFit.contain,
-                              ),
+          backgroundColor: (dark ? PremiumColors.darkBg : Colors.white)
+              .withValues(alpha: 0.96),
+          body: SafeArea(
+            child: Semantics(
+              button: true,
+              label: l.chestCollect,
+              child: GestureDetector(
+                onTap: _showRewards ? _dismiss : null,
+                child: Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(
+                        height: 220,
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            ChestWidget(
+                              key: ValueKey('chest_${r.type.name}'),
+                              type: r.type,
+                              size: 180,
+                              animate: true,
+                              onOpenComplete: _onChestOpened,
                             ),
-                          // Glow ring behind chest when opened
-                          if (_showRewards)
-                            AnimatedBuilder(
-                              animation: _revealCtrl,
-                              builder: (ctx, _) => Container(
-                                width: 200 + _revealCtrl.value * 40,
-                                height: 200 + _revealCtrl.value * 40,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  gradient: RadialGradient(
-                                    colors: [
-                                      r.type.glowColor.withValues(alpha: 0.3 * _revealCtrl.value),
-                                      Colors.transparent,
-                                    ],
+                            if (!_showRewards &&
+                                !ProviderScope.containerOf(context)
+                                    .read(lowEndDeviceDetectorProvider)
+                                    .reduceAnimations)
+                              SizedBox(
+                                width: 200,
+                                height: 200,
+                                child: Lottie.asset(
+                                  'assets/animations/sparkle.json',
+                                  repeat: true,
+                                  animate: true,
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                            // Glow ring behind chest when opened
+                            if (_showRewards)
+                              AnimatedBuilder(
+                                animation: _revealCtrl,
+                                builder: (ctx, _) => Container(
+                                  width: 200 + _revealCtrl.value * 40,
+                                  height: 200 + _revealCtrl.value * 40,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    gradient: RadialGradient(
+                                      colors: [
+                                        r.type.glowColor.withValues(
+                                          alpha: 0.3 * _revealCtrl.value,
+                                        ),
+                                        Colors.transparent,
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: AppSpacing.xxl),
-                    AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 500),
-                      child: _showRewards
-                          ? _RewardsPanel(
-                              reward: r,
-                              animation: _revealCtrl,
-                              onDismiss: _dismiss,
-                            )
-                          : _TitlePanel(type: r.type, title: r.title),
-                    ),
-                  ],
+                      const SizedBox(height: AppSpacing.xxl),
+                      AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 500),
+                        child: _showRewards
+                            ? _RewardsPanel(
+                                reward: r,
+                                animation: _revealCtrl,
+                                onDismiss: _dismiss,
+                              )
+                            : _TitlePanel(type: r.type, title: r.title),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
         ),
       ),
-    ),
     );
   }
 }
@@ -233,7 +239,9 @@ class _RewardsPanel extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: AppSpacing.lg),
               child: Text(
                 r.message!,
-                style: AppTextStyle.subtitle.copyWith(color: context.textSecondary),
+                style: AppTextStyle.subtitle.copyWith(
+                  color: context.textSecondary,
+                ),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -244,9 +252,7 @@ class _RewardsPanel extends StatelessWidget {
             alignment: WrapAlignment.center,
             children: [
               if (r.xp > 0)
-                _GemRewardChip(
-                  gemCount: (r.xp / 3).round().clamp(2, 75),
-                ),
+                _GemRewardChip(gemCount: (r.xp / 3).round().clamp(2, 75)),
               if (r.xp > 0)
                 _RewardChip(
                   icon: Icons.auto_awesome_rounded,
@@ -282,10 +288,14 @@ class _RewardsPanel extends StatelessWidget {
                   child: OutlinedButton.icon(
                     onPressed: () {
                       HapticFeedback.lightImpact();
-                      final items = [...r.specialItems.map((e) => e.displayName), ...r.cosmeticUnlocks.map((e) => e.displayName)];
+                      final items = [
+                        ...r.specialItems.map((e) => e.displayName),
+                        ...r.cosmeticUnlocks.map((e) => e.displayName),
+                      ];
                       ShareService.instance.shareImage(
                         Uint8List(0),
-                        text: 'I got ${items.join(", ")} from a ${r.type.name} chest on SAGEN!',
+                        text:
+                            'I got ${items.join(", ")} from a ${r.type.name} chest on SAGEN!',
                         source: 'chest_reward',
                       );
                     },
@@ -295,7 +305,10 @@ class _RewardsPanel extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(AppRadius.lg),
                       ),
-                      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.lg,
+                        vertical: AppSpacing.md,
+                      ),
                     ),
                   ),
                 ),
@@ -389,14 +402,21 @@ class _RewardChip extends StatelessWidget {
   final IconData icon;
   final String label;
   final Color color;
-  const _RewardChip({required this.icon, required this.label, required this.color});
+  const _RewardChip({
+    required this.icon,
+    required this.label,
+    required this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Semantics(
       label: label,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.md,
+          vertical: AppSpacing.sm,
+        ),
         decoration: BoxDecoration(
           color: color.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(AppRadius.md),
@@ -405,9 +425,7 @@ class _RewardChip extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            ExcludeSemantics(
-              child: Icon(icon, size: 16, color: color),
-            ),
+            ExcludeSemantics(child: Icon(icon, size: 16, color: color)),
             const SizedBox(width: AppSpacing.xxs),
             Text(label, style: AppTextStyle.bodyBold.copyWith(color: color)),
           ],
@@ -447,49 +465,71 @@ class _SpecialItemChipState extends State<_SpecialItemChip>
   Color get _color {
     final tier = widget.itemType.rarityTier;
     switch (tier) {
-      case 0: return PremiumColors.rarityCommon;
-      case 1: return PremiumColors.rarityUncommon;
-      case 2: return PremiumColors.rarityRare;
-      case 3: return PremiumColors.rarityEpic;
-      case 4: return PremiumColors.rarityLegendary;
-      default: return PremiumColors.rarityCommon;
+      case 0:
+        return PremiumColors.rarityCommon;
+      case 1:
+        return PremiumColors.rarityUncommon;
+      case 2:
+        return PremiumColors.rarityRare;
+      case 3:
+        return PremiumColors.rarityEpic;
+      case 4:
+        return PremiumColors.rarityLegendary;
+      default:
+        return PremiumColors.rarityCommon;
     }
   }
 
   IconData get _icon {
     switch (widget.itemType) {
-      case SpecialItemType.focusElixir: return Icons.auto_awesome_rounded;
-      case SpecialItemType.phoenixFeather: return Icons.local_fire_department_rounded;
-      case SpecialItemType.sageMonocle: return Icons.visibility_rounded;
-      case SpecialItemType.titaniumShield: return Icons.shield_rounded;
-      case SpecialItemType.luckBoost: return Icons.casino_rounded;
-      case SpecialItemType.timeWarp: return Icons.schedule_rounded;
+      case SpecialItemType.focusElixir:
+        return Icons.auto_awesome_rounded;
+      case SpecialItemType.phoenixFeather:
+        return Icons.local_fire_department_rounded;
+      case SpecialItemType.sageMonocle:
+        return Icons.visibility_rounded;
+      case SpecialItemType.titaniumShield:
+        return Icons.shield_rounded;
+      case SpecialItemType.luckBoost:
+        return Icons.casino_rounded;
+      case SpecialItemType.timeWarp:
+        return Icons.schedule_rounded;
       case SpecialItemType.avatarFrameNeon:
       case SpecialItemType.avatarFrameDragon:
       case SpecialItemType.avatarFrameCrystal:
       case SpecialItemType.avatarFrameSkull:
-      case SpecialItemType.avatarFrameGalaxy: return Icons.filter_frames_rounded;
+      case SpecialItemType.avatarFrameGalaxy:
+        return Icons.filter_frames_rounded;
       case SpecialItemType.titleCyberSage:
       case SpecialItemType.titleNightGuardian:
       case SpecialItemType.titleDigitalPhoenix:
       case SpecialItemType.titleShadowHacker:
-      case SpecialItemType.titleStormBreaker: return Icons.title_rounded;
+      case SpecialItemType.titleStormBreaker:
+        return Icons.title_rounded;
       case SpecialItemType.themeDarkFire:
-      case SpecialItemType.themeCyberNeon: return Icons.palette_rounded;
+      case SpecialItemType.themeCyberNeon:
+        return Icons.palette_rounded;
       case SpecialItemType.effectDigitalRain:
-      case SpecialItemType.effectFireTrail: return Icons.auto_awesome_rounded;
+      case SpecialItemType.effectFireTrail:
+        return Icons.auto_awesome_rounded;
     }
   }
 
   String get _rarityLabel {
     final tier = widget.itemType.rarityTier;
     switch (tier) {
-      case 0: return '';
-      case 1: return '★';
-      case 2: return '★★';
-      case 3: return '★★★';
-      case 4: return '★★★★';
-      default: return '';
+      case 0:
+        return '';
+      case 1:
+        return '★';
+      case 2:
+        return '★★';
+      case 3:
+        return '★★★';
+      case 4:
+        return '★★★★';
+      default:
+        return '';
     }
   }
 
@@ -500,7 +540,10 @@ class _SpecialItemChipState extends State<_SpecialItemChip>
       animation: _shimmerCtrl,
       builder: (ctx, _) {
         return Container(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.md,
+            vertical: AppSpacing.sm,
+          ),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
@@ -517,7 +560,10 @@ class _SpecialItemChipState extends State<_SpecialItemChip>
               end: Alignment.bottomRight,
             ),
             borderRadius: BorderRadius.circular(AppRadius.md),
-            border: Border.all(color: _color.withValues(alpha: 0.4), width: 1.5),
+            border: Border.all(
+              color: _color.withValues(alpha: 0.4),
+              width: 1.5,
+            ),
             boxShadow: [
               BoxShadow(
                 color: _color.withValues(alpha: 0.15),
@@ -529,14 +575,18 @@ class _SpecialItemChipState extends State<_SpecialItemChip>
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              ExcludeSemantics(
-                child: Icon(_icon, size: 16, color: _color),
-              ),
+              ExcludeSemantics(child: Icon(_icon, size: 16, color: _color)),
               const SizedBox(width: 4),
               Text(name, style: AppTextStyle.bodyBold.copyWith(color: _color)),
               if (_rarityLabel.isNotEmpty) ...[
-            const SizedBox(width: AppSpacing.xxs),
-                Text(_rarityLabel, style: AppTextStyle.label.copyWith(color: _color.withValues(alpha: 0.7), fontSize: 10)),
+                const SizedBox(width: AppSpacing.xxs),
+                Text(
+                  _rarityLabel,
+                  style: AppTextStyle.label.copyWith(
+                    color: _color.withValues(alpha: 0.7),
+                    fontSize: 10,
+                  ),
+                ),
               ],
             ],
           ),

@@ -1,9 +1,18 @@
 class AppConfig {
-  static const String geminiApiKey = String.fromEnvironment('GEMINI_API_KEY', defaultValue: '');
+  static const String geminiApiKey = String.fromEnvironment(
+    'GEMINI_API_KEY',
+    defaultValue: '',
+  );
 
   static const String appName = 'SAGEN';
-  static const String appVersion = String.fromEnvironment('APP_VERSION', defaultValue: '5.1.1');
-  static const String appBuildNumber = String.fromEnvironment('APP_BUILD', defaultValue: '7');
+  static const String appVersion = String.fromEnvironment(
+    'APP_VERSION',
+    defaultValue: '5.1.1',
+  );
+  static const String appBuildNumber = String.fromEnvironment(
+    'APP_BUILD',
+    defaultValue: '7',
+  );
   static const String appTagline = 'Your digital guide';
   static const String appTaglineAlt = 'Learn cybersecurity the smart way';
   static const String appSlogan = 'Your cybersecurity guide.';

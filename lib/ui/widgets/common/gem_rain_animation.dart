@@ -10,11 +10,7 @@ class GemRainAnimation extends StatefulWidget {
   final int gemCount;
   final VoidCallback? onComplete;
 
-  const GemRainAnimation({
-    super.key,
-    required this.gemCount,
-    this.onComplete,
-  });
+  const GemRainAnimation({super.key, required this.gemCount, this.onComplete});
 
   static Future<void> show(BuildContext context, {required int gemCount}) {
     return showGeneralDialog(
@@ -151,20 +147,30 @@ class _GemRainAnimationState extends State<GemRainAnimation>
                     child: Opacity(
                       opacity: _glowCtrl.value,
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxxl, vertical: AppSpacing.xl),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppSpacing.xxxl,
+                          vertical: AppSpacing.xl,
+                        ),
                         decoration: BoxDecoration(
                           gradient: const LinearGradient(
-                            colors: [PremiumColors.accentCyan, PremiumColors.deepPurple],
+                            colors: [
+                              PremiumColors.accentCyan,
+                              PremiumColors.deepPurple,
+                            ],
                           ),
                           borderRadius: BorderRadius.circular(AppRadius.round),
                           boxShadow: [
                             BoxShadow(
-                              color: PremiumColors.accentCyan.withValues(alpha: 0.6),
+                              color: PremiumColors.accentCyan.withValues(
+                                alpha: 0.6,
+                              ),
                               blurRadius: 40,
                               spreadRadius: 8,
                             ),
                             BoxShadow(
-                              color: PremiumColors.deepPurple.withValues(alpha: 0.4),
+                              color: PremiumColors.deepPurple.withValues(
+                                alpha: 0.4,
+                              ),
                               blurRadius: 60,
                               spreadRadius: 4,
                             ),
@@ -180,21 +186,26 @@ class _GemRainAnimationState extends State<GemRainAnimation>
                                 height: 28,
                                 decoration: BoxDecoration(
                                   gradient: const LinearGradient(
-                                     colors: [Colors.white, PremiumColors.surfaceTintLight],
+                                    colors: [
+                                      Colors.white,
+                                      PremiumColors.surfaceTintLight,
+                                    ],
                                   ),
                                   borderRadius: BorderRadius.circular(4),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: PremiumColors.accentCyan,
-                              blurRadius: 8,
-                            ),
-                          ],
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: PremiumColors.accentCyan,
+                                      blurRadius: 8,
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
                             const SizedBox(width: 16),
                             Semantics(
-                              label: AppLocalizations.of(context)!.rewardAdEarnedGems(widget.gemCount),
+                              label: AppLocalizations.of(
+                                context,
+                              )!.rewardAdEarnedGems(widget.gemCount),
                               child: Text(
                                 '+${widget.gemCount}',
                                 style: const TextStyle(
@@ -203,8 +214,14 @@ class _GemRainAnimationState extends State<GemRainAnimation>
                                   fontWeight: FontWeight.w900,
                                   letterSpacing: 2,
                                   shadows: [
-                                    Shadow(color: Colors.black26, blurRadius: 8),
-                                    Shadow(color: PremiumColors.accentCyan, blurRadius: 16),
+                                    Shadow(
+                                      color: Colors.black26,
+                                      blurRadius: 8,
+                                    ),
+                                    Shadow(
+                                      color: PremiumColors.accentCyan,
+                                      blurRadius: 16,
+                                    ),
                                   ],
                                 ),
                               ),
@@ -291,16 +308,30 @@ class _GemRainPainter extends CustomPainter {
       // Glow
       paint.color = PremiumColors.accentCyan.withValues(alpha: 0.3 * opacity);
       canvas.drawOval(
-        Rect.fromCenter(center: Offset.zero, width: gem.size * 1.8, height: gem.size * 1.8),
+        Rect.fromCenter(
+          center: Offset.zero,
+          width: gem.size * 1.8,
+          height: gem.size * 1.8,
+        ),
         paint,
       );
 
       // Diamond body
       final gradient = LinearGradient(
         colors: [
-          Color.fromARGB(255, (0 + gem.hue).round().clamp(0, 255), (229 + gem.hue * 0.5).round().clamp(0, 255), 255),
+          Color.fromARGB(
+            255,
+            (0 + gem.hue).round().clamp(0, 255),
+            (229 + gem.hue * 0.5).round().clamp(0, 255),
+            255,
+          ),
           PremiumColors.deepPurple,
-          Color.fromARGB(255, (0 + gem.hue).round().clamp(0, 255), (229 + gem.hue * 0.5).round().clamp(0, 255), 255),
+          Color.fromARGB(
+            255,
+            (0 + gem.hue).round().clamp(0, 255),
+            (229 + gem.hue * 0.5).round().clamp(0, 255),
+            255,
+          ),
         ],
       );
 
@@ -316,7 +347,11 @@ class _GemRainPainter extends CustomPainter {
       paint.shader = null;
       paint.color = Colors.white.withValues(alpha: 0.6 * opacity);
       final highlight = RRect.fromRectAndRadius(
-        Rect.fromCenter(center: Offset(-gem.size * 0.1, -gem.size * 0.1), width: gem.size * 0.4, height: gem.size * 0.4),
+        Rect.fromCenter(
+          center: Offset(-gem.size * 0.1, -gem.size * 0.1),
+          width: gem.size * 0.4,
+          height: gem.size * 0.4,
+        ),
         const Radius.circular(1),
       );
       canvas.drawRRect(highlight, paint);
@@ -370,7 +405,11 @@ class _GemPilePainter extends CustomPainter {
       // Glow
       _paint.color = PremiumColors.accentCyan.withValues(alpha: 0.15);
       canvas.drawOval(
-        Rect.fromCenter(center: Offset.zero, width: gemSize * 2, height: gemSize * 2),
+        Rect.fromCenter(
+          center: Offset.zero,
+          width: gemSize * 2,
+          height: gemSize * 2,
+        ),
         _paint,
       );
 
@@ -393,7 +432,11 @@ class _GemPilePainter extends CustomPainter {
       _paint.shader = null;
       _paint.color = Colors.white.withValues(alpha: 0.5);
       canvas.drawOval(
-        Rect.fromCenter(center: Offset(-gemSize * 0.15, -gemSize * 0.15), width: gemSize * 0.3, height: gemSize * 0.3),
+        Rect.fromCenter(
+          center: Offset(-gemSize * 0.15, -gemSize * 0.15),
+          width: gemSize * 0.3,
+          height: gemSize * 0.3,
+        ),
         _paint,
       );
 
@@ -402,5 +445,6 @@ class _GemPilePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(_GemPilePainter old) => old.progress != progress || old.count != count;
+  bool shouldRepaint(_GemPilePainter old) =>
+      old.progress != progress || old.count != count;
 }

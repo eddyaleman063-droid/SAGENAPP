@@ -144,79 +144,108 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
               SizedBox(
                 width: double.infinity,
                 height: 52,
-                child: Semantics(button: true, label: l.verifyEmailCheckButton, child: ElevatedButton(
-                  onPressed: _checking
+                child: Semantics(
+                  button: true,
+                  label: l.verifyEmailCheckButton,
+                  child: ElevatedButton(
+                    onPressed: _checking
+                        ? null
+                        : () {
+                            ref.read(experienceServiceProvider).lightHaptic();
+                            _checkVerified();
+                          },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: PremiumColors.primaryAccent,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(AppRadius.lg),
+                      ),
+                      elevation: 0,
+                    ),
+                    child: _checking
+                        ? const PremiumLoader(
+                            loading: true,
+                            child: SizedBox(width: 22, height: 22),
+                          )
+                        : Text(
+                            l.verifyEmailCheckButton,
+                            style: AppTextStyle.titleSmall.copyWith(
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: AppSpacing.md),
+              Semantics(
+                button: true,
+                label: l.verifyEmailResendButton,
+                child: TextButton(
+                  onPressed: _sending
                       ? null
                       : () {
                           ref.read(experienceServiceProvider).lightHaptic();
-                          _checkVerified();
+                          _resendEmail();
                         },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: PremiumColors.primaryAccent,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(AppRadius.lg),
-                    ),
-                    elevation: 0,
-                  ),
-                  child: _checking
-                      ? const PremiumLoader(loading: true, child: SizedBox(width: 22, height: 22))
+                  child: _sending
+                      ? const SizedBox(
+                          width: 18,
+                          height: 18,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
                       : Text(
-                          l.verifyEmailCheckButton,
-                          style: AppTextStyle.titleSmall.copyWith(fontWeight: FontWeight.w700),
+                          l.verifyEmailResendButton,
+                          style: AppTextStyle.body.copyWith(
+                            color: PremiumColors.primaryAccent,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
-                )),
+                ),
               ),
               const SizedBox(height: AppSpacing.md),
-              Semantics(button: true, label: l.verifyEmailResendButton, child: TextButton(
-                onPressed: _sending
-                    ? null
-                    : () {
-                        ref.read(experienceServiceProvider).lightHaptic();
-                        _resendEmail();
-                      },
-                child: _sending
-                    ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2))
-                    : Text(
-                        l.verifyEmailResendButton,
-                        style: AppTextStyle.body.copyWith(
-                          color: PremiumColors.primaryAccent,
-                          fontWeight: FontWeight.w600,
-                        ),
+              Semantics(
+                button: true,
+                label: l.verifyEmailSignOut,
+                child: TextButton(
+                  onPressed: () {
+                    ref.read(experienceServiceProvider).lightHaptic();
+                    showDialog(
+                      context: context,
+                      builder: (ctx) => AlertDialog(
+                        title: Text(l.verifyEmailSignOut),
+                        content: Text(l.settingsLogoutConfirm),
+                        actions: [
+                          Semantics(
+                            button: true,
+                            label: l.cancelButton,
+                            child: TextButton(
+                              onPressed: () => context.pop(),
+                              child: Text(l.cancelButton),
+                            ),
+                          ),
+                          Semantics(
+                            button: true,
+                            label: l.verifyEmailSignOut,
+                            child: TextButton(
+                              onPressed: () {
+                                context.pop();
+                                _signOut();
+                              },
+                              child: Text(l.verifyEmailSignOut),
+                            ),
+                          ),
+                        ],
                       ),
-              )),
-              const SizedBox(height: AppSpacing.md),
-              Semantics(button: true, label: l.verifyEmailSignOut, child: TextButton(
-                onPressed: () {
-                  ref.read(experienceServiceProvider).lightHaptic();
-                  showDialog(
-                    context: context,
-                    builder: (ctx) => AlertDialog(
-                      title: Text(l.verifyEmailSignOut),
-                      content: Text(l.settingsLogoutConfirm),
-                      actions: [
-                        Semantics(button: true, label: l.cancelButton, child: TextButton(
-                          onPressed: () => context.pop(),
-                          child: Text(l.cancelButton),
-                        )),
-                        Semantics(button: true, label: l.verifyEmailSignOut, child: TextButton(
-                          onPressed: () {
-                            context.pop();
-                            _signOut();
-                          },
-                          child: Text(l.verifyEmailSignOut),
-                        )),
-                      ],
+                    );
+                  },
+                  child: Text(
+                    l.verifyEmailSignOut,
+                    style: AppTextStyle.bodyMd.copyWith(
+                      color: context.textSecondary,
                     ),
-                  );
-                },
-                child: Text(
-                  l.verifyEmailSignOut,
-                  style: AppTextStyle.bodyMd.copyWith(
-                    color: context.textSecondary,
                   ),
                 ),
-              )),
+              ),
             ],
           ).animate().fadeIn().slideY(begin: 0.1),
         ),

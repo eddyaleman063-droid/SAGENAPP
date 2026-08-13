@@ -22,21 +22,25 @@ class DailyMissionsSection extends ConsumerWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppRadius.xl),
             color: context.surfaceCard,
-            border: Border.all(
-              color: context.subtleBorder,
-            ),
+            border: Border.all(color: context.subtleBorder),
           ),
           child: Row(
             children: [
               const ExcludeSemantics(
-                child: Icon(Icons.celebration_rounded, color: PremiumColors.warning, size: 24),
+                child: Icon(
+                  Icons.celebration_rounded,
+                  color: PremiumColors.warning,
+                  size: 24,
+                ),
               ),
               const SizedBox(width: AppSpacing.md),
               Expanded(
                 child: Text(
                   l.dailyMissionsAllCompleted,
                   style: AppTextStyle.bodyMdBold.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.87),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.87),
                   ),
                 ),
               ),
@@ -52,25 +56,34 @@ class DailyMissionsSection extends ConsumerWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppRadius.xl),
           color: context.surfaceCard,
-          border: Border.all(
-            color: context.subtleBorder,
-          ),
+          border: Border.all(color: context.subtleBorder),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(AppSpacing.lg, AppSpacing.lg, AppSpacing.lg, AppSpacing.sm),
+              padding: const EdgeInsets.fromLTRB(
+                AppSpacing.lg,
+                AppSpacing.lg,
+                AppSpacing.lg,
+                AppSpacing.sm,
+              ),
               child: Row(
                 children: [
                   const ExcludeSemantics(
-                    child: Icon(Icons.emoji_events_rounded, size: 18, color: PremiumColors.warning),
+                    child: Icon(
+                      Icons.emoji_events_rounded,
+                      size: 18,
+                      color: PremiumColors.warning,
+                    ),
                   ),
                   const SizedBox(width: AppSpacing.sm),
                   Text(
                     l.dailyMissions,
                     style: AppTextStyle.bodyMdBold.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.87),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withValues(alpha: 0.87),
                     ),
                   ),
                   const Spacer(),
@@ -109,14 +122,21 @@ class _MissionRow extends StatelessWidget {
     final l = AppLocalizations.of(context)!;
     final color = _colorForRarity(context);
     return Padding(
-      padding: const EdgeInsets.fromLTRB(AppSpacing.lg, 0, AppSpacing.lg, AppSpacing.md),
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.lg,
+        0,
+        AppSpacing.lg,
+        AppSpacing.md,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
               Icon(
-                mission.completed ? Icons.check_circle_rounded : Icons.task_alt_rounded,
+                mission.completed
+                    ? Icons.check_circle_rounded
+                    : Icons.task_alt_rounded,
                 size: 16,
                 color: mission.completed ? PremiumColors.success : color,
               ),
@@ -127,14 +147,24 @@ class _MissionRow extends StatelessWidget {
                   style: AppTextStyle.subtitle.copyWith(
                     fontWeight: FontWeight.w500,
                     color: mission.completed
-                        ? Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.38)
-                        : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.87),
-                    decoration: mission.completed ? TextDecoration.lineThrough : null,
+                        ? Theme.of(
+                            context,
+                          ).colorScheme.onSurface.withValues(alpha: 0.38)
+                        : Theme.of(
+                            context,
+                          ).colorScheme.onSurface.withValues(alpha: 0.87),
+                    decoration: mission.completed
+                        ? TextDecoration.lineThrough
+                        : null,
                   ),
                 ),
               ),
               if (!mission.completed) ...[
-                _RewardChip(value: '${mission.xpReward}', icon: Icons.auto_awesome_rounded, color: PremiumColors.xpColor),
+                _RewardChip(
+                  value: '${mission.xpReward}',
+                  icon: Icons.auto_awesome_rounded,
+                  color: PremiumColors.xpColor,
+                ),
               ],
             ],
           ),
@@ -143,7 +173,9 @@ class _MissionRow extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(AppRadius.pill),
               child: Semantics(
-                label: AppLocalizations.of(context)!.missionProgress((mission.progressFraction * 100).round()),
+                label: AppLocalizations.of(
+                  context,
+                )!.missionProgress((mission.progressFraction * 100).round()),
                 value: '${(mission.progressFraction * 100).round()}',
                 child: LinearProgressIndicator(
                   value: mission.progressFraction,
@@ -157,9 +189,7 @@ class _MissionRow extends StatelessWidget {
               padding: const EdgeInsets.only(top: 2),
               child: Text(
                 '${mission.progress}/${mission.target}',
-                style: AppTextStyle.tiny.copyWith(
-                  color: context.textTertiary,
-                ),
+                style: AppTextStyle.tiny.copyWith(color: context.textTertiary),
               ),
             ),
           ],
@@ -174,7 +204,11 @@ class _RewardChip extends StatelessWidget {
   final IconData icon;
   final Color color;
 
-  const _RewardChip({required this.value, required this.icon, required this.color});
+  const _RewardChip({
+    required this.value,
+    required this.icon,
+    required this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -187,13 +221,14 @@ class _RewardChip extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          ExcludeSemantics(
-            child: Icon(icon, size: 10, color: color),
-          ),
+          ExcludeSemantics(child: Icon(icon, size: 10, color: color)),
           const SizedBox(width: 2),
           Text(
             value,
-            style: AppTextStyle.tiny.copyWith(fontWeight: FontWeight.w600, color: color),
+            style: AppTextStyle.tiny.copyWith(
+              fontWeight: FontWeight.w600,
+              color: color,
+            ),
           ),
         ],
       ),

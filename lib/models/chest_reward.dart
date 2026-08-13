@@ -17,7 +17,8 @@ class ChestReward with _$ChestReward {
     @Default([]) List<SpecialItemType> cosmeticUnlocks,
   }) = _ChestReward;
 
-  factory ChestReward.fromJson(Map<String, dynamic> json) => _$ChestRewardFromJson(json);
+  factory ChestReward.fromJson(Map<String, dynamic> json) =>
+      _$ChestRewardFromJson(json);
 }
 
 /// Determines when chests unlock and whether they are premium.

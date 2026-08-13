@@ -22,7 +22,12 @@ class QuizProgressHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(AppSpacing.xl, AppSpacing.lg, AppSpacing.xl, AppSpacing.md),
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.xl,
+        AppSpacing.lg,
+        AppSpacing.xl,
+        AppSpacing.md,
+      ),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surfaceContainerHigh,
         boxShadow: AppShadows.card(),
@@ -42,10 +47,16 @@ class QuizProgressHeader extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.all(AppSpacing.md),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.surfaceContainerHighest,
                       borderRadius: BorderRadius.circular(AppRadius.sm),
                     ),
-                    child: Icon(Icons.close_rounded, size: 18, color: context.textSecondary),
+                    child: Icon(
+                      Icons.close_rounded,
+                      size: 18,
+                      color: context.textSecondary,
+                    ),
                   ),
                 ),
               ),
@@ -53,15 +64,21 @@ class QuizProgressHeader extends StatelessWidget {
               Expanded(
                 child: Text(
                   title,
-                  style: AppTextStyle.body.copyWith(fontWeight: FontWeight.bold,
-                    color: context.textPrimary),
+                  style: AppTextStyle.body.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: context.textPrimary,
+                  ),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
               Text(
                 '$current / $total',
-                style: AppTextStyle.subtitle.copyWith(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.54),
-                  fontWeight: FontWeight.w600),
+                style: AppTextStyle.subtitle.copyWith(
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withValues(alpha: 0.54),
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ],
           ),
@@ -74,7 +91,9 @@ class QuizProgressHeader extends StatelessWidget {
               child: LinearProgressIndicator(
                 value: progress,
                 minHeight: 6,
-                backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+                backgroundColor: Theme.of(
+                  context,
+                ).colorScheme.surfaceContainerHighest,
                 valueColor: const AlwaysStoppedAnimation<Color>(
                   PremiumColors.primary,
                 ),

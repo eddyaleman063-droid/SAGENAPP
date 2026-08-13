@@ -41,7 +41,9 @@ class ChestPainter extends CustomPainter {
     final cx = c.dx;
 
     final bodyRect = RRect.fromRectAndRadius(
-      Rect.fromLTRB(cL, bT, cR, bB), Radius.circular(bR));
+      Rect.fromLTRB(cL, bT, cR, bB),
+      Radius.circular(bR),
+    );
 
     _drawGlow(canvas, s, c, t);
     _drawShadow(canvas, s, c);
@@ -67,9 +69,15 @@ class ChestPainter extends CustomPainter {
           bodyColor: PremiumColors.chestBronzeBody,
           accentColor: PremiumColors.chestBronzeAccent,
           glowColor: PremiumColors.chestBronzeGlow,
-          lidTop: 0.18, bodyTop: 0.46, bodyBottom: 0.82,
-          bodyRadius: 0.035, bandCount: 1, bandWidth: 2.5,
-          hasArch: false, lockGem: false, lockSize: 0.055,
+          lidTop: 0.18,
+          bodyTop: 0.46,
+          bodyBottom: 0.82,
+          bodyRadius: 0.035,
+          bandCount: 1,
+          bandWidth: 2.5,
+          hasArch: false,
+          lockGem: false,
+          lockSize: 0.055,
           particleColor: PremiumColors.chestBronzeBody,
         );
       case ChestType.silver:
@@ -77,9 +85,15 @@ class ChestPainter extends CustomPainter {
           bodyColor: PremiumColors.chestSilverBody,
           accentColor: PremiumColors.chestSilverAccent,
           glowColor: PremiumColors.chestSilverGlow,
-          lidTop: 0.16, bodyTop: 0.44, bodyBottom: 0.82,
-          bodyRadius: 0.040, bandCount: 2, bandWidth: 3.0,
-          hasArch: true, lockGem: false, lockSize: 0.060,
+          lidTop: 0.16,
+          bodyTop: 0.44,
+          bodyBottom: 0.82,
+          bodyRadius: 0.040,
+          bandCount: 2,
+          bandWidth: 3.0,
+          hasArch: true,
+          lockGem: false,
+          lockSize: 0.060,
           particleColor: PremiumColors.chestSilverParticle,
         );
       case ChestType.gold:
@@ -87,9 +101,15 @@ class ChestPainter extends CustomPainter {
           bodyColor: PremiumColors.chestGoldBody,
           accentColor: PremiumColors.chestGoldAccent,
           glowColor: PremiumColors.chestGoldGlow,
-          lidTop: 0.14, bodyTop: 0.42, bodyBottom: 0.83,
-          bodyRadius: 0.045, bandCount: 3, bandWidth: 3.5,
-          hasArch: true, lockGem: true, lockSize: 0.065,
+          lidTop: 0.14,
+          bodyTop: 0.42,
+          bodyBottom: 0.83,
+          bodyRadius: 0.045,
+          bandCount: 3,
+          bandWidth: 3.5,
+          hasArch: true,
+          lockGem: true,
+          lockSize: 0.065,
           particleColor: PremiumColors.chestGoldParticle,
         );
       case ChestType.legendary:
@@ -97,9 +117,15 @@ class ChestPainter extends CustomPainter {
           bodyColor: PremiumColors.chestLegendaryBody,
           accentColor: PremiumColors.deepPurple,
           glowColor: PremiumColors.chestLegendaryGlow2,
-          lidTop: 0.12, bodyTop: 0.40, bodyBottom: 0.84,
-          bodyRadius: 0.050, bandCount: 2, bandWidth: 3.0,
-          hasArch: true, lockGem: true, lockSize: 0.070,
+          lidTop: 0.12,
+          bodyTop: 0.40,
+          bodyBottom: 0.84,
+          bodyRadius: 0.050,
+          bandCount: 2,
+          bandWidth: 3.0,
+          hasArch: true,
+          lockGem: true,
+          lockSize: 0.070,
           particleColor: PremiumColors.chestLegendaryParticle,
         );
     }
@@ -110,7 +136,10 @@ class ChestPainter extends CustomPainter {
     final gp = t < _anticipationEnd ? t / _anticipationEnd : 1.0;
     final ga = (0.12 + 0.10 * gp).clamp(0.0, 1.0);
     _p.shader = RadialGradient(
-      colors: [_cfg.glowColor.withValues(alpha: ga), _cfg.glowColor.withValues(alpha: 0.0)],
+      colors: [
+        _cfg.glowColor.withValues(alpha: ga),
+        _cfg.glowColor.withValues(alpha: 0.0),
+      ],
     ).createShader(Rect.fromCircle(center: c, radius: r));
     canvas.drawCircle(c, r, _p);
   }
@@ -118,13 +147,30 @@ class ChestPainter extends CustomPainter {
   void _drawShadow(Canvas canvas, double s, Offset c) {
     final sy = s * 0.83;
     _p.shader = RadialGradient(
-      colors: [Colors.black.withValues(alpha: 0.20), Colors.black.withValues(alpha: 0.0)],
+      colors: [
+        Colors.black.withValues(alpha: 0.20),
+        Colors.black.withValues(alpha: 0.0),
+      ],
     ).createShader(Rect.fromCircle(center: Offset(c.dx, sy), radius: s * 0.25));
     canvas.drawOval(
-      Rect.fromCenter(center: Offset(c.dx, sy), width: s * 0.50, height: s * 0.10), _p);
+      Rect.fromCenter(
+        center: Offset(c.dx, sy),
+        width: s * 0.50,
+        height: s * 0.10,
+      ),
+      _p,
+    );
   }
 
-  void _drawBodyInterior(Canvas canvas, double cL, double cR, double bT, double bB, double bR, double t) {
+  void _drawBodyInterior(
+    Canvas canvas,
+    double cL,
+    double cR,
+    double bT,
+    double bB,
+    double bR,
+    double t,
+  ) {
     final rt = _openProgress(t);
     if (rt <= 0) return;
     final a = (rt * 0.60).clamp(0.0, 1.0);
@@ -132,13 +178,16 @@ class ChestPainter extends CustomPainter {
     _p.style = PaintingStyle.fill;
     _p.color = PremiumColors.chestDarkBg.withValues(alpha: a);
     final inner = RRect.fromRectAndRadius(
-      Rect.fromLTRB(cL + 4, bT + 2, cR - 4, bB - 4), Radius.circular(bR * 0.5));
+      Rect.fromLTRB(cL + 4, bT + 2, cR - 4, bB - 4),
+      Radius.circular(bR * 0.5),
+    );
     canvas.drawRRect(inner, _p);
   }
 
   void _drawBody(Canvas canvas, RRect rect) {
     _p.shader = LinearGradient(
-      begin: Alignment.topCenter, end: Alignment.bottomCenter,
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
       colors: [
         _cfg.bodyColor,
         _cfg.bodyColor.withValues(alpha: 0.70),
@@ -151,7 +200,8 @@ class ChestPainter extends CustomPainter {
 
   void _drawBodySheen(Canvas canvas, RRect rect) {
     _p.shader = LinearGradient(
-      begin: Alignment.topLeft, end: Alignment.bottomRight,
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
       colors: [
         Colors.white.withValues(alpha: 0.15),
         Colors.white.withValues(alpha: 0.0),
@@ -168,7 +218,15 @@ class ChestPainter extends CustomPainter {
     canvas.drawRRect(rect, _strokeP);
   }
 
-  void _drawBodyBands(Canvas canvas, double s, double cL, double cR, double cx, double bT, double bB) {
+  void _drawBodyBands(
+    Canvas canvas,
+    double s,
+    double cL,
+    double cR,
+    double cx,
+    double bT,
+    double bB,
+  ) {
     _strokeP.strokeWidth = _cfg.bandWidth;
     _strokeP.color = _cfg.accentColor.withValues(alpha: 0.50);
 
@@ -182,16 +240,31 @@ class ChestPainter extends CustomPainter {
         canvas.drawPath(path, _strokeP);
       } else {
         final off = (i - 1) * s * 0.01;
-        canvas.drawLine(Offset(cL + s * 0.02, by + off), Offset(cR - s * 0.02, by + off), _strokeP);
+        canvas.drawLine(
+          Offset(cL + s * 0.02, by + off),
+          Offset(cR - s * 0.02, by + off),
+          _strokeP,
+        );
       }
     }
 
     _strokeP.strokeWidth = 1.5;
     _strokeP.color = _cfg.accentColor.withValues(alpha: 0.30);
-    canvas.drawLine(Offset(cx, bT + s * 0.02), Offset(cx, bB - s * 0.02), _strokeP);
+    canvas.drawLine(
+      Offset(cx, bT + s * 0.02),
+      Offset(cx, bB - s * 0.02),
+      _strokeP,
+    );
   }
 
-  void _drawLock(Canvas canvas, double cx, double bT, double bB, double cL, double cR) {
+  void _drawLock(
+    Canvas canvas,
+    double cx,
+    double bT,
+    double bB,
+    double cL,
+    double cR,
+  ) {
     final lc = Offset(cx, bT + (bB - bT) * 0.45);
     final lr = (cR - cL) * _cfg.lockSize;
 
@@ -213,14 +286,28 @@ class ChestPainter extends CustomPainter {
     if (_cfg.lockGem) {
       final gr = lr * 0.28;
       _p.color = type == ChestType.legendary
-          ? PremiumColors.chestLegendaryParticle : PremiumColors.chestLegendaryRed;
+          ? PremiumColors.chestLegendaryParticle
+          : PremiumColors.chestLegendaryRed;
       canvas.drawCircle(Offset(cx, lc.dy - lr * 0.4), gr, _p);
       _p.color = Colors.white.withValues(alpha: 0.30);
-      canvas.drawCircle(Offset(cx - gr * 0.2, lc.dy - lr * 0.4 - gr * 0.2), gr * 0.35, _p);
+      canvas.drawCircle(
+        Offset(cx - gr * 0.2, lc.dy - lr * 0.4 - gr * 0.2),
+        gr * 0.35,
+        _p,
+      );
     }
   }
 
-  void _drawLidInterior(Canvas canvas, double s, double cL, double cR, double lT, double bT, double cx, double t) {
+  void _drawLidInterior(
+    Canvas canvas,
+    double s,
+    double cL,
+    double cR,
+    double lT,
+    double bT,
+    double cx,
+    double t,
+  ) {
     final angle = _lidAngle(t);
     if (angle > -0.05) return;
 
@@ -235,7 +322,8 @@ class ChestPainter extends CustomPainter {
     canvas.drawRect(Rect.fromLTRB(cL, lT, cR, bT), _p);
 
     _p.shader = LinearGradient(
-      begin: Alignment.topCenter, end: Alignment.bottomCenter,
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
       colors: [
         Colors.black.withValues(alpha: 0.40),
         Colors.black.withValues(alpha: 0.0),
@@ -246,7 +334,16 @@ class ChestPainter extends CustomPainter {
     canvas.restore();
   }
 
-  void _drawLid(Canvas canvas, double s, double cL, double cR, double lT, double bT, double cx, double t) {
+  void _drawLid(
+    Canvas canvas,
+    double s,
+    double cL,
+    double cR,
+    double lT,
+    double bT,
+    double cx,
+    double t,
+  ) {
     final angle = _lidAngle(t);
     final lr = Rect.fromLTRB(cL, lT, cR, bT);
 
@@ -257,18 +354,24 @@ class ChestPainter extends CustomPainter {
 
     _p.style = PaintingStyle.fill;
     _p.shader = LinearGradient(
-      begin: Alignment.topCenter, end: Alignment.bottomCenter,
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
       colors: [
-        _cfg.bodyColor.withValues(alpha: 0.85), _cfg.bodyColor, _cfg.bodyColor.withValues(alpha: 0.90),
+        _cfg.bodyColor.withValues(alpha: 0.85),
+        _cfg.bodyColor,
+        _cfg.bodyColor.withValues(alpha: 0.90),
       ],
     ).createShader(lr);
     canvas.drawRect(lr, _p);
 
     _p.shader = LinearGradient(
-      begin: Alignment.topLeft, end: Alignment.bottomRight,
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
       colors: [
-        Colors.white.withValues(alpha: 0.20), Colors.white.withValues(alpha: 0.0),
-        Colors.white.withValues(alpha: 0.10), Colors.white.withValues(alpha: 0.0),
+        Colors.white.withValues(alpha: 0.20),
+        Colors.white.withValues(alpha: 0.0),
+        Colors.white.withValues(alpha: 0.10),
+        Colors.white.withValues(alpha: 0.0),
       ],
     ).createShader(lr);
     canvas.drawRect(lr, _p);
@@ -316,7 +419,16 @@ class ChestPainter extends CustomPainter {
     canvas.restore();
   }
 
-  void _drawOpeningGlow(Canvas canvas, double s, double cL, double cR, double bT, double bB, double bR, double t) {
+  void _drawOpeningGlow(
+    Canvas canvas,
+    double s,
+    double cL,
+    double cR,
+    double bT,
+    double bB,
+    double bR,
+    double t,
+  ) {
     final rt = _openProgress(t);
     if (rt <= 0) return;
     final a = (rt * 0.50).clamp(0.0, 1.0);
@@ -325,21 +437,41 @@ class ChestPainter extends CustomPainter {
     _p.color = Colors.white.withValues(alpha: a * 0.20);
     canvas.drawRRect(
       RRect.fromRectAndRadius(
-        Rect.fromLTRB(cL + s * 0.04, bT + s * 0.02, cR - s * 0.04, bB - s * 0.02),
-        Radius.circular(bR * 0.5)),
-      _p);
+        Rect.fromLTRB(
+          cL + s * 0.04,
+          bT + s * 0.02,
+          cR - s * 0.04,
+          bB - s * 0.02,
+        ),
+        Radius.circular(bR * 0.5),
+      ),
+      _p,
+    );
 
-    _p.shader = RadialGradient(
-      colors: [
-        _cfg.particleColor.withValues(alpha: a * 0.25),
-        _cfg.particleColor.withValues(alpha: 0.0),
-      ],
-    ).createShader(Rect.fromCircle(
-      center: Offset((cL + cR) / 2, (bT + bB) / 2), radius: s * 0.20));
+    _p.shader =
+        RadialGradient(
+          colors: [
+            _cfg.particleColor.withValues(alpha: a * 0.25),
+            _cfg.particleColor.withValues(alpha: 0.0),
+          ],
+        ).createShader(
+          Rect.fromCircle(
+            center: Offset((cL + cR) / 2, (bT + bB) / 2),
+            radius: s * 0.20,
+          ),
+        );
     canvas.drawRect(Rect.fromLTRB(cL, bT, cR, bB), _p);
   }
 
-  void _drawShineSweep(Canvas canvas, double cL, double cR, double bT, double bB, double s, double t) {
+  void _drawShineSweep(
+    Canvas canvas,
+    double cL,
+    double cR,
+    double bT,
+    double bB,
+    double s,
+    double t,
+  ) {
     final sweep = (t * 1.5) % 1.0;
     final x = cL + (cR - cL) * sweep;
     final halfW = (cR - cL) * 0.12;
@@ -361,7 +493,9 @@ class ChestPainter extends CustomPainter {
     _p.style = PaintingStyle.fill;
     _p.shader = null;
 
-    final count = type == ChestType.legendary ? 10 : (type == ChestType.gold ? 8 : 6);
+    final count = type == ChestType.legendary
+        ? 10
+        : (type == ChestType.gold ? 8 : 6);
     for (var i = 0; i < count; i++) {
       final seed = i * 1.618;
       final angle = -math.pi / 2 + (seed - 0.5) * math.pi * 0.7;
@@ -382,7 +516,16 @@ class ChestPainter extends CustomPainter {
     }
   }
 
-  void _drawTierEffects(Canvas canvas, double s, Offset c, double t, double cL, double cR, double bT, double bB) {
+  void _drawTierEffects(
+    Canvas canvas,
+    double s,
+    Offset c,
+    double t,
+    double cL,
+    double cR,
+    double bT,
+    double bB,
+  ) {
     if (type == ChestType.legendary) {
       final sa = (0.3 + 0.3 * math.sin(t * math.pi * 8)).clamp(0.0, 1.0);
       _p.style = PaintingStyle.fill;
@@ -393,7 +536,11 @@ class ChestPainter extends CustomPainter {
         final dist = s * 0.42 + 0.04 * s * math.sin(t * math.pi * 5 + i * 1.2);
         final px = c.dx + dist * math.cos(angle);
         final py = c.dy - s * 0.05 + dist * math.sin(angle);
-        canvas.drawCircle(Offset(px, py), s * (0.010 + 0.004 * math.sin(t * math.pi * 7 + i)), _p);
+        canvas.drawCircle(
+          Offset(px, py),
+          s * (0.010 + 0.004 * math.sin(t * math.pi * 7 + i)),
+          _p,
+        );
       }
 
       final ra = (0.2 + 0.2 * math.sin(t * math.pi * 3)).clamp(0.0, 1.0);
@@ -409,7 +556,9 @@ class ChestPainter extends CustomPainter {
       _p.style = PaintingStyle.fill;
       _p.shader = null;
       _p.color = Colors.white.withValues(alpha: sa);
-      final x = cL + (cR - cL) * (0.3 + 0.4 * (0.5 + 0.5 * math.sin(t * math.pi * 4)));
+      final x =
+          cL +
+          (cR - cL) * (0.3 + 0.4 * (0.5 + 0.5 * math.sin(t * math.pi * 4)));
       canvas.drawCircle(Offset(x, s * 0.30), s * 0.025, _p);
     }
   }

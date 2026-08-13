@@ -45,7 +45,9 @@ class InventoryRepositoryImpl implements InventoryRepository {
     for (final entry in raw.split(',')) {
       final parts = entry.split(':');
       if (parts.length == 2) {
-        final ct = ChestType.values.where((t) => t.name == parts[0]).firstOrNull;
+        final ct = ChestType.values
+            .where((t) => t.name == parts[0])
+            .firstOrNull;
         if (ct != null) map[ct] = int.tryParse(parts[1]) ?? 0;
       }
     }
@@ -70,7 +72,9 @@ class InventoryRepositoryImpl implements InventoryRepository {
   }
 
   void _saveChests(Map<ChestType, int> map) {
-    final encoded = map.entries.map((e) => '${e.key.name}:${e.value}').join(',');
+    final encoded = map.entries
+        .map((e) => '${e.key.name}:${e.value}')
+        .join(',');
     _prefs.setString(_keyChests, encoded);
   }
 

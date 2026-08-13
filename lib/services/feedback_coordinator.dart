@@ -8,11 +8,9 @@ class FeedbackCoordinator {
   final ExperienceService _exp;
   final AudioService _audio;
 
-  FeedbackCoordinator({
-    ExperienceService? experience,
-    AudioService? audio,
-  })  : _exp = experience ?? ExperienceService.instance,
-        _audio = audio ?? AudioService.instance;
+  FeedbackCoordinator({ExperienceService? experience, AudioService? audio})
+    : _exp = experience ?? ExperienceService.instance,
+      _audio = audio ?? AudioService.instance;
 
   static final FeedbackCoordinator instance = FeedbackCoordinator();
 

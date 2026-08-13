@@ -3,24 +3,24 @@ import 'package:sagen/providers/streak_provider.dart';
 import 'package:sagen/services/streak_service.dart';
 
 StreakState _state(int streak) => StreakState(
-      status: StreakStatus(
-        currentStreak: streak,
-        longestStreak: streak,
-        lastActivityDate: DateTime.now(),
-        streakFreezes: 0,
-        isAtRisk: false,
-        message: '',
-        tier: 'bronze',
-      ),
-      totalCheckIns: streak,
-      perfectWeeks: 0,
-      missionCompleted: false,
-      weeklyStats: {},
-      heatmapData: {},
-      monthlyData: {},
-      streakHistory: [],
-      emotionalMessages: const [],
-    );
+  status: StreakStatus(
+    currentStreak: streak,
+    longestStreak: streak,
+    lastActivityDate: DateTime.now(),
+    streakFreezes: 0,
+    isAtRisk: false,
+    message: '',
+    tier: 'bronze',
+  ),
+  totalCheckIns: streak,
+  perfectWeeks: 0,
+  missionCompleted: false,
+  weeklyStats: {},
+  heatmapData: {},
+  monthlyData: {},
+  streakHistory: [],
+  emotionalMessages: const [],
+);
 
 void main() {
   group('streakMultiplier', () {

@@ -4,13 +4,7 @@ part 'notification_model.freezed.dart';
 part 'notification_model.g.dart';
 
 @JsonEnum()
-enum NotificationType {
-  streak,
-  analysis,
-  tip,
-  achievement,
-  system,
-}
+enum NotificationType { streak, analysis, tip, achievement, system }
 
 @unfreezed
 class NotificationItem with _$NotificationItem {
@@ -25,5 +19,6 @@ class NotificationItem with _$NotificationItem {
     @Default(false) bool isRead,
   }) = _NotificationItem;
 
-  factory NotificationItem.fromJson(Map<String, dynamic> json) => _$NotificationItemFromJson(json);
+  factory NotificationItem.fromJson(Map<String, dynamic> json) =>
+      _$NotificationItemFromJson(json);
 }

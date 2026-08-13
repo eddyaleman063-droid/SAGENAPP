@@ -20,7 +20,11 @@ import '../../../ui/widgets/auth/auth_social_buttons.dart';
 class LoginScreen extends ConsumerStatefulWidget {
   final bool isOnboarding;
   final VoidCallback? onSwitchToRegister;
-  const LoginScreen({super.key, this.isOnboarding = false, this.onSwitchToRegister});
+  const LoginScreen({
+    super.key,
+    this.isOnboarding = false,
+    this.onSwitchToRegister,
+  });
 
   @override
   ConsumerState<LoginScreen> createState() => _LoginScreenState();
@@ -63,7 +67,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     _validateDebounce?.cancel();
     _validateDebounce = Timer(const Duration(milliseconds: 150), () {
       final email = _emailCtrl.text.trim();
-      final emailValid = email.isNotEmpty && RegExp(r'^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$').hasMatch(email);
+      final emailValid =
+          email.isNotEmpty &&
+          RegExp(
+            r'^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$',
+          ).hasMatch(email);
       final valid = emailValid && _passwordCtrl.text.isNotEmpty;
       if (valid != _fieldsValid && mounted) {
         setState(() => _fieldsValid = valid);
@@ -87,11 +95,21 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         ref.read(experienceServiceProvider).successHaptic();
         AnalyticsService.instance.track(AnalyticEvent.signIn);
       } else if (auth.errorMessage != null) {
-        SagenNotification.show(context, message: AuthException(auth.errorMessage!).localizedMessage(AppLocalizations.of(context)!), type: NotificationType.error);
+        SagenNotification.show(
+          context,
+          message: AuthException(
+            auth.errorMessage!,
+          ).localizedMessage(AppLocalizations.of(context)!),
+          type: NotificationType.error,
+        );
       }
     } catch (_) {
       if (!mounted) return;
-      SagenNotification.show(context, message: AppLocalizations.of(context)!.authLoginError, type: NotificationType.error);
+      SagenNotification.show(
+        context,
+        message: AppLocalizations.of(context)!.authLoginError,
+        type: NotificationType.error,
+      );
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -109,11 +127,21 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         ref.read(experienceServiceProvider).successHaptic();
         AnalyticsService.instance.track(AnalyticEvent.signIn);
       } else if (auth.errorMessage != null) {
-        SagenNotification.show(context, message: AuthException(auth.errorMessage!).localizedMessage(AppLocalizations.of(context)!), type: NotificationType.error);
+        SagenNotification.show(
+          context,
+          message: AuthException(
+            auth.errorMessage!,
+          ).localizedMessage(AppLocalizations.of(context)!),
+          type: NotificationType.error,
+        );
       }
     } catch (_) {
       if (!mounted) return;
-      SagenNotification.show(context, message: AppLocalizations.of(context)!.authGoogleError, type: NotificationType.error);
+      SagenNotification.show(
+        context,
+        message: AppLocalizations.of(context)!.authGoogleError,
+        type: NotificationType.error,
+      );
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -131,16 +159,30 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         ref.read(experienceServiceProvider).successHaptic();
         AnalyticsService.instance.track(AnalyticEvent.signIn);
       } else if (auth.errorMessage != null) {
-        SagenNotification.show(context, message: AuthException(auth.errorMessage!).localizedMessage(AppLocalizations.of(context)!), type: NotificationType.error);
+        SagenNotification.show(
+          context,
+          message: AuthException(
+            auth.errorMessage!,
+          ).localizedMessage(AppLocalizations.of(context)!),
+          type: NotificationType.error,
+        );
       }
     } on AuthException catch (e) {
       if (!mounted) return;
       if (e.code != 'canceled') {
-        SagenNotification.show(context, message: e.localizedMessage(AppLocalizations.of(context)!), type: NotificationType.error);
+        SagenNotification.show(
+          context,
+          message: e.localizedMessage(AppLocalizations.of(context)!),
+          type: NotificationType.error,
+        );
       }
     } catch (_) {
       if (!mounted) return;
-      SagenNotification.show(context, message: AppLocalizations.of(context)!.authFacebookError, type: NotificationType.error);
+      SagenNotification.show(
+        context,
+        message: AppLocalizations.of(context)!.authFacebookError,
+        type: NotificationType.error,
+      );
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -167,7 +209,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               children: [
                 // ── Header ──
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxs, vertical: AppSpacing.sm),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.xxs,
+                    vertical: AppSpacing.sm,
+                  ),
                   child: Row(
                     children: [
                       Semantics(
@@ -194,16 +239,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ),
                 const SizedBox(height: AppSpacing.xl),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.xxl,
+                  ),
                   child: Form(
                     key: _formKey,
                     child: Container(
                       decoration: BoxDecoration(
                         color: context.subtleBorder,
-                            borderRadius: BorderRadius.circular(AppRadius.md),
-                        border: Border.all(
-                          color: context.borderSubtle,
-                        ),
+                        borderRadius: BorderRadius.circular(AppRadius.md),
+                        border: Border.all(color: context.borderSubtle),
                       ),
                       child: Column(
                         children: [
@@ -215,22 +260,38 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               maxLength: 254,
                               keyboardType: TextInputType.emailAddress,
                               textInputAction: TextInputAction.next,
-                              onFieldSubmitted: (_) => _passwordFocus.requestFocus(),
-                              style: AppTextStyle.body.copyWith(color: context.textPrimary),
+                              onFieldSubmitted: (_) =>
+                                  _passwordFocus.requestFocus(),
+                              style: AppTextStyle.body.copyWith(
+                                color: context.textPrimary,
+                              ),
                               decoration: InputDecoration(
                                 hintText: l.authEmailLabel,
-                                hintStyle: AppTextStyle.body.copyWith(color: context.textSecondary),
-                                prefixIcon: Icon(Icons.person_outline, size: 20, color: context.textSecondary),
+                                hintStyle: AppTextStyle.body.copyWith(
+                                  color: context.textSecondary,
+                                ),
+                                prefixIcon: Icon(
+                                  Icons.person_outline,
+                                  size: 20,
+                                  color: context.textSecondary,
+                                ),
                                 border: InputBorder.none,
                                 focusedBorder: InputBorder.none,
                                 enabledBorder: InputBorder.none,
                                 errorBorder: InputBorder.none,
                                 focusedErrorBorder: InputBorder.none,
-                                contentPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: 18),
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: AppSpacing.lg,
+                                  vertical: 18,
+                                ),
                               ),
                               validator: (v) {
-                                if (v == null || v.trim().isEmpty) return l.authEmailError;
-                                if (!RegExp(r'^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$').hasMatch(v.trim())) {
+                                if (v == null || v.trim().isEmpty) {
+                                  return l.authEmailError;
+                                }
+                                if (!RegExp(
+                                  r'^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$',
+                                ).hasMatch(v.trim())) {
                                   return l.authEmailInvalid;
                                 }
                                 return null;
@@ -252,29 +313,48 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               obscureText: _obscurePassword,
                               textInputAction: TextInputAction.done,
                               onFieldSubmitted: (_) => _handleLogin(),
-                              style: AppTextStyle.body.copyWith(color: context.textPrimary),
+                              style: AppTextStyle.body.copyWith(
+                                color: context.textPrimary,
+                              ),
                               decoration: InputDecoration(
                                 hintText: l.authPasswordLabel,
-                                hintStyle: AppTextStyle.body.copyWith(color: context.textSecondary),
-                                prefixIcon: Icon(Icons.lock_outline, size: 20, color: context.textSecondary),
+                                hintStyle: AppTextStyle.body.copyWith(
+                                  color: context.textSecondary,
+                                ),
+                                prefixIcon: Icon(
+                                  Icons.lock_outline,
+                                  size: 20,
+                                  color: context.textSecondary,
+                                ),
                                 suffixIcon: IconButton(
                                   icon: Icon(
-                                    _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                                    _obscurePassword
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
                                     size: 20,
                                     color: PremiumColors.primaryAccent,
                                   ),
-                                  tooltip: _obscurePassword ? l.showPassword : l.hidePassword,
-                                  onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
+                                  tooltip: _obscurePassword
+                                      ? l.showPassword
+                                      : l.hidePassword,
+                                  onPressed: () => setState(
+                                    () => _obscurePassword = !_obscurePassword,
+                                  ),
                                 ),
                                 border: InputBorder.none,
                                 focusedBorder: InputBorder.none,
                                 enabledBorder: InputBorder.none,
                                 errorBorder: InputBorder.none,
                                 focusedErrorBorder: InputBorder.none,
-                                contentPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: 18),
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: AppSpacing.lg,
+                                  vertical: 18,
+                                ),
                               ),
                               validator: (v) {
-                                if (v == null || v.isEmpty) return l.authPasswordError;
+                                if (v == null || v.isEmpty) {
+                                  return l.authPasswordError;
+                                }
                                 return null;
                               },
                             ),
@@ -287,7 +367,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 const SizedBox(height: AppSpacing.xl),
                 // ── Login button ──
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.xxl,
+                  ),
                   child: SizedBox(
                     width: double.infinity,
                     height: 52,
@@ -309,21 +391,27 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           disabledBackgroundColor: context.subtleBorder,
                           disabledForegroundColor: context.textSecondary,
                           shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(AppRadius.md),
+                            borderRadius: BorderRadius.circular(AppRadius.md),
                           ),
                           elevation: 0,
                         ),
                         child: _isLoading
                             ? SizedBox(
-                                width: 22, height: 22,
+                                width: 22,
+                                height: 22,
                                 child: CircularProgressIndicator(
                                   strokeWidth: 2.5,
-                                  valueColor: AlwaysStoppedAnimation<Color>(context.textPrimary),
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    context.textPrimary,
+                                  ),
                                 ),
                               )
                             : Text(
                                 l.authLoginButton,
-                                style: AppTextStyle.body.copyWith(fontWeight: FontWeight.w700, letterSpacing: 1),
+                                style: AppTextStyle.body.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  letterSpacing: 1,
+                                ),
                               ),
                       ),
                     ),
@@ -362,18 +450,29 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ),
                 const SizedBox(height: AppSpacing.xl),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.xxl,
+                  ),
                   child: Center(
                     child: LegalTextBlock(
-                      onTerms: () => launchUrl(Uri.parse(_termsUrl), mode: LaunchMode.externalApplication),
-                      onPrivacy: () => launchUrl(Uri.parse(_privacyUrl), mode: LaunchMode.externalApplication),
+                      onTerms: () => launchUrl(
+                        Uri.parse(_termsUrl),
+                        mode: LaunchMode.externalApplication,
+                      ),
+                      onPrivacy: () => launchUrl(
+                        Uri.parse(_privacyUrl),
+                        mode: LaunchMode.externalApplication,
+                      ),
                     ),
                   ),
                 ),
                 // ── Conditional link ──
                 if (widget.isOnboarding)
                   Padding(
-                    padding: const EdgeInsets.only(top: AppSpacing.md, bottom: AppSpacing.sm),
+                    padding: const EdgeInsets.only(
+                      top: AppSpacing.md,
+                      bottom: AppSpacing.sm,
+                    ),
                     child: Center(
                       child: Semantics(
                         button: true,
@@ -382,7 +481,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           onPressed: () => context.pop(),
                           child: Text(
                             l.authBack,
-                              style: AppTextStyle.subtitle.copyWith(color: context.textTertiary),
+                            style: AppTextStyle.subtitle.copyWith(
+                              color: context.textTertiary,
+                            ),
                           ),
                         ),
                       ),
@@ -390,7 +491,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   )
                 else if (widget.onSwitchToRegister != null)
                   Padding(
-                    padding: const EdgeInsets.only(top: AppSpacing.md, bottom: AppSpacing.sm),
+                    padding: const EdgeInsets.only(
+                      top: AppSpacing.md,
+                      bottom: AppSpacing.sm,
+                    ),
                     child: Center(
                       child: Semantics(
                         button: true,
@@ -400,7 +504,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           child: RichText(
                             text: TextSpan(
                               text: l.authNoAccount,
-                            style: AppTextStyle.subtitle.copyWith(color: context.textTertiary),
+                              style: AppTextStyle.subtitle.copyWith(
+                                color: context.textTertiary,
+                              ),
                               children: [
                                 TextSpan(
                                   text: l.authCreateAccount,

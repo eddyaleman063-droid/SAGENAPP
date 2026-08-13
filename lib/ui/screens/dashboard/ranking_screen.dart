@@ -23,8 +23,14 @@ class RankingScreen extends ConsumerStatefulWidget {
   ConsumerState<RankingScreen> createState() => _RankingScreenState();
 }
 
-class _RankingScreenState extends ConsumerState<RankingScreen> with AutomaticKeepAliveClientMixin {
-  void _showFlexCard(BuildContext context, WidgetRef ref, LeaderboardEntry entry, int rank) {
+class _RankingScreenState extends ConsumerState<RankingScreen>
+    with AutomaticKeepAliveClientMixin {
+  void _showFlexCard(
+    BuildContext context,
+    WidgetRef ref,
+    LeaderboardEntry entry,
+    int rank,
+  ) {
     ref.read(experienceServiceProvider).lightHaptic();
     final auth = ref.read(authProvider);
     final learning = ref.read(learningProvider);
@@ -66,7 +72,12 @@ class _RankingScreenState extends ConsumerState<RankingScreen> with AutomaticKee
             button: true,
             label: l.shareRanking,
             child: FloatingActionButton(
-              onPressed: () => _showFlexCard(context, ref, entries[currentIndex], currentIndex + 1),
+              onPressed: () => _showFlexCard(
+                context,
+                ref,
+                entries[currentIndex],
+                currentIndex + 1,
+              ),
               backgroundColor: PremiumColors.splashBlue,
               child: const Icon(Icons.share_rounded, color: Colors.white),
             ),
@@ -80,18 +91,33 @@ class _RankingScreenState extends ConsumerState<RankingScreen> with AutomaticKee
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const ExcludeSemantics(child: Icon(Icons.error_outline, size: 48, color: PremiumColors.error)),
+                const ExcludeSemantics(
+                  child: Icon(
+                    Icons.error_outline,
+                    size: 48,
+                    color: PremiumColors.error,
+                  ),
+                ),
                 const SizedBox(height: AppSpacing.xxl),
-                Text(l.rankingError, style: AppTextStyle.body.copyWith(color: context.textSecondary)),
+                Text(
+                  l.rankingError,
+                  style: AppTextStyle.body.copyWith(
+                    color: context.textSecondary,
+                  ),
+                ),
                 const SizedBox(height: AppSpacing.xxl),
                 ElevatedButton(
-                  onPressed: () { ExperienceService.instance.lightHaptic(); ref.invalidate(leaderboardProvider); },
+                  onPressed: () {
+                    ExperienceService.instance.lightHaptic();
+                    ref.invalidate(leaderboardProvider);
+                  },
                   child: Text(l.retry),
                 ),
               ],
             ),
           ),
-          data: (entries) => _RankingContent(entries: entries, currentUid: currentUid),
+          data: (entries) =>
+              _RankingContent(entries: entries, currentUid: currentUid),
         ),
       ),
     );
@@ -120,9 +146,7 @@ class _RankingContent extends ConsumerWidget {
             Text(
               l.rankingEmptyMessage,
               textAlign: TextAlign.center,
-              style: AppTextStyle.bodyMd.copyWith(
-                color: context.textTertiary,
-              ),
+              style: AppTextStyle.bodyMd.copyWith(color: context.textTertiary),
             ),
           ],
         ),
@@ -145,87 +169,100 @@ class _RankingContent extends ConsumerWidget {
           child: LayoutBuilder(
             builder: (context, constraints) {
               final isWide = constraints.maxWidth > 600;
-              final horizontalPadding = isWide ? AppSpacing.xxl * 2.0 : AppSpacing.xxl.toDouble();
+              final horizontalPadding = isWide
+                  ? AppSpacing.xxl * 2.0
+                  : AppSpacing.xxl.toDouble();
               return CustomScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
                 slivers: [
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(
-                      horizontalPadding,
-                      MediaQuery.paddingOf(context).top + AppSpacing.xxl,
-                      horizontalPadding,
-                      AppSpacing.xxl,
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(
+                        horizontalPadding,
+                        MediaQuery.paddingOf(context).top + AppSpacing.xxl,
+                        horizontalPadding,
+                        AppSpacing.xxl,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            l.rankingTitle,
+                            style: AppTextStyle.headline.copyWith(
+                              fontSize: isWide ? 30 : 26,
+                              color: context.textPrimary,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            l.rankingSubtitle,
+                            style: AppTextStyle.subtitle.copyWith(
+                              color: context.textTertiary,
+                            ),
+                          ),
+                        ],
+                      ).animate().fadeIn(duration: 400.ms).slideY(begin: 0.1),
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          l.rankingTitle,
-                          style: AppTextStyle.headline.copyWith(
-                            fontSize: isWide ? 30 : 26,
-                            color: context.textPrimary,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          l.rankingSubtitle,
-                          style: AppTextStyle.subtitle.copyWith(
-                            color: context.textTertiary,
-                          ),
-                        ),
-                      ],
-                    ).animate().fadeIn(duration: 400.ms).slideY(begin: 0.1),
                   ),
-                ),
-                if (top3.isNotEmpty)
-                  SliverToBoxAdapter(child: Padding(
-                    padding: const EdgeInsets.only(bottom: AppSpacing.xxl),
-                    child: PodiumWidget(top3: top3),
-                  )),
-                if (rest.isNotEmpty)
-                  SliverPadding(
-                    padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                    sliver: SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) {
+                  if (top3.isNotEmpty)
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: AppSpacing.xxl),
+                        child: PodiumWidget(top3: top3),
+                      ),
+                    ),
+                  if (rest.isNotEmpty)
+                    SliverPadding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: horizontalPadding,
+                      ),
+                      sliver: SliverList(
+                        delegate: SliverChildBuilderDelegate((context, index) {
                           final entry = rest[index];
                           final rank = index + 4;
                           return RankingTileWidget(
-                            rank: rank,
-                            entry: entry,
-                            isCurrentUser: entry.uid == currentUid,
-                          ).animate().fadeIn(delay: (index * 40).ms, duration: 300.ms).slideX(begin: 0.05);
-                        },
-                        childCount: rest.length,
+                                rank: rank,
+                                entry: entry,
+                                isCurrentUser: entry.uid == currentUid,
+                              )
+                              .animate()
+                              .fadeIn(delay: (index * 40).ms, duration: 300.ms)
+                              .slideX(begin: 0.05);
+                        }, childCount: rest.length),
                       ),
                     ),
-                  ),
-                if (isInTop50 && currentIndex >= 3)
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(horizontalPadding, AppSpacing.sm, horizontalPadding, AppSpacing.xxl),
-                      child: RankingTileWidget(
-                        rank: currentIndex + 1,
-                        entry: entries[currentIndex],
-                        isCurrentUser: true,
-                      ),
-                    ),
-                  ),
-                if (!isInTop50)
-                  SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: 100,
-                      child: Center(
-                        child: Text(
-                           l.rankingEmptyMessage,
-                          style: AppTextStyle.subtitle.copyWith(color: context.textTertiary),
+                  if (isInTop50 && currentIndex >= 3)
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(
+                          horizontalPadding,
+                          AppSpacing.sm,
+                          horizontalPadding,
+                          AppSpacing.xxl,
+                        ),
+                        child: RankingTileWidget(
+                          rank: currentIndex + 1,
+                          entry: entries[currentIndex],
+                          isCurrentUser: true,
                         ),
                       ),
                     ),
-                  ),
-                const SliverToBoxAdapter(child: SizedBox(height: 100)),
-              ],
+                  if (!isInTop50)
+                    SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: 100,
+                        child: Center(
+                          child: Text(
+                            l.rankingEmptyMessage,
+                            style: AppTextStyle.subtitle.copyWith(
+                              color: context.textTertiary,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  const SliverToBoxAdapter(child: SizedBox(height: 100)),
+                ],
               );
             },
           ),
@@ -235,10 +272,12 @@ class _RankingContent extends ConsumerWidget {
             left: AppSpacing.xxl,
             right: AppSpacing.xxl,
             bottom: AppSpacing.xl,
-              child: CurrentUserRankBar(
+            child: CurrentUserRankBar(
               rank: currentIndex + 1,
               totalXp: currentEntry.totalXp,
-              xpToNext: currentIndex > 0 ? entries[currentIndex - 1].totalXp - currentEntry.totalXp : 0,
+              xpToNext: currentIndex > 0
+                  ? entries[currentIndex - 1].totalXp - currentEntry.totalXp
+                  : 0,
             ),
           ),
       ],
@@ -264,10 +303,12 @@ class _RankingFlexCardShareSheet extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<_RankingFlexCardShareSheet> createState() => _RankingFlexCardShareSheetState();
+  ConsumerState<_RankingFlexCardShareSheet> createState() =>
+      _RankingFlexCardShareSheetState();
 }
 
-class _RankingFlexCardShareSheetState extends ConsumerState<_RankingFlexCardShareSheet> {
+class _RankingFlexCardShareSheetState
+    extends ConsumerState<_RankingFlexCardShareSheet> {
   final _flexCardKey = GlobalKey<FlexCardWidgetState>();
   bool _sharing = false;
 
@@ -310,7 +351,12 @@ class _RankingFlexCardShareSheetState extends ConsumerState<_RankingFlexCardShar
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(AppSpacing.xl, AppSpacing.md, AppSpacing.xl, AppSpacing.xl),
+            padding: const EdgeInsets.fromLTRB(
+              AppSpacing.xl,
+              AppSpacing.md,
+              AppSpacing.xl,
+              AppSpacing.xl,
+            ),
             child: SizedBox(
               width: double.infinity,
               height: 48,
@@ -323,15 +369,23 @@ class _RankingFlexCardShareSheetState extends ConsumerState<_RankingFlexCardShar
                       ? const SizedBox(
                           width: 18,
                           height: 18,
-                          child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.white,
+                          ),
                         )
                       : const Icon(Icons.share_rounded, size: 18),
-                  label: Text(_sharing ? l.rankingSharing : l.rankingShareButton),
+                  label: Text(
+                    _sharing ? l.rankingSharing : l.rankingShareButton,
+                  ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: PremiumColors.splashBlue,
                     foregroundColor: Colors.white,
-                    disabledBackgroundColor: PremiumColors.splashBlue.withValues(alpha: 0.5),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
+                    disabledBackgroundColor: PremiumColors.splashBlue
+                        .withValues(alpha: 0.5),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(AppRadius.lg),
+                    ),
                   ),
                 ),
               ),
@@ -347,7 +401,13 @@ class _RankingFlexCardShareSheetState extends ConsumerState<_RankingFlexCardShar
     final bytes = await _flexCardKey.currentState?.capture();
     if (!mounted) return;
     if (bytes != null) {
-      await ref.read(shareServiceProvider).shareImage(bytes, text: AppLocalizations.of(context)?.flexCardJoinAlliance, source: 'ranking');
+      await ref
+          .read(shareServiceProvider)
+          .shareImage(
+            bytes,
+            text: AppLocalizations.of(context)?.flexCardJoinAlliance,
+            source: 'ranking',
+          );
     }
     if (mounted) {
       context.pop();
@@ -362,17 +422,34 @@ class _RankingShimmer extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(AppSpacing.xxl, AppSpacing.lg, AppSpacing.xxl, 0),
+        padding: const EdgeInsets.fromLTRB(
+          AppSpacing.xxl,
+          AppSpacing.lg,
+          AppSpacing.xxl,
+          0,
+        ),
         child: Column(
           children: [
             const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ShimmerLoading(width: 80, height: 80, borderRadius: AppRadius.pill),
+                ShimmerLoading(
+                  width: 80,
+                  height: 80,
+                  borderRadius: AppRadius.pill,
+                ),
                 SizedBox(width: AppSpacing.md),
-                ShimmerLoading(width: 80, height: 80, borderRadius: AppRadius.pill),
+                ShimmerLoading(
+                  width: 80,
+                  height: 80,
+                  borderRadius: AppRadius.pill,
+                ),
                 SizedBox(width: AppSpacing.md),
-                ShimmerLoading(width: 80, height: 80, borderRadius: AppRadius.pill),
+                ShimmerLoading(
+                  width: 80,
+                  height: 80,
+                  borderRadius: AppRadius.pill,
+                ),
               ],
             ),
             const SizedBox(height: AppSpacing.xxl),

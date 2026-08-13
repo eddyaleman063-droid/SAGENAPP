@@ -32,10 +32,12 @@ class ProfileHookScreen extends StatelessWidget {
               const SizedBox(
                 width: 110,
                 height: 110,
-                child: ExcludeSemantics(child: SageEmotionWidget(
-                  emotion: SageEmotion.happy,
-                  size: 110,
-                )),
+                child: ExcludeSemantics(
+                  child: SageEmotionWidget(
+                    emotion: SageEmotion.happy,
+                    size: 110,
+                  ),
+                ),
               ),
               const SizedBox(height: AppSpacing.xxl),
               Text(
@@ -60,17 +62,24 @@ class ProfileHookScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(AppRadius.xl),
                   color: context.surfaceTinted,
-                  border: Border.all(
-                    color: context.subtleBorder,
-                  ),
+                  border: Border.all(color: context.subtleBorder),
                 ),
                 child: Column(
                   children: [
-                    _BenefitRow2(icon: Icons.cloud_done_rounded, text: l.regCloudSave),
+                    _BenefitRow2(
+                      icon: Icons.cloud_done_rounded,
+                      text: l.regCloudSave,
+                    ),
                     const SizedBox(height: AppSpacing.md),
-                    _BenefitRow2(icon: Icons.local_fire_department_rounded, text: l.regStreakSync),
+                    _BenefitRow2(
+                      icon: Icons.local_fire_department_rounded,
+                      text: l.regStreakSync,
+                    ),
                     const SizedBox(height: AppSpacing.md),
-                    _BenefitRow2(icon: Icons.auto_awesome_rounded, text: l.regRewards),
+                    _BenefitRow2(
+                      icon: Icons.auto_awesome_rounded,
+                      text: l.regRewards,
+                    ),
                   ],
                 ),
               ),
@@ -78,27 +87,42 @@ class ProfileHookScreen extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 height: 54,
-                child: Semantics(button: true, label: l.regCreateProfile, child: ElevatedButton(
-                  onPressed: onCreateProfile,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: PremiumColors.primary,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
-                    elevation: 4,
-                  ),
-                  child: Text(l.regCreateProfile, style: AppTextStyle.titleSmall.copyWith(fontWeight: FontWeight.bold)),
-                )),
-              ),
-              const SizedBox(height: AppSpacing.md),
-              Semantics(button: true, label: l.regLater, child: TextButton(
-                onPressed: onSkipToHome,
-                child: Text(
-                  l.regLater,
-                  style: AppTextStyle.subtitle.copyWith(
-                    color: context.textSecondary,
+                child: Semantics(
+                  button: true,
+                  label: l.regCreateProfile,
+                  child: ElevatedButton(
+                    onPressed: onCreateProfile,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: PremiumColors.primary,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(AppRadius.lg),
+                      ),
+                      elevation: 4,
+                    ),
+                    child: Text(
+                      l.regCreateProfile,
+                      style: AppTextStyle.titleSmall.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
-              )),
+              ),
+              const SizedBox(height: AppSpacing.md),
+              Semantics(
+                button: true,
+                label: l.regLater,
+                child: TextButton(
+                  onPressed: onSkipToHome,
+                  child: Text(
+                    l.regLater,
+                    style: AppTextStyle.subtitle.copyWith(
+                      color: context.textSecondary,
+                    ),
+                  ),
+                ),
+              ),
             ],
           ).animate().fadeIn().slideY(begin: 0.1),
         ),
@@ -122,9 +146,7 @@ class _BenefitRow2 extends StatelessWidget {
         Expanded(
           child: Text(
             text,
-            style: AppTextStyle.subtitle.copyWith(
-              color: context.textPrimary,
-            ),
+            style: AppTextStyle.subtitle.copyWith(color: context.textPrimary),
           ),
         ),
       ],

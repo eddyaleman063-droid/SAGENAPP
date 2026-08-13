@@ -11,16 +11,28 @@ class SageChatHeader extends ConsumerWidget {
   final bool dark;
   final SageAiChatState sage;
   final VoidCallback? onClear;
-  const SageChatHeader({super.key, required this.dark, required this.sage, this.onClear});
+  const SageChatHeader({
+    super.key,
+    required this.dark,
+    required this.sage,
+    this.onClear,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l = AppLocalizations.of(context)!;
     final mascotEmotion = sage.isBusy ? SageEmotion.thinking : SageEmotion.calm;
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl, vertical: AppSpacing.md),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.xxl,
+        vertical: AppSpacing.md,
+      ),
       decoration: const BoxDecoration(
-        gradient: LinearGradient(colors: PremiumColors.gradientSage, begin: Alignment.topLeft, end: Alignment.bottomRight),
+        gradient: LinearGradient(
+          colors: PremiumColors.gradientSage,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(AppRadius.xl),
           bottomRight: Radius.circular(AppRadius.xl),
@@ -28,11 +40,7 @@ class SageChatHeader extends ConsumerWidget {
       ),
       child: Row(
         children: [
-          SageEmotionWidget(
-            emotion: mascotEmotion,
-            size: 36,
-            animated: true,
-          ),
+          SageEmotionWidget(emotion: mascotEmotion, size: 36, animated: true),
           const SizedBox(width: AppSpacing.md),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,7 +48,10 @@ class SageChatHeader extends ConsumerWidget {
             children: [
               Text(
                 l.chatSageTutorLabel,
-                style: AppTextStyle.titleSmall.copyWith(fontWeight: FontWeight.bold, color: Colors.white),
+                style: AppTextStyle.titleSmall.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
               Text(
                 l.chatGuideSubtitle,
@@ -85,7 +96,10 @@ class SageChatHeader extends ConsumerWidget {
                   );
                 },
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.md),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.md,
+                    vertical: AppSpacing.md,
+                  ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(AppRadius.pill),
                     color: Colors.white.withValues(alpha: 0.15),
@@ -93,9 +107,18 @@ class SageChatHeader extends ConsumerWidget {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(Icons.delete_outline_rounded, size: 14, color: Colors.white),
+                      const Icon(
+                        Icons.delete_outline_rounded,
+                        size: 14,
+                        color: Colors.white,
+                      ),
                       const SizedBox(width: 4),
-                      Text(l.chatClearAction, style: AppTextStyle.caption.copyWith(color: Colors.white)),
+                      Text(
+                        l.chatClearAction,
+                        style: AppTextStyle.caption.copyWith(
+                          color: Colors.white,
+                        ),
+                      ),
                     ],
                   ),
                 ),

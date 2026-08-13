@@ -19,12 +19,15 @@ class _ColorConverter implements JsonConverter<Color, Object> {
       try {
         return Color(int.parse(h, radix: 16));
       } catch (_) {
-        AppLogger().warning('StageColorConverter: failed to parse color from hex');
+        AppLogger().warning(
+          'StageColorConverter: failed to parse color from hex',
+        );
         return PremiumColors.wizardOrange;
       }
     }
     return PremiumColors.wizardOrange;
   }
+
   @override
   Object toJson(Color object) => object.toARGB32();
 }
@@ -55,6 +58,7 @@ class _IconConverter implements JsonConverter<IconData, Object> {
     if (json is int) return _codePointMap[json] ?? Icons.shield_rounded;
     return Icons.shield_rounded;
   }
+
   @override
   Object toJson(IconData object) {
     for (final entry in _iconMap.entries) {
@@ -112,14 +116,16 @@ class Stage with _$Stage {
       final sessionLessons = sessions.expand((s) => s.lessons).toList();
       if (lessons.length != sessionLessons.length) {
         throw StateError(
-            'Stage $id: lessons (${lessons.length}) != '
-            'sessions.expand().lessons (${sessionLessons.length})');
+          'Stage $id: lessons (${lessons.length}) != '
+          'sessions.expand().lessons (${sessionLessons.length})',
+        );
       }
       for (int i = 0; i < lessons.length; i++) {
         if (lessons[i].id != sessionLessons[i].id) {
           throw StateError(
-              'Stage $id: lessons[$i].id (${lessons[i].id}) != '
-              'sessions.expand()[$i].id (${sessionLessons[i].id})');
+            'Stage $id: lessons[$i].id (${lessons[i].id}) != '
+            'sessions.expand()[$i].id (${sessionLessons[i].id})',
+          );
         }
       }
       return true;

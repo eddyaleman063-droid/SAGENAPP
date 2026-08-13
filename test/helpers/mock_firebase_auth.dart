@@ -2,8 +2,11 @@ import 'package:mocktail/mocktail.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class MockFirebaseAuth extends Mock implements FirebaseAuth {}
+
 class MockUserCredential extends Mock implements UserCredential {}
+
 class MockUser extends Mock implements User {}
+
 class MockAuthCredential extends Mock implements AuthCredential {}
 
 class FakeUser implements User {

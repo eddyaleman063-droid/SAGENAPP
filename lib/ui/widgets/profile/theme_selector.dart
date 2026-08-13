@@ -18,9 +18,21 @@ class ThemeSelector extends ConsumerWidget {
       themeProvider.select((t) => t.effectiveMode),
     );
     final options = [
-      ThemeOption(value: ThemeMode.system, label: l.themeSystemLabel, icon: Icons.settings_brightness_rounded),
-      ThemeOption(value: ThemeMode.light, label: l.themeLightLabel, icon: Icons.light_mode_rounded),
-      ThemeOption(value: ThemeMode.dark, label: l.themeDarkLabel, icon: Icons.dark_mode_rounded),
+      ThemeOption(
+        value: ThemeMode.system,
+        label: l.themeSystemLabel,
+        icon: Icons.settings_brightness_rounded,
+      ),
+      ThemeOption(
+        value: ThemeMode.light,
+        label: l.themeLightLabel,
+        icon: Icons.light_mode_rounded,
+      ),
+      ThemeOption(
+        value: ThemeMode.dark,
+        label: l.themeDarkLabel,
+        icon: Icons.dark_mode_rounded,
+      ),
     ];
 
     return Column(
@@ -28,8 +40,10 @@ class ThemeSelector extends ConsumerWidget {
       children: [
         Text(
           l.themeLabel,
-          style: AppTextStyle.subtitle.copyWith(fontWeight: FontWeight.w600,
-            color: context.textSecondary),
+          style: AppTextStyle.subtitle.copyWith(
+            fontWeight: FontWeight.w600,
+            color: context.textSecondary,
+          ),
         ),
         const SizedBox(height: AppSpacing.sm),
         Row(
@@ -48,7 +62,13 @@ class ThemeSelector extends ConsumerWidget {
                     onTap: () {
                       ExperienceService.instance.mediumHaptic();
                       ref.read(themeProvider.notifier).setMode(opt.value);
-                      AnalyticsService.instance.track(AnalyticEvent.settingsChange, properties: {'setting': 'theme', 'value': opt.value.name});
+                      AnalyticsService.instance.track(
+                        AnalyticEvent.settingsChange,
+                        properties: {
+                          'setting': 'theme',
+                          'value': opt.value.name,
+                        },
+                      );
                     },
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 200),
@@ -78,12 +98,14 @@ class ThemeSelector extends ConsumerWidget {
                           const SizedBox(height: AppSpacing.xxs),
                           Text(
                             opt.label,
-                            style: AppTextStyle.label.copyWith(fontWeight: selected
+                            style: AppTextStyle.label.copyWith(
+                              fontWeight: selected
                                   ? FontWeight.w600
                                   : FontWeight.normal,
                               color: selected
                                   ? Colors.white
-                                  : context.iconSecondary),
+                                  : context.iconSecondary,
+                            ),
                           ),
                         ],
                       ),

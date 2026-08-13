@@ -16,9 +16,9 @@ class AuthService implements IAuthService {
     AppLogger? logger,
     AuthClient? client,
     AuthSessionManager? sessionManager,
-  })  : _logger = logger ?? AppLogger(),
-        _client = client ?? FirebaseAuthClient(),
-        _sessionManager = sessionManager ?? AuthSessionManager();
+  }) : _logger = logger ?? AppLogger(),
+       _client = client ?? FirebaseAuthClient(),
+       _sessionManager = sessionManager ?? AuthSessionManager();
 
   final AuthClient _client;
   final AuthSessionManager _sessionManager;
@@ -26,7 +26,8 @@ class AuthService implements IAuthService {
 
   AppUser? _currentUser;
   StreamSubscription<firebase.User?>? _authSub;
-  final StreamController<AppUser?> _authController = StreamController<AppUser?>.broadcast();
+  final StreamController<AppUser?> _authController =
+      StreamController<AppUser?>.broadcast();
   bool _disposed = false;
 
   @override
@@ -152,7 +153,10 @@ class AuthService implements IAuthService {
     required String password,
   }) async {
     try {
-      final user = await _client.signInWithEmail(email: email, password: password);
+      final user = await _client.signInWithEmail(
+        email: email,
+        password: password,
+      );
       _currentUser = user;
       await _sessionManager.saveSession(user);
       return user;

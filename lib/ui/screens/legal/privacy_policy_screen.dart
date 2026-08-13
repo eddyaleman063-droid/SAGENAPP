@@ -11,7 +11,9 @@ class PrivacyPolicyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final textPrimary = isDark ? PremiumColors.textLight : PremiumColors.textDark;
+    final textPrimary = isDark
+        ? PremiumColors.textLight
+        : PremiumColors.textDark;
     final textSecondary = isDark
         ? PremiumColors.textLight.withValues(alpha: 0.7)
         : PremiumColors.textDark.withValues(alpha: 0.7);
@@ -64,7 +66,9 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 const SizedBox(height: AppSpacing.lg),
                 Text(
                   l.privacyPolicyTitle,
-                  style: AppTextStyle.headlineMedium.copyWith(color: textPrimary),
+                  style: AppTextStyle.headlineMedium.copyWith(
+                    color: textPrimary,
+                  ),
                 ),
                 const SizedBox(height: AppSpacing.sm),
                 Text(

@@ -5,11 +5,7 @@ class WizardSummaryRow extends StatelessWidget {
   final String label;
   final String value;
 
-  const WizardSummaryRow({
-    super.key,
-    required this.label,
-    required this.value,
-  });
+  const WizardSummaryRow({super.key, required this.label, required this.value});
 
   @override
   Widget build(BuildContext context) {
@@ -23,15 +19,19 @@ class WizardSummaryRow extends StatelessWidget {
             width: 100,
             child: Text(
               label,
-              style: AppTextStyle.subtitle.copyWith(fontWeight: FontWeight.w600,
-                color: cs.onSurface.withValues(alpha: 0.5)),
+              style: AppTextStyle.subtitle.copyWith(
+                fontWeight: FontWeight.w600,
+                color: cs.onSurface.withValues(alpha: 0.5),
+              ),
             ),
           ),
           Expanded(
             child: Text(
               value,
-              style: AppTextStyle.subtitle.copyWith(color: cs.onSurface.withValues(alpha: 0.9),
-                height: 1.3),
+              style: AppTextStyle.subtitle.copyWith(
+                color: cs.onSurface.withValues(alpha: 0.9),
+                height: 1.3,
+              ),
             ),
           ),
         ],

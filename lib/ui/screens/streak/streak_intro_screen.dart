@@ -17,7 +17,9 @@ class StreakIntroScreen extends StatelessWidget {
     final l = AppLocalizations.of(context)!;
 
     return Scaffold(
-      backgroundColor: dark ? PremiumColors.deepBackground : PremiumColors.lightBg,
+      backgroundColor: dark
+          ? PremiumColors.deepBackground
+          : PremiumColors.lightBg,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(AppSpacing.xxl),
@@ -35,16 +37,25 @@ class StreakIntroScreen extends StatelessWidget {
               ),
               const SizedBox(height: AppSpacing.xxl),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl, vertical: AppSpacing.sm),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.xl,
+                  vertical: AppSpacing.sm,
+                ),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(AppRadius.pill),
                   color: PremiumColors.streakOrange.withValues(alpha: 0.1),
-                  border: Border.all(color: PremiumColors.streakOrange.withValues(alpha: 0.2)),
+                  border: Border.all(
+                    color: PremiumColors.streakOrange.withValues(alpha: 0.2),
+                  ),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(Icons.local_fire_department_rounded, size: 18, color: PremiumColors.streakOrange),
+                    const Icon(
+                      Icons.local_fire_department_rounded,
+                      size: 18,
+                      color: PremiumColors.streakOrange,
+                    ),
                     const SizedBox(width: AppSpacing.sm),
                     Text(
                       l.streakBadge,
@@ -79,17 +90,24 @@ class StreakIntroScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(AppRadius.xl),
                   color: context.surfaceTinted,
-                  border: Border.all(
-                    color: context.subtleBorder,
-                  ),
+                  border: Border.all(color: context.subtleBorder),
                 ),
                 child: Column(
                   children: [
-                    _BenefitRow(icon: Icons.shield_rounded, text: l.streakStrongerShield),
+                    _BenefitRow(
+                      icon: Icons.shield_rounded,
+                      text: l.streakStrongerShield,
+                    ),
                     const SizedBox(height: AppSpacing.md),
-                    _BenefitRow(icon: Icons.auto_awesome_rounded, text: l.streakRewards),
+                    _BenefitRow(
+                      icon: Icons.auto_awesome_rounded,
+                      text: l.streakRewards,
+                    ),
                     const SizedBox(height: AppSpacing.md),
-                    _BenefitRow(icon: Icons.emoji_events_rounded, text: l.streakAchievements),
+                    _BenefitRow(
+                      icon: Icons.emoji_events_rounded,
+                      text: l.streakAchievements,
+                    ),
                   ],
                 ),
               ),
@@ -105,10 +123,17 @@ class StreakIntroScreen extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: PremiumColors.streakOrange,
                       foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(AppRadius.lg),
+                      ),
                       elevation: 4,
                     ),
-                    child: Text(l.streakGotIt, style: AppTextStyle.titleSmall.copyWith(fontWeight: FontWeight.bold)),
+                    child: Text(
+                      l.streakGotIt,
+                      style: AppTextStyle.titleSmall.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -136,9 +161,7 @@ class _BenefitRow extends StatelessWidget {
         Expanded(
           child: Text(
             text,
-            style: AppTextStyle.subtitle.copyWith(
-              color: context.textSecondary,
-            ),
+            style: AppTextStyle.subtitle.copyWith(color: context.textSecondary),
           ),
         ),
       ],

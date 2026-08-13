@@ -1,4 +1,4 @@
-﻿import 'dart:math' as math;
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,11 +15,7 @@ class StartingPointScreen extends ConsumerStatefulWidget {
   final VoidCallback? onContinue;
   final VoidCallback? onBack;
 
-  const StartingPointScreen({
-    super.key,
-    this.onContinue,
-    this.onBack,
-  });
+  const StartingPointScreen({super.key, this.onContinue, this.onBack});
 
   @override
   ConsumerState<StartingPointScreen> createState() =>
@@ -47,8 +43,9 @@ class _StartingPointScreenState extends ConsumerState<StartingPointScreen> {
     setState(() => _isPressed = false);
     HapticFeedback.lightImpact();
     if (_selectedCard != null) {
-      ref.read(diagnosticPathProvider.notifier).state =
-          _selectedCard == 0 ? DiagnosticPath.beginner : DiagnosticPath.experienced;
+      ref.read(diagnosticPathProvider.notifier).state = _selectedCard == 0
+          ? DiagnosticPath.beginner
+          : DiagnosticPath.experienced;
     }
     widget.onContinue?.call();
   }
@@ -63,13 +60,18 @@ class _StartingPointScreenState extends ConsumerState<StartingPointScreen> {
   Widget build(BuildContext context) {
     final dark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: dark ? PremiumColors.deepBackground : PremiumColors.lightBg,
+      backgroundColor: dark
+          ? PremiumColors.deepBackground
+          : PremiumColors.lightBg,
       body: SafeArea(
         child: Column(
           children: [
             // ── Header ──
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxs, vertical: AppSpacing.sm),
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.xxs,
+                vertical: AppSpacing.sm,
+              ),
               child: Row(
                 children: [
                   Semantics(
@@ -117,8 +119,7 @@ class _StartingPointScreenState extends ConsumerState<StartingPointScreen> {
             // ── Mascot row ──
             RepaintBoundary(
               child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.xxl),
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -129,7 +130,8 @@ class _StartingPointScreenState extends ConsumerState<StartingPointScreen> {
                         height: 80,
                         cacheWidth: 160,
                         cacheHeight: 160,
-                        errorBuilder: (_, _, _) => const Icon(Icons.pets, size: 48),
+                        errorBuilder: (_, _, _) =>
+                            const Icon(Icons.pets, size: 48),
                       ),
                     ),
                     const SizedBox(width: AppSpacing.sm),
@@ -139,13 +141,15 @@ class _StartingPointScreenState extends ConsumerState<StartingPointScreen> {
                         children: [
                           Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: AppSpacing.xl, vertical: AppSpacing.lg),
+                              horizontal: AppSpacing.xl,
+                              vertical: AppSpacing.lg,
+                            ),
                             decoration: BoxDecoration(
-                              color: dark ? PremiumColors.onboardingBubbleDark : Colors.white,
+                              color: dark
+                                  ? PremiumColors.onboardingBubbleDark
+                                  : Colors.white,
                               borderRadius: BorderRadius.circular(AppRadius.xl),
-                              border: Border.all(
-                                color: context.borderSubtle,
-                              ),
+                              border: Border.all(color: context.borderSubtle),
                             ),
                             child: Text(
                               AppLocalizations.of(context)!.onbStartingPerfecto,
@@ -165,7 +169,9 @@ class _StartingPointScreenState extends ConsumerState<StartingPointScreen> {
                                   width: 12,
                                   height: 12,
                                   decoration: BoxDecoration(
-                                    color: dark ? PremiumColors.onboardingBubbleDark : Colors.white,
+                                    color: dark
+                                        ? PremiumColors.onboardingBubbleDark
+                                        : Colors.white,
                                     border: Border.all(
                                       color: context.borderSubtle,
                                     ),
@@ -187,8 +193,7 @@ class _StartingPointScreenState extends ConsumerState<StartingPointScreen> {
             // ── Cards ──
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.xxl),
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
                 child: Column(
                   children: [
                     Expanded(
@@ -197,7 +202,9 @@ class _StartingPointScreenState extends ConsumerState<StartingPointScreen> {
                         icon: Icons.menu_book,
                         iconColor: PremiumColors.onboardingAccentOrange,
                         title: AppLocalizations.of(context)!.onbStartingTitle,
-                        subtitle: AppLocalizations.of(context)!.onbStartingSubtitle,
+                        subtitle: AppLocalizations.of(
+                          context,
+                        )!.onbStartingSubtitle,
                         showBadge: _badgeOnCard1,
                         dark: dark,
                       ),
@@ -208,8 +215,12 @@ class _StartingPointScreenState extends ConsumerState<StartingPointScreen> {
                         index: 1,
                         icon: Icons.radar,
                         iconColor: PremiumColors.onboardingAccentCyan,
-                        title: AppLocalizations.of(context)!.onbStartingExperienced,
-                        subtitle: AppLocalizations.of(context)!.onbStartingExperiencedSub,
+                        title: AppLocalizations.of(
+                          context,
+                        )!.onbStartingExperienced,
+                        subtitle: AppLocalizations.of(
+                          context,
+                        )!.onbStartingExperiencedSub,
                         showBadge: _badgeOnCard2,
                         dark: dark,
                       ),
@@ -222,7 +233,11 @@ class _StartingPointScreenState extends ConsumerState<StartingPointScreen> {
             // ── Bottom button ──
             Padding(
               padding: const EdgeInsets.fromLTRB(
-                  AppSpacing.xxl, 0, AppSpacing.xxl, AppSpacing.xxl),
+                AppSpacing.xxl,
+                0,
+                AppSpacing.xxl,
+                AppSpacing.xxl,
+              ),
               child: Semantics(
                 button: true,
                 label: AppLocalizations.of(context)!.continueText,
@@ -240,7 +255,9 @@ class _StartingPointScreenState extends ConsumerState<StartingPointScreen> {
                     decoration: BoxDecoration(
                       color: _canContinue
                           ? PremiumColors.primaryAccent
-                          : dark ? PremiumColors.darkCard : context.surfaceCard,
+                          : dark
+                          ? PremiumColors.darkCard
+                          : context.surfaceCard,
                       borderRadius: BorderRadius.circular(AppRadius.xl),
                       boxShadow: _isPressed || !_canContinue
                           ? []
@@ -296,87 +313,91 @@ class _StartingPointScreenState extends ConsumerState<StartingPointScreen> {
           ExperienceService.instance.lightHaptic();
         },
         child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: isSelected
-              ? PremiumColors.primaryAccent.withValues(alpha: 0.08)
-              : context.subtle,
-          borderRadius: BorderRadius.circular(AppRadius.xxl),
-          border: Border.all(
+          duration: const Duration(milliseconds: 200),
+          width: double.infinity,
+          decoration: BoxDecoration(
             color: isSelected
-                ? PremiumColors.primaryAccent
-                : context.borderSubtle,
-            width: isSelected ? 2.5 : 1,
-          ),
-        ),
-        child: Stack(
-          clipBehavior: Clip.none,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: AppSpacing.xxl, vertical: AppSpacing.lg),
-              child: Row(
-                children: [
-                  Container(
-                    width: 64,
-                    height: 64,
-                    decoration: BoxDecoration(
-                      color: iconColor.withValues(alpha: 0.15),
-                      borderRadius: BorderRadius.circular(AppRadius.xl),
-                    ),
-                    child: Icon(icon, color: iconColor, size: 36),
-                  ),
-                  const SizedBox(width: AppSpacing.xl),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          title,
-                          style: AppTextStyle.titleSmall.copyWith(
-                            color: context.textPrimary,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        const SizedBox(height: AppSpacing.xs),
-                        Text(
-                          subtitle,
-                          style: AppTextStyle.bodyMd.copyWith(
-                            color: context.textSecondary,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+                ? PremiumColors.primaryAccent.withValues(alpha: 0.08)
+                : context.subtle,
+            borderRadius: BorderRadius.circular(AppRadius.xxl),
+            border: Border.all(
+              color: isSelected
+                  ? PremiumColors.primaryAccent
+                  : context.borderSubtle,
+              width: isSelected ? 2.5 : 1,
             ),
-            if (showBadge)
-              Positioned(
-                top: -10,
-                right: 16,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 10, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: PremiumColors.primaryAccent,
-                    borderRadius: BorderRadius.circular(AppRadius.sm),
-                  ),
-                  child: Text(
-                    l.recommended,
+          ),
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.xxl,
+                  vertical: AppSpacing.lg,
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 64,
+                      height: 64,
+                      decoration: BoxDecoration(
+                        color: iconColor.withValues(alpha: 0.15),
+                        borderRadius: BorderRadius.circular(AppRadius.xl),
+                      ),
+                      child: Icon(icon, color: iconColor, size: 36),
+                    ),
+                    const SizedBox(width: AppSpacing.xl),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            title,
+                            style: AppTextStyle.titleSmall.copyWith(
+                              color: context.textPrimary,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          const SizedBox(height: AppSpacing.xs),
+                          Text(
+                            subtitle,
+                            style: AppTextStyle.bodyMd.copyWith(
+                              color: context.textSecondary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              if (showBadge)
+                Positioned(
+                  top: -10,
+                  right: 16,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: PremiumColors.primaryAccent,
+                      borderRadius: BorderRadius.circular(AppRadius.sm),
+                    ),
+                    child: Text(
+                      l.recommended,
                       style: AppTextStyle.label.copyWith(
                         color: context.textPrimary,
                         fontWeight: FontWeight.w800,
                         letterSpacing: 0.5,
+                      ),
                     ),
                   ),
                 ),
-              ),
-          ],
+            ],
+          ),
         ),
-      ),
       ),
     );
   }

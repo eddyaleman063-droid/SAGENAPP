@@ -7,19 +7,28 @@ void main() {
       final stopwatch = Stopwatch()..start();
 
       await tester.pumpWidget(
-        const MaterialApp(home: Scaffold(body: Center(child: Text('test')))),
+        const MaterialApp(
+          home: Scaffold(body: Center(child: Text('test'))),
+        ),
       );
       await tester.pumpAndSettle();
 
       stopwatch.stop();
 
-      expect(stopwatch.elapsedMilliseconds, lessThan(5000),
-          reason: 'Cold startup should complete within 5 seconds');
+      expect(
+        stopwatch.elapsedMilliseconds,
+        lessThan(5000),
+        reason: 'Cold startup should complete within 5 seconds',
+      );
     });
 
-    testWidgets('Widget rebuild does not exceed 16ms frame budget', (tester) async {
+    testWidgets('Widget rebuild does not exceed 16ms frame budget', (
+      tester,
+    ) async {
       await tester.pumpWidget(
-        const MaterialApp(home: Scaffold(body: Center(child: Text('test')))),
+        const MaterialApp(
+          home: Scaffold(body: Center(child: Text('test'))),
+        ),
       );
       await tester.pumpAndSettle();
 
@@ -27,27 +36,39 @@ void main() {
       await tester.pump();
       stopwatch.stop();
 
-      expect(stopwatch.elapsedMilliseconds, lessThan(100),
-          reason: 'Frame rebuild should complete within budget');
+      expect(
+        stopwatch.elapsedMilliseconds,
+        lessThan(100),
+        reason: 'Frame rebuild should complete within budget',
+      );
     });
   });
 
   group('Performance — Memory Benchmarks', () {
-    testWidgets('Repeated navigation does not cause memory leaks', (tester) async {
+    testWidgets('Repeated navigation does not cause memory leaks', (
+      tester,
+    ) async {
       await tester.pumpWidget(
-        const MaterialApp(home: Scaffold(body: Center(child: Text('test')))),
+        const MaterialApp(
+          home: Scaffold(body: Center(child: Text('test'))),
+        ),
       );
       await tester.pumpAndSettle();
 
       for (int i = 0; i < 5; i++) {
         await tester.pumpWidget(
-          MaterialApp(home: Scaffold(body: Center(child: Text('page $i')))),
+          MaterialApp(
+            home: Scaffold(body: Center(child: Text('page $i'))),
+          ),
         );
         await tester.pump();
       }
 
-      expect(find.byType(Scaffold).evaluate().isNotEmpty, true,
-          reason: 'App should remain stable after repeated rebuilds');
+      expect(
+        find.byType(Scaffold).evaluate().isNotEmpty,
+        true,
+        reason: 'App should remain stable after repeated rebuilds',
+      );
     });
   });
 }

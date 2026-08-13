@@ -10,11 +10,13 @@ void main() {
       final futures = <Future>[];
 
       for (var i = 0; i < 1000; i++) {
-        futures.add(Future(() {
-          logger.info('Message $i');
-          logger.warning('Warning $i');
-          logger.error('Error $i');
-        }));
+        futures.add(
+          Future(() {
+            logger.info('Message $i');
+            logger.warning('Warning $i');
+            logger.error('Error $i');
+          }),
+        );
       }
 
       await Future.wait(futures);

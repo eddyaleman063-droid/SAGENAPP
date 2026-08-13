@@ -7,7 +7,11 @@ import 'package:sagen/l10n/app_localizations.dart';
 class LevelUpCelebration extends StatefulWidget {
   final int newLevel;
   final VoidCallback onComplete;
-  const LevelUpCelebration({super.key, required this.newLevel, required this.onComplete});
+  const LevelUpCelebration({
+    super.key,
+    required this.newLevel,
+    required this.onComplete,
+  });
 
   @override
   State<LevelUpCelebration> createState() => _LevelUpCelebrationState();
@@ -25,10 +29,22 @@ class _LevelUpCelebrationState extends State<LevelUpCelebration>
     super.initState();
     HapticFeedback.heavyImpact();
 
-    _mainCtrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 600));
-    _ringCtrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 1200));
-    _textCtrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 500));
-    _particleCtrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 2000));
+    _mainCtrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 600),
+    );
+    _ringCtrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1200),
+    );
+    _textCtrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
+    _particleCtrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 2000),
+    );
 
     _mainCtrl.forward();
     _ringCtrl.forward();
@@ -60,97 +76,116 @@ class _LevelUpCelebrationState extends State<LevelUpCelebration>
       child: Material(
         color: Colors.black.withValues(alpha: 0.7),
         child: RepaintBoundary(
-        child: AnimatedBuilder(
-          animation: _mainCtrl,
-          builder: (context, _) => Stack(
-          children: [
-            ...List.generate(24, (i) => _buildParticle(i)),
-            Center(
-              child: ScaleTransition(
-                scale: CurvedAnimation(parent: _mainCtrl, curve: Curves.elasticOut),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Stack(
-                      alignment: Alignment.center,
+          child: AnimatedBuilder(
+            animation: _mainCtrl,
+            builder: (context, _) => Stack(
+              children: [
+                ...List.generate(24, (i) => _buildParticle(i)),
+                Center(
+                  child: ScaleTransition(
+                    scale: CurvedAnimation(
+                      parent: _mainCtrl,
+                      curve: Curves.elasticOut,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        AnimatedBuilder(
-                          animation: _ringCtrl,
-                          builder: (context, _) {
-                            final ringOpacity = max(0.0, 1.0 - _ringCtrl.value);
-                            final ringScale = 1.0 + _ringCtrl.value * 0.6;
-                            return Transform.scale(
-                              scale: ringScale,
-                              child: Container(
-                                width: 140,
-                                height: 140,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: PremiumColors.achievementEnd.withValues(alpha: ringOpacity * 0.6),
-                                    width: 3,
+                        Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            AnimatedBuilder(
+                              animation: _ringCtrl,
+                              builder: (context, _) {
+                                final ringOpacity = max(
+                                  0.0,
+                                  1.0 - _ringCtrl.value,
+                                );
+                                final ringScale = 1.0 + _ringCtrl.value * 0.6;
+                                return Transform.scale(
+                                  scale: ringScale,
+                                  child: Container(
+                                    width: 140,
+                                    height: 140,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                        color: PremiumColors.achievementEnd
+                                            .withValues(
+                                              alpha: ringOpacity * 0.6,
+                                            ),
+                                        width: 3,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                            Container(
+                              width: 120,
+                              height: 120,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                gradient: RadialGradient(
+                                  colors: [
+                                    PremiumColors.achievementEnd.withValues(
+                                      alpha: 0.3,
+                                    ),
+                                    PremiumColors.achievementEnd.withValues(
+                                      alpha: 0.0,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  '${widget.newLevel}',
+                                  style: AppTextStyle.hero.copyWith(
+                                    color: PremiumColors.achievementEnd,
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 48,
                                   ),
                                 ),
                               ),
-                            );
-                          },
+                            ),
+                          ],
                         ),
-                        Container(
-                          width: 120,
-                          height: 120,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            gradient: RadialGradient(
-                              colors: [
-                                PremiumColors.achievementEnd.withValues(alpha: 0.3),
-                                PremiumColors.achievementEnd.withValues(alpha: 0.0),
-                              ],
+                        const SizedBox(height: AppSpacing.xl),
+                        FadeTransition(
+                          opacity: CurvedAnimation(
+                            parent: _textCtrl,
+                            curve: Curves.easeIn,
+                          ),
+                          child: Text(
+                            l.profileLevelValue(widget.newLevel),
+                            style: AppTextStyle.headlineLarge.copyWith(
+                              color: PremiumColors.achievementEnd,
+                              fontWeight: FontWeight.w700,
                             ),
                           ),
-                          child: Center(
-                            child: Text(
-                              '${widget.newLevel}',
-                              style: AppTextStyle.hero.copyWith(
-                                color: PremiumColors.achievementEnd,
-                                fontWeight: FontWeight.w900,
-                                fontSize: 48,
-                              ),
+                        ),
+                        const SizedBox(height: AppSpacing.sm),
+                        FadeTransition(
+                          opacity: CurvedAnimation(
+                            parent: _textCtrl,
+                            curve: Curves.easeIn,
+                          ),
+                          child: Text(
+                            l.xpLevelUp,
+                            style: AppTextStyle.bodyMd.copyWith(
+                              color: Colors.white.withValues(alpha: 0.6),
                             ),
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: AppSpacing.xl),
-                    FadeTransition(
-                      opacity: CurvedAnimation(parent: _textCtrl, curve: Curves.easeIn),
-                      child: Text(
-                        l.profileLevelValue(widget.newLevel),
-                        style: AppTextStyle.headlineLarge.copyWith(
-                          color: PremiumColors.achievementEnd,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: AppSpacing.sm),
-                    FadeTransition(
-                      opacity: CurvedAnimation(parent: _textCtrl, curve: Curves.easeIn),
-                      child: Text(
-                        l.xpLevelUp,
-                        style: AppTextStyle.bodyMd.copyWith(
-                          color: Colors.white.withValues(alpha: 0.6),
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
           ),
         ),
       ),
-    ),
-  );
+    );
   }
 
   Widget _buildParticle(int index) {
@@ -191,13 +226,17 @@ class _LevelUpCelebrationState extends State<LevelUpCelebration>
 
 /// Shows level-up celebration overlay. Call from any context.
 void showLevelUpCelebration(BuildContext context, int newLevel) {
-  Navigator.of(context).push(PageRouteBuilder(
-    opaque: false,
-    barrierDismissible: false,
-    pageBuilder: (context, animation, secondaryAnimation) => LevelUpCelebration(
-      newLevel: newLevel,
-      onComplete: () => Navigator.of(context).pop(),
+  Navigator.of(context).push(
+    PageRouteBuilder(
+      opaque: false,
+      barrierDismissible: false,
+      pageBuilder: (context, animation, secondaryAnimation) =>
+          LevelUpCelebration(
+            newLevel: newLevel,
+            onComplete: () => Navigator.of(context).pop(),
+          ),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+          child,
     ),
-    transitionsBuilder: (context, animation, secondaryAnimation, child) => child,
-  ));
+  );
 }

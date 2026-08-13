@@ -20,9 +20,7 @@ class SagenMultiOptionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final accentColor = Theme.of(context).colorScheme.primary;
-    final borderColor = isSelected
-        ? accentColor
-        : context.subtle;
+    final borderColor = isSelected ? accentColor : context.subtle;
     final bgColor = isSelected
         ? accentColor.withValues(alpha: 0.10)
         : Colors.transparent;
@@ -57,23 +55,22 @@ class SagenMultiOptionCard extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  SizedBox(
-                    width: 24,
-                    height: 24,
-                    child: leading,
-                  ),
+                  SizedBox(width: 24, height: 24, child: leading),
                   const SizedBox(width: AppSpacing.md),
                   Expanded(
                     child: Text(
                       title,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: titleColor,
-                            fontWeight: FontWeight.w600,
-                          ),
+                        color: titleColor,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                   const SizedBox(width: AppSpacing.md),
-                  _CustomCheckbox(isSelected: isSelected, accentColor: accentColor),
+                  _CustomCheckbox(
+                    isSelected: isSelected,
+                    accentColor: accentColor,
+                  ),
                 ],
               ),
             ),
@@ -88,10 +85,7 @@ class _CustomCheckbox extends StatelessWidget {
   final bool isSelected;
   final Color accentColor;
 
-  const _CustomCheckbox({
-    required this.isSelected,
-    required this.accentColor,
-  });
+  const _CustomCheckbox({required this.isSelected, required this.accentColor});
 
   @override
   Widget build(BuildContext context) {

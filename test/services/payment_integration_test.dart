@@ -118,9 +118,21 @@ void main() {
 
     test('handles concurrent payment attempts', () async {
       final futures = [
-        paymentService.createPreference(amount: 10, currency: 'PEN', description: 'A'),
-        paymentService.createPreference(amount: 20, currency: 'PEN', description: 'B'),
-        paymentService.createPreference(amount: 30, currency: 'PEN', description: 'C'),
+        paymentService.createPreference(
+          amount: 10,
+          currency: 'PEN',
+          description: 'A',
+        ),
+        paymentService.createPreference(
+          amount: 20,
+          currency: 'PEN',
+          description: 'B',
+        ),
+        paymentService.createPreference(
+          amount: 30,
+          currency: 'PEN',
+          description: 'C',
+        ),
       ];
 
       final results = await Future.wait(futures);

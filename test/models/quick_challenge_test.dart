@@ -13,30 +13,56 @@ void main() {
     });
 
     test('localizedLabel maps every type in Spanish', () {
-      expect(QuickChallengeType.trueFalse.localizedLabel(es), es.quickChallengeTrueFalse);
-      expect(QuickChallengeType.detectRisk.localizedLabel(es), es.quickChallengeDetectRisk);
-      expect(QuickChallengeType.safePassword.localizedLabel(es), es.quickChallengeSafePassword);
       expect(
-          QuickChallengeType.whatWouldYouDo.localizedLabel(es),
-          es.quickChallengeWhatWouldYouDo);
-      expect(QuickChallengeType.detectPhishing.localizedLabel(es),
-          es.quickChallengeDetectPhishing);
+        QuickChallengeType.trueFalse.localizedLabel(es),
+        es.quickChallengeTrueFalse,
+      );
+      expect(
+        QuickChallengeType.detectRisk.localizedLabel(es),
+        es.quickChallengeDetectRisk,
+      );
+      expect(
+        QuickChallengeType.safePassword.localizedLabel(es),
+        es.quickChallengeSafePassword,
+      );
+      expect(
+        QuickChallengeType.whatWouldYouDo.localizedLabel(es),
+        es.quickChallengeWhatWouldYouDo,
+      );
+      expect(
+        QuickChallengeType.detectPhishing.localizedLabel(es),
+        es.quickChallengeDetectPhishing,
+      );
     });
 
     test('localizedLabel maps every type in English', () {
-      expect(QuickChallengeType.trueFalse.localizedLabel(en), en.quickChallengeTrueFalse);
-      expect(QuickChallengeType.detectRisk.localizedLabel(en), en.quickChallengeDetectRisk);
-      expect(QuickChallengeType.safePassword.localizedLabel(en), en.quickChallengeSafePassword);
       expect(
-          QuickChallengeType.whatWouldYouDo.localizedLabel(en),
-          en.quickChallengeWhatWouldYouDo);
-      expect(QuickChallengeType.detectPhishing.localizedLabel(en),
-          en.quickChallengeDetectPhishing);
+        QuickChallengeType.trueFalse.localizedLabel(en),
+        en.quickChallengeTrueFalse,
+      );
+      expect(
+        QuickChallengeType.detectRisk.localizedLabel(en),
+        en.quickChallengeDetectRisk,
+      );
+      expect(
+        QuickChallengeType.safePassword.localizedLabel(en),
+        en.quickChallengeSafePassword,
+      );
+      expect(
+        QuickChallengeType.whatWouldYouDo.localizedLabel(en),
+        en.quickChallengeWhatWouldYouDo,
+      );
+      expect(
+        QuickChallengeType.detectPhishing.localizedLabel(en),
+        en.quickChallengeDetectPhishing,
+      );
     });
 
     test('labels differ between locales', () {
-      expect(QuickChallengeType.trueFalse.localizedLabel(es),
-          isNot(QuickChallengeType.trueFalse.localizedLabel(en)));
+      expect(
+        QuickChallengeType.trueFalse.localizedLabel(es),
+        isNot(QuickChallengeType.trueFalse.localizedLabel(en)),
+      );
     });
   });
 

@@ -37,8 +37,12 @@ class AuthSocialButtons extends StatelessWidget {
                   onPressed: isLoading ? null : onGooglePressed,
                   icon: Image.asset(
                     'assets/ui/google_logo.png',
-                    width: 20, height: 20, cacheWidth: 40, cacheHeight: 40,
-                    errorBuilder: (_, _, _) => const Icon(Icons.g_mobiledata, size: 20),
+                    width: 20,
+                    height: 20,
+                    cacheWidth: 40,
+                    cacheHeight: 40,
+                    errorBuilder: (_, _, _) =>
+                        const Icon(Icons.g_mobiledata, size: 20),
                   ),
                   label: Text(
                     l.authGoogleButton,
@@ -49,9 +53,7 @@ class AuthSocialButtons extends StatelessWidget {
                   ),
                   style: OutlinedButton.styleFrom(
                     backgroundColor: context.subtleBorder,
-                    side: BorderSide(
-                      color: context.borderSubtle,
-                    ),
+                    side: BorderSide(color: context.borderSubtle),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(AppRadius.sm),
                     ),
@@ -83,9 +85,7 @@ class AuthSocialButtons extends StatelessWidget {
                   ),
                   style: OutlinedButton.styleFrom(
                     backgroundColor: context.subtleBorder,
-                    side: BorderSide(
-                      color: context.borderSubtle,
-                    ),
+                    side: BorderSide(color: context.borderSubtle),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(AppRadius.sm),
                     ),

@@ -27,9 +27,9 @@ void main() {
     setUp(() async {
       SharedPreferences.setMockInitialValues({});
       final prefs = await SharedPreferences.getInstance();
-      container = ProviderContainer(overrides: [
-        prefsProvider.overrideWithValue(prefs),
-      ]);
+      container = ProviderContainer(
+        overrides: [prefsProvider.overrideWithValue(prefs)],
+      );
     });
 
     tearDown(() => container.dispose());
@@ -142,9 +142,9 @@ void main() {
         'review_total': 5,
       });
       final prefs = await SharedPreferences.getInstance();
-      final newContainer = ProviderContainer(overrides: [
-        prefsProvider.overrideWithValue(prefs),
-      ]);
+      final newContainer = ProviderContainer(
+        overrides: [prefsProvider.overrideWithValue(prefs)],
+      );
       final notifier = newContainer.read(reviewProvider.notifier);
       expect(notifier.failureCountFor('q1'), 2);
       expect(notifier.failureCountFor('q2'), 1);

@@ -27,17 +27,20 @@ void main() {
         GoRoute(
           path: '/',
           name: 'splash',
-          builder: (context, state) => const Scaffold(body: Center(child: Text('home'))),
+          builder: (context, state) =>
+              const Scaffold(body: Center(child: Text('home'))),
         ),
         GoRoute(
           path: '/welcome',
           name: 'welcome',
-          builder: (context, state) => const Scaffold(body: Center(child: Text('welcome'))),
+          builder: (context, state) =>
+              const Scaffold(body: Center(child: Text('welcome'))),
         ),
         GoRoute(
           path: '/main',
           name: 'main',
-          builder: (context, state) => const Scaffold(body: Center(child: Text('main'))),
+          builder: (context, state) =>
+              const Scaffold(body: Center(child: Text('main'))),
         ),
       ],
     );
@@ -103,7 +106,10 @@ void main() {
       await tester.tap(find.text('Cerrar sesión').first);
       await tester.pumpAndSettle();
 
-      expect(find.text('¿Estás seguro de que quieres cerrar sesión?'), findsOneWidget);
+      expect(
+        find.text('¿Estás seguro de que quieres cerrar sesión?'),
+        findsOneWidget,
+      );
       expect(find.text('Cancelar'), findsOneWidget);
       await tester.pumpAndSettle();
     });
@@ -118,7 +124,10 @@ void main() {
       await tester.tap(find.text('Cancelar'));
       await tester.pumpAndSettle();
 
-      expect(find.text('¿Estás seguro de que quieres cerrar sesión?'), findsNothing);
+      expect(
+        find.text('¿Estás seguro de que quieres cerrar sesión?'),
+        findsNothing,
+      );
       await tester.pumpAndSettle();
     });
   });

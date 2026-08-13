@@ -26,14 +26,13 @@ class ThemeState {
     int? scheduleStartHour,
     int? scheduleEndHour,
     String? themeVariant,
-  }) =>
-      ThemeState(
-        mode: mode ?? this.mode,
-        scheduleEnabled: scheduleEnabled ?? this.scheduleEnabled,
-        scheduleStartHour: scheduleStartHour ?? this.scheduleStartHour,
-        scheduleEndHour: scheduleEndHour ?? this.scheduleEndHour,
-        themeVariant: themeVariant ?? this.themeVariant,
-      );
+  }) => ThemeState(
+    mode: mode ?? this.mode,
+    scheduleEnabled: scheduleEnabled ?? this.scheduleEnabled,
+    scheduleStartHour: scheduleStartHour ?? this.scheduleStartHour,
+    scheduleEndHour: scheduleEndHour ?? this.scheduleEndHour,
+    themeVariant: themeVariant ?? this.themeVariant,
+  );
 
   ThemeData get currentTheme {
     final isDark = effectiveMode == ThemeMode.dark;
@@ -45,7 +44,9 @@ class ThemeState {
             primary: PremiumColors.primary,
             secondary: PremiumColors.primaryAccent,
           ),
-          scaffoldBackgroundColor: isDark ? PremiumColors.ambientDark : PremiumColors.variantBlueLight,
+          scaffoldBackgroundColor: isDark
+              ? PremiumColors.ambientDark
+              : PremiumColors.variantBlueLight,
         );
       case 'purple':
         return base.copyWith(
@@ -53,7 +54,9 @@ class ThemeState {
             primary: PremiumColors.variantPurplePrimary,
             secondary: PremiumColors.variantPurpleSecondary,
           ),
-          scaffoldBackgroundColor: isDark ? PremiumColors.variantPurpleDark : PremiumColors.variantPurpleLight,
+          scaffoldBackgroundColor: isDark
+              ? PremiumColors.variantPurpleDark
+              : PremiumColors.variantPurpleLight,
         );
       default:
         return base;
@@ -109,7 +112,10 @@ class ThemeNotifier extends Notifier<ThemeState> {
   }
 
   void setScheduleEnabled(bool enabled) {
-    state = state.copyWith(scheduleEnabled: enabled, mode: enabled ? ThemeMode.system : state.mode);
+    state = state.copyWith(
+      scheduleEnabled: enabled,
+      mode: enabled ? ThemeMode.system : state.mode,
+    );
     _storage.setBool('theme_schedule_enabled', enabled);
   }
 

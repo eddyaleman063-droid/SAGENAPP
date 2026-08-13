@@ -84,23 +84,27 @@ class _ErrorFallback extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                    const ExcludeSemantics(
-                      child: SageEmotionWidget(emotion: SageEmotion.worried),
-                    ),
-                    Semantics(
-                      label: l?.errorSomethingWrong ?? 'Error',
-                      child: const SizedBox.shrink(),
-                    ),
+                  const ExcludeSemantics(
+                    child: SageEmotionWidget(emotion: SageEmotion.worried),
+                  ),
+                  Semantics(
+                    label: l?.errorSomethingWrong ?? 'Error',
+                    child: const SizedBox.shrink(),
+                  ),
                   const SizedBox(height: AppSpacing.xxl),
-                  Text(title,
-                      style: AppTextStyle.headlineMedium.copyWith(
-                          color: context.textPrimary)),
+                  Text(
+                    title,
+                    style: AppTextStyle.headlineMedium.copyWith(
+                      color: context.textPrimary,
+                    ),
+                  ),
                   const SizedBox(height: AppSpacing.md),
                   Text(
                     desc,
                     textAlign: TextAlign.center,
                     style: AppTextStyle.bodyMd.copyWith(
-                        color: context.textSecondary),
+                      color: context.textSecondary,
+                    ),
                   ),
                   const SizedBox(height: AppSpacing.xxxl),
                   if (onRetry != null)
@@ -115,9 +119,12 @@ class _ErrorFallback extends StatelessWidget {
                           backgroundColor: PremiumColors.primary,
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(AppRadius.lg)),
+                            borderRadius: BorderRadius.circular(AppRadius.lg),
+                          ),
                           padding: const EdgeInsets.symmetric(
-                              horizontal: AppSpacing.xxl, vertical: AppSpacing.md),
+                            horizontal: AppSpacing.xxl,
+                            vertical: AppSpacing.md,
+                          ),
                         ),
                       ),
                     ),
@@ -131,12 +138,14 @@ class _ErrorFallback extends StatelessWidget {
                       label: Text(homeLabel),
                       style: OutlinedButton.styleFrom(
                         foregroundColor: context.textSecondary,
-                        side: BorderSide(
-                            color: context.borderSubtle),
+                        side: BorderSide(color: context.borderSubtle),
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(AppRadius.lg)),
+                          borderRadius: BorderRadius.circular(AppRadius.lg),
+                        ),
                         padding: const EdgeInsets.symmetric(
-                            horizontal: AppSpacing.xxl, vertical: AppSpacing.md),
+                          horizontal: AppSpacing.xxl,
+                          vertical: AppSpacing.md,
+                        ),
                       ),
                     ),
                   ),

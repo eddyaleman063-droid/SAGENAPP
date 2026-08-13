@@ -36,10 +36,12 @@ void main() {
     setUp(() async {
       SharedPreferences.setMockInitialValues({});
       final prefs = await SharedPreferences.getInstance();
-      container = ProviderContainer(overrides: [
-        prefsProvider.overrideWithValue(prefs),
-        learningProvider.overrideWith(() => MockLearningNotifier()),
-      ]);
+      container = ProviderContainer(
+        overrides: [
+          prefsProvider.overrideWithValue(prefs),
+          learningProvider.overrideWith(() => MockLearningNotifier()),
+        ],
+      );
     });
 
     tearDown(() => container.dispose());
@@ -50,11 +52,14 @@ void main() {
       expect(state.totalCount, 0);
     });
 
-    test('unlockAchievement works even without async init completing', () async {
-      final notifier = container.read(achievementProvider.notifier);
-      final result = notifier.unlockAchievement('first_lesson');
-      expect(result, isTrue);
-    });
+    test(
+      'unlockAchievement works even without async init completing',
+      () async {
+        final notifier = container.read(achievementProvider.notifier);
+        final result = notifier.unlockAchievement('first_lesson');
+        expect(result, isTrue);
+      },
+    );
 
     test('totalCount is populated from templates', () async {
       var state = container.read(achievementProvider);
@@ -71,7 +76,10 @@ void main() {
       expect(result, isTrue);
       final state = container.read(achievementProvider);
       expect(state.unlockedCount, 1);
-      expect(state.achievements.any((a) => a.id == 'first_lesson' && a.unlocked), isTrue);
+      expect(
+        state.achievements.any((a) => a.id == 'first_lesson' && a.unlocked),
+        isTrue,
+      );
     });
 
     test('unlockAchievement returns false for unknown id', () async {

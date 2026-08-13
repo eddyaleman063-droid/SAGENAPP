@@ -18,11 +18,14 @@ void main() {
     expect(service.lessonsUntilNextPromo, 1);
   });
 
-  test('shouldShowPromo is false before reaching the lesson threshold', () async {
-    await service.incrementLessonCount();
-    await service.incrementLessonCount();
-    expect(service.shouldShowPromo(), isFalse);
-  });
+  test(
+    'shouldShowPromo is false before reaching the lesson threshold',
+    () async {
+      await service.incrementLessonCount();
+      await service.incrementLessonCount();
+      expect(service.shouldShowPromo(), isFalse);
+    },
+  );
 
   test('shouldShowPromo is true at the lesson threshold', () async {
     for (int i = 0; i < 3; i++) {

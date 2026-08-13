@@ -7,10 +7,7 @@ class ItemState {
   final Map<SpecialItemType, int> quantities;
   final Map<SpecialItemType, DateTime?> activeUntil;
 
-  const ItemState({
-    this.quantities = const {},
-    this.activeUntil = const {},
-  });
+  const ItemState({this.quantities = const {}, this.activeUntil = const {}});
 
   ItemState copyWith({
     Map<SpecialItemType, int>? quantities,
@@ -108,20 +105,28 @@ class ItemNotifier extends Notifier<ItemState> {
 
   bool isTimeWarpActive() => state.isActive(SpecialItemType.timeWarp);
 
-  bool hasPhoenixFeather() => _repo.getQuantity(SpecialItemType.phoenixFeather) > 0;
+  bool hasPhoenixFeather() =>
+      _repo.getQuantity(SpecialItemType.phoenixFeather) > 0;
 
-  bool hasTitaniumShield() => _repo.getQuantity(SpecialItemType.titaniumShield) > 0;
+  bool hasTitaniumShield() =>
+      _repo.getQuantity(SpecialItemType.titaniumShield) > 0;
 
   bool usePhoenixFeather() {
     if (!hasPhoenixFeather()) return false;
-    _repo.setQuantity(SpecialItemType.phoenixFeather, _repo.getQuantity(SpecialItemType.phoenixFeather) - 1);
+    _repo.setQuantity(
+      SpecialItemType.phoenixFeather,
+      _repo.getQuantity(SpecialItemType.phoenixFeather) - 1,
+    );
     _save();
     return true;
   }
 
   bool useTitaniumShield() {
     if (!hasTitaniumShield()) return false;
-    _repo.setQuantity(SpecialItemType.titaniumShield, _repo.getQuantity(SpecialItemType.titaniumShield) - 1);
+    _repo.setQuantity(
+      SpecialItemType.titaniumShield,
+      _repo.getQuantity(SpecialItemType.titaniumShield) - 1,
+    );
     _save();
     return true;
   }

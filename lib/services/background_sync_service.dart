@@ -55,7 +55,9 @@ Future<bool> _performSync() async {
 
     try {
       final batch = FirebaseFirestore.instance.batch();
-      final userDoc = FirebaseFirestore.instance.collection('users').doc(user.uid);
+      final userDoc = FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid);
 
       for (final key in dirtyKeys) {
         final value = prefs.get('sync_$key');
@@ -98,9 +100,7 @@ class BackgroundSyncService {
         'sagen-periodic-sync',
         _taskName,
         frequency: const Duration(minutes: 15),
-        constraints: Constraints(
-          networkType: NetworkType.connected,
-        ),
+        constraints: Constraints(networkType: NetworkType.connected),
       );
     } catch (e) {
       AppLogger().error('BackgroundSync: registerPeriodicSync failed', e);

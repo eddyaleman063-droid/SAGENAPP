@@ -16,7 +16,11 @@ void main() {
       final stages = await loadStagesFromAssets();
       for (final stage in stages) {
         expect(stage.id, isNotEmpty, reason: 'stage id must not be empty');
-        expect(stage.title, isNotEmpty, reason: 'stage title must not be empty');
+        expect(
+          stage.title,
+          isNotEmpty,
+          reason: 'stage title must not be empty',
+        );
       }
     });
 

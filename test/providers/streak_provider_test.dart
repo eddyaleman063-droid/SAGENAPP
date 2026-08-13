@@ -22,19 +22,25 @@ void main() {
     final mockEconomic = MockEconomicFunctionsService();
     final mockChest = MockStreakChestService();
 
-    when(() => mockEconomic.incrementStreak()).thenAnswer((_) async => <String, dynamic>{});
-    when(() => mockChest.checkAndReward(
-          oldStreak: any(named: 'oldStreak'),
-          newStreak: any(named: 'newStreak'),
-          learning: any(named: 'learning'),
-        )).thenAnswer((_) async {});
+    when(
+      () => mockEconomic.incrementStreak(),
+    ).thenAnswer((_) async => <String, dynamic>{});
+    when(
+      () => mockChest.checkAndReward(
+        oldStreak: any(named: 'oldStreak'),
+        newStreak: any(named: 'newStreak'),
+        learning: any(named: 'learning'),
+      ),
+    ).thenAnswer((_) async {});
 
-    return ProviderContainer(overrides: [
-      prefsProvider.overrideWithValue(prefs),
-      learningProvider.overrideWith(MockLearningNotifier.new),
-      economicFunctionsServiceProvider.overrideWithValue(mockEconomic),
-      streakChestServiceProvider.overrideWithValue(mockChest),
-    ]);
+    return ProviderContainer(
+      overrides: [
+        prefsProvider.overrideWithValue(prefs),
+        learningProvider.overrideWith(MockLearningNotifier.new),
+        economicFunctionsServiceProvider.overrideWithValue(mockEconomic),
+        streakChestServiceProvider.overrideWithValue(mockChest),
+      ],
+    );
   }
 
   group('StreakNotifier', () {

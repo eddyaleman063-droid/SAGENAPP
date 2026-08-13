@@ -7,11 +7,7 @@ class GemState {
   final int totalEarned;
   final int totalSpent;
 
-  const GemState({
-    this.balance = 0,
-    this.totalEarned = 0,
-    this.totalSpent = 0,
-  });
+  const GemState({this.balance = 0, this.totalEarned = 0, this.totalSpent = 0});
 
   GemState copyWith({int? balance, int? totalEarned, int? totalSpent}) {
     return GemState(
@@ -72,7 +68,6 @@ class GemNotifier extends Notifier<GemState> {
     addGems(gems, reason: 'chest');
     return gems;
   }
-
 
   /// Award gems from daily login bonus.
   /// Escalates with streak: day 1-2=5, day 3-6=8, day 7-13=12, day 14-29=18, day 30+=30

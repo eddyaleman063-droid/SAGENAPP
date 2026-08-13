@@ -39,7 +39,8 @@ class ProtectionState {
       score: score ?? this.score,
       totalQueries: totalQueries ?? this.totalQueries,
       totalAnalyses: totalAnalyses ?? this.totalAnalyses,
-      totalMissionsCompleted: totalMissionsCompleted ?? this.totalMissionsCompleted,
+      totalMissionsCompleted:
+          totalMissionsCompleted ?? this.totalMissionsCompleted,
       totalCheckIns: totalCheckIns ?? this.totalCheckIns,
       learnedTopics: learnedTopics ?? this.learnedTopics,
       habits: habits ?? this.habits,
@@ -137,7 +138,8 @@ class ProtectionNotifier extends Notifier<ProtectionState> {
     if (newScore < 0) newScore = 0;
     final newLevel1 = protectionLevelForScore(newScore);
     if (newLevel1 > oldLevel1) {
-      lastInsight = 'Reached level $newLevel1 — ${protectionNameForLevel(newLevel1)}';
+      lastInsight =
+          'Reached level $newLevel1 — ${protectionNameForLevel(newLevel1)}';
     }
 
     if (topic != null && topic.isNotEmpty && !newTopics.contains(topic)) {
@@ -147,7 +149,8 @@ class ProtectionNotifier extends Notifier<ProtectionState> {
       if (newScore < 0) newScore = 0;
       final newLevel2 = protectionLevelForScore(newScore);
       if (newLevel2 > oldLevel2) {
-        lastInsight = 'Reached level $newLevel2 — ${protectionNameForLevel(newLevel2)}';
+        lastInsight =
+            'Reached level $newLevel2 — ${protectionNameForLevel(newLevel2)}';
       }
     }
 
@@ -203,20 +206,30 @@ class ProtectionNotifier extends Notifier<ProtectionState> {
     final s = state;
     final insights = <String>[];
     if (s.totalQueries > 20) {
-      insights.add('You have ${s.totalQueries} queries. Your learning is consistent.');
+      insights.add(
+        'You have ${s.totalQueries} queries. Your learning is consistent.',
+      );
     }
     if (s.totalAnalyses > 10) {
-      insights.add('You analyzed ${s.totalAnalyses} links. Your detection skills are growing.');
+      insights.add(
+        'You analyzed ${s.totalAnalyses} links. Your detection skills are growing.',
+      );
     }
     if (s.totalMissionsCompleted > 5) {
-      insights.add('Completed ${s.totalMissionsCompleted} missions. Keep it up!');
+      insights.add(
+        'Completed ${s.totalMissionsCompleted} missions. Keep it up!',
+      );
     }
     final lvl = protectionLevelForScore(s.score);
     if (lvl >= 10) {
-      insights.add('Level $lvl — ${protectionNameForLevel(lvl)}. Your consistency pays off.');
+      insights.add(
+        'Level $lvl — ${protectionNameForLevel(lvl)}. Your consistency pays off.',
+      );
     }
     if (s.totalCheckIns > 30) {
-      insights.add('Over ${s.totalCheckIns} active days. Consistency is your best ally.');
+      insights.add(
+        'Over ${s.totalCheckIns} active days. Consistency is your best ally.',
+      );
     }
     if (insights.isEmpty) {
       insights.addAll([
@@ -225,7 +238,8 @@ class ProtectionNotifier extends Notifier<ProtectionState> {
         'Your protection level will increase with every action.',
       ]);
     }
-    final insight = insights[DateTime.now().millisecondsSinceEpoch % insights.length];
+    final insight =
+        insights[DateTime.now().millisecondsSinceEpoch % insights.length];
     state = state.copyWith(lastInsight: insight);
     _save();
     return insight;

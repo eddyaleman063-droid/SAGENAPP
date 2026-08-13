@@ -53,10 +53,12 @@ class RemoteConfigService {
       _rc = FirebaseRemoteConfig.instance;
       final rc = _rc;
       if (rc == null) return;
-      await rc.setConfigSettings(RemoteConfigSettings(
-        fetchTimeout: const Duration(seconds: 5),
-        minimumFetchInterval: const Duration(hours: 1),
-      ));
+      await rc.setConfigSettings(
+        RemoteConfigSettings(
+          fetchTimeout: const Duration(seconds: 5),
+          minimumFetchInterval: const Duration(hours: 1),
+        ),
+      );
       await rc.setDefaults({
         _keyChestDropRates: jsonEncode(_defaultDropRates()),
         _keyPityThreshold: 20,
@@ -95,7 +97,9 @@ class RemoteConfigService {
       await rc.fetchAndActivate().timeout(
         const Duration(seconds: 5),
         onTimeout: () {
-          _logger.warning('RemoteConfigService.init: fetchAndActivate timed out, using defaults');
+          _logger.warning(
+            'RemoteConfigService.init: fetchAndActivate timed out, using defaults',
+          );
           return false;
         },
       );
@@ -120,10 +124,13 @@ class RemoteConfigService {
   }
 
   // ── A/B Testing ────────────────────────────────────────
-  String get onboardingFlowVariant => _rc?.getString(_abOnboardingFlow) ?? 'standard';
+  String get onboardingFlowVariant =>
+      _rc?.getString(_abOnboardingFlow) ?? 'standard';
   String get lessonLayoutVariant => _rc?.getString(_abLessonLayout) ?? 'card';
-  String get chestAnimationVariant => _rc?.getString(_abChestAnimation) ?? 'classic';
-  String get paywallPositionVariant => _rc?.getString(_abPaywallPosition) ?? 'bottom';
+  String get chestAnimationVariant =>
+      _rc?.getString(_abChestAnimation) ?? 'classic';
+  String get paywallPositionVariant =>
+      _rc?.getString(_abPaywallPosition) ?? 'bottom';
 
   String getExperimentVariant(String key, {String defaultValue = 'control'}) {
     return _rc?.getString(key) ?? defaultValue;
@@ -154,26 +161,33 @@ class RemoteConfigService {
 
   Map<String, dynamic> get chestDropRates {
     final now = DateTime.now();
-    if (_cachedDropRates != null && _lastDropRatesFetch != null &&
+    if (_cachedDropRates != null &&
+        _lastDropRatesFetch != null &&
         now.difference(_lastDropRatesFetch!) < const Duration(minutes: 30)) {
       return _cachedDropRates!;
     }
     if (_rc == null) return _defaultDropRates();
     try {
       final rc = _rc!;
-      _cachedDropRates = jsonDecode(rc.getString(_keyChestDropRates)) as Map<String, dynamic>;
+      _cachedDropRates =
+          jsonDecode(rc.getString(_keyChestDropRates)) as Map<String, dynamic>;
       _lastDropRatesFetch = now;
       return _cachedDropRates!;
     } catch (e) {
-      AppLogger().error('RemoteConfig: chestDropRates parse failed, using defaults', e);
+      AppLogger().error(
+        'RemoteConfig: chestDropRates parse failed, using defaults',
+        e,
+      );
       return _defaultDropRates();
     }
   }
 
   int get pityThreshold => _rc?.getInt(_keyPityThreshold) ?? 20;
 
-  double get missionLegendaryRate => (_rc?.getDouble(_keyMissionLegendaryRate) ?? 0.01).clamp(0, 1);
-  double get missionGoldRate => (_rc?.getDouble(_keyMissionGoldRate) ?? 0.06).clamp(0, 1);
+  double get missionLegendaryRate =>
+      (_rc?.getDouble(_keyMissionLegendaryRate) ?? 0.01).clamp(0, 1);
+  double get missionGoldRate =>
+      (_rc?.getDouble(_keyMissionGoldRate) ?? 0.06).clamp(0, 1);
   double get missionSilverRate {
     final raw = (_rc?.getDouble(_keyMissionSilverRate) ?? 0.20);
     final clamped = raw.clamp(0.0, 1.0);
@@ -185,16 +199,20 @@ class RemoteConfigService {
     return clamped;
   }
 
-  double get evolutionBronzeToSilver => (_rc?.getDouble(_keyEvolutionBronzeToSilver) ?? 0.45).clamp(0.0, 1.0);
-  double get evolutionSilverToGold => (_rc?.getDouble(_keyEvolutionSilverToGold) ?? 0.20).clamp(0.0, 1.0);
-  double get evolutionGoldToLegendary => (_rc?.getDouble(_keyEvolutionGoldToLegendary) ?? 0.03).clamp(0.0, 1.0);
+  double get evolutionBronzeToSilver =>
+      (_rc?.getDouble(_keyEvolutionBronzeToSilver) ?? 0.45).clamp(0.0, 1.0);
+  double get evolutionSilverToGold =>
+      (_rc?.getDouble(_keyEvolutionSilverToGold) ?? 0.20).clamp(0.0, 1.0);
+  double get evolutionGoldToLegendary =>
+      (_rc?.getDouble(_keyEvolutionGoldToLegendary) ?? 0.03).clamp(0.0, 1.0);
 
   int get streakMaxFreezes => _rc?.getInt(_keyStreakMaxFreezes) ?? 7;
 
   /// BUG-073: Shop catalog from RemoteConfig (empty list = use hardcoded defaults)
   List<Map<String, dynamic>> get shopCatalog {
     final now = DateTime.now();
-    if (_cachedShopCatalog != null && _lastShopCatalogFetch != null &&
+    if (_cachedShopCatalog != null &&
+        _lastShopCatalogFetch != null &&
         now.difference(_lastShopCatalogFetch!) < const Duration(minutes: 30)) {
       return _cachedShopCatalog!;
     }
@@ -223,7 +241,10 @@ class RemoteConfigService {
     final rates = chestDropRates[chestType];
     if (rates is List) {
       final list = rates.cast<Map<String, dynamic>>();
-      final totalWeight = list.fold<int>(0, (sum, r) => sum + (r['weight'] as int? ?? 0));
+      final totalWeight = list.fold<int>(
+        0,
+        (sum, r) => sum + (r['weight'] as int? ?? 0),
+      );
       if (totalWeight <= 0) {
         // All weights are zero — use default rates to avoid division by zero
         final defaults = _defaultDropRates();
@@ -233,10 +254,14 @@ class RemoteConfigService {
       }
       if (totalWeight == 100) return list;
       final factor = 100 / totalWeight;
-      return list.map((r) => {
-        ...r,
-        'weight': ((r['weight'] as int? ?? 0) * factor).round(),
-      }).toList();
+      return list
+          .map(
+            (r) => {
+              ...r,
+              'weight': ((r['weight'] as int? ?? 0) * factor).round(),
+            },
+          )
+          .toList();
     }
     final defaults = _defaultDropRates();
     final fallback = defaults[chestType];

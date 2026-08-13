@@ -72,7 +72,10 @@ class _SplashScreenState extends State<SplashScreen>
     final dark = Theme.of(context).brightness == Brightness.dark;
     return Semantics(
       button: true,
-      label: AppLocalizations.of(context)?.loading ?? AppLocalizations.of(context)?.tapToContinue ?? '',
+      label:
+          AppLocalizations.of(context)?.loading ??
+          AppLocalizations.of(context)?.tapToContinue ??
+          '',
       child: GestureDetector(
         onTap: () {
           HapticFeedback.lightImpact();
@@ -81,49 +84,51 @@ class _SplashScreenState extends State<SplashScreen>
         child: AnimatedBuilder(
           animation: _bgAnim,
           builder: (context, _) => Scaffold(
-          backgroundColor: _phase2
-              ? (dark ? _bgAnim.value ?? PremiumColors.deepBackground : PremiumColors.lightBg)
-              : PremiumColors.splashBlue,
-          body: Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SlideTransition(
-                  position: _textSlideAnim,
-                  child: FadeTransition(
-                    opacity: _textFadeAnim,
-                    child: Text(
-                      AppLocalizations.of(context)!.splashTitle,
-                      style: AppTextStyle.hero.copyWith(
-                        fontWeight: FontWeight.w900,
-                        color: context.textPrimary,
-                        letterSpacing: 6,
-                      ),
-                    ),
-                  ),
-                ),
-                if (_phase2)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 32),
-                    child: Semantics(
-                      label: AppLocalizations.of(context)?.loading ?? '',
-                      child: SizedBox(
-                        width: 24,
-                        height: 24,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2.5,
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                            context.textDisabled,
-                          ),
+            backgroundColor: _phase2
+                ? (dark
+                      ? _bgAnim.value ?? PremiumColors.deepBackground
+                      : PremiumColors.lightBg)
+                : PremiumColors.splashBlue,
+            body: Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SlideTransition(
+                    position: _textSlideAnim,
+                    child: FadeTransition(
+                      opacity: _textFadeAnim,
+                      child: Text(
+                        AppLocalizations.of(context)!.splashTitle,
+                        style: AppTextStyle.hero.copyWith(
+                          fontWeight: FontWeight.w900,
+                          color: context.textPrimary,
+                          letterSpacing: 6,
                         ),
                       ),
                     ),
                   ),
-              ],
+                  if (_phase2)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 32),
+                      child: Semantics(
+                        label: AppLocalizations.of(context)?.loading ?? '',
+                        child: SizedBox(
+                          width: 24,
+                          height: 24,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2.5,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              context.textDisabled,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
             ),
           ),
         ),
-      ),
       ),
     );
   }

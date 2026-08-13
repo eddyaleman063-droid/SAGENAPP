@@ -24,9 +24,7 @@ class _MockGamification extends GamificationNotifier {
 
 Widget _wrap(_MockGamification notifier) {
   return ProviderScope(
-    overrides: [
-      gamificationProvider.overrideWith(() => notifier),
-    ],
+    overrides: [gamificationProvider.overrideWith(() => notifier)],
     child: MaterialApp(
       theme: ThemeData(),
       locale: const Locale('es'),
@@ -52,7 +50,9 @@ void main() {
     expect(find.text('Reclamar'), findsOneWidget);
   });
 
-  testWidgets('claiming rewards XP and shows success notification', (tester) async {
+  testWidgets('claiming rewards XP and shows success notification', (
+    tester,
+  ) async {
     final mock = _MockGamification(unclaimed: true, claimResult: 10);
     await tester.pumpWidget(_wrap(mock));
     await tester.pump();

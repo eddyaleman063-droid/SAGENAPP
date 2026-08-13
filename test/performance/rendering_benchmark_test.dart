@@ -27,8 +27,11 @@ void main() {
       await tester.pump();
       stopwatch.stop();
 
-      expect(stopwatch.elapsedMilliseconds, lessThan(10000),
-          reason: 'WelcomeScreen initial render should complete within 10000ms');
+      expect(
+        stopwatch.elapsedMilliseconds,
+        lessThan(10000),
+        reason: 'WelcomeScreen initial render should complete within 10000ms',
+      );
       await tester.pump(const Duration(seconds: 6));
     });
 
@@ -37,23 +40,28 @@ void main() {
       addTearDown(() => tester.binding.setSurfaceSize(null));
 
       final stopwatch = Stopwatch()..start();
-      await tester.pumpWidget(wrapInApp(
-        const GlassCard(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text('Performance Test'),
-              SizedBox(height: 8),
-              Text('GlassCard rendering benchmark'),
-            ],
+      await tester.pumpWidget(
+        wrapInApp(
+          const GlassCard(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('Performance Test'),
+                SizedBox(height: 8),
+                Text('GlassCard rendering benchmark'),
+              ],
+            ),
           ),
         ),
-      ));
+      );
       await tester.pump();
       stopwatch.stop();
 
-      expect(stopwatch.elapsedMilliseconds, lessThan(500),
-          reason: 'GlassCard render should complete within 500ms');
+      expect(
+        stopwatch.elapsedMilliseconds,
+        lessThan(500),
+        reason: 'GlassCard render should complete within 500ms',
+      );
     });
 
     testWidgets('Animation startup does not block frame', (tester) async {
@@ -67,8 +75,11 @@ void main() {
       }
       stopwatch.stop();
 
-      expect(stopwatch.elapsedMilliseconds, lessThan(5000),
-          reason: 'Animation startup should not block more than 5000ms');
+      expect(
+        stopwatch.elapsedMilliseconds,
+        lessThan(5000),
+        reason: 'Animation startup should not block more than 5000ms',
+      );
       await tester.pump(const Duration(seconds: 6));
     });
 
@@ -88,8 +99,11 @@ void main() {
       final root = find.byType(WelcomeScreen).evaluate().first;
       final depth = countElements(root);
 
-      expect(depth, lessThan(200),
-          reason: 'Widget tree depth should be manageable for performance');
+      expect(
+        depth,
+        lessThan(200),
+        reason: 'Widget tree depth should be manageable for performance',
+      );
       await tester.pump(const Duration(seconds: 6));
     });
   });
@@ -107,8 +121,11 @@ void main() {
       }
       stopwatch.stop();
 
-      expect(stopwatch.elapsedMilliseconds, lessThan(10000),
-          reason: '100 rebuilds should complete within 10 seconds');
+      expect(
+        stopwatch.elapsedMilliseconds,
+        lessThan(10000),
+        reason: '100 rebuilds should complete within 10 seconds',
+      );
       await tester.pump(const Duration(seconds: 6));
     });
 
@@ -123,13 +140,19 @@ void main() {
         await tester.pump();
       }
 
-      expect(true, true, reason: 'State should not leak after 10 widget replacements');
+      expect(
+        true,
+        true,
+        reason: 'State should not leak after 10 widget replacements',
+      );
       await tester.pump(const Duration(seconds: 6));
     });
   });
 
   group('Performance — Layout Benchmarks', () {
-    testWidgets('Layout calculation completes within frame budget', (tester) async {
+    testWidgets('Layout calculation completes within frame budget', (
+      tester,
+    ) async {
       await tester.binding.setSurfaceSize(const Size(1080, 1920));
       addTearDown(() => tester.binding.setSurfaceSize(null));
 
@@ -140,12 +163,17 @@ void main() {
       await tester.pump();
       stopwatch.stop();
 
-      expect(stopwatch.elapsedMilliseconds, lessThan(500),
-          reason: 'Layout recalculation should complete within budget');
+      expect(
+        stopwatch.elapsedMilliseconds,
+        lessThan(500),
+        reason: 'Layout recalculation should complete within budget',
+      );
       await tester.pump(const Duration(seconds: 6));
     });
 
-    testWidgets('Multiple screen sizes do not cause layout overflow', (tester) async {
+    testWidgets('Multiple screen sizes do not cause layout overflow', (
+      tester,
+    ) async {
       final sizes = [
         const Size(320, 568),
         const Size(375, 812),
@@ -161,8 +189,11 @@ void main() {
         await tester.pumpWidget(wrapInApp(const WelcomeScreen()));
         await tester.pump();
 
-        expect(tester.takeException(), isNull,
-            reason: 'Layout should not overflow at ${size.width}x${size.height}');
+        expect(
+          tester.takeException(),
+          isNull,
+          reason: 'Layout should not overflow at ${size.width}x${size.height}',
+        );
       }
       await tester.pump(const Duration(seconds: 6));
     });

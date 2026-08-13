@@ -1,4 +1,4 @@
-﻿import 'dart:math' as math;
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,11 +13,7 @@ class MotivationScreen extends StatefulWidget {
   final VoidCallback? onContinue;
   final VoidCallback? onBack;
 
-  const MotivationScreen({
-    super.key,
-    this.onContinue,
-    this.onBack,
-  });
+  const MotivationScreen({super.key, this.onContinue, this.onBack});
 
   @override
   State<MotivationScreen> createState() => _MotivationScreenState();
@@ -136,13 +132,18 @@ class _MotivationScreenState extends State<MotivationScreen> {
   Widget build(BuildContext context) {
     final dark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: dark ? PremiumColors.deepBackground : PremiumColors.lightBg,
+      backgroundColor: dark
+          ? PremiumColors.deepBackground
+          : PremiumColors.lightBg,
       body: SafeArea(
         child: Column(
           children: [
             // ── Header ──
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxs, vertical: AppSpacing.sm),
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.xxs,
+                vertical: AppSpacing.sm,
+              ),
               child: Row(
                 children: [
                   Semantics(
@@ -190,8 +191,7 @@ class _MotivationScreenState extends State<MotivationScreen> {
             // ── Mascot row ──
             RepaintBoundary(
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -202,7 +202,8 @@ class _MotivationScreenState extends State<MotivationScreen> {
                         height: 80,
                         cacheWidth: 160,
                         cacheHeight: 160,
-                        errorBuilder: (_, _, _) => const Icon(Icons.pets, size: 48),
+                        errorBuilder: (_, _, _) =>
+                            const Icon(Icons.pets, size: 48),
                       ),
                     ),
                     const SizedBox(width: AppSpacing.sm),
@@ -212,21 +213,25 @@ class _MotivationScreenState extends State<MotivationScreen> {
                         children: [
                           Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: AppSpacing.xl, vertical: AppSpacing.lg),
+                              horizontal: AppSpacing.xl,
+                              vertical: AppSpacing.lg,
+                            ),
                             decoration: BoxDecoration(
-                              color: dark ? PremiumColors.onboardingBubbleDark : Colors.white,
+                              color: dark
+                                  ? PremiumColors.onboardingBubbleDark
+                                  : Colors.white,
                               borderRadius: BorderRadius.circular(AppRadius.xl),
-                              border: Border.all(
-                                color: context.borderSubtle,
-                              ),
+                              border: Border.all(color: context.borderSubtle),
                             ),
                             child: AnimatedSwitcher(
                               duration: const Duration(milliseconds: 250),
                               child: Text(
                                 _dialogText(AppLocalizations.of(context)!),
-                                key: ValueKey(_dialogText(AppLocalizations.of(context)!)),
+                                key: ValueKey(
+                                  _dialogText(AppLocalizations.of(context)!),
+                                ),
                                 style: AppTextStyle.body.copyWith(
-                                    color: context.textPrimary,
+                                  color: context.textPrimary,
                                   height: 1.4,
                                 ),
                               ),
@@ -242,7 +247,9 @@ class _MotivationScreenState extends State<MotivationScreen> {
                                   width: 12,
                                   height: 12,
                                   decoration: BoxDecoration(
-                                    color: dark ? PremiumColors.onboardingBubbleDark : Colors.white,
+                                    color: dark
+                                        ? PremiumColors.onboardingBubbleDark
+                                        : Colors.white,
                                     border: Border.all(
                                       color: context.borderSubtle,
                                     ),
@@ -265,12 +272,13 @@ class _MotivationScreenState extends State<MotivationScreen> {
             Expanded(
               child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
                 itemCount: _buildOptions(AppLocalizations.of(context)!).length,
                 itemBuilder: (context, index) {
                   final isSelected = _selections[index];
-                  final opt = _buildOptions(AppLocalizations.of(context)!)[index];
+                  final opt = _buildOptions(
+                    AppLocalizations.of(context)!,
+                  )[index];
                   return Semantics(
                     key: ValueKey('motivation_$index'),
                     button: true,
@@ -282,68 +290,77 @@ class _MotivationScreenState extends State<MotivationScreen> {
                         _toggle(index);
                       },
                       child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 200),
-                      height: 64,
-                      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                      margin: const EdgeInsets.only(bottom: AppSpacing.md),
-                      decoration: BoxDecoration(
-                        color: isSelected
-                            ? PremiumColors.primaryAccent
-                                .withValues(alpha: 0.08)
-                            : context.subtle,
-                        borderRadius: BorderRadius.circular(AppRadius.xl),
-                        border: Border.all(
-                          color: isSelected
-                              ? PremiumColors.primaryAccent
-                              : context.borderSubtle,
-                          width: isSelected ? 2.5 : 1,
+                        duration: const Duration(milliseconds: 200),
+                        height: 64,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppSpacing.lg,
                         ),
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(
-                            opt["icon"] is IconData ? opt["icon"] as IconData : Icons.star,
+                        margin: const EdgeInsets.only(bottom: AppSpacing.md),
+                        decoration: BoxDecoration(
+                          color: isSelected
+                              ? PremiumColors.primaryAccent.withValues(
+                                  alpha: 0.08,
+                                )
+                              : context.subtle,
+                          borderRadius: BorderRadius.circular(AppRadius.xl),
+                          border: Border.all(
                             color: isSelected
                                 ? PremiumColors.primaryAccent
-                                : context.textSecondary,
-                            size: 24,
+                                : context.borderSubtle,
+                            width: isSelected ? 2.5 : 1,
                           ),
-                          const SizedBox(width: AppSpacing.lg),
-                          Expanded(
-                            child: Text(
-                              opt["label"] is String ? opt["label"] as String : '',
-                              style: AppTextStyle.body.copyWith(
-                                color: context.textPrimary,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            width: 24,
-                            height: 24,
-                            decoration: BoxDecoration(
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              opt["icon"] is IconData
+                                  ? opt["icon"] as IconData
+                                  : Icons.star,
                               color: isSelected
                                   ? PremiumColors.primaryAccent
-                                  : Colors.transparent,
-                              borderRadius: BorderRadius.circular(AppRadius.xs),
-                              border: Border.all(
-                                color: isSelected
-                                    ? PremiumColors.primaryAccent
-                                    : context.textDisabled,
-                                width: 2,
+                                  : context.textSecondary,
+                              size: 24,
+                            ),
+                            const SizedBox(width: AppSpacing.lg),
+                            Expanded(
+                              child: Text(
+                                opt["label"] is String
+                                    ? opt["label"] as String
+                                    : '',
+                                style: AppTextStyle.body.copyWith(
+                                  color: context.textPrimary,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                             ),
-                            child: isSelected
-                                ? Icon(
-                                    Icons.check,
-                                    size: 16,
-                                  color: context.textPrimary,
-                                  )
-                                : null,
-                          ),
-                        ],
+                            Container(
+                              width: 24,
+                              height: 24,
+                              decoration: BoxDecoration(
+                                color: isSelected
+                                    ? PremiumColors.primaryAccent
+                                    : Colors.transparent,
+                                borderRadius: BorderRadius.circular(
+                                  AppRadius.xs,
+                                ),
+                                border: Border.all(
+                                  color: isSelected
+                                      ? PremiumColors.primaryAccent
+                                      : context.textDisabled,
+                                  width: 2,
+                                ),
+                              ),
+                              child: isSelected
+                                  ? Icon(
+                                      Icons.check,
+                                      size: 16,
+                                      color: context.textPrimary,
+                                    )
+                                  : null,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
                     ),
                   );
                 },
@@ -353,7 +370,11 @@ class _MotivationScreenState extends State<MotivationScreen> {
             // ── Bottom button ──
             Padding(
               padding: const EdgeInsets.fromLTRB(
-                  AppSpacing.xxl, 0, AppSpacing.xxl, AppSpacing.xxl),
+                AppSpacing.xxl,
+                0,
+                AppSpacing.xxl,
+                AppSpacing.xxl,
+              ),
               child: Semantics(
                 button: true,
                 label: AppLocalizations.of(context)!.continueText,
@@ -362,42 +383,42 @@ class _MotivationScreenState extends State<MotivationScreen> {
                   onTapUp: _canContinue ? _onTapUp : null,
                   onTapCancel: _canContinue ? _onTapCancel : null,
                   child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 80),
-                  transform: _isPressed
-                      ? Matrix4.translationValues(0, 4, 0)
-                      : Matrix4.identity(),
-                  height: 54,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: _canContinue
-                        ? PremiumColors.primaryAccent
-                        : context.surfaceCard,
-                    borderRadius: BorderRadius.circular(AppRadius.xl),
-                    boxShadow: _isPressed || !_canContinue
-                        ? []
-                        : [
-                            const BoxShadow(
-                              color: PremiumColors.primaryDark,
-                              offset: Offset(0, 4),
-                              blurRadius: 0,
-                            ),
-                          ],
-                  ),
-                  child: Center(
-                    child: Text(
-                      AppLocalizations.of(context)!.continueText,
-                      style: AppTextStyle.titleSmall.copyWith(
+                    duration: const Duration(milliseconds: 80),
+                    transform: _isPressed
+                        ? Matrix4.translationValues(0, 4, 0)
+                        : Matrix4.identity(),
+                    height: 54,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: _canContinue
+                          ? PremiumColors.primaryAccent
+                          : context.surfaceCard,
+                      borderRadius: BorderRadius.circular(AppRadius.xl),
+                      boxShadow: _isPressed || !_canContinue
+                          ? []
+                          : [
+                              const BoxShadow(
+                                color: PremiumColors.primaryDark,
+                                offset: Offset(0, 4),
+                                blurRadius: 0,
+                              ),
+                            ],
+                    ),
+                    child: Center(
+                      child: Text(
+                        AppLocalizations.of(context)!.continueText,
+                        style: AppTextStyle.titleSmall.copyWith(
                           color: _canContinue
                               ? context.textPrimary
                               : context.textDisabled,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 1.5,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 1.5,
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
             ),
           ],
         ).animate().fadeIn().slideY(begin: 0.05),

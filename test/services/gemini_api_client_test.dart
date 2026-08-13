@@ -26,10 +26,7 @@ void main() {
     });
 
     test('generate throws AiException for empty Content list', () {
-      expect(
-        () => client.generate([]),
-        throwsA(isA<AiException>()),
-      );
+      expect(() => client.generate([]), throwsA(isA<AiException>()));
     });
 
     test('generateStream throws AiException for empty Content list', () async {

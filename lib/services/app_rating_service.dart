@@ -17,7 +17,10 @@ class AppRatingService {
 
   Future<void> onSessionCompleted() async {
     final prefs = await _getPrefs();
-    if (prefs.getBool(_keyRated) == true || prefs.getBool(_keyDismissed) == true) return;
+    if (prefs.getBool(_keyRated) == true ||
+        prefs.getBool(_keyDismissed) == true) {
+      return;
+    }
 
     final count = (prefs.getInt(_keySessionCount) ?? 0) + 1;
     await prefs.setInt(_keySessionCount, count);

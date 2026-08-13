@@ -63,8 +63,11 @@ class StreakState {
       monthlyData: monthlyData ?? this.monthlyData,
       streakHistory: streakHistory ?? this.streakHistory,
       emotionalMessages: emotionalMessages ?? this.emotionalMessages,
-      lastMilestone: lastMilestone != null ? lastMilestone() : this.lastMilestone,
-      cachedMonthlyStreakStats: cachedMonthlyStreakStats ?? this.cachedMonthlyStreakStats,
+      lastMilestone: lastMilestone != null
+          ? lastMilestone()
+          : this.lastMilestone,
+      cachedMonthlyStreakStats:
+          cachedMonthlyStreakStats ?? this.cachedMonthlyStreakStats,
     );
   }
 
@@ -156,7 +159,9 @@ class StreakNotifier extends Notifier<StreakState> {
     } else if (status.currentStreak >= 50) {
       msgs.add('50 days of constant digital protection.');
     } else if (status.currentStreak >= 30) {
-      msgs.add('One month of learning. Your dedication makes you a Digital Guardian.');
+      msgs.add(
+        'One month of learning. Your dedication makes you a Digital Guardian.',
+      );
     } else if (status.currentStreak >= 14) {
       msgs.add('Two weeks of consistency. Your shield shines.');
     } else if (status.currentStreak >= 7) {
@@ -183,7 +188,9 @@ class StreakNotifier extends Notifier<StreakState> {
   void _syncStreakToFirestore() {
     try {
       // Sync streak to server via Cloud Function (not just local cache)
-      ref.read(economicFunctionsServiceProvider).incrementStreak().catchError((e) {
+      ref.read(economicFunctionsServiceProvider).incrementStreak().catchError((
+        e,
+      ) {
         // Non-critical: local streak is already updated
         return null;
       });
@@ -194,17 +201,32 @@ class StreakNotifier extends Notifier<StreakState> {
 
   void _checkAchievements(int oldStreak, StreakStatus newStatus) {
     final a = ref.read(analyticsServiceProvider);
-    if (newStatus.currentStreak >= 1 && oldStreak == 0) a.unlockAchievement(Achievement.shieldBasic);
-    if (newStatus.currentStreak >= 7 && oldStreak < 7) a.unlockAchievement(Achievement.shieldGlow);
+    if (newStatus.currentStreak >= 1 && oldStreak == 0) {
+      a.unlockAchievement(Achievement.shieldBasic);
+    }
+    if (newStatus.currentStreak >= 7 && oldStreak < 7) {
+      a.unlockAchievement(Achievement.shieldGlow);
+    }
     if (newStatus.currentStreak >= 30 && oldStreak < 30) {
       a.unlockAchievement(Achievement.shieldCrystal);
       a.unlockAchievement(Achievement.cyberGuardian);
     }
-    if (newStatus.currentStreak >= 100 && oldStreak < 100) a.unlockAchievement(Achievement.shieldLegendary);
-    if (newStatus.currentStreak == 7) { a.unlockAchievement(Achievement.streak7); a.unlockAchievement(Achievement.perfectWeek); }
-    if (newStatus.currentStreak == 14) a.unlockAchievement(Achievement.streak14);
-    if (newStatus.currentStreak == 30) a.unlockAchievement(Achievement.streak30);
-    if (newStatus.currentStreak == 100) a.unlockAchievement(Achievement.streak100);
+    if (newStatus.currentStreak >= 100 && oldStreak < 100) {
+      a.unlockAchievement(Achievement.shieldLegendary);
+    }
+    if (newStatus.currentStreak == 7) {
+      a.unlockAchievement(Achievement.streak7);
+      a.unlockAchievement(Achievement.perfectWeek);
+    }
+    if (newStatus.currentStreak == 14) {
+      a.unlockAchievement(Achievement.streak14);
+    }
+    if (newStatus.currentStreak == 30) {
+      a.unlockAchievement(Achievement.streak30);
+    }
+    if (newStatus.currentStreak == 100) {
+      a.unlockAchievement(Achievement.streak100);
+    }
     if (newStatus.currentStreak == 3) a.unlockAchievement(Achievement.streak3);
   }
 
@@ -235,7 +257,8 @@ class StreakNotifier extends Notifier<StreakState> {
   Map<String, int> get heatmapData => Map.unmodifiable(state.heatmapData);
   Map<String, int> get monthlyStats => Map.unmodifiable(state.monthlyData);
   List<String> get streakHistory => List.unmodifiable(state.streakHistory);
-  List<String> get emotionalMessages => List.unmodifiable(state.emotionalMessages);
+  List<String> get emotionalMessages =>
+      List.unmodifiable(state.emotionalMessages);
 
   String get currentMission => _missions[DateTime.now().day % _missions.length];
 
@@ -261,12 +284,18 @@ class StreakNotifier extends Notifier<StreakState> {
 
   String shieldTierName(AppLocalizations l) {
     switch (tier) {
-      case 'legendary': return l.shieldTierLegendary;
-      case 'crystal': return l.shieldTierCrystal;
-      case 'particles': return l.shieldTierParticles;
-      case 'glow': return l.shieldTierGlow;
-      case 'basic': return l.shieldTierBasic;
-      default: return l.shieldTierInactive;
+      case 'legendary':
+        return l.shieldTierLegendary;
+      case 'crystal':
+        return l.shieldTierCrystal;
+      case 'particles':
+        return l.shieldTierParticles;
+      case 'glow':
+        return l.shieldTierGlow;
+      case 'basic':
+        return l.shieldTierBasic;
+      default:
+        return l.shieldTierInactive;
     }
   }
 
@@ -308,7 +337,9 @@ class StreakNotifier extends Notifier<StreakState> {
       if (needsProtection && items.hasTitaniumShield()) {
         items.useTitaniumShield();
         final currentFreezes = streakFreezes;
-        final maxFreezes = ref.read(remoteConfigServiceProvider).streakMaxFreezes;
+        final maxFreezes = ref
+            .read(remoteConfigServiceProvider)
+            .streakMaxFreezes;
         if (currentFreezes < maxFreezes) {
           setFreezes(currentFreezes + 1);
         }
@@ -317,7 +348,9 @@ class StreakNotifier extends Notifier<StreakState> {
       final newStatus = _service.checkIn();
 
       // Phoenix Feather: revive streak if it would have been lost
-      if (usePhoenixFeather && newStatus.currentStreak < oldStreak && oldStreak > 0) {
+      if (usePhoenixFeather &&
+          newStatus.currentStreak < oldStreak &&
+          oldStreak > 0) {
         items.usePhoenixFeather();
         final revivedStatus = StreakStatus(
           currentStreak: oldStreak,
@@ -345,10 +378,13 @@ class StreakNotifier extends Notifier<StreakState> {
       // Solo el primer check-in del día debe inflar las estadísticas.
       final now = DateTime.now();
       final today = DateTime(now.year, now.month, now.day);
-      final isFirstCheckInToday = lastDate == null ||
+      final isFirstCheckInToday =
+          lastDate == null ||
           DateTime(lastDate.year, lastDate.month, lastDate.day) != today;
 
-      final newTotalCheckIns = isFirstCheckInToday ? state.totalCheckIns + 1 : state.totalCheckIns;
+      final newTotalCheckIns = isFirstCheckInToday
+          ? state.totalCheckIns + 1
+          : state.totalCheckIns;
 
       final weekKey = '${now.year}-W${_isoWeekNumber(now)}';
       final newWeeklyStats = Map<String, int>.from(state.weeklyStats);
@@ -376,31 +412,39 @@ class StreakNotifier extends Notifier<StreakState> {
       }
 
       _checkAchievements(oldStreak, newStatus);
-      AnalyticsService.instance.track(AnalyticEvent.streakCheckIn, properties: {'streak': newStatus.currentStreak.toString()});
+      AnalyticsService.instance.track(
+        AnalyticEvent.streakCheckIn,
+        properties: {'streak': newStatus.currentStreak.toString()},
+      );
 
       final newEmotions = _computeEmotionalMessages(newStatus);
 
-      final newPerfectWeeks = (isFirstCheckInToday &&
+      final newPerfectWeeks =
+          (isFirstCheckInToday &&
               newStatus.currentStreak > 0 &&
               newStatus.currentStreak % 7 == 0)
           ? state.perfectWeeks + 1
           : state.perfectWeeks;
 
-      ref.read(streakChestServiceProvider).checkAndReward(
-        oldStreak: oldStreak,
-        newStreak: newStatus.currentStreak,
-        learning: ref.read(learningProvider.notifier),
-      ).catchError((e) {
-        AppLogger().error('streak chest reward failed: $e');
-      });
+      ref
+          .read(streakChestServiceProvider)
+          .checkAndReward(
+            oldStreak: oldStreak,
+            newStreak: newStatus.currentStreak,
+            learning: ref.read(learningProvider.notifier),
+          )
+          .catchError((e) {
+            AppLogger().error('streak chest reward failed: $e');
+          });
 
-      final int? milestone = StreakState.milestoneValues
-          .where((m) => oldStreak < m && newStatus.currentStreak >= m)
-          .isEmpty
+      final int? milestone =
+          StreakState.milestoneValues
+              .where((m) => oldStreak < m && newStatus.currentStreak >= m)
+              .isEmpty
           ? null
           : StreakState.milestoneValues
-              .where((m) => oldStreak < m && newStatus.currentStreak >= m)
-              .first;
+                .where((m) => oldStreak < m && newStatus.currentStreak >= m)
+                .first;
 
       state = state.copyWith(
         status: newStatus,
@@ -425,7 +469,9 @@ class StreakNotifier extends Notifier<StreakState> {
         storage.setBool(_keyJustDefrosted, true);
       }
       if (newStatus.freezeConsumed) {
-        ref.read(notificationServiceProvider).showFreezeConsumedNotification(newStatus.streakFreezes);
+        ref
+            .read(notificationServiceProvider)
+            .showFreezeConsumedNotification(newStatus.streakFreezes);
       }
       _saveExtras(storage);
       _syncStreakToFirestore();
@@ -436,7 +482,9 @@ class StreakNotifier extends Notifier<StreakState> {
   }
 
   void _scheduleStreakReminder() {
-    ref.read(notificationServiceProvider).scheduleStreakReminder(state.status.currentStreak);
+    ref
+        .read(notificationServiceProvider)
+        .scheduleStreakReminder(state.status.currentStreak);
   }
 
   void clearMilestone() {

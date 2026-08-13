@@ -14,9 +14,7 @@ class SagenChatHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final bubbleColor = isDark
-        ? PremiumColors.chatHeaderDark
-        : Colors.white;
+    final bubbleColor = isDark ? PremiumColors.chatHeaderDark : Colors.white;
     final textColor = isDark
         ? PremiumColors.chatHeaderLight
         : PremiumColors.chatLockedDark;
@@ -26,11 +24,7 @@ class SagenChatHeader extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.only(top: AppSpacing.xs),
-          child: SizedBox(
-            width: 48,
-            height: 48,
-            child: avatar,
-          ),
+          child: SizedBox(width: 48, height: 48, child: avatar),
         ),
         const SizedBox(width: AppSpacing.sm),
         Expanded(
@@ -57,9 +51,9 @@ class SagenChatHeader extends StatelessWidget {
               child: Text(
                 message,
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: textColor,
-                      fontWeight: FontWeight.w500,
-                    ),
+                  color: textColor,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
           ),
@@ -81,13 +75,20 @@ class _BubbleClipper extends CustomClipper<Path> {
     path.lineTo(0, triangleHeight + 8);
     path.close();
 
-    path.addRRect(RRect.fromRectAndCorners(
-      Rect.fromLTWH(triangleWidth, 0, size.width - triangleWidth, size.height),
-      topRight: const Radius.circular(AppRadius.xl),
-      bottomRight: const Radius.circular(AppRadius.xl),
-      bottomLeft: const Radius.circular(AppRadius.xl),
-      topLeft: const Radius.circular(AppRadius.xl),
-    ));
+    path.addRRect(
+      RRect.fromRectAndCorners(
+        Rect.fromLTWH(
+          triangleWidth,
+          0,
+          size.width - triangleWidth,
+          size.height,
+        ),
+        topRight: const Radius.circular(AppRadius.xl),
+        bottomRight: const Radius.circular(AppRadius.xl),
+        bottomLeft: const Radius.circular(AppRadius.xl),
+        topLeft: const Radius.circular(AppRadius.xl),
+      ),
+    );
 
     return path;
   }

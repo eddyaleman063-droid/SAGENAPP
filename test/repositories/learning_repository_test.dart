@@ -19,12 +19,12 @@ class _FakeStageService extends LearningStageService {
 }
 
 Stage stage(String id) => Stage(
-      id: id,
-      title: 'T-$id',
-      subtitle: 'S-$id',
-      accent: const Color(0xFF123456),
-      icon: Icons.shield_rounded,
-    );
+  id: id,
+  title: 'T-$id',
+  subtitle: 'S-$id',
+  accent: const Color(0xFF123456),
+  icon: Icons.shield_rounded,
+);
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -187,7 +187,10 @@ void main() {
 
   group('fetchStages', () {
     test('returns stages from the service', () async {
-      final r = LearningRepositoryImpl(prefs, _FakeStageService(stages: [stage('remote')]));
+      final r = LearningRepositoryImpl(
+        prefs,
+        _FakeStageService(stages: [stage('remote')]),
+      );
       final result = await r.fetchStages();
       expect(result.single.id, 'remote');
     });

@@ -40,7 +40,9 @@ class MockPaymentNotifier extends PaymentNotifier {
 
   @override
   Future<void> refreshGems() async {
-    state = state.copyWith(donatedAfter: ref.read(learningProvider).totalDonated.toInt());
+    state = state.copyWith(
+      donatedAfter: ref.read(learningProvider).totalDonated.toInt(),
+    );
   }
 }
 

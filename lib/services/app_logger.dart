@@ -18,8 +18,9 @@ class AppLogger {
     _state.productionMode = enabled;
   }
 
-  List<Map<String, dynamic>> get recentErrors =>
-      _state.recentErrors.map((e) => {'time': e.time.toIso8601String(), 'message': e.message}).toList();
+  List<Map<String, dynamic>> get recentErrors => _state.recentErrors
+      .map((e) => {'time': e.time.toIso8601String(), 'message': e.message})
+      .toList();
 
   void debug(String message) {
     if (!_state.productionMode) debugPrint('[SAGEN] $message');
@@ -35,7 +36,9 @@ class AppLogger {
 
   void error(String message, [Object? exception, StackTrace? stack]) {
     _state.recentErrors.add(_LogEntry(message, DateTime.now()));
-    if (_state.recentErrors.length > _maxRecentErrors) _state.recentErrors.removeAt(0);
+    if (_state.recentErrors.length > _maxRecentErrors) {
+      _state.recentErrors.removeAt(0);
+    }
 
     if (!_state.productionMode) {
       debugPrint('[SAGEN] [ERROR] $message');
@@ -44,12 +47,21 @@ class AppLogger {
     }
   }
 
-  void log(LogLevel level, String message, [Object? exception, StackTrace? stack]) {
+  void log(
+    LogLevel level,
+    String message, [
+    Object? exception,
+    StackTrace? stack,
+  ]) {
     switch (level) {
-      case LogLevel.debug: debug(message);
-      case LogLevel.info: info(message);
-      case LogLevel.warning: warning(message);
-      case LogLevel.error: error(message, exception, stack);
+      case LogLevel.debug:
+        debug(message);
+      case LogLevel.info:
+        info(message);
+      case LogLevel.warning:
+        warning(message);
+      case LogLevel.error:
+        error(message, exception, stack);
     }
   }
 }

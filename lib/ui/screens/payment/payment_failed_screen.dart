@@ -56,7 +56,9 @@ class PaymentFailedScreen extends ConsumerWidget {
                     error!,
                     textAlign: TextAlign.center,
                     style: AppTextStyle.bodyMd.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withValues(alpha: 0.6),
                     ),
                   ),
                 ),

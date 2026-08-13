@@ -1,4 +1,4 @@
-﻿import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:sagen/services/emotion_event_bus.dart';
 
 void main() {
@@ -14,7 +14,10 @@ void main() {
       bus.fire(EmotionEventType.streakMilestone);
 
       await Future<void>.delayed(Duration.zero);
-      expect(received, [EmotionEventType.lessonCompleted, EmotionEventType.streakMilestone]);
+      expect(received, [
+        EmotionEventType.lessonCompleted,
+        EmotionEventType.streakMilestone,
+      ]);
 
       await sub.cancel();
     });

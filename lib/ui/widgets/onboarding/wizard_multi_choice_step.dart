@@ -22,7 +22,8 @@ class WizardMultiChoiceStep extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final config = stepConfig;
     final state = ref.watch(onboardingWizardProvider);
-    final selected = (state.sectionData[stepIndex] as List<String>?) ?? <String>[];
+    final selected =
+        (state.sectionData[stepIndex] as List<String>?) ?? <String>[];
     final textPrimary = context.textPrimary;
 
     return Padding(
@@ -33,9 +34,11 @@ class WizardMultiChoiceStep extends ConsumerWidget {
           const SizedBox(height: AppSpacing.sm),
           Text(
             config.question,
-            style: AppTextStyle.title.copyWith(fontWeight: FontWeight.bold,
+            style: AppTextStyle.title.copyWith(
+              fontWeight: FontWeight.bold,
               color: textPrimary,
-              height: 1.3),
+              height: 1.3,
+            ),
           ),
           const SizedBox(height: AppSpacing.lg),
           Expanded(
@@ -56,7 +59,9 @@ class WizardMultiChoiceStep extends ConsumerWidget {
                         } else {
                           updated.add(config.options[i].value);
                         }
-                        ref.read(onboardingWizardProvider.notifier).setSectionData(stepIndex, updated);
+                        ref
+                            .read(onboardingWizardProvider.notifier)
+                            .setSectionData(stepIndex, updated);
                       },
                     ),
                   ],

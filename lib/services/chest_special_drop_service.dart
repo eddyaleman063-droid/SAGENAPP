@@ -128,7 +128,10 @@ class ChestSpecialDropService {
     }
   }
 
-  SpecialItemType? _weightedPick(List<_WeightedItem> pool, Set<SpecialItemType> exclude) {
+  SpecialItemType? _weightedPick(
+    List<_WeightedItem> pool,
+    Set<SpecialItemType> exclude,
+  ) {
     final available = pool.where((w) => !exclude.contains(w.type)).toList();
     if (available.isEmpty) return null;
 

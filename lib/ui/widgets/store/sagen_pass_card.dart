@@ -20,7 +20,12 @@ class SagenPassCard extends ConsumerWidget {
     final progress = pass.isMaxLevel ? 1.0 : pass.progressFraction;
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(AppSpacing.xxl, AppSpacing.xl, AppSpacing.xxl, 0),
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.xxl,
+        AppSpacing.xl,
+        AppSpacing.xxl,
+        0,
+      ),
       child: Semantics(
         button: true,
         label: l.sagenPassTitle,
@@ -50,8 +55,11 @@ class SagenPassCard extends ConsumerWidget {
               borderRadius: BorderRadius.circular(AppRadius.xl),
               boxShadow: [
                 BoxShadow(
-                  color: (dark ? PremiumColors.shadowDark : PremiumColors.shadowSupportLight)
-                      .withValues(alpha: 0.3),
+                  color:
+                      (dark
+                              ? PremiumColors.shadowDark
+                              : PremiumColors.shadowSupportLight)
+                          .withValues(alpha: 0.3),
                   blurRadius: 12,
                   offset: const Offset(0, 4),
                 ),
@@ -66,7 +74,11 @@ class SagenPassCard extends ConsumerWidget {
                     color: Colors.white.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(AppRadius.lg),
                   ),
-                  child: const Icon(Icons.workspace_premium_rounded, color: Colors.white, size: 26),
+                  child: const Icon(
+                    Icons.workspace_premium_rounded,
+                    color: Colors.white,
+                    size: 26,
+                  ),
                 ),
                 const SizedBox(width: AppSpacing.md),
                 Expanded(
@@ -94,7 +106,9 @@ class SagenPassCard extends ConsumerWidget {
                           value: progress,
                           minHeight: 5,
                           backgroundColor: Colors.white.withValues(alpha: 0.2),
-                          valueColor: const AlwaysStoppedAnimation<Color>(PremiumColors.accentYellow),
+                          valueColor: const AlwaysStoppedAnimation<Color>(
+                            PremiumColors.accentYellow,
+                          ),
                         ),
                       ),
                     ],

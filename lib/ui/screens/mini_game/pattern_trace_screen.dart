@@ -60,7 +60,10 @@ class _PatternTraceScreenState extends ConsumerState<PatternTraceScreen> {
     _rewarded = false;
     _timeRemaining = widget.config.timeLimit.inSeconds;
     _timer = Timer.periodic(const Duration(seconds: 1), (t) {
-      if (!mounted) { t.cancel(); return; }
+      if (!mounted) {
+        t.cancel();
+        return;
+      }
       if (_timeRemaining <= 0) {
         t.cancel();
         _completeGame();
@@ -84,7 +87,10 @@ class _PatternTraceScreenState extends ConsumerState<PatternTraceScreen> {
     int i = 0;
     _patternTimer?.cancel();
     _patternTimer = Timer.periodic(const Duration(milliseconds: 600), (t) {
-      if (!mounted) { t.cancel(); return; }
+      if (!mounted) {
+        t.cancel();
+        return;
+      }
       if (i >= _pattern.length) {
         t.cancel();
         setState(() {
@@ -140,11 +146,17 @@ class _PatternTraceScreenState extends ConsumerState<PatternTraceScreen> {
     });
     if (!_rewarded) {
       _rewarded = true;
-      await ref.read(learningProvider.notifier).addXp(_score, reason: 'mini_game');
+      await ref
+          .read(learningProvider.notifier)
+          .addXp(_score, reason: 'mini_game');
       if (!mounted) return;
-      setState(() { _completing = false; });
+      setState(() {
+        _completing = false;
+      });
     } else {
-      setState(() { _completing = false; });
+      setState(() {
+        _completing = false;
+      });
     }
   }
 
@@ -161,9 +173,19 @@ class _PatternTraceScreenState extends ConsumerState<PatternTraceScreen> {
             title: Text(l.miniGameExitTitle),
             content: Text(l.miniGameExitContent),
             actions: [
-              TextButton(onPressed: () { HapticFeedback.lightImpact(); Navigator.pop(ctx); }, child: Text(l.cancel)),
               TextButton(
-                onPressed: () { HapticFeedback.lightImpact(); Navigator.pop(ctx); Navigator.pop(context); },
+                onPressed: () {
+                  HapticFeedback.lightImpact();
+                  Navigator.pop(ctx);
+                },
+                child: Text(l.cancel),
+              ),
+              TextButton(
+                onPressed: () {
+                  HapticFeedback.lightImpact();
+                  Navigator.pop(ctx);
+                  Navigator.pop(context);
+                },
                 child: Text(l.exitText),
               ),
             ],
@@ -171,58 +193,85 @@ class _PatternTraceScreenState extends ConsumerState<PatternTraceScreen> {
         );
       },
       child: Scaffold(
-      appBar: AppBar(
-        title: Text(l.miniGamePattern),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(AppSpacing.lg),
-            child: Row(children: [
-              Icon(Icons.timer_rounded, size: 18, color: _timeRemaining < 10 ? PremiumColors.error : context.textPrimary),
-              const SizedBox(width: AppSpacing.xxs),
-              Text('$_timeRemaining', style: AppTextStyle.titleSmall.copyWith(fontWeight: FontWeight.bold, color: context.textPrimary)),
-            ]),
-          ),
-        ],
-      ),
-      body: _gameComplete
-          ? _buildResult(l)
-          : Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(AppSpacing.lg),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      StatChip(label: l.miniGameRound, value: '${_round + 1}/$_maxRounds'),
-                      StatChip(label: l.miniGameScore, value: '$_score'),
-                      if (_showingPattern)
-                        StatChip(label: l.miniGameWatch, value: ''),
-                    ],
+        appBar: AppBar(
+          title: Text(l.miniGamePattern),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(AppSpacing.lg),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.timer_rounded,
+                    size: 18,
+                    color: _timeRemaining < 10
+                        ? PremiumColors.error
+                        : context.textPrimary,
                   ),
-                ),
-                Expanded(
-                  child: Center(
-                    child: SizedBox(
-                      width: 280,
-                      height: 280,
-                      child: GridView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, mainAxisSpacing: 12, crossAxisSpacing: 12),
-                        itemCount: 9,
-                        itemBuilder: (ctx, i) => _buildDot(i),
+                  const SizedBox(width: AppSpacing.xxs),
+                  Text(
+                    '$_timeRemaining',
+                    style: AppTextStyle.titleSmall.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: context.textPrimary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        body: _gameComplete
+            ? _buildResult(l)
+            : Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(AppSpacing.lg),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        StatChip(
+                          label: l.miniGameRound,
+                          value: '${_round + 1}/$_maxRounds',
+                        ),
+                        StatChip(label: l.miniGameScore, value: '$_score'),
+                        if (_showingPattern)
+                          StatChip(label: l.miniGameWatch, value: ''),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Center(
+                      child: SizedBox(
+                        width: 280,
+                        height: 280,
+                        child: GridView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 3,
+                                mainAxisSpacing: 12,
+                                crossAxisSpacing: 12,
+                              ),
+                          itemCount: 9,
+                          itemBuilder: (ctx, i) => _buildDot(i),
+                        ),
                       ),
                     ),
                   ),
-                ),
-                if (_waitingForInput)
-                  Padding(
-                    padding: const EdgeInsets.all(AppSpacing.lg),
-                    child: Text('${l.miniGameYourTurn} (${_userInput.length}/${_pattern.length})', style: AppTextStyle.body.copyWith(color: context.textSecondary)),
-                  ),
-                const SizedBox(height: AppSpacing.xxxl),
-              ],
-            ).animate().fadeIn(duration: 300.ms),
-          ),
+                  if (_waitingForInput)
+                    Padding(
+                      padding: const EdgeInsets.all(AppSpacing.lg),
+                      child: Text(
+                        '${l.miniGameYourTurn} (${_userInput.length}/${_pattern.length})',
+                        style: AppTextStyle.body.copyWith(
+                          color: context.textSecondary,
+                        ),
+                      ),
+                    ),
+                  const SizedBox(height: AppSpacing.xxxl),
+                ],
+              ).animate().fadeIn(duration: 300.ms),
+      ),
     );
   }
 
@@ -241,14 +290,21 @@ class _PatternTraceScreenState extends ConsumerState<PatternTraceScreen> {
             color: isHighlighted
                 ? PremiumColors.primary
                 : isCompleted
-                    ? PremiumColors.primary.withValues(alpha: 0.3)
-                    : context.surfaceTinted,
+                ? PremiumColors.primary.withValues(alpha: 0.3)
+                : context.surfaceTinted,
             border: Border.all(
-              color: isHighlighted ? PremiumColors.primary : context.borderSubtle,
+              color: isHighlighted
+                  ? PremiumColors.primary
+                  : context.borderSubtle,
               width: isHighlighted ? 3 : 1,
             ),
             boxShadow: isHighlighted
-                ? [BoxShadow(color: PremiumColors.primary.withValues(alpha: 0.4), blurRadius: 12)]
+                ? [
+                    BoxShadow(
+                      color: PremiumColors.primary.withValues(alpha: 0.4),
+                      blurRadius: 12,
+                    ),
+                  ]
                 : null,
           ),
         ),
@@ -268,14 +324,30 @@ class _PatternTraceScreenState extends ConsumerState<PatternTraceScreen> {
               alignment: Alignment.center,
               children: [
                 const ConfettiWidget(type: ConfettiType.level),
-                ExcludeSemantics(child: Icon(_score >= 40 ? Icons.emoji_events_rounded : Icons.star_rounded, size: 64, color: _score >= 40 ? PremiumColors.accentYellow : PremiumColors.primary)),
+                ExcludeSemantics(
+                  child: Icon(
+                    _score >= 40
+                        ? Icons.emoji_events_rounded
+                        : Icons.star_rounded,
+                    size: 64,
+                    color: _score >= 40
+                        ? PremiumColors.accentYellow
+                        : PremiumColors.primary,
+                  ),
+                ),
               ],
             ),
           ),
           const SizedBox(height: AppSpacing.lg),
-          Text(_round >= _maxRounds ? l.miniGameComplete : l.miniGameOver, style: AppTextStyle.headline),
+          Text(
+            _round >= _maxRounds ? l.miniGameComplete : l.miniGameOver,
+            style: AppTextStyle.headline,
+          ),
           const SizedBox(height: AppSpacing.sm),
-          Text('${l.miniGameScore}: $_score', style: AppTextStyle.body.copyWith(color: context.textSecondary)),
+          Text(
+            '${l.miniGameScore}: $_score',
+            style: AppTextStyle.body.copyWith(color: context.textSecondary),
+          ),
           const SizedBox(height: AppSpacing.lg),
           if (_completing)
             const Padding(
@@ -288,13 +360,38 @@ class _PatternTraceScreenState extends ConsumerState<PatternTraceScreen> {
               duration: const Duration(milliseconds: 1500),
               curve: Curves.easeOut,
               builder: (context, value, _) => Container(
-                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl, vertical: 10),
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(AppRadius.pill), gradient: const LinearGradient(colors: [PremiumColors.primary, PremiumColors.primaryAccent])),
-                child: Row(mainAxisSize: MainAxisSize.min, children: [
-                  const ExcludeSemantics(child: Icon(Icons.star_rounded, size: 18, color: Colors.white)),
-                  const SizedBox(width: AppSpacing.xs),
-                  Text('$value XP', style: AppTextStyle.bodyBold.copyWith(color: Colors.white)),
-                ]),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.xl,
+                  vertical: 10,
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(AppRadius.pill),
+                  gradient: const LinearGradient(
+                    colors: [
+                      PremiumColors.primary,
+                      PremiumColors.primaryAccent,
+                    ],
+                  ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const ExcludeSemantics(
+                      child: Icon(
+                        Icons.star_rounded,
+                        size: 18,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(width: AppSpacing.xs),
+                    Text(
+                      '$value XP',
+                      style: AppTextStyle.bodyBold.copyWith(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
             const SizedBox(height: AppSpacing.xxl),
@@ -302,12 +399,16 @@ class _PatternTraceScreenState extends ConsumerState<PatternTraceScreen> {
           Semantics(
             button: true,
             label: l.miniGamePlayAgain,
-            child: FilledButton(onPressed: () { HapticFeedback.lightImpact(); setState(() => _initGame()); }, child: Text(l.miniGamePlayAgain)),
+            child: FilledButton(
+              onPressed: () {
+                HapticFeedback.lightImpact();
+                setState(() => _initGame());
+              },
+              child: Text(l.miniGamePlayAgain),
+            ),
           ),
         ],
       ).animate().fadeIn(duration: 300.ms),
     );
   }
 }
-
-

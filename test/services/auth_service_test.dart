@@ -7,6 +7,7 @@ import 'package:sagen/services/auth_service.dart';
 import 'package:sagen/services/auth_session_manager.dart';
 
 class MockAuthClient extends Mock implements AuthClient {}
+
 class MockSessionManager extends Mock implements AuthSessionManager {}
 
 void main() {
@@ -17,10 +18,7 @@ void main() {
   setUp(() {
     mockClient = MockAuthClient();
     mockSession = MockSessionManager();
-    service = AuthService(
-      client: mockClient,
-      sessionManager: mockSession,
-    );
+    service = AuthService(client: mockClient, sessionManager: mockSession);
   });
 
   setUpAll(() {
@@ -49,7 +47,11 @@ void main() {
 
   group('signInWithGoogle', () {
     test('sets currentUser and saves session on success', () async {
-      const user = AppUser(uid: 'g1', displayName: 'Google User', email: 'g@test.com');
+      const user = AppUser(
+        uid: 'g1',
+        displayName: 'Google User',
+        email: 'g@test.com',
+      );
       when(() => mockClient.signInWithGoogle()).thenAnswer((_) async => user);
       when(() => mockSession.saveSession(any())).thenAnswer((_) async {});
 
@@ -63,8 +65,9 @@ void main() {
     });
 
     test('throws AuthException when client throws', () async {
-      when(() => mockClient.signInWithGoogle())
-          .thenThrow(const AuthException('canceled'));
+      when(
+        () => mockClient.signInWithGoogle(),
+      ).thenThrow(const AuthException('canceled'));
 
       expect(
         () => service.signInWithGoogle(),
@@ -74,19 +77,30 @@ void main() {
     });
 
     test('throws firebase_unavailable when Firebase not initialized', () async {
-      when(() => mockClient.signInWithGoogle())
-          .thenThrow(const AuthException('firebase_unavailable'));
+      when(
+        () => mockClient.signInWithGoogle(),
+      ).thenThrow(const AuthException('firebase_unavailable'));
 
       expect(
         () => service.signInWithGoogle(),
-        throwsA(isA<AuthException>().having((e) => e.code, 'code', 'firebase_unavailable')),
+        throwsA(
+          isA<AuthException>().having(
+            (e) => e.code,
+            'code',
+            'firebase_unavailable',
+          ),
+        ),
       );
     });
   });
 
   group('signInWithFacebook', () {
     test('sets currentUser and saves session on success', () async {
-      const user = AppUser(uid: 'f1', displayName: 'FB User', email: 'fb@test.com');
+      const user = AppUser(
+        uid: 'f1',
+        displayName: 'FB User',
+        email: 'fb@test.com',
+      );
       when(() => mockClient.signInWithFacebook()).thenAnswer((_) async => user);
       when(() => mockSession.saveSession(any())).thenAnswer((_) async {});
 
@@ -98,22 +112,28 @@ void main() {
     });
 
     test('throws when canceled', () async {
-      when(() => mockClient.signInWithFacebook())
-          .thenThrow(const AuthException('canceled'));
+      when(
+        () => mockClient.signInWithFacebook(),
+      ).thenThrow(const AuthException('canceled'));
 
-      expect(
-        () => service.signInWithFacebook(),
-        throwsA(isA<AuthException>()),
-      );
+      expect(() => service.signInWithFacebook(), throwsA(isA<AuthException>()));
       expect(service.isLoggedIn, false);
     });
   });
 
   group('signInWithEmail', () {
     test('sets currentUser and saves session on success', () async {
-      const user = AppUser(uid: 'e1', displayName: 'Email User', email: 'e@test.com');
-      when(() => mockClient.signInWithEmail(email: any(named: 'email'), password: any(named: 'password')))
-          .thenAnswer((_) async => user);
+      const user = AppUser(
+        uid: 'e1',
+        displayName: 'Email User',
+        email: 'e@test.com',
+      );
+      when(
+        () => mockClient.signInWithEmail(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+        ),
+      ).thenAnswer((_) async => user);
       when(() => mockSession.saveSession(any())).thenAnswer((_) async {});
 
       final result = await service.signInWithEmail(
@@ -128,54 +148,92 @@ void main() {
     });
 
     test('throws wrong_password on invalid credentials', () async {
-      when(() => mockClient.signInWithEmail(email: any(named: 'email'), password: any(named: 'password')))
-          .thenThrow(const AuthException('wrong_password'));
+      when(
+        () => mockClient.signInWithEmail(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+        ),
+      ).thenThrow(const AuthException('wrong_password'));
 
       expect(
         () => service.signInWithEmail(email: 'e@test.com', password: 'bad'),
-        throwsA(isA<AuthException>().having((e) => e.code, 'code', 'wrong_password')),
+        throwsA(
+          isA<AuthException>().having((e) => e.code, 'code', 'wrong_password'),
+        ),
       );
     });
 
     test('throws invalid_credential', () async {
-      when(() => mockClient.signInWithEmail(email: any(named: 'email'), password: any(named: 'password')))
-          .thenThrow(const AuthException('invalid_credential'));
+      when(
+        () => mockClient.signInWithEmail(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+        ),
+      ).thenThrow(const AuthException('invalid_credential'));
 
       expect(
         () => service.signInWithEmail(email: 'e@test.com', password: 'bad'),
-        throwsA(isA<AuthException>().having((e) => e.code, 'code', 'invalid_credential')),
+        throwsA(
+          isA<AuthException>().having(
+            (e) => e.code,
+            'code',
+            'invalid_credential',
+          ),
+        ),
       );
     });
 
     test('throws too_many_requests', () async {
-      when(() => mockClient.signInWithEmail(email: any(named: 'email'), password: any(named: 'password')))
-          .thenThrow(const AuthException('too_many_requests'));
+      when(
+        () => mockClient.signInWithEmail(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+        ),
+      ).thenThrow(const AuthException('too_many_requests'));
 
       expect(
         () => service.signInWithEmail(email: 'e@test.com', password: 'p'),
-        throwsA(isA<AuthException>().having((e) => e.code, 'code', 'too_many_requests')),
+        throwsA(
+          isA<AuthException>().having(
+            (e) => e.code,
+            'code',
+            'too_many_requests',
+          ),
+        ),
       );
     });
 
     test('throws network_error', () async {
-      when(() => mockClient.signInWithEmail(email: any(named: 'email'), password: any(named: 'password')))
-          .thenThrow(const AuthException('network_error'));
+      when(
+        () => mockClient.signInWithEmail(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+        ),
+      ).thenThrow(const AuthException('network_error'));
 
       expect(
         () => service.signInWithEmail(email: 'e@test.com', password: 'p'),
-        throwsA(isA<AuthException>().having((e) => e.code, 'code', 'network_error')),
+        throwsA(
+          isA<AuthException>().having((e) => e.code, 'code', 'network_error'),
+        ),
       );
     });
   });
 
   group('signUpWithEmail', () {
     test('sets currentUser and saves session on success', () async {
-      const user = AppUser(uid: 'n1', displayName: 'New User', email: 'n@test.com');
-      when(() => mockClient.signUpWithEmail(
-            email: any(named: 'email'),
-            password: any(named: 'password'),
-            displayName: any(named: 'displayName'),
-          )).thenAnswer((_) async => user);
+      const user = AppUser(
+        uid: 'n1',
+        displayName: 'New User',
+        email: 'n@test.com',
+      );
+      when(
+        () => mockClient.signUpWithEmail(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+          displayName: any(named: 'displayName'),
+        ),
+      ).thenAnswer((_) async => user);
       when(() => mockSession.saveSession(any())).thenAnswer((_) async {});
 
       final result = await service.signUpWithEmail(
@@ -190,11 +248,13 @@ void main() {
     });
 
     test('throws email_in_use when email already exists', () async {
-      when(() => mockClient.signUpWithEmail(
-            email: any(named: 'email'),
-            password: any(named: 'password'),
-            displayName: any(named: 'displayName'),
-          )).thenThrow(const AuthException('email_in_use'));
+      when(
+        () => mockClient.signUpWithEmail(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+          displayName: any(named: 'displayName'),
+        ),
+      ).thenThrow(const AuthException('email_in_use'));
 
       expect(
         () => service.signUpWithEmail(
@@ -202,16 +262,20 @@ void main() {
           password: 'pass',
           displayName: 'User',
         ),
-        throwsA(isA<AuthException>().having((e) => e.code, 'code', 'email_in_use')),
+        throwsA(
+          isA<AuthException>().having((e) => e.code, 'code', 'email_in_use'),
+        ),
       );
     });
 
     test('throws weak_password', () async {
-      when(() => mockClient.signUpWithEmail(
-            email: any(named: 'email'),
-            password: any(named: 'password'),
-            displayName: any(named: 'displayName'),
-          )).thenThrow(const AuthException('weak_password'));
+      when(
+        () => mockClient.signUpWithEmail(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+          displayName: any(named: 'displayName'),
+        ),
+      ).thenThrow(const AuthException('weak_password'));
 
       expect(
         () => service.signUpWithEmail(
@@ -219,16 +283,20 @@ void main() {
           password: '123',
           displayName: 'User',
         ),
-        throwsA(isA<AuthException>().having((e) => e.code, 'code', 'weak_password')),
+        throwsA(
+          isA<AuthException>().having((e) => e.code, 'code', 'weak_password'),
+        ),
       );
     });
 
     test('throws invalid_email', () async {
-      when(() => mockClient.signUpWithEmail(
-            email: any(named: 'email'),
-            password: any(named: 'password'),
-            displayName: any(named: 'displayName'),
-          )).thenThrow(const AuthException('invalid_email'));
+      when(
+        () => mockClient.signUpWithEmail(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+          displayName: any(named: 'displayName'),
+        ),
+      ).thenThrow(const AuthException('invalid_email'));
 
       expect(
         () => service.signUpWithEmail(
@@ -236,7 +304,9 @@ void main() {
           password: 'pass',
           displayName: 'User',
         ),
-        throwsA(isA<AuthException>().having((e) => e.code, 'code', 'invalid_email')),
+        throwsA(
+          isA<AuthException>().having((e) => e.code, 'code', 'invalid_email'),
+        ),
       );
     });
   });
@@ -264,16 +334,21 @@ void main() {
 
   group('sendPasswordResetEmail', () {
     test('delegates to client', () async {
-      when(() => mockClient.sendPasswordResetEmail(any())).thenAnswer((_) async {});
+      when(
+        () => mockClient.sendPasswordResetEmail(any()),
+      ).thenAnswer((_) async {});
 
       await service.sendPasswordResetEmail('test@test.com');
 
-      verify(() => mockClient.sendPasswordResetEmail('test@test.com')).called(1);
+      verify(
+        () => mockClient.sendPasswordResetEmail('test@test.com'),
+      ).called(1);
     });
 
     test('propagates exceptions', () async {
-      when(() => mockClient.sendPasswordResetEmail(any()))
-          .thenThrow(const AuthException('network_error'));
+      when(
+        () => mockClient.sendPasswordResetEmail(any()),
+      ).thenThrow(const AuthException('network_error'));
 
       expect(
         () => service.sendPasswordResetEmail('test@test.com'),
@@ -330,10 +405,12 @@ void main() {
       when(() => fakeUser.reload()).thenAnswer((_) async {});
       when(() => mockClient.isAvailable).thenReturn(true);
       when(() => mockClient.firebaseUser).thenReturn(null);
-      when(() => mockClient.authStateChanges).thenAnswer((_) => controller.stream);
-      when(() => mockClient.appUserFromFirebase(any())).thenReturn(
-        const AppUser(uid: 'mapped', displayName: 'Mapped'),
-      );
+      when(
+        () => mockClient.authStateChanges,
+      ).thenAnswer((_) => controller.stream);
+      when(
+        () => mockClient.appUserFromFirebase(any()),
+      ).thenReturn(const AppUser(uid: 'mapped', displayName: 'Mapped'));
       when(() => mockSession.restoreSession()).thenAnswer((_) async => null);
       when(() => mockSession.saveSession(any())).thenAnswer((_) async {});
 
@@ -382,24 +459,32 @@ void main() {
       when(() => fakeUser.reload()).thenAnswer((_) async {});
       when(() => mockClient.isAvailable).thenReturn(true);
       when(() => mockClient.firebaseUser).thenReturn(fakeUser);
-      when(() => mockClient.appUserFromFirebase(any()))
-          .thenReturn(const AppUser(uid: 'fb1', displayName: 'FB User'));
-      when(() => mockClient.authStateChanges).thenAnswer((_) => const Stream.empty());
+      when(
+        () => mockClient.appUserFromFirebase(any()),
+      ).thenReturn(const AppUser(uid: 'fb1', displayName: 'FB User'));
+      when(
+        () => mockClient.authStateChanges,
+      ).thenAnswer((_) => const Stream.empty());
       when(() => mockSession.saveSession(any())).thenAnswer((_) async {});
 
       await service.init();
 
       expect(service.currentUser?.uid, 'fb1');
       expect(service.isLoggedIn, true);
-      verify(() => mockSession.saveSession(any())).called(greaterThanOrEqualTo(1));
+      verify(
+        () => mockSession.saveSession(any()),
+      ).called(greaterThanOrEqualTo(1));
     });
 
     test('clears session when restored session validation fails', () async {
       when(() => mockClient.isAvailable).thenReturn(true);
       when(() => mockClient.firebaseUser).thenReturn(null);
-      when(() => mockClient.authStateChanges).thenAnswer((_) => const Stream.empty());
-      when(() => mockSession.restoreSession())
-          .thenAnswer((_) async => const AppUser(uid: 'old'));
+      when(
+        () => mockClient.authStateChanges,
+      ).thenAnswer((_) => const Stream.empty());
+      when(
+        () => mockSession.restoreSession(),
+      ).thenAnswer((_) async => const AppUser(uid: 'old'));
       when(() => mockSession.clearSession()).thenAnswer((_) async {});
 
       await service.init();
@@ -422,10 +507,13 @@ void main() {
       when(() => fakeUser.reload()).thenAnswer((_) async {});
       when(() => mockClient.isAvailable).thenReturn(true);
       when(() => mockClient.firebaseUser).thenReturn(null);
-      when(() => mockClient.authStateChanges).thenAnswer((_) => controller.stream);
+      when(
+        () => mockClient.authStateChanges,
+      ).thenAnswer((_) => controller.stream);
       when(() => mockSession.restoreSession()).thenAnswer((_) async => null);
-      when(() => mockClient.appUserFromFirebase(fakeUser))
-          .thenReturn(const AppUser(uid: 'live', displayName: 'Live'));
+      when(
+        () => mockClient.appUserFromFirebase(fakeUser),
+      ).thenReturn(const AppUser(uid: 'live', displayName: 'Live'));
       when(() => mockSession.saveSession(any())).thenAnswer((_) async {});
 
       await service.init();
@@ -445,4 +533,5 @@ void main() {
 }
 
 class MockFirebaseUser extends Mock implements firebase.User {}
+
 class FakeFirebaseUser extends Fake implements firebase.User {}

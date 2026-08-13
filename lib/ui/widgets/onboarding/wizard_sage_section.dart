@@ -32,8 +32,12 @@ class WizardSageSection extends StatelessWidget {
           Flexible(
             child: Text(
               message,
-              style: AppTextStyle.bodyMd.copyWith(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.9),
-                height: 1.3),
+              style: AppTextStyle.bodyMd.copyWith(
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.9),
+                height: 1.3,
+              ),
             ),
           ),
         ],
@@ -72,9 +76,13 @@ class WizardSageBubble extends StatelessWidget {
           Expanded(
             child: Text(
               message,
-              style: AppTextStyle.bodyMd.copyWith(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.9),
+              style: AppTextStyle.bodyMd.copyWith(
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.9),
                 height: 1.4,
-                fontStyle: FontStyle.italic),
+                fontStyle: FontStyle.italic,
+              ),
             ),
           ),
         ],

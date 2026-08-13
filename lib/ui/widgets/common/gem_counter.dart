@@ -10,11 +10,7 @@ class GemCounter extends ConsumerStatefulWidget {
   final bool compact;
   final bool showLabel;
 
-  const GemCounter({
-    super.key,
-    this.compact = false,
-    this.showLabel = true,
-  });
+  const GemCounter({super.key, this.compact = false, this.showLabel = true});
 
   @override
   ConsumerState<GemCounter> createState() => _GemCounterState();
@@ -74,7 +70,10 @@ class _GemCounterState extends ConsumerState<GemCounter>
         animation: _sparkleAnim,
         builder: (context, child) {
           return Container(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: AppSpacing.sm),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 14,
+              vertical: AppSpacing.sm,
+            ),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
@@ -86,13 +85,17 @@ class _GemCounterState extends ConsumerState<GemCounter>
               ),
               borderRadius: BorderRadius.circular(AppRadius.pill),
               border: Border.all(
-                color: PremiumColors.accentCyan.withValues(alpha: 0.3 + _sparkleAnim.value * 0.3),
+                color: PremiumColors.accentCyan.withValues(
+                  alpha: 0.3 + _sparkleAnim.value * 0.3,
+                ),
                 width: 1.0,
               ),
               boxShadow: [
                 if (_sparkleAnim.value > 0)
                   BoxShadow(
-                    color: PremiumColors.accentCyan.withValues(alpha: 0.4 * _sparkleAnim.value),
+                    color: PremiumColors.accentCyan.withValues(
+                      alpha: 0.4 * _sparkleAnim.value,
+                    ),
                     blurRadius: 16 * _sparkleAnim.value,
                     spreadRadius: 3 * _sparkleAnim.value,
                   ),
@@ -161,7 +164,11 @@ class _GemIcon extends StatelessWidget {
               height: 20,
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
-                  colors: [PremiumColors.accentCyan, PremiumColors.deepPurple, PremiumColors.accentCyan],
+                  colors: [
+                    PremiumColors.accentCyan,
+                    PremiumColors.deepPurple,
+                    PremiumColors.accentCyan,
+                  ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
@@ -198,9 +205,24 @@ class _GemIcon extends StatelessWidget {
           // Sparkle particles
           if (sparkle > 0.3) ...[
             _SparkleParticle(angle: 0, distance: 14, size: 3, opacity: sparkle),
-            _SparkleParticle(angle: pi / 2, distance: 12, size: 2, opacity: sparkle * 0.8),
-            _SparkleParticle(angle: pi, distance: 14, size: 3, opacity: sparkle * 0.6),
-            _SparkleParticle(angle: 3 * pi / 2, distance: 12, size: 2, opacity: sparkle * 0.9),
+            _SparkleParticle(
+              angle: pi / 2,
+              distance: 12,
+              size: 2,
+              opacity: sparkle * 0.8,
+            ),
+            _SparkleParticle(
+              angle: pi,
+              distance: 14,
+              size: 3,
+              opacity: sparkle * 0.6,
+            ),
+            _SparkleParticle(
+              angle: 3 * pi / 2,
+              distance: 12,
+              size: 2,
+              opacity: sparkle * 0.9,
+            ),
           ],
         ],
       ),
@@ -234,10 +256,7 @@ class _SparkleParticle extends StatelessWidget {
             shape: BoxShape.circle,
             color: Colors.white,
             boxShadow: [
-              BoxShadow(
-                color: PremiumColors.accentCyan,
-                blurRadius: 3,
-              ),
+              BoxShadow(color: PremiumColors.accentCyan, blurRadius: 3),
             ],
           ),
         ),
@@ -271,7 +290,10 @@ class _CompactGemBadge extends StatelessWidget {
                 height: 10,
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
-                    colors: [PremiumColors.accentCyan, PremiumColors.deepPurple],
+                    colors: [
+                      PremiumColors.accentCyan,
+                      PremiumColors.deepPurple,
+                    ],
                   ),
                   borderRadius: BorderRadius.circular(2),
                 ),

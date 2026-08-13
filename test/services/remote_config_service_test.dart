@@ -38,7 +38,10 @@ void main() {
 
     test('getExperimentVariant returns default for unknown key', () {
       expect(service.getExperimentVariant('unknown'), 'control');
-      expect(service.getExperimentVariant('unknown', defaultValue: 'custom'), 'custom');
+      expect(
+        service.getExperimentVariant('unknown', defaultValue: 'custom'),
+        'custom',
+      );
     });
 
     test('allFeatureFlags returns map of all flags', () {

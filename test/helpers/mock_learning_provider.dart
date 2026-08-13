@@ -22,7 +22,9 @@ class MockLearningNotifier extends LearningNotifier {
     state = state.copyWith(
       xp: newLevel > state.currentLevel ? 0 : newXp,
       totalXpEarned: newTotalXp,
-      currentLevel: newLevel > state.currentLevel ? newLevel : state.currentLevel,
+      currentLevel: newLevel > state.currentLevel
+          ? newLevel
+          : state.currentLevel,
     );
   }
 }

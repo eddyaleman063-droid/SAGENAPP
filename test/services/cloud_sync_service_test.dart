@@ -5,9 +5,11 @@ void main() {
   group('FirestoreFieldConfig', () {
     test('isServerOnlyField returns true for economic fields', () {
       expect(FirestoreFieldConfig.isServerOnlyField('learning_gems'), isTrue);
-      expect(FirestoreFieldConfig.isServerOnlyField('learning_total_xp'), isTrue);
+      expect(
+        FirestoreFieldConfig.isServerOnlyField('learning_total_xp'),
+        isTrue,
+      );
       expect(FirestoreFieldConfig.isServerOnlyField('streakCurrent'), isTrue);
-
     });
 
     test('isServerOnlyField returns false for profile fields', () {
@@ -26,9 +28,15 @@ void main() {
     });
 
     test('validateFieldType passes for correct types', () {
-      expect(FirestoreFieldConfig.validateFieldType('firstName', 'test'), isTrue);
+      expect(
+        FirestoreFieldConfig.validateFieldType('firstName', 'test'),
+        isTrue,
+      );
       expect(FirestoreFieldConfig.validateFieldType('age', 25), isTrue);
-      expect(FirestoreFieldConfig.validateFieldType('onboardingCompleted', true), isTrue);
+      expect(
+        FirestoreFieldConfig.validateFieldType('onboardingCompleted', true),
+        isTrue,
+      );
     });
 
     test('validateFieldType fails for wrong types', () {
@@ -37,11 +45,17 @@ void main() {
     });
 
     test('validateFieldType passes for unknown fields', () {
-      expect(FirestoreFieldConfig.validateFieldType('unknownField', 'anything'), isTrue);
+      expect(
+        FirestoreFieldConfig.validateFieldType('unknownField', 'anything'),
+        isTrue,
+      );
     });
 
     test('validateStringLength passes within limit', () {
-      expect(FirestoreFieldConfig.validateStringLength('firstName', 'John'), isTrue);
+      expect(
+        FirestoreFieldConfig.validateStringLength('firstName', 'John'),
+        isTrue,
+      );
     });
 
     test('validateStringLength fails over limit', () {
@@ -52,7 +66,10 @@ void main() {
     });
 
     test('validateStringLength passes for unknown fields', () {
-      expect(FirestoreFieldConfig.validateStringLength('unknown', 'any'), isTrue);
+      expect(
+        FirestoreFieldConfig.validateStringLength('unknown', 'any'),
+        isTrue,
+      );
     });
 
     test('validateIntRange passes within range', () {
@@ -84,36 +101,49 @@ void main() {
     });
 
     test('serverOnlyFields does not overlap with profileFields', () {
-      final overlap = FirestoreFieldConfig.serverOnlyFields
-          .intersection(FirestoreFieldConfig.profileFields);
+      final overlap = FirestoreFieldConfig.serverOnlyFields.intersection(
+        FirestoreFieldConfig.profileFields,
+      );
       expect(overlap, isEmpty);
     });
 
     test('profileFieldTypes covers all profile fields', () {
       for (final field in FirestoreFieldConfig.profileFields) {
-        expect(FirestoreFieldConfig.profileFieldTypes, contains(field),
-          reason: 'profileFieldTypes missing type for $field');
+        expect(
+          FirestoreFieldConfig.profileFieldTypes,
+          contains(field),
+          reason: 'profileFieldTypes missing type for $field',
+        );
       }
     });
 
     test('stringFieldMaxLengths are positive', () {
       for (final entry in FirestoreFieldConfig.stringFieldMaxLengths.entries) {
-        expect(entry.value, greaterThan(0),
-          reason: '${entry.key} has non-positive max length');
+        expect(
+          entry.value,
+          greaterThan(0),
+          reason: '${entry.key} has non-positive max length',
+        );
       }
     });
 
     test('intFieldRanges have min <= max', () {
       for (final entry in FirestoreFieldConfig.intFieldRanges.entries) {
-        expect(entry.value.$1, lessThanOrEqualTo(entry.value.$2),
-          reason: '${entry.key} has min > max');
+        expect(
+          entry.value.$1,
+          lessThanOrEqualTo(entry.value.$2),
+          reason: '${entry.key} has min > max',
+        );
       }
     });
 
     test('all serverOnlyFields are covered by syncKeys exclusion', () {
       for (final field in FirestoreFieldConfig.serverOnlyFields) {
-        expect(FirestoreFieldConfig.syncKeys, isNot(contains(field)),
-          reason: 'server-only field $field should NOT be in syncKeys');
+        expect(
+          FirestoreFieldConfig.syncKeys,
+          isNot(contains(field)),
+          reason: 'server-only field $field should NOT be in syncKeys',
+        );
       }
     });
   });

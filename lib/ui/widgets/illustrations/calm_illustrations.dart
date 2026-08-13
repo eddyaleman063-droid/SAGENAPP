@@ -19,11 +19,23 @@ class CalmShieldPainter extends CustomPainter {
     final cy = size.height * 0.55;
 
     path.moveTo(cx, cy - size.height * 0.35 * progress);
-    path.lineTo(cx + size.width * 0.3 * progress, cy - size.height * 0.1 * progress);
-    path.lineTo(cx + size.width * 0.25 * progress, cy + size.height * 0.25 * progress);
+    path.lineTo(
+      cx + size.width * 0.3 * progress,
+      cy - size.height * 0.1 * progress,
+    );
+    path.lineTo(
+      cx + size.width * 0.25 * progress,
+      cy + size.height * 0.25 * progress,
+    );
     path.lineTo(cx, cy + size.height * 0.35 * progress);
-    path.lineTo(cx - size.width * 0.25 * progress, cy + size.height * 0.25 * progress);
-    path.lineTo(cx - size.width * 0.3 * progress, cy - size.height * 0.1 * progress);
+    path.lineTo(
+      cx - size.width * 0.25 * progress,
+      cy + size.height * 0.25 * progress,
+    );
+    path.lineTo(
+      cx - size.width * 0.3 * progress,
+      cy - size.height * 0.1 * progress,
+    );
     path.close();
 
     canvas.drawPath(path, paint);
@@ -36,11 +48,23 @@ class CalmShieldPainter extends CustomPainter {
     final innerPath = Path();
     final scale = 0.7 * progress;
     innerPath.moveTo(cx, cy - size.height * 0.35 * scale);
-    innerPath.lineTo(cx + size.width * 0.3 * scale, cy - size.height * 0.1 * scale);
-    innerPath.lineTo(cx + size.width * 0.25 * scale, cy + size.height * 0.25 * scale);
+    innerPath.lineTo(
+      cx + size.width * 0.3 * scale,
+      cy - size.height * 0.1 * scale,
+    );
+    innerPath.lineTo(
+      cx + size.width * 0.25 * scale,
+      cy + size.height * 0.25 * scale,
+    );
     innerPath.lineTo(cx, cy + size.height * 0.35 * scale);
-    innerPath.lineTo(cx - size.width * 0.25 * scale, cy + size.height * 0.25 * scale);
-    innerPath.lineTo(cx - size.width * 0.3 * scale, cy - size.height * 0.1 * scale);
+    innerPath.lineTo(
+      cx - size.width * 0.25 * scale,
+      cy + size.height * 0.25 * scale,
+    );
+    innerPath.lineTo(
+      cx - size.width * 0.3 * scale,
+      cy - size.height * 0.1 * scale,
+    );
     innerPath.close();
     canvas.drawPath(innerPath, innerPaint);
 
@@ -48,11 +72,16 @@ class CalmShieldPainter extends CustomPainter {
       ..style = PaintingStyle.fill
       ..color = primaryColor.withValues(alpha: 0.15 * progress);
 
-    canvas.drawCircle(Offset(cx, cy - size.height * 0.08 * progress), 4 * progress, dotPaint);
+    canvas.drawCircle(
+      Offset(cx, cy - size.height * 0.08 * progress),
+      4 * progress,
+      dotPaint,
+    );
   }
 
   @override
-  bool shouldRepaint(CalmShieldPainter old) => old.progress != progress || old.primaryColor != primaryColor;
+  bool shouldRepaint(CalmShieldPainter old) =>
+      old.progress != progress || old.primaryColor != primaryColor;
 }
 
 class CalmShield extends StatelessWidget {
@@ -60,7 +89,12 @@ class CalmShield extends StatelessWidget {
   final double progress;
   final Color? color;
 
-  const CalmShield({super.key, this.size = 120, this.progress = 1.0, this.color});
+  const CalmShield({
+    super.key,
+    this.size = 120,
+    this.progress = 1.0,
+    this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -96,13 +130,19 @@ class LearningBloomPainter extends CustomPainter {
 
     final stemPath = Path();
     stemPath.moveTo(cx, cy);
-    stemPath.quadraticBezierTo(cx + 8 * progress, cy - size.height * 0.2 * progress, cx, cy - size.height * 0.35 * progress);
+    stemPath.quadraticBezierTo(
+      cx + 8 * progress,
+      cy - size.height * 0.2 * progress,
+      cx,
+      cy - size.height * 0.35 * progress,
+    );
     canvas.drawPath(stemPath, stemPaint);
 
     for (int i = 0; i < 5; i++) {
       final angle = (i / 5) * math.pi * 2 - math.pi / 2;
       final px = cx + math.cos(angle) * 18 * progress;
-      final py = cy - size.height * 0.35 * progress + math.sin(angle) * 18 * progress;
+      final py =
+          cy - size.height * 0.35 * progress + math.sin(angle) * 18 * progress;
       final petalPaint = Paint()
         ..style = PaintingStyle.fill
         ..color = HSLColor.fromColor(color)
@@ -115,7 +155,11 @@ class LearningBloomPainter extends CustomPainter {
     final centerPaint = Paint()
       ..style = PaintingStyle.fill
       ..color = color.withValues(alpha: 0.3 * progress);
-    canvas.drawCircle(Offset(cx, cy - size.height * 0.35 * progress), 6 * progress, centerPaint);
+    canvas.drawCircle(
+      Offset(cx, cy - size.height * 0.35 * progress),
+      6 * progress,
+      centerPaint,
+    );
 
     final leafPaint = Paint()
       ..style = PaintingStyle.fill
@@ -123,13 +167,19 @@ class LearningBloomPainter extends CustomPainter {
 
     final leafPath = Path();
     leafPath.moveTo(cx - 4, cy - size.height * 0.12 * progress);
-    leafPath.quadraticBezierTo(cx - 16 * progress, cy - size.height * 0.08 * progress, cx - 2, cy);
+    leafPath.quadraticBezierTo(
+      cx - 16 * progress,
+      cy - size.height * 0.08 * progress,
+      cx - 2,
+      cy,
+    );
     leafPath.close();
     canvas.drawPath(leafPath, leafPaint);
   }
 
   @override
-  bool shouldRepaint(LearningBloomPainter old) => old.progress != progress || old.color != color;
+  bool shouldRepaint(LearningBloomPainter old) =>
+      old.progress != progress || old.color != color;
 }
 
 class LearningBloom extends StatelessWidget {
@@ -137,7 +187,12 @@ class LearningBloom extends StatelessWidget {
   final double progress;
   final Color? color;
 
-  const LearningBloom({super.key, this.size = 120, this.progress = 1.0, this.color});
+  const LearningBloom({
+    super.key,
+    this.size = 120,
+    this.progress = 1.0,
+    this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -179,7 +234,10 @@ class ProtectionNestPainter extends CustomPainter {
         ..style = PaintingStyle.fill
         ..color = color.withValues(alpha: (0.1 + (i % 3) * 0.05) * progress);
       canvas.drawCircle(
-        Offset(cx + math.cos(angle) * 28 * progress, cy + math.sin(angle) * 28 * progress),
+        Offset(
+          cx + math.cos(angle) * 28 * progress,
+          cy + math.sin(angle) * 28 * progress,
+        ),
         3 * progress,
         dotPaint,
       );
@@ -187,7 +245,8 @@ class ProtectionNestPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(ProtectionNestPainter old) => old.progress != progress || old.color != color;
+  bool shouldRepaint(ProtectionNestPainter old) =>
+      old.progress != progress || old.color != color;
 }
 
 class ProtectionNest extends StatelessWidget {
@@ -195,7 +254,12 @@ class ProtectionNest extends StatelessWidget {
   final double progress;
   final Color? color;
 
-  const ProtectionNest({super.key, this.size = 120, this.progress = 1.0, this.color});
+  const ProtectionNest({
+    super.key,
+    this.size = 120,
+    this.progress = 1.0,
+    this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -256,12 +320,17 @@ class SageGlowPainter extends CustomPainter {
     smilePath.quadraticBezierTo(cx, cy + 6, cx + 5, cy + 2);
     canvas.drawPath(smilePath, facePaint);
 
-    canvas.drawCircle(Offset(cx - 4, cy - 3), 1.5, facePaint..color = Colors.white.withValues(alpha: 0.25 * progress));
+    canvas.drawCircle(
+      Offset(cx - 4, cy - 3),
+      1.5,
+      facePaint..color = Colors.white.withValues(alpha: 0.25 * progress),
+    );
     canvas.drawCircle(Offset(cx + 4, cy - 3), 1.5, facePaint);
   }
 
   @override
-  bool shouldRepaint(SageGlowPainter old) => old.progress != progress || old.color != color;
+  bool shouldRepaint(SageGlowPainter old) =>
+      old.progress != progress || old.color != color;
 }
 
 class SageGlow extends StatelessWidget {

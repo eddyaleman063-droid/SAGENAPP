@@ -15,10 +15,9 @@ void main() {
   });
 
   setUpAll(() {
-    registerFallbackValue(ApiRequest(
-      method: 'GET',
-      uri: Uri.parse('https://fallback.test'),
-    ));
+    registerFallbackValue(
+      ApiRequest(method: 'GET', uri: Uri.parse('https://fallback.test')),
+    );
   });
 
   group('MercadoPagoPreference', () {
@@ -63,7 +62,8 @@ void main() {
       when(() => mockSender.send(any())).thenAnswer(
         (_) async => const ApiResponse(
           statusCode: 200,
-          body: '{"result":{"preferenceId":"pref_1","initPoint":"https://mp.com/checkout","externalRef":"ref_1"}}',
+          body:
+              '{"result":{"preferenceId":"pref_1","initPoint":"https://mp.com/checkout","externalRef":"ref_1"}}',
         ),
       );
 
@@ -82,14 +82,18 @@ void main() {
       expect(request.method, 'POST');
       expect(request.headers?['Authorization'], 'Bearer token_abc');
       expect((request.body as Map<String, dynamic>)['amount'], 50);
-      expect((request.body as Map<String, dynamic>)['productId'], 'donation_basic');
+      expect(
+        (request.body as Map<String, dynamic>)['productId'],
+        'donation_basic',
+      );
     });
 
     test('includes price when provided', () async {
       when(() => mockSender.send(any())).thenAnswer(
         (_) async => const ApiResponse(
           statusCode: 200,
-          body: '{"result":{"preferenceId":"p","initPoint":"i","externalRef":"e"}}',
+          body:
+              '{"result":{"preferenceId":"p","initPoint":"i","externalRef":"e"}}',
         ),
       );
 
@@ -111,18 +115,21 @@ void main() {
       );
 
       expect(
-        () => service.createPreference(amount: 10, productId: 'p', idToken: 't'),
+        () =>
+            service.createPreference(amount: 10, productId: 'p', idToken: 't'),
         throwsA(isA<MercadoPagoException>()),
       );
     });
 
     test('throws MercadoPagoException when result is missing', () async {
       when(() => mockSender.send(any())).thenAnswer(
-        (_) async => const ApiResponse(statusCode: 200, body: '{"other":"data"}'),
+        (_) async =>
+            const ApiResponse(statusCode: 200, body: '{"other":"data"}'),
       );
 
       expect(
-        () => service.createPreference(amount: 10, productId: 'p', idToken: 't'),
+        () =>
+            service.createPreference(amount: 10, productId: 'p', idToken: 't'),
         throwsA(isA<MercadoPagoException>()),
       );
     });
@@ -133,12 +140,15 @@ void main() {
       );
 
       expect(
-        () => service.createPreference(amount: 10, productId: 'p', idToken: 't'),
-        throwsA(isA<MercadoPagoException>().having(
-          (e) => e.message,
-          'message',
-          contains('network'),
-        )),
+        () =>
+            service.createPreference(amount: 10, productId: 'p', idToken: 't'),
+        throwsA(
+          isA<MercadoPagoException>().having(
+            (e) => e.message,
+            'message',
+            contains('network'),
+          ),
+        ),
       );
     });
 
@@ -146,7 +156,8 @@ void main() {
       when(() => mockSender.send(any())).thenThrow(Exception('unexpected'));
 
       expect(
-        () => service.createPreference(amount: 10, productId: 'p', idToken: 't'),
+        () =>
+            service.createPreference(amount: 10, productId: 'p', idToken: 't'),
         throwsA(isA<MercadoPagoException>()),
       );
     });
@@ -154,9 +165,9 @@ void main() {
 
   group('checkHealth', () {
     test('returns true when server responds 200', () async {
-      when(() => mockSender.send(any())).thenAnswer(
-        (_) async => const ApiResponse(statusCode: 200, body: '{}'),
-      );
+      when(
+        () => mockSender.send(any()),
+      ).thenAnswer((_) async => const ApiResponse(statusCode: 200, body: '{}'));
 
       final result = await service.checkHealth();
       expect(result, true);
@@ -198,9 +209,9 @@ void main() {
     });
 
     test('returns empty map when result is missing', () async {
-      when(() => mockSender.send(any())).thenAnswer(
-        (_) async => const ApiResponse(statusCode: 200, body: '{}'),
-      );
+      when(
+        () => mockSender.send(any()),
+      ).thenAnswer((_) async => const ApiResponse(statusCode: 200, body: '{}'));
 
       final result = await service.validatePurchase(
         cost: 29,
@@ -212,9 +223,9 @@ void main() {
     });
 
     test('propagates ApiException', () async {
-      when(() => mockSender.send(any())).thenThrow(
-        const ApiException(ApiErrorType.server, 'Server error'),
-      );
+      when(
+        () => mockSender.send(any()),
+      ).thenThrow(const ApiException(ApiErrorType.server, 'Server error'));
 
       expect(
         () => service.validatePurchase(cost: 29, itemId: 'i', idToken: 't'),
@@ -244,9 +255,9 @@ void main() {
     });
 
     test('propagates ApiException', () async {
-      when(() => mockSender.send(any())).thenThrow(
-        const ApiException(ApiErrorType.network, 'No connection'),
-      );
+      when(
+        () => mockSender.send(any()),
+      ).thenThrow(const ApiException(ApiErrorType.network, 'No connection'));
 
       expect(
         () => service.registerPendingPayment(

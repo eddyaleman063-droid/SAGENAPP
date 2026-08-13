@@ -27,7 +27,8 @@ import 'motivation_screen.dart';
 import 'projection_screen.dart';
 import 'starting_point_screen.dart';
 
-typedef _StepBuilder = Widget Function(BuildContext context, _PostOnboardingActions actions);
+typedef _StepBuilder =
+    Widget Function(BuildContext context, _PostOnboardingActions actions);
 
 class _PostOnboardingActions {
   final VoidCallback advance;
@@ -93,12 +94,17 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
       final auth = ref.read(authProvider);
       if (auth.isAuthenticated) {
         await _createProfile(auth, funnel);
-        ref.read(analyticsServiceProvider).track(AnalyticEvent.signUp, properties: {
-          'method': 'google',
-        });
+        ref
+            .read(analyticsServiceProvider)
+            .track(AnalyticEvent.signUp, properties: {'method': 'google'});
         setState(() => _step = 14);
       } else if (auth.errorMessage != null) {
-        SagenNotification.show(context, message: AuthException(auth.errorMessage!).localizedMessage(AppLocalizations.of(context)!));
+        SagenNotification.show(
+          context,
+          message: AuthException(
+            auth.errorMessage!,
+          ).localizedMessage(AppLocalizations.of(context)!),
+        );
       }
     } else if (funnel.authMethod == 'email') {
       final password = funnel.password;
@@ -112,31 +118,43 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
       final auth = ref.read(authProvider);
       if (auth.showVerificationScreen || auth.isAuthenticated) {
         await _createProfile(auth, funnel);
-        ref.read(analyticsServiceProvider).track(AnalyticEvent.signUp, properties: {
-          'method': 'email',
-        });
+        ref
+            .read(analyticsServiceProvider)
+            .track(AnalyticEvent.signUp, properties: {'method': 'email'});
         _advance();
       } else if (auth.errorMessage != null) {
-        SagenNotification.show(context, message: AuthException(auth.errorMessage!).localizedMessage(AppLocalizations.of(context)!));
+        SagenNotification.show(
+          context,
+          message: AuthException(
+            auth.errorMessage!,
+          ).localizedMessage(AppLocalizations.of(context)!),
+        );
       }
     }
   }
 
-  Future<void> _createProfile(AuthState auth, RegistrationFunnelState funnel) async {
+  Future<void> _createProfile(
+    AuthState auth,
+    RegistrationFunnelState funnel,
+  ) async {
     final uid = ref.read(authServiceProvider).currentUser?.uid;
     if (uid == null) return;
     for (int attempt = 0; attempt < 3; attempt++) {
       try {
-        await ref.read(firestoreServiceProvider).createUserProfile(
-          uid: uid,
-          firstName: funnel.name,
-          lastName: funnel.surname,
-          email: funnel.email.isNotEmpty ? funnel.email : auth.email,
-          age: funnel.age,
-        );
+        await ref
+            .read(firestoreServiceProvider)
+            .createUserProfile(
+              uid: uid,
+              firstName: funnel.name,
+              lastName: funnel.surname,
+              email: funnel.email.isNotEmpty ? funnel.email : auth.email,
+              age: funnel.age,
+            );
         return;
       } catch (e) {
-        AppLogger().warning('post_onboarding: _createProfile attempt $attempt failed: $e');
+        AppLogger().warning(
+          'post_onboarding: _createProfile attempt $attempt failed: $e',
+        );
         if (attempt < 2) await Future.delayed(const Duration(seconds: 1));
       }
     }
@@ -185,7 +203,8 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
 
   static final List<_StepBuilder?> _stepBuilders = [
     // 0: Welcome
-    (ctx, a) => PostOnboardingWelcomeScreen(onContinue: a.advance, onBack: a.goToHome),
+    (ctx, a) =>
+        PostOnboardingWelcomeScreen(onContinue: a.advance, onBack: a.goToHome),
     // 1: Route selection
     (ctx, a) => RouteSelectionScreen(onContinue: a.advance, onBack: a.goBack),
     // 2: Motivation
@@ -201,16 +220,21 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
     // 7: Streak intro
     (ctx, a) => StreakIntroScreen(onContinue: a.advance),
     // 8: Profile hook
-    (ctx, a) => ProfileHookScreen(onCreateProfile: a.advance, onSkipToHome: () {
-      a.ref.read(registrationFunnelProvider.notifier).skipToHome();
-      a.jumpToStep(15);
-    }),
+    (ctx, a) => ProfileHookScreen(
+      onCreateProfile: a.advance,
+      onSkipToHome: () {
+        a.ref.read(registrationFunnelProvider.notifier).skipToHome();
+        a.jumpToStep(15);
+      },
+    ),
     // 9: Age input
     (ctx, a) => AgeInputScreen(onContinue: a.advance),
     // 10: Auth method
-    (ctx, a) => AuthMethodScreen(onContinue: () {
-      a.onAuthMethodSelected('google');
-    }),
+    (ctx, a) => AuthMethodScreen(
+      onContinue: () {
+        a.onAuthMethodSelected('google');
+      },
+    ),
     // 11: Email input (conditional)
     null,
     // 12: Password input (conditional)
@@ -241,9 +265,11 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
     _bridgeWizardData();
 
     if (_step == 10) {
-      return AuthMethodScreen(onContinue: () => _onAuthMethodSelected(
-        ref.read(registrationFunnelProvider).authMethod,
-      ));
+      return AuthMethodScreen(
+        onContinue: () => _onAuthMethodSelected(
+          ref.read(registrationFunnelProvider).authMethod,
+        ),
+      );
     }
 
     if (_step == 11) {
@@ -271,6 +297,8 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
     }
 
     final builder = _stepBuilders[_step];
-    return builder != null ? builder(context, actions).animate().fadeIn().slideY(begin: 0.05) : const ProfileSuccessScreen();
+    return builder != null
+        ? builder(context, actions).animate().fadeIn().slideY(begin: 0.05)
+        : const ProfileSuccessScreen();
   }
 }

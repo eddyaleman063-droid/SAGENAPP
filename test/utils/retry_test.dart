@@ -22,13 +22,10 @@ void main() {
     test('throws after maxRetries exceeded', () async {
       var attempts = 0;
       try {
-        await retry(
-          () async {
-            attempts++;
-            throw Exception('always fail');
-          },
-          config: const RetryConfig(maxRetries: 2),
-        );
+        await retry(() async {
+          attempts++;
+          throw Exception('always fail');
+        }, config: const RetryConfig(maxRetries: 2));
         // ignore: dead_code
         fail('Should have thrown');
       } catch (_) {
@@ -40,16 +37,10 @@ void main() {
     test('respects shouldRetry returning false', () async {
       var attempts = 0;
       try {
-        await retry(
-          () async {
-            attempts++;
-            throw Exception('no retry');
-          },
-          config: RetryConfig(
-            maxRetries: 5,
-            shouldRetry: (_) => false,
-          ),
-        );
+        await retry(() async {
+          attempts++;
+          throw Exception('no retry');
+        }, config: RetryConfig(maxRetries: 5, shouldRetry: (_) => false));
         // ignore: dead_code
         fail('Should have thrown');
       } catch (_) {

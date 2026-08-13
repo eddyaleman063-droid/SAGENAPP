@@ -1,4 +1,4 @@
-﻿import 'dart:math' as math;
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,11 +13,7 @@ class RouteSelectionScreen extends StatefulWidget {
   final VoidCallback? onContinue;
   final VoidCallback? onBack;
 
-  const RouteSelectionScreen({
-    super.key,
-    this.onContinue,
-    this.onBack,
-  });
+  const RouteSelectionScreen({super.key, this.onContinue, this.onBack});
 
   @override
   State<RouteSelectionScreen> createState() => _RouteSelectionScreenState();
@@ -39,13 +35,18 @@ class _RouteSelectionScreenState extends State<RouteSelectionScreen> {
   Widget build(BuildContext context) {
     final dark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: dark ? PremiumColors.deepBackground : PremiumColors.lightBg,
+      backgroundColor: dark
+          ? PremiumColors.deepBackground
+          : PremiumColors.lightBg,
       body: SafeArea(
         child: Column(
           children: [
             // ── Header: back arrow + progress bar ──
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxs, vertical: AppSpacing.sm),
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.xxs,
+                vertical: AppSpacing.sm,
+              ),
               child: Row(
                 children: [
                   Semantics(
@@ -104,7 +105,8 @@ class _RouteSelectionScreenState extends State<RouteSelectionScreen> {
                       height: 80,
                       cacheWidth: 160,
                       cacheHeight: 160,
-                      errorBuilder: (_, _, _) => const Icon(Icons.pets, size: 48),
+                      errorBuilder: (_, _, _) =>
+                          const Icon(Icons.pets, size: 48),
                     ),
                   ),
                   const SizedBox(width: AppSpacing.sm),
@@ -116,9 +118,13 @@ class _RouteSelectionScreenState extends State<RouteSelectionScreen> {
                         children: [
                           Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: AppSpacing.xl, vertical: AppSpacing.lg),
+                              horizontal: AppSpacing.xl,
+                              vertical: AppSpacing.lg,
+                            ),
                             decoration: BoxDecoration(
-                              color: dark ? PremiumColors.onboardingBubbleDark : Colors.white,
+                              color: dark
+                                  ? PremiumColors.onboardingBubbleDark
+                                  : Colors.white,
                               borderRadius: BorderRadius.circular(AppRadius.xl),
                               border: Border.all(
                                 color: dark
@@ -145,7 +151,9 @@ class _RouteSelectionScreenState extends State<RouteSelectionScreen> {
                                   width: 12,
                                   height: 12,
                                   decoration: BoxDecoration(
-                                    color: dark ? PremiumColors.onboardingBubbleDark : Colors.white,
+                                    color: dark
+                                        ? PremiumColors.onboardingBubbleDark
+                                        : Colors.white,
                                     border: Border.all(
                                       color: dark
                                           ? Colors.white.withValues(alpha: 0.10)
@@ -170,13 +178,15 @@ class _RouteSelectionScreenState extends State<RouteSelectionScreen> {
             Align(
               alignment: Alignment.centerLeft,
               child: Padding(
-                padding:
-                    const EdgeInsets.only(left: AppSpacing.xxl, bottom: AppSpacing.md),
-                  child: Text(
-                    AppLocalizations.of(context)!.onbRouteAvailable,
+                padding: const EdgeInsets.only(
+                  left: AppSpacing.xxl,
+                  bottom: AppSpacing.md,
+                ),
+                child: Text(
+                  AppLocalizations.of(context)!.onbRouteAvailable,
                   style: AppTextStyle.subtitle.copyWith(
-                  color: context.textTertiary,
-                  fontWeight: FontWeight.w500,
+                    color: context.textTertiary,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
@@ -186,14 +196,17 @@ class _RouteSelectionScreenState extends State<RouteSelectionScreen> {
             Expanded(
               child: RepaintBoundary(
                 child: ListView.separated(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.xxl,
+                  ),
                   itemCount: _routes(AppLocalizations.of(context)!).length,
                   separatorBuilder: (_, _) =>
                       const SizedBox(height: AppSpacing.md),
                   itemBuilder: (context, index) {
                     final isSelected = _selectedRouteIndex == index;
-                    final (emoji, title) = _routes(AppLocalizations.of(context)!)[index];
+                    final (emoji, title) = _routes(
+                      AppLocalizations.of(context)!,
+                    )[index];
                     return Semantics(
                       button: true,
                       selected: isSelected,
@@ -204,45 +217,49 @@ class _RouteSelectionScreenState extends State<RouteSelectionScreen> {
                           setState(() => _selectedRouteIndex = index);
                         },
                         child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 200),
-                        height: 60,
-                        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                        decoration: BoxDecoration(
-                          color: isSelected
-                              ? PremiumColors.primaryAccent.withValues(alpha: 0.08)
-                              : context.subtle,
-                          borderRadius: BorderRadius.circular(AppRadius.xl),
-                          border: Border.all(
-                            color: isSelected
-                                ? PremiumColors.primaryAccent
-                                : (dark
-                                   ? Colors.white.withValues(alpha: 0.10)
-                                   : context.borderSubtle),
-                            width: isSelected ? 2.5 : 1,
+                          duration: const Duration(milliseconds: 200),
+                          height: 60,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: AppSpacing.lg,
                           ),
-                        ),
-                        child: Row(
-                          children: [
-                            Text(emoji, style: AppTextStyle.headline),
-                            const SizedBox(width: AppSpacing.lg),
-                            Expanded(
-                              child: Text(
-                                title,
-                                style: AppTextStyle.body.copyWith(
-                                  color: context.textPrimary,
-                                  fontWeight: FontWeight.w600,
+                          decoration: BoxDecoration(
+                            color: isSelected
+                                ? PremiumColors.primaryAccent.withValues(
+                                    alpha: 0.08,
+                                  )
+                                : context.subtle,
+                            borderRadius: BorderRadius.circular(AppRadius.xl),
+                            border: Border.all(
+                              color: isSelected
+                                  ? PremiumColors.primaryAccent
+                                  : (dark
+                                        ? Colors.white.withValues(alpha: 0.10)
+                                        : context.borderSubtle),
+                              width: isSelected ? 2.5 : 1,
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Text(emoji, style: AppTextStyle.headline),
+                              const SizedBox(width: AppSpacing.lg),
+                              Expanded(
+                                child: Text(
+                                  title,
+                                  style: AppTextStyle.body.copyWith(
+                                    color: context.textPrimary,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                               ),
-                            ),
-                            if (isSelected)
-                              const Icon(
-                                Icons.check_circle_rounded,
-                                color: PremiumColors.primaryAccent,
-                                size: 22,
-                              ),
-                          ],
+                              if (isSelected)
+                                const Icon(
+                                  Icons.check_circle_rounded,
+                                  color: PremiumColors.primaryAccent,
+                                  size: 22,
+                                ),
+                            ],
+                          ),
                         ),
-                      ),
                       ),
                     );
                   },
@@ -253,7 +270,11 @@ class _RouteSelectionScreenState extends State<RouteSelectionScreen> {
             // ── Conditional bottom button ──
             Padding(
               padding: const EdgeInsets.fromLTRB(
-                  AppSpacing.xxl, 0, AppSpacing.xxl, AppSpacing.xxl),
+                AppSpacing.xxl,
+                0,
+                AppSpacing.xxl,
+                AppSpacing.xxl,
+              ),
               child: Semantics(
                 button: true,
                 label: AppLocalizations.of(context)!.continueText,

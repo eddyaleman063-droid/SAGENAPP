@@ -15,7 +15,8 @@ class ProfileSuccessScreen extends ConsumerStatefulWidget {
   const ProfileSuccessScreen({super.key});
 
   @override
-  ConsumerState<ProfileSuccessScreen> createState() => _ProfileSuccessScreenState();
+  ConsumerState<ProfileSuccessScreen> createState() =>
+      _ProfileSuccessScreenState();
 }
 
 class _ProfileSuccessScreenState extends ConsumerState<ProfileSuccessScreen>
@@ -27,7 +28,10 @@ class _ProfileSuccessScreenState extends ConsumerState<ProfileSuccessScreen>
   void initState() {
     super.initState();
     _confettiCtrl = ConfettiController(duration: const Duration(seconds: 3));
-    _enterCtrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 800));
+    _enterCtrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
+    );
     _enterCtrl.forward();
     _confettiCtrl.play();
     ref.read(authProvider.notifier).markOnboardingCompleted();
@@ -74,29 +78,46 @@ class _ProfileSuccessScreenState extends ConsumerState<ProfileSuccessScreen>
                 children: [
                   const Spacer(flex: 2),
                   ScaleTransition(
-                    scale: CurvedAnimation(parent: _enterCtrl, curve: Curves.elasticOut),
+                    scale: CurvedAnimation(
+                      parent: _enterCtrl,
+                      curve: Curves.elasticOut,
+                    ),
                     child: const SizedBox(
                       width: 120,
                       height: 120,
-                      child: ExcludeSemantics(child: SageEmotionWidget(
-                        emotion: SageEmotion.surprisedWings,
-                        size: 120,
-                      )),
+                      child: ExcludeSemantics(
+                        child: SageEmotionWidget(
+                          emotion: SageEmotion.surprisedWings,
+                          size: 120,
+                        ),
+                      ),
                     ),
                   ),
                   const SizedBox(height: AppSpacing.xxl),
                   FadeTransition(
-                    opacity: CurvedAnimation(parent: _enterCtrl, curve: Curves.easeIn),
+                    opacity: CurvedAnimation(
+                      parent: _enterCtrl,
+                      curve: Curves.easeIn,
+                    ),
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl, vertical: AppSpacing.sm),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.xl,
+                        vertical: AppSpacing.sm,
+                      ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(AppRadius.pill),
-                        gradient: const LinearGradient(colors: PremiumColors.gradientAchievement),
+                        gradient: const LinearGradient(
+                          colors: PremiumColors.gradientAchievement,
+                        ),
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Icon(Icons.check_circle_rounded, size: 16, color: Colors.white),
+                          const Icon(
+                            Icons.check_circle_rounded,
+                            size: 16,
+                            color: Colors.white,
+                          ),
                           const SizedBox(width: AppSpacing.sm),
                           Text(
                             l.regProfileCreated,
@@ -112,7 +133,10 @@ class _ProfileSuccessScreenState extends ConsumerState<ProfileSuccessScreen>
                   ),
                   const SizedBox(height: AppSpacing.xl),
                   FadeTransition(
-                    opacity: CurvedAnimation(parent: _enterCtrl, curve: Curves.easeIn),
+                    opacity: CurvedAnimation(
+                      parent: _enterCtrl,
+                      curve: Curves.easeIn,
+                    ),
                     child: Text(
                       l.regWelcomeSagen,
                       style: AppTextStyle.headlineLarge.copyWith(
@@ -122,7 +146,10 @@ class _ProfileSuccessScreenState extends ConsumerState<ProfileSuccessScreen>
                   ),
                   const SizedBox(height: AppSpacing.md),
                   FadeTransition(
-                    opacity: CurvedAnimation(parent: _enterCtrl, curve: Curves.easeIn),
+                    opacity: CurvedAnimation(
+                      parent: _enterCtrl,
+                      curve: Curves.easeIn,
+                    ),
                     child: Text(
                       l.regReadyForLesson,
                       textAlign: TextAlign.center,
@@ -144,11 +171,15 @@ class _ProfileSuccessScreenState extends ConsumerState<ProfileSuccessScreen>
                       style: ElevatedButton.styleFrom(
                         backgroundColor: PremiumColors.primaryAccent,
                         foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(AppRadius.lg),
+                        ),
                       ),
                       child: Text(
                         l.nextText.toUpperCase(),
-                        style: AppTextStyle.body.copyWith(fontWeight: FontWeight.bold),
+                        style: AppTextStyle.body.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),

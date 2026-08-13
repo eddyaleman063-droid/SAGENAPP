@@ -45,9 +45,13 @@ class CertificatePinning {
           }
         }
       }
-      _logger.info('CertificatePinning: loaded pins for ${config.keys.length} hosts from config');
+      _logger.info(
+        'CertificatePinning: loaded pins for ${config.keys.length} hosts from config',
+      );
     } catch (e) {
-      _logger.warning('CertificatePinning: no cert_pins.json found, using default pins only');
+      _logger.warning(
+        'CertificatePinning: no cert_pins.json found, using default pins only',
+      );
     }
   }
 
@@ -55,7 +59,9 @@ class CertificatePinning {
   void setEnforceMode({required bool enforce}) {
     _enforcePinning = enforce;
     if (!enforce) {
-      _logger.warning('CertificatePinning: enforcement DISABLED (log-only mode)');
+      _logger.warning(
+        'CertificatePinning: enforcement DISABLED (log-only mode)',
+      );
     }
   }
 
@@ -79,10 +85,14 @@ class CertificatePinning {
     if (!_pins.containsKey(host)) {
       // Unknown host: REJECT in enforce mode (fail-closed), warn in log-only mode
       if (_enforcePinning) {
-        _logger.error('CertificatePinning: REJECTING unknown host $host — no pins configured (enforce mode)');
+        _logger.error(
+          'CertificatePinning: REJECTING unknown host $host — no pins configured (enforce mode)',
+        );
         return false;
       }
-      _logger.warning('CertificatePinning: unknown host $host — no pins configured (log-only)');
+      _logger.warning(
+        'CertificatePinning: unknown host $host — no pins configured (log-only)',
+      );
       return true;
     }
 
@@ -125,7 +135,9 @@ class CertificatePinning {
       }
       // Unknown host: block if enforce mode is on
       if (_enforcePinning) {
-        _logger.error('CertificatePinning: BLOCKED unknown host $h — no pins configured');
+        _logger.error(
+          'CertificatePinning: BLOCKED unknown host $h — no pins configured',
+        );
         return false;
       }
       return true;
@@ -158,7 +170,9 @@ class CertificatePinning {
   static bool _isPlaceholderPin(String pin) {
     final hash = pin.replaceFirst('sha256/', '');
     if (hash.length != 64) return true;
-    if (RegExp(r'^[0-9a-f]{64}$', caseSensitive: false).hasMatch(hash)) return false;
+    if (RegExp(r'^[0-9a-f]{64}$', caseSensitive: false).hasMatch(hash)) {
+      return false;
+    }
     if (RegExp(r'^[A-Za-z0-9+/]+=*$', caseSensitive: false).hasMatch(hash) &&
         hash.length == 44) {
       return false;

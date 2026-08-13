@@ -8,19 +8,27 @@ enum InventoryItemType {
 
   String get displayName {
     switch (this) {
-      case InventoryItemType.focusElixir: return 'Focus Elixir';
-      case InventoryItemType.phoenixFeather: return 'Phoenix Feather';
-      case InventoryItemType.sagesMonocle: return "Sage's Monocle";
-      case InventoryItemType.titaniumShield: return 'Titanium Shield';
+      case InventoryItemType.focusElixir:
+        return 'Focus Elixir';
+      case InventoryItemType.phoenixFeather:
+        return 'Phoenix Feather';
+      case InventoryItemType.sagesMonocle:
+        return "Sage's Monocle";
+      case InventoryItemType.titaniumShield:
+        return 'Titanium Shield';
     }
   }
 
   String localizedDisplayName(AppLocalizations l) {
     switch (this) {
-      case InventoryItemType.focusElixir: return l.inventoryFocusElixir;
-      case InventoryItemType.phoenixFeather: return l.inventoryPhoenixFeather;
-      case InventoryItemType.sagesMonocle: return l.inventorySagesMonocle;
-      case InventoryItemType.titaniumShield: return l.inventoryTitaniumShield;
+      case InventoryItemType.focusElixir:
+        return l.inventoryFocusElixir;
+      case InventoryItemType.phoenixFeather:
+        return l.inventoryPhoenixFeather;
+      case InventoryItemType.sagesMonocle:
+        return l.inventorySagesMonocle;
+      case InventoryItemType.titaniumShield:
+        return l.inventoryTitaniumShield;
     }
   }
 
@@ -39,19 +47,27 @@ enum InventoryItemType {
 
   String localizedDescription(AppLocalizations l) {
     switch (this) {
-      case InventoryItemType.focusElixir: return l.inventoryFocusElixirDesc;
-      case InventoryItemType.phoenixFeather: return l.inventoryPhoenixFeatherDesc;
-      case InventoryItemType.sagesMonocle: return l.inventorySagesMonocleDesc;
-      case InventoryItemType.titaniumShield: return l.inventoryTitaniumShieldDesc;
+      case InventoryItemType.focusElixir:
+        return l.inventoryFocusElixirDesc;
+      case InventoryItemType.phoenixFeather:
+        return l.inventoryPhoenixFeatherDesc;
+      case InventoryItemType.sagesMonocle:
+        return l.inventorySagesMonocleDesc;
+      case InventoryItemType.titaniumShield:
+        return l.inventoryTitaniumShieldDesc;
     }
   }
 
   String get iconAsset {
     switch (this) {
-      case InventoryItemType.focusElixir: return '🧪';
-      case InventoryItemType.phoenixFeather: return '🪶';
-      case InventoryItemType.sagesMonocle: return '👁️';
-      case InventoryItemType.titaniumShield: return '🛡️';
+      case InventoryItemType.focusElixir:
+        return '🧪';
+      case InventoryItemType.phoenixFeather:
+        return '🪶';
+      case InventoryItemType.sagesMonocle:
+        return '👁️';
+      case InventoryItemType.titaniumShield:
+        return '🛡️';
     }
   }
 }
@@ -73,7 +89,9 @@ class InventoryItem {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is InventoryItem && type == other.type && quantity == other.quantity;
+      other is InventoryItem &&
+          type == other.type &&
+          quantity == other.quantity;
 
   @override
   int get hashCode => type.hashCode ^ quantity.hashCode;

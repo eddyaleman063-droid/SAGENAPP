@@ -2,11 +2,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'app_logger.dart';
 
-enum DeviceTier {
-  lowEnd,
-  midRange,
-  highEnd,
-}
+enum DeviceTier { lowEnd, midRange, highEnd }
 
 /// Top-level function for compute isolate — reads /proc/meminfo
 int _readMemTotalKBSync() {
@@ -19,10 +15,10 @@ int _readMemTotalKBSync() {
         final parts = line.split(RegExp(r'\s+'));
         if (parts.length >= 2) return int.tryParse(parts[1]) ?? 0;
       }
-      }
-    } catch (e) {
-      AppLogger().warning('DeviceTier: failed to read /proc/meminfo: $e');
     }
+  } catch (e) {
+    AppLogger().warning('DeviceTier: failed to read /proc/meminfo: $e');
+  }
   return 0;
 }
 
@@ -98,7 +94,9 @@ class LowEndDeviceDetector {
     try {
       _tier = await compute(_detectTierFromSystem, null as dynamic);
     } catch (_) {
-      AppLogger().warning('DeviceTier: failed to detect device tier from system, defaulting to midRange');
+      AppLogger().warning(
+        'DeviceTier: failed to detect device tier from system, defaulting to midRange',
+      );
       _tier = DeviceTier.midRange;
     }
   }

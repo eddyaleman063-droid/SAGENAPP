@@ -42,18 +42,28 @@ class SagenNotification {
       SnackBar(
         content: Row(
           children: [
-            ExcludeSemantics(
-              child: Icon(icon, color: textColor, size: 18),
-            ),
+            ExcludeSemantics(child: Icon(icon, color: textColor, size: 18)),
             const SizedBox(width: AppSpacing.sm),
-            Expanded(child: Text(message, style: AppTextStyle.subtitle.copyWith(color: textColor))),
+            Expanded(
+              child: Text(
+                message,
+                style: AppTextStyle.subtitle.copyWith(color: textColor),
+              ),
+            ),
           ],
         ),
         backgroundColor: backgroundColor,
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadius.lg),
+        ),
         duration: duration,
-        margin: const EdgeInsets.fromLTRB(AppSpacing.lg, 0, AppSpacing.lg, AppSpacing.lg),
+        margin: const EdgeInsets.fromLTRB(
+          AppSpacing.lg,
+          0,
+          AppSpacing.lg,
+          AppSpacing.lg,
+        ),
       ),
     );
   }

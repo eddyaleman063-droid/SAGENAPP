@@ -41,46 +41,69 @@ class EmailInputScreen extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: AppSpacing.xxl),
-              Semantics(label: l.regEmailTitle, child: TextField(
-                maxLength: 254,
-                keyboardType: TextInputType.emailAddress,
-                style: AppTextStyle.titleSmall.copyWith(
-                  color: context.textPrimary,
-                ),
-                decoration: InputDecoration(
-                  hintText: l.regEmailHint,
-                  hintStyle: AppTextStyle.titleSmall.copyWith(
-                    color: context.subtle,
+              Semantics(
+                label: l.regEmailTitle,
+                child: TextField(
+                  maxLength: 254,
+                  keyboardType: TextInputType.emailAddress,
+                  style: AppTextStyle.titleSmall.copyWith(
+                    color: context.textPrimary,
                   ),
-                  filled: true,
-                  fillColor: context.surfaceTinted,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(AppRadius.xl),
-                    borderSide: BorderSide.none,
+                  decoration: InputDecoration(
+                    hintText: l.regEmailHint,
+                    hintStyle: AppTextStyle.titleSmall.copyWith(
+                      color: context.subtle,
+                    ),
+                    filled: true,
+                    fillColor: context.surfaceTinted,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(AppRadius.xl),
+                      borderSide: BorderSide.none,
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.lg,
+                      vertical: AppSpacing.lg,
+                    ),
+                    prefixIcon: const Icon(
+                      Icons.email_rounded,
+                      color: PremiumColors.primary,
+                      size: 20,
+                    ),
                   ),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.lg),
-                  prefixIcon: const Icon(Icons.email_rounded, color: PremiumColors.primary, size: 20),
+                  onChanged: (value) {
+                    ref
+                        .read(registrationFunnelProvider.notifier)
+                        .setEmail(value);
+                  },
                 ),
-                onChanged: (value) {
-                  ref.read(registrationFunnelProvider.notifier).setEmail(value);
-                },
-              )),
+              ),
               const Spacer(flex: 3),
               SizedBox(
                 width: double.infinity,
                 height: 54,
-                child: Semantics(button: true, label: l.continueText, child: ElevatedButton(
-                  onPressed: emailValid ? onContinue : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: PremiumColors.primary,
-                    foregroundColor: Colors.white,
-                    disabledBackgroundColor: context.surfaceTinted,
-                    disabledForegroundColor: context.textDisabled,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
-                    elevation: emailValid ? 4 : 0,
+                child: Semantics(
+                  button: true,
+                  label: l.continueText,
+                  child: ElevatedButton(
+                    onPressed: emailValid ? onContinue : null,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: PremiumColors.primary,
+                      foregroundColor: Colors.white,
+                      disabledBackgroundColor: context.surfaceTinted,
+                      disabledForegroundColor: context.textDisabled,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(AppRadius.lg),
+                      ),
+                      elevation: emailValid ? 4 : 0,
+                    ),
+                    child: Text(
+                      l.continueText,
+                      style: AppTextStyle.titleSmall.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
-                  child: Text(l.continueText, style: AppTextStyle.titleSmall.copyWith(fontWeight: FontWeight.bold)),
-                )),
+                ),
               ),
               const SizedBox(height: AppSpacing.md),
             ],

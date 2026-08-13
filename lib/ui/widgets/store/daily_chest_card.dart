@@ -26,7 +26,9 @@ class _DailyChestCardState extends ConsumerState<DailyChestCard> {
     final exp = ref.read(experienceServiceProvider);
     setState(() => _claiming = true);
     try {
-      final xp = await ref.read(gamificationProvider.notifier).claimDailyChest();
+      final xp = await ref
+          .read(gamificationProvider.notifier)
+          .claimDailyChest();
       if (!mounted) return;
       if (xp > 0) {
         exp.successHaptic();
@@ -66,7 +68,9 @@ class _DailyChestCardState extends ConsumerState<DailyChestCard> {
           borderRadius: BorderRadius.circular(AppRadius.xl),
           gradient: LinearGradient(
             colors: [
-              PremiumColors.chestBronzeBody.withValues(alpha: dark ? 0.20 : 0.14),
+              PremiumColors.chestBronzeBody.withValues(
+                alpha: dark ? 0.20 : 0.14,
+              ),
               context.surfaceCard,
             ],
             begin: Alignment.topLeft,
@@ -150,7 +154,10 @@ class _ClaimButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(AppRadius.md),
             gradient: enabled
                 ? const LinearGradient(
-                    colors: [PremiumColors.chestBronzeBody, PremiumColors.chestGoldBody],
+                    colors: [
+                      PremiumColors.chestBronzeBody,
+                      PremiumColors.chestGoldBody,
+                    ],
                   )
                 : null,
             color: enabled ? null : context.surfaceTinted,
@@ -159,7 +166,10 @@ class _ClaimButton extends StatelessWidget {
               ? const SizedBox(
                   width: 14,
                   height: 14,
-                  child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: Colors.white,
+                  ),
                 )
               : Text(
                   label,

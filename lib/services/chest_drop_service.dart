@@ -16,7 +16,8 @@ class ChestDropService {
   FirebaseFunctions? _functions;
   final _logger = AppLogger();
 
-  FirebaseFunctions get _getFunctions => _functions ??= FirebaseFunctions.instance;
+  FirebaseFunctions get _getFunctions =>
+      _functions ??= FirebaseFunctions.instance;
 
   static const int _maxRetries = 3;
   static const int _baseDelayMs = 1000;
@@ -24,13 +25,15 @@ class ChestDropService {
   Future<ChestReward> roll(ChestType type) async {
     for (int attempt = 0; attempt < _maxRetries; attempt++) {
       try {
-        final result = await _getFunctions
-            .httpsCallable('rollChestDrop')
-            .call({'chestType': type.name});
+        final result = await _getFunctions.httpsCallable('rollChestDrop').call({
+          'chestType': type.name,
+        });
 
         final data = result.data;
         if (data is! Map<String, dynamic>) {
-          _logger.warning('Chest drop returned non-map data: ${data.runtimeType}');
+          _logger.warning(
+            'Chest drop returned non-map data: ${data.runtimeType}',
+          );
           return const ChestReward(xp: 0);
         }
         return ChestReward(

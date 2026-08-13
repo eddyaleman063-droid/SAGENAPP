@@ -19,7 +19,10 @@ class SagePromptBuilder {
 
   /// Strips control characters; keeps printable ASCII and common Unicode.
   static String _sanitize(String text) {
-    final sanitized = text.replaceAll(RegExp(r'[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]'), '');
+    final sanitized = text.replaceAll(
+      RegExp(r'[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]'),
+      '',
+    );
     return sanitized.length > 5000 ? sanitized.substring(0, 5000) : sanitized;
   }
 
@@ -28,7 +31,9 @@ class SagePromptBuilder {
       final role = m.role == ChatRole.user ? 'user' : 'model';
       return {
         'role': role,
-        'parts': [{'text': _sanitize(m.text)}],
+        'parts': [
+          {'text': _sanitize(m.text)},
+        ],
       };
     }).toList();
   }

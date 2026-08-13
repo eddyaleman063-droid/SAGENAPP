@@ -18,7 +18,12 @@ class _MockLearningNotifier extends LearningNotifier {
 class _MockShopNotifier extends ShopNotifier {
   final List<ShopItem> _items = const [
     ShopItem(id: 'xp_boost', name: 'Boost de XP', description: '2x XP'),
-    ShopItem(id: 'theme_blue', name: 'Tema azul', description: 'Apariencia premium', iconAsset: 'palette'),
+    ShopItem(
+      id: 'theme_blue',
+      name: 'Tema azul',
+      description: 'Apariencia premium',
+      iconAsset: 'palette',
+    ),
   ];
 
   @override
@@ -65,7 +70,9 @@ void main() {
       await tester.pumpAndSettle();
     });
 
-    testWidgets('renders Personalización section when scrolled', (tester) async {
+    testWidgets('renders Personalización section when scrolled', (
+      tester,
+    ) async {
       SharedPreferences.setMockInitialValues({});
       final prefs = await SharedPreferences.getInstance();
       await tester.pumpWidget(createTestApp(prefs: prefs));
@@ -114,7 +121,9 @@ void main() {
       final prefs = await SharedPreferences.getInstance();
       final learning = _MockLearningNotifier();
       final shop = _MockShopNotifier();
-      await tester.pumpWidget(createTestApp(prefs: prefs, learning: learning, shop: shop));
+      await tester.pumpWidget(
+        createTestApp(prefs: prefs, learning: learning, shop: shop),
+      );
       await tester.pumpAndSettle();
 
       expect(shop.state.items.length, 2);

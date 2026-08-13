@@ -50,7 +50,9 @@ class LessonStatsScreen extends ConsumerWidget {
 
     if (!lesson.isComplete || lesson.questions.isEmpty) {
       return Scaffold(
-        backgroundColor: dark ? PremiumColors.deepBackground : PremiumColors.lightBg,
+        backgroundColor: dark
+            ? PremiumColors.deepBackground
+            : PremiumColors.lightBg,
         body: Center(child: Text(l.statsNoData)),
       );
     }
@@ -61,7 +63,9 @@ class LessonStatsScreen extends ConsumerWidget {
     final color = _color(acc);
 
     return Scaffold(
-      backgroundColor: dark ? PremiumColors.deepBackground : PremiumColors.lightBg,
+      backgroundColor: dark
+          ? PremiumColors.deepBackground
+          : PremiumColors.lightBg,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(AppSpacing.xxl),
@@ -121,7 +125,9 @@ class LessonStatsScreen extends ConsumerWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(AppRadius.xl),
                     color: PremiumColors.primary.withValues(alpha: 0.08),
-                    border: Border.all(color: PremiumColors.primary.withValues(alpha: 0.2)),
+                    border: Border.all(
+                      color: PremiumColors.primary.withValues(alpha: 0.2),
+                    ),
                   ),
                   child: Column(
                     children: [
@@ -161,10 +167,17 @@ class LessonStatsScreen extends ConsumerWidget {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: PremiumColors.primary,
                       foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(AppRadius.lg),
+                      ),
                       elevation: 4,
                     ),
-                    child: Text(l.statsReceiveXp, style: AppTextStyle.titleSmall.copyWith(fontWeight: FontWeight.bold)),
+                    child: Text(
+                      l.statsReceiveXp,
+                      style: AppTextStyle.titleSmall.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -193,7 +206,10 @@ class _StatBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg,
+        vertical: AppSpacing.md,
+      ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppRadius.xl),
         color: color.withValues(alpha: 0.08),
@@ -202,9 +218,7 @@ class _StatBadge extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          ExcludeSemantics(
-            child: Icon(icon, size: 22, color: color),
-          ),
+          ExcludeSemantics(child: Icon(icon, size: 22, color: color)),
           const SizedBox(height: AppSpacing.xs),
           Text(
             value,

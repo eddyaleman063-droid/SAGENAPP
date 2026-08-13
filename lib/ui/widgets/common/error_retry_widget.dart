@@ -11,12 +11,7 @@ class ErrorRetryWidget extends StatelessWidget {
   final String? details;
   final VoidCallback? onRetry;
 
-  const ErrorRetryWidget({
-    super.key,
-    this.message,
-    this.details,
-    this.onRetry,
-  });
+  const ErrorRetryWidget({super.key, this.message, this.details, this.onRetry});
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +56,9 @@ class ErrorRetryWidget extends StatelessWidget {
                 label: Text(l.tryAgain),
                 style: OutlinedButton.styleFrom(
                   foregroundColor: PremiumColors.splashBlue,
-                  side: BorderSide(color: PremiumColors.splashBlue.withValues(alpha: 0.3)),
+                  side: BorderSide(
+                    color: PremiumColors.splashBlue.withValues(alpha: 0.3),
+                  ),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(AppRadius.lg),
                   ),

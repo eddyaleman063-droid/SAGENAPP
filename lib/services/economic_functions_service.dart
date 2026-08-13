@@ -21,7 +21,10 @@ class EconomicFunctionsService implements IEconomicFunctionsService {
   final _random = Random.secure();
 
   String _idempotencyKey([String? prefix]) {
-    final suffix = List.generate(16, (_) => _random.nextInt(36).toRadixString(36)).join();
+    final suffix = List.generate(
+      16,
+      (_) => _random.nextInt(36).toRadixString(36),
+    ).join();
     return '${_uid}_${prefix ?? ''}_$suffix';
   }
 
@@ -42,7 +45,9 @@ class EconomicFunctionsService implements IEconomicFunctionsService {
       _logger.info('EconomicFunctions: $name succeeded');
       return result.data as T?;
     } on FirebaseFunctionsException catch (e) {
-      _logger.error('EconomicFunctions: $name failed: ${e.code} - ${e.message}');
+      _logger.error(
+        'EconomicFunctions: $name failed: ${e.code} - ${e.message}',
+      );
       rethrow;
     } catch (e) {
       _logger.error('EconomicFunctions: $name unexpected error: $e');
@@ -111,5 +116,4 @@ class EconomicFunctionsService implements IEconomicFunctionsService {
       'idempotencyKey': _idempotencyKey('donation'),
     });
   }
-
 }

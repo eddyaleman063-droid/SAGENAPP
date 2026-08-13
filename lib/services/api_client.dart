@@ -10,7 +10,15 @@ import 'certificate_pinning.dart';
 
 export 'package:http/http.dart' show Client;
 
-enum ApiErrorType { timeout, network, auth, rateLimit, server, validation, unknown }
+enum ApiErrorType {
+  timeout,
+  network,
+  auth,
+  rateLimit,
+  server,
+  validation,
+  unknown,
+}
 
 abstract class ApiSender {
   Future<ApiResponse> send(ApiRequest request);
@@ -91,17 +99,16 @@ class ApiClient implements ApiSender {
 
   final RetryConfig _defaultRetryConfig;
 
-  ApiClient._({
-    RetryConfig? retryConfig,
-  }) : _defaultRetryConfig = retryConfig ?? const RetryConfig(
-          maxRetries: 2,
-          baseDelay: Duration(seconds: 1),
-          policy: RetryPolicy.exponentialBackoff,
-        );
+  ApiClient._({RetryConfig? retryConfig})
+    : _defaultRetryConfig =
+          retryConfig ??
+          const RetryConfig(
+            maxRetries: 2,
+            baseDelay: Duration(seconds: 1),
+            policy: RetryPolicy.exponentialBackoff,
+          );
 
-  static Future<ApiClient> init({
-    RetryConfig? retryConfig,
-  }) async {
+  static Future<ApiClient> init({RetryConfig? retryConfig}) async {
     final pinning = CertificatePinning.instance;
 
     // Certificate pins for critical hosts.
@@ -149,7 +156,9 @@ class ApiClient implements ApiSender {
 
   static ApiClient get instance {
     if (_instance == null) {
-      throw StateError('ApiClient not initialized. Call ApiClient.init() first.');
+      throw StateError(
+        'ApiClient not initialized. Call ApiClient.init() first.',
+      );
     }
     return _instance!;
   }
@@ -216,17 +225,26 @@ class ApiClient implements ApiSender {
 
       switch (request.method.toUpperCase()) {
         case 'GET':
-          response = await _client.get(uri, headers: headers).timeout(effectiveTimeout);
+          response = await _client
+              .get(uri, headers: headers)
+              .timeout(effectiveTimeout);
           break;
         case 'POST':
           if (request.body is Map && !headers.containsKey('Content-Type')) {
             headers['Content-Type'] = 'application/json';
           }
-          final body = request.body is Map ? jsonEncode(request.body) : (request.body as String? ?? '');
-          response = await _client.post(uri, headers: headers, body: body).timeout(effectiveTimeout);
+          final body = request.body is Map
+              ? jsonEncode(request.body)
+              : (request.body as String? ?? '');
+          response = await _client
+              .post(uri, headers: headers, body: body)
+              .timeout(effectiveTimeout);
           break;
         default:
-          throw ApiException(ApiErrorType.validation, 'Unsupported method: ${request.method}');
+          throw ApiException(
+            ApiErrorType.validation,
+            'Unsupported method: ${request.method}',
+          );
       }
 
       return ApiResponse(
@@ -235,9 +253,17 @@ class ApiClient implements ApiSender {
         headers: response.headers,
       );
     } on TimeoutException {
-      throw ApiException(ApiErrorType.timeout, 'Request timed out.', host: request.host);
+      throw ApiException(
+        ApiErrorType.timeout,
+        'Request timed out.',
+        host: request.host,
+      );
     } on SocketException {
-      throw ApiException(ApiErrorType.network, 'No internet connection.', host: request.host);
+      throw ApiException(
+        ApiErrorType.network,
+        'No internet connection.',
+        host: request.host,
+      );
     } on http.ClientException catch (e) {
       throw ApiException(ApiErrorType.network, e.message, host: request.host);
     }
@@ -245,7 +271,10 @@ class ApiClient implements ApiSender {
 
   void _validateRequest(ApiRequest request) {
     if (request.uri.scheme != 'https') {
-      throw const ApiException(ApiErrorType.validation, 'Only HTTPS connections are allowed.');
+      throw const ApiException(
+        ApiErrorType.validation,
+        'Only HTTPS connections are allowed.',
+      );
     }
     if (request.uri.host.isEmpty) {
       throw const ApiException(ApiErrorType.validation, 'Invalid URL.');
@@ -274,13 +303,24 @@ class ApiClient implements ApiSender {
       throw const ApiException(ApiErrorType.auth, 'Access denied.');
     }
     if (statusCode == 429) {
-      throw const ApiException(ApiErrorType.rateLimit, 'Too many requests. Wait a few seconds.');
+      throw const ApiException(
+        ApiErrorType.rateLimit,
+        'Too many requests. Wait a few seconds.',
+      );
     }
     if (statusCode >= 500) {
-      throw ApiException(ApiErrorType.server, 'Server error ($statusCode).', statusCode: statusCode);
+      throw ApiException(
+        ApiErrorType.server,
+        'Server error ($statusCode).',
+        statusCode: statusCode,
+      );
     }
     if (statusCode < 200 || statusCode >= 300) {
-      throw ApiException(ApiErrorType.unknown, 'Unexpected error ($statusCode).', statusCode: statusCode);
+      throw ApiException(
+        ApiErrorType.unknown,
+        'Unexpected error ($statusCode).',
+        statusCode: statusCode,
+      );
     }
   }
 

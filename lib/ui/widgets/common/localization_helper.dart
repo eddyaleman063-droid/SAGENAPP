@@ -12,5 +12,6 @@ class _FallbackLocalizations implements AppLocalizations {
   const _FallbackLocalizations();
 
   @override
-  dynamic noSuchMethod(Invocation invocation) => '[missing: ${invocation.memberName}]';
+  dynamic noSuchMethod(Invocation invocation) =>
+      '[missing: ${invocation.memberName}]';
 }

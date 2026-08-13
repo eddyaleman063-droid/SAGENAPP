@@ -35,65 +35,96 @@ class NameInputScreen extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: AppSpacing.xxl),
-              Semantics(label: l.regNameHint, child: TextField(
-                maxLength: 100,
-                style: AppTextStyle.titleSmall.copyWith(
-                  color: context.textPrimary,
-                ),
-                decoration: InputDecoration(
-                  hintText: l.regNameHint,
-                  hintStyle: AppTextStyle.titleSmall.copyWith(
-                    color: context.subtle,
+              Semantics(
+                label: l.regNameHint,
+                child: TextField(
+                  maxLength: 100,
+                  style: AppTextStyle.titleSmall.copyWith(
+                    color: context.textPrimary,
                   ),
-                  filled: true,
-                  fillColor: context.surfaceTinted,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(AppRadius.xl),
-                    borderSide: BorderSide.none,
+                  decoration: InputDecoration(
+                    hintText: l.regNameHint,
+                    hintStyle: AppTextStyle.titleSmall.copyWith(
+                      color: context.subtle,
+                    ),
+                    filled: true,
+                    fillColor: context.surfaceTinted,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(AppRadius.xl),
+                      borderSide: BorderSide.none,
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.lg,
+                      vertical: AppSpacing.lg,
+                    ),
+                    prefixIcon: const Icon(
+                      Icons.person_rounded,
+                      color: PremiumColors.primary,
+                      size: 20,
+                    ),
                   ),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.lg),
-                  prefixIcon: const Icon(Icons.person_rounded, color: PremiumColors.primary, size: 20),
+                  onChanged: (value) => notifier.setName(value),
                 ),
-                onChanged: (value) => notifier.setName(value),
-              )),
+              ),
               const SizedBox(height: AppSpacing.md),
-              Semantics(label: l.regSurnameHint, child: TextField(
-                maxLength: 100,
-                style: AppTextStyle.titleSmall.copyWith(
-                  color: context.textPrimary,
-                ),
-                decoration: InputDecoration(
-                  hintText: l.regSurnameHint,
-                  hintStyle: AppTextStyle.titleSmall.copyWith(
-                    color: context.subtle,
+              Semantics(
+                label: l.regSurnameHint,
+                child: TextField(
+                  maxLength: 100,
+                  style: AppTextStyle.titleSmall.copyWith(
+                    color: context.textPrimary,
                   ),
-                  filled: true,
-                  fillColor: context.surfaceTinted,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(AppRadius.xl),
-                    borderSide: BorderSide.none,
+                  decoration: InputDecoration(
+                    hintText: l.regSurnameHint,
+                    hintStyle: AppTextStyle.titleSmall.copyWith(
+                      color: context.subtle,
+                    ),
+                    filled: true,
+                    fillColor: context.surfaceTinted,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(AppRadius.xl),
+                      borderSide: BorderSide.none,
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.lg,
+                      vertical: AppSpacing.lg,
+                    ),
+                    prefixIcon: const Icon(
+                      Icons.badge_rounded,
+                      color: PremiumColors.primary,
+                      size: 20,
+                    ),
                   ),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.lg),
-                  prefixIcon: const Icon(Icons.badge_rounded, color: PremiumColors.primary, size: 20),
+                  onChanged: (value) => notifier.setSurname(value),
                 ),
-                onChanged: (value) => notifier.setSurname(value),
-              )),
+              ),
               const Spacer(flex: 3),
               SizedBox(
                 width: double.infinity,
                 height: 54,
-                child: Semantics(button: true, label: l.continueText, child: ElevatedButton(
-                  onPressed: nameValid ? onContinue : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: PremiumColors.primary,
-                    foregroundColor: Colors.white,
-                    disabledBackgroundColor: context.surfaceTinted,
-                    disabledForegroundColor: context.textDisabled,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
-                    elevation: nameValid ? 4 : 0,
+                child: Semantics(
+                  button: true,
+                  label: l.continueText,
+                  child: ElevatedButton(
+                    onPressed: nameValid ? onContinue : null,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: PremiumColors.primary,
+                      foregroundColor: Colors.white,
+                      disabledBackgroundColor: context.surfaceTinted,
+                      disabledForegroundColor: context.textDisabled,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(AppRadius.lg),
+                      ),
+                      elevation: nameValid ? 4 : 0,
+                    ),
+                    child: Text(
+                      l.continueText,
+                      style: AppTextStyle.titleSmall.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
-                  child: Text(l.continueText, style: AppTextStyle.titleSmall.copyWith(fontWeight: FontWeight.bold)),
-                )),
+                ),
               ),
               const SizedBox(height: AppSpacing.md),
             ],

@@ -22,14 +22,22 @@ class PassLevel {
 
   String localizedRewardName(AppLocalizations l) {
     switch (rewardKey) {
-      case 'rewardCopperFrame': return l.rewardCopperFrame;
-      case 'rewardEpicChest': return l.rewardEpicChest;
-      case 'rewardIceFlame': return l.rewardIceFlame;
-      case 'rewardGoldenChest': return l.rewardGoldenChest;
-      case 'reward100Xp': return l.reward100Xp;
-      case 'rewardTitaniumShield': return l.rewardTitaniumShield;
-      case 'reward200Exp': return l.reward200Exp;
-      default: return rewardName;
+      case 'rewardCopperFrame':
+        return l.rewardCopperFrame;
+      case 'rewardEpicChest':
+        return l.rewardEpicChest;
+      case 'rewardIceFlame':
+        return l.rewardIceFlame;
+      case 'rewardGoldenChest':
+        return l.rewardGoldenChest;
+      case 'reward100Xp':
+        return l.reward100Xp;
+      case 'rewardTitaniumShield':
+        return l.rewardTitaniumShield;
+      case 'reward200Exp':
+        return l.reward200Exp;
+      default:
+        return rewardName;
     }
   }
 }
@@ -48,8 +56,8 @@ class SagenPass {
     List<int>? claimedLevels,
     DateTime? seasonStart,
     this.seasonDurationDays = 90,
-  })  : claimedLevels = List<int>.unmodifiable(claimedLevels ?? const []),
-        seasonStart = seasonStart ?? DateTime.now();
+  }) : claimedLevels = List<int>.unmodifiable(claimedLevels ?? const []),
+       seasonStart = seasonStart ?? DateTime.now();
 
   SagenPass copyWith({
     int? currentLevel,
@@ -62,7 +70,9 @@ class SagenPass {
     return SagenPass(
       currentLevel: currentLevel ?? this.currentLevel,
       currentSP: currentSP ?? this.currentSP,
-      claimedLevels: List<int>.unmodifiable(claimedLevels ?? this.claimedLevels),
+      claimedLevels: List<int>.unmodifiable(
+        claimedLevels ?? this.claimedLevels,
+      ),
       seasonStart: clearSeasonStart ? null : (seasonStart ?? this.seasonStart),
       seasonDurationDays: seasonDurationDays ?? this.seasonDurationDays,
     );
@@ -80,9 +90,8 @@ class SagenPass {
     return spForLevel(currentLevel);
   }
 
-  double get progressFraction => spForNextLevel > 0
-      ? (currentSP / spForNextLevel).clamp(0.0, 1.0)
-      : 1.0;
+  double get progressFraction =>
+      spForNextLevel > 0 ? (currentSP / spForNextLevel).clamp(0.0, 1.0) : 1.0;
 
   bool get isMaxLevel => currentLevel >= maxLevel;
 
@@ -93,14 +102,16 @@ class SagenPass {
     final sp = 50 + i * 10;
     if (level == 10) {
       return PassLevel(
-        level: level, spRequired: sp,
+        level: level,
+        spRequired: sp,
         rewardType: PassRewardType.avatarFrame,
         rewardName: 'Copper Frame',
         rewardKey: 'rewardCopperFrame',
       );
     } else if (level == 25) {
       return PassLevel(
-        level: level, spRequired: sp,
+        level: level,
+        spRequired: sp,
         rewardType: PassRewardType.chest,
         rewardName: 'Epic Chest',
         rewardKey: 'rewardEpicChest',
@@ -108,14 +119,16 @@ class SagenPass {
       );
     } else if (level == 50) {
       return PassLevel(
-        level: level, spRequired: sp,
+        level: level,
+        spRequired: sp,
         rewardType: PassRewardType.cosmetic,
         rewardName: 'Ice Flame + Guardian',
         rewardKey: 'rewardIceFlame',
       );
     } else if (level % 10 == 0) {
       return PassLevel(
-        level: level, spRequired: sp,
+        level: level,
+        spRequired: sp,
         rewardType: PassRewardType.chest,
         rewardName: 'Golden Chest',
         rewardKey: 'rewardGoldenChest',
@@ -123,7 +136,8 @@ class SagenPass {
       );
     } else if (level % 5 == 0) {
       return PassLevel(
-        level: level, spRequired: sp,
+        level: level,
+        spRequired: sp,
         rewardType: PassRewardType.xp,
         rewardName: '100 EXP',
         rewardKey: 'reward100Xp',
@@ -131,7 +145,8 @@ class SagenPass {
       );
     } else if (level % 3 == 0) {
       return PassLevel(
-        level: level, spRequired: sp,
+        level: level,
+        spRequired: sp,
         rewardType: PassRewardType.item,
         rewardName: 'Titanium Shield',
         rewardKey: 'rewardTitaniumShield',
@@ -139,7 +154,8 @@ class SagenPass {
       );
     } else {
       return PassLevel(
-        level: level, spRequired: sp,
+        level: level,
+        spRequired: sp,
         rewardType: PassRewardType.xp,
         rewardName: '200 EXP',
         rewardKey: 'reward200Exp',

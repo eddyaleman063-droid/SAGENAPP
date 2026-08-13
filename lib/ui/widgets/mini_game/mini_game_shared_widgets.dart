@@ -10,13 +10,30 @@ class StatChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.xs),
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(AppRadius.pill), color: context.surfaceTinted),
-      child: Row(children: [
-        Text(label, style: AppTextStyle.caption.copyWith(color: context.textTertiary)),
-        const SizedBox(width: AppSpacing.xs),
-        Text(value, style: AppTextStyle.bodyMd.copyWith(fontWeight: FontWeight.bold, color: context.textPrimary)),
-      ]),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.md,
+        vertical: AppSpacing.xs,
+      ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(AppRadius.pill),
+        color: context.surfaceTinted,
+      ),
+      child: Row(
+        children: [
+          Text(
+            label,
+            style: AppTextStyle.caption.copyWith(color: context.textTertiary),
+          ),
+          const SizedBox(width: AppSpacing.xs),
+          Text(
+            value,
+            style: AppTextStyle.bodyMd.copyWith(
+              fontWeight: FontWeight.bold,
+              color: context.textPrimary,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -28,15 +45,29 @@ class RewardBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl, vertical: 10),
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(AppRadius.pill), gradient: const LinearGradient(colors: [PremiumColors.primary, PremiumColors.primaryAccent])),
-      child: Row(mainAxisSize: MainAxisSize.min, children: [
-        const ExcludeSemantics(
-          child: Icon(Icons.star_rounded, size: 18, color: Colors.white),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.xl,
+        vertical: 10,
+      ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(AppRadius.pill),
+        gradient: const LinearGradient(
+          colors: [PremiumColors.primary, PremiumColors.primaryAccent],
         ),
-        const SizedBox(width: AppSpacing.xs),
-        Text('$xp XP', style: AppTextStyle.bodyBold.copyWith(color: Colors.white)),
-      ]),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const ExcludeSemantics(
+            child: Icon(Icons.star_rounded, size: 18, color: Colors.white),
+          ),
+          const SizedBox(width: AppSpacing.xs),
+          Text(
+            '$xp XP',
+            style: AppTextStyle.bodyBold.copyWith(color: Colors.white),
+          ),
+        ],
+      ),
     );
   }
 }

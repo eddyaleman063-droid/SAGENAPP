@@ -38,8 +38,13 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
   bool _circleFilled = false;
 
   List<String> _dayLabels(AppLocalizations l) => [
-    l.dayAbbrMon, l.dayAbbrTue, l.dayAbbrWed,
-    l.dayAbbrThu, l.dayAbbrFri, l.dayAbbrSat, l.dayAbbrSun,
+    l.dayAbbrMon,
+    l.dayAbbrTue,
+    l.dayAbbrWed,
+    l.dayAbbrThu,
+    l.dayAbbrFri,
+    l.dayAbbrSat,
+    l.dayAbbrSun,
   ];
 
   List<String> _streakMessages(AppLocalizations l) => [
@@ -113,10 +118,12 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
       barrierColor: Colors.black54,
       builder: (ctx) => Dialog(
         backgroundColor: dark ? PremiumColors.darkCard : Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.xxl)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadius.xxl),
+        ),
         child: Padding(
-              padding: const EdgeInsets.all(AppSpacing.xxl),
-              child: Column(
+          padding: const EdgeInsets.all(AppSpacing.xxl),
+          child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               const SageEmotionWidget(
@@ -184,7 +191,9 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
       final key = date.toIso8601String().substring(0, 10);
       _weekDays[i] = heatmap.containsKey(key) && heatmap[key]! > 0;
     }
-    if (mounted) setState(() {}); // rebuild with updated _streakDays, _weekDays, etc.
+    if (mounted) {
+      setState(() {}); // rebuild with updated _streakDays, _weekDays, etc.
+    }
   }
 
   @override
@@ -246,7 +255,10 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
                     ),
                     SizedBox(
                       height: h * 0.38,
-                      child: _buildHeroSection(accent, AppLocalizations.of(context)!),
+                      child: _buildHeroSection(
+                        accent,
+                        AppLocalizations.of(context)!,
+                      ),
                     ),
                     SizedBox(
                       height: h * 0.18,
@@ -351,14 +363,14 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
                   phase: _showDefrosting
                       ? FlamePhase.defrosting
                       : _streakFrozen
-                          ? FlamePhase.frozen
-                          : null,
+                      ? FlamePhase.frozen
+                      : null,
                 ),
               ),
             ),
             const Center(
               child: Padding(
-                    padding: EdgeInsets.only(bottom: 30),
+                padding: EdgeInsets.only(bottom: 30),
                 child: SageEmotionWidget(
                   emotion: SageEmotion.excitedWave,
                   size: 130,
@@ -386,7 +398,7 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
                           builder: (context, val, _) => Text(
                             '${val.toInt()}',
                             textAlign: TextAlign.center,
-                      style: AppTextStyle.heroLarge.copyWith(
+                            style: AppTextStyle.heroLarge.copyWith(
                               fontWeight: FontWeight.w900,
                               color: accent,
                               height: 1,
@@ -423,7 +435,9 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
   }
 
   Widget _buildWeekTimeline(Color accent, bool dark, AppLocalizations l) {
-    final grayColor = dark ? PremiumColors.streakInactiveDark : PremiumColors.streakInactiveLight;
+    final grayColor = dark
+        ? PremiumColors.streakInactiveDark
+        : PremiumColors.streakInactiveLight;
     final grayText = context.textTertiary;
 
     return AnimatedBuilder(
@@ -441,10 +455,16 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
             bool showCheck = false;
 
             if (_isWeeklyReset && rp > 0 && rp < 1.0) {
-              _weeklyResetState(i, rp, accent, grayColor, isPast,
-                  outColor: (c) => circleColor = c,
-                  outScale: (s) => scale = s,
-                  outCheck: (c) => showCheck = c);
+              _weeklyResetState(
+                i,
+                rp,
+                accent,
+                grayColor,
+                isPast,
+                outColor: (c) => circleColor = c,
+                outScale: (s) => scale = s,
+                outCheck: (c) => showCheck = c,
+              );
             } else {
               final filled = isToday ? _circleFilled : isPast;
               circleColor = filled ? accent : grayColor;
@@ -456,8 +476,8 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
             final dayStatus = (isToday && _circleFilled) || isPast
                 ? 'completado'
                 : isToday
-                    ? 'hoy'
-                    : 'pendiente';
+                ? 'hoy'
+                : 'pendiente';
             return Semantics(
               label: '$dayLabel: $dayStatus',
               container: true,
@@ -469,7 +489,9 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
                       dayLabel,
                       style: AppTextStyle.label.copyWith(
                         fontWeight: FontWeight.w600,
-                        color: _circleFilled && i == _todayIndex ? accent : grayText,
+                        color: _circleFilled && i == _todayIndex
+                            ? accent
+                            : grayText,
                       ),
                     ),
                   ),
@@ -486,7 +508,11 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
                         color: circleColor,
                       ),
                       child: showCheck
-                          ? const Icon(Icons.check_rounded, size: 18, color: Colors.white)
+                          ? const Icon(
+                              Icons.check_rounded,
+                              size: 18,
+                              color: Colors.white,
+                            )
                           : null,
                     ),
                   ),
@@ -500,7 +526,11 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
   }
 
   void _weeklyResetState(
-    int index, double rp, Color accent, Color gray, bool defaultPast, {
+    int index,
+    double rp,
+    Color accent,
+    Color gray,
+    bool defaultPast, {
     required void Function(Color) outColor,
     required void Function(double) outScale,
     required void Function(bool) outCheck,
@@ -542,7 +572,9 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
     final streak = ref.read(streakProvider);
     final heatmap = streak.heatmapData;
     final now = DateTime.now();
-    final grayColor = dark ? PremiumColors.streakInactiveDark : PremiumColors.streakInactiveLight;
+    final grayColor = dark
+        ? PremiumColors.streakInactiveDark
+        : PremiumColors.streakInactiveLight;
 
     return Semantics(
       label: AppLocalizations.of(context)!.activityMap30Days,
@@ -564,9 +596,7 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
               color: hasActivity
                   ? accent.withValues(alpha: isToday ? 1.0 : 0.6)
                   : grayColor,
-              border: isToday
-                  ? Border.all(color: accent, width: 1.5)
-                  : null,
+              border: isToday ? Border.all(color: accent, width: 1.5) : null,
             ),
           );
         }),
@@ -604,7 +634,11 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
                 ),
               ),
               const SizedBox(width: AppSpacing.xxs),
-              Icon(Icons.arrow_forward_rounded, size: 18, color: Colors.white.withValues(alpha: 0.7)),
+              Icon(
+                Icons.arrow_forward_rounded,
+                size: 18,
+                color: Colors.white.withValues(alpha: 0.7),
+              ),
             ],
           ),
         ),

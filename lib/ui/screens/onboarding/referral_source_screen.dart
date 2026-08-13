@@ -1,4 +1,4 @@
-﻿import 'dart:math' as math;
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,11 +13,7 @@ class ReferralSourceScreen extends StatefulWidget {
   final VoidCallback? onContinue;
   final VoidCallback? onBack;
 
-  const ReferralSourceScreen({
-    super.key,
-    this.onContinue,
-    this.onBack,
-  });
+  const ReferralSourceScreen({super.key, this.onContinue, this.onBack});
 
   @override
   State<ReferralSourceScreen> createState() => _ReferralSourceScreenState();
@@ -52,13 +48,18 @@ class _ReferralSourceScreenState extends State<ReferralSourceScreen> {
     final dark = Theme.of(context).brightness == Brightness.dark;
     final l = AppLocalizations.of(context)!;
     return Scaffold(
-      backgroundColor: dark ? PremiumColors.deepBackground : PremiumColors.lightBg,
+      backgroundColor: dark
+          ? PremiumColors.deepBackground
+          : PremiumColors.lightBg,
       body: SafeArea(
         child: Column(
           children: [
             // ── Block 1: Header (fixed) ──
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxs, vertical: AppSpacing.sm),
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.xxs,
+                vertical: AppSpacing.sm,
+              ),
               child: Row(
                 children: [
                   Semantics(
@@ -106,8 +107,7 @@ class _ReferralSourceScreenState extends State<ReferralSourceScreen> {
             // ── Block 2: Mascot (fixed) ──
             RepaintBoundary(
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -118,7 +118,8 @@ class _ReferralSourceScreenState extends State<ReferralSourceScreen> {
                         height: 80,
                         cacheWidth: 160,
                         cacheHeight: 160,
-                        errorBuilder: (_, _, _) => const Icon(Icons.pets, size: 48),
+                        errorBuilder: (_, _, _) =>
+                            const Icon(Icons.pets, size: 48),
                       ),
                     ),
                     const SizedBox(width: AppSpacing.sm),
@@ -128,9 +129,13 @@ class _ReferralSourceScreenState extends State<ReferralSourceScreen> {
                         children: [
                           Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: AppSpacing.xl, vertical: AppSpacing.lg),
+                              horizontal: AppSpacing.xl,
+                              vertical: AppSpacing.lg,
+                            ),
                             decoration: BoxDecoration(
-                              color: dark ? PremiumColors.onboardingBubbleDark : Colors.white,
+                              color: dark
+                                  ? PremiumColors.onboardingBubbleDark
+                                  : Colors.white,
                               borderRadius: BorderRadius.circular(AppRadius.xl),
                               border: Border.all(
                                 color: dark
@@ -156,7 +161,9 @@ class _ReferralSourceScreenState extends State<ReferralSourceScreen> {
                                   width: 12,
                                   height: 12,
                                   decoration: BoxDecoration(
-                                    color: dark ? PremiumColors.onboardingBubbleDark : Colors.white,
+                                    color: dark
+                                        ? PremiumColors.onboardingBubbleDark
+                                        : Colors.white,
                                     border: Border.all(
                                       color: dark
                                           ? Colors.white.withValues(alpha: 0.10)
@@ -181,8 +188,7 @@ class _ReferralSourceScreenState extends State<ReferralSourceScreen> {
             Expanded(
               child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
                 itemCount: _sourceLabels(l).length,
                 itemBuilder: (context, index) {
                   final isSelected = _selectedIndex == index;
@@ -196,46 +202,50 @@ class _ReferralSourceScreenState extends State<ReferralSourceScreen> {
                         setState(() => _selectedIndex = index);
                       },
                       child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 200),
-                      height: 64,
-                      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                      margin: const EdgeInsets.only(bottom: AppSpacing.md),
-                      decoration: BoxDecoration(
-                        color: isSelected
-                            ? PremiumColors.primaryAccent.withValues(alpha: 0.08)
-                            : context.subtle,
-                        borderRadius: BorderRadius.circular(AppRadius.xl),
-                        border: Border.all(
-                          color: isSelected
-                              ? PremiumColors.primaryAccent
-                              : (dark
-                                   ? Colors.white.withValues(alpha: 0.10)
-                                   : context.borderSubtle),
-                          width: isSelected ? 2.5 : 1,
+                        duration: const Duration(milliseconds: 200),
+                        height: 64,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppSpacing.lg,
                         ),
-                      ),
-                      child: Row(
-                        children: [
-                          _brandLogo(index),
-                          const SizedBox(width: AppSpacing.lg),
-                          Expanded(
-                            child: Text(
-                              _sourceLabels(l)[index],
-                              style: AppTextStyle.body.copyWith(
-                                color: context.textPrimary,
-                                fontWeight: FontWeight.w500,
+                        margin: const EdgeInsets.only(bottom: AppSpacing.md),
+                        decoration: BoxDecoration(
+                          color: isSelected
+                              ? PremiumColors.primaryAccent.withValues(
+                                  alpha: 0.08,
+                                )
+                              : context.subtle,
+                          borderRadius: BorderRadius.circular(AppRadius.xl),
+                          border: Border.all(
+                            color: isSelected
+                                ? PremiumColors.primaryAccent
+                                : (dark
+                                      ? Colors.white.withValues(alpha: 0.10)
+                                      : context.borderSubtle),
+                            width: isSelected ? 2.5 : 1,
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            _brandLogo(index),
+                            const SizedBox(width: AppSpacing.lg),
+                            Expanded(
+                              child: Text(
+                                _sourceLabels(l)[index],
+                                style: AppTextStyle.body.copyWith(
+                                  color: context.textPrimary,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                             ),
-                          ),
-                          if (isSelected)
-                            const Icon(
-                              Icons.check_circle_rounded,
-                              color: PremiumColors.primaryAccent,
-                              size: 22,
-                            ),
-                        ],
+                            if (isSelected)
+                              const Icon(
+                                Icons.check_circle_rounded,
+                                color: PremiumColors.primaryAccent,
+                                size: 22,
+                              ),
+                          ],
+                        ),
                       ),
-                    ),
                     ),
                   );
                 },
@@ -245,7 +255,11 @@ class _ReferralSourceScreenState extends State<ReferralSourceScreen> {
             // ── Block 4: Bottom button (fixed) ──
             Padding(
               padding: const EdgeInsets.fromLTRB(
-                  AppSpacing.xxl, 0, AppSpacing.xxl, AppSpacing.xxl),
+                AppSpacing.xxl,
+                0,
+                AppSpacing.xxl,
+                AppSpacing.xxl,
+              ),
               child: Semantics(
                 button: true,
                 label: l.continueText,
@@ -309,8 +323,11 @@ Widget _brandLogo(int index) {
     case 0:
       return _squared(PremiumColors.youtubeRed, Icons.play_arrow, Colors.white);
     case 1:
-      return _squared(PremiumColors.tiktokBlack, Icons.music_note,
-          PremiumColors.tiktokCyan);
+      return _squared(
+        PremiumColors.tiktokBlack,
+        Icons.music_note,
+        PremiumColors.tiktokCyan,
+      );
     case 2:
       return Container(
         width: 32,
@@ -318,7 +335,11 @@ Widget _brandLogo(int index) {
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(8)),
           gradient: LinearGradient(
-            colors: [PremiumColors.instagramPurple, PremiumColors.instagramRed, PremiumColors.instagramOrange],
+            colors: [
+              PremiumColors.instagramPurple,
+              PremiumColors.instagramRed,
+              PremiumColors.instagramOrange,
+            ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -326,12 +347,13 @@ Widget _brandLogo(int index) {
         child: const Icon(Icons.camera_alt, color: Colors.white, size: 18),
       );
     case 3:
-      return const ImageIcon(
-        AssetImage('assets/ui/google_logo.png'),
-        size: 24,
-      );
+      return const ImageIcon(AssetImage('assets/ui/google_logo.png'), size: 24);
     case 4:
-      return _squared(PremiumColors.spotifyGreen, Icons.play_circle, Colors.white);
+      return _squared(
+        PremiumColors.spotifyGreen,
+        Icons.play_circle,
+        Colors.white,
+      );
     case 5:
       return _squared(null, Icons.favorite, PremiumColors.pinkHeart);
     case 6:

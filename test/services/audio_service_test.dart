@@ -10,18 +10,18 @@ const _playerChannel = MethodChannel('xyz.luan/audioplayers');
 void mockAudioChannels() {
   TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
       .setMockMethodCallHandler(_globalChannel, (MethodCall call) async {
-    if (call.method == 'create') return 'test-player-id';
-    return 1;
-  });
+        if (call.method == 'create') return 'test-player-id';
+        return 1;
+      });
   TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
       .setMockMethodCallHandler(_playerChannel, (MethodCall call) async {
-    switch (call.method) {
-      case 'getCurrentPosition':
-        return 0;
-      default:
-        return 1;
-    }
-  });
+        switch (call.method) {
+          case 'getCurrentPosition':
+            return 0;
+          default:
+            return 1;
+        }
+      });
 }
 
 void main() {

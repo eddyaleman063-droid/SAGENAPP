@@ -115,10 +115,14 @@ class _FlameFallbackWidgetState extends State<_FlameFallbackWidget>
   @override
   void initState() {
     super.initState();
-    _ctrl = AnimationController(vsync: this, duration: const Duration(seconds: 2));
-    _pulseAnim = Tween<double>(begin: 0.7, end: 1.0).animate(
-      CurvedAnimation(parent: _ctrl, curve: Curves.easeInOut),
+    _ctrl = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
     );
+    _pulseAnim = Tween<double>(
+      begin: 0.7,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _ctrl, curve: Curves.easeInOut));
     if (defaultTargetPlatform != TargetPlatform.android) {
       _ctrl.repeat(reverse: true);
     }

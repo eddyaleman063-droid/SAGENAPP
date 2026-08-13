@@ -4,7 +4,10 @@ import 'package:sagen/services/firestore_service.dart';
 void main() {
   group('FirestoreService.sanitize', () {
     test('removes HTML tags', () async {
-      expect(await FirestoreService.sanitize('<script>alert(1)</script>'), 'alert(1)');
+      expect(
+        await FirestoreService.sanitize('<script>alert(1)</script>'),
+        'alert(1)',
+      );
     });
 
     test('removes javascript: protocol', () async {
@@ -38,7 +41,10 @@ void main() {
     });
 
     test('replaces multiline with space', () async {
-      expect(await FirestoreService.sanitize('line1\nline2\r\nline3'), 'line1 line2 line3');
+      expect(
+        await FirestoreService.sanitize('line1\nline2\r\nline3'),
+        'line1 line2 line3',
+      );
     });
 
     test('truncates to 100 characters', () async {
@@ -55,17 +61,26 @@ void main() {
     });
 
     test('blocks javascript URLs', () async {
-      expect(await FirestoreService.sanitize('javascript:alert(1)'), 'alert(1)');
+      expect(
+        await FirestoreService.sanitize('javascript:alert(1)'),
+        'alert(1)',
+      );
     });
   });
 
   group('FirestoreService.sanitizeUrl', () {
     test('returns valid HTTP URL', () {
-      expect(FirestoreService.sanitizeUrl('https://example.com'), 'https://example.com');
+      expect(
+        FirestoreService.sanitizeUrl('https://example.com'),
+        'https://example.com',
+      );
     });
 
     test('returns valid FTP URL', () {
-      expect(FirestoreService.sanitizeUrl('ftp://files.example.com'), 'ftp://files.example.com');
+      expect(
+        FirestoreService.sanitizeUrl('ftp://files.example.com'),
+        'ftp://files.example.com',
+      );
     });
 
     test('blocks javascript: URL', () {
@@ -77,7 +92,10 @@ void main() {
     });
 
     test('trims whitespace', () {
-      expect(FirestoreService.sanitizeUrl('  https://example.com  '), 'https://example.com');
+      expect(
+        FirestoreService.sanitizeUrl('  https://example.com  '),
+        'https://example.com',
+      );
     });
   });
 
@@ -108,8 +126,14 @@ void main() {
     });
 
     test('does not contain economic fields', () {
-      expect(FirestoreService.allowedUpdateFields, isNot(contains('learning_gems')));
-      expect(FirestoreService.allowedUpdateFields, isNot(contains('learning_total_xp')));
+      expect(
+        FirestoreService.allowedUpdateFields,
+        isNot(contains('learning_gems')),
+      );
+      expect(
+        FirestoreService.allowedUpdateFields,
+        isNot(contains('learning_total_xp')),
+      );
     });
   });
 }

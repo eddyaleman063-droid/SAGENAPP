@@ -3,7 +3,8 @@ import 'dart:math';
 /// Provides motivational quotes for streak and progress screens.
 class MotivationalQuotesService {
   MotivationalQuotesService._();
-  static final MotivationalQuotesService instance = MotivationalQuotesService._();
+  static final MotivationalQuotesService instance =
+      MotivationalQuotesService._();
 
   final List<String> _all = [
     // Seguridad digital

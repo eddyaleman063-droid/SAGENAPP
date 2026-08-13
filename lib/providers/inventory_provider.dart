@@ -26,7 +26,8 @@ class InventoryState {
     return InventoryState(
       chestsOpened: chestsOpened ?? this.chestsOpened,
       xpBoostsCollected: xpBoostsCollected ?? this.xpBoostsCollected,
-      bonusMultipliersCollected: bonusMultipliersCollected ?? this.bonusMultipliersCollected,
+      bonusMultipliersCollected:
+          bonusMultipliersCollected ?? this.bonusMultipliersCollected,
       totalChestsOpened: totalChestsOpened ?? this.totalChestsOpened,
     );
   }
@@ -55,15 +56,18 @@ class InventoryNotifier extends Notifier<InventoryState> {
   }
 
   void _save(InventoryState current) {
-    _repo.saveAll(InventoryData(
-      chestsOpened: current.chestsOpened,
-      totalChestsOpened: current.totalChestsOpened,
-      xpBoostsCollected: current.xpBoostsCollected,
-      bonusMultipliersCollected: current.bonusMultipliersCollected,
-    ));
+    _repo.saveAll(
+      InventoryData(
+        chestsOpened: current.chestsOpened,
+        totalChestsOpened: current.totalChestsOpened,
+        xpBoostsCollected: current.xpBoostsCollected,
+        bonusMultipliersCollected: current.bonusMultipliersCollected,
+      ),
+    );
   }
 
-  int get totalChestsAllTime => state.chestsOpened.values.fold(0, (a, b) => a + b);
+  int get totalChestsAllTime =>
+      state.chestsOpened.values.fold(0, (a, b) => a + b);
 
   void recordChestOpened(ChestRewardData data) {
     final updated = Map<ChestType, int>.from(state.chestsOpened);
@@ -72,7 +76,8 @@ class InventoryNotifier extends Notifier<InventoryState> {
       chestsOpened: updated,
       totalChestsOpened: state.totalChestsOpened + 1,
       xpBoostsCollected: state.xpBoostsCollected + (data.xpBoost ? 1 : 0),
-      bonusMultipliersCollected: state.bonusMultipliersCollected + (data.streakShields ?? 0),
+      bonusMultipliersCollected:
+          state.bonusMultipliersCollected + (data.streakShields ?? 0),
     );
     _save(next);
     state = next;
@@ -91,5 +96,6 @@ class InventoryProvider {
   void recordChestOpened(ChestRewardData data) => _recordDelegate?.call(data);
 
   static void Function(ChestRewardData)? _recordDelegate;
-  static set recordDelegate(void Function(ChestRewardData)? fn) => _recordDelegate = fn;
+  static set recordDelegate(void Function(ChestRewardData)? fn) =>
+      _recordDelegate = fn;
 }

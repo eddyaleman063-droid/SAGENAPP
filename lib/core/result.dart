@@ -19,42 +19,41 @@ sealed class AppResult<T> {
   bool get isError => this is AppError<T>;
 
   T? get value => switch (this) {
-        AppOk(:final value) => value,
-        AppError() => null,
-      };
+    AppOk(:final value) => value,
+    AppError() => null,
+  };
 
   Object? get error => switch (this) {
-        AppOk() => null,
-        AppError(:final error) => error,
-      };
+    AppOk() => null,
+    AppError(:final error) => error,
+  };
 
   T orElse(T fallback) => switch (this) {
-        AppOk(:final value) => value,
-        AppError() => fallback,
-      };
+    AppOk(:final value) => value,
+    AppError() => fallback,
+  };
 
   T orElseGet(T Function(Object error) fn) => switch (this) {
-        AppOk(:final value) => value,
-        AppError(:final error) => fn(error),
-      };
+    AppOk(:final value) => value,
+    AppError(:final error) => fn(error),
+  };
 
   AppResult<R> map<R>(R Function(T value) fn) => switch (this) {
-        AppOk(:final value) => AppResult.ok(fn(value)),
-        AppError(:final error) => AppResult.error(error),
-      };
+    AppOk(:final value) => AppResult.ok(fn(value)),
+    AppError(:final error) => AppResult.error(error),
+  };
 
   Future<AppResult<R>> flatMap<R>(
     Future<AppResult<R>> Function(T value) fn,
-  ) async =>
-      switch (this) {
-        AppOk(:final value) => await fn(value),
-        AppError(:final error) => AppResult.error(error),
-      };
+  ) async => switch (this) {
+    AppOk(:final value) => await fn(value),
+    AppError(:final error) => AppResult.error(error),
+  };
 
   T unwrap() => switch (this) {
-        AppOk(:final value) => value,
-        AppError(:final error) => throw error,
-      };
+    AppOk(:final value) => value,
+    AppError(:final error) => throw error,
+  };
 }
 
 final class AppOk<T> extends AppResult<T> {

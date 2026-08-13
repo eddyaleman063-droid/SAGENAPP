@@ -24,7 +24,8 @@ class ProfileScreen extends ConsumerStatefulWidget {
   ConsumerState<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends ConsumerState<ProfileScreen> with AutomaticKeepAliveClientMixin {
+class _ProfileScreenState extends ConsumerState<ProfileScreen>
+    with AutomaticKeepAliveClientMixin {
   void _showFlexCard(BuildContext context, WidgetRef ref) {
     ref.read(experienceServiceProvider).lightHaptic();
     final auth = ref.read(authProvider);
@@ -55,16 +56,16 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with AutomaticKee
     final displayName = ref.watch(authProvider.select((a) => a.displayName));
     final photoUrl = ref.watch(authProvider.select((a) => a.photoUrl));
     final learning = ref.watch(learningProvider);
-    final currentStreak = ref.watch(streakProvider.select((s) => s.currentStreak));
+    final currentStreak = ref.watch(
+      streakProvider.select((s) => s.currentStreak),
+    );
     final achievements = ref.watch(achievementProvider);
 
     if (learning.isLoading) {
       return PremiumLoader(
         loading: true,
         message: l.loading,
-        child: Scaffold(
-          backgroundColor: context.surfaceBackground,
-        ),
+        child: Scaffold(backgroundColor: context.surfaceBackground),
       );
     }
 
@@ -86,133 +87,179 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with AutomaticKee
             ref.invalidate(achievementProvider);
           },
           child: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: ProfileHeaderWidget(
-              displayName: displayName,
-              photoUrl: photoUrl,
-              currentLevel: learning.currentLevel,
-              xp: learning.totalXpEarned,
-              nextLevelXp: learning.nextLevelXp,
-              hasGoldFrame: ref.watch(shopProvider.select((s) => s.items.any((i) => i.id == 'gold_frame' && i.isOwned))),
-            ).animate().fadeIn(duration: 400.ms).slideY(begin: 0.1),
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(AppSpacing.xxl, AppSpacing.xl, AppSpacing.xxl, 0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: StatCardWidget(
-                      icon: Icons.local_fire_department_rounded,
-                      value: '$currentStreak',
-                      label: l.profileStreak,
-                      iconColor: PremiumColors.streakOrange,
+            slivers: [
+              SliverToBoxAdapter(
+                child: ProfileHeaderWidget(
+                  displayName: displayName,
+                  photoUrl: photoUrl,
+                  currentLevel: learning.currentLevel,
+                  xp: learning.totalXpEarned,
+                  nextLevelXp: learning.nextLevelXp,
+                  hasGoldFrame: ref.watch(
+                    shopProvider.select(
+                      (s) =>
+                          s.items.any((i) => i.id == 'gold_frame' && i.isOwned),
                     ),
                   ),
-                  const SizedBox(width: AppSpacing.md),
-                  Expanded(
-                    child: StatCardWidget(
-                      icon: Icons.auto_awesome_rounded,
-                      value: '${learning.totalXpEarned}',
-                      label: l.profileXpLabel,
-                      iconColor: PremiumColors.xpColor,
-                    ),
-                  ),
-                  const SizedBox(width: AppSpacing.md),
-                   Expanded(
-                    child: StatCardWidget(
-                      icon: Icons.volunteer_activism_rounded,
-                      value: '${l.currencySymbol}${learning.totalDonated.toStringAsFixed(2)}',
-                      label: l.profileDonations,
-                      iconColor: PremiumColors.achievementEnd,
-                      accentColor: PremiumColors.accentYellow,
-                    ),
-                  ),
-                ],
+                ).animate().fadeIn(duration: 400.ms).slideY(begin: 0.1),
               ),
-            ),
-          ).animate().fadeIn(delay: 200.ms, duration: 400.ms).slideY(begin: 0.1),
-          const SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(AppSpacing.xxl, AppSpacing.xl, AppSpacing.xxl, 0),
-              child: SagenSupportCard(),
-            ),
-          ),
-          const SliverToBoxAdapter(
-            child: SagenPassCard(),
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(AppSpacing.xxl, AppSpacing.xl, AppSpacing.xxl, 0),
-              child: Row(
-                children: [
-                  const ExcludeSemantics(child: Icon(Icons.emoji_events_rounded, size: 18, color: PremiumColors.achievementStart)),
-                  const SizedBox(width: AppSpacing.sm),
-                  Text(
-                    l.profileAchievements,
-                    style: AppTextStyle.titleSmall.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: context.textSecondary,
+              SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        AppSpacing.xxl,
+                        AppSpacing.xl,
+                        AppSpacing.xxl,
+                        0,
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: StatCardWidget(
+                              icon: Icons.local_fire_department_rounded,
+                              value: '$currentStreak',
+                              label: l.profileStreak,
+                              iconColor: PremiumColors.streakOrange,
+                            ),
+                          ),
+                          const SizedBox(width: AppSpacing.md),
+                          Expanded(
+                            child: StatCardWidget(
+                              icon: Icons.auto_awesome_rounded,
+                              value: '${learning.totalXpEarned}',
+                              label: l.profileXpLabel,
+                              iconColor: PremiumColors.xpColor,
+                            ),
+                          ),
+                          const SizedBox(width: AppSpacing.md),
+                          Expanded(
+                            child: StatCardWidget(
+                              icon: Icons.volunteer_activism_rounded,
+                              value:
+                                  '${l.currencySymbol}${learning.totalDonated.toStringAsFixed(2)}',
+                              label: l.profileDonations,
+                              iconColor: PremiumColors.achievementEnd,
+                              accentColor: PremiumColors.accentYellow,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
+                  )
+                  .animate()
+                  .fadeIn(delay: 200.ms, duration: 400.ms)
+                  .slideY(begin: 0.1),
+              const SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(
+                    AppSpacing.xxl,
+                    AppSpacing.xl,
+                    AppSpacing.xxl,
+                    0,
                   ),
-                  const Spacer(),
-                  Text(
-                    '${achievements.unlockedCount}/${achievements.totalCount}',
-                    style: AppTextStyle.subtitle.copyWith(color: context.textTertiary),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          if (achievements.totalCount == 0)
-            SliverFillRemaining(
-              hasScrollBody: false,
-              child: Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const ExcludeSemantics(
-                      child: SageEmotionWidget(emotion: SageEmotion.thinking),
-                    ),
-                    const SizedBox(height: AppSpacing.md),
-                    Text(
-                      l.emptyProfile,
-                      textAlign: TextAlign.center,
-                      style: AppTextStyle.bodyMd.copyWith(color: context.textTertiary),
-                    ),
-                  ],
+                  child: SagenSupportCard(),
                 ),
               ),
-            )
-          else
-          SliverPadding(
-            padding: const EdgeInsets.fromLTRB(AppSpacing.xxl, AppSpacing.md, AppSpacing.xxl, 0),
-            sliver: SliverGrid(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: AppSpacing.md,
-                crossAxisSpacing: AppSpacing.md,
-                childAspectRatio: 0.85,
+              const SliverToBoxAdapter(child: SagenPassCard()),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(
+                    AppSpacing.xxl,
+                    AppSpacing.xl,
+                    AppSpacing.xxl,
+                    0,
+                  ),
+                  child: Row(
+                    children: [
+                      const ExcludeSemantics(
+                        child: Icon(
+                          Icons.emoji_events_rounded,
+                          size: 18,
+                          color: PremiumColors.achievementStart,
+                        ),
+                      ),
+                      const SizedBox(width: AppSpacing.sm),
+                      Text(
+                        l.profileAchievements,
+                        style: AppTextStyle.titleSmall.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: context.textSecondary,
+                        ),
+                      ),
+                      const Spacer(),
+                      Text(
+                        '${achievements.unlockedCount}/${achievements.totalCount}',
+                        style: AppTextStyle.subtitle.copyWith(
+                          color: context.textTertiary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-                delegate: SliverChildBuilderDelegate(
-                (ctx, i) => AchievementCard(achievement: achievements.achievements[i], dark: dark),
-                childCount: achievements.achievements.length,
+              if (achievements.totalCount == 0)
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const ExcludeSemantics(
+                          child: SageEmotionWidget(
+                            emotion: SageEmotion.thinking,
+                          ),
+                        ),
+                        const SizedBox(height: AppSpacing.md),
+                        Text(
+                          l.emptyProfile,
+                          textAlign: TextAlign.center,
+                          style: AppTextStyle.bodyMd.copyWith(
+                            color: context.textTertiary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              else
+                SliverPadding(
+                  padding: const EdgeInsets.fromLTRB(
+                    AppSpacing.xxl,
+                    AppSpacing.md,
+                    AppSpacing.xxl,
+                    0,
+                  ),
+                  sliver: SliverGrid(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: AppSpacing.md,
+                          crossAxisSpacing: AppSpacing.md,
+                          childAspectRatio: 0.85,
+                        ),
+                    delegate: SliverChildBuilderDelegate(
+                      (ctx, i) => AchievementCard(
+                        achievement: achievements.achievements[i],
+                        dark: dark,
+                      ),
+                      childCount: achievements.achievements.length,
+                    ),
+                  ),
+                ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(
+                    AppSpacing.xxl,
+                    AppSpacing.xxl,
+                    AppSpacing.xxl,
+                    32,
+                  ),
+                  child: SettingsActions(dark: dark),
+                ),
               ),
-            ),
+            ],
           ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(AppSpacing.xxl, AppSpacing.xxl, AppSpacing.xxl, 32),
-              child: SettingsActions(dark: dark),
-            ),
-          ),
-        ],
-      ),
-      ),
         ),
+      ),
     );
   }
 }
-
-

@@ -8,20 +8,14 @@ class GemRewardAnimation extends StatefulWidget {
   final int amount;
   final VoidCallback? onComplete;
 
-  const GemRewardAnimation({
-    super.key,
-    required this.amount,
-    this.onComplete,
-  });
+  const GemRewardAnimation({super.key, required this.amount, this.onComplete});
 
   static void show(BuildContext context, int amount) {
     final overlay = Overlay.of(context);
     late OverlayEntry entry;
     entry = OverlayEntry(
-      builder: (_) => GemRewardAnimation(
-        amount: amount,
-        onComplete: () => entry.remove(),
-      ),
+      builder: (_) =>
+          GemRewardAnimation(amount: amount, onComplete: () => entry.remove()),
     );
     overlay.insert(entry);
   }
@@ -76,94 +70,113 @@ class _GemRewardAnimationState extends State<GemRewardAnimation>
       child: AnimatedBuilder(
         animation: _ctrl,
         builder: (context, _) {
-        final t = _ctrl.value;
-        final fadeOut = t > 0.6 ? 1.0 - ((t - 0.6) / 0.4).clamp(0.0, 1.0) : 1.0;
-        final scale = t < 0.15 ? (t / 0.15) * 0.5 + 0.5 : (t < 0.3 ? 1.0 + (t - 0.15) / 0.15 * 0.2 : 1.2 - (t - 0.3) * 0.5);
-        final slideY = t < 0.3 ? 0 : -(t - 0.3) * 120;
+          final t = _ctrl.value;
+          final fadeOut = t > 0.6
+              ? 1.0 - ((t - 0.6) / 0.4).clamp(0.0, 1.0)
+              : 1.0;
+          final scale = t < 0.15
+              ? (t / 0.15) * 0.5 + 0.5
+              : (t < 0.3
+                    ? 1.0 + (t - 0.15) / 0.15 * 0.2
+                    : 1.2 - (t - 0.3) * 0.5);
+          final slideY = t < 0.3 ? 0 : -(t - 0.3) * 120;
 
-        return Positioned(
-          top: MediaQuery.of(context).size.height * 0.35 + slideY,
-          left: 0,
-          right: 0,
-          child: Opacity(
-            opacity: fadeOut,
-            child: Transform.scale(
-              scale: scale.clamp(0.3, 1.5),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  // Particle burst
-                  for (int i = 0; i < _particles.length; i++)
-                    _ParticleWidget(
-                      particle: _particles[i],
-                      progress: t,
-                    ),
-                  // Main badge
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-                    decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        colors: [PremiumColors.accentCyan, PremiumColors.deepPurple],
+          return Positioned(
+            top: MediaQuery.of(context).size.height * 0.35 + slideY,
+            left: 0,
+            right: 0,
+            child: Opacity(
+              opacity: fadeOut,
+              child: Transform.scale(
+                scale: scale.clamp(0.3, 1.5),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    // Particle burst
+                    for (int i = 0; i < _particles.length; i++)
+                      _ParticleWidget(particle: _particles[i], progress: t),
+                    // Main badge
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 14,
                       ),
-                      borderRadius: BorderRadius.circular(30),
-                      boxShadow: [
-                        BoxShadow(
-                          color: PremiumColors.accentCyan.withValues(alpha: 0.5),
-                          blurRadius: 24,
-                          spreadRadius: 4,
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [
+                            PremiumColors.accentCyan,
+                            PremiumColors.deepPurple,
+                          ],
                         ),
-                        BoxShadow(
-                          color: PremiumColors.deepPurple.withValues(alpha: 0.3),
-                          blurRadius: 32,
-                          spreadRadius: 2,
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Transform.rotate(
-                          angle: 0.785 + t * 0.5,
-                          child: Container(
-                            width: 20,
-                            height: 20,
-                            decoration: BoxDecoration(
-                              gradient: const LinearGradient(
-                                    colors: [Colors.white, PremiumColors.surfaceTintLight],
+                        borderRadius: BorderRadius.circular(30),
+                        boxShadow: [
+                          BoxShadow(
+                            color: PremiumColors.accentCyan.withValues(
+                              alpha: 0.5,
+                            ),
+                            blurRadius: 24,
+                            spreadRadius: 4,
+                          ),
+                          BoxShadow(
+                            color: PremiumColors.deepPurple.withValues(
+                              alpha: 0.3,
+                            ),
+                            blurRadius: 32,
+                            spreadRadius: 2,
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Transform.rotate(
+                            angle: 0.785 + t * 0.5,
+                            child: Container(
+                              width: 20,
+                              height: 20,
+                              decoration: BoxDecoration(
+                                gradient: const LinearGradient(
+                                  colors: [
+                                    Colors.white,
+                                    PremiumColors.surfaceTintLight,
+                                  ],
+                                ),
+                                borderRadius: BorderRadius.circular(3),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.white.withValues(alpha: 0.5),
+                                    blurRadius: 6,
+                                  ),
+                                ],
                               ),
-                              borderRadius: BorderRadius.circular(3),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.white.withValues(alpha: 0.5),
-                                  blurRadius: 6,
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Text(
+                            '+${widget.amount}',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 24,
+                              fontWeight: FontWeight.w900,
+                              letterSpacing: 1,
+                              shadows: [
+                                Shadow(color: Colors.black26, blurRadius: 6),
+                                Shadow(
+                                  color: PremiumColors.accentCyan,
+                                  blurRadius: 12,
                                 ),
                               ],
                             ),
                           ),
-                        ),
-                        const SizedBox(width: 10),
-                        Text(
-                          '+${widget.amount}',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
-                            fontWeight: FontWeight.w900,
-                            letterSpacing: 1,
-                            shadows: [
-                              Shadow(color: Colors.black26, blurRadius: 6),
-                              Shadow(color: PremiumColors.accentCyan, blurRadius: 12),
-                            ],
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        );
-      },
+          );
+        },
       ),
     );
   }
@@ -174,7 +187,12 @@ class _Particle {
   final double speed;
   final double size;
   final Color color;
-  _Particle({required this.angle, required this.speed, required this.size, required this.color});
+  _Particle({
+    required this.angle,
+    required this.speed,
+    required this.size,
+    required this.color,
+  });
 }
 
 class _ParticleWidget extends StatelessWidget {
@@ -202,10 +220,7 @@ class _ParticleWidget extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               gradient: RadialGradient(
-                colors: [
-                  particle.color,
-                  particle.color.withValues(alpha: 0.3),
-                ],
+                colors: [particle.color, particle.color.withValues(alpha: 0.3)],
               ),
               boxShadow: [
                 BoxShadow(

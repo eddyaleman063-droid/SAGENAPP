@@ -33,9 +33,11 @@ class WizardSingleChoiceStep extends ConsumerWidget {
           const SizedBox(height: AppSpacing.sm),
           Text(
             config.question,
-            style: AppTextStyle.title.copyWith(fontWeight: FontWeight.bold,
+            style: AppTextStyle.title.copyWith(
+              fontWeight: FontWeight.bold,
               color: textPrimary,
-              height: 1.3),
+              height: 1.3,
+            ),
           ),
           const SizedBox(height: AppSpacing.lg),
           Expanded(
@@ -50,7 +52,9 @@ class WizardSingleChoiceStep extends ConsumerWidget {
                       isSelected: selected == config.options[i].value,
                       onTap: () {
                         ref.read(experienceServiceProvider).lightHaptic();
-                        ref.read(onboardingWizardProvider.notifier).setSectionData(stepIndex, config.options[i].value);
+                        ref
+                            .read(onboardingWizardProvider.notifier)
+                            .setSectionData(stepIndex, config.options[i].value);
                       },
                     ),
                   ],

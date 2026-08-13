@@ -15,7 +15,12 @@ class ChestColors extends ThemeExtension<ChestColors> {
   });
 
   @override
-  ChestColors copyWith({Color? bronze, Color? silver, Color? gold, Color? legendary}) {
+  ChestColors copyWith({
+    Color? bronze,
+    Color? silver,
+    Color? gold,
+    Color? legendary,
+  }) {
     return ChestColors(
       bronze: bronze ?? this.bronze,
       silver: silver ?? this.silver,
@@ -96,7 +101,12 @@ class StreakColors extends ThemeExtension<StreakColors> {
   });
 
   @override
-  StreakColors copyWith({Color? chispa, Color? constante, Color? azul, Color? cosmica}) {
+  StreakColors copyWith({
+    Color? chispa,
+    Color? constante,
+    Color? azul,
+    Color? cosmica,
+  }) {
     return StreakColors(
       chispa: chispa ?? this.chispa,
       constante: constante ?? this.constante,

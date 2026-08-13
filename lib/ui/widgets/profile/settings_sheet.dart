@@ -34,11 +34,17 @@ class SettingsSheet extends StatelessWidget {
           ),
           Row(
             children: [
-              const Icon(Icons.tune_rounded, size: 18, color: PremiumColors.primary),
+              const Icon(
+                Icons.tune_rounded,
+                size: 18,
+                color: PremiumColors.primary,
+              ),
               const SizedBox(width: AppSpacing.sm),
               Text(
                 l.settingsTitle,
-                style: AppTextStyle.titleSmall.copyWith(fontWeight: FontWeight.bold),
+                style: AppTextStyle.titleSmall.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ],
           ),

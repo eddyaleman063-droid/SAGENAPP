@@ -1,4 +1,4 @@
-﻿import 'dart:math' as math;
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,19 +15,14 @@ class LevelAssessmentScreen extends ConsumerStatefulWidget {
   final VoidCallback? onContinue;
   final VoidCallback? onBack;
 
-  const LevelAssessmentScreen({
-    super.key,
-    this.onContinue,
-    this.onBack,
-  });
+  const LevelAssessmentScreen({super.key, this.onContinue, this.onBack});
 
   @override
   ConsumerState<LevelAssessmentScreen> createState() =>
       _LevelAssessmentScreenState();
 }
 
-class _LevelAssessmentScreenState
-    extends ConsumerState<LevelAssessmentScreen> {
+class _LevelAssessmentScreenState extends ConsumerState<LevelAssessmentScreen> {
   int? _selectedLevelIndex;
   bool _isPressed = false;
 
@@ -55,13 +50,18 @@ class _LevelAssessmentScreenState
   Widget build(BuildContext context) {
     final dark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: dark ? PremiumColors.deepBackground : PremiumColors.lightBg,
+      backgroundColor: dark
+          ? PremiumColors.deepBackground
+          : PremiumColors.lightBg,
       body: SafeArea(
         child: Column(
           children: [
             // ── Header ──
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxs, vertical: AppSpacing.sm),
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.xxs,
+                vertical: AppSpacing.sm,
+              ),
               child: Row(
                 children: [
                   Semantics(
@@ -109,8 +109,7 @@ class _LevelAssessmentScreenState
             // ── Mascot row ──
             RepaintBoundary(
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -121,7 +120,8 @@ class _LevelAssessmentScreenState
                         height: 80,
                         cacheWidth: 160,
                         cacheHeight: 160,
-                        errorBuilder: (_, _, _) => const Icon(Icons.pets, size: 48),
+                        errorBuilder: (_, _, _) =>
+                            const Icon(Icons.pets, size: 48),
                       ),
                     ),
                     const SizedBox(width: AppSpacing.sm),
@@ -131,13 +131,15 @@ class _LevelAssessmentScreenState
                         children: [
                           Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: AppSpacing.xl, vertical: AppSpacing.lg),
+                              horizontal: AppSpacing.xl,
+                              vertical: AppSpacing.lg,
+                            ),
                             decoration: BoxDecoration(
-                              color: dark ? PremiumColors.onboardingBubbleDark : Colors.white,
+                              color: dark
+                                  ? PremiumColors.onboardingBubbleDark
+                                  : Colors.white,
                               borderRadius: BorderRadius.circular(AppRadius.xl),
-                              border: Border.all(
-                                color: context.borderSubtle,
-                              ),
+                              border: Border.all(color: context.borderSubtle),
                             ),
                             child: Text(
                               AppLocalizations.of(context)!.onbLevelQuestion,
@@ -157,7 +159,9 @@ class _LevelAssessmentScreenState
                                   width: 12,
                                   height: 12,
                                   decoration: BoxDecoration(
-                                    color: dark ? PremiumColors.onboardingBubbleDark : Colors.white,
+                                    color: dark
+                                        ? PremiumColors.onboardingBubbleDark
+                                        : Colors.white,
                                     border: Border.all(
                                       color: context.borderSubtle,
                                     ),
@@ -180,8 +184,7 @@ class _LevelAssessmentScreenState
             Expanded(
               child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
                 itemCount: _levelLabels(AppLocalizations.of(context)!).length,
                 itemBuilder: (context, index) {
                   final isSelected = _selectedLevelIndex == index;
@@ -198,11 +201,15 @@ class _LevelAssessmentScreenState
                       child: AnimatedContainer(
                         duration: const Duration(milliseconds: 200),
                         height: 68,
-                        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppSpacing.lg,
+                        ),
                         margin: const EdgeInsets.only(bottom: AppSpacing.md),
                         decoration: BoxDecoration(
                           color: isSelected
-                              ? PremiumColors.primaryAccent.withValues(alpha: 0.08)
+                              ? PremiumColors.primaryAccent.withValues(
+                                  alpha: 0.08,
+                                )
                               : context.subtle,
                           borderRadius: BorderRadius.circular(AppRadius.xl),
                           border: Border.all(
@@ -218,7 +225,9 @@ class _LevelAssessmentScreenState
                             const SizedBox(width: AppSpacing.lg),
                             Expanded(
                               child: Text(
-                                _levelLabels(AppLocalizations.of(context)!)[index],
+                                _levelLabels(
+                                  AppLocalizations.of(context)!,
+                                )[index],
                                 style: AppTextStyle.bodyMd.copyWith(
                                   color: context.textPrimary,
                                   fontWeight: FontWeight.w500,
@@ -244,7 +253,11 @@ class _LevelAssessmentScreenState
             // ── Bottom button ──
             Padding(
               padding: const EdgeInsets.fromLTRB(
-                  AppSpacing.xxl, 0, AppSpacing.xxl, AppSpacing.xxl),
+                AppSpacing.xxl,
+                0,
+                AppSpacing.xxl,
+                AppSpacing.xxl,
+              ),
               child: Semantics(
                 button: true,
                 label: AppLocalizations.of(context)!.continueText,
@@ -259,42 +272,42 @@ class _LevelAssessmentScreenState
                       ? () => setState(() => _isPressed = false)
                       : null,
                   child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 80),
-                  transform: _isPressed
-                      ? Matrix4.translationValues(0, 4, 0)
-                      : Matrix4.identity(),
-                  height: 54,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: _selectedLevelIndex != null
-                        ? PremiumColors.primaryAccent
-                        : context.surfaceCard,
-                    borderRadius: BorderRadius.circular(AppRadius.xl),
-                    boxShadow: _isPressed || _selectedLevelIndex == null
-                        ? []
-                        : [
-                            const BoxShadow(
-                              color: PremiumColors.primaryDark,
-                              offset: Offset(0, 4),
-                              blurRadius: 0,
-                            ),
-                          ],
-                  ),
-                  child: Center(
-                    child: Text(
-                      AppLocalizations.of(context)!.continueText,
-                      style: AppTextStyle.titleSmall.copyWith(
-                        color: _selectedLevelIndex != null
-                            ? context.textPrimary
-                            : context.textDisabled,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 1.5,
+                    duration: const Duration(milliseconds: 80),
+                    transform: _isPressed
+                        ? Matrix4.translationValues(0, 4, 0)
+                        : Matrix4.identity(),
+                    height: 54,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: _selectedLevelIndex != null
+                          ? PremiumColors.primaryAccent
+                          : context.surfaceCard,
+                      borderRadius: BorderRadius.circular(AppRadius.xl),
+                      boxShadow: _isPressed || _selectedLevelIndex == null
+                          ? []
+                          : [
+                              const BoxShadow(
+                                color: PremiumColors.primaryDark,
+                                offset: Offset(0, 4),
+                                blurRadius: 0,
+                              ),
+                            ],
+                    ),
+                    child: Center(
+                      child: Text(
+                        AppLocalizations.of(context)!.continueText,
+                        style: AppTextStyle.titleSmall.copyWith(
+                          color: _selectedLevelIndex != null
+                              ? context.textPrimary
+                              : context.textDisabled,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 1.5,
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
             ),
           ],
         ).animate().fadeIn().slideY(begin: 0.05),
@@ -328,9 +341,7 @@ class _SignalBars extends StatelessWidget {
             height: _barHeights[i],
             margin: EdgeInsets.only(right: i < 4 ? _barSpacing : 0),
             decoration: BoxDecoration(
-              color: lit
-                  ? PremiumColors.primaryAccent
-                  : context.textDisabled,
+              color: lit ? PremiumColors.primaryAccent : context.textDisabled,
               borderRadius: BorderRadius.circular(2),
             ),
           );

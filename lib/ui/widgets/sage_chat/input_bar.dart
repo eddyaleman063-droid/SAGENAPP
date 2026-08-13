@@ -36,7 +36,10 @@ class InputBar extends StatelessWidget {
         children: [
           Expanded(
             child: Semantics(
-              label: AppLocalizations.of(context)?.chatHint ?? AppLocalizations.of(context)?.chatInputHint ?? '',
+              label:
+                  AppLocalizations.of(context)?.chatHint ??
+                  AppLocalizations.of(context)?.chatInputHint ??
+                  '',
               child: TextField(
                 controller: controller,
                 focusNode: focusNode,
@@ -47,15 +50,23 @@ class InputBar extends StatelessWidget {
                 textInputAction: TextInputAction.send,
                 onSubmitted: enabled ? (_) => onSend() : null,
                 decoration: InputDecoration(
-                  hintText: AppLocalizations.of(context)?.chatHint ?? AppLocalizations.of(context)?.chatInputHint ?? '',
-                  hintStyle: AppTextStyle.bodyMd.copyWith(color: context.textTertiary),
+                  hintText:
+                      AppLocalizations.of(context)?.chatHint ??
+                      AppLocalizations.of(context)?.chatInputHint ??
+                      '',
+                  hintStyle: AppTextStyle.bodyMd.copyWith(
+                    color: context.textTertiary,
+                  ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(AppRadius.pill),
                     borderSide: BorderSide.none,
                   ),
                   filled: true,
                   fillColor: context.surfaceCard,
-                  contentPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.lg,
+                    vertical: AppSpacing.md,
+                  ),
                   isDense: true,
                 ),
               ),

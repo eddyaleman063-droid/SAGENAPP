@@ -10,13 +10,26 @@ class QuestionBank {
   final AppLogger _logger = AppLogger();
 
   /// Returns questions from LocalQuestionDB only. No hardcoded fallback.
-  Future<List<Challenge>> getQuestionsForLesson(String stageId, String lessonId, {int count = 5}) async {
+  Future<List<Challenge>> getQuestionsForLesson(
+    String stageId,
+    String lessonId, {
+    int count = 5,
+  }) async {
     try {
-      final dbQuestions = await LocalQuestionDB.instance.getQuestionsForLesson(stageId, lessonId, count: count);
+      final dbQuestions = await LocalQuestionDB.instance.getQuestionsForLesson(
+        stageId,
+        lessonId,
+        count: count,
+      );
       if (dbQuestions.isNotEmpty) return dbQuestions;
-      _logger.warning('QuestionBank: no questions found for $stageId/$lessonId');
+      _logger.warning(
+        'QuestionBank: no questions found for $stageId/$lessonId',
+      );
     } catch (e) {
-      _logger.error('QuestionBank: failed to load questions for $stageId/$lessonId', e);
+      _logger.error(
+        'QuestionBank: failed to load questions for $stageId/$lessonId',
+        e,
+      );
     }
     return const [];
   }

@@ -1,13 +1,7 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
-enum SagenMood {
-  neutral,
-  happy,
-  sad,
-  surprised,
-  angry,
-}
+enum SagenMood { neutral, happy, sad, surprised, angry }
 
 class SagenLogo extends StatefulWidget {
   final double size;
@@ -27,7 +21,8 @@ class SagenLogo extends StatefulWidget {
   State<SagenLogo> createState() => _SagenLogoState();
 }
 
-class _SagenLogoState extends State<SagenLogo> with SingleTickerProviderStateMixin {
+class _SagenLogoState extends State<SagenLogo>
+    with SingleTickerProviderStateMixin {
   AnimationController? _pulseCtrl;
 
   @override
@@ -94,10 +89,7 @@ class _SagenLogoPainter extends CustomPainter {
   final SagenMood mood;
   final double neonIntensity;
 
-  const _SagenLogoPainter({
-    required this.mood,
-    this.neonIntensity = 1.0,
-  });
+  const _SagenLogoPainter({required this.mood, this.neonIntensity = 1.0});
 
   static const _bgCenter = Color(0xFF7FFFD4);
   static const _bgEdge = Color(0xFF00E5EE);
@@ -208,7 +200,9 @@ class _SagenLogoPainter extends CustomPainter {
       canvas.drawPath(
         maskPath,
         Paint()
-          ..color = _neon.withValues(alpha: (0.15 * neonIntensity - i * 0.035).clamp(0.0, 1.0))
+          ..color = _neon.withValues(
+            alpha: (0.15 * neonIntensity - i * 0.035).clamp(0.0, 1.0),
+          )
           ..style = PaintingStyle.stroke
           ..strokeWidth = pw * (2 + i * 1.5)
           ..maskFilter = MaskFilter.blur(BlurStyle.normal, pw * (1 + i * 0.8)),
@@ -268,10 +262,14 @@ class _SagenLogoPainter extends CustomPainter {
         ..color = Colors.white.withValues(alpha: 0.10 + noise2 * 0.20)
         ..strokeWidth = 0.4 + noise * 0.8;
       canvas.drawLine(
-        Offset(center.dx + (pupilR + eyeR * 0.05) * math.cos(angle),
-            center.dy + (pupilR + eyeR * 0.05) * math.sin(angle)),
-        Offset(center.dx + endDist * math.cos(angle),
-            center.dy + endDist * math.sin(angle)),
+        Offset(
+          center.dx + (pupilR + eyeR * 0.05) * math.cos(angle),
+          center.dy + (pupilR + eyeR * 0.05) * math.sin(angle),
+        ),
+        Offset(
+          center.dx + endDist * math.cos(angle),
+          center.dy + endDist * math.sin(angle),
+        ),
         irisLinePaint,
       );
     }
@@ -313,7 +311,13 @@ class _SagenLogoPainter extends CustomPainter {
     );
   }
 
-  void _drawEyelids(Canvas canvas, Offset leftEye, Offset rightEye, double eyeR, double r) {
+  void _drawEyelids(
+    Canvas canvas,
+    Offset leftEye,
+    Offset rightEye,
+    double eyeR,
+    double r,
+  ) {
     switch (mood) {
       case SagenMood.happy:
         _drawLid(canvas, leftEye, eyeR, -eyeR * 0.35);
@@ -342,7 +346,12 @@ class _SagenLogoPainter extends CustomPainter {
     final path = Path()
       ..moveTo(ec.dx - eyeR * 1.6, ec.dy + eyeR * 0.1)
       ..quadraticBezierTo(ec.dx - eyeR * 0.5, ec.dy + topY, ec.dx, ec.dy + topY)
-      ..quadraticBezierTo(ec.dx + eyeR * 0.5, ec.dy + topY, ec.dx + eyeR * 1.6, ec.dy + eyeR * 0.1)
+      ..quadraticBezierTo(
+        ec.dx + eyeR * 0.5,
+        ec.dy + topY,
+        ec.dx + eyeR * 1.6,
+        ec.dy + eyeR * 0.1,
+      )
       ..lineTo(ec.dx + eyeR * 1.6, ec.dy - eyeR * 1.5)
       ..lineTo(ec.dx - eyeR * 1.6, ec.dy - eyeR * 1.5)
       ..close();
@@ -353,11 +362,24 @@ class _SagenLogoPainter extends CustomPainter {
     final paint = Paint()
       ..color = const Color(0xFFFF6D00).withValues(alpha: 0.12)
       ..maskFilter = MaskFilter.blur(BlurStyle.normal, r * 0.05);
-    canvas.drawCircle(Offset(leftEye.dx, leftEye.dy + r * 0.14), r * 0.08, paint);
-    canvas.drawCircle(Offset(rightEye.dx, rightEye.dy + r * 0.14), r * 0.08, paint);
+    canvas.drawCircle(
+      Offset(leftEye.dx, leftEye.dy + r * 0.14),
+      r * 0.08,
+      paint,
+    );
+    canvas.drawCircle(
+      Offset(rightEye.dx, rightEye.dy + r * 0.14),
+      r * 0.08,
+      paint,
+    );
   }
 
-  void _drawAngryBrow(Canvas canvas, Offset leftEye, Offset rightEye, double r) {
+  void _drawAngryBrow(
+    Canvas canvas,
+    Offset leftEye,
+    Offset rightEye,
+    double r,
+  ) {
     final p = Paint()
       ..color = _maskBase
       ..style = PaintingStyle.stroke
@@ -365,10 +387,14 @@ class _SagenLogoPainter extends CustomPainter {
       ..strokeCap = StrokeCap.round;
     canvas.drawLine(
       Offset(leftEye.dx - r * 0.10, leftEye.dy - r * 0.14),
-      Offset(leftEye.dx + r * 0.10, leftEye.dy - r * 0.28), p);
+      Offset(leftEye.dx + r * 0.10, leftEye.dy - r * 0.28),
+      p,
+    );
     canvas.drawLine(
       Offset(rightEye.dx + r * 0.10, rightEye.dy - r * 0.14),
-      Offset(rightEye.dx - r * 0.10, rightEye.dy - r * 0.28), p);
+      Offset(rightEye.dx - r * 0.10, rightEye.dy - r * 0.28),
+      p,
+    );
   }
 
   void _drawMouth(Canvas canvas, Offset c, double r) {
@@ -379,48 +405,88 @@ class _SagenLogoPainter extends CustomPainter {
     switch (mood) {
       case SagenMood.happy:
         path.moveTo(c.dx - mW, mY - r * 0.02);
-        path.cubicTo(c.dx - mW * 0.6, mY + r * 0.10, c.dx + mW * 0.6, mY + r * 0.10, c.dx + mW, mY - r * 0.02);
+        path.cubicTo(
+          c.dx - mW * 0.6,
+          mY + r * 0.10,
+          c.dx + mW * 0.6,
+          mY + r * 0.10,
+          c.dx + mW,
+          mY - r * 0.02,
+        );
       case SagenMood.sad:
         path.moveTo(c.dx - mW, mY + r * 0.02);
-        path.cubicTo(c.dx - mW * 0.6, mY - r * 0.06, c.dx + mW * 0.6, mY - r * 0.06, c.dx + mW, mY + r * 0.02);
+        path.cubicTo(
+          c.dx - mW * 0.6,
+          mY - r * 0.06,
+          c.dx + mW * 0.6,
+          mY - r * 0.06,
+          c.dx + mW,
+          mY + r * 0.02,
+        );
       case SagenMood.surprised:
         canvas.drawOval(
-          Rect.fromCenter(center: Offset(c.dx, mY + r * 0.04), width: mW * 0.7, height: mW * 0.8),
-          Paint()..color = _pupil);
+          Rect.fromCenter(
+            center: Offset(c.dx, mY + r * 0.04),
+            width: mW * 0.7,
+            height: mW * 0.8,
+          ),
+          Paint()..color = _pupil,
+        );
         canvas.drawOval(
-          Rect.fromCenter(center: Offset(c.dx - mW * 0.05, mY + r * 0.02),
-              width: mW * 0.15, height: mW * 0.25),
+          Rect.fromCenter(
+            center: Offset(c.dx - mW * 0.05, mY + r * 0.02),
+            width: mW * 0.15,
+            height: mW * 0.25,
+          ),
           Paint()
             ..color = _highlight.withValues(alpha: 0.15)
-            ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 1));
+            ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 1),
+        );
         return;
       case SagenMood.angry:
         path.moveTo(c.dx - mW * 0.7, mY);
         path.lineTo(c.dx + mW * 0.7, mY);
       case SagenMood.neutral:
         path.moveTo(c.dx - mW * 0.8, mY);
-        path.cubicTo(c.dx - mW * 0.4, mY + r * 0.02, c.dx + mW * 0.4, mY + r * 0.02, c.dx + mW * 0.8, mY);
+        path.cubicTo(
+          c.dx - mW * 0.4,
+          mY + r * 0.02,
+          c.dx + mW * 0.4,
+          mY + r * 0.02,
+          c.dx + mW * 0.8,
+          mY,
+        );
     }
 
-    canvas.drawPath(path, Paint()
-      ..color = Colors.black.withValues(alpha: 0.25)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = r * 0.018
-      ..strokeCap = StrokeCap.round);
+    canvas.drawPath(
+      path,
+      Paint()
+        ..color = Colors.black.withValues(alpha: 0.25)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = r * 0.018
+        ..strokeCap = StrokeCap.round,
+    );
 
-    canvas.drawPath(path, Paint()
-      ..color = _highlight.withValues(alpha: 0.15)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = r * 0.008
-      ..strokeCap = StrokeCap.round);
+    canvas.drawPath(
+      path,
+      Paint()
+        ..color = _highlight.withValues(alpha: 0.15)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = r * 0.008
+        ..strokeCap = StrokeCap.round,
+    );
 
-    canvas.drawPath(path, Paint()
-      ..color = _maskBase.withValues(alpha: 0.7)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = r * 0.012
-      ..strokeCap = StrokeCap.round);
+    canvas.drawPath(
+      path,
+      Paint()
+        ..color = _maskBase.withValues(alpha: 0.7)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = r * 0.012
+        ..strokeCap = StrokeCap.round,
+    );
   }
 
   @override
-  bool shouldRepaint(_SagenLogoPainter old) => old.mood != mood || old.neonIntensity != neonIntensity;
+  bool shouldRepaint(_SagenLogoPainter old) =>
+      old.mood != mood || old.neonIntensity != neonIntensity;
 }

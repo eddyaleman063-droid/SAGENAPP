@@ -11,32 +11,42 @@ class QuizSkeleton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ShimmerScope(
       child: Column(
-      children: [
-        _buildHeader(context),
-        Expanded(
-          child: SingleChildScrollView(
-            padding: const EdgeInsetsDirectional.fromSTEB(AppSpacing.xl, AppSpacing.sm, AppSpacing.xl, AppSpacing.xl),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildQuestionCard(context),
-                const SizedBox(height: AppSpacing.lg),
-                _buildOptionCard(context, 0.85),
-                _buildOptionCard(context, 0.72),
-                _buildOptionCard(context, 0.78),
-                _buildOptionCard(context, 0.65),
-              ],
+        children: [
+          _buildHeader(context),
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsetsDirectional.fromSTEB(
+                AppSpacing.xl,
+                AppSpacing.sm,
+                AppSpacing.xl,
+                AppSpacing.xl,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildQuestionCard(context),
+                  const SizedBox(height: AppSpacing.lg),
+                  _buildOptionCard(context, 0.85),
+                  _buildOptionCard(context, 0.72),
+                  _buildOptionCard(context, 0.78),
+                  _buildOptionCard(context, 0.65),
+                ],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
       ),
     );
   }
 
   Widget _buildHeader(BuildContext context) {
     return Container(
-      padding: const EdgeInsetsDirectional.fromSTEB(AppSpacing.xl, AppSpacing.lg, AppSpacing.xl, AppSpacing.md),
+      padding: const EdgeInsetsDirectional.fromSTEB(
+        AppSpacing.xl,
+        AppSpacing.lg,
+        AppSpacing.xl,
+        AppSpacing.md,
+      ),
       decoration: BoxDecoration(
         color: context.surfaceCard,
         boxShadow: [
@@ -130,7 +140,10 @@ class QuizSkeleton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: AppSpacing.lg),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md),
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.lg,
+          vertical: AppSpacing.md,
+        ),
         decoration: BoxDecoration(
           color: context.shimmerBase,
           borderRadius: BorderRadius.circular(AppRadius.lg),

@@ -29,7 +29,10 @@ class _StatCardWidgetState extends State<StatCardWidget>
   @override
   void initState() {
     super.initState();
-    _ctrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 600));
+    _ctrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 600),
+    );
     _scaleAnim = CurvedAnimation(parent: _ctrl, curve: Curves.elasticOut);
     _ctrl.forward();
   }
@@ -46,7 +49,10 @@ class _StatCardWidgetState extends State<StatCardWidget>
     return ScaleTransition(
       scale: _scaleAnim,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg, horizontal: AppSpacing.md),
+        padding: const EdgeInsets.symmetric(
+          vertical: AppSpacing.lg,
+          horizontal: AppSpacing.md,
+        ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppRadius.xl),
           color: PremiumColors.darkCard,
@@ -68,13 +74,17 @@ class _StatCardWidgetState extends State<StatCardWidget>
             const SizedBox(height: AppSpacing.sm),
             Text(
               widget.value,
-              style: AppTextStyle.titleLg.copyWith(fontWeight: FontWeight.bold,
-                color: accent.withValues(alpha: 0.95)),
+              style: AppTextStyle.titleLg.copyWith(
+                fontWeight: FontWeight.bold,
+                color: accent.withValues(alpha: 0.95),
+              ),
             ),
             const SizedBox(height: AppSpacing.xxs),
             Text(
               widget.label,
-              style: AppTextStyle.label.copyWith(color: Colors.white.withValues(alpha: 0.45)),
+              style: AppTextStyle.label.copyWith(
+                color: Colors.white.withValues(alpha: 0.45),
+              ),
             ),
           ],
         ),

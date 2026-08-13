@@ -13,9 +13,8 @@ import 'feedback_coordinator.dart';
 class ExperienceService {
   final LowEndDeviceDetector _detector;
 
-  ExperienceService({
-    LowEndDeviceDetector? detector,
-  })  : _detector = detector ?? LowEndDeviceDetector.instance;
+  ExperienceService({LowEndDeviceDetector? detector})
+    : _detector = detector ?? LowEndDeviceDetector.instance;
 
   static final ExperienceService instance = ExperienceService();
 
@@ -139,9 +138,15 @@ class ExperienceService {
   void chestEvolveHaptic() => FeedbackCoordinator.instance.chestEvolve();
   void chestFailHaptic() => FeedbackCoordinator.instance.chestFail();
 
-  Duration get fast => _reduceAnimations ? Duration.zero : const Duration(milliseconds: 150);
-  Duration get normal => _reduceAnimations ? Duration.zero : const Duration(milliseconds: 300);
-  Duration get medium => _reduceAnimations ? Duration.zero : const Duration(milliseconds: 500);
-  Duration get slow => _reduceAnimations ? Duration.zero : const Duration(milliseconds: 800);
-  Duration get celebration => _reduceAnimations ? const Duration(milliseconds: 200) : const Duration(milliseconds: 1200);
+  Duration get fast =>
+      _reduceAnimations ? Duration.zero : const Duration(milliseconds: 150);
+  Duration get normal =>
+      _reduceAnimations ? Duration.zero : const Duration(milliseconds: 300);
+  Duration get medium =>
+      _reduceAnimations ? Duration.zero : const Duration(milliseconds: 500);
+  Duration get slow =>
+      _reduceAnimations ? Duration.zero : const Duration(milliseconds: 800);
+  Duration get celebration => _reduceAnimations
+      ? const Duration(milliseconds: 200)
+      : const Duration(milliseconds: 1200);
 }

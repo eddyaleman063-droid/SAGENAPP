@@ -36,12 +36,12 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
     try {
       final uid = ref.read(authServiceProvider).currentUser?.uid;
       if (uid == null) return false;
-      
+
       final userRef = FirebaseFirestore.instance.collection('users').doc(uid);
       final inventoryRef = userRef.collection('inventory').doc('shop_items');
-      
+
       final doc = await inventoryRef.get();
-      
+
       if (doc.exists) {
         final data = doc.data();
         if (data != null && data['items'] is List) {
@@ -99,14 +99,12 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
     }
   }
 
-  void _buyItem(
-    BuildContext context,
-    ShopItem item,
-    bool dark,
-  ) async {
+  void _buyItem(BuildContext context, ShopItem item, bool dark) async {
     if (_purchasingItems.contains(item.id)) return;
     final l = AppLocalizations.of(context)!;
-    setState(() { _purchasingItems.add(item.id); });
+    setState(() {
+      _purchasingItems.add(item.id);
+    });
     try {
       final exp = ref.read(experienceServiceProvider);
       final isValid = await _validatePurchase(item.id, item.gemCost);
@@ -181,7 +179,11 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
         );
       }
     } finally {
-      if (mounted) setState(() { _purchasingItems.remove(item.id); });
+      if (mounted) {
+        setState(() {
+          _purchasingItems.remove(item.id);
+        });
+      }
     }
   }
 
@@ -202,20 +204,22 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
       return PremiumLoader(
         loading: true,
         message: l.loading,
-        child: Scaffold(
-          backgroundColor: context.surfaceBackground,
-        ),
+        child: Scaffold(backgroundColor: context.surfaceBackground),
       );
     }
 
-    final filteredItems = shop.items.where((i) => i.category == _selectedCategory).toList();
+    final filteredItems = shop.items
+        .where((i) => i.category == _selectedCategory)
+        .toList();
 
     return Scaffold(
       backgroundColor: context.surfaceBackground,
       body: LayoutBuilder(
         builder: (context, constraints) {
           final isWide = constraints.maxWidth > 600;
-          final horizontalPadding = isWide ? AppSpacing.xxl * 2.0 : AppSpacing.xxl.toDouble();
+          final horizontalPadding = isWide
+              ? AppSpacing.xxl * 2.0
+              : AppSpacing.xxl.toDouble();
           return SafeArea(
             child: RepaintBoundary(
               child: RefreshIndicator(
@@ -225,157 +229,173 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
                   await Future.delayed(const Duration(milliseconds: 500));
                 },
                 child: CustomScrollView(
-                slivers: [
-                  SliverToBoxAdapter(
-                    child: StoreHeader(dark: dark),
-                  ),
-                  SliverPadding(
-                    padding: EdgeInsets.fromLTRB(
-                      horizontalPadding,
-                      AppSpacing.md,
-                      horizontalPadding,
-                      AppSpacing.md,
-                    ),
-                    sliver: const SliverToBoxAdapter(
-                      child: DailyChestCard(),
-                    ),
-                  ),
-                  SliverPadding(
-                    padding: EdgeInsets.fromLTRB(
-                      horizontalPadding,
-                      AppSpacing.md,
-                      horizontalPadding,
-                      AppSpacing.md,
-                    ),
-                    sliver: SliverToBoxAdapter(
-                      child: Text(
-                        l.storeProtectStreak,
-                        style: AppTextStyle.titleSmall.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: context.textSecondary,
-                        ),
+                  slivers: [
+                    SliverToBoxAdapter(child: StoreHeader(dark: dark)),
+                    SliverPadding(
+                      padding: EdgeInsets.fromLTRB(
+                        horizontalPadding,
+                        AppSpacing.md,
+                        horizontalPadding,
+                        AppSpacing.md,
                       ),
+                      sliver: const SliverToBoxAdapter(child: DailyChestCard()),
                     ),
-                  ),
-                  SliverPadding(
-                    padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                    sliver: SliverToBoxAdapter(
-                      child: StreakFireCard(
-                        streak: streak,
+                    SliverPadding(
+                      padding: EdgeInsets.fromLTRB(
+                        horizontalPadding,
+                        AppSpacing.md,
+                        horizontalPadding,
+                        AppSpacing.md,
                       ),
-                    ),
-                  ),
-                  SliverPadding(
-                    padding: EdgeInsets.fromLTRB(
-                      horizontalPadding,
-                      0,
-                      horizontalPadding,
-                      AppSpacing.md,
-                    ),
-                    sliver: SliverToBoxAdapter(
-                      child: Text(
-                        l.storeSupportTiers,
-                        style: AppTextStyle.titleSmall.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: context.textSecondary,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SliverPadding(
-                    padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                    sliver: SliverToBoxAdapter(
-                      child: SupporterTiersSection(dark: dark),
-                    ),
-                  ),
-                  // Gem earning tips
-                  SliverPadding(
-                    padding: EdgeInsets.fromLTRB(
-                      horizontalPadding,
-                      AppSpacing.xl,
-                      horizontalPadding,
-                      AppSpacing.md,
-                    ),
-                    sliver: SliverToBoxAdapter(
-                      child: _GemEarningTipsCard(dark: dark),
-                    ),
-                  ),
-                  SliverPadding(
-                    padding: EdgeInsets.fromLTRB(
-                      horizontalPadding,
-                      AppSpacing.xl,
-                      horizontalPadding,
-                      AppSpacing.md,
-                    ),
-                    sliver: SliverToBoxAdapter(
-                      child: Text(
-                        l.storePersonalization,
-                        style: AppTextStyle.titleSmall.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: context.textSecondary,
-                        ),
-                      ),
-                    ),
-                  ),
-                  // Category tabs
-                  SliverPadding(
-                    padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                    sliver: SliverToBoxAdapter(
-                      child: _CategoryTabs(
-                        selected: _selectedCategory,
-                        dark: dark,
-                        onChanged: (cat) => setState(() => _selectedCategory = cat),
-                      ),
-                    ),
-                  ),
-                  const SliverPadding(padding: EdgeInsets.only(top: AppSpacing.md)),
-                  if (filteredItems.isEmpty)
-                    SliverFillRemaining(
-                      hasScrollBody: false,
-                      child: Center(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const ExcludeSemantics(
-                              child: SageEmotionWidget(emotion: SageEmotion.curious),
-                            ),
-                            const SizedBox(height: AppSpacing.md),
-                            Text(
-                              l.emptyStore,
-                              style: AppTextStyle.bodyMd.copyWith(color: context.textTertiary),
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                  else SliverPadding(
-                    padding: EdgeInsets.fromLTRB(
-                      horizontalPadding,
-                      0,
-                      horizontalPadding,
-                      100,
-                    ),
-                    sliver: SliverList(
-                      delegate: SliverChildBuilderDelegate((ctx, i) {
-                        final item = filteredItems[i];
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: AppSpacing.md),
-                          child: Semantics(
-                            button: true,
-                            label: item.name,
-                            child: ShopItemCard(
-                              item: item,
-                              dark: dark,
-                              isLoading: _purchasingItems.contains(item.id),
-                              gemBalance: gemBalance,
-                              onBuy: () => _confirmAndBuy(ctx, item, dark),
-                            ),
+                      sliver: SliverToBoxAdapter(
+                        child: Text(
+                          l.storeProtectStreak,
+                          style: AppTextStyle.titleSmall.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: context.textSecondary,
                           ),
-                        ).animate().fadeIn(delay: (i * 60).ms, duration: 300.ms).slideX(begin: 0.05);
-                      }, childCount: filteredItems.length),
+                        ),
+                      ),
                     ),
-                  ),
-                ],
+                    SliverPadding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: horizontalPadding,
+                      ),
+                      sliver: SliverToBoxAdapter(
+                        child: StreakFireCard(streak: streak),
+                      ),
+                    ),
+                    SliverPadding(
+                      padding: EdgeInsets.fromLTRB(
+                        horizontalPadding,
+                        0,
+                        horizontalPadding,
+                        AppSpacing.md,
+                      ),
+                      sliver: SliverToBoxAdapter(
+                        child: Text(
+                          l.storeSupportTiers,
+                          style: AppTextStyle.titleSmall.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: context.textSecondary,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SliverPadding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: horizontalPadding,
+                      ),
+                      sliver: SliverToBoxAdapter(
+                        child: SupporterTiersSection(dark: dark),
+                      ),
+                    ),
+                    // Gem earning tips
+                    SliverPadding(
+                      padding: EdgeInsets.fromLTRB(
+                        horizontalPadding,
+                        AppSpacing.xl,
+                        horizontalPadding,
+                        AppSpacing.md,
+                      ),
+                      sliver: SliverToBoxAdapter(
+                        child: _GemEarningTipsCard(dark: dark),
+                      ),
+                    ),
+                    SliverPadding(
+                      padding: EdgeInsets.fromLTRB(
+                        horizontalPadding,
+                        AppSpacing.xl,
+                        horizontalPadding,
+                        AppSpacing.md,
+                      ),
+                      sliver: SliverToBoxAdapter(
+                        child: Text(
+                          l.storePersonalization,
+                          style: AppTextStyle.titleSmall.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: context.textSecondary,
+                          ),
+                        ),
+                      ),
+                    ),
+                    // Category tabs
+                    SliverPadding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: horizontalPadding,
+                      ),
+                      sliver: SliverToBoxAdapter(
+                        child: _CategoryTabs(
+                          selected: _selectedCategory,
+                          dark: dark,
+                          onChanged: (cat) =>
+                              setState(() => _selectedCategory = cat),
+                        ),
+                      ),
+                    ),
+                    const SliverPadding(
+                      padding: EdgeInsets.only(top: AppSpacing.md),
+                    ),
+                    if (filteredItems.isEmpty)
+                      SliverFillRemaining(
+                        hasScrollBody: false,
+                        child: Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const ExcludeSemantics(
+                                child: SageEmotionWidget(
+                                  emotion: SageEmotion.curious,
+                                ),
+                              ),
+                              const SizedBox(height: AppSpacing.md),
+                              Text(
+                                l.emptyStore,
+                                style: AppTextStyle.bodyMd.copyWith(
+                                  color: context.textTertiary,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    else
+                      SliverPadding(
+                        padding: EdgeInsets.fromLTRB(
+                          horizontalPadding,
+                          0,
+                          horizontalPadding,
+                          100,
+                        ),
+                        sliver: SliverList(
+                          delegate: SliverChildBuilderDelegate((ctx, i) {
+                            final item = filteredItems[i];
+                            return Padding(
+                                  padding: const EdgeInsets.only(
+                                    bottom: AppSpacing.md,
+                                  ),
+                                  child: Semantics(
+                                    button: true,
+                                    label: item.name,
+                                    child: ShopItemCard(
+                                      item: item,
+                                      dark: dark,
+                                      isLoading: _purchasingItems.contains(
+                                        item.id,
+                                      ),
+                                      gemBalance: gemBalance,
+                                      onBuy: () =>
+                                          _confirmAndBuy(ctx, item, dark),
+                                    ),
+                                  ),
+                                )
+                                .animate()
+                                .fadeIn(delay: (i * 60).ms, duration: 300.ms)
+                                .slideX(begin: 0.05);
+                          }, childCount: filteredItems.length),
+                        ),
+                      ),
+                  ],
                 ),
               ),
             ),
@@ -452,16 +472,20 @@ class _GemEarningTipsCard extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppRadius.xl),
         color: context.surfaceCard,
-        border: Border.all(
-          color: context.subtleBorder,
-        ),
+        border: Border.all(color: context.subtleBorder),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              const ExcludeSemantics(child: Icon(Icons.diamond_rounded, size: 18, color: PremiumColors.accentYellow)),
+              const ExcludeSemantics(
+                child: Icon(
+                  Icons.diamond_rounded,
+                  size: 18,
+                  color: PremiumColors.accentYellow,
+                ),
+              ),
               const SizedBox(width: AppSpacing.sm),
               Expanded(
                 child: Text(
@@ -475,13 +499,41 @@ class _GemEarningTipsCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: AppSpacing.md),
-          _TipRow(icon: Icons.school_rounded, text: l.storeGemTipLesson, dark: dark),
-          _TipRow(icon: Icons.star_rounded, text: l.storeGemTipPerfect, dark: dark),
-          _TipRow(icon: Icons.wb_sunny_rounded, text: l.storeGemTipFirstLesson, dark: dark),
-          _TipRow(icon: Icons.inventory_2_rounded, text: l.storeGemTipChest, dark: dark),
-          _TipRow(icon: Icons.task_alt_rounded, text: l.storeGemTipMission, dark: dark),
-          _TipRow(icon: Icons.local_fire_department_rounded, text: l.storeGemTipStreak, dark: dark),
-          _TipRow(icon: Icons.emoji_events_rounded, text: l.storeGemTipAchievement, dark: dark),
+          _TipRow(
+            icon: Icons.school_rounded,
+            text: l.storeGemTipLesson,
+            dark: dark,
+          ),
+          _TipRow(
+            icon: Icons.star_rounded,
+            text: l.storeGemTipPerfect,
+            dark: dark,
+          ),
+          _TipRow(
+            icon: Icons.wb_sunny_rounded,
+            text: l.storeGemTipFirstLesson,
+            dark: dark,
+          ),
+          _TipRow(
+            icon: Icons.inventory_2_rounded,
+            text: l.storeGemTipChest,
+            dark: dark,
+          ),
+          _TipRow(
+            icon: Icons.task_alt_rounded,
+            text: l.storeGemTipMission,
+            dark: dark,
+          ),
+          _TipRow(
+            icon: Icons.local_fire_department_rounded,
+            text: l.storeGemTipStreak,
+            dark: dark,
+          ),
+          _TipRow(
+            icon: Icons.emoji_events_rounded,
+            text: l.storeGemTipAchievement,
+            dark: dark,
+          ),
         ],
       ),
     );
@@ -506,9 +558,7 @@ class _TipRow extends StatelessWidget {
           Expanded(
             child: Text(
               text,
-              style: AppTextStyle.caption.copyWith(
-                color: context.textTertiary,
-              ),
+              style: AppTextStyle.caption.copyWith(color: context.textTertiary),
             ),
           ),
         ],

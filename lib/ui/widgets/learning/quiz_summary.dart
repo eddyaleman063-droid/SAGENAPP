@@ -67,11 +67,17 @@ class _QuizSummaryScreenState extends State<QuizSummaryScreen>
           ),
           if (r.perfect)
             const Positioned.fill(
-              child: ConfettiWidget(type: ConfettiType.level, particleCount: 80),
+              child: ConfettiWidget(
+                type: ConfettiType.level,
+                particleCount: 80,
+              ),
             )
           else if (r.score >= 0.7)
             const Positioned.fill(
-              child: ConfettiWidget(type: ConfettiType.streak, particleCount: 40),
+              child: ConfettiWidget(
+                type: ConfettiType.streak,
+                particleCount: 40,
+              ),
             ),
           Center(
             child: SingleChildScrollView(
@@ -91,27 +97,37 @@ class _QuizSummaryScreenState extends State<QuizSummaryScreen>
                         shape: BoxShape.circle,
                         gradient: r.perfect
                             ? const LinearGradient(
-                                colors: [PremiumColors.achievementStart, PremiumColors.achievementEnd],
+                                colors: [
+                                  PremiumColors.achievementStart,
+                                  PremiumColors.achievementEnd,
+                                ],
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
                               )
                             : r.score >= 0.7
-                                ? const LinearGradient(
-                                    colors: [PremiumColors.primary, PremiumColors.primaryLight],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                  )
-                                : LinearGradient(
-                                    colors: [context.borderSubtle, context.borderSubtle.withValues(alpha: 0.7)],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                  ),
+                            ? const LinearGradient(
+                                colors: [
+                                  PremiumColors.primary,
+                                  PremiumColors.primaryLight,
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              )
+                            : LinearGradient(
+                                colors: [
+                                  context.borderSubtle,
+                                  context.borderSubtle.withValues(alpha: 0.7),
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
                         boxShadow: [
                           BoxShadow(
-                            color: (r.perfect
-                                    ? PremiumColors.achievementEnd
-                                    : PremiumColors.primary)
-                                .withValues(alpha: 0.3),
+                            color:
+                                (r.perfect
+                                        ? PremiumColors.achievementEnd
+                                        : PremiumColors.primary)
+                                    .withValues(alpha: 0.3),
                             blurRadius: 24,
                             spreadRadius: 2,
                           ),
@@ -120,8 +136,10 @@ class _QuizSummaryScreenState extends State<QuizSummaryScreen>
                       child: Center(
                         child: Text(
                           '$scorePercent%',
-                          style: AppTextStyle.displayMedium.copyWith(color: Colors.white,
-                            fontWeight: FontWeight.bold),
+                          style: AppTextStyle.displayMedium.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
@@ -136,10 +154,12 @@ class _QuizSummaryScreenState extends State<QuizSummaryScreen>
                       r.perfect
                           ? l.summaryPerfect
                           : r.score >= 0.7
-                              ? l.summaryGoodWork
-                              : l.summaryKeepPracticing,
-                      style: AppTextStyle.headline.copyWith(fontWeight: FontWeight.bold,
-                        color: context.textPrimary),
+                          ? l.summaryGoodWork
+                          : l.summaryKeepPracticing,
+                      style: AppTextStyle.headline.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: context.textPrimary,
+                      ),
                     ),
                   ),
                   const SizedBox(height: AppSpacing.sm),
@@ -150,7 +170,9 @@ class _QuizSummaryScreenState extends State<QuizSummaryScreen>
                     ),
                     child: Text(
                       l.correctAnswers(r.correctAnswers, r.totalQuestions),
-                      style: AppTextStyle.bodyMd.copyWith(color: context.textSecondary),
+                      style: AppTextStyle.bodyMd.copyWith(
+                        color: context.textSecondary,
+                      ),
                     ),
                   ),
                   if (minutes > 0 || seconds > 0)
@@ -158,18 +180,27 @@ class _QuizSummaryScreenState extends State<QuizSummaryScreen>
                       padding: const EdgeInsets.only(top: 4),
                       child: Text(
                         '${minutes}m ${seconds}s',
-                        style: AppTextStyle.caption.copyWith(color: context.textTertiary),
+                        style: AppTextStyle.caption.copyWith(
+                          color: context.textTertiary,
+                        ),
                       ),
                     ),
                   const SizedBox(height: AppSpacing.xxxl),
                   SlideTransition(
-                    position: Tween<Offset>(
-                      begin: const Offset(0, 0.3),
-                      end: Offset.zero,
-                    ).animate(CurvedAnimation(
-                      parent: _entranceCtrl,
-                      curve: const Interval(0.3, 0.8, curve: Curves.easeOutCubic),
-                    )),
+                    position:
+                        Tween<Offset>(
+                          begin: const Offset(0, 0.3),
+                          end: Offset.zero,
+                        ).animate(
+                          CurvedAnimation(
+                            parent: _entranceCtrl,
+                            curve: const Interval(
+                              0.3,
+                              0.8,
+                              curve: Curves.easeOutCubic,
+                            ),
+                          ),
+                        ),
                     child: FadeTransition(
                       opacity: CurvedAnimation(
                         parent: _entranceCtrl,
@@ -177,7 +208,11 @@ class _QuizSummaryScreenState extends State<QuizSummaryScreen>
                       ),
                       child: _RewardRow(
                         iconWidget: const ExcludeSemantics(
-                          child: Icon(Icons.auto_awesome_rounded, size: 18, color: PremiumColors.achievementEnd),
+                          child: Icon(
+                            Icons.auto_awesome_rounded,
+                            size: 18,
+                            color: PremiumColors.achievementEnd,
+                          ),
                         ),
                         label: l.summaryXpEarned,
                         value: '${r.xpEarned}',
@@ -188,21 +223,36 @@ class _QuizSummaryScreenState extends State<QuizSummaryScreen>
                   ),
                   const SizedBox(height: AppSpacing.md),
                   SlideTransition(
-                    position: Tween<Offset>(
-                      begin: const Offset(0, 0.3),
-                      end: Offset.zero,
-                    ).animate(CurvedAnimation(
-                      parent: _entranceCtrl,
-                      curve: const Interval(0.45, 0.95, curve: Curves.easeOutCubic),
-                    )),
+                    position:
+                        Tween<Offset>(
+                          begin: const Offset(0, 0.3),
+                          end: Offset.zero,
+                        ).animate(
+                          CurvedAnimation(
+                            parent: _entranceCtrl,
+                            curve: const Interval(
+                              0.45,
+                              0.95,
+                              curve: Curves.easeOutCubic,
+                            ),
+                          ),
+                        ),
                     child: FadeTransition(
                       opacity: CurvedAnimation(
                         parent: _entranceCtrl,
-                        curve: const Interval(0.45, 0.95, curve: Curves.easeOut),
+                        curve: const Interval(
+                          0.45,
+                          0.95,
+                          curve: Curves.easeOut,
+                        ),
                       ),
                       child: _RewardRow(
                         iconWidget: const ExcludeSemantics(
-                          child: Icon(Icons.emoji_events_rounded, size: 18, color: PremiumColors.achievementEnd),
+                          child: Icon(
+                            Icons.emoji_events_rounded,
+                            size: 18,
+                            color: PremiumColors.achievementEnd,
+                          ),
                         ),
                         label: l.profileStreak,
                         value: l.summaryStreakDays(r.perfect ? 2 : 1),
@@ -228,9 +278,16 @@ class _QuizSummaryScreenState extends State<QuizSummaryScreen>
                             ExperienceService.instance.lightHaptic();
                             widget.onContinue();
                           },
-                          icon: const Icon(Icons.arrow_forward_rounded, size: 20),
-                          label: Text(l.continueText,
-                              style: AppTextStyle.titleSmall.copyWith(fontWeight: FontWeight.bold)),
+                          icon: const Icon(
+                            Icons.arrow_forward_rounded,
+                            size: 20,
+                          ),
+                          label: Text(
+                            l.continueText,
+                            style: AppTextStyle.titleSmall.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: PremiumColors.primary,
                             foregroundColor: Colors.white,
@@ -238,7 +295,9 @@ class _QuizSummaryScreenState extends State<QuizSummaryScreen>
                               borderRadius: BorderRadius.circular(AppRadius.lg),
                             ),
                             elevation: 4,
-                            shadowColor: PremiumColors.primary.withValues(alpha: 0.3),
+                            shadowColor: PremiumColors.primary.withValues(
+                              alpha: 0.3,
+                            ),
                           ),
                         ),
                       ),
@@ -257,12 +316,18 @@ class _QuizSummaryScreenState extends State<QuizSummaryScreen>
                         child: OutlinedButton.icon(
                           onPressed: widget.onRetry,
                           icon: const Icon(Icons.refresh_rounded, size: 18),
-                          label: Text(l.sessionRetry,
-                              style: AppTextStyle.bodyMd.copyWith(fontWeight: FontWeight.bold)),
+                          label: Text(
+                            l.sessionRetry,
+                            style: AppTextStyle.bodyMd.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                           style: OutlinedButton.styleFrom(
                             foregroundColor: PremiumColors.primary,
                             side: BorderSide(
-                              color: PremiumColors.primary.withValues(alpha: 0.3),
+                              color: PremiumColors.primary.withValues(
+                                alpha: 0.3,
+                              ),
                             ),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(AppRadius.lg),
@@ -300,7 +365,10 @@ class _RewardRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.lg),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg,
+        vertical: AppSpacing.lg,
+      ),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.06),
         borderRadius: BorderRadius.circular(AppRadius.lg),
@@ -324,8 +392,10 @@ class _RewardRow extends StatelessWidget {
           const Spacer(),
           Text(
             value,
-            style: AppTextStyle.titleSmall.copyWith(fontWeight: FontWeight.bold,
-              color: color),
+            style: AppTextStyle.titleSmall.copyWith(
+              fontWeight: FontWeight.bold,
+              color: color,
+            ),
           ),
         ],
       ),

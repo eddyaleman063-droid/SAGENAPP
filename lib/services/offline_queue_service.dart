@@ -21,8 +21,8 @@ class OfflineQueueService {
   OfflineQueueService._({
     ConnectivityService? connectivity,
     EconomicFunctionsService? economic,
-  })  : _connectivity = connectivity ?? ConnectivityService.instance,
-        _economic = economic ?? EconomicFunctionsService.instance;
+  }) : _connectivity = connectivity ?? ConnectivityService.instance,
+       _economic = economic ?? EconomicFunctionsService.instance;
 
   final ConnectivityService _connectivity;
   final EconomicFunctionsService _economic;
@@ -64,7 +64,9 @@ class OfflineQueueService {
       }
     });
 
-    _logger.info('OfflineQueue: initialized with ${_queue.length} pending items');
+    _logger.info(
+      'OfflineQueue: initialized with ${_queue.length} pending items',
+    );
   }
 
   void _onConnectivityChanged() {
@@ -79,7 +81,8 @@ class OfflineQueueService {
       final db = await DatabaseHelper.instance.database;
       final rows = await db.query('sync_queue', orderBy: 'created_at ASC');
       _queue = rows.map((row) {
-        final payload = jsonDecode(row['payload'] as String) as Map<String, dynamic>;
+        final payload =
+            jsonDecode(row['payload'] as String) as Map<String, dynamic>;
         payload['_dbId'] = row['id'];
         payload['retries'] = row['retry_count'] ?? 0;
         return payload;
@@ -101,7 +104,8 @@ class OfflineQueueService {
     String? feedback,
   }) async {
     final item = {
-      'id': '${lessonId}_${completedAt.millisecondsSinceEpoch}_${DateTime.now().microsecondsSinceEpoch}_${_queue.length}',
+      'id':
+          '${lessonId}_${completedAt.millisecondsSinceEpoch}_${DateTime.now().microsecondsSinceEpoch}_${_queue.length}',
       'lessonId': lessonId,
       'stageId': stageId,
       'gemsEarned': gemsEarned,
@@ -125,12 +129,17 @@ class OfflineQueueService {
       });
       item['_dbId'] = dbId;
     } catch (e) {
-      _logger.error('OfflineQueue: failed to persist to SQLite — lesson will not be queued', e);
+      _logger.error(
+        'OfflineQueue: failed to persist to SQLite — lesson will not be queued',
+        e,
+      );
       return;
     }
 
     _queue.add(item);
-    _logger.info('OfflineQueue: queued lesson $lessonId (${_queue.length} pending)');
+    _logger.info(
+      'OfflineQueue: queued lesson $lessonId (${_queue.length} pending)',
+    );
 
     // NOTE: Do NOT process the queue synchronously here.
     // The caller MUST NOT call EconomicFunctionsService.completeLesson() directly.
@@ -150,7 +159,9 @@ class OfflineQueueService {
 
       if (retries >= _maxRetries) {
         toRemove.add(i);
-        _logger.warning('OfflineQueue: max retries for ${item['lessonId']}, removing');
+        _logger.warning(
+          'OfflineQueue: max retries for ${item['lessonId']}, removing',
+        );
         onItemDropped?.call(item);
         continue;
       }
@@ -162,7 +173,9 @@ class OfflineQueueService {
         if (result != null) onItemSynced?.call(result);
       } catch (e) {
         item['retries'] = retries + 1;
-        _logger.warning('OfflineQueue: sync failed for ${item['lessonId']} (attempt ${retries + 1})');
+        _logger.warning(
+          'OfflineQueue: sync failed for ${item['lessonId']} (attempt ${retries + 1})',
+        );
       }
     }
 
@@ -179,7 +192,11 @@ class OfflineQueueService {
       if (dbIds.isNotEmpty) {
         try {
           final placeholders = List.filled(dbIds.length, '?').join(',');
-          await db.delete('sync_queue', where: 'id IN ($placeholders)', whereArgs: dbIds);
+          await db.delete(
+            'sync_queue',
+            where: 'id IN ($placeholders)',
+            whereArgs: dbIds,
+          );
         } catch (e) {
           _logger.warning('OfflineQueue: batch delete failed');
         }

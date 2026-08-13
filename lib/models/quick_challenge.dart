@@ -5,16 +5,27 @@ part 'quick_challenge.freezed.dart';
 part 'quick_challenge.g.dart';
 
 @JsonEnum()
-enum QuickChallengeType { trueFalse, detectRisk, safePassword, whatWouldYouDo, detectPhishing }
+enum QuickChallengeType {
+  trueFalse,
+  detectRisk,
+  safePassword,
+  whatWouldYouDo,
+  detectPhishing,
+}
 
 extension QuickChallengeTypeX on QuickChallengeType {
   String localizedLabel(AppLocalizations l) {
     switch (this) {
-      case QuickChallengeType.trueFalse: return l.quickChallengeTrueFalse;
-      case QuickChallengeType.detectRisk: return l.quickChallengeDetectRisk;
-      case QuickChallengeType.safePassword: return l.quickChallengeSafePassword;
-      case QuickChallengeType.whatWouldYouDo: return l.quickChallengeWhatWouldYouDo;
-      case QuickChallengeType.detectPhishing: return l.quickChallengeDetectPhishing;
+      case QuickChallengeType.trueFalse:
+        return l.quickChallengeTrueFalse;
+      case QuickChallengeType.detectRisk:
+        return l.quickChallengeDetectRisk;
+      case QuickChallengeType.safePassword:
+        return l.quickChallengeSafePassword;
+      case QuickChallengeType.whatWouldYouDo:
+        return l.quickChallengeWhatWouldYouDo;
+      case QuickChallengeType.detectPhishing:
+        return l.quickChallengeDetectPhishing;
     }
   }
 }
@@ -36,7 +47,9 @@ class QuickChallenge with _$QuickChallenge {
     @Default(15) int xpReward,
   }) = _QuickChallenge;
 
-  factory QuickChallenge.fromJson(Map<String, dynamic> json) => _$QuickChallengeFromJson(json);
+  factory QuickChallenge.fromJson(Map<String, dynamic> json) =>
+      _$QuickChallengeFromJson(json);
 
-  bool get isCorrectIndexValid => correctIndex >= 0 && correctIndex < options.length;
+  bool get isCorrectIndexValid =>
+      correctIndex >= 0 && correctIndex < options.length;
 }

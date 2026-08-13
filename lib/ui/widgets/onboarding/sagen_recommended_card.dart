@@ -26,9 +26,7 @@ class SagenRecommendedCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
     final accentColor = Theme.of(context).colorScheme.primary;
-    final borderColor = isSelected
-        ? accentColor
-        : context.subtle;
+    final borderColor = isSelected ? accentColor : context.subtle;
     final bgColor = isSelected
         ? accentColor.withValues(alpha: 0.10)
         : Colors.transparent;
@@ -69,11 +67,7 @@ class SagenRecommendedCard extends StatelessWidget {
                   child: Row(
                     children: [
                       ExcludeSemantics(
-                        child: SizedBox(
-                          width: 24,
-                          height: 24,
-                          child: leading,
-                        ),
+                        child: SizedBox(width: 24, height: 24, child: leading),
                       ),
                       const SizedBox(width: AppSpacing.md),
                       Expanded(
@@ -82,7 +76,8 @@ class SagenRecommendedCard extends StatelessWidget {
                           children: [
                             Text(
                               title,
-                              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              style: Theme.of(context).textTheme.bodyLarge
+                                  ?.copyWith(
                                     color: titleColor,
                                     fontWeight: FontWeight.w600,
                                   ),
@@ -91,7 +86,8 @@ class SagenRecommendedCard extends StatelessWidget {
                               const SizedBox(height: 2),
                               Text(
                                 subtitle!,
-                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                style: Theme.of(context).textTheme.bodySmall
+                                    ?.copyWith(
                                       color: Theme.of(context)
                                           .colorScheme
                                           .onSurface
@@ -123,10 +119,10 @@ class SagenRecommendedCard extends StatelessWidget {
                       child: Text(
                         l.recommended,
                         style: AppTextStyle.tiny.copyWith(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 0.5,
-                            ),
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 0.5,
+                        ),
                       ),
                     ),
                   ),

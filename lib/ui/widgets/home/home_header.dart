@@ -36,8 +36,10 @@ class HomeHeader extends StatelessWidget {
             backgroundColor: PremiumColors.splashBlue.withValues(alpha: 0.2),
             child: Text(
               _initials,
-              style: AppTextStyle.titleSmall.copyWith(fontWeight: FontWeight.bold,
-                color: PremiumColors.splashBlue),
+              style: AppTextStyle.titleSmall.copyWith(
+                fontWeight: FontWeight.bold,
+                color: PremiumColors.splashBlue,
+              ),
             ),
           ),
           const SizedBox(width: AppSpacing.md),
@@ -47,12 +49,16 @@ class HomeHeader extends StatelessWidget {
               children: [
                 Text(
                   greeting,
-                  style: AppTextStyle.caption.copyWith(color: context.textSecondary),
+                  style: AppTextStyle.caption.copyWith(
+                    color: context.textSecondary,
+                  ),
                 ),
                 Text(
                   displayName.isNotEmpty ? displayName : l.homeDefaultName,
-                  style: AppTextStyle.title.copyWith(fontWeight: FontWeight.bold,
-                    color: context.textPrimary),
+                  style: AppTextStyle.title.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: context.textPrimary,
+                  ),
                   overflow: TextOverflow.ellipsis,
                 ),
               ],
@@ -68,7 +74,9 @@ class HomeHeader extends StatelessWidget {
           const SizedBox(width: AppSpacing.sm),
           _Pill(
             icon: Icons.favorite_rounded,
-            value: totalDonated > 0 ? '\$${totalDonated.toStringAsFixed(0)}' : '0',
+            value: totalDonated > 0
+                ? '\$${totalDonated.toStringAsFixed(0)}'
+                : '0',
             label: l.profileDonations,
           ),
         ],
@@ -91,16 +99,15 @@ class _Pill extends StatelessWidget {
   final String value;
   final String label;
 
-  const _Pill({
-    required this.icon,
-    required this.value,
-    required this.label,
-  });
+  const _Pill({required this.icon, required this.value, required this.label});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.xs),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.md,
+        vertical: AppSpacing.xs,
+      ),
       decoration: BoxDecoration(
         color: context.subtle,
         borderRadius: BorderRadius.circular(AppRadius.pill),
@@ -114,8 +121,10 @@ class _Pill extends StatelessWidget {
           const SizedBox(width: AppSpacing.xxs),
           Text(
             value,
-            style: AppTextStyle.subtitle.copyWith(fontWeight: FontWeight.bold,
-              color: context.textPrimary),
+            style: AppTextStyle.subtitle.copyWith(
+              fontWeight: FontWeight.bold,
+              color: context.textPrimary,
+            ),
           ),
           const SizedBox(width: AppSpacing.xxs),
           Text(
@@ -135,7 +144,10 @@ class _GemPill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.xs),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.md,
+        vertical: AppSpacing.xs,
+      ),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
@@ -160,7 +172,10 @@ class _GemPill extends StatelessWidget {
                 height: 12,
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
-                    colors: [PremiumColors.accentCyan, PremiumColors.deepPurple],
+                    colors: [
+                      PremiumColors.accentCyan,
+                      PremiumColors.deepPurple,
+                    ],
                   ),
                   borderRadius: BorderRadius.circular(2),
                 ),

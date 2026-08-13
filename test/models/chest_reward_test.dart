@@ -13,8 +13,7 @@ class FakeChestDropService extends ChestDropService {
       ChestType.bronze => const ChestReward(xp: 20),
       ChestType.silver => const ChestReward(xp: 30),
       ChestType.gold => const ChestReward(xp: 45),
-      ChestType.legendary => const ChestReward(
-          xp: 65, streakShields: 1),
+      ChestType.legendary => const ChestReward(xp: 65, streakShields: 1),
     };
   }
 }

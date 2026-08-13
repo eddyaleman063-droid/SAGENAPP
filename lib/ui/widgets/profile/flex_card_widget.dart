@@ -35,7 +35,9 @@ class FlexCardWidgetState extends ConsumerState<FlexCardWidget> {
 
   Future<Uint8List?> capture() async {
     try {
-      final boundary = _repaintKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
+      final boundary =
+          _repaintKey.currentContext?.findRenderObject()
+              as RenderRepaintBoundary?;
       if (boundary == null) return null;
       final image = await boundary.toImage(pixelRatio: 3.0);
       final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
@@ -50,7 +52,9 @@ class FlexCardWidgetState extends ConsumerState<FlexCardWidget> {
     if (parts.length >= 2) {
       return '${parts.first[0]}${parts.last[0]}'.toUpperCase();
     }
-    return widget.displayName.isNotEmpty ? widget.displayName[0].toUpperCase() : '?';
+    return widget.displayName.isNotEmpty
+        ? widget.displayName[0].toUpperCase()
+        : '?';
   }
 
   @override
@@ -67,7 +71,7 @@ class FlexCardWidgetState extends ConsumerState<FlexCardWidget> {
             center: Alignment.topCenter,
             radius: 1.2,
             colors: [
-Color(0x334AC2DD),
+              Color(0x334AC2DD),
               PremiumColors.deepBackground,
               PremiumColors.deepBackground,
             ],
@@ -81,22 +85,35 @@ Color(0x334AC2DD),
               CircleAvatar(
                 radius: 48,
                 backgroundColor: PremiumColors.darkCard,
-                backgroundImage: widget.photoUrl != null ? NetworkImage(widget.photoUrl!) : null,
+                backgroundImage: widget.photoUrl != null
+                    ? NetworkImage(widget.photoUrl!)
+                    : null,
                 child: widget.photoUrl == null
-                    ? Text(_initials, style: AppTextStyle.displayMedium.copyWith(fontWeight: FontWeight.bold, color: Colors.white))
+                    ? Text(
+                        _initials,
+                        style: AppTextStyle.displayMedium.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      )
                     : null,
               ),
-                const SizedBox(height: AppSpacing.lg),
+              const SizedBox(height: AppSpacing.lg),
               Text(
                 widget.displayName,
-                style: AppTextStyle.headlineLarge.copyWith(fontWeight: FontWeight.bold,
+                style: AppTextStyle.headlineLarge.copyWith(
+                  fontWeight: FontWeight.bold,
                   color: Colors.white,
-                  letterSpacing: 0.5),
+                  letterSpacing: 0.5,
+                ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: AppSpacing.md),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.xs),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.lg,
+                  vertical: AppSpacing.xs,
+                ),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(AppRadius.xxl),
                   color: const Color(0x334AC2DD),
@@ -104,8 +121,10 @@ Color(0x334AC2DD),
                 ),
                 child: Text(
                   l.profileLevelValue(widget.level),
-                    style: AppTextStyle.titleSmall.copyWith(fontWeight: FontWeight.w600,
-                    color: PremiumColors.splashBlue),
+                  style: AppTextStyle.titleSmall.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: PremiumColors.splashBlue,
+                  ),
                 ),
               ),
               const SizedBox(height: AppSpacing.xxl),
@@ -113,7 +132,11 @@ Color(0x334AC2DD),
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const ExcludeSemantics(
-                    child: Icon(Icons.local_fire_department_rounded, color: PremiumColors.streakOrange, size: 24),
+                    child: Icon(
+                      Icons.local_fire_department_rounded,
+                      color: PremiumColors.streakOrange,
+                      size: 24,
+                    ),
                   ),
                   const SizedBox(width: AppSpacing.sm),
                   Text(
@@ -125,8 +148,10 @@ Color(0x334AC2DD),
                   const SizedBox(width: AppSpacing.sm),
                   Text(
                     widget.streak == 1 ? l.profileDay : l.profileDays,
-                    style: AppTextStyle.bodyMd.copyWith(fontWeight: FontWeight.w500,
-                      color: Colors.white.withValues(alpha: 0.5)),
+                    style: AppTextStyle.bodyMd.copyWith(
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white.withValues(alpha: 0.5),
+                    ),
                   ),
                 ],
               ),
@@ -135,20 +160,29 @@ Color(0x334AC2DD),
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const ExcludeSemantics(
-                    child: Icon(Icons.auto_awesome_rounded, color: PremiumColors.xpColor, size: 18),
+                    child: Icon(
+                      Icons.auto_awesome_rounded,
+                      color: PremiumColors.xpColor,
+                      size: 18,
+                    ),
                   ),
                   const SizedBox(width: AppSpacing.xs),
                   Text(
                     '${widget.xp} XP',
-                    style: AppTextStyle.title.copyWith(fontWeight: FontWeight.w600,
-                      color: PremiumColors.xpColor),
+                    style: AppTextStyle.title.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: PremiumColors.xpColor,
+                    ),
                   ),
                 ],
               ),
               if (widget.rank != null) ...[
-              const SizedBox(height: AppSpacing.lg),
+                const SizedBox(height: AppSpacing.lg),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.xs),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.lg,
+                    vertical: AppSpacing.xs,
+                  ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(AppRadius.xxl),
                     color: const Color(0x33FFD700),
@@ -158,13 +192,19 @@ Color(0x334AC2DD),
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       const ExcludeSemantics(
-                        child: Icon(Icons.emoji_events_rounded, color: PremiumColors.gold, size: 16),
+                        child: Icon(
+                          Icons.emoji_events_rounded,
+                          color: PremiumColors.gold,
+                          size: 16,
+                        ),
                       ),
                       const SizedBox(width: AppSpacing.xs),
                       Text(
                         l.rankingPosition(widget.rank!),
-                        style: AppTextStyle.bodyMd.copyWith(fontWeight: FontWeight.w600,
-                          color: PremiumColors.gold),
+                        style: AppTextStyle.bodyMd.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: PremiumColors.gold,
+                        ),
                       ),
                     ],
                   ),
@@ -173,9 +213,11 @@ Color(0x334AC2DD),
               const Spacer(flex: 3),
               Text(
                 widget.subtitleText ?? l.flexCardJoinAlliance,
-                style: AppTextStyle.caption.copyWith(fontWeight: FontWeight.w500,
+                style: AppTextStyle.caption.copyWith(
+                  fontWeight: FontWeight.w500,
                   color: Colors.white.withValues(alpha: 0.55),
-                  letterSpacing: 1.0),
+                  letterSpacing: 1.0,
+                ),
               ),
               const SizedBox(height: AppSpacing.xxxl),
             ],

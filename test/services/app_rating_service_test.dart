@@ -15,15 +15,15 @@ void main() {
     SharedPreferences.setMockInitialValues({});
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(_reviewChannel, (MethodCall call) async {
-      calls.add(call.method);
-      switch (call.method) {
-        case 'isAvailable':
-          return true;
-        case 'requestReview':
+          calls.add(call.method);
+          switch (call.method) {
+            case 'isAvailable':
+              return true;
+            case 'requestReview':
+              return null;
+          }
           return null;
-      }
-      return null;
-    });
+        });
   });
 
   tearDown(() {
@@ -88,10 +88,10 @@ void main() {
   test('does not prompt when review is unavailable', () async {
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(_reviewChannel, (MethodCall call) async {
-      calls.add(call.method);
-      if (call.method == 'isAvailable') return false;
-      return null;
-    });
+          calls.add(call.method);
+          if (call.method == 'isAvailable') return false;
+          return null;
+        });
     final service = AppRatingService();
     for (int i = 0; i < 5; i++) {
       await service.onSessionCompleted();

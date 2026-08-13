@@ -144,7 +144,11 @@ void main() {
         'sage_talk',
       ];
       for (final id in expectedIds) {
-        expect(service.getById(id), isNotNull, reason: 'Missing achievement: $id');
+        expect(
+          service.getById(id),
+          isNotNull,
+          reason: 'Missing achievement: $id',
+        );
       }
     });
   });

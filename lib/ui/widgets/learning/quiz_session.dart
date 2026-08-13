@@ -62,10 +62,7 @@ class _QuizSessionState extends ConsumerState<QuizSession>
   void initState() {
     super.initState();
     _startTime = DateTime.now();
-    _feedbackCtrl = AnimationController(
-      vsync: this,
-      duration: AppMotion.fast,
-    );
+    _feedbackCtrl = AnimationController(vsync: this, duration: AppMotion.fast);
     _feedbackAnim = CurvedAnimation(
       parent: _feedbackCtrl,
       curve: AppEasing.entrance,
@@ -77,10 +74,7 @@ class _QuizSessionState extends ConsumerState<QuizSession>
     _questionSlide = Tween<double>(begin: 0.08, end: 0.0).animate(
       CurvedAnimation(parent: _questionCtrl, curve: AppEasing.entrance),
     );
-    _optionCtrl = AnimationController(
-      vsync: this,
-      duration: AppMotion.normal,
-    );
+    _optionCtrl = AnimationController(vsync: this, duration: AppMotion.normal);
     _optionStagger = CurvedAnimation(
       parent: _optionCtrl,
       curve: AppEasing.entrance,
@@ -119,7 +113,8 @@ class _QuizSessionState extends ConsumerState<QuizSession>
       final savedIds = data[3].split(',');
       final savedTime = DateTime.tryParse(data[4]);
       if (savedStageId != widget.stageId) return;
-      if (savedTime != null && DateTime.now().difference(savedTime).inMinutes > 30) {
+      if (savedTime != null &&
+          DateTime.now().difference(savedTime).inMinutes > 30) {
         await _clearProgress();
         return;
       }
@@ -176,9 +171,13 @@ class _QuizSessionState extends ConsumerState<QuizSession>
       ExperienceService.instance.errorHaptic();
       try {
         final learning = ref.read(learningProvider);
-        final stage = learning.stages.where((s) => s.id == widget.stageId).firstOrNull;
+        final stage = learning.stages
+            .where((s) => s.id == widget.stageId)
+            .firstOrNull;
         if (stage == null) return;
-        ref.read(reviewProvider.notifier).recordMistake(_current.id, stage.title);
+        ref
+            .read(reviewProvider.notifier)
+            .recordMistake(_current.id, stage.title);
       } catch (e) {
         AppLogger().error('QuizSession: failed to record mistake', e);
       }
@@ -244,15 +243,17 @@ class _QuizSessionState extends ConsumerState<QuizSession>
       timeSpentSeconds: timeTaken.inSeconds,
     );
 
-    widget.onComplete(QuizResult(
-      totalQuestions: total,
-      correctAnswers: correct,
-      xpEarned: score.xp,
-      perfect: score.isPerfect,
-      timeTaken: timeTaken,
-      stageId: widget.stageId,
-      lessonId: widget.lessonId,
-    ));
+    widget.onComplete(
+      QuizResult(
+        totalQuestions: total,
+        correctAnswers: correct,
+        xpEarned: score.xp,
+        perfect: score.isPerfect,
+        timeTaken: timeTaken,
+        stageId: widget.stageId,
+        lessonId: widget.lessonId,
+      ),
+    );
   }
 
   @override
@@ -271,7 +272,12 @@ class _QuizSessionState extends ConsumerState<QuizSession>
         ),
         Expanded(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(AppSpacing.xl, AppSpacing.sm, AppSpacing.xl, AppSpacing.xl),
+            padding: const EdgeInsets.fromLTRB(
+              AppSpacing.xl,
+              AppSpacing.sm,
+              AppSpacing.xl,
+              AppSpacing.xl,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -286,14 +292,18 @@ class _QuizSessionState extends ConsumerState<QuizSession>
                       ),
                     );
                   },
-                  child:                 QuizQuestionCard(
+                  child: QuizQuestionCard(
                     challenge: _current,
                     index: _currentIndex,
                   ),
                 ),
                 const SizedBox(height: AppSpacing.lg),
                 // Sage Monocle button — visible when user owns monocles
-                if (!_answered && !_monocleUsed && ref.read(itemProvider.notifier).hasItem(SpecialItemType.sageMonocle))
+                if (!_answered &&
+                    !_monocleUsed &&
+                    ref
+                        .read(itemProvider.notifier)
+                        .hasItem(SpecialItemType.sageMonocle))
                   Padding(
                     padding: const EdgeInsets.only(bottom: AppSpacing.md),
                     child: SizedBox(
@@ -301,10 +311,17 @@ class _QuizSessionState extends ConsumerState<QuizSession>
                       child: OutlinedButton.icon(
                         onPressed: _useMonocle,
                         icon: const Icon(Icons.visibility_rounded, size: 18),
-                        label: Text(AppLocalizations.of(context)!.sageMonocleButton, style: AppTextStyle.label),
+                        label: Text(
+                          AppLocalizations.of(context)!.sageMonocleButton,
+                          style: AppTextStyle.label,
+                        ),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: PremiumColors.premiumBlue,
-                          side: BorderSide(color: PremiumColors.premiumBlue.withValues(alpha: 0.5)),
+                          side: BorderSide(
+                            color: PremiumColors.premiumBlue.withValues(
+                              alpha: 0.5,
+                            ),
+                          ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(AppRadius.lg),
                           ),
@@ -318,17 +335,31 @@ class _QuizSessionState extends ConsumerState<QuizSession>
                     padding: const EdgeInsets.only(bottom: AppSpacing.sm),
                     child: Center(
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
                         decoration: BoxDecoration(
-                          color: PremiumColors.premiumBlue.withValues(alpha: 0.2),
+                          color: PremiumColors.premiumBlue.withValues(
+                            alpha: 0.2,
+                          ),
                           borderRadius: BorderRadius.circular(AppRadius.xxl),
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(Icons.visibility_rounded, size: 16, color: PremiumColors.premiumBlue),
+                            const Icon(
+                              Icons.visibility_rounded,
+                              size: 16,
+                              color: PremiumColors.premiumBlue,
+                            ),
                             const SizedBox(width: 6),
-                            Text(AppLocalizations.of(context)!.sageMonocleActive, style: AppTextStyle.label.copyWith(color: PremiumColors.premiumBlue)),
+                            Text(
+                              AppLocalizations.of(context)!.sageMonocleActive,
+                              style: AppTextStyle.label.copyWith(
+                                color: PremiumColors.premiumBlue,
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -336,18 +367,19 @@ class _QuizSessionState extends ConsumerState<QuizSession>
                   ),
                 ...List.generate(_current.options.length, (i) {
                   final visibleIndices = _getMonocleFilteredIndices();
-                  if (!visibleIndices.contains(i)) return const SizedBox.shrink();
+                  if (!visibleIndices.contains(i)) {
+                    return const SizedBox.shrink();
+                  }
                   return AnimatedBuilder(
                     animation: _optionStagger,
                     builder: (context, child) {
                       final delay = (i * 0.12).clamp(0.0, 1.0);
-                      final slideProgress = ((_optionStagger.value - delay) / (1.0 - delay)).clamp(0.0, 1.0);
+                      final slideProgress =
+                          ((_optionStagger.value - delay) / (1.0 - delay))
+                              .clamp(0.0, 1.0);
                       return Transform.translate(
                         offset: Offset(0, 12 * (1.0 - slideProgress)),
-                        child: Opacity(
-                          opacity: slideProgress,
-                          child: child,
-                        ),
+                        child: Opacity(opacity: slideProgress, child: child),
                       );
                     },
                     child: QuizOptionButton(
@@ -374,16 +406,24 @@ class _QuizSessionState extends ConsumerState<QuizSession>
                     height: 52,
                     child: Semantics(
                       button: true,
-                      label: _isLast ? l10n(context).firstLessonSeeResults : l10n(context).nextText,
+                      label: _isLast
+                          ? l10n(context).firstLessonSeeResults
+                          : l10n(context).nextText,
                       child: ElevatedButton.icon(
                         onPressed: _next,
                         icon: Icon(
-                          _isLast ? Icons.check_rounded : Icons.arrow_forward_rounded,
+                          _isLast
+                              ? Icons.check_rounded
+                              : Icons.arrow_forward_rounded,
                           size: 20,
                         ),
                         label: Text(
-                          _isLast ? l10n(context).firstLessonSeeResults : l10n(context).nextText,
-                          style: AppTextStyle.body.copyWith(fontWeight: FontWeight.bold),
+                          _isLast
+                              ? l10n(context).firstLessonSeeResults
+                              : l10n(context).nextText,
+                          style: AppTextStyle.body.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: PremiumColors.primary,
@@ -395,7 +435,7 @@ class _QuizSessionState extends ConsumerState<QuizSession>
                         ),
                       ),
                     ),
-                    ),
+                  ),
                 ],
               ],
             ),

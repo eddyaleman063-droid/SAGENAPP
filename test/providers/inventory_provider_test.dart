@@ -16,9 +16,7 @@ void main() {
 
     test('copyWith updates only specified fields', () {
       const state = InventoryState();
-      final updated = state.copyWith(
-        totalChestsOpened: 5,
-      );
+      final updated = state.copyWith(totalChestsOpened: 5);
       expect(updated.totalChestsOpened, 5);
       expect(updated.xpBoostsCollected, 0);
     });
@@ -30,9 +28,9 @@ void main() {
     setUp(() async {
       SharedPreferences.setMockInitialValues({});
       final prefs = await SharedPreferences.getInstance();
-      container = ProviderContainer(overrides: [
-        prefsProvider.overrideWithValue(prefs),
-      ]);
+      container = ProviderContainer(
+        overrides: [prefsProvider.overrideWithValue(prefs)],
+      );
     });
 
     tearDown(() => container.dispose());
@@ -49,17 +47,26 @@ void main() {
     });
 
     ChestRewardData bronzeReward() => const ChestRewardData(
-      type: ChestType.bronze, xp: 10,
-      title: 'B', message: 'M', source: 'test',
+      type: ChestType.bronze,
+      xp: 10,
+      title: 'B',
+      message: 'M',
+      source: 'test',
     );
     ChestRewardData silverReward() => const ChestRewardData(
-      type: ChestType.silver, xp: 20,
-      title: 'S', message: 'M', source: 'test',
+      type: ChestType.silver,
+      xp: 20,
+      title: 'S',
+      message: 'M',
+      source: 'test',
     );
     ChestRewardData goldReward() => const ChestRewardData(
-      type: ChestType.gold, xp: 50,
+      type: ChestType.gold,
+      xp: 50,
       xpBoost: true,
-      title: 'G', message: 'M', source: 'test',
+      title: 'G',
+      message: 'M',
+      source: 'test',
     );
 
     test('recordChestOpened increments counters', () {
@@ -95,9 +102,9 @@ void main() {
         'inv_total_chests': 3,
       });
       final prefs = await SharedPreferences.getInstance();
-      final newContainer = ProviderContainer(overrides: [
-        prefsProvider.overrideWithValue(prefs),
-      ]);
+      final newContainer = ProviderContainer(
+        overrides: [prefsProvider.overrideWithValue(prefs)],
+      );
       final state = newContainer.read(inventoryProvider);
       expect(state.totalChestsOpened, 3);
       expect(state.chestsOpened[ChestType.bronze], 2);

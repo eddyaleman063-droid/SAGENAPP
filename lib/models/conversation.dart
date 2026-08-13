@@ -18,7 +18,8 @@ class Conversation with _$Conversation {
     @Default(false) bool isFavorite,
   }) = _Conversation;
 
-  factory Conversation.fromJson(Map<String, dynamic> json) => _$ConversationFromJson(json);
+  factory Conversation.fromJson(Map<String, dynamic> json) =>
+      _$ConversationFromJson(json);
 
   String get preview {
     if (messages.isEmpty) return '';

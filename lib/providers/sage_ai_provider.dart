@@ -62,7 +62,9 @@ class SageAiChatState {
   double get progress => (lessonsCompleted / lessonsRequired).clamp(0.0, 1.0);
   bool get isLoading => status == SageAiChatStatus.loading;
   bool get isStreaming => status == SageAiChatStatus.streaming;
-  bool get isBusy => status == SageAiChatStatus.loading || status == SageAiChatStatus.streaming;
+  bool get isBusy =>
+      status == SageAiChatStatus.loading ||
+      status == SageAiChatStatus.streaming;
 
   List<String> get suggestionChips => [
     'What is phishing?',
@@ -104,7 +106,11 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
     );
   }
 
-  void updateContext({String userName = '', int userLevel = 1, int currentStreak = 0}) {
+  void updateContext({
+    String userName = '',
+    int userLevel = 1,
+    int currentStreak = 0,
+  }) {
     state = state.copyWith(
       userName: userName,
       userLevel: userLevel,
@@ -118,13 +124,16 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
 
     // Daily rate limiting
     final now = DateTime.now();
-    if (now.day != _dayStart.day || now.month != _dayStart.month || now.year != _dayStart.year) {
+    if (now.day != _dayStart.day ||
+        now.month != _dayStart.month ||
+        now.year != _dayStart.year) {
       _messagesSentToday = 0;
       _dayStart = now;
     }
     if (_messagesSentToday >= _maxMessagesPerDay) {
       state = state.copyWith(
-        errorMessage: () => 'You have reached the daily message limit. Try again tomorrow.',
+        errorMessage: () =>
+            'You have reached the daily message limit. Try again tomorrow.',
       );
       return;
     }
@@ -132,8 +141,16 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
     _lastSendTime = now;
     _messagesSentToday++;
 
-    final userMsg = ChatMessage(role: ChatRole.user, text: text, time: DateTime.now());
-    final assistantMsg = ChatMessage(role: ChatRole.assistant, text: '', time: DateTime.now());
+    final userMsg = ChatMessage(
+      role: ChatRole.user,
+      text: text,
+      time: DateTime.now(),
+    );
+    final assistantMsg = ChatMessage(
+      role: ChatRole.assistant,
+      text: '',
+      time: DateTime.now(),
+    );
 
     final messages = [...state.messages, userMsg, assistantMsg];
     const maxMessages = 100;
@@ -151,35 +168,37 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
     ref.read(emotionEventBusProvider).fire(EmotionEventType.chatSent);
 
     final contextMessages = _buildContextMessages(text);
-    final service = _primaryService.isAvailable ? _primaryService : _fallbackService;
+    final service = _primaryService.isAvailable
+        ? _primaryService
+        : _fallbackService;
 
     await _streamSub?.cancel();
     final buffer = StringBuffer();
     _streamSub = service
         .generateStream(
-      contextMessages,
-      userName: state.userName,
-      userLevel: state.userLevel,
-      currentStreak: state.currentStreak,
-      weakTopics: state.weakTopics,
-    )
+          contextMessages,
+          userName: state.userName,
+          userLevel: state.userLevel,
+          currentStreak: state.currentStreak,
+          weakTopics: state.weakTopics,
+        )
         .listen(
-      (chunk) {
-        if (state.status == SageAiChatStatus.loading) {
-          state = state.copyWith(status: SageAiChatStatus.streaming);
-        }
-        buffer.write(chunk);
-        state = state.copyWith(streamingText: buffer.toString());
-      },
-      onDone: () {
-        _finalizeResponse(text);
-      },
-      onError: (Object e) {
-        AppLogger().error('SageAiProvider stream error', e);
-        ref.read(emotionEventBusProvider).fire(EmotionEventType.chatError);
-        _fallbackResponse(text);
-      },
-    );
+          (chunk) {
+            if (state.status == SageAiChatStatus.loading) {
+              state = state.copyWith(status: SageAiChatStatus.streaming);
+            }
+            buffer.write(chunk);
+            state = state.copyWith(streamingText: buffer.toString());
+          },
+          onDone: () {
+            _finalizeResponse(text);
+          },
+          onError: (Object e) {
+            AppLogger().error('SageAiProvider stream error', e);
+            ref.read(emotionEventBusProvider).fire(EmotionEventType.chatError);
+            _fallbackResponse(text);
+          },
+        );
   }
 
   void _finalizeResponse(String lastQuestion) {
@@ -199,24 +218,30 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
 
     final buffer = StringBuffer();
     _streamSub = _fallbackService
-        .generateStream([ChatMessage(role: ChatRole.user, text: lastQuestion, time: DateTime.now())])
+        .generateStream([
+          ChatMessage(
+            role: ChatRole.user,
+            text: lastQuestion,
+            time: DateTime.now(),
+          ),
+        ])
         .listen(
-      (chunk) {
-        if (state.status == SageAiChatStatus.loading) {
-          state = state.copyWith(status: SageAiChatStatus.streaming);
-        }
-        buffer.write(chunk);
-        state = state.copyWith(streamingText: buffer.toString());
-      },
-      onDone: () {
-        _applyAssistantMessage(state.streamingText.trim());
-      },
-      onError: (_) {
-        _applyAssistantMessage(
-          'My mental connection is weak right now, but keep practicing and ask me again later.',
+          (chunk) {
+            if (state.status == SageAiChatStatus.loading) {
+              state = state.copyWith(status: SageAiChatStatus.streaming);
+            }
+            buffer.write(chunk);
+            state = state.copyWith(streamingText: buffer.toString());
+          },
+          onDone: () {
+            _applyAssistantMessage(state.streamingText.trim());
+          },
+          onError: (_) {
+            _applyAssistantMessage(
+              'My mental connection is weak right now, but keep practicing and ask me again later.',
+            );
+          },
         );
-      },
-    );
   }
 
   void _applyAssistantMessage(String text) {
@@ -242,7 +267,11 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
   }
 
   List<ChatMessage> _buildContextMessages(String currentText) {
-    final userMsg = ChatMessage(role: ChatRole.user, text: currentText, time: DateTime.now());
+    final userMsg = ChatMessage(
+      role: ChatRole.user,
+      text: currentText,
+      time: DateTime.now(),
+    );
 
     final recent = <ChatMessage>[];
     final start = state.messages.length > AppConfig.maxContextMessages * 2
@@ -265,6 +294,4 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
       status: SageAiChatStatus.idle,
     );
   }
-
-
 }

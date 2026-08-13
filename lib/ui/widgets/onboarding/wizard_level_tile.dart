@@ -40,64 +40,78 @@ class WizardLevelTile extends StatelessWidget {
         },
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-        curve: AppEasing.entrance,
-        padding: const EdgeInsets.all(AppSpacing.lg),
-        decoration: BoxDecoration(
-          color: isSelected ? accentColor.withValues(alpha: 0.1) : cardBg,
-          borderRadius: BorderRadius.circular(AppRadius.md),
-          border: Border.all(
-            color: isSelected ? accentColor.withValues(alpha: 0.4) : cardBorder,
-            width: isSelected ? 1.5 : 1.0,
+          curve: AppEasing.entrance,
+          padding: const EdgeInsets.all(AppSpacing.lg),
+          decoration: BoxDecoration(
+            color: isSelected ? accentColor.withValues(alpha: 0.1) : cardBg,
+            borderRadius: BorderRadius.circular(AppRadius.md),
+            border: Border.all(
+              color: isSelected
+                  ? accentColor.withValues(alpha: 0.4)
+                  : cardBorder,
+              width: isSelected ? 1.5 : 1.0,
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  ExcludeSemantics(
+                    child: Icon(
+                      option.icon,
+                      size: 22,
+                      color: isSelected ? accentColor : iconColor,
+                    ),
+                  ),
+                  const SizedBox(width: AppSpacing.md),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          option.label,
+                          style: AppTextStyle.body.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: isSelected ? textPrimary : textSecondary,
+                          ),
+                        ),
+                        if (option.subtitle != null) ...[
+                          const SizedBox(height: 2),
+                          Text(
+                            option.subtitle!,
+                            style: AppTextStyle.caption.copyWith(
+                              color: isSelected
+                                  ? textSecondary.withValues(alpha: 0.7)
+                                  : textSecondary.withValues(alpha: 0.4),
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                  Icon(
+                    isSelected
+                        ? Icons.check_circle_rounded
+                        : Icons.circle_outlined,
+                    size: 22,
+                    color: isSelected ? accentColor : iconColor,
+                  ),
+                ],
+              ),
+              const SizedBox(height: AppSpacing.md),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(3),
+                child: LinearProgressIndicator(
+                  value: isSelected ? fill : 0.0,
+                  backgroundColor: context.shimmerBase,
+                  valueColor: AlwaysStoppedAnimation<Color>(accentColor),
+                  minHeight: 4,
+                ),
+              ),
+            ],
           ),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                ExcludeSemantics(
-                  child: Icon(option.icon, size: 22, color: isSelected ? accentColor : iconColor),
-                ),
-                const SizedBox(width: AppSpacing.md),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        option.label,
-                        style: AppTextStyle.body.copyWith(fontWeight: FontWeight.w600,
-                          color: isSelected ? textPrimary : textSecondary),
-                      ),
-                      if (option.subtitle != null) ...[
-                        const SizedBox(height: 2),
-                        Text(
-                          option.subtitle!,
-                          style: AppTextStyle.caption.copyWith(color: isSelected ? textSecondary.withValues(alpha: 0.7) : textSecondary.withValues(alpha: 0.4)),
-                        ),
-                      ],
-                    ],
-                  ),
-                ),
-                Icon(
-                  isSelected ? Icons.check_circle_rounded : Icons.circle_outlined,
-                  size: 22,
-                  color: isSelected ? accentColor : iconColor,
-                ),
-              ],
-            ),
-            const SizedBox(height: AppSpacing.md),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(3),
-              child: LinearProgressIndicator(
-                value: isSelected ? fill : 0.0,
-                backgroundColor: context.shimmerBase,
-                valueColor: AlwaysStoppedAnimation<Color>(accentColor),
-                minHeight: 4,
-              ),
-            ),
-          ],
-        ),
-      ),
       ),
     );
   }

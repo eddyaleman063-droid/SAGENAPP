@@ -43,12 +43,17 @@ void main() {
   });
 
   testWidgets('renders track name and subtitle', (tester) async {
-    await tester.pumpWidget(buildTestApp(
-      child: LearningTrackTile(
-        stage: makeStage(title: 'Phishing Basics', subtitle: 'Learn about phishing'),
-        status: StageStatus.inProgress,
+    await tester.pumpWidget(
+      buildTestApp(
+        child: LearningTrackTile(
+          stage: makeStage(
+            title: 'Phishing Basics',
+            subtitle: 'Learn about phishing',
+          ),
+          status: StageStatus.inProgress,
+        ),
       ),
-    ));
+    );
     await tester.pumpAndSettle();
 
     expect(find.text('Phishing Basics'), findsOneWidget);
@@ -56,36 +61,42 @@ void main() {
   });
 
   testWidgets('renders progress indicator', (tester) async {
-    await tester.pumpWidget(buildTestApp(
-      child: LearningTrackTile(
-        stage: makeStage(),
-        status: StageStatus.inProgress,
+    await tester.pumpWidget(
+      buildTestApp(
+        child: LearningTrackTile(
+          stage: makeStage(),
+          status: StageStatus.inProgress,
+        ),
       ),
-    ));
+    );
     await tester.pumpAndSettle();
 
     expect(find.byType(LinearProgressIndicator), findsOneWidget);
   });
 
   testWidgets('renders lock icon for locked stage', (tester) async {
-    await tester.pumpWidget(buildTestApp(
-      child: LearningTrackTile(
-        stage: makeStage(title: 'Locked Stage'),
-        status: StageStatus.locked,
+    await tester.pumpWidget(
+      buildTestApp(
+        child: LearningTrackTile(
+          stage: makeStage(title: 'Locked Stage'),
+          status: StageStatus.locked,
+        ),
       ),
-    ));
+    );
     await tester.pumpAndSettle();
 
     expect(find.byIcon(Icons.lock_rounded), findsOneWidget);
   });
 
   testWidgets('renders check icon for completed stage', (tester) async {
-    await tester.pumpWidget(buildTestApp(
-      child: LearningTrackTile(
-        stage: makeStage(),
-        status: StageStatus.completed,
+    await tester.pumpWidget(
+      buildTestApp(
+        child: LearningTrackTile(
+          stage: makeStage(),
+          status: StageStatus.completed,
+        ),
       ),
-    ));
+    );
     await tester.pumpAndSettle();
 
     expect(find.byIcon(Icons.check_circle_rounded), findsOneWidget);
@@ -93,13 +104,15 @@ void main() {
 
   testWidgets('handles tap on non-locked stage', (tester) async {
     var tapped = false;
-    await tester.pumpWidget(buildTestApp(
-      child: LearningTrackTile(
-        stage: makeStage(),
-        status: StageStatus.inProgress,
-        onTap: () => tapped = true,
+    await tester.pumpWidget(
+      buildTestApp(
+        child: LearningTrackTile(
+          stage: makeStage(),
+          status: StageStatus.inProgress,
+          onTap: () => tapped = true,
+        ),
       ),
-    ));
+    );
     await tester.pumpAndSettle();
 
     await tester.tap(find.byType(GestureDetector).first);
@@ -109,13 +122,15 @@ void main() {
 
   testWidgets('does not call onTap when locked', (tester) async {
     var tapped = false;
-    await tester.pumpWidget(buildTestApp(
-      child: LearningTrackTile(
-        stage: makeStage(),
-        status: StageStatus.locked,
-        onTap: () => tapped = true,
+    await tester.pumpWidget(
+      buildTestApp(
+        child: LearningTrackTile(
+          stage: makeStage(),
+          status: StageStatus.locked,
+          onTap: () => tapped = true,
+        ),
       ),
-    ));
+    );
     await tester.pumpAndSettle();
 
     await tester.tap(find.byType(GestureDetector).first);
@@ -124,12 +139,14 @@ void main() {
   });
 
   testWidgets('renders chevron for non-completed stages', (tester) async {
-    await tester.pumpWidget(buildTestApp(
-      child: LearningTrackTile(
-        stage: makeStage(),
-        status: StageStatus.inProgress,
+    await tester.pumpWidget(
+      buildTestApp(
+        child: LearningTrackTile(
+          stage: makeStage(),
+          status: StageStatus.inProgress,
+        ),
       ),
-    ));
+    );
     await tester.pumpAndSettle();
 
     expect(find.byIcon(Icons.chevron_right_rounded), findsOneWidget);
