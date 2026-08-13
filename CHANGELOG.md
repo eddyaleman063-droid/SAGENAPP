@@ -18,15 +18,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- `DailyChestCard` en la tienda: cofre diario reclamable (F-02 server-authoritative con `claimDailyChest` en Cloud Functions y `applyServerXp` local).
+- `tools/repo_guard.ps1` y protocolo `AGENTS.md`: lock de sesión y snapshots para evitar corrupción por sesiones en paralelo.
+- CI en rama `master` + job de tests Jest para Cloud Functions.
+- Lints estrictos en `analysis_options.yaml` (const, final fields, llaves en control-flow).
 - Dependency audit CI workflow
-- Architecture documentation (ARCHITECTURE.md)
-- Contributing guide (CONTRIBUTING.md)
-- Code style guide (STYLE_GUIDE.md)
 - PR template for GitHub
 - CODEOWNERS file
 - Release notes template
 
 ### Changed
+- Git for Windows instalado; remote sin PAT embebido (usa Git Credential Manager).
+- `dart format` aplicado a todo `lib/` y `test/` (374 archivos).
 - Improved ConnectivityService with proper StreamSubscription lifecycle
 - Added cacheWidth/cacheHeight to all Image.asset calls
 - Extracted shared StatChip/RewardBadge widgets from mini-games
