@@ -21,7 +21,7 @@ void main() {
     test('removes data URIs', () async {
       expect(
         await FirestoreService.sanitize('data:text/html,<h1>hi</h1>'),
-        'text&#x2F;html,hi',
+        'text/html,hi',
       );
     });
 

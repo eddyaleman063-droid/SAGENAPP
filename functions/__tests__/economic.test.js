@@ -508,12 +508,35 @@ describe('completeLesson', () => {
       sagen_pass_level: 1,
     });
     const result = await economic.completeLesson(
-      { lessonId: 'lesson-1', perfect: true },
+      { lessonId: 'lesson-1', perfect: true, correctCount: 15, totalQuestions: 15 },
       makeContext()
     );
     // 10 (lesson) + 15 (perfect_lesson)
     expect(result.sagenPass.spAdded).toBe(25);
     expect(result.sagenPass.sp).toBe(25);
+  });
+
+  test('ignores perfect claim without a consistent answer set (anti-farm)', async () => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    setUserDoc(AUTH_UID, {
+      learning_total_xp: 0,
+      learning_level: 1,
+      currentStreak: 1,
+      longestStreak: 1,
+      streak_last_activity: { toDate: () => yesterday },
+      lessonsCompleted: 0,
+      learning_gems: 0,
+      sagen_pass_level: 1,
+    });
+    // perfect=true but totalQuestions missing / inconsistent: bonus must NOT apply
+    const result = await economic.completeLesson(
+      { lessonId: 'lesson-1', perfect: true, correctCount: 15, totalQuestions: 10 },
+      makeContext()
+    );
+    expect(result.gems.perfect).toBe(false);
+    expect(result.sagenPass.spAdded).toBe(10); // lesson SP only
+    expect(result.sagenPass.sp).toBe(10);
   });
 
   test('completeLesson SP respects the daily cap', async () => {

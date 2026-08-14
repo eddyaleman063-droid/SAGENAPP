@@ -146,7 +146,9 @@ async function rateLimit(req, res, next) {
 
 // ── Express app ────────────────────────────────────────────────
 const app = express();
-app.use(express.json());
+app.use(express.json({
+  verify: (req, res, buf) => { req.rawBody = buf; },
+}));
 
 // ────────────────────────────────────────────────────────────────
 // POST /api/createPaymentPreference
@@ -229,7 +231,9 @@ app.post('/api/handlePaymentWebhook', async (req, res) => {
         console.warn('Webhook missing signature', { paymentId: data.id });
         return res.status(401).send('Unauthorized');
       }
-      const rawBody = JSON.stringify(req.body);
+      const rawBody = req.rawBody
+        ? req.rawBody.toString('utf8')
+        : JSON.stringify(req.body);
       const expected = crypto.createHmac('sha256', WEBHOOK_SECRET)
         .update(`ts${ts}req${rawBody}`)
         .digest('hex');
@@ -273,8 +277,14 @@ app.post('/api/handlePaymentWebhook', async (req, res) => {
     }
 
     if (!userId || isNaN(amount) || amount <= 0) {
-      console.error('Invalid userId or amount', { userId, amount });
-      return res.status(200).send('OK');
+      // NUEVO-fix: never silently swallow an approved payment without the
+      // metadata needed to credit the user. Log details and return a
+      // non-2xx so MercadoPago retries / flags the webhook for review.
+      console.error('Approved payment missing userId/amount — NOT credited', {
+        paymentId, externalRef, amount, hasMetadata: !!payment.metadata,
+        hasExternalRef: !!externalRef,
+      });
+      return res.status(400).send('Missing payment metadata');
     }
 
     const userRef = admin.firestore().doc(`users/${userId}`);
@@ -340,9 +350,15 @@ app.post('/api/handlePaymentWebhook', async (req, res) => {
 // ────────────────────────────────────────────────────────────────
 app.post('/api/adminCreditDonation', requireAdmin, async (req, res) => {
   try {
-    const { userId, amount, paymentMethod, productId, idempotencyKey } = req.body;
-    if (!userId || !amount || amount <= 0 || !idempotencyKey) {
-      return res.status(400).json({ error: 'invalid-argument', message: 'userId, amount e idempotencyKey requeridos' });
+    const { userId, paymentMethod, productId, idempotencyKey } = req.body;
+    // NUEVO-fix: coerce amount to a real number BEFORE any arithmetic so a
+    // string payload cannot produce "105" from amount="10"+"5" concatenation.
+    const rawAmount = req.body.amount;
+    const amount = typeof rawAmount === 'number'
+      ? rawAmount
+      : parseFloat(String(rawAmount ?? '').replace(',', '.'));
+    if (!userId || !Number.isFinite(amount) || amount <= 0 || !idempotencyKey) {
+      return res.status(400).json({ error: 'invalid-argument', message: 'userId, amount (número) e idempotencyKey requeridos' });
     }
 
     const logRef = admin.firestore().doc(`payment_logs/${idempotencyKey}`);

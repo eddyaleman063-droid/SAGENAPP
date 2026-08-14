@@ -103,12 +103,14 @@ class EconomicFunctionsService implements IEconomicFunctionsService {
     required String lessonId,
     required int xpEarned,
     int? correctCount,
+    int? totalQuestions,
     bool? perfect,
   }) async {
     return _call<Map<String, dynamic>>('completeLesson', {
       'lessonId': lessonId,
       'xpEarned': xpEarned,
       'correctCount': correctCount ?? 0,
+      'totalQuestions': totalQuestions ?? 0,
       'perfect': perfect ?? false,
       'idempotencyKey': 'lesson_$lessonId',
     });

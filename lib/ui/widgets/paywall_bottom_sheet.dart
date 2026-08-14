@@ -5,6 +5,7 @@ import 'package:sagen/config/app_config.dart';
 import 'package:sagen/core/theme/app_colors.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/l10n/app_localizations.dart';
+import 'package:sagen/models/product.dart';
 import 'package:sagen/providers/payment_provider.dart';
 import 'package:sagen/ui/widgets/common/sagen_notification.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -35,6 +36,18 @@ const donationPackages = [
   DonationPackage(2, 5.00, 'paywallPopular'),
   DonationPackage(3, 10.00, 'paywallPremium'),
 ];
+
+/// Maps a paywall donation package to the canonical [Product] with the same
+/// price and supporter level so MercadoPago receives a valid productId.
+Product? _productForPackage(DonationPackage pkg, AppLocalizations l) {
+  for (final product in allProductsLocalized(l)) {
+    if (product.supporterLevel == pkg.supporterLevel &&
+        (product.price - pkg.price).abs() < 0.001) {
+      return product;
+    }
+  }
+  return null;
+}
 
 class PaywallBottomSheet extends ConsumerWidget {
   final String? userId;
@@ -94,9 +107,10 @@ class PaywallBottomSheet extends ConsumerWidget {
     DonationPackage pkg,
   ) async {
     final l = AppLocalizations.of(context)!;
+    final product = _productForPackage(pkg, l);
     final initPoint = await ref
         .read(paymentProvider.notifier)
-        .initiateMercadoPago(price: pkg.price);
+        .initiateMercadoPago(price: pkg.price, product: product);
 
     if (initPoint == null) {
       if (context.mounted) {

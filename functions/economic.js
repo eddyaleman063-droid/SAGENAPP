@@ -480,7 +480,7 @@ exports.completeLesson = functions.runWith({ maxInstances: 10 }).https.onCall(as
     throw new functions.https.HttpsError('unauthenticated', 'Debes iniciar sesion');
   }
 
-  const { lessonId, correctCount, perfect } = data;
+  const { lessonId, correctCount, perfect, totalQuestions } = data;
 
   if (!lessonId || typeof lessonId !== 'string') {
     throw new functions.https.HttpsError('invalid-argument', 'lessonId requerido');
@@ -587,10 +587,30 @@ exports.completeLesson = functions.runWith({ maxInstances: 10 }).https.onCall(as
 
       // Server-authoritative gems for the lesson: correct answers, perfect
       // bonus and first-lesson-of-day bonus, all capped by the daily gem cap.
+      // correctCount/perfect are NOT trusted blindly: the client must report a
+      // consistent answer set (totalQuestions > 0, correctCount <= totalQuestions)
+      // for the perfect bonus and SP to apply. Inconsistent or missing claims
+      // are treated as a non-perfect lesson (anti-farm).
       const gemsDailyData = dailyGemsDoc.data() || {};
-      const correct = Math.min(Math.max(parseInt(correctCount, 10) || 0, 0), 20);
+      const rawCorrect = parseInt(correctCount, 10);
+      const rawTotal = parseInt(totalQuestions, 10);
+      const reportedTotal = Number.isFinite(rawTotal) && rawTotal > 0
+        ? Math.min(rawTotal, 20)
+        : 0;
+      const reportedCorrect = Number.isFinite(rawCorrect)
+        ? Math.min(Math.max(rawCorrect, 0), reportedTotal || 20)
+        : 0;
+      // "perfect" requires a claim that is actually consistent: the raw
+      // correct count must equal the reported total (clamping would mask
+      // impossible claims like 15/10).
+      const consistentPerfect = perfect === true &&
+        reportedTotal > 0 &&
+        Number.isFinite(rawCorrect) &&
+        rawCorrect === reportedTotal &&
+        rawCorrect > 0;
+      const correct = reportedCorrect;
       const baseGems = correct * gems.GEM_REWARDS.lesson_correct;
-      const perfectGems = perfect === true ? gems.GEM_REWARDS.perfect_bonus : 0;
+      const perfectGems = consistentPerfect ? gems.GEM_REWARDS.perfect_bonus : 0;
       let firstOfDayGems = 0;
       if (!gemsDailyData.first_lesson_of_day) {
         firstOfDayGems = gems.GEM_REWARDS.first_lesson_of_day;
@@ -607,7 +627,7 @@ exports.completeLesson = functions.runWith({ maxInstances: 10 }).https.onCall(as
 
       // SAGEN PASS SP — awarded from a server-verified action only.
       const lessonSp = sagenpass.SP_REWARDS.lesson;
-      const perfectSp = perfect === true ? sagenpass.SP_REWARDS.perfect_lesson : 0;
+      const perfectSp = consistentPerfect ? sagenpass.SP_REWARDS.perfect_lesson : 0;
       const spCredit = sagenpass.applySagenPassSp({
         transaction,
         userRef,

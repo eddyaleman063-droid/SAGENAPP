@@ -319,6 +319,20 @@
   "dayAbbrWed": "Mié",
   "dayShortFri": "V",
   "dayShortMon": "L",
+  "weekDayCompleted": "{day}, completado",
+  "@weekDayCompleted": {
+    "description": "Accessible label for a completed day in the weekly calendar.",
+    "placeholders": {
+      "day": {}
+    }
+  },
+  "weekDayToday": "Hoy, {day}",
+  "@weekDayToday": {
+    "description": "Accessible label for today in the weekly calendar.",
+    "placeholders": {
+      "day": {}
+    }
+  },
   "dayShortSat": "S",
   "dayShortSun": "D",
   "dayShortThu": "J",
@@ -1718,6 +1732,21 @@
       "current": {},
       "total": {}
     }
+  },
+  "quizTimeRemaining": "Tiempo restante: {time}",
+  "@quizTimeRemaining": {
+    "description": "Live region announcing the remaining quiz time to screen readers.",
+    "placeholders": {
+      "time": {}
+    }
+  },
+  "quizVerdictCorrect": "Respuesta correcta",
+  "@quizVerdictCorrect": {
+    "description": "Live region announcing a correct answer to screen readers."
+  },
+  "quizVerdictIncorrect": "Respuesta incorrecta",
+  "@quizVerdictIncorrect": {
+    "description": "Live region announcing an incorrect answer to screen readers."
   },
   "@dailyGoalMinutesPerDay": {
     "placeholders": {

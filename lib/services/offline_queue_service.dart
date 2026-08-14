@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'connectivity_service.dart';
 import 'database_helper.dart';
@@ -26,7 +27,6 @@ class OfflineQueueService {
 
   final ConnectivityService _connectivity;
   final EconomicFunctionsService _economic;
-  static const _maxRetries = 3;
   final AppLogger _logger = AppLogger();
 
   List<Map<String, dynamic>> _queue = [];
@@ -39,7 +39,10 @@ class OfflineQueueService {
   /// The Map contains the server response (gems, xp, level, etc.).
   void Function(Map<String, dynamic> serverResult)? onItemSynced;
 
-  /// Callback fired when a queue item is dropped after max retries.
+  /// Callback fired when a queue item is dropped after a permanent failure
+  /// (server-side validation/auth error that would never succeed on retry).
+  /// Transient failures (network, timeouts, server outages) are retried
+  /// indefinitely and never drop the item, so XP/gems are not lost.
   void Function(Map<String, dynamic> item)? onItemDropped;
 
   List<Map<String, dynamic>> get queue => List.unmodifiable(_queue);
@@ -169,6 +172,29 @@ class OfflineQueueService {
     }
   }
 
+  /// Whether [error] is permanent (server-side validation/auth failure) so the
+  /// item would never succeed on retry, or transient (network/timeout/server
+  /// outage) where keeping the item in the queue is safe because completeLesson
+  /// is idempotent per lessonId (transaction_logs guard against double credit).
+  /// Transient errors are retried indefinitely so XP/gems are never lost.
+  static bool _isPermanentError(Object error) {
+    if (error is FirebaseFunctionsException) {
+      const permanent = {
+        'invalid-argument',
+        'failed-precondition',
+        'permission-denied',
+        'not-found',
+        'unauthenticated',
+        'out-of-range',
+        'aborted',
+        'already-exists',
+        'internal',
+      };
+      return permanent.contains(error.code);
+    }
+    return error is ArgumentError;
+  }
+
   Future<void> _processQueue() async {
     if (_syncing || _queue.isEmpty) return;
     _syncing = true;
@@ -179,28 +205,31 @@ class OfflineQueueService {
       final item = _queue[i];
       final retries = (item['retries'] as int?) ?? 0;
 
-      if (retries >= _maxRetries) {
-        toRemove.add(i);
-        _logger.warning(
-          'OfflineQueue: max retries for ${item['lessonId']}, removing',
-        );
-        onItemDropped?.call(item);
-        continue;
-      }
-
       try {
         final result = await _syncItem(item);
         toRemove.add(i);
         _logger.info('OfflineQueue: synced ${item['lessonId']}');
         if (result != null) onItemSynced?.call(result);
       } catch (e) {
+        if (_isPermanentError(e)) {
+          toRemove.add(i);
+          _logger.warning(
+            'OfflineQueue: permanent failure for ${item['lessonId']}, '
+            'removing (${e.toString()})',
+          );
+          onItemDropped?.call(item);
+          continue;
+        }
+        // Transient failure: keep the item and retry on the next cycle.
+        // completeLesson is idempotent, so re-sending cannot double-credit.
         item['retries'] = retries + 1;
         final dbId = item['_dbId'];
         if (dbId is int) {
           await _persistRetryCount(dbId, retries + 1);
         }
         _logger.warning(
-          'OfflineQueue: sync failed for ${item['lessonId']} (attempt ${retries + 1})',
+          'OfflineQueue: transient failure for ${item['lessonId']} '
+          '(attempt ${retries + 1}), keeping item for retry',
         );
       }
     }
@@ -250,6 +279,7 @@ class OfflineQueueService {
       lessonId: item['lessonId'] as String? ?? '',
       xpEarned: item['xpEarned'] as int? ?? 0,
       correctCount: correctCount,
+      totalQuestions: totalQuestions,
       perfect: correctCount > 0 && correctCount == totalQuestions,
     );
 
@@ -257,6 +287,10 @@ class OfflineQueueService {
     // Firestore rules block client writes to subcollections (server-only).
     // The economic mutation above already records the completion server-side.
     // If metadata logging is needed, create a Cloud Function for it.
+
+    if (result != null && item['lessonId'] != null) {
+      result['lessonId'] = item['lessonId'];
+    }
 
     return result;
   }

@@ -246,7 +246,12 @@ class PaymentNotifier extends AutoDisposeNotifier<PaymentState> {
         idToken: idToken,
       );
       final status = result['status'] as String?;
-      if (status == 'confirmed' || status == 'credited') {
+      // Both backends flip pending payments to 'completed' (webhook or admin
+      // manual credit). Treat it as success; 'confirmed'/'credited' are kept
+      // for forward compatibility with other backends.
+      if (status == 'completed' ||
+          status == 'confirmed' ||
+          status == 'credited') {
         _pollTimer?.cancel();
         await refreshGems();
         state = state.copyWith(

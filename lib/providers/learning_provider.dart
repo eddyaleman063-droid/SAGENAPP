@@ -171,6 +171,7 @@ class LearningNotifier extends Notifier<LearningState> {
           ? levelData['current'] as int?
           : null;
       final serverLessonsCompleted = (rawLessons is int) ? rawLessons : null;
+      final serverLessonId = result['lessonId'] as String?;
 
       // The server gem ledger is authoritative: reconcile the local cache
       // with the balance reported by completeLesson (NUEVO-03).
@@ -196,6 +197,18 @@ class LearningNotifier extends Notifier<LearningState> {
           lessonsCompleted: serverLessonsCompleted ?? state.lessonsCompleted,
         );
         _save();
+      }
+
+      // NUEVO-fix: the lesson chest is rolled only AFTER the server confirms
+      // the lesson completion, using the server-authoritative lesson counter.
+      // Rolling it earlier (from the local, already-incremented counter) made
+      // rollChestDrop derive the tier from the stale server counter, turning
+      // milestone chests into bronze and locking the wrong idempotency key.
+      if (serverLessonsCompleted != null) {
+        unawaited(_checkLessonChest(
+          serverLessonId ?? 'lesson_sync',
+          lessonsCompleted: serverLessonsCompleted,
+        ));
       }
     } catch (e) {
       AppLogger().warning('_reconcileWithServer failed: $e');
@@ -488,7 +501,8 @@ class LearningNotifier extends Notifier<LearningState> {
           completedAt: DateTime.now(),
         );
 
-    await _checkLessonChest(lessonId);
+    // El cofre de lección se rueda tras la confirmación del servidor en
+    // _reconcileWithServer (contador server-authoritative). No se rueda aquí.
     _scheduleStreakReminder();
   }
 
@@ -498,12 +512,15 @@ class LearningNotifier extends Notifier<LearningState> {
     ref.read(notificationServiceProvider).scheduleStreakReminder(streak);
   }
 
-  Future<void> _checkLessonChest(String lessonId) async {
+  Future<void> _checkLessonChest(
+    String lessonId, {
+    required int lessonsCompleted,
+  }) async {
     final luckActive = ref.read(itemProvider.notifier).isLuckBoostActive();
     final data = await ref
         .read(learningRewardServiceProvider)
         .rollChest(
-          lessonsCompleted: state.lessonsCompleted,
+          lessonsCompleted: lessonsCompleted,
           totalDonated: state.totalDonated,
           xp: state.xp,
           luckBoostActive: luckActive,

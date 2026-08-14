@@ -1884,6 +1884,18 @@ abstract class AppLocalizations {
   /// **'L'**
   String get dayShortMon;
 
+  /// Accessible label for a completed day in the weekly calendar.
+  ///
+  /// In es, this message translates to:
+  /// **'{day}, completado'**
+  String weekDayCompleted(Object day);
+
+  /// Accessible label for today in the weekly calendar.
+  ///
+  /// In es, this message translates to:
+  /// **'Hoy, {day}'**
+  String weekDayToday(Object day);
+
   /// No description provided for @dayShortSat.
   ///
   /// In es, this message translates to:
@@ -9220,6 +9232,24 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Error'**
   String get errorGenericShort;
+
+  /// Live region announcing the remaining quiz time to screen readers.
+  ///
+  /// In es, this message translates to:
+  /// **'Tiempo restante: {time}'**
+  String quizTimeRemaining(Object time);
+
+  /// Live region announcing a correct answer to screen readers.
+  ///
+  /// In es, this message translates to:
+  /// **'Respuesta correcta'**
+  String get quizVerdictCorrect;
+
+  /// Live region announcing an incorrect answer to screen readers.
+  ///
+  /// In es, this message translates to:
+  /// **'Respuesta incorrecta'**
+  String get quizVerdictIncorrect;
 
   /// No description provided for @exitQuizTitle.
   ///

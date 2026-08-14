@@ -281,6 +281,36 @@ class ShopNotifier extends Notifier<ShopState> {
     ),
   ];
 
+  /// Maps a shop item id to its special-item type, mirroring the default
+  /// catalog. Used when the Remote Config catalog omits specialItemType so
+  /// consumable purchases still credit the inventory (NUEVO-08 / store).
+  static ShopCategory _categoryFromString(String? raw) {
+    switch (raw) {
+      case 'cosmetics':
+        return ShopCategory.cosmetics;
+      case 'themes':
+        return ShopCategory.themes;
+      default:
+        return ShopCategory.consumables;
+    }
+  }
+
+  static SpecialItemType? _specialTypeForId(String id) {
+    for (final item in _defaultItems) {
+      if (item.id == id) return item.specialItemType;
+    }
+    return null;
+  }
+
+  static SpecialItemType? _specialTypeFromValue(Object? raw) {
+    if (raw is String && raw.isNotEmpty) {
+      for (final v in SpecialItemType.values) {
+        if (v.name == raw) return v;
+      }
+    }
+    return null;
+  }
+
   ShopState _load() {
     final xpBoostActive = _storage.getBool(_keyXpBoost);
     final ownedIds = _storage.getStringList(_keyOwnedItems);
@@ -290,16 +320,22 @@ class ShopNotifier extends Notifier<ShopState> {
     final items = catalog.isNotEmpty
         ? catalog
               .map(
-                (e) => ShopItem(
-                  id: e['id'] as String? ?? '',
-                  name: e['name'] as String? ?? '',
-                  description: e['description'] as String? ?? '',
-                  iconAsset: e['iconAsset'] as String? ?? 'shield',
-                  isOwned: ownedSet.contains(e['id']),
-                  supporterLevelRequired:
-                      (e['supporterLevelRequired'] as num?)?.toInt() ?? 1,
-                  gemCost: (e['gemCost'] as num?)?.toInt() ?? 100,
-                ),
+                (e) {
+                  final id = e['id'] as String? ?? '';
+                  return ShopItem(
+                    id: id,
+                    name: e['name'] as String? ?? '',
+                    description: e['description'] as String? ?? '',
+                    iconAsset: e['iconAsset'] as String? ?? 'shield',
+                    isOwned: ownedSet.contains(id),
+                    supporterLevelRequired:
+                        (e['supporterLevelRequired'] as num?)?.toInt() ?? 1,
+                    gemCost: (e['gemCost'] as num?)?.toInt() ?? 100,
+                    category: _categoryFromString(e['category'] as String?),
+                    specialItemType: _specialTypeFromValue(e['specialItemType']) ??
+                        _specialTypeForId(id),
+                  );
+                },
               )
               .where((i) => i.id.isNotEmpty)
               .toList()

@@ -166,8 +166,11 @@ class GemNotifier extends Notifier<GemState> {
 
   /// Award gems from achievement unlock.
   /// Scales with achievement XP: xpReward / 4, clamped 2-30.
+  /// Uses floor() to match the server-authoritative formula (gems.js):
+  /// floor(xp / 4) — a modified client cannot get more gems than the server
+  /// will credit on reconciliation.
   void awardAchievementGems(int xpReward) {
-    final gems = (xpReward / 4).round().clamp(2, 30);
+    final gems = (xpReward / 4).floor().clamp(2, 30);
     addGems(gems, reason: 'achievement');
     _persistEarnToServer('achievement', {'xp': xpReward});
   }

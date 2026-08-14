@@ -185,7 +185,7 @@ class StreakNotifier extends Notifier<StreakState> {
     storage.setString(_keyMonthlyData, encodeStringMap(s.monthlyData));
   }
 
-  void _syncStreakToFirestore({bool freezeUsed = false}) {
+  void _syncStreakToFirestore({bool freezeUsed = false, int? oldStreak}) {
     try {
       // Sync streak to server via Cloud Function (not just local cache).
       // Fire-and-forget with bounded retry + backoff so a transient network
@@ -193,9 +193,32 @@ class StreakNotifier extends Notifier<StreakState> {
       Future<void>.delayed(Duration.zero, () async {
         for (int attempt = 0; attempt < 3; attempt++) {
           try {
-            await ref
+            final result = await ref
                 .read(economicFunctionsServiceProvider)
                 .incrementStreak(freezeUsed: freezeUsed);
+            // NUEVO-fix: the server streak is authoritative. The streak chest
+            // must be rolled only AFTER the server confirms the increment,
+            // otherwise rollChestDrop derives a bronze tier from the stale
+            // server streak. oldStreak is passed so we only reward when a
+            // milestone was actually crossed.
+            if (result != null) {
+              _reconcileServerStreak(result);
+              if (oldStreak != null) {
+                final serverStreak = (result['currentStreak'] as num?)?.toInt();
+                if (serverStreak != null && serverStreak > oldStreak) {
+                  ref
+                      .read(streakChestServiceProvider)
+                      .checkAndReward(
+                        oldStreak: oldStreak,
+                        newStreak: serverStreak,
+                        learning: ref.read(learningProvider.notifier),
+                      )
+                      .catchError((e) {
+                        AppLogger().error('streak chest reward failed: $e');
+                      });
+                }
+              }
+            }
             return;
           } catch (e) {
             if (attempt == 2) {
@@ -211,6 +234,46 @@ class StreakNotifier extends Notifier<StreakState> {
       });
     } catch (e) {
       AppLogger().warning('StreakNotifier._syncStreakToFirestore failed: $e');
+    }
+  }
+
+  /// NUEVO-fix: reconcile the local streak with the authoritative server
+  /// state returned by `incrementStreak`. When the server denies a freeze,
+  /// breaks the streak, or reports a different streak (e.g. another device),
+  /// the client no longer keeps a divergent optimistic streak.
+  void _reconcileServerStreak(Map<String, dynamic> result) {
+    try {
+      final serverStreak = (result['currentStreak'] as num?)?.toInt();
+      final serverLongest = (result['longestStreak'] as num?)?.toInt();
+      if (serverStreak == null) return;
+
+      final current = state.status;
+      final serverDiverged = serverStreak != current.currentStreak ||
+          serverLongest != current.longestStreak;
+      final serverBroke = result['streakBroken'] == true ||
+          result['freezeDenied'] == true;
+
+      if (!serverDiverged && !serverBroke) return;
+
+      final newStatus = StreakStatus(
+        currentStreak: serverStreak,
+        longestStreak: serverLongest ?? current.longestStreak,
+        lastActivityDate: current.lastActivityDate,
+        streakFreezes: current.streakFreezes,
+        isAtRisk: current.isAtRisk,
+        message: current.message,
+        tier: current.tier,
+      );
+      state = state.copyWith(status: newStatus);
+      _service.saveStreak(
+        currentStreak: newStatus.currentStreak,
+        longestStreak: newStatus.longestStreak,
+        lastActivityDate: newStatus.lastActivityDate,
+        streakFreezes: newStatus.streakFreezes,
+      );
+      _saveExtras(ref.read(storageServiceProvider));
+    } catch (e) {
+      AppLogger().warning('StreakNotifier._reconcileServerStreak failed: $e');
     }
   }
 
@@ -441,17 +504,6 @@ class StreakNotifier extends Notifier<StreakState> {
           ? state.perfectWeeks + 1
           : state.perfectWeeks;
 
-      ref
-          .read(streakChestServiceProvider)
-          .checkAndReward(
-            oldStreak: oldStreak,
-            newStreak: newStatus.currentStreak,
-            learning: ref.read(learningProvider.notifier),
-          )
-          .catchError((e) {
-            AppLogger().error('streak chest reward failed: $e');
-          });
-
       final int? milestone =
           StreakState.milestoneValues
               .where((m) => oldStreak < m && newStatus.currentStreak >= m)
@@ -489,7 +541,10 @@ class StreakNotifier extends Notifier<StreakState> {
             .showFreezeConsumedNotification(newStatus.streakFreezes);
       }
       _saveExtras(storage);
-      _syncStreakToFirestore(freezeUsed: newStatus.freezeConsumed);
+      _syncStreakToFirestore(
+        freezeUsed: newStatus.freezeConsumed,
+        oldStreak: oldStreak,
+      );
       _scheduleStreakReminder();
     } catch (e) {
       AppLogger().error('streak checkIn failed: $e');

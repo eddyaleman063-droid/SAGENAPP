@@ -336,8 +336,14 @@ exports.handlePaymentWebhook = functions.runWith({ maxInstances: 5 }).https.onRe
     }
 
     if (!userId || isNaN(amount) || amount <= 0) {
-      functions.logger.error('Invalid userId or amount', { userId, amount });
-      return res.status(200).send('OK');
+      // NUEVO-fix: never silently swallow an approved payment without the
+      // metadata needed to credit the user. Log details and return a
+      // non-2xx so MercadoPago retries / flags the webhook for review.
+      functions.logger.error('Approved payment missing userId/amount — NOT credited', {
+        paymentId, externalRef, amount, hasMetadata: !!payment.metadata,
+        hasExternalRef: !!externalRef,
+      });
+      return res.status(400).send('Missing payment metadata');
     }
 
     const userRef = admin.firestore().doc(`users/${userId}`);
@@ -425,7 +431,7 @@ exports.handlePaymentWebhook = functions.runWith({ maxInstances: 5 }).https.onRe
  *     double-credit even if called concurrently with the same key.
  */
 exports.adminCreditDonation = functions.runWith({ maxInstances: 3 }).https.onCall(async (data, context) => {
-  const { userId, amount, paymentMethod, productId, idempotencyKey } = data;
+  const { userId, paymentMethod, productId, idempotencyKey } = data;
 
   // Uso context.auth en vez de adminSecret
   if (!context.auth) {
@@ -446,9 +452,16 @@ exports.adminCreditDonation = functions.runWith({ maxInstances: 3 }).https.onCal
   // Rate limit para admins (30 req/min)
   await checkRateLimit(callerUid, 30, 60000);
 
-  if (!userId || !amount || amount <= 0) {
+  // NUEVO-fix: coerce amount to a real number BEFORE any arithmetic so a
+  // string payload cannot produce "105" from amount="10"+"5" concatenation.
+  const rawAmount = data && data.amount;
+  const amount = typeof rawAmount === 'number'
+    ? rawAmount
+    : parseFloat(String(rawAmount ?? '').replace(',', '.'));
+
+  if (!userId || !Number.isFinite(amount) || amount <= 0) {
     throw new functions.https.HttpsError(
-      'invalid-argument', 'userId y amount requeridos'
+      'invalid-argument', 'userId y amount (número) requeridos'
     );
   }
 

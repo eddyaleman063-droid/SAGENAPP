@@ -994,6 +994,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get dayShortMon => 'L';
 
   @override
+  String weekDayCompleted(Object day) {
+    return '$day, completado';
+  }
+
+  @override
+  String weekDayToday(Object day) {
+    return 'Hoy, $day';
+  }
+
+  @override
   String get dayShortSat => 'S';
 
   @override
@@ -4977,6 +4987,17 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get errorGenericShort => 'Error';
+
+  @override
+  String quizTimeRemaining(Object time) {
+    return 'Tiempo restante: $time';
+  }
+
+  @override
+  String get quizVerdictCorrect => 'Respuesta correcta';
+
+  @override
+  String get quizVerdictIncorrect => 'Respuesta incorrecta';
 
   @override
   String get exitQuizTitle => '¿Seguro que quieres salir de la lección?';

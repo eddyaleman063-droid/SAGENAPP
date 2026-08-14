@@ -49,12 +49,21 @@ class WeeklyCalendarWidget extends StatelessWidget {
                 date.month == today.month &&
                 date.day == today.day;
 
-            return _DayCircle(
-              label: dayLabels(l)[i],
-              isCompleted: isCompleted,
-              isToday: isToday,
-              isDark: isDark,
-              dayNumber: date.day,
+            return Semantics(
+              container: true,
+              excludeSemantics: true,
+              label: isCompleted
+                  ? l.weekDayCompleted(dayLabels(l)[i])
+                  : isToday
+                  ? l.weekDayToday(dayLabels(l)[i])
+                  : dayLabels(l)[i],
+              child: _DayCircle(
+                label: dayLabels(l)[i],
+                isCompleted: isCompleted,
+                isToday: isToday,
+                isDark: isDark,
+                dayNumber: date.day,
+              ),
             );
           }),
         ),

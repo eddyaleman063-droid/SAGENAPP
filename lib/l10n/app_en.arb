@@ -1,4 +1,4 @@
-{
+﻿{
   "@@locale": "en",
   "@sageAchievementUnlocked": {
     "placeholders": {
@@ -357,6 +357,20 @@
   "dayAbbrWed": "Wed",
   "dayShortFri": "F",
   "dayShortMon": "M",
+  "weekDayCompleted": "{day}, completed",
+  "@weekDayCompleted": {
+    "description": "Accessible label for a completed day in the weekly calendar.",
+    "placeholders": {
+      "day": {}
+    }
+  },
+  "weekDayToday": "Today, {day}",
+  "@weekDayToday": {
+    "description": "Accessible label for today in the weekly calendar.",
+    "placeholders": {
+      "day": {}
+    }
+  },
   "dayShortSat": "S",
   "dayShortSun": "S",
   "dayShortThu": "T",
@@ -1756,6 +1770,21 @@
       "current": {},
       "total": {}
     }
+  },
+  "quizTimeRemaining": "Time remaining: {time}",
+  "@quizTimeRemaining": {
+    "description": "Live region announcing the remaining quiz time to screen readers.",
+    "placeholders": {
+      "time": {}
+    }
+  },
+  "quizVerdictCorrect": "Correct answer",
+  "@quizVerdictCorrect": {
+    "description": "Live region announcing a correct answer to screen readers."
+  },
+  "quizVerdictIncorrect": "Incorrect answer",
+  "@quizVerdictIncorrect": {
+    "description": "Live region announcing an incorrect answer to screen readers."
   },
   "@dailyGoalMinutesPerDay": {
     "placeholders": {

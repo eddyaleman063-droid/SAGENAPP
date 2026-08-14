@@ -44,8 +44,6 @@ String _sanitizeWorker(String value) {
       .replaceAll('>', '&gt;')
       .replaceAll('"', '&quot;')
       .replaceAll("'", '&#x27;')
-      .replaceAll('/', '&#x2F;')
-      .replaceAll('%', '&#x25;')
       .trim();
 
   if (clean.length > 100) {

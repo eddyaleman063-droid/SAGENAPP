@@ -5,6 +5,7 @@ abstract class IEconomicFunctionsService {
     required String lessonId,
     required int xpEarned,
     int? correctCount,
+    int? totalQuestions,
     bool? perfect,
   });
   Future<Map<String, dynamic>?> processDonation({

@@ -510,68 +510,94 @@ class _CyberQuizScreenState extends State<CyberQuizScreen>
     final l = l10n(context);
     String label;
     Color bgColor;
-
+    final String? verdictLabel;
     if (_answerState == _AnswerState.idle) {
       label = l.quizCheckAnswer;
       bgColor = PremiumColors.primaryAccent;
+      verdictLabel = null;
     } else if (_isCorrect) {
       label = l.quizContinue;
       bgColor = PremiumColors.success;
+      verdictLabel = l.quizVerdictCorrect;
     } else {
       label = l.quizContinue;
       bgColor = PremiumColors.error;
+      verdictLabel = l.quizVerdictIncorrect;
     }
 
-    return Semantics(
-      button: true,
-      label: label,
-      child: Container(
-        padding: const EdgeInsets.fromLTRB(
-          AppSpacing.xxl,
-          AppSpacing.md,
-          AppSpacing.xxl,
-          AppSpacing.xxl,
-        ),
-        child: SizedBox(
-          width: double.infinity,
-          height: 52,
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 250),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(AppRadius.lg),
-              boxShadow: [
-                BoxShadow(
-                  color: bgColor.withValues(alpha: 0.35),
-                  blurRadius: 12,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: ElevatedButton(
-              onPressed: _answerState == _AnswerState.idle
-                  ? _onCheck
-                  : _onContinue,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: bgColor,
-                disabledBackgroundColor: Colors.white.withValues(alpha: 0.06),
-                disabledForegroundColor: Colors.white.withValues(alpha: 0.25),
-                foregroundColor: Colors.white,
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(AppRadius.lg),
-                ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Live region announcing the correct/incorrect verdict to screen
+        // readers. Hidden visually (Opacity 0) but kept in the tree.
+        if (verdictLabel != null)
+          Semantics(
+            liveRegion: true,
+            label: verdictLabel,
+            child: ExcludeSemantics(
+              child: Opacity(
+                opacity: 0,
+                child: Text(verdictLabel, style: AppTextStyle.caption),
               ),
-              child: Text(
-                label,
-                style: AppTextStyle.body.copyWith(
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1.2,
+            ),
+          ),
+        Semantics(
+          container: true,
+          button: true,
+          label: label,
+          child: Container(
+            padding: const EdgeInsets.fromLTRB(
+              AppSpacing.xxl,
+              AppSpacing.md,
+              AppSpacing.xxl,
+              AppSpacing.xxl,
+            ),
+            child: SizedBox(
+              width: double.infinity,
+              height: 52,
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 250),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(AppRadius.lg),
+                  boxShadow: [
+                    BoxShadow(
+                      color: bgColor.withValues(alpha: 0.35),
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: ElevatedButton(
+                  onPressed: _answerState == _AnswerState.idle
+                      ? _onCheck
+                      : _onContinue,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: bgColor,
+                    disabledBackgroundColor: Colors.white.withValues(
+                      alpha: 0.06,
+                    ),
+                    disabledForegroundColor: Colors.white.withValues(
+                      alpha: 0.25,
+                    ),
+                    foregroundColor: Colors.white,
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(AppRadius.lg),
+                    ),
+                  ),
+                  child: Text(
+                    label,
+                    style: AppTextStyle.body.copyWith(
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.2,
+                    ),
+                  ),
                 ),
               ),
             ),
           ),
         ),
-      ),
+      ],
     );
   }
 }
@@ -657,13 +683,22 @@ class _HudBar extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 4),
-                  Text(
-                    '${timeRemaining ~/ 60}:${(timeRemaining % 60).toString().padLeft(2, '0')}',
-                    style: AppTextStyle.bodyMd.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: timeRemaining < _lowTimeThresholdSeconds
-                          ? PremiumColors.error
-                          : context.textSecondary,
+                  // Live region so screen readers announce the remaining time.
+                  Semantics(
+                    liveRegion: true,
+                    label: l10n(context).quizTimeRemaining(
+                      '${timeRemaining ~/ 60}:${(timeRemaining % 60).toString().padLeft(2, '0')}',
+                    ),
+                    child: ExcludeSemantics(
+                      child: Text(
+                        '${timeRemaining ~/ 60}:${(timeRemaining % 60).toString().padLeft(2, '0')}',
+                        style: AppTextStyle.bodyMd.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: timeRemaining < _lowTimeThresholdSeconds
+                              ? PremiumColors.error
+                              : context.textSecondary,
+                        ),
+                      ),
                     ),
                   ),
                 ],
