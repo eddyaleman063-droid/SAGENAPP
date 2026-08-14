@@ -141,10 +141,32 @@ class OfflineQueueService {
       'OfflineQueue: queued lesson $lessonId (${_queue.length} pending)',
     );
 
-    // NOTE: Do NOT process the queue synchronously here.
-    // The caller MUST NOT call EconomicFunctionsService.completeLesson() directly.
-    // All economic mutations go through this queue exclusively.
-    // Processing will happen on the next connectivity change or periodic timer.
+    // Procesa de inmediato si hay conexión para acreditar rápido; la cola
+    // protege contra reintentos/duplicados (idempotencia por lessonId).
+    if (_connectivity.online.value) {
+      unawaited(flush());
+    }
+  }
+
+  /// Procesa la cola inmediatamente si hay conexión.
+  Future<void> flush() async {
+    if (_connectivity.online.value && _queue.isNotEmpty && !_syncing) {
+      await _processQueue();
+    }
+  }
+
+  Future<void> _persistRetryCount(int dbId, int retries) async {
+    try {
+      final db = await DatabaseHelper.instance.database;
+      await db.update(
+        'sync_queue',
+        {'retry_count': retries},
+        where: 'id = ?',
+        whereArgs: [dbId],
+      );
+    } catch (e) {
+      _logger.error('OfflineQueue: failed to persist retry count', e);
+    }
   }
 
   Future<void> _processQueue() async {
@@ -173,6 +195,10 @@ class OfflineQueueService {
         if (result != null) onItemSynced?.call(result);
       } catch (e) {
         item['retries'] = retries + 1;
+        final dbId = item['_dbId'];
+        if (dbId is int) {
+          await _persistRetryCount(dbId, retries + 1);
+        }
         _logger.warning(
           'OfflineQueue: sync failed for ${item['lessonId']} (attempt ${retries + 1})',
         );
@@ -218,9 +244,13 @@ class OfflineQueueService {
     final economicService = _economic;
 
     // Sync lesson completion through Cloud Function (atomic: gems + XP + streak)
+    final correctCount = item['correctAnswers'] as int? ?? 0;
+    final totalQuestions = item['totalQuestions'] as int? ?? 0;
     final result = await economicService.completeLesson(
       lessonId: item['lessonId'] as String? ?? '',
       xpEarned: item['xpEarned'] as int? ?? 0,
+      correctCount: correctCount,
+      perfect: correctCount > 0 && correctCount == totalQuestions,
     );
 
     // NOTE: Metadata write to lesson_completions subcollection is intentionally omitted.

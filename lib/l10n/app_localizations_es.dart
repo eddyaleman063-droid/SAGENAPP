@@ -4046,6 +4046,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get storePurchaseSuccess => '¡Compra exitosa!';
 
   @override
+  String get storeAlreadyOwned => 'Ya tienes este artículo.';
+
+  @override
   String get storeShieldLimitReached => 'Límite de protectores alcanzado';
 
   @override

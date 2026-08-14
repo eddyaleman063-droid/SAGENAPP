@@ -40,14 +40,21 @@ class StreakChestService {
           ? ChestType.gold
           : ChestType.legendary;
 
-      final reward = await _roller.roll(t);
+      final reward = await _roller.roll(
+        t,
+        contextId: 'streak_$newStreak',
+        source: 'streak',
+      );
 
-      await learning.addXp(reward.xp, reason: 'streak_chest');
+      // rollChestDrop ya acredita el XP en el servidor; solo se refleja
+      // en el estado local para no duplicar la recompensa.
+      learning.applyServerXp(reward.xp);
 
       _eventBus.fire(
         ChestRewardData(
-          type: t,
+          type: reward.chestType ?? t,
           xp: reward.xp,
+          gems: reward.gems,
           streakShields: reward.streakShields,
           xpBoost: reward.xpBoost,
           specialItems: reward.specialItems,

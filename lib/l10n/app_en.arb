@@ -1304,6 +1304,7 @@
   "storeDailyChestTitle": "Daily Chest",
   "storePurchaseFailed": "Purchase validation failed. Please try again.",
   "storePurchaseSuccess": "Purchase successful!",
+  "storeAlreadyOwned": "You already own this item.",
   "storeShieldLimitReached": "Shield limit reached",
   "storeSupport": "Support Us",
   "storeSupportTiers": "Supporter tiers",

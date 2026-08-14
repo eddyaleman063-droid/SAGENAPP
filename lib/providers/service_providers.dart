@@ -41,6 +41,7 @@ import '../services/chest_evolution_service.dart';
 import '../services/motivational_quotes_service.dart';
 import '../services/chest_reward_roller.dart';
 import '../services/learning_reward_service.dart';
+import '../services/inventory_service.dart';
 import 'prefs_provider.dart';
 
 /// Logger — default instance. Override in ProviderScope for production.
@@ -245,4 +246,8 @@ final chestRewardRollerProvider = Provider<ChestRewardRoller>((ref) {
 
 final learningRewardServiceProvider = Provider<LearningRewardService>((ref) {
   return LearningRewardService.instance;
+});
+
+final inventoryServiceProvider = Provider<InventoryService>((ref) {
+  return InventoryService.instance;
 });

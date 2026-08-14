@@ -7,6 +7,7 @@ import '../models/special_item.dart';
 class ChestRewardData {
   final ChestType type;
   final int xp;
+  final int gems;
   final int? streakShields;
   final String? title;
   final String? message;
@@ -18,6 +19,7 @@ class ChestRewardData {
   const ChestRewardData({
     required this.type,
     this.xp = 0,
+    this.gems = 0,
     this.streakShields,
     this.title,
     this.message,

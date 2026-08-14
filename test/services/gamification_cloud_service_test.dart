@@ -163,72 +163,6 @@ void main() {
     });
   });
 
-  group('earnSPResult', () {
-    test('returns sp and level', () async {
-      mockFunctionsResult({'sp': 42, 'level': 3});
-      final result = await service.earnSPResult();
-      expect(result.isOk, isTrue);
-      expect(result.value, {'sp': 42, 'level': 3});
-    });
-
-    test('falls back to level 1', () async {
-      mockFunctionsResult({'sp': 10});
-      final result = await service.earnSPResult();
-      expect(result.value, {'sp': 10, 'level': 1});
-    });
-
-    test('passes through the reason and does not send an amount', () async {
-      Map? captured;
-      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-          .setMockDecodedMessageHandler<Object?>(_cloudFunctionsChannel, (
-            Object? message,
-          ) async {
-            captured = ((message as List)[0] as Map)['parameters'] as Map?;
-            return <Object?>[
-              <String, Object?>{'sp': 5, 'level': 1},
-            ];
-          });
-      await service.earnSPResult(reason: 'challenge');
-      expect(captured?['amount'], isNull);
-      expect(captured?['reason'], 'challenge');
-    });
-
-    test('defaults reason to lesson', () async {
-      Map? captured;
-      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-          .setMockDecodedMessageHandler<Object?>(_cloudFunctionsChannel, (
-            Object? message,
-          ) async {
-            captured = ((message as List)[0] as Map)['parameters'] as Map?;
-            return <Object?>[
-              <String, Object?>{'sp': 5, 'level': 1},
-            ];
-          });
-      await service.earnSPResult();
-      expect(captured?['reason'], 'lesson');
-    });
-
-    test('returns SyncError on null response', () async {
-      mockFunctionsResult(null);
-      final result = await service.earnSPResult();
-      expect(result.isError, isTrue);
-      expect(result.error, isA<SyncError>());
-    });
-
-    test('returns error when function throws', () async {
-      mockFunctionsError(
-        PlatformException(
-          code: 'unavailable',
-          message: 'down',
-          details: {'code': 'functions/unavailable'},
-        ),
-      );
-      final result = await service.earnSPResult();
-      expect(result.isError, isTrue);
-      expect(result.error, isA<NetworkError>());
-    });
-  });
-
   group('claimPassRewardResult', () {
     test('returns reward data', () async {
       mockFunctionsResult({
@@ -318,11 +252,6 @@ void main() {
     test('claimAdReward returns value when ok', () async {
       mockFunctionsResult({'xp': 50});
       expect(await service.claimAdReward(), isNotNull);
-    });
-
-    test('earnSP returns value when ok', () async {
-      mockFunctionsResult({'sp': 5, 'level': 1});
-      expect(await service.earnSP(), isNotNull);
     });
 
     test('claimPassReward returns value when ok', () async {

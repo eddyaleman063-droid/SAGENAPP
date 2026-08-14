@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../services/app_logger.dart';
 import '../services/auth_service.dart';
-import '../services/background_sync_service.dart';
 import '../services/cloud_sync_service.dart';
 import 'providers.dart';
 
@@ -49,11 +48,15 @@ class AppLifecycleNotifier extends StateNotifier<AppLifecycleState>
       final uid = _authService.currentUser?.uid;
       if (uid != null) {
         await _cloudSync.saveAll(uid, prefs);
+        // After a full cloud sync the local gem cache is reconciled with the
+        // authoritative server balance (NUEVO-03).
+        _ref.read(gemProvider.notifier).syncBalanceFromServer();
+        // Server-authoritative inventory reconciliation (NUEVO-08).
+        await _ref.read(itemProvider.notifier).syncFromServer();
       }
     } catch (e) {
       AppLogger().error('Cloud sync on app pause failed', e);
     }
-    BackgroundSyncService.instance.registerPeriodicSync();
   }
 }
 

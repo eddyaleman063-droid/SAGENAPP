@@ -51,8 +51,9 @@ void main() {
   group('Anti-Cheat', () {
     test('future date blocks chest claim', () {
       repo.canClaimDailyChest;
-      // Simulate clock manipulation by setting a future date
-      final tomorrow = DateTime.now().add(const Duration(days: 1));
+      // Simulate clock manipulation by setting a future date (UTC-anchored,
+      // matching the repository's UTC day key).
+      final tomorrow = DateTime.now().toUtc().add(const Duration(days: 1));
       prefs.setString(
         'gamification_last_claim_date',
         tomorrow.toIso8601String().substring(0, 10),

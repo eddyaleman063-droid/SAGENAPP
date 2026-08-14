@@ -4077,6 +4077,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get storePurchaseSuccess => 'Achat réussi!';
 
   @override
+  String get storeAlreadyOwned => 'Vous possédez déjà cet article.';
+
+  @override
   String get storeShieldLimitReached => 'Limite de boucliers atteinte';
 
   @override

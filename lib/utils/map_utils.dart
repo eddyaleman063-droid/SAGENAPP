@@ -13,3 +13,10 @@ Map<String, int> parseStringMap(String raw) {
 String encodeStringMap(Map<String, int> map) {
   return map.entries.map((e) => '${e.key}:${e.value}').join(',');
 }
+
+/// Clave de día (YYYY-MM-DD) anclada en UTC, coherente con los topes
+/// diarios del servidor (Cloud Functions usan UTC).
+String utcDayKey([DateTime? now]) {
+  final dt = (now ?? DateTime.now()).toUtc();
+  return dt.toIso8601String().substring(0, 10);
+}

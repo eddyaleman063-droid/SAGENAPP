@@ -94,17 +94,16 @@ class LearningNotifier extends Notifier<LearningState> {
 
   LearningRepository get _repo => ref.read(learningRepositoryProvider);
 
-  /// XP real que se acredita al completar una lección, aplicando
-  /// multiplicador de racha y boosts. Fuente única usada tanto para
-  /// acreditar como para mostrar en la pantalla de resultados.
+  /// XP real que acredita el servidor al completar una lección: recompensa
+  /// base por lección (15, 20 si termina en `_l6` — igual que el servidor)
+  /// escalada por el multiplicador de racha. El boost de XP NO se aplica
+  /// (no tiene efecto server-side, ver NUEVO-10); la reconciliación es
+  /// server-authoritative. Fuente única usada tanto para acreditar como
+  /// para mostrar en la pantalla de resultados.
   int xpForLesson(Lesson lesson) {
     final streakMult = ref.read(streakProvider).streakMultiplier;
-    final boostActive = ref.read(shopProvider).xpBoostActive;
-    final focusElixirActive = ref
-        .read(itemProvider.notifier)
-        .isFocusElixirActive();
-    final boostMult = (boostActive || focusElixirActive) ? 2.0 : 1.0;
-    return (lesson.xpReward * streakMult * boostMult).round();
+    final baseXp = lesson.id.endsWith('_l6') ? 20 : 15;
+    return (baseXp * streakMult).round();
   }
 
   static List<String> _localizedEmotionalPhrases(AppLocalizations l) => [
@@ -156,7 +155,10 @@ class LearningNotifier extends Notifier<LearningState> {
   }
 
   /// Reconcile local state with server response after queue sync.
-  /// Server values are the source of truth for economic fields.
+  /// Server values are the source of truth for economic fields (NUEVO-10):
+  /// the server applies the streak multiplier itself, so the local total is
+  /// set to the server-reported total/level instead of keeping the inflated
+  /// local value forever via max().
   void _reconcileWithServer(Map<String, dynamic> result) {
     if (result['duplicate'] == true) return;
     try {
@@ -170,11 +172,28 @@ class LearningNotifier extends Notifier<LearningState> {
           : null;
       final serverLessonsCompleted = (rawLessons is int) ? rawLessons : null;
 
+      // The server gem ledger is authoritative: reconcile the local cache
+      // with the balance reported by completeLesson (NUEVO-03).
+      final gemsData = result['gems'];
+      final serverGemBalance = (gemsData is Map)
+          ? (gemsData['balance'] as num?)?.toInt()
+          : null;
+      if (serverGemBalance != null) {
+        ref.read(gemProvider.notifier).syncBalance(serverGemBalance);
+      }
+
       if (serverTotalXp != null || serverLevel != null) {
+        final authoritativeTotalXp = serverTotalXp ?? state.totalXpEarned;
+        final authoritativeLevel = serverLevel ?? state.currentLevel;
+        // Recompute progress-within-level from the authoritative total so
+        // the level bar matches the server.
+        final progressInLevel =
+            authoritativeTotalXp - (authoritativeLevel - 1) * 100;
         state = state.copyWith(
-          totalXpEarned: serverTotalXp,
-          currentLevel: serverLevel,
-          lessonsCompleted: serverLessonsCompleted,
+          totalXpEarned: authoritativeTotalXp,
+          currentLevel: authoritativeLevel,
+          xp: progressInLevel < 0 ? 0 : progressInLevel,
+          lessonsCompleted: serverLessonsCompleted ?? state.lessonsCompleted,
         );
         _save();
       }
@@ -469,7 +488,7 @@ class LearningNotifier extends Notifier<LearningState> {
           completedAt: DateTime.now(),
         );
 
-    await _checkLessonChest();
+    await _checkLessonChest(lessonId);
     _scheduleStreakReminder();
   }
 
@@ -479,7 +498,7 @@ class LearningNotifier extends Notifier<LearningState> {
     ref.read(notificationServiceProvider).scheduleStreakReminder(streak);
   }
 
-  Future<void> _checkLessonChest() async {
+  Future<void> _checkLessonChest(String lessonId) async {
     final luckActive = ref.read(itemProvider.notifier).isLuckBoostActive();
     final data = await ref
         .read(learningRewardServiceProvider)
@@ -488,10 +507,13 @@ class LearningNotifier extends Notifier<LearningState> {
           totalDonated: state.totalDonated,
           xp: state.xp,
           luckBoostActive: luckActive,
+          contextId: 'lesson_$lessonId',
         );
     if (data == null) return;
 
-    if (data.xp > 0) await addXp(data.xp, reason: 'chest_reward');
+    // El servidor ya acredita el XP del cofre en rollChestDrop de forma
+    // atómica; aquí solo se refleja en el estado local (sin re-llamar).
+    if (data.xp > 0) applyServerXp(data.xp);
 
     ref.read(learningRewardServiceProvider).emitRewardEffects(data);
   }
@@ -594,10 +616,22 @@ class LearningNotifier extends Notifier<LearningState> {
     if (didLevelUp && !_disposed) _levelUpController.add(newLevel);
 
     try {
-      // Server-authoritative: amount is ignored server-side, reward based on reason
-      await ref
+      // Server-authoritative: amount is ignored server-side, reward based on reason.
+      // Apply the server-reported totals/level so local state matches the
+      // server exactly (NUEVO-10).
+      final result = await ref
           .read(economicFunctionsServiceProvider)
           .addXp(reason: reason ?? 'lesson_reward', lessonId: lessonId);
+      final serverTotalXp = (result?['totalXp'] as num?)?.toInt();
+      final serverLevel = (result?['level'] as num?)?.toInt();
+      if (result?['duplicate'] != true && serverTotalXp != null && serverLevel != null) {
+        final progressInLevel = serverTotalXp - (serverLevel - 1) * 100;
+        state = state.copyWith(
+          totalXpEarned: serverTotalXp,
+          currentLevel: serverLevel,
+          xp: progressInLevel < 0 ? 0 : progressInLevel,
+        );
+      }
       _repo.saveXp(state.xp);
       _repo.saveTotalXp(state.totalXpEarned);
       _repo.saveLevel(state.currentLevel);

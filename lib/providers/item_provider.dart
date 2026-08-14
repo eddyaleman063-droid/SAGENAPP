@@ -61,6 +61,40 @@ class ItemNotifier extends Notifier<ItemState> {
     return true;
   }
 
+  /// Reconciles local quantities with the authoritative server inventory
+  /// (NUEVO-08). Consumables and cosmetics granted server-side (chest drops
+  /// and gem-shop purchases) are reflected here; the local value is only a
+  /// cache. Consumable uses are reported back via the server callable.
+  Future<void> syncFromServer() async {
+    final inventory = ref.read(inventoryServiceProvider);
+    final quantities = await inventory.fetchQuantities();
+    if (quantities == null) return;
+    for (final type in SpecialItemType.values) {
+      final serverQty = quantities[type] ?? 0;
+      final localQty = _repo.getQuantity(type);
+      if (serverQty > localQty || (type.isCosmetic && serverQty > 0)) {
+        _repo.setQuantity(type, serverQty);
+      }
+    }
+    _save();
+  }
+
+  /// Consumes a consumable server-authoritatively. When the server call
+  /// fails (offline/error) the local cache decrement is still applied so
+  /// the UX is not blocked; the authoritative state is restored on the
+  /// next syncFromServer.
+  Future<bool> useItemServer(SpecialItemType type) async {
+    final current = _repo.getQuantity(type);
+    if (current <= 0) return false;
+    final inventory = ref.read(inventoryServiceProvider);
+    final consumed = await inventory.useItem(type);
+    if (consumed) {
+      _repo.setQuantity(type, current - 1);
+      _save();
+    }
+    return consumed;
+  }
+
   bool hasItem(SpecialItemType type) => _repo.getQuantity(type) > 0;
 
   bool consumeItem(SpecialItemType type) => useItem(type);

@@ -3,10 +3,9 @@ import 'package:flutter/foundation.dart';
 import '../models/chest_type.dart';
 import '../models/chest_reward.dart';
 import 'chest_drop_service.dart';
-import 'chest_special_drop_service.dart';
 import 'app_logger.dart';
 
-/// Rolls chest rewards via server-side Cloud Function + client-side special drops.
+/// Rolls chest rewards via the server-side Cloud Function.
 ///
 /// ## XP Ranges by Chest Type
 ///   - bronze:   15–25 XP
@@ -14,48 +13,31 @@ import 'app_logger.dart';
 ///   - gold:     35–50 XP
 ///   - legendary: 50–75 XP
 ///
-/// ## Special Drops (client-side)
+/// ## Special Drops (server-authoritative, NUEVO-08)
 ///   - streakShields: 1 when category = shield (server)
 ///   - xpBoost: true when category = booster (server)
-///   - specialItems: from ChestSpecialDropService (client-side)
-///   - cosmeticUnlocks: from ChestSpecialDropService (client-side)
+///   - specialItems / cosmeticUnlocks: rolled and persisted SERVER-SIDE.
+///     The client never rolls them locally (a modified client could
+///     otherwise fabricate infinite consumables).
 class ChestRewardRoller {
-  ChestRewardRoller._({
-    ChestDropService? dropService,
-    ChestSpecialDropService? specialDropService,
-  }) : _dropService = dropService ?? ChestDropService.instance,
-       _specialDropService =
-           specialDropService ?? ChestSpecialDropService.instance;
+  ChestRewardRoller._({ChestDropService? dropService})
+      : _dropService = dropService ?? ChestDropService.instance;
 
   @visibleForTesting
-  ChestRewardRoller({
-    ChestDropService? dropService,
-    ChestSpecialDropService? specialDropService,
-  }) : _dropService = dropService ?? ChestDropService.instance,
-       _specialDropService =
-           specialDropService ?? ChestSpecialDropService.instance;
+  ChestRewardRoller({ChestDropService? dropService})
+      : _dropService = dropService ?? ChestDropService.instance;
   static final ChestRewardRoller instance = ChestRewardRoller._();
 
   final ChestDropService _dropService;
-  final ChestSpecialDropService _specialDropService;
   Completer<void>? _rollMutex;
 
-  static int _fallbackXp(ChestType type) {
-    switch (type) {
-      case ChestType.bronze:
-        return 15;
-      case ChestType.silver:
-        return 25;
-      case ChestType.gold:
-        return 35;
-      case ChestType.legendary:
-        return 50;
-    }
-  }
+  static int _fallbackXp(ChestType type) => 0;
 
   Future<ChestReward> roll(
     ChestType type, {
     bool luckBoostActive = false,
+    String? contextId,
+    String source = 'lesson',
   }) async {
     while (_rollMutex != null) {
       await _rollMutex?.future;
@@ -64,7 +46,12 @@ class ChestRewardRoller {
     try {
       ChestReward serverReward;
       try {
-        serverReward = await _dropService.roll(type);
+        serverReward = await _dropService.roll(
+          type,
+          contextId: contextId,
+          source: source,
+          luckBoostActive: luckBoostActive,
+        );
       } catch (e) {
         AppLogger().warning(
           'ChestRewardRoller: server roll failed, using minimal reward: $e',
@@ -72,17 +59,14 @@ class ChestRewardRoller {
         serverReward = ChestReward(xp: _fallbackXp(type));
       }
 
-      final specialDrop = _specialDropService.roll(
-        type,
-        luckBoostActive: luckBoostActive,
-      );
-
       return ChestReward(
         xp: serverReward.xp,
+        gems: serverReward.gems,
         streakShields: serverReward.streakShields,
         xpBoost: serverReward.xpBoost,
-        specialItems: specialDrop.specialItems,
-        cosmeticUnlocks: specialDrop.cosmeticUnlocks,
+        chestType: serverReward.chestType,
+        specialItems: serverReward.specialItems,
+        cosmeticUnlocks: serverReward.cosmeticUnlocks,
       );
     } finally {
       final mutex = _rollMutex;

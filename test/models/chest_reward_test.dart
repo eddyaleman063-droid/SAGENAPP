@@ -8,7 +8,12 @@ class FakeChestDropService extends ChestDropService {
   FakeChestDropService() : super.private();
 
   @override
-  Future<ChestReward> roll(ChestType type) async {
+  Future<ChestReward> roll(
+    ChestType type, {
+    String? contextId,
+    String source = 'lesson',
+    bool luckBoostActive = false,
+  }) async {
     return switch (type) {
       ChestType.bronze => const ChestReward(xp: 20),
       ChestType.silver => const ChestReward(xp: 30),

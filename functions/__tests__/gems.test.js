@@ -47,6 +47,22 @@ describe('earnGems', () => {
     expect(result.gemsAdded).toBe(60);
   });
 
+  test('credits daily bonus escalating with the day streak', async () => {
+    setUserDoc(AUTH_UID, { learning_gems: 0 });
+    const base = await gems.earnGems({ reason: 'daily_bonus', meta: { dayStreak: 1 } }, makeContext());
+    expect(base.gemsAdded).toBe(5);
+
+    admin._resetFirestore();
+    setUserDoc(AUTH_UID, { learning_gems: 0 });
+    const mid = await gems.earnGems({ reason: 'daily_bonus', meta: { dayStreak: 7 } }, makeContext());
+    expect(mid.gemsAdded).toBe(12);
+
+    admin._resetFirestore();
+    setUserDoc(AUTH_UID, { learning_gems: 0 });
+    const high = await gems.earnGems({ reason: 'daily_bonus', meta: { dayStreak: 30 } }, makeContext());
+    expect(high.gemsAdded).toBe(30);
+  });
+
   test('rejects client-provided amount and uses server value', async () => {
     setUserDoc(AUTH_UID, { learning_gems: 0 });
     const result = await gems.earnGems({ reason: 'review', amount: 9999 }, makeContext());
@@ -117,6 +133,107 @@ describe('spendGems', () => {
     setUserDoc(AUTH_UID, { learning_gems: 100 });
     await expect(gems.spendGems({ amount: 10 }, makeContext())).rejects.toThrow();
     await expect(gems.spendGems({ itemId: 'x', amount: 10 }, makeContext())).rejects.toThrow();
+  });
+
+  test('ignores forged client amount, uses server catalog cost', async () => {
+    setUserDoc(AUTH_UID, { learning_gems: 100 });
+    const result = await gems.spendGems(
+      { itemId: 'titanium_shield', amount: 1, idempotencyKey: 'spend-forge' },
+      makeContext()
+    );
+    expect(result.spent).toBe(80);
+    expect(result.balance).toBe(20);
+  });
+
+  test('rejects unknown shop item even with valid amount', async () => {
+    setUserDoc(AUTH_UID, { learning_gems: 100 });
+    await expect(
+      gems.spendGems({ itemId: 'made_up_item', amount: 30, idempotencyKey: 'spend-unknown' }, makeContext())
+    ).rejects.toThrow(/Artículo desconocido/);
+  });
+
+  test('allows re-buying a consumable with a fresh key (NUEVO-01)', async () => {
+    setUserDoc(AUTH_UID, { learning_gems: 100 });
+    const first = await gems.spendGems(
+      { itemId: 'focus_elixir', idempotencyKey: 'cons-1' },
+      makeContext()
+    );
+    expect(first.success).toBe(true);
+    expect(first.duplicate).toBe(false);
+    expect(first.balance).toBe(70);
+
+    const second = await gems.spendGems(
+      { itemId: 'focus_elixir', idempotencyKey: 'cons-2' },
+      makeContext()
+    );
+    expect(second.success).toBe(true);
+    expect(second.duplicate).toBe(false);
+    expect(second.balance).toBe(40);
+  });
+
+  test('refuses a second purchase of a one-time item even with a fresh key (NUEVO-01)', async () => {
+    setUserDoc(AUTH_UID, { learning_gems: 500 });
+    const first = await gems.spendGems(
+      { itemId: 'theme_blue', idempotencyKey: 'ot-1' },
+      makeContext()
+    );
+    expect(first.success).toBe(true);
+    expect(first.owned).toBe(true);
+    expect(first.balance).toBe(350);
+
+    // A different key must NOT bypass the ownership check.
+    const second = await gems.spendGems(
+      { itemId: 'theme_blue', idempotencyKey: 'ot-2' },
+      makeContext()
+    );
+    expect(second.success).toBe(false);
+    expect(second.owned).toBe(true);
+    expect(second.balance).toBe(350);
+  });
+
+  test('writes shop ownership to users/{uid}/inventory/shop_items (NUEVO-11)', async () => {
+    setUserDoc(AUTH_UID, { learning_gems: 500 });
+    await gems.spendGems(
+      { itemId: 'theme_blue', idempotencyKey: 'inv-1' },
+      makeContext()
+    );
+    const inv = admin._getDoc(`users/${AUTH_UID}/inventory/shop_items`);
+    expect(inv).not.toBeNull();
+    expect(inv.items).toContain('theme_blue');
+  });
+
+  test('persists consumable purchases into the server inventory (NUEVO-08)', async () => {
+    setUserDoc(AUTH_UID, { learning_gems: 500 });
+    await gems.spendGems(
+      { itemId: 'focus_elixir', idempotencyKey: 'inv-cons-1' },
+      makeContext()
+    );
+    const state = admin._getDoc(`users/${AUTH_UID}/inventory/state`);
+    expect(state).not.toBeNull();
+    expect(state.specialItems.focusElixir).toBe(1);
+  });
+
+  test('persists cosmetic purchases into the server inventory (NUEVO-08)', async () => {
+    setUserDoc(AUTH_UID, { learning_gems: 500 });
+    await gems.spendGems(
+      { itemId: 'avatar_frame_neon', idempotencyKey: 'inv-cos-1' },
+      makeContext()
+    );
+    const state = admin._getDoc(`users/${AUTH_UID}/inventory/state`);
+    expect(state).not.toBeNull();
+    expect(state.cosmetics).toContain('avatarFrameNeon');
+  });
+
+  test('clamps repeated consumable purchases to the item max limit (NUEVO-08)', async () => {
+    setUserDoc(AUTH_UID, { learning_gems: 100000 });
+    for (let i = 0; i < 10; i++) {
+      await gems.spendGems(
+        { itemId: 'titanium_shield', idempotencyKey: `inv-clamp-${i}` },
+        makeContext()
+      );
+    }
+    const state = admin._getDoc(`users/${AUTH_UID}/inventory/state`);
+    expect(state.specialItems.titaniumShield).toBe(3);
   });
 
   test('rejects unauthenticated user', async () => {

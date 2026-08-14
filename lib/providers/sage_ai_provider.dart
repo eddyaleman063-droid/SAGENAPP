@@ -84,14 +84,20 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
   int _messagesSentToday = 0;
   DateTime _dayStart = DateTime.now();
 
+  // Se preserva a través de rebuilds para no perder la conversación.
+  List<ChatMessage> _messages = const [];
+
   @override
   SageAiChatState build() {
     _streamSub?.cancel();
     _streamSub = null;
     _primaryService = ref.watch(aiServiceProvider);
     _fallbackService = LocalFallbackService();
-    final learning = ref.watch(learningProvider);
-    final reviewState = ref.watch(reviewProvider);
+    // Contexto leído al construir; se refresca al enviar mensajes. No se
+    // observan learning/review aquí para que completar una lección no
+    // reinicie la conversación en curso.
+    final learning = ref.read(learningProvider);
+    final reviewState = ref.read(reviewProvider);
     final weakTopics = reviewState.topicScores.entries
         .where((e) => e.value > 3)
         .map((e) => e.key)
@@ -100,6 +106,7 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
       _streamSub?.cancel();
     });
     return SageAiChatState(
+      messages: _messages,
       lessonsCompleted: learning.lessonsCompleted,
       userLevel: learning.currentLevel,
       weakTopics: weakTopics,
@@ -152,11 +159,12 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
       time: DateTime.now(),
     );
 
-    final messages = [...state.messages, userMsg, assistantMsg];
+    final messages = [..._messages, userMsg, assistantMsg];
     const maxMessages = 100;
     if (messages.length > maxMessages) {
       messages.removeRange(0, messages.length - maxMessages);
     }
+    _messages = messages;
 
     state = state.copyWith(
       messages: () => messages,
@@ -247,7 +255,7 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
   void _applyAssistantMessage(String text) {
     _streamSub?.cancel();
     _streamSub = null;
-    final messages = List<ChatMessage>.from(state.messages);
+    final messages = List<ChatMessage>.from(_messages);
     final idx = messages.length - 1;
     if (idx >= 0 && messages[idx].role == ChatRole.assistant) {
       messages[idx] = ChatMessage(
@@ -256,6 +264,7 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
         time: messages[idx].time,
       );
     }
+    _messages = messages;
     state = state.copyWith(
       messages: () => messages,
       streamingText: '',
@@ -287,6 +296,7 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
   void clearMessages() {
     _streamSub?.cancel();
     _streamSub = null;
+    _messages = const [];
     state = state.copyWith(
       messages: () => [],
       streamingText: '',

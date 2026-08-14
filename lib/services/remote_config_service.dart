@@ -29,7 +29,6 @@ class RemoteConfigService {
   static const _keyDailyGemCapStreak = 'daily_gem_cap_streak';
   static const _keyDailyGemCapChallenge = 'daily_gem_cap_challenge';
   static const _keyDailyGemCapGacha = 'daily_gem_cap_gacha';
-  static const _keyDailyGemCapSagenPass = 'daily_gem_cap_sagen_pass';
 
   // Feature Flags
   static const _ffNewUI = 'ff_new_ui';
@@ -78,7 +77,6 @@ class RemoteConfigService {
         _keyDailyGemCapStreak: 200,
         _keyDailyGemCapChallenge: 30,
         _keyDailyGemCapGacha: 200,
-        _keyDailyGemCapSagenPass: 300,
         // Feature Flags defaults
         _ffNewUI: false,
         _ffChatV2: false,

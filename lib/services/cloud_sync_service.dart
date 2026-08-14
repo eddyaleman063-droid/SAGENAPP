@@ -135,7 +135,8 @@ class CloudSyncService implements ICloudSyncService {
     // Validate fields before writing
     final validUpdates = <String, dynamic>{};
     for (final entry in data.entries) {
-      if (FirestoreFieldConfig.isProfileField(entry.key)) {
+      if (FirestoreFieldConfig.isProfileField(entry.key) ||
+          entry.key.startsWith('_ts_')) {
         validUpdates[entry.key] = entry.value;
       } else {
         _logger.warning('CloudSync: skipping non-profile field: ${entry.key}');
@@ -215,18 +216,22 @@ class CloudSyncService implements ICloudSyncService {
     final pendingWrites = <String, dynamic>{};
 
     for (final entry in data.entries) {
-      if (entry.key.startsWith('_')) continue;
+      if (entry.key.startsWith('_') && !entry.key.startsWith('_ts_')) {
+        continue;
+      }
+      final spKey =
+          FirestoreFieldConfig.firestoreToSpMapping[entry.key] ?? entry.key;
       try {
         final val = entry.value;
 
         if (!isInitialLoad) {
-          final localVal = prefs.get(entry.key);
+          final localVal = prefs.get(spKey);
           if (localVal != null && !_isCloudNewer(entry.key, data, prefs)) {
             continue;
           }
         }
 
-        pendingWrites[entry.key] = val;
+        pendingWrites[spKey] = val;
       } catch (e) {
         _logger.warning('CloudSync: field ${entry.key} prepare failed: $e');
       }

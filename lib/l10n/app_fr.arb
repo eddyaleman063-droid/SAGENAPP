@@ -1304,6 +1304,7 @@
   "storeDailyChestTitle": "Coffre quotidien",
   "storePurchaseFailed": "Échec de la validation de l''achat. Veuillez réessayer.",
   "storePurchaseSuccess": "Achat réussi!",
+  "storeAlreadyOwned": "Vous possédez déjà cet article.",
   "storeShieldLimitReached": "Limite de boucliers atteinte",
   "storeSupport": "Soutenez-nous",
   "storeSupportTiers": "Niveaux de soutien",

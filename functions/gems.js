@@ -1,5 +1,6 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
+const inventory = require('./inventory');
 
 // ══════════════════════════════════════════════════════════════════
 // GEM ECONOMY — Server-authoritative
@@ -28,10 +29,61 @@ const GEM_REWARDS = {
   challenge: 10,
   ad_reward: 2,
   gacha: 10,
-  sagen_pass_bonus: 300,    // bonus gems granted with a SAGEN PASS purchase
   streak_milestones: { 7: 15, 14: 30, 30: 60, 60: 100, 100: 150, 180: 250, 365: 500 },
+  daily_bonus: { 3: 8, 7: 12, 14: 18, 30: 30 },  // day streak -> bonus; base 5
 };
 const DEFAULT_GEM_REWARD = 5;
+
+// Server-authoritative gem shop catalog.
+// The server decides the cost of each item — the client amount is ignored
+// (anti-farm). Unknown items are rejected.
+const SHOP_GEM_CATALOG = {
+  focus_elixir: 30,
+  xp_boost: 40,
+  luck_boost: 40,
+  sage_monocle: 50,
+  time_warp: 60,
+  titanium_shield: 80,
+  phoenix_feather: 100,
+  avatar_frame_neon: 120,
+  avatar_frame_galaxy: 180,
+  avatar_frame_dragon: 200,
+  avatar_frame_crystal: 250,
+  avatar_frame_skull: 350,
+  title_storm_breaker: 120,
+  title_cyber_sage: 150,
+  title_shadow_hacker: 200,
+  title_night_guardian: 220,
+  title_digital_phoenix: 300,
+  effect_digital_rain: 250,
+  effect_fire_trail: 350,
+  theme_blue: 150,
+  theme_purple: 150,
+  theme_dark_fire: 250,
+  theme_cyber_neon: 350,
+};
+
+// Items that are purchased ONE time per user (cosmetics/themes). Consumables
+// (elixirs, boosts, shields, feathers) can be bought repeatedly, each time
+// charging the server catalog cost with a fresh idempotencyKey.
+const SHOP_ONE_TIME_ITEMS = new Set([
+  'avatar_frame_neon',
+  'avatar_frame_galaxy',
+  'avatar_frame_dragon',
+  'avatar_frame_crystal',
+  'avatar_frame_skull',
+  'title_storm_breaker',
+  'title_cyber_sage',
+  'title_shadow_hacker',
+  'title_night_guardian',
+  'title_digital_phoenix',
+  'effect_digital_rain',
+  'effect_fire_trail',
+  'theme_blue',
+  'theme_purple',
+  'theme_dark_fire',
+  'theme_cyber_neon',
+]);
 
 // Daily gem caps per source (anti-farm). Mirrors Remote Config
 // daily_gem_cap_* defaults in lib/services/remote_config_service.dart.
@@ -47,7 +99,7 @@ const GEM_DAILY_CAPS = {
   mini_game: 30,
   challenge: 30,
   gacha: 200,
-  sagen_pass: 300,
+  daily_bonus: 30,
 };
 const DEFAULT_DAILY_GEM_CAP = 50;
 
@@ -57,7 +109,7 @@ const MAX_GEM_BALANCE = 100000;
 // Reasons that can ONLY be earned via earnGems() (the rest are credited
 // atomically inside completeLesson / rollChestDrop / claimDailyChest /
 // claimAdReward so there is a single authoritative path per source).
-const EARN_GEMS_REASONS = ['achievement', 'mission', 'review', 'streak_milestone', 'mini_game', 'challenge', 'gacha'];
+const EARN_GEMS_REASONS = ['achievement', 'mission', 'review', 'streak_milestone', 'mini_game', 'challenge', 'gacha', 'daily_bonus'];
 
 exports.GEM_REWARDS = GEM_REWARDS;
 exports.GEM_DAILY_CAPS = GEM_DAILY_CAPS;
@@ -141,6 +193,18 @@ function gemAmountForReason(reason, meta) {
       const days = m.streakDays || 0;
       const keys = Object.keys(table).map(Number).sort((a, b) => a - b);
       let reward = 0;
+      for (const k of keys) {
+        if (days >= k) reward = table[k];
+      }
+      return reward;
+    }
+    case 'daily_bonus': {
+      // Base 5, escalating with the day streak: 8 at 3d, 12 at 7d, 18 at 14d,
+      // 30 at 30d+ (mirrors the client's awardDailyBonus table).
+      const days = m.dayStreak || 0;
+      const table = GEM_REWARDS.daily_bonus;
+      const keys = Object.keys(table).map(Number).sort((a, b) => a - b);
+      let reward = 5;
       for (const k of keys) {
         if (days >= k) reward = table[k];
       }
@@ -241,23 +305,45 @@ exports.spendGems = functions.runWith({ maxInstances: 10 }).https.onCall(async (
   }
 
   const { itemId, idempotencyKey } = data;
-  const amount = parseInt(data && data.amount, 10);
   if (!itemId || typeof itemId !== 'string' || !idempotencyKey || typeof idempotencyKey !== 'string') {
     throw new functions.https.HttpsError('invalid-argument', 'itemId e idempotencyKey requeridos');
   }
-  if (isNaN(amount) || amount <= 0 || amount > 100000) {
-    throw new functions.https.HttpsError('invalid-argument', 'El monto debe estar entre 1 y 100000');
+
+  // Server-authoritative cost: the client amount is ignored when the item is
+  // in the catalog. Unknown items are rejected (no forged-amount purchases).
+  const catalogCost = SHOP_GEM_CATALOG[itemId];
+  if (typeof catalogCost !== 'number') {
+    throw new functions.https.HttpsError('invalid-argument', 'Artículo desconocido en la tienda');
   }
+  const amount = catalogCost;
 
   const userRef = admin.firestore().doc(`users/${userId}`);
   const logRef = admin.firestore().doc(`transaction_logs/${idempotencyKey}`);
+  const isOneTime = SHOP_ONE_TIME_ITEMS.has(itemId);
+  const inventoryRef = admin.firestore().doc(`users/${userId}/inventory/shop_items`);
+  const inventoryStateRef = inventory.getInventoryRef(userId);
 
   try {
     const result = await admin.firestore().runTransaction(async (transaction) => {
-      const [userDoc, logDoc] = await Promise.all([
+      const [userDoc, logDoc, inventoryDoc, inventoryStateDoc] = await Promise.all([
         transaction.get(userRef),
         transaction.get(logRef),
+        transaction.get(inventoryRef),
+        transaction.get(inventoryStateRef),
       ]);
+
+      // One-time items cannot be bought twice, regardless of the
+      // idempotencyKey used. This prevents re-buying cosmetics for free
+      // with a different key (see NUEVO-01).
+      const ownedItems = (inventoryDoc.data()?.items || []);
+      if (isOneTime && ownedItems.includes(itemId)) {
+        return {
+          success: false,
+          owned: true,
+          duplicate: false,
+          balance: userDoc.data()?.learning_gems || 0,
+        };
+      }
 
       if (logDoc.exists) {
         return { success: true, duplicate: true, balance: userDoc.data()?.learning_gems || 0 };
@@ -278,6 +364,26 @@ exports.spendGems = functions.runWith({ maxInstances: 10 }).https.onCall(async (
         _ts_learning_gems: admin.firestore.FieldValue.serverTimestamp(),
       });
 
+      if (isOneTime) {
+        // Persist shop ownership server-side so "already owned" survives
+        // reinstalls / multi-device and _validatePurchase works (NUEVO-11).
+        transaction.set(inventoryRef, {
+          items: [...ownedItems, itemId],
+          updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+        }, { merge: true });
+      }
+
+      // NUEVO-08: gem purchases are also credited into the authoritative
+      // inventory state (users/{uid}/inventory/state) so consumables survive
+      // reinstalls and the client only reads what the server granted.
+      const purchasedState = inventory.applyShopPurchaseToState(inventoryStateDoc.data() || {}, itemId);
+      if (purchasedState) {
+        transaction.set(inventoryStateRef, {
+          ...purchasedState,
+          updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+        }, { merge: true });
+      }
+
       transaction.create(logRef, {
         userId,
         type: 'gemSpend',
@@ -287,7 +393,7 @@ exports.spendGems = functions.runWith({ maxInstances: 10 }).https.onCall(async (
         createdAt: admin.firestore.FieldValue.serverTimestamp(),
       });
 
-      return { success: true, duplicate: false, balance: balance - amount, spent: amount, itemId };
+      return { success: true, duplicate: false, owned: isOneTime, balance: balance - amount, spent: amount, itemId };
     });
 
     functions.logger.info('Gems spent', { userId, itemId, amount, duplicate: result.duplicate });

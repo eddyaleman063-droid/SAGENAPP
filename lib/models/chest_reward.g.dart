@@ -9,6 +9,7 @@ part of 'chest_reward.dart';
 _$ChestRewardImpl _$$ChestRewardImplFromJson(Map<String, dynamic> json) =>
     _$ChestRewardImpl(
       xp: (json['xp'] as num?)?.toInt() ?? 0,
+      gems: (json['gems'] as num?)?.toInt() ?? 0,
       streakShields: (json['streakShields'] as num?)?.toInt(),
       title: json['title'] as String?,
       message: json['message'] as String?,
@@ -24,11 +25,13 @@ _$ChestRewardImpl _$$ChestRewardImplFromJson(Map<String, dynamic> json) =>
               ?.map((e) => $enumDecode(_$SpecialItemTypeEnumMap, e))
               .toList() ??
           const [],
+      chestType: $enumDecodeNullable(_$ChestTypeEnumMap, json['chestType']),
     );
 
 Map<String, dynamic> _$$ChestRewardImplToJson(_$ChestRewardImpl instance) =>
     <String, dynamic>{
       'xp': instance.xp,
+      'gems': instance.gems,
       'streakShields': instance.streakShields,
       'title': instance.title,
       'message': instance.message,
@@ -40,6 +43,7 @@ Map<String, dynamic> _$$ChestRewardImplToJson(_$ChestRewardImpl instance) =>
       'cosmeticUnlocks': instance.cosmeticUnlocks
           .map((e) => _$SpecialItemTypeEnumMap[e]!)
           .toList(),
+      'chestType': _$ChestTypeEnumMap[instance.chestType],
     };
 
 const _$SpecialItemTypeEnumMap = {
@@ -63,4 +67,11 @@ const _$SpecialItemTypeEnumMap = {
   SpecialItemType.themeCyberNeon: 'themeCyberNeon',
   SpecialItemType.effectDigitalRain: 'effectDigitalRain',
   SpecialItemType.effectFireTrail: 'effectFireTrail',
+};
+
+const _$ChestTypeEnumMap = {
+  ChestType.bronze: 'bronze',
+  ChestType.silver: 'silver',
+  ChestType.gold: 'gold',
+  ChestType.legendary: 'legendary',
 };

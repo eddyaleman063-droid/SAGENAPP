@@ -123,6 +123,7 @@ firestoreFn.Timestamp = Timestamp;
 
 module.exports = {
   initializeApp: jest.fn(),
+  apps: [],
   firestore: firestoreFn,
   auth: () => authInstance,
   _mockFirestore: firestoreInstance,

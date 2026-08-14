@@ -281,17 +281,24 @@ class MissionNotifier extends Notifier<MissionState> {
     }
 
     if (chestType != null) {
-      final reward = await ref.read(chestRewardRollerProvider).roll(chestType);
-      await ref
-          .read(learningProvider.notifier)
-          .addXp(reward.xp, reason: 'mission_reward');
+      final reward = await ref
+          .read(chestRewardRollerProvider)
+          .roll(
+            chestType,
+            contextId: 'mission_${mission.id}',
+            source: 'mission',
+          );
+      // rollChestDrop ya acredita el XP en el servidor; solo se refleja
+      // en el estado local para no duplicar la recompensa.
+      ref.read(learningProvider.notifier).applyServerXp(reward.xp);
       ref.read(gemProvider.notifier).awardMissionGems();
       ref
           .read(chestEventBusProvider)
           .fire(
             ChestRewardData(
-              type: chestType,
+              type: reward.chestType ?? chestType,
               xp: reward.xp,
+              gems: reward.gems,
               streakShields: reward.streakShields,
               xpBoost: reward.xpBoost,
               specialItems: reward.specialItems,

@@ -109,50 +109,24 @@ class StreakService implements IStreakService {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
 
-    int updatedCurrent = current;
-    int updatedFreezes = freezes;
-    DateTime? updatedLast = lastDate;
-
-    if (lastDate != null) {
-      final last = DateTime(lastDate.year, lastDate.month, lastDate.day);
-      final diff = today.difference(last).inDays;
-
-      if (diff >= 2) {
-        updatedCurrent = 0;
-        updatedLast = null;
-      }
-    }
-
     final atRisk =
-        updatedCurrent > 0 &&
-        updatedLast != null &&
+        current > 0 &&
+        lastDate != null &&
         today
                 .difference(
-                  DateTime(
-                    updatedLast.year,
-                    updatedLast.month,
-                    updatedLast.day,
-                  ),
+                  DateTime(lastDate.year, lastDate.month, lastDate.day),
                 )
                 .inDays >=
             1;
 
-    final message = _buildMessage(updatedCurrent, atRisk);
-    final tier = _tierFor(updatedCurrent);
-
-    final newLongest = max(updatedCurrent, longest);
-    if (updatedCurrent != current ||
-        newLongest != longest ||
-        updatedLast != lastDate ||
-        updatedFreezes != freezes) {
-      _save(updatedCurrent, newLongest, updatedLast, updatedFreezes);
-    }
+    final message = _buildMessage(current, atRisk);
+    final tier = _tierFor(current);
 
     return StreakStatus(
-      currentStreak: updatedCurrent,
-      longestStreak: max(updatedCurrent, longest),
-      lastActivityDate: updatedLast,
-      streakFreezes: updatedFreezes,
+      currentStreak: current,
+      longestStreak: max(current, longest),
+      lastActivityDate: lastDate,
+      streakFreezes: freezes,
       isAtRisk: atRisk,
       freezeConsumed: freezeConsumed,
       message: message,

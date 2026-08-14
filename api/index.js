@@ -30,49 +30,13 @@ const WEBHOOK_BASE = process.env.VERCEL_URL
 
 const STREAK_SHIELD_MAX = 2;
 
-const hardcodedCatalog = {
-  'donation_5':    { amount: 5,   title: 'Donación $5 - SAGEN',            price: 5.00,  bonuses: [] },
-  'donation_10':   { amount: 10,  title: 'Donación $10 - SAGEN',           price: 10.00, bonuses: [] },
-  'donation_20':   { amount: 20,  title: 'Donación $20 - SAGEN',           price: 20.00, bonuses: [] },
-  'donation_35':   { amount: 35,  title: 'Donación $35 - SAGEN',           price: 35.00, bonuses: [] },
-  'donation_60':   { amount: 60,  title: 'Donación $60 - SAGEN',           price: 60.00, bonuses: [] },
-  'bundle_protector':   { amount: 12,  title: 'Pack Protegido - SAGEN',      price: 12.00, bonuses: [{ type: 'streakProtector', quantity: 1 }] },
-  'bundle_xp':          { amount: 20,  title: 'Pack Impulso - SAGEN',        price: 20.00, bonuses: [{ type: 'xpBoost', quantity: 1 }] },
-  'bundle_multiplier':  { amount: 28,  title: 'Pack Fortuna - SAGEN',        price: 28.00, bonuses: [{ type: 'xpMultiplier', quantity: 1 }] },
-  'bundle_luck':        { amount: 24,  title: 'Pack Suerte - SAGEN',         price: 24.00, bonuses: [{ type: 'luckBoost', quantity: 1 }] },
-  'sagen_pass':         { amount: 9.90, title: 'SAGEN PASS',                  price: 9.90,  bonuses: [{ type: 'sagenPass', quantity: 1, gems: 500 }] },
-};
+const hardcodedCatalog = require('../functions/catalog');
+const catalogService = hardcodedCatalog.createCatalog(admin, { warn: (m, ctx) => console.warn(m, ctx && ctx.error) });
 
-let _catalogCache = null;
-let _catalogCacheTime = 0;
-const CATALOG_CACHE_TTL = 5 * 60 * 1000;
+const loadCatalog = () => catalogService.loadCatalog();
 
-async function loadCatalog() {
-  const now = Date.now();
-  if (_catalogCache && (now - _catalogCacheTime) < CATALOG_CACHE_TTL) {
-    return _catalogCache;
-  }
-  try {
-    const snap = await admin.firestore().doc('config/productCatalog').get();
-    if (snap.exists) {
-      const data = snap.data();
-      _catalogCache = data.products || hardcodedCatalog;
-      _catalogCacheTime = now;
-      return _catalogCache;
-    }
-  } catch (e) {
-    console.warn('Failed to load catalog from Firestore, using hardcoded', e.message);
-  }
-  _catalogCache = hardcodedCatalog;
-  _catalogCacheTime = now;
-  return _catalogCache;
-}
-
-async function getProductDetails(productId) {
-  const catalog = await loadCatalog();
-  const item = catalog[productId];
-  if (item) return item;
-  throw new Error(`Producto desconocido: ${productId}`);
+function getProductDetails(productId) {
+  return catalogService.getProductDetails(productId);
 }
 
 function getStreakShieldSlots(currentShields) {
@@ -172,9 +136,11 @@ async function rateLimit(req, res, next) {
     if (e.message === 'RATE_LIMIT_EXCEEDED') {
       return res.status(429).json({ error: 'resource-exhausted', message: 'Demasiadas solicitudes. Intenta de nuevo.' });
     }
-    // On Firestore errors, fail open (allow request) to avoid blocking users
-    console.warn('Rate limit check failed (fail-open)', e.message);
-    next();
+    // Fail-closed on Firestore errors (aligned with the Cloud Functions
+    // layers): under degradation the endpoint rejects instead of allowing
+    // unlimited abuse.
+    console.error('Rate limit check failed (fail-closed)', e.message);
+    return res.status(503).json({ error: 'unavailable', message: 'Servicio temporalmente no disponible. Intenta de nuevo.' });
   }
 }
 
@@ -346,6 +312,21 @@ app.post('/api/handlePaymentWebhook', async (req, res) => {
       });
     });
 
+    // Flip any matching pending payment to completed so the app can poll it.
+    try {
+      const pendSnap = await admin.firestore()
+        .collection('pending_payments')
+        .where('operationId', '==', paymentId)
+        .get();
+      await Promise.all(pendSnap.docs.map((doc) =>
+        admin.firestore().doc(`pending_payments/${doc.id}`).update({
+          status: 'completed',
+          completedAt: admin.firestore.FieldValue.serverTimestamp(),
+        })));
+    } catch (e) {
+      console.warn('Failed to flip pending payment status', e.message);
+    }
+
     console.log('Payment processed', { userId, amount, productId: productId || 'none' });
     return res.status(200).send('OK');
   } catch (error) {
@@ -404,6 +385,21 @@ app.post('/api/adminCreditDonation', requireAdmin, async (req, res) => {
       return { success: true, duplicate: false, newBalance: currentBalance + amount, bonuses };
     });
 
+    // Flip any matching pending payment to completed so the app can poll it.
+    try {
+      const pendSnap = await admin.firestore()
+        .collection('pending_payments')
+        .where('operationId', '==', idempotencyKey)
+        .get();
+      await Promise.all(pendSnap.docs.map((doc) =>
+        admin.firestore().doc(`pending_payments/${doc.id}`).update({
+          status: 'completed',
+          completedAt: admin.firestore.FieldValue.serverTimestamp(),
+        })));
+    } catch (e) {
+      console.warn('Failed to flip pending payment status (admin)', e.message);
+    }
+
     console.log('Manual donation credited', { userId, amount, method });
     res.json({ result });
   } catch (error) {
@@ -412,46 +408,6 @@ app.post('/api/adminCreditDonation', requireAdmin, async (req, res) => {
       return res.status(404).json({ error: 'not-found', message: error.message });
     }
     res.status(500).json({ error: 'internal', message: 'Error al acreditar gemas' });
-  }
-});
-
-// ────────────────────────────────────────────────────────────────
-// POST /api/validatePurchase
-// ────────────────────────────────────────────────────────────────
-app.post('/api/validatePurchase', requireAuth, rateLimit, async (req, res) => {
-  try {
-    const { cost, itemId } = req.body;
-    if (!cost || cost <= 0 || !itemId) {
-      return res.status(400).json({ error: 'invalid-argument', message: 'cost y itemId requeridos' });
-    }
-
-    const userId = req.user.uid;
-    const userRef = admin.firestore().doc(`users/${userId}`);
-    const userDoc = await userRef.get();
-    if (!userDoc.exists) {
-      return res.status(404).json({ error: 'not-found', message: 'Usuario no encontrado' });
-    }
-
-    const balance = userDoc.data()?.learning_gems || 0;
-    if (balance < cost) {
-      return res.status(400).json({ error: 'failed-precondition', message: 'Gemas insuficientes' });
-    }
-
-    const hmacSecret = process.env.PURCHASE_SECRET;
-    if (!hmacSecret) {
-      console.error('PURCHASE_SECRET not configured');
-      return res.status(500).json({ error: 'internal', message: 'Server configuration error' });
-    }
-
-    const payload = JSON.stringify({ userId, itemId, cost, ts: Date.now(), exp: Date.now() + 60000 });
-    const hmac = crypto.createHmac('sha256', hmacSecret).update(payload).digest('hex');
-    const token = Buffer.from(JSON.stringify({ payload, sig: hmac })).toString('base64');
-
-    console.log('Purchase validation token issued', { userId, itemId, cost });
-    res.json({ result: { valid: true, balance, token } });
-  } catch (error) {
-    console.error('validatePurchase error', error);
-    res.status(500).json({ error: 'internal', message: 'Error al validar la compra' });
   }
 });
 
@@ -487,6 +443,54 @@ app.post('/api/registerPendingPayment', requireAuth, rateLimit, async (req, res)
 });
 
 // ────────────────────────────────────────────────────────────────
+// GET/POST /api/checkPendingPaymentStatus
+// ────────────────────────────────────────────────────────────────
+app.all('/api/checkPendingPaymentStatus', requireAuth, rateLimit, async (req, res) => {
+  try {
+    const { operationId, pendingPaymentId } = { ...req.query, ...req.body };
+    if (!operationId && !pendingPaymentId) {
+      return res.status(400).json({ error: 'invalid-argument', message: 'operationId o pendingPaymentId requerido' });
+    }
+
+    const userId = req.user.uid;
+    let pendingRef = admin.firestore().collection('pending_payments');
+    if (pendingPaymentId) {
+      pendingRef = pendingRef.where('__name__', '==', String(pendingPaymentId));
+    } else {
+      pendingRef = pendingRef.where('operationId', '==', String(operationId));
+    }
+
+    const snap = await pendingRef.get();
+    const latest = snap.docs
+      .map((doc) => ({ id: doc.id, ...doc.data() }))
+      .filter((doc) => doc.userId === userId)
+      .sort((a, b) => {
+        const atA = a.createdAt && a.createdAt.toMillis ? a.createdAt.toMillis() : 0;
+        const atB = b.createdAt && b.createdAt.toMillis ? b.createdAt.toMillis() : 0;
+        return atB - atA;
+      })[0] || null;
+
+    if (!latest) {
+      return res.json({ result: { status: 'not_found' } });
+    }
+
+    res.json({
+      result: {
+        status: latest.status,
+        operationId: latest.operationId,
+        productId: latest.productId || null,
+        completedAt: latest.completedAt && latest.completedAt.toMillis
+          ? latest.completedAt.toMillis()
+          : null,
+      },
+    });
+  } catch (error) {
+    console.error('checkPendingPaymentStatus error', error);
+    res.status(500).json({ error: 'internal', message: 'Error al consultar el estado del pago' });
+  }
+});
+
+// ────────────────────────────────────────────────────────────────
 // GET /api/health
 // ────────────────────────────────────────────────────────────────
 app.get('/api/health', (req, res) => {
@@ -494,4 +498,7 @@ app.get('/api/health', (req, res) => {
 });
 
 // ── Export for Vercel ───────────────────────────────────────────
+// Attach the catalog helpers for contract testing (Vercel uses `app`).
+app.loadCatalog = loadCatalog;
+app.getProductDetails = getProductDetails;
 module.exports = app;

@@ -6,8 +6,7 @@ import '../services/auth_service.dart';
 import '../services/auth/email_verification_manager.dart';
 import '../services/auth/auth_sync_manager.dart';
 import '../services/app_logger.dart';
-import 'prefs_provider.dart';
-import 'service_providers.dart';
+import 'providers.dart';
 
 enum AuthStatus {
   uninitialized,
@@ -155,6 +154,9 @@ class AuthNotifier extends Notifier<AuthState> {
         _syncManager.syncAfterLogin(user.uid, prefs);
         _syncManager.startListening(user.uid, prefs);
       }
+      // Reconcile the local gem cache with the authoritative server balance
+      // right after login so the UI shows the real balance (NUEVO-03).
+      ref.read(gemProvider.notifier).syncBalanceFromServer();
     } else if (state.status == AuthStatus.unauthenticated && wasAuthenticated) {
       _syncManager.stopListening();
     }

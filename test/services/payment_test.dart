@@ -190,50 +190,6 @@ void main() {
     });
   });
 
-  group('validatePurchase', () {
-    test('returns result on success', () async {
-      when(() => mockSender.send(any())).thenAnswer(
-        (_) async => const ApiResponse(
-          statusCode: 200,
-          body: '{"result":{"gemsAdded":50}}',
-        ),
-      );
-
-      final result = await service.validatePurchase(
-        cost: 29,
-        itemId: 'gems_50',
-        idToken: 'token',
-      );
-
-      expect(result['gemsAdded'], 50);
-    });
-
-    test('returns empty map when result is missing', () async {
-      when(
-        () => mockSender.send(any()),
-      ).thenAnswer((_) async => const ApiResponse(statusCode: 200, body: '{}'));
-
-      final result = await service.validatePurchase(
-        cost: 29,
-        itemId: 'gems_50',
-        idToken: 'token',
-      );
-
-      expect(result, isEmpty);
-    });
-
-    test('propagates ApiException', () async {
-      when(
-        () => mockSender.send(any()),
-      ).thenThrow(const ApiException(ApiErrorType.server, 'Server error'));
-
-      expect(
-        () => service.validatePurchase(cost: 29, itemId: 'i', idToken: 't'),
-        throwsA(isA<ApiException>()),
-      );
-    });
-  });
-
   group('registerPendingPayment', () {
     test('returns result on success', () async {
       when(() => mockSender.send(any())).thenAnswer(

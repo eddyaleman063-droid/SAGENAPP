@@ -141,35 +141,6 @@ class MercadoPagoService {
     }
   }
 
-  Future<Map<String, dynamic>> validatePurchase({
-    required int cost,
-    required String itemId,
-    required String idToken,
-  }) async {
-    final url = Uri.parse('$_baseUrl/api/validatePurchase');
-    try {
-      final response = await _sender.send(
-        ApiRequest(
-          method: 'POST',
-          uri: url,
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer $idToken',
-          },
-          body: {'cost': cost, 'itemId': itemId},
-        ),
-      );
-      final decoded = response.jsonMap;
-      return decoded?['result'] as Map<String, dynamic>? ?? {};
-    } on ApiException catch (e) {
-      _logger.error('validatePurchase API error', e);
-      rethrow;
-    } catch (e) {
-      _logger.error('validatePurchase error', e);
-      rethrow;
-    }
-  }
-
   Future<Map<String, dynamic>> checkPendingPaymentStatus({
     required String pendingPaymentId,
     required String idToken,

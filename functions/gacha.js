@@ -38,6 +38,11 @@ async function checkRateLimit(uid) {
  * Server-side chest evolution gacha roll.
  * Accepts: { currentTier: 'bronze'|'silver'|'gold' }
  * Returns: { newTier, evolved }
+ *
+ * The user's actual tier is tracked server-side (users/{uid}.gacha_tier) and
+ * the client-provided tier must match it, so a client cannot jump tiers by
+ * lying about currentTier. The roll is idempotent per tier per day: an
+ * unlucky user can retry the next day instead of being locked forever.
  */
 exports.rollChestEvolution = functions.runWith({ maxInstances: 5 }).https.onCall(async (data, context) => {
   if (!context.auth) {
@@ -47,7 +52,7 @@ exports.rollChestEvolution = functions.runWith({ maxInstances: 5 }).https.onCall
   await checkRateLimit(context.auth.uid);
 
   const { currentTier } = data;
-  if (!['bronze', 'silver', 'gold'].includes(currentTier)) {
+  if (!['bronze', 'silver', 'gold', 'legendary'].includes(currentTier)) {
     throw new functions.https.HttpsError('invalid-argument', 'Tier inválido');
   }
 
@@ -56,45 +61,74 @@ exports.rollChestEvolution = functions.runWith({ maxInstances: 5 }).https.onCall
   }
 
   const userId = context.auth.uid;
-  const logRef = admin.firestore().doc(`transaction_logs/${userId}_evolution_${currentTier}`);
+  const userRef = admin.firestore().doc(`users/${userId}`);
+  const date = new Date().toISOString().split('T')[0];
+  const logRef = admin.firestore().doc(`transaction_logs/${userId}_evolution_${currentTier}_${date}`);
 
   const nextTier = { bronze: 'silver', silver: 'gold', gold: 'legendary' }[currentTier];
   const probability = PROBABILITIES[`${currentTier}->${nextTier}`] || 0;
 
-  const roll = crypto.randomInt(1, 101) / 100;
-  const evolved = roll <= probability;
-
-  const newTier = evolved ? nextTier : currentTier;
-
-  // Atomic idempotency: create() fails with ALREADY_EXISTS if doc exists (race-condition safe)
   try {
-    await logRef.create({
-      userId,
-      fromTier: currentTier,
-      toTier: newTier,
-      roll,
-      probability,
-      evolved,
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+    const result = await admin.firestore().runTransaction(async (transaction) => {
+      const userDoc = await transaction.get(userRef);
+      if (!userDoc.exists) {
+        throw new functions.https.HttpsError('not-found', 'Usuario no encontrado');
+      }
+
+      const userData = userDoc.data() || {};
+      const serverTier = userData.gacha_tier || 'bronze';
+      if (serverTier !== currentTier) {
+        throw new functions.https.HttpsError(
+          'failed-precondition',
+          'El tier no coincide con el del servidor',
+        );
+      }
+
+      const logDoc = await transaction.get(logRef);
+      if (logDoc.exists) {
+        const prev = logDoc.data();
+        return {
+          newTier: prev.toTier || currentTier,
+          evolved: prev.evolved || false,
+          duplicate: true,
+        };
+      }
+
+      const roll = crypto.randomInt(1, 101) / 100;
+      const evolved = roll <= probability;
+      const newTier = evolved ? nextTier : currentTier;
+
+      transaction.set(logRef, {
+        userId,
+        fromTier: currentTier,
+        toTier: newTier,
+        roll,
+        probability,
+        evolved,
+        createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      });
+
+      if (evolved) {
+        transaction.update(userRef, { gacha_tier: newTier });
+      }
+
+      return { newTier, evolved, duplicate: false };
     });
-  } catch (e) {
-    if (e.code === 6) { // ALREADY_EXISTS
-      const prev = (await logRef.get()).data();
-      return { newTier: prev.toTier || currentTier, evolved: prev.evolved || false, duplicate: true };
+
+    if (result.evolved && !result.duplicate) {
+      await admin.firestore().collection('gacha_logs').add({
+        userId,
+        fromTier: currentTier,
+        toTier: result.newTier,
+        probability,
+        createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      });
     }
-    throw e;
-  }
 
-  if (evolved) {
-    await admin.firestore().collection('gacha_logs').add({
-      userId,
-      fromTier: currentTier,
-      toTier: newTier,
-      roll,
-      probability,
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
-    });
+    return result;
+  } catch (error) {
+    if (error instanceof functions.https.HttpsError) throw error;
+    functions.logger.error('rollChestEvolution error', error);
+    throw new functions.https.HttpsError('internal', 'Error al intentar la evolución');
   }
-
-  return { newTier, evolved };
 });

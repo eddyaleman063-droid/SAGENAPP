@@ -52,7 +52,7 @@ void main() {
         expect(status.tier, 'basic');
       });
 
-      test('resets streak after 2+ days without freezes', () {
+      test('does not reset streak on load; flags at-risk instead', () {
         final threeDaysAgo = DateTime.now().subtract(const Duration(days: 3));
         when(() => repo.currentStreak).thenReturn(5);
         when(() => repo.longestStreak).thenReturn(10);
@@ -63,9 +63,31 @@ void main() {
 
         final status = service.load();
 
-        expect(status.currentStreak, 0);
+        expect(status.currentStreak, 5);
         expect(status.longestStreak, 10);
-        expect(status.hasStreak, false);
+        expect(status.isAtRisk, true);
+        expect(status.hasStreak, true);
+      });
+
+      test('load with a gap does not persist the reset (freeze-friendly)', () {
+        final threeDaysAgo = DateTime.now().subtract(const Duration(days: 3));
+        when(() => repo.currentStreak).thenReturn(5);
+        when(() => repo.longestStreak).thenReturn(10);
+        when(() => repo.streakFreezes).thenReturn(1);
+        when(
+          () => repo.lastActivityDate,
+        ).thenReturn(threeDaysAgo.toIso8601String());
+
+        service.load();
+
+        verifyNever(
+          () => repo.saveAll(
+            currentStreak: any(named: 'currentStreak'),
+            longestStreak: any(named: 'longestStreak'),
+            lastActivityDate: any(named: 'lastActivityDate'),
+            streakFreezes: any(named: 'streakFreezes'),
+          ),
+        );
       });
 
       test('uses freeze for 2-day gap via checkIn', () {

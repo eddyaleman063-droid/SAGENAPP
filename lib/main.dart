@@ -16,7 +16,6 @@ import 'router/app_router.dart';
 import 'services/app_logger.dart';
 import 'services/auth_service.dart';
 import 'providers/app_lifecycle_provider.dart';
-import 'services/background_sync_service.dart';
 import 'services/cloud_sync_service.dart';
 import 'services/deep_link_service.dart';
 import 'ui/widgets/common/ambient_background.dart';
@@ -155,10 +154,6 @@ void main() async {
       cloudSyncService: cloudSyncService,
     ),
   );
-
-  BackgroundSyncService.instance.init().catchError((e) {
-    logger.warning('BackgroundSyncService init failed (non-critical): $e');
-  });
 }
 
 void _setupErrorHandlers(AppLogger logger) {
@@ -220,7 +215,6 @@ class _SagenAppState extends ConsumerState<SagenApp> {
           _handleDeepLinkAction,
           onError: (e) => AppLogger().warning('Deep link stream error: $e'),
         );
-    BackgroundSyncService.instance.registerPeriodicSync();
   }
 
   @override

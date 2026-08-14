@@ -20,50 +20,12 @@ const WEBHOOK_BASE = `https://us-central1-${process.env.GCLOUD_PROJECT || 'sagen
 
 const STREAK_SHIELD_MAX = 2;
 
-// Gems bonus granted when the SAGEN PASS is purchased (one-time).
-const SAGEN_PASS_GEMS = 500;
+const hardcodedCatalog = require('./catalog');
+const SAGEN_PASS_GEMS = hardcodedCatalog.SAGEN_PASS_GEMS;
+const catalogService = hardcodedCatalog.createCatalog(admin, functions.logger);
 
-const hardcodedCatalog = {
-  'donate_basic':    { amount: 3,   title: 'Supporter - SAGEN',       price: 3.00,  bonuses: [] },
-  'donate_popular':  { amount: 5,   title: 'Super Supporter - SAGEN', price: 5.00,  bonuses: [] },
-  'donate_premium':  { amount: 10,  title: 'Champion - SAGEN',        price: 10.00, bonuses: [] },
-  'bundle_protector':{ amount: 12,  title: 'Pack Protegido - SAGEN',  price: 12.00, bonuses: [{ type: 'streakProtector', quantity: 1 }] },
-  'bundle_xp':       { amount: 20,  title: 'Pack Impulso - SAGEN',    price: 20.00, bonuses: [{ type: 'xpBoost', quantity: 1 }] },
-  'bundle_luck':     { amount: 24,  title: 'Pack Suerte - SAGEN',     price: 24.00, bonuses: [{ type: 'luckBoost', quantity: 1 }] },
-  'sagen_pass':      { amount: 9.90, title: 'SAGEN PASS',             price: 9.90,  bonuses: [{ type: 'sagenPass', quantity: 1, gems: SAGEN_PASS_GEMS }] },
-};
-
-let _catalogCache = null;
-let _catalogCacheTime = 0;
-const CATALOG_CACHE_TTL = 5 * 60 * 1000;
-
-async function loadCatalog() {
-  const now = Date.now();
-  if (_catalogCache && (now - _catalogCacheTime) < CATALOG_CACHE_TTL) {
-    return _catalogCache;
-  }
-  try {
-    const snap = await admin.firestore().doc('config/productCatalog').get();
-    if (snap.exists) {
-      const data = snap.data();
-      _catalogCache = data.products || hardcodedCatalog;
-      _catalogCacheTime = now;
-      return _catalogCache;
-    }
-  } catch (e) {
-    functions.logger.warn('Failed to load catalog from Firestore, using hardcoded', { error: e.message });
-  }
-  _catalogCache = hardcodedCatalog;
-  _catalogCacheTime = now;
-  return _catalogCache;
-}
-
-async function getProductDetails(productId) {
-  const catalog = await loadCatalog();
-  const item = catalog[productId];
-  if (item) return item;
-  return null;
-}
+const loadCatalog = () => catalogService.loadCatalog();
+const getProductDetails = (productId) => catalogService.getProductDetails(productId);
 
 async function getProductBonuses(amount) {
   const catalog = await loadCatalog();
@@ -405,14 +367,15 @@ exports.handlePaymentWebhook = functions.runWith({ maxInstances: 5 }).https.onRe
       }
 
       const userData = userDoc.data() || {};
-      const currentDonated = userData.totalDonated || 0;
+      const currentDonated = userData.total_donated || 0;
 
       const updateData = {
-        totalDonated: currentDonated + amount,
+        total_donated: currentDonated + amount,
+        is_supporter: true,
         lastPaymentAt: admin.firestore.FieldValue.serverTimestamp(),
         lastPaymentMethod: 'mercadopago',
         lastPaymentAmount: amount,
-        _ts_totalDonated: admin.firestore.FieldValue.serverTimestamp(),
+        _ts_total_donated: admin.firestore.FieldValue.serverTimestamp(),
       };
 
       applyProductBonuses(updateData, userData, bonuses);
@@ -524,14 +487,15 @@ exports.adminCreditDonation = functions.runWith({ maxInstances: 3 }).https.onCal
       }
 
       const userData = userDoc.data() || {};
-      const currentDonated = userData.totalDonated || 0;
+      const currentDonated = userData.total_donated || 0;
 
       const updateData = {
-        totalDonated: currentDonated + amount,
+        total_donated: currentDonated + amount,
+        is_supporter: true,
         lastManualCreditAt: admin.firestore.FieldValue.serverTimestamp(),
         lastManualCreditMethod: method,
         lastManualCreditAmount: amount,
-        _ts_totalDonated: admin.firestore.FieldValue.serverTimestamp(),
+        _ts_total_donated: admin.firestore.FieldValue.serverTimestamp(),
       };
 
       const catalog = await loadCatalog();
@@ -586,61 +550,6 @@ exports.adminCreditDonation = functions.runWith({ maxInstances: 3 }).https.onCal
  * Returns a signed token that the client must include in the spend request.
  * The token expires after 60 seconds.
  */
-exports.validatePurchase = functions.runWith({ maxInstances: 5 }).https.onCall(async (data, context) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError('unauthenticated', 'Debes iniciar sesión');
-  }
-  await checkRateLimit(context.auth.uid);
-
-  const { cost, itemId } = data;
-  if (!cost || cost <= 0 || !itemId) {
-    throw new functions.https.HttpsError('invalid-argument', 'cost e itemId requeridos');
-  }
-
-  const userId = context.auth.uid;
-  const userRef = admin.firestore().doc(`users/${userId}`);
-
-  try {
-    const userDoc = await userRef.get();
-    if (!userDoc.exists) {
-      throw new functions.https.HttpsError('not-found', 'Usuario no encontrado');
-    }
-
-    const userData = userDoc.data() || {};
-    const balance = userData.totalDonated || 0;
-
-    if (balance < cost) {
-      throw new functions.https.HttpsError(
-        'failed-precondition', 'Donación insuficiente',
-      );
-    }
-
-    // Generar token firmado que expira en 60 segundos
-    const payload = JSON.stringify({
-      userId,
-      itemId,
-      cost,
-      ts: Date.now(),
-      exp: Date.now() + 60000,
-    });
-    const secret = functions.config().app?.purchase_secret;
-    if (!secret) {
-      functions.logger.error('purchase_secret not configured');
-      throw new functions.https.HttpsError('internal', 'Error de configuración del servidor');
-    }
-    const hmac = crypto.createHmac('sha256', secret).update(payload).digest('hex');
-    const token = Buffer.from(JSON.stringify({ payload, sig: hmac })).toString('base64');
-
-    functions.logger.info('Purchase validation token issued', { userId, itemId, cost });
-
-    return { valid: true, totalDonated: balance, token };
-  } catch (error) {
-    if (error instanceof functions.https.HttpsError) throw error;
-    functions.logger.error('validatePurchase error', error);
-    throw new functions.https.HttpsError('internal', 'Error al validar la compra');
-  }
-});
-
 /**
  * HTTPS Callable: Register a pending payment (WhatsApp/Yape/Plin).
  * Saves to pending_payments collection for admin review.
@@ -733,7 +642,7 @@ exports.checkPendingPaymentStatus = functions.runWith({ maxInstances: 5 }).https
     createdAt: pendingData.createdAt?.toDate?.()?.toISOString() || null,
     expiresAt: pendingData.expiresAt?.toDate?.()?.toISOString() || null,
     isExpired: pendingData.expiresAt?.toDate?.()?.getTime() < Date.now(),
-    serverBalance: (await admin.firestore().doc(`users/${userId}`).get()).data()?.totalDonated ?? null,
+    serverBalance: (await admin.firestore().doc(`users/${userId}`).get()).data()?.total_donated ?? null,
   };
 });
 
@@ -775,12 +684,13 @@ const economic = require('./economic');
 exports.addXp = economic.addXp;
 exports.incrementStreak = economic.incrementStreak;
 exports.completeLesson = economic.completeLesson;
+exports.processDonation = economic.processDonation;
+exports.recordDonation = economic.recordDonation;
 
 // ── Gamification Functions (server-authoritative daily claims) ──
 const gamification = require('./gamification');
-exports.claimDailyChest = gamification.claimDailyChest;
-exports.earnSagenPassSP = gamification.earnSagenPassSP;
-exports.claimSagenPassReward = gamification.claimSagenPassReward;
+  exports.claimDailyChest = gamification.claimDailyChest;
+  exports.claimSagenPassReward = gamification.claimSagenPassReward;
 exports.claimAdReward = gamification.claimAdReward;
 exports.rollChestDrop = gamification.rollChestDrop;
 exports.getSagenPassSeason = gamification.getSagenPassSeason;
@@ -791,6 +701,11 @@ exports.earnGems = gems.earnGems;
 exports.spendGems = gems.spendGems;
 exports.getGemsBalance = gems.getGemsBalance;
 
+// ── Inventory (server-authoritative items & cosmetics, NUEVO-08) ──
+const inventory = require('./inventory');
+exports.getInventory = inventory.getInventory;
+exports.useInventoryItem = inventory.useInventoryItem;
+
 // ── AI Streaming (CRIT-2) ──────────────────────────────────────────
 const aiStreaming = require('./ai_streaming');
 exports.generateContentStream = aiStreaming.generateContentStream;
@@ -798,10 +713,6 @@ exports.generateContentStream = aiStreaming.generateContentStream;
 // ── Server-side Gacha (CRIT-5) ─────────────────────────────────────
 const gacha = require('./gacha');
 exports.rollChestEvolution = gacha.rollChestEvolution;
-
-// ── Offline Sync (CRIT-6) ──────────────────────────────────────────
-const sync = require('./sync');
-exports.syncLessonCompletions = sync.syncLessonCompletions;
 
 // ── Gemini AI Proxy (SEC-001: API key never exposed to client) ─────
 const GEMINI_API_KEY = functions.config().gemini?.api_key;
@@ -812,8 +723,13 @@ const GEMINI_TOP_K = 40;
 const GEMINI_TOP_P = 0.95;
 
 /**
- * HTTPS Callable: Generate AI response via Gemini proxy.
+ * HTTPS Callable: Generate AI response via Gemini proxy (non-streaming).
  * The API key stays server-side only. Client sends prompt, receives response.
+ *
+ * @deprecated The app uses the streaming path (generateContentStream) from
+ * ai_streaming.js. This non-streaming variant is kept only as a fallback for
+ * clients that cannot use streaming; it is not called by current production
+ * code. Do not add new features here — extend ai_streaming.js instead.
  */
 exports.generateContent = functions.runWith({ maxInstances: 3 }).https.onCall(async (data, context) => {
   if (!context.auth) {

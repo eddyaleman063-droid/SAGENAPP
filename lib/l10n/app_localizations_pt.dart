@@ -4050,6 +4050,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get storePurchaseSuccess => 'Compra realizada com sucesso!';
 
   @override
+  String get storeAlreadyOwned => 'Você já possui este item.';
+
+  @override
   String get storeShieldLimitReached => 'Limite de escudos atingido';
 
   @override

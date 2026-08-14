@@ -39,15 +39,22 @@ class LearningRewardService {
     required double totalDonated,
     required int xp,
     bool luckBoostActive = false,
+    String? contextId,
   }) async {
     if (!ChestSystem.shouldUnlockChest(lessonsCompleted)) return null;
 
     final type = chestTypeFor(lessonsCompleted);
-    final reward = await _roller.roll(type, luckBoostActive: luckBoostActive);
+    final reward = await _roller.roll(
+      type,
+      luckBoostActive: luckBoostActive,
+      contextId: contextId,
+      source: 'lesson',
+    );
 
     return ChestRewardData(
-      type: type,
+      type: reward.chestType ?? type,
       xp: reward.xp,
+      gems: reward.gems,
       streakShields: reward.streakShields,
       xpBoost: reward.xpBoost,
       specialItems: reward.specialItems,

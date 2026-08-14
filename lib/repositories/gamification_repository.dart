@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sagen/services/app_logger.dart';
+import 'package:sagen/utils/map_utils.dart';
 
 /// Repository for gamification data persistence.
 /// Tracks daily chest and missions.
@@ -36,8 +37,7 @@ class GamificationRepositoryImpl implements GamificationRepository {
   Map<String, int>? _missionsCache;
 
   String _today() {
-    final now = DateTime.now();
-    return '${now.year.toString().padLeft(4, '0')}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
+    return utcDayKey();
   }
 
   @override
@@ -101,8 +101,8 @@ class GamificationRepositoryImpl implements GamificationRepository {
 
   @override
   int get secondsUntilMidnight {
-    final now = DateTime.now();
-    final midnight = DateTime(now.year, now.month, now.day + 1);
+    final now = DateTime.now().toUtc();
+    final midnight = DateTime.utc(now.year, now.month, now.day + 1);
     return midnight.difference(now).inSeconds;
   }
 

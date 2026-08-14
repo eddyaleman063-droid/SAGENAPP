@@ -49,6 +49,7 @@ class SagenPass {
   final List<int> claimedLevels;
   final DateTime seasonStart;
   final int seasonDurationDays;
+  final bool premium;
 
   SagenPass({
     this.currentLevel = 1,
@@ -56,6 +57,7 @@ class SagenPass {
     List<int>? claimedLevels,
     DateTime? seasonStart,
     this.seasonDurationDays = 90,
+    this.premium = false,
   }) : claimedLevels = List<int>.unmodifiable(claimedLevels ?? const []),
        seasonStart = seasonStart ?? DateTime.now();
 
@@ -66,6 +68,7 @@ class SagenPass {
     DateTime? seasonStart,
     bool clearSeasonStart = false,
     int? seasonDurationDays,
+    bool? premium,
   }) {
     return SagenPass(
       currentLevel: currentLevel ?? this.currentLevel,
@@ -75,6 +78,7 @@ class SagenPass {
       ),
       seasonStart: clearSeasonStart ? null : (seasonStart ?? this.seasonStart),
       seasonDurationDays: seasonDurationDays ?? this.seasonDurationDays,
+      premium: premium ?? this.premium,
     );
   }
 

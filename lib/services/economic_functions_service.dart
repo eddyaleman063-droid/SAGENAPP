@@ -86,9 +86,15 @@ class EconomicFunctionsService implements IEconomicFunctionsService {
   }
 
   /// Increments the daily streak with server-side date validation.
+  /// When [freezeUsed] is true and a day was missed, the server keeps the
+  /// streak alive instead of resetting it (streak shield consumed).
   @override
-  Future<Map<String, dynamic>?> incrementStreak() async {
-    return _call<Map<String, dynamic>>('incrementStreak', {});
+  Future<Map<String, dynamic>?> incrementStreak({
+    bool freezeUsed = false,
+  }) async {
+    return _call<Map<String, dynamic>>('incrementStreak', {
+      'freezeUsed': freezeUsed,
+    });
   }
 
   /// Atomic lesson completion: XP + streak + level in one transaction.
@@ -96,11 +102,15 @@ class EconomicFunctionsService implements IEconomicFunctionsService {
   Future<Map<String, dynamic>?> completeLesson({
     required String lessonId,
     required int xpEarned,
+    int? correctCount,
+    bool? perfect,
   }) async {
     return _call<Map<String, dynamic>>('completeLesson', {
       'lessonId': lessonId,
       'xpEarned': xpEarned,
-      'idempotencyKey': _idempotencyKey('lesson'),
+      'correctCount': correctCount ?? 0,
+      'perfect': perfect ?? false,
+      'idempotencyKey': 'lesson_$lessonId',
     });
   }
 

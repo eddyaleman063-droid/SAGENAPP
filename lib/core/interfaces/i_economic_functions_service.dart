@@ -4,6 +4,8 @@ abstract class IEconomicFunctionsService {
   Future<Map<String, dynamic>?> completeLesson({
     required String lessonId,
     required int xpEarned,
+    int? correctCount,
+    bool? perfect,
   });
   Future<Map<String, dynamic>?> processDonation({
     required double amount,
@@ -14,7 +16,7 @@ abstract class IEconomicFunctionsService {
     required String reason,
     String? lessonId,
   });
-  Future<Map<String, dynamic>?> incrementStreak();
+  Future<Map<String, dynamic>?> incrementStreak({bool freezeUsed = false});
   Future<Map<String, dynamic>?> recordDonation({
     required double amount,
     required String method,

@@ -25,7 +25,7 @@ void main() {
   group('SagenPassRepository — save', () {
     test('save persists all fields', () {
       final season = DateTime(2026, 3, 1);
-      repo.save(12, 340, [3, 5, 10], season);
+      repo.save(12, 340, [3, 5, 10], season, false);
       expect(repo.currentLevel, 12);
       expect(repo.currentSP, 340);
       expect(repo.claimedLevels, [3, 5, 10]);
@@ -33,21 +33,21 @@ void main() {
     });
 
     test('saveLevel updates only level', () {
-      repo.save(1, 10, const [], DateTime(2026));
+      repo.save(1, 10, const [], DateTime(2026), false);
       repo.saveLevel(7);
       expect(repo.currentLevel, 7);
       expect(repo.currentSP, 10);
     });
 
     test('saveSP updates only sp', () {
-      repo.save(1, 10, const [], DateTime(2026));
+      repo.save(1, 10, const [], DateTime(2026), false);
       repo.saveSP(55);
       expect(repo.currentSP, 55);
       expect(repo.currentLevel, 1);
     });
 
     test('saveClaimedLevels updates claimed list', () {
-      repo.save(1, 0, const [], DateTime(2026));
+      repo.save(1, 0, const [], DateTime(2026), false);
       repo.saveClaimedLevels([1, 2, 3]);
       expect(repo.claimedLevels, [1, 2, 3]);
     });
@@ -82,7 +82,7 @@ void main() {
     });
 
     test('persisted data survives repository recreation', () {
-      repo.save(9, 120, const [1], DateTime(2026, 6, 1));
+      repo.save(9, 120, const [1], DateTime(2026, 6, 1), true);
       final fresh = SagenPassRepositoryImpl(prefs);
       expect(fresh.currentLevel, 9);
       expect(fresh.currentSP, 120);

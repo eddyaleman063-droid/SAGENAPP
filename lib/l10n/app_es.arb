@@ -1266,6 +1266,7 @@
   "storeDailyChestTitle": "Cofre diario",
   "storePurchaseFailed": "Error al validar la compra. Inténtalo de nuevo.",
   "storePurchaseSuccess": "¡Compra exitosa!",
+  "storeAlreadyOwned": "Ya tienes este artículo.",
   "storeShieldLimitReached": "Límite de protectores alcanzado",
   "storeSupport": "Apóyanos",
   "storeSupportTiers": "Niveles de apoyo",

@@ -10,8 +10,15 @@ abstract class SagenPassRepository {
   List<int> get claimedLevels;
   DateTime get seasonStart;
   int get seasonDurationDays;
+  bool get premium;
 
-  void save(int level, int sp, List<int> claimedLevels, DateTime seasonStart);
+  void save(
+    int level,
+    int sp,
+    List<int> claimedLevels,
+    DateTime seasonStart,
+    bool premium,
+  );
   void saveLevel(int level);
   void saveSP(int sp);
   void saveClaimedLevels(List<int> levels);
@@ -64,7 +71,16 @@ class SagenPassRepositoryImpl implements SagenPassRepository {
   int get seasonDurationDays => (_loadRaw()['duration'] as int?) ?? 90;
 
   @override
-  void save(int level, int sp, List<int> claimedLevels, DateTime seasonStart) {
+  bool get premium => (_loadRaw()['premium'] as bool?) ?? false;
+
+  @override
+  void save(
+    int level,
+    int sp,
+    List<int> claimedLevels,
+    DateTime seasonStart,
+    bool premium,
+  ) {
     _invalidateCache();
     _prefs.setString(
       _keyPass,
@@ -74,6 +90,7 @@ class SagenPassRepositoryImpl implements SagenPassRepository {
         'claimed': claimedLevels,
         'seasonStart': seasonStart.toIso8601String(),
         'duration': seasonDurationDays,
+        'premium': premium,
       }),
     );
   }

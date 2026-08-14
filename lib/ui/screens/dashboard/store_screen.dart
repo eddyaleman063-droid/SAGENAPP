@@ -61,6 +61,15 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
     }
   }
 
+  bool _isOwned(ShopItem item) {
+    try {
+      final items = ref.read(shopProvider).items;
+      return items.any((i) => i.id == item.id && i.isOwned);
+    } catch (_) {
+      return false;
+    }
+  }
+
   Future<void> _confirmAndBuy(
     BuildContext context,
     ShopItem item,
@@ -113,34 +122,37 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
         if (context.mounted) {
           SagenNotification.show(
             context,
-            message: l.storePurchaseFailed,
-            type: NotificationType.error,
+            message: _isOwned(item) ? l.storeAlreadyOwned : l.storePurchaseFailed,
+            type: _isOwned(item)
+                ? NotificationType.info
+                : NotificationType.error,
           );
         }
         return;
       }
 
-      // Unlock item first, then spend gems. If spending fails, rollback.
-      ref.read(shopProvider.notifier).unlockItem(item.id);
-      bool spent = false;
-      try {
-        spent = ref.read(gemProvider.notifier).spendGems(item.gemCost);
-      } catch (e) {
-        ref.read(shopProvider.notifier).relockItem(item.id);
-        rethrow;
-      }
-      if (!spent) {
-        ref.read(shopProvider.notifier).relockItem(item.id);
+      // Server-authoritative purchase: gems are spent via Cloud Function with
+      // the catalog cost. The item unlocks only after the server confirms.
+      final result = await ref
+          .read(gemProvider.notifier)
+          .spendShopGems(item.id);
+      if (result != ShopPurchaseResult.success) {
         exp.errorHaptic();
         if (context.mounted) {
           SagenNotification.show(
             context,
-            message: l.storePurchaseFailed,
-            type: NotificationType.error,
+            message: result == ShopPurchaseResult.owned
+                ? l.storeAlreadyOwned
+                : l.storePurchaseFailed,
+            type: result == ShopPurchaseResult.owned
+                ? NotificationType.info
+                : NotificationType.error,
           );
         }
         return;
       }
+
+      ref.read(shopProvider.notifier).unlockItem(item.id);
 
       // Apply purchase effects
       if (item.id == 'xp_boost') {

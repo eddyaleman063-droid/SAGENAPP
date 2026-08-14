@@ -29,8 +29,8 @@ class FirestoreFieldConfig {
   // These fields are updated exclusively by Cloud Functions (admin SDK).
   // They are BLOCKED in CloudSyncService and rejected by Firestore rules.
   static const Set<String> serverOnlyFields = {
-    'totalDonated',
-    'isSupporter',
+    'total_donated',
+    'is_supporter',
     'learning_gems',
     'learning_total_xp',
     'learning_level',
@@ -120,6 +120,13 @@ class FirestoreFieldConfig {
     'motivation',
     'updatedAt',
   ];
+
+  // ── Firestore → SharedPreferences mapping (read path) ────────
+  // Maps server-side field names to their local SP keys when they differ.
+  static const Map<String, String> firestoreToSpMapping = {
+    'total_donated': 'learning_total_donated',
+    'is_supporter': 'learning_is_supporter',
+  };
 
   /// Checks if a field is a server-only economic field.
   static bool isServerOnlyField(String field) =>

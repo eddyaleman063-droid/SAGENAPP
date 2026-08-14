@@ -23,7 +23,7 @@ void main() {
     final mockChest = MockStreakChestService();
 
     when(
-      () => mockEconomic.incrementStreak(),
+      () => mockEconomic.incrementStreak(freezeUsed: any(named: 'freezeUsed')),
     ).thenAnswer((_) async => <String, dynamic>{});
     when(
       () => mockChest.checkAndReward(

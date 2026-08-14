@@ -2,39 +2,25 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const { getDailyXpDocRef, computeCappedXp, MAX_DAILY_XP } = require('./economic');
 const gems = require('./gems');
+const sagenpass = require('./sagenpass');
+const inventory = require('./inventory');
 
 // ══════════════════════════════════════════════════════════════════
 // GAMIFICATION FUNCTIONS — Server-authoritative daily claims
 // Daily chest, missions, and ad rewards are validated server-side.
 // ══════════════════════════════════════════════════════════════════
 
-// Server-authoritative Sagen Pass SP per reason.
-// The client can NOT specify the amount — the server decides it.
-const SP_REWARDS = {
-  lesson: 10,
-  daily_chest: 5,
-  streak_chest: 5,
-  ad_reward: 3,
-  mini_game: 5,
-  review: 5,
-  achievement: 10,
-  mission_reward: 5,
-  challenge: 10,
-  perfect_lesson: 15,
+// Server-authoritative daily chest rewards per tier.
+// Unknown/absent chestType falls back to bronze.
+const DAILY_CHEST_REWARDS = {
+  bronze: { xp: 10 },
+  silver: { xp: 15 },
+  gold: { xp: 20 },
+  legendary: { xp: 25 },
 };
-const DEFAULT_SP_REWARD = 5;
-
-// Max Sagen Pass SP earnable per day (anti-farm).
-const MAX_DAILY_SP = 100;
-
-function getDailySpDocRef(userId) {
-  const today = new Date().toISOString().split('T')[0];
-  return admin.firestore().doc(`daily_sp_sources/${userId}_${today}`);
-}
 
 /**
  * Firestore-based distributed rate limiting.
- * Replaces the in-memory Map that didn't work across instances.
  */
 async function checkDistributedRateLimit(uid, windowMs, maxRequests) {
   const now = Date.now();
@@ -78,17 +64,26 @@ exports.claimDailyChest = functions.runWith({ maxInstances: 5 }).https.onCall(as
     throw new functions.https.HttpsError('resource-exhausted', 'Demasiadas solicitudes');
   }
 
+  // Server-authoritative: the reward is decided by the validated chestType,
+  // never by the client. Unknown types fall back to bronze.
+  const rawChestType = data && data.chestType || 'bronze';
+  const chestType = DAILY_CHEST_REWARDS[rawChestType] ? rawChestType : 'bronze';
+  const dailyReward = DAILY_CHEST_REWARDS[chestType];
+  const xp = dailyReward.xp;
+
   const userRef = admin.firestore().doc(`users/${userId}`);
   const today = new Date().toISOString().split('T')[0];
   const dailyXpRef = getDailyXpDocRef(userId);
   const dailyGemsRef = gems.getDailyGemsDocRef(userId);
+  const dailySpRef = sagenpass.getDailySpDocRef(userId);
 
   try {
     const result = await admin.firestore().runTransaction(async (transaction) => {
-      const [userDoc, dailyXpDoc, dailyGemsDoc] = await Promise.all([
+      const [userDoc, dailyXpDoc, dailyGemsDoc, dailySpDoc] = await Promise.all([
         transaction.get(userRef),
         transaction.get(dailyXpRef),
         transaction.get(dailyGemsRef),
+        transaction.get(dailySpRef),
       ]);
       if (!userDoc.exists) {
         throw new functions.https.HttpsError('not-found', 'Usuario no encontrado');
@@ -101,8 +96,6 @@ exports.claimDailyChest = functions.runWith({ maxInstances: 5 }).https.onCall(as
         return { success: false, alreadyClaimed: true };
       }
 
-      // Server-authoritative: 10 XP only
-      const xp = 10;
       const dailyData = dailyXpDoc.data() || {};
       const xpEarnedToday = dailyData.total || 0;
       const { cappedXp } = computeCappedXp(xpEarnedToday, xp);
@@ -123,6 +116,16 @@ exports.claimDailyChest = functions.runWith({ maxInstances: 5 }).https.onCall(as
         dailyGemsRef, dailyGemsData,
         'daily_chest', gems.GEM_REWARDS.daily_chest,
       );
+
+      const spCredit = sagenpass.applySagenPassSp({
+        transaction,
+        userRef,
+        userData,
+        dailySpRef,
+        dailySpData: dailySpDoc.data() || {},
+        reason: 'daily_chest',
+        spToAdd: sagenpass.SP_REWARDS.daily_chest,
+      });
 
       transaction.update(userRef, {
         learning_total_xp: newTotalXp,
@@ -157,6 +160,7 @@ exports.claimDailyChest = functions.runWith({ maxInstances: 5 }).https.onCall(as
 
       return {
         success: true,
+        chestType,
         xp: cappedXp,
         leveledUp: newLevel > currentLevel,
         newLevel,
@@ -165,6 +169,16 @@ exports.claimDailyChest = functions.runWith({ maxInstances: 5 }).https.onCall(as
           balance: gemCredit.balance,
           dailyCapped: gemCredit.dailyCapped,
         },
+        sagenPass: spCredit
+          ? {
+              spAdded: spCredit.spAdded,
+              sp: spCredit.sp,
+              level: spCredit.level,
+              leveledUp: spCredit.leveledUp,
+              dailyCapped: spCredit.dailyCapped,
+              premium: spCredit.premium,
+            }
+          : null,
       };
     });
 
@@ -174,105 +188,6 @@ exports.claimDailyChest = functions.runWith({ maxInstances: 5 }).https.onCall(as
     if (error instanceof functions.https.HttpsError) throw error;
     functions.logger.error('claimDailyChest error', error);
     throw new functions.https.HttpsError('internal', 'Error al reclamar cofre diario');
-  }
-});
-
-/**
- * HTTPS Callable: Earn Sagen Pass SP.
- * Server-authoritative: the SP amount is decided by `reason`, NOT by the client.
- * Enforces a daily SP cap to prevent farming to max level.
- */
-exports.earnSagenPassSP = functions.runWith({ maxInstances: 5 }).https.onCall(async (data, context) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError('unauthenticated', 'Debes iniciar sesión');
-  }
-
-  const userId = context.auth.uid;
-  const rateCheck = await checkDistributedRateLimit(userId, 60 * 1000, 10);
-  if (!rateCheck.allowed) {
-    throw new functions.https.HttpsError('resource-exhausted', 'Demasiadas solicitudes');
-  }
-
-  // Server-authoritative: ignore any client-provided amount.
-  const reason = data && typeof data.reason === 'string' ? data.reason : 'lesson';
-  const spToAdd = SP_REWARDS[reason] || DEFAULT_SP_REWARD;
-
-  const userRef = admin.firestore().doc(`users/${userId}`);
-  const dailySpRef = getDailySpDocRef(userId);
-
-  try {
-    const result = await admin.firestore().runTransaction(async (transaction) => {
-      const [userDoc, dailySpDoc] = await Promise.all([
-        transaction.get(userRef),
-        transaction.get(dailySpRef),
-      ]);
-      if (!userDoc.exists) {
-        throw new functions.https.HttpsError('not-found', 'Usuario no encontrado');
-      }
-
-      const userData = userDoc.data() || {};
-
-      // SAGEN PASS holders earn unlimited SP (no daily cap).
-      const isPassHolder = userData.sagen_pass_active === true;
-      const dailySpData = dailySpDoc.data() || {};
-      const spEarnedToday = dailySpData.total || 0;
-      const remainingDailySp = isPassHolder
-        ? spToAdd
-        : Math.max(0, MAX_DAILY_SP - spEarnedToday);
-      const cappedSp = Math.min(spToAdd, remainingDailySp);
-
-      if (cappedSp <= 0) {
-        throw new functions.https.HttpsError('resource-exhausted', `Limite diario de SP alcanzado (${MAX_DAILY_SP} SP/dia)`);
-      }
-
-      const currentSP = userData.sagen_pass_sp || 0;
-      const currentLevel = userData.sagen_pass_level || 1;
-
-      // SP required per level: 50 + (level - 1) * 10
-      const spForLevel = (level) => 50 + (level - 1) * 10;
-
-      let newSP = currentSP + cappedSp;
-      let newLevel = currentLevel;
-      const maxLevel = 50;
-
-      while (newSP >= spForLevel(newLevel) && newLevel < maxLevel) {
-        newSP -= spForLevel(newLevel);
-        newLevel++;
-      }
-
-      if (newLevel >= maxLevel) {
-        newSP = 0;
-      }
-
-      transaction.update(userRef, {
-        sagen_pass_sp: newSP,
-        sagen_pass_level: newLevel,
-        _ts_sagen_pass: admin.firestore.FieldValue.serverTimestamp(),
-      });
-
-      transaction.set(dailySpRef, {
-        total: admin.firestore.FieldValue.increment(cappedSp),
-        [reason]: admin.firestore.FieldValue.increment(cappedSp),
-        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
-      }, { merge: true });
-
-      return {
-        success: true,
-        sp: newSP,
-        level: newLevel,
-        leveledUp: newLevel > currentLevel,
-        spAdded: cappedSp,
-        dailyCapped: isPassHolder ? false : cappedSp < spToAdd,
-        premium: isPassHolder,
-      };
-    });
-
-    functions.logger.info('Sagen Pass SP earned', { userId, reason, sp: result.spAdded, level: result.level });
-    return result;
-  } catch (error) {
-    if (error instanceof functions.https.HttpsError) throw error;
-    functions.logger.error('earnSagenPassSP error', error);
-    throw new functions.https.HttpsError('internal', 'Error al agregar SP');
   }
 });
 
@@ -415,33 +330,73 @@ exports.rollChestDrop = functions.runWith({ maxInstances: 5 }).https.onCall(asyn
     throw new functions.https.HttpsError('resource-exhausted', 'Demasiadas solicitudes');
   }
 
-  const { chestType, lessonId } = data;
-  const validTypes = ['bronze', 'silver', 'gold', 'legendary'];
-  if (!chestType || !validTypes.includes(chestType)) {
-    throw new functions.https.HttpsError('invalid-argument', 'chestType debe ser bronze, silver, gold o legendary');
-  }
+  // NUEVO-02: the rarity is decided SERVER-SIDE from verifiable user state,
+  // never from the client. The client chestType is ignored entirely.
+  const { source, lessonId, contextId, luckBoostActive } = data;
+  const validSources = ['lesson', 'streak', 'mission'];
+  const src = validSources.includes(source) ? source : 'lesson';
 
-  const idempotencyKey = `${userId}_chest_${lessonId || 'unknown'}_${new Date().toISOString().split('T')[0]}`;
   const userRef = admin.firestore().doc(`users/${userId}`);
-  const logRef = admin.firestore().doc(`transaction_logs/${idempotencyKey}`);
   const dailyXpRef = getDailyXpDocRef(userId);
   const dailyGemsRef = gems.getDailyGemsDocRef(userId);
+  const inventoryRef = inventory.getInventoryRef(userId);
 
   try {
     const result = await admin.firestore().runTransaction(async (transaction) => {
-      const [userDoc, logDoc, dailyXpDoc, dailyGemsDoc] = await Promise.all([
+      const [userDoc, dailyXpDoc, dailyGemsDoc, inventoryDoc] = await Promise.all([
         transaction.get(userRef),
-        transaction.get(logRef),
         transaction.get(dailyXpRef),
         transaction.get(dailyGemsRef),
+        transaction.get(inventoryRef),
       ]);
-
-      if (logDoc.exists) {
-        return { success: true, duplicate: true, xp: 0 };
-      }
 
       if (!userDoc.exists) {
         throw new functions.https.HttpsError('not-found', 'Usuario no encontrado');
+      }
+
+      const userData = userDoc.data() || {};
+      const today = new Date().toISOString().split('T')[0];
+
+      // Server-authoritative chest type derivation.
+      let chestType;
+      let idempotencyKey;
+      if (src === 'streak') {
+        // Streak milestones must be verified against the server streak.
+        const m = /^streak_(\d+)$/.exec(contextId || '');
+        const milestone = m ? parseInt(m[1], 10) : 0;
+        const milestoneMap = { 7: 'silver', 14: 'gold', 30: 'gold', 100: 'legendary' };
+        const serverStreak = userData.currentStreak || 0;
+        chestType = milestoneMap[milestone] && serverStreak >= milestone
+          ? milestoneMap[milestone]
+          : 'bronze';
+        idempotencyKey = `${userId}_chest_streak_${milestone}_${today}`;
+      } else if (src === 'mission') {
+        // Missions are client-tracked: roll the rarity server-side so a
+        // modified client cannot force a legendary chest.
+        const roll = Math.random() * 100;
+        if (roll < 2) chestType = 'legendary';
+        else if (roll < 8) chestType = 'gold';
+        else if (roll < 25) chestType = 'silver';
+        else chestType = 'bronze';
+        const missionId = (contextId || 'mission').replace(/[^a-zA-Z0-9_-]/g, '_');
+        idempotencyKey = `${userId}_chest_mission_${missionId}_${today}`;
+      } else {
+        // Lesson chest: derive the tier from the server-authoritative lesson
+        // counter (the same mapping the client uses), keyed by that counter so
+        // a modified client cannot farm chests between real lessons.
+        const lessons = userData.lessonsCompleted || 0;
+        if (lessons > 0 && lessons % 15 === 0) chestType = 'legendary';
+        else if (lessons > 0 && lessons % 5 === 0) chestType = 'gold';
+        else if (lessons > 0 && lessons % 3 === 0) chestType = 'silver';
+        else chestType = 'bronze';
+        idempotencyKey = `${userId}_chest_lesson_${lessons}_${today}`;
+      }
+
+      const logRef = admin.firestore().doc(`transaction_logs/${idempotencyKey}`);
+      const logDoc = await transaction.get(logRef);
+
+      if (logDoc.exists) {
+        return { success: true, duplicate: true, xp: 0, chestType };
       }
 
       // Weighted category selection
@@ -469,7 +424,6 @@ exports.rollChestDrop = functions.runWith({ maxInstances: 5 }).https.onCall(asyn
       const xpBoost = category === 'booster';
 
       // Apply rewards atomically
-      const userData = userDoc.data() || {};
       const currentTotalXp = userData.learning_total_xp || 0;
       const currentLevel = userData.learning_level || 1;
       const currentShields = userData.streak_shields || 0;
@@ -508,10 +462,31 @@ exports.rollChestDrop = functions.runWith({ maxInstances: 5 }).https.onCall(asyn
         }, { merge: true });
       }
 
+      // NUEVO-08: special items & cosmetics are rolled SERVER-SIDE and
+      // persisted to users/{uid}/inventory/state. The client never rolls
+      // them locally, so a modified client cannot fabricate items.
+      //
+      // A forged luckBoostActive flag is harmless by itself (bronze still
+      // never drops), but the +15% bonus is only honored when the server
+      // verifies the user actually owns a luck boost (purchased or dropped).
+      const inventoryData = inventoryDoc.data() || {};
+      const inventoryState = inventoryData.specialItems || {};
+      const ownsLuckBoost =
+        (inventoryState.luckBoost || 0) > 0 ||
+        (userData.shop_purchased_luck_boosts || 0) > 0;
+      const effectiveLuckBoost = luckBoostActive === true && ownsLuckBoost;
+      const drops = inventory.rollSpecialDrops(chestType, effectiveLuckBoost);
+      const nextState = inventory.applyDropsToState(inventoryData, drops.specialItems, drops.cosmeticUnlocks);
+      transaction.set(inventoryRef, {
+        ...nextState,
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      }, { merge: true });
+
       // Idempotency log (create fails if already exists — prevents double-reward in race condition)
       transaction.create(logRef, {
         userId,
         type: 'chestDrop',
+        source: src,
         chestType,
         category,
         xp: cappedXp,
@@ -523,12 +498,15 @@ exports.rollChestDrop = functions.runWith({ maxInstances: 5 }).https.onCall(asyn
       return {
         success: true,
         duplicate: false,
+        chestType,
         xp: cappedXp,
         streakShield: streakShield > 0,
         xpBoost,
         category,
         leveledUp: newLevel > currentLevel,
         newLevel,
+        specialItems: drops.specialItems,
+        cosmeticUnlocks: drops.cosmeticUnlocks,
         gems: {
           added: gemCredit.gemsAdded,
           balance: gemCredit.balance,
@@ -538,7 +516,7 @@ exports.rollChestDrop = functions.runWith({ maxInstances: 5 }).https.onCall(asyn
     });
 
     functions.logger.info('Chest drop rolled', {
-      userId, chestType: data.chestType, xp: result.xp,
+      userId, source: src, chestType: result.chestType, xp: result.xp,
       category: result.category, duplicate: result.duplicate,
     });
 
@@ -568,13 +546,15 @@ exports.claimAdReward = functions.runWith({ maxInstances: 3 }).https.onCall(asyn
   const userRef = admin.firestore().doc(`users/${userId}`);
   const dailyXpRef = getDailyXpDocRef(userId);
   const dailyGemsRef = gems.getDailyGemsDocRef(userId);
+  const dailySpRef = sagenpass.getDailySpDocRef(userId);
 
   try {
     const result = await admin.firestore().runTransaction(async (transaction) => {
-      const [userDoc, dailyXpDoc, dailyGemsDoc] = await Promise.all([
+      const [userDoc, dailyXpDoc, dailyGemsDoc, dailySpDoc] = await Promise.all([
         transaction.get(userRef),
         transaction.get(dailyXpRef),
         transaction.get(dailyGemsRef),
+        transaction.get(dailySpRef),
       ]);
       if (!userDoc.exists) {
         throw new functions.https.HttpsError('not-found', 'Usuario no encontrado');
@@ -609,6 +589,16 @@ exports.claimAdReward = functions.runWith({ maxInstances: 3 }).https.onCall(asyn
         'ad_reward', gems.GEM_REWARDS.ad_reward,
       );
 
+      const spCredit = sagenpass.applySagenPassSp({
+        transaction,
+        userRef,
+        userData,
+        dailySpRef,
+        dailySpData: dailySpDoc.data() || {},
+        reason: 'ad_reward',
+        spToAdd: sagenpass.SP_REWARDS.ad_reward,
+      });
+
       transaction.update(userRef, {
         learning_total_xp: newTotalXp,
         learning_level: newLevel,
@@ -636,6 +626,16 @@ exports.claimAdReward = functions.runWith({ maxInstances: 3 }).https.onCall(asyn
           balance: gemCredit.balance,
           dailyCapped: gemCredit.dailyCapped,
         },
+        sagenPass: spCredit
+          ? {
+              spAdded: spCredit.spAdded,
+              sp: spCredit.sp,
+              level: spCredit.level,
+              leveledUp: spCredit.leveledUp,
+              dailyCapped: spCredit.dailyCapped,
+              premium: spCredit.premium,
+            }
+          : null,
       };
     });
 

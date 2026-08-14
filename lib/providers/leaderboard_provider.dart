@@ -20,7 +20,7 @@ final leaderboardProvider = StreamProvider.autoDispose<List<LeaderboardEntry>>((
   ref,
 ) {
   return FirebaseFirestore.instance
-      .collection('users')
+      .collection('leaderboards')
       .orderBy('learning_total_xp', descending: true)
       .limit(50)
       .snapshots()

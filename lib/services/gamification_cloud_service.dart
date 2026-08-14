@@ -58,7 +58,9 @@ class GamificationCloudService {
   /// Claims the daily chest with explicit error handling.
   Future<AppResult<Map<String, dynamic>>> claimDailyChestResult() async {
     try {
-      final result = await _functions.httpsCallable('claimDailyChest').call();
+      final result = await _functions.httpsCallable('claimDailyChest').call({
+        'chestType': 'bronze',
+      });
       final data = _validateResponse(result.data);
       if (data == null) return AppResult.ok({'alreadyClaimed': true});
       if (_safeBool(data, 'alreadyClaimed')) {
@@ -104,32 +106,6 @@ class GamificationCloudService {
       return AppResult.error(NetworkError(message: e.code, originalError: e));
     } catch (e) {
       _logger.error('GamificationCloudService.claimAdReward failed', e);
-      return AppResult.error(
-        NetworkError(message: 'unknown', originalError: e),
-      );
-    }
-  }
-
-  /// Earns Sagen Pass SP with explicit error handling.
-  /// The server decides the SP amount by `reason`; clients never send an amount.
-  Future<AppResult<Map<String, dynamic>>> earnSPResult({String? reason}) async {
-    try {
-      final result = await _functions.httpsCallable('earnSagenPassSP').call({
-        'reason': reason ?? 'lesson',
-      });
-      final data = _validateResponse(result.data);
-      if (data == null) {
-        return AppResult.error(const SyncError('null response'));
-      }
-      return AppResult.ok({
-        'sp': _safeInt(data, 'sp'),
-        'level': _safeInt(data, 'level', 1),
-      });
-    } on FirebaseFunctionsException catch (e) {
-      _logger.error('GamificationCloudService.earnSP failed: ${e.code}', e);
-      return AppResult.error(NetworkError(message: e.code, originalError: e));
-    } catch (e) {
-      _logger.error('GamificationCloudService.earnSP failed', e);
       return AppResult.error(
         NetworkError(message: 'unknown', originalError: e),
       );
@@ -209,11 +185,6 @@ class GamificationCloudService {
 
   Future<Map<String, dynamic>?> claimAdReward() async {
     final result = await claimAdRewardResult();
-    return result.value;
-  }
-
-  Future<Map<String, dynamic>?> earnSP({String? reason}) async {
-    final result = await earnSPResult(reason: reason);
     return result.value;
   }
 

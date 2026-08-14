@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'chest_type.dart';
 import 'special_item.dart';
 
 part 'chest_reward.freezed.dart';
@@ -8,6 +9,7 @@ part 'chest_reward.g.dart';
 class ChestReward with _$ChestReward {
   const factory ChestReward({
     @Default(0) int xp,
+    @Default(0) int gems,
     int? streakShields,
     String? title,
     String? message,
@@ -15,6 +17,7 @@ class ChestReward with _$ChestReward {
     @Default(false) bool xpBoost,
     @Default([]) List<SpecialItemType> specialItems,
     @Default([]) List<SpecialItemType> cosmeticUnlocks,
+    ChestType? chestType,
   }) = _ChestReward;
 
   factory ChestReward.fromJson(Map<String, dynamic> json) =>

@@ -2,6 +2,7 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const crypto = require('crypto');
 const gems = require('./gems');
+const sagenpass = require('./sagenpass');
 
 // ══════════════════════════════════════════════════════════════════
 // ECONOMIC FUNCTIONS — Server-authoritative mutations
@@ -11,6 +12,7 @@ const gems = require('./gems');
 
 const MAX_XP_PER_LESSON = 100;
 const MAX_DAILY_XP = 500;
+const MAX_DONATION_AMOUNT = 100000;
 
 // Server-authoritative XP rewards per reason.
 // Client cannot specify amount — server uses these predefined values.
@@ -38,6 +40,15 @@ function getLessonXp(lessonId) {
   // Match by lessonId prefix (e.g., "ac_s1_ses1_l6" for bonus lessons ending in _l6)
   if (lessonId.endsWith('_l6')) return LESSON_REWARDS._bonus.xp;
   return LESSON_REWARDS.default.xp;
+}
+
+// Server-authoritative streak multiplier (mirrors the client's
+// streakMultiplier in streak_provider.dart:77-81). Applied to lesson XP so
+// the XP shown locally equals what the server actually credits.
+function getStreakMultiplier(currentStreak) {
+  if (currentStreak < 10) return 1.0;
+  const mult = 1.0 + Math.floor(currentStreak / 10) * 0.1;
+  return Math.min(Math.max(mult, 1.0), 2.0);
 }
 
 function getDailyXpDocRef(userId) {
@@ -85,6 +96,9 @@ exports.processDonation = functions.runWith({ maxInstances: 10 }).https.onCall(a
   if (typeof amount !== 'number' || amount <= 0) {
     throw new functions.https.HttpsError('invalid-argument', 'El monto debe ser mayor a 0');
   }
+  if (amount > MAX_DONATION_AMOUNT) {
+    throw new functions.https.HttpsError('invalid-argument', `El monto excede el límite de ${MAX_DONATION_AMOUNT}`);
+  }
   if (!method || typeof method !== 'string') {
     throw new functions.https.HttpsError('invalid-argument', 'method requerido');
   }
@@ -104,7 +118,7 @@ exports.processDonation = functions.runWith({ maxInstances: 10 }).https.onCall(a
       ]);
 
       if (logDoc.exists) {
-        return { success: true, duplicate: true, totalDonated: userDoc.data()?.totalDonated || 0 };
+        return { success: true, duplicate: true, total_donated: userDoc.data()?.total_donated || 0 };
       }
 
       if (!userDoc.exists) {
@@ -120,13 +134,15 @@ exports.processDonation = functions.runWith({ maxInstances: 10 }).https.onCall(a
         }
         transaction.update(userRef, {
           walletBalance: walletBalance - amount,
-          totalDonated: (userData.totalDonated || 0) + amount,
-          _ts_totalDonated: admin.firestore.FieldValue.serverTimestamp(),
+          total_donated: (userData.total_donated || 0) + amount,
+          is_supporter: true,
+          _ts_total_donated: admin.firestore.FieldValue.serverTimestamp(),
         });
       } else {
         transaction.update(userRef, {
-          totalDonated: (userData.totalDonated || 0) + amount,
-          _ts_totalDonated: admin.firestore.FieldValue.serverTimestamp(),
+          total_donated: (userData.total_donated || 0) + amount,
+          is_supporter: true,
+          _ts_total_donated: admin.firestore.FieldValue.serverTimestamp(),
         });
       }
 
@@ -138,7 +154,7 @@ exports.processDonation = functions.runWith({ maxInstances: 10 }).https.onCall(a
         createdAt: admin.firestore.FieldValue.serverTimestamp(),
       });
 
-      return { success: true, duplicate: false, totalDonated: (userData.totalDonated || 0) + amount };
+      return { success: true, duplicate: false, total_donated: (userData.total_donated || 0) + amount };
     });
 
     functions.logger.info('processDonation', {
@@ -150,6 +166,79 @@ exports.processDonation = functions.runWith({ maxInstances: 10 }).https.onCall(a
     if (error instanceof functions.https.HttpsError) throw error;
     functions.logger.error('processDonation error', error);
     throw new functions.https.HttpsError('internal', 'Error al procesar donación');
+  }
+});
+
+/**
+ * HTTPS Callable: Record a user-reported donation (manual methods like
+ * WhatsApp/Yape/Plin). The amount is user-provided by design (verified later
+ * by an admin), but bounds are enforced and the write is idempotent.
+ */
+exports.recordDonation = functions.runWith({ maxInstances: 10 }).https.onCall(async (data, context) => {
+  if (!context.auth) {
+    throw new functions.https.HttpsError('unauthenticated', 'Debes iniciar sesion');
+  }
+
+  const { amount, method, idempotencyKey } = data;
+  if (typeof amount !== 'number' || amount <= 0) {
+    throw new functions.https.HttpsError('invalid-argument', 'El monto debe ser mayor a 0');
+  }
+  if (amount > MAX_DONATION_AMOUNT) {
+    throw new functions.https.HttpsError('invalid-argument', `El monto excede el límite de ${MAX_DONATION_AMOUNT}`);
+  }
+  if (!method || typeof method !== 'string') {
+    throw new functions.https.HttpsError('invalid-argument', 'method requerido');
+  }
+
+  const userId = context.auth.uid;
+  const userRef = admin.firestore().doc(`users/${userId}`);
+  const key = idempotencyKey || `donation_${userId}_${Date.now()}`;
+  const logRef = admin.firestore().doc(`transaction_logs/${key}`);
+
+  try {
+    const result = await admin.firestore().runTransaction(async (transaction) => {
+      const [userDoc, logDoc] = await Promise.all([
+        transaction.get(userRef),
+        transaction.get(logRef),
+      ]);
+
+      if (logDoc.exists) {
+        return { success: true, duplicate: true, total_donated: userDoc.data()?.total_donated || 0 };
+      }
+
+      if (!userDoc.exists) {
+        throw new functions.https.HttpsError('not-found', 'Usuario no encontrado');
+      }
+
+      const userData = userDoc.data() || {};
+      const newTotal = (userData.total_donated || 0) + amount;
+
+      transaction.update(userRef, {
+        total_donated: newTotal,
+        is_supporter: true,
+        _ts_total_donated: admin.firestore.FieldValue.serverTimestamp(),
+      });
+
+      transaction.create(logRef, {
+        userId,
+        type: 'donation',
+        method,
+        amount,
+        createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      });
+
+      return { success: true, duplicate: false, total_donated: newTotal };
+    });
+
+    functions.logger.info('recordDonation', {
+      userId, amount, method, duplicate: result.duplicate,
+    });
+
+    return result;
+  } catch (error) {
+    if (error instanceof functions.https.HttpsError) throw error;
+    functions.logger.error('recordDonation error', error);
+    throw new functions.https.HttpsError('internal', 'Error al registrar donación');
   }
 });
 
@@ -174,6 +263,7 @@ exports.addXp = functions.runWith({ maxInstances: 10 }).https.onCall(async (data
   const logRef = admin.firestore().doc(`transaction_logs/${idempotencyKey}`);
   const today = new Date().toISOString().split('T')[0];
   const dailyXpRef = admin.firestore().doc(`daily_xp_sources/${userId}_${today}`);
+  const leaderboardRef = admin.firestore().doc(`leaderboards/${userId}`);
 
   try {
     const result = await admin.firestore().runTransaction(async (transaction) => {
@@ -221,6 +311,14 @@ exports.addXp = functions.runWith({ maxInstances: 10 }).https.onCall(async (data
         updatedAt: admin.firestore.FieldValue.serverTimestamp(),
       }, { merge: true });
 
+      transaction.set(leaderboardRef, {
+        firstName: userData.firstName || '',
+        lastName: userData.lastName || '',
+        photoUrl: userData.photoUrl || '',
+        learning_total_xp: newTotalXp,
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      }, { merge: true });
+
       transaction.create(logRef, {
         userId,
         type: 'addXp',
@@ -255,6 +353,8 @@ exports.incrementStreak = functions.runWith({ maxInstances: 5 }).https.onCall(as
     throw new functions.https.HttpsError('unauthenticated', 'Debes iniciar sesion');
   }
 
+  const { freezeUsed } = data;
+
   const userId = context.auth.uid;
   const userRef = admin.firestore().doc(`users/${userId}`);
 
@@ -287,6 +387,51 @@ exports.incrementStreak = functions.runWith({ maxInstances: 5 }).https.onCall(as
         const yesterdayStr = yesterday.toISOString().split('T')[0];
 
         if (lastStr !== yesterdayStr) {
+          // Server-side freeze decision (NUEVO-09): a freeze is only honored
+          // if the user actually owns streak shields. The server verifies and
+          // debits them; the client's freezeUsed is never trusted on its own.
+          if (freezeUsed === true) {
+            const streakShields = userData.streak_shields || 0;
+            const shopShields = userData.shop_streak_shields || 0;
+            const availableShields = streakShields + shopShields;
+
+            if (availableShields > 0) {
+              const keptStreak = currentStreak + 1;
+              const newLongest = Math.max(longestStreak, keptStreak);
+              const shieldUpdates = streakShields > 0
+                ? { streak_shields: streakShields - 1 }
+                : { shop_streak_shields: shopShields - 1 };
+              transaction.update(userRef, {
+                currentStreak: keptStreak,
+                longestStreak: newLongest,
+                streak_last_activity: admin.firestore.FieldValue.serverTimestamp(),
+                _ts_currentStreak: admin.firestore.FieldValue.serverTimestamp(),
+                _ts_longestStreak: admin.firestore.FieldValue.serverTimestamp(),
+                ...shieldUpdates,
+              });
+              return {
+                success: true, currentStreak: keptStreak, longestStreak: newLongest,
+                freezeConsumed: true, previousStreak: currentStreak,
+                shieldsRemaining: availableShields - 1,
+              };
+            }
+            // Client asked for a freeze but owns no shields: the freeze is
+            // denied and the streak breaks (server-authoritative).
+            const newStreak = 1;
+            const newLongest = Math.max(longestStreak, currentStreak);
+            transaction.update(userRef, {
+              currentStreak: newStreak,
+              longestStreak: newLongest,
+              streak_last_activity: admin.firestore.FieldValue.serverTimestamp(),
+              _ts_currentStreak: admin.firestore.FieldValue.serverTimestamp(),
+              _ts_longestStreak: admin.firestore.FieldValue.serverTimestamp(),
+            });
+            return {
+              success: true, currentStreak: newStreak, longestStreak: newLongest,
+              streakBroken: true, previousStreak: currentStreak,
+              freezeDenied: true,
+            };
+          }
           const newStreak = 1;
           const newLongest = Math.max(longestStreak, currentStreak);
           transaction.update(userRef, {
@@ -353,14 +498,17 @@ exports.completeLesson = functions.runWith({ maxInstances: 10 }).https.onCall(as
   const logRef = admin.firestore().doc(`transaction_logs/${userId}_${lessonId}`);
   const dailyXpRef = getDailyXpDocRef(userId);
   const dailyGemsRef = gems.getDailyGemsDocRef(userId);
+  const dailySpRef = sagenpass.getDailySpDocRef(userId);
+  const leaderboardRef = admin.firestore().doc(`leaderboards/${userId}`);
 
   try {
     const result = await admin.firestore().runTransaction(async (transaction) => {
-      const [userDoc, logDoc, dailyXpDoc, dailyGemsDoc] = await Promise.all([
+      const [userDoc, logDoc, dailyXpDoc, dailyGemsDoc, dailySpDoc] = await Promise.all([
         transaction.get(userRef),
         transaction.get(logRef),
         transaction.get(dailyXpRef),
         transaction.get(dailyGemsRef),
+        transaction.get(dailySpRef),
       ]);
 
       if (logDoc.exists) {
@@ -376,6 +524,7 @@ exports.completeLesson = functions.runWith({ maxInstances: 10 }).https.onCall(as
           },
           lessonsCompleted: userDoc.data()?.lessonsCompleted || 0,
           gems: { added: 0, balance: userDoc.data()?.learning_gems || 0 },
+          sagenPass: null,
         };
       }
 
@@ -385,18 +534,26 @@ exports.completeLesson = functions.runWith({ maxInstances: 10 }).https.onCall(as
 
       const userData = userDoc.data() || {};
 
+      const currentStreak = userData.currentStreak || 0;
+      const longestStreak = userData.longestStreak || 0;
+
+      // Server-authoritative XP: base lesson reward scaled by the streak
+      // multiplier (mirrors the client's xpForLesson). Boost multipliers are
+      // NOT applied here — boosts have no server-side effect (see NUEVO-10).
+      const effectiveXp = Math.min(
+        Math.round(xp * getStreakMultiplier(currentStreak)),
+        MAX_XP_PER_LESSON,
+      );
+
       const dailyData = dailyXpDoc.data() || {};
       const xpEarnedToday = dailyData.total || 0;
-      const { cappedXp } = computeCappedXp(xpEarnedToday, xp);
+      const { cappedXp } = computeCappedXp(xpEarnedToday, effectiveXp);
 
       const currentTotalXp = userData.learning_total_xp || 0;
       const currentLevel = userData.learning_level || 1;
       const newTotalXp = currentTotalXp + cappedXp;
       const newLevel = Math.floor(newTotalXp / 100) + 1;
       const leveledUp = newLevel > currentLevel;
-
-      const currentStreak = userData.currentStreak || 0;
-      const longestStreak = userData.longestStreak || 0;
       const lastActivity = userData.streak_last_activity;
       let streakToSet = currentStreak;
       let longestToSet = longestStreak;
@@ -448,6 +605,19 @@ exports.completeLesson = functions.runWith({ maxInstances: 10 }).https.onCall(as
         transaction.set(dailyGemsRef, { first_lesson_of_day: true }, { merge: true });
       }
 
+      // SAGEN PASS SP — awarded from a server-verified action only.
+      const lessonSp = sagenpass.SP_REWARDS.lesson;
+      const perfectSp = perfect === true ? sagenpass.SP_REWARDS.perfect_lesson : 0;
+      const spCredit = sagenpass.applySagenPassSp({
+        transaction,
+        userRef,
+        userData,
+        dailySpRef,
+        dailySpData: dailySpDoc.data() || {},
+        reason: 'lesson',
+        spToAdd: lessonSp + perfectSp,
+      });
+
       transaction.update(userRef, {
         learning_total_xp: newTotalXp,
         learning_level: newLevel,
@@ -464,6 +634,14 @@ exports.completeLesson = functions.runWith({ maxInstances: 10 }).https.onCall(as
       transaction.set(dailyXpRef, {
         total: admin.firestore.FieldValue.increment(cappedXp),
         completeLesson: admin.firestore.FieldValue.increment(cappedXp),
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      }, { merge: true });
+
+      transaction.set(leaderboardRef, {
+        firstName: userData.firstName || '',
+        lastName: userData.lastName || '',
+        photoUrl: userData.photoUrl || '',
+        learning_total_xp: newTotalXp,
         updatedAt: admin.firestore.FieldValue.serverTimestamp(),
       }, { merge: true });
 
@@ -494,6 +672,16 @@ exports.completeLesson = functions.runWith({ maxInstances: 10 }).https.onCall(as
           perfect: perfectGems > 0,
           firstOfDay: firstOfDayGems > 0,
         },
+        sagenPass: spCredit
+          ? {
+              spAdded: spCredit.spAdded,
+              sp: spCredit.sp,
+              level: spCredit.level,
+              leveledUp: spCredit.leveledUp,
+              dailyCapped: spCredit.dailyCapped,
+              premium: spCredit.premium,
+            }
+          : null,
       };
     });
 

@@ -102,6 +102,7 @@ class EnergyNotifier extends Notifier<EnergyState> {
     try {
       state = state.copyWith(energy: state.energy - _lessonCost);
       _save();
+      _startRegen(state.energy);
       return true;
     } finally {
       _consuming = false;

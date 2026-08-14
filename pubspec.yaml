@@ -68,7 +68,6 @@ dependencies:
   rive: ^0.13.0
   confetti: ^0.7.0
   package_info_plus: ^8.0.0
-  workmanager: ^0.10.7
   flutter_timezone: ^5.1.0
 
 dev_dependencies:

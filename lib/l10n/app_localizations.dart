@@ -7517,6 +7517,12 @@ abstract class AppLocalizations {
   /// **'¡Compra exitosa!'**
   String get storePurchaseSuccess;
 
+  /// No description provided for @storeAlreadyOwned.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya tienes este artículo.'**
+  String get storeAlreadyOwned;
+
   /// No description provided for @storeShieldLimitReached.
   ///
   /// In es, this message translates to:

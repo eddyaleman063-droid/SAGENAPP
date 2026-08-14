@@ -22,6 +22,7 @@ ChestReward _$ChestRewardFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ChestReward {
   int get xp => throw _privateConstructorUsedError;
+  int get gems => throw _privateConstructorUsedError;
   int? get streakShields => throw _privateConstructorUsedError;
   String? get title => throw _privateConstructorUsedError;
   String? get message => throw _privateConstructorUsedError;
@@ -30,6 +31,7 @@ mixin _$ChestReward {
   List<SpecialItemType> get specialItems => throw _privateConstructorUsedError;
   List<SpecialItemType> get cosmeticUnlocks =>
       throw _privateConstructorUsedError;
+  ChestType? get chestType => throw _privateConstructorUsedError;
 
   /// Serializes this ChestReward to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -50,6 +52,7 @@ abstract class $ChestRewardCopyWith<$Res> {
   @useResult
   $Res call({
     int xp,
+    int gems,
     int? streakShields,
     String? title,
     String? message,
@@ -57,6 +60,7 @@ abstract class $ChestRewardCopyWith<$Res> {
     bool xpBoost,
     List<SpecialItemType> specialItems,
     List<SpecialItemType> cosmeticUnlocks,
+    ChestType? chestType,
   });
 }
 
@@ -76,6 +80,7 @@ class _$ChestRewardCopyWithImpl<$Res, $Val extends ChestReward>
   @override
   $Res call({
     Object? xp = null,
+    Object? gems = null,
     Object? streakShields = freezed,
     Object? title = freezed,
     Object? message = freezed,
@@ -83,12 +88,17 @@ class _$ChestRewardCopyWithImpl<$Res, $Val extends ChestReward>
     Object? xpBoost = null,
     Object? specialItems = null,
     Object? cosmeticUnlocks = null,
+    Object? chestType = freezed,
   }) {
     return _then(
       _value.copyWith(
             xp: null == xp
                 ? _value.xp
                 : xp // ignore: cast_nullable_to_non_nullable
+                      as int,
+            gems: null == gems
+                ? _value.gems
+                : gems // ignore: cast_nullable_to_non_nullable
                       as int,
             streakShields: freezed == streakShields
                 ? _value.streakShields
@@ -118,6 +128,10 @@ class _$ChestRewardCopyWithImpl<$Res, $Val extends ChestReward>
                 ? _value.cosmeticUnlocks
                 : cosmeticUnlocks // ignore: cast_nullable_to_non_nullable
                       as List<SpecialItemType>,
+            chestType: freezed == chestType
+                ? _value.chestType
+                : chestType // ignore: cast_nullable_to_non_nullable
+                      as ChestType?,
           )
           as $Val,
     );
@@ -135,6 +149,7 @@ abstract class _$$ChestRewardImplCopyWith<$Res>
   @useResult
   $Res call({
     int xp,
+    int gems,
     int? streakShields,
     String? title,
     String? message,
@@ -142,6 +157,7 @@ abstract class _$$ChestRewardImplCopyWith<$Res>
     bool xpBoost,
     List<SpecialItemType> specialItems,
     List<SpecialItemType> cosmeticUnlocks,
+    ChestType? chestType,
   });
 }
 
@@ -160,6 +176,7 @@ class __$$ChestRewardImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? xp = null,
+    Object? gems = null,
     Object? streakShields = freezed,
     Object? title = freezed,
     Object? message = freezed,
@@ -167,12 +184,17 @@ class __$$ChestRewardImplCopyWithImpl<$Res>
     Object? xpBoost = null,
     Object? specialItems = null,
     Object? cosmeticUnlocks = null,
+    Object? chestType = freezed,
   }) {
     return _then(
       _$ChestRewardImpl(
         xp: null == xp
             ? _value.xp
             : xp // ignore: cast_nullable_to_non_nullable
+                  as int,
+        gems: null == gems
+            ? _value.gems
+            : gems // ignore: cast_nullable_to_non_nullable
                   as int,
         streakShields: freezed == streakShields
             ? _value.streakShields
@@ -202,6 +224,10 @@ class __$$ChestRewardImplCopyWithImpl<$Res>
             ? _value._cosmeticUnlocks
             : cosmeticUnlocks // ignore: cast_nullable_to_non_nullable
                   as List<SpecialItemType>,
+        chestType: freezed == chestType
+            ? _value.chestType
+            : chestType // ignore: cast_nullable_to_non_nullable
+                  as ChestType?,
       ),
     );
   }
@@ -212,6 +238,7 @@ class __$$ChestRewardImplCopyWithImpl<$Res>
 class _$ChestRewardImpl implements _ChestReward {
   const _$ChestRewardImpl({
     this.xp = 0,
+    this.gems = 0,
     this.streakShields,
     this.title,
     this.message,
@@ -219,6 +246,7 @@ class _$ChestRewardImpl implements _ChestReward {
     this.xpBoost = false,
     final List<SpecialItemType> specialItems = const [],
     final List<SpecialItemType> cosmeticUnlocks = const [],
+    this.chestType,
   }) : _specialItems = specialItems,
        _cosmeticUnlocks = cosmeticUnlocks;
 
@@ -228,6 +256,9 @@ class _$ChestRewardImpl implements _ChestReward {
   @override
   @JsonKey()
   final int xp;
+  @override
+  @JsonKey()
+  final int gems;
   @override
   final int? streakShields;
   @override
@@ -259,8 +290,11 @@ class _$ChestRewardImpl implements _ChestReward {
   }
 
   @override
+  final ChestType? chestType;
+
+  @override
   String toString() {
-    return 'ChestReward(xp: $xp, streakShields: $streakShields, title: $title, message: $message, isPremium: $isPremium, xpBoost: $xpBoost, specialItems: $specialItems, cosmeticUnlocks: $cosmeticUnlocks)';
+    return 'ChestReward(xp: $xp, gems: $gems, streakShields: $streakShields, title: $title, message: $message, isPremium: $isPremium, xpBoost: $xpBoost, specialItems: $specialItems, cosmeticUnlocks: $cosmeticUnlocks, chestType: $chestType)';
   }
 
   @override
@@ -269,6 +303,7 @@ class _$ChestRewardImpl implements _ChestReward {
         (other.runtimeType == runtimeType &&
             other is _$ChestRewardImpl &&
             (identical(other.xp, xp) || other.xp == xp) &&
+            (identical(other.gems, gems) || other.gems == gems) &&
             (identical(other.streakShields, streakShields) ||
                 other.streakShields == streakShields) &&
             (identical(other.title, title) || other.title == title) &&
@@ -283,7 +318,9 @@ class _$ChestRewardImpl implements _ChestReward {
             const DeepCollectionEquality().equals(
               other._cosmeticUnlocks,
               _cosmeticUnlocks,
-            ));
+            ) &&
+            (identical(other.chestType, chestType) ||
+                other.chestType == chestType));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -291,6 +328,7 @@ class _$ChestRewardImpl implements _ChestReward {
   int get hashCode => Object.hash(
     runtimeType,
     xp,
+    gems,
     streakShields,
     title,
     message,
@@ -298,6 +336,7 @@ class _$ChestRewardImpl implements _ChestReward {
     xpBoost,
     const DeepCollectionEquality().hash(_specialItems),
     const DeepCollectionEquality().hash(_cosmeticUnlocks),
+    chestType,
   );
 
   /// Create a copy of ChestReward
@@ -317,6 +356,7 @@ class _$ChestRewardImpl implements _ChestReward {
 abstract class _ChestReward implements ChestReward {
   const factory _ChestReward({
     final int xp,
+    final int gems,
     final int? streakShields,
     final String? title,
     final String? message,
@@ -324,6 +364,7 @@ abstract class _ChestReward implements ChestReward {
     final bool xpBoost,
     final List<SpecialItemType> specialItems,
     final List<SpecialItemType> cosmeticUnlocks,
+    final ChestType? chestType,
   }) = _$ChestRewardImpl;
 
   factory _ChestReward.fromJson(Map<String, dynamic> json) =
@@ -331,6 +372,8 @@ abstract class _ChestReward implements ChestReward {
 
   @override
   int get xp;
+  @override
+  int get gems;
   @override
   int? get streakShields;
   @override
@@ -345,6 +388,8 @@ abstract class _ChestReward implements ChestReward {
   List<SpecialItemType> get specialItems;
   @override
   List<SpecialItemType> get cosmeticUnlocks;
+  @override
+  ChestType? get chestType;
 
   /// Create a copy of ChestReward
   /// with the given fields replaced by the non-null parameter values.

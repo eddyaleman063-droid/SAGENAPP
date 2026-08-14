@@ -44,6 +44,7 @@ class SagenPassNotifier extends Notifier<SagenPass> {
       currentSP: _repo.currentSP,
       claimedLevels: _repo.claimedLevels,
       seasonStart: _repo.seasonStart,
+      premium: _repo.premium,
     );
   }
 
@@ -59,6 +60,7 @@ class SagenPassNotifier extends Notifier<SagenPass> {
       final serverLevel = serverData['level'] as int? ?? state.currentLevel;
       final serverSP = serverData['sp'] as int? ?? state.currentSP;
       final serverClaimed = serverData['claimed'];
+      final serverPremium = serverData['premium'] as bool? ?? state.premium;
 
       List<int> claimed;
       if (serverClaimed is List) {
@@ -81,6 +83,7 @@ class SagenPassNotifier extends Notifier<SagenPass> {
         currentSP: serverSP,
         claimedLevels: claimed,
         seasonStart: seasonStart,
+        premium: serverPremium,
       );
       _save();
     } catch (e) {
@@ -96,36 +99,8 @@ class SagenPassNotifier extends Notifier<SagenPass> {
       state.currentSP,
       state.claimedLevels,
       state.seasonStart,
+      state.premium,
     );
-  }
-
-  /// Earns SP via server-side Cloud Function, then updates local state.
-  /// The server decides the SP amount by `reason`; clients never send an amount.
-  /// Server response is validated to prevent crashes from malformed data.
-  Future<void> addSP({String? reason}) async {
-    if (state.isMaxLevel) return;
-    final result = await ref
-        .read(gamificationCloudServiceProvider)
-        .earnSP(reason: reason);
-    if (result == null) return;
-
-    // Validate server response types before applying
-    final serverSP = result['sp'];
-    final serverLevel = result['level'];
-
-    final safeSP = (serverSP is int) ? serverSP : state.currentSP;
-    final safeLevel = (serverLevel is int) ? serverLevel : state.currentLevel;
-
-    // Sanity check: server values should not be negative
-    if (safeSP < 0 || safeLevel < 1) {
-      AppLogger().warning(
-        'SagenPass: invalid server response — sp=$safeSP, level=$safeLevel',
-      );
-      return;
-    }
-
-    state = state.copyWith(currentSP: safeSP, currentLevel: safeLevel);
-    _save();
   }
 
   /// Claims a level reward via server-side Cloud Function.

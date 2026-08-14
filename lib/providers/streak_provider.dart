@@ -185,14 +185,29 @@ class StreakNotifier extends Notifier<StreakState> {
     storage.setString(_keyMonthlyData, encodeStringMap(s.monthlyData));
   }
 
-  void _syncStreakToFirestore() {
+  void _syncStreakToFirestore({bool freezeUsed = false}) {
     try {
-      // Sync streak to server via Cloud Function (not just local cache)
-      ref.read(economicFunctionsServiceProvider).incrementStreak().catchError((
-        e,
-      ) {
-        // Non-critical: local streak is already updated
-        return null;
+      // Sync streak to server via Cloud Function (not just local cache).
+      // Fire-and-forget with bounded retry + backoff so a transient network
+      // failure does not silently diverge the server streak (NUEVO-09).
+      Future<void>.delayed(Duration.zero, () async {
+        for (int attempt = 0; attempt < 3; attempt++) {
+          try {
+            await ref
+                .read(economicFunctionsServiceProvider)
+                .incrementStreak(freezeUsed: freezeUsed);
+            return;
+          } catch (e) {
+            if (attempt == 2) {
+              AppLogger().warning(
+                'StreakNotifier: server streak sync failed after retries: $e',
+              );
+              return;
+            }
+            final base = const Duration(seconds: 1) * (attempt + 1);
+            await Future.delayed(base);
+          }
+        }
       });
     } catch (e) {
       AppLogger().warning('StreakNotifier._syncStreakToFirestore failed: $e');
@@ -474,7 +489,7 @@ class StreakNotifier extends Notifier<StreakState> {
             .showFreezeConsumedNotification(newStatus.streakFreezes);
       }
       _saveExtras(storage);
-      _syncStreakToFirestore();
+      _syncStreakToFirestore(freezeUsed: newStatus.freezeConsumed);
       _scheduleStreakReminder();
     } catch (e) {
       AppLogger().error('streak checkIn failed: $e');

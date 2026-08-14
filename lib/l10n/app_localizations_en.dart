@@ -4022,6 +4022,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get storePurchaseSuccess => 'Purchase successful!';
 
   @override
+  String get storeAlreadyOwned => 'You already own this item.';
+
+  @override
   String get storeShieldLimitReached => 'Shield limit reached';
 
   @override

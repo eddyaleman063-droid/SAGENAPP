@@ -8,6 +8,7 @@ abstract class GemRepository {
 
   void addGems(int amount);
   bool spendGems(int amount);
+  void setBalance(int balance);
   void save();
 }
 
@@ -56,6 +57,11 @@ class GemRepositoryImpl implements GemRepository {
     _balance -= amount;
     _totalSpent += amount;
     return true;
+  }
+
+  @override
+  void setBalance(int balance) {
+    _balance = balance.clamp(0, 100000);
   }
 
   @override

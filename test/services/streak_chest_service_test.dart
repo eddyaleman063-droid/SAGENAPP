@@ -11,12 +11,11 @@ import 'package:sagen/services/streak_chest_service.dart';
 
 class _FakeLearning extends LearningNotifier {
   int xp = 0;
-  String? lastReason;
 
   @override
-  Future<void> addXp(int amount, {String? reason, String? lessonId}) async {
+  void applyServerXp(int amount) {
+    if (amount <= 0) return;
     xp += amount;
-    lastReason = reason;
   }
 }
 
@@ -30,6 +29,8 @@ class _FakeRoller extends ChestRewardRoller {
   Future<ChestReward> roll(
     ChestType type, {
     bool luckBoostActive = false,
+    String? contextId,
+    String source = 'lesson',
   }) async {
     if (gate != null) await gate!.future;
     return _result;
@@ -41,6 +42,8 @@ class _ThrowingRoller extends ChestRewardRoller {
   Future<ChestReward> roll(
     ChestType type, {
     bool luckBoostActive = false,
+    String? contextId,
+    String source = 'lesson',
   }) async {
     throw Exception('boom');
   }
@@ -104,7 +107,6 @@ void main() {
     );
     await flush();
     expect(learning.xp, 30);
-    expect(learning.lastReason, 'streak_chest');
     expect(singleEvent()?.type, ChestType.silver);
     expect(singleEvent()?.xp, 30);
     expect(singleEvent()?.streakShields, 1);

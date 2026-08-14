@@ -1,7 +1,7 @@
 /**
  * Tests for index.js — Payment, webhook, and utility functions.
  * Covers: health, createPaymentPreference, adminCreditDonation,
- * registerPendingPayment, checkPendingPaymentStatus, validatePurchase.
+ * registerPendingPayment, checkPendingPaymentStatus.
  */
 
 jest.mock('firebase-admin', () => require('../__mocks__/firebase-admin'));
@@ -65,9 +65,9 @@ describe('health', () => {
 
 describe('createPaymentPreference', () => {
   test('creates preference for valid request', async () => {
-    setUserDoc(AUTH_UID, { totalDonated: 0 });
+    setUserDoc(AUTH_UID, { total_donated: 0 });
     const { req, res } = makeReqRes(
-      { amount: 3, productId: 'donate_basic' },
+      { amount: 3, productId: 'donation_basic' },
       'Bearer fake-token-for-test'
     );
     admin._setVerifyIdTokenResult({ uid: AUTH_UID });
@@ -79,7 +79,7 @@ describe('createPaymentPreference', () => {
   });
 
   test('rejects request without origin header', async () => {
-    const { req, res } = makeReqRes({ amount: 3, productId: 'donate_basic' });
+    const { req, res } = makeReqRes({ amount: 3, productId: 'donation_basic' });
     delete req.headers.origin;
     admin._setVerifyIdTokenResult({ uid: AUTH_UID });
     await index.createPaymentPreference(req, res);
@@ -87,7 +87,7 @@ describe('createPaymentPreference', () => {
   });
 
   test('rejects disallowed origin', async () => {
-    const { req, res } = makeReqRes({ amount: 3, productId: 'donate_basic' });
+    const { req, res } = makeReqRes({ amount: 3, productId: 'donation_basic' });
     req.headers.origin = 'https://evil.example.com';
     admin._setVerifyIdTokenResult({ uid: AUTH_UID });
     await index.createPaymentPreference(req, res);
@@ -95,14 +95,14 @@ describe('createPaymentPreference', () => {
   });
 
   test('rejects unauthenticated user', async () => {
-    const { req, res } = makeReqRes({ amount: 3, productId: 'donate_basic' });
+    const { req, res } = makeReqRes({ amount: 3, productId: 'donation_basic' });
     await index.createPaymentPreference(req, res);
     expect(res._status).toBe(401);
   });
 
   test('rejects missing amount', async () => {
     const { req, res } = makeReqRes(
-      { productId: 'donate_basic' },
+      { productId: 'donation_basic' },
       'Bearer fake-token-for-test'
     );
     admin._setVerifyIdTokenResult({ uid: AUTH_UID });
@@ -122,7 +122,7 @@ describe('createPaymentPreference', () => {
 
   test('rejects amount that does not match catalog', async () => {
     const { req, res } = makeReqRes(
-      { amount: 999, productId: 'donate_basic' },
+      { amount: 999, productId: 'donation_basic' },
       'Bearer fake-token-for-test'
     );
     admin._setVerifyIdTokenResult({ uid: AUTH_UID });
@@ -151,7 +151,7 @@ describe('createPaymentPreference', () => {
 describe('adminCreditDonation', () => {
   test('credits donation as admin', async () => {
     setAdminDoc(AUTH_UID, { role: 'admin' });
-    setUserDoc('target-user', { totalDonated: 100 });
+    setUserDoc('target-user', { total_donated: 100 });
     const result = await index.adminCreditDonation(
       {
         userId: 'target-user',
@@ -167,7 +167,7 @@ describe('adminCreditDonation', () => {
   });
 
   test('rejects non-admin user', async () => {
-    setUserDoc(AUTH_UID, { totalDonated: 0 });
+    setUserDoc(AUTH_UID, { total_donated: 0 });
     await expect(
       index.adminCreditDonation(
         {
@@ -221,7 +221,7 @@ describe('adminCreditDonation', () => {
 
   test('is idempotent for same idempotencyKey', async () => {
     setAdminDoc(AUTH_UID, { role: 'admin' });
-    setUserDoc('target-user', { totalDonated: 100 });
+    setUserDoc('target-user', { total_donated: 100 });
     await index.adminCreditDonation(
       {
         userId: 'target-user',
@@ -243,7 +243,7 @@ describe('adminCreditDonation', () => {
 
   test('grants SAGEN PASS: premium flag, question bank, and gems', async () => {
     setAdminDoc(AUTH_UID, { role: 'admin' });
-    setUserDoc('pass-user', { totalDonated: 0, learning_gems: 100 });
+    setUserDoc('pass-user', { total_donated: 0, learning_gems: 100 });
     const result = await index.adminCreditDonation(
       {
         userId: 'pass-user',
@@ -269,7 +269,7 @@ describe('registerPendingPayment', () => {
         paymentMethod: 'whatsapp',
         operationId: 'op-1',
         amount: 10,
-        productId: 'donate_basic',
+        productId: 'donation_basic',
       },
       makeContext()
     );
@@ -312,7 +312,7 @@ describe('checkPendingPaymentStatus', () => {
       createdAt: { toDate: () => new Date() },
       expiresAt: { toDate: () => expiresAt },
     });
-    setUserDoc(AUTH_UID, { totalDonated: 42 });
+    setUserDoc(AUTH_UID, { total_donated: 42 });
     const result = await index.checkPendingPaymentStatus(
       { pendingPaymentId: `${AUTH_UID}_op-1` },
       makeContext()
@@ -351,37 +351,7 @@ describe('checkPendingPaymentStatus', () => {
 });
 
 describe('validatePurchase', () => {
-  test('issues signed token when balance is sufficient', async () => {
-    setUserDoc(AUTH_UID, { totalDonated: 200 });
-    const result = await index.validatePurchase(
-      { cost: 50, itemId: 'bundle_xp' },
-      makeContext()
-    );
-    expect(result.valid).toBe(true);
-    expect(result.totalDonated).toBe(200);
-    expect(result.token).toBeDefined();
-  });
-
-  test('rejects insufficient donation balance', async () => {
-    setUserDoc(AUTH_UID, { totalDonated: 10 });
-    await expect(
-      index.validatePurchase(
-        { cost: 50, itemId: 'bundle_xp' },
-        makeContext()
-      )
-    ).rejects.toThrow();
-  });
-
-  test('rejects missing cost or itemId', async () => {
-    setUserDoc(AUTH_UID, { totalDonated: 200 });
-    await expect(
-      index.validatePurchase({ cost: 50 }, makeContext())
-    ).rejects.toThrow();
-  });
-
-  test('rejects unauthenticated user', async () => {
-    await expect(
-      index.validatePurchase({ cost: 10, itemId: 'x' }, NO_AUTH)
-    ).rejects.toThrow();
+  test('removed: real purchase flow uses spendGems, not validatePurchase (NUEVO-14)', () => {
+    expect(typeof index.validatePurchase).toBe('undefined');
   });
 });

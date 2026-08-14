@@ -59,14 +59,14 @@ describe('checkDailyXpCap', () => {
 
 describe('processDonation', () => {
   test('credits donation to user balance', async () => {
-    setUserDoc(AUTH_UID, { totalDonated: 100 });
+    setUserDoc(AUTH_UID, { total_donated: 100 });
     const result = await economic.processDonation(
       { amount: 25, method: 'mercadopago', idempotencyKey: 'donation-1' },
       makeContext()
     );
     expect(result.success).toBe(true);
     expect(result.duplicate).toBe(false);
-    expect(result.totalDonated).toBe(125);
+    expect(result.total_donated).toBe(125);
   });
 
   test('rejects unauthenticated user', async () => {
@@ -97,7 +97,7 @@ describe('processDonation', () => {
   });
 
   test('is idempotent for same idempotencyKey', async () => {
-    setUserDoc(AUTH_UID, { totalDonated: 100 });
+    setUserDoc(AUTH_UID, { total_donated: 100 });
     await economic.processDonation(
       { amount: 25, method: 'mercadopago', idempotencyKey: 'donation-dup' },
       makeContext()
@@ -107,7 +107,7 @@ describe('processDonation', () => {
       makeContext()
     );
     expect(result.duplicate).toBe(true);
-    expect(result.totalDonated).toBe(125);
+    expect(result.total_donated).toBe(125);
   });
 
   test('rejects non-existent user', async () => {
@@ -236,6 +236,63 @@ describe('incrementStreak', () => {
     expect(result.previousStreak).toBe(10);
   });
 
+  test('keeps streak alive and debits a shield when freeze is honored', async () => {
+    const threeDaysAgo = new Date();
+    threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+    setUserDoc(AUTH_UID, {
+      currentStreak: 10,
+      longestStreak: 15,
+      streak_last_activity: { toDate: () => threeDaysAgo },
+      streak_shields: 2,
+    });
+    const result = await economic.incrementStreak(
+      { freezeUsed: true },
+      makeContext()
+    );
+    expect(result.currentStreak).toBe(11);
+    expect(result.freezeConsumed).toBe(true);
+    expect(result.streakBroken).toBeUndefined();
+    expect(result.shieldsRemaining).toBe(1);
+    expect(admin._getDoc(`users/${AUTH_UID}`).streak_shields).toBe(1);
+  });
+
+  test('honors shop streak shields when streak_shields is zero', async () => {
+    const threeDaysAgo = new Date();
+    threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+    setUserDoc(AUTH_UID, {
+      currentStreak: 10,
+      longestStreak: 15,
+      streak_last_activity: { toDate: () => threeDaysAgo },
+      streak_shields: 0,
+      shop_streak_shields: 1,
+    });
+    const result = await economic.incrementStreak(
+      { freezeUsed: true },
+      makeContext()
+    );
+    expect(result.freezeConsumed).toBe(true);
+    expect(result.shieldsRemaining).toBe(0);
+    expect(admin._getDoc(`users/${AUTH_UID}`).shop_streak_shields).toBe(0);
+  });
+
+  test('denies freeze and breaks streak when no shields owned', async () => {
+    const threeDaysAgo = new Date();
+    threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+    setUserDoc(AUTH_UID, {
+      currentStreak: 10,
+      longestStreak: 15,
+      streak_last_activity: { toDate: () => threeDaysAgo },
+    });
+    const result = await economic.incrementStreak(
+      { freezeUsed: true },
+      makeContext()
+    );
+    expect(result.currentStreak).toBe(1);
+    expect(result.streakBroken).toBe(true);
+    expect(result.freezeDenied).toBe(true);
+    expect(result.previousStreak).toBe(10);
+  });
+
   test('starts streak at 1 if no previous activity', async () => {
     setUserDoc(AUTH_UID, {
       currentStreak: 0,
@@ -312,6 +369,63 @@ describe('completeLesson', () => {
     expect(result.xp.added).toBe(20);
   });
 
+  test('applies the streak multiplier to lesson XP (streak 10 = 1.1x)', async () => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    setUserDoc(AUTH_UID, {
+      learning_total_xp: 0,
+      learning_level: 1,
+      currentStreak: 10,
+      longestStreak: 10,
+      streak_last_activity: { toDate: () => yesterday },
+      lessonsCompleted: 0,
+    });
+    const result = await economic.completeLesson(
+      { lessonId: 'lesson-1' },
+      makeContext()
+    );
+    // 15 * 1.1 = 16.5 -> round 17
+    expect(result.xp.added).toBe(17);
+    expect(result.xp.totalXp).toBe(17);
+  });
+
+  test('caps the streak multiplier at 2.0', async () => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    setUserDoc(AUTH_UID, {
+      learning_total_xp: 0,
+      learning_level: 1,
+      currentStreak: 100,
+      longestStreak: 100,
+      streak_last_activity: { toDate: () => yesterday },
+      lessonsCompleted: 0,
+    });
+    const result = await economic.completeLesson(
+      { lessonId: 'lesson-1' },
+      makeContext()
+    );
+    // 15 * 2.0 = 30
+    expect(result.xp.added).toBe(30);
+  });
+
+  test('streak multiplier is not applied below streak 10', async () => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    setUserDoc(AUTH_UID, {
+      learning_total_xp: 0,
+      learning_level: 1,
+      currentStreak: 9,
+      longestStreak: 9,
+      streak_last_activity: { toDate: () => yesterday },
+      lessonsCompleted: 0,
+    });
+    const result = await economic.completeLesson(
+      { lessonId: 'lesson-1' },
+      makeContext()
+    );
+    expect(result.xp.added).toBe(15);
+  });
+
   test('rejects missing lessonId', async () => {
     setUserDoc(AUTH_UID, { learning_gems: 0 });
     await expect(
@@ -358,5 +472,108 @@ describe('completeLesson', () => {
     const result = await economic.completeLesson({ lessonId: 'lesson-1' }, makeContext());
     expect(result.xp.added).toBe(5);
     expect(result.xp.totalXp).toBe(5);
+  });
+
+  test('awards Sagen Pass SP from a server-verified lesson', async () => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    setUserDoc(AUTH_UID, {
+      learning_total_xp: 0,
+      learning_level: 1,
+      currentStreak: 1,
+      longestStreak: 1,
+      streak_last_activity: { toDate: () => yesterday },
+      lessonsCompleted: 0,
+      sagen_pass_sp: 0,
+      sagen_pass_level: 1,
+    });
+    const result = await economic.completeLesson({ lessonId: 'lesson-1' }, makeContext());
+    expect(result.sagenPass).toBeTruthy();
+    expect(result.sagenPass.spAdded).toBe(10);
+    expect(result.sagenPass.sp).toBe(10);
+    expect(result.sagenPass.level).toBe(1);
+  });
+
+  test('awards perfect_lesson SP bonus when the lesson is perfect', async () => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    setUserDoc(AUTH_UID, {
+      learning_total_xp: 0,
+      learning_level: 1,
+      currentStreak: 1,
+      longestStreak: 1,
+      streak_last_activity: { toDate: () => yesterday },
+      lessonsCompleted: 0,
+      sagen_pass_sp: 0,
+      sagen_pass_level: 1,
+    });
+    const result = await economic.completeLesson(
+      { lessonId: 'lesson-1', perfect: true },
+      makeContext()
+    );
+    // 10 (lesson) + 15 (perfect_lesson)
+    expect(result.sagenPass.spAdded).toBe(25);
+    expect(result.sagenPass.sp).toBe(25);
+  });
+
+  test('completeLesson SP respects the daily cap', async () => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    setUserDoc(AUTH_UID, {
+      learning_total_xp: 0,
+      learning_level: 1,
+      currentStreak: 1,
+      longestStreak: 1,
+      streak_last_activity: { toDate: () => yesterday },
+      lessonsCompleted: 0,
+      sagen_pass_sp: 0,
+      sagen_pass_level: 1,
+    });
+    const today = new Date().toISOString().split('T')[0];
+    admin._setDoc(`daily_sp_sources/${AUTH_UID}_${today}`, { total: 95 });
+    const result = await economic.completeLesson({ lessonId: 'lesson-1' }, makeContext());
+    expect(result.sagenPass.spAdded).toBe(5);
+    expect(result.sagenPass.dailyCapped).toBe(true);
+  });
+
+  test('completeLesson does not award SP on duplicates', async () => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    setUserDoc(AUTH_UID, {
+      learning_total_xp: 0,
+      learning_level: 1,
+      currentStreak: 1,
+      longestStreak: 1,
+      streak_last_activity: { toDate: () => yesterday },
+      lessonsCompleted: 0,
+      sagen_pass_sp: 0,
+      sagen_pass_level: 1,
+    });
+    await economic.completeLesson({ lessonId: 'lesson-sp-dup' }, makeContext());
+    const result = await economic.completeLesson({ lessonId: 'lesson-sp-dup' }, makeContext());
+    expect(result.duplicate).toBe(true);
+    expect(result.sagenPass).toBeNull();
+  });
+
+  test('completeLesson pass holders earn unlimited SP', async () => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    setUserDoc(AUTH_UID, {
+      learning_total_xp: 0,
+      learning_level: 1,
+      currentStreak: 1,
+      longestStreak: 1,
+      streak_last_activity: { toDate: () => yesterday },
+      lessonsCompleted: 0,
+      sagen_pass_sp: 0,
+      sagen_pass_level: 1,
+      sagen_pass_active: true,
+    });
+    const today = new Date().toISOString().split('T')[0];
+    admin._setDoc(`daily_sp_sources/${AUTH_UID}_${today}`, { total: 100 });
+    const result = await economic.completeLesson({ lessonId: 'lesson-1' }, makeContext());
+    expect(result.sagenPass.spAdded).toBe(10);
+    expect(result.sagenPass.dailyCapped).toBe(false);
+    expect(result.sagenPass.premium).toBe(true);
   });
 });
