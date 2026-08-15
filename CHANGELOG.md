@@ -26,13 +26,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Webhooks de MercadoPago (Cloud Functions y Vercel): fallos transitorios (fetch a MP o error interno) devuelven 5xx para que MP reintente en vez de 200; el catch-all ya no traga errores.
 - `registerPendingPayment` y `adminCreditDonation`: validación de monto (rango 0..100000) y sanitización de `operationId`/`userId`/`idempotencyKey` (regex `[A-Za-z0-9_-]`) contra path-injection en ids de documentos.
 - Guards contra `data` nulo en callables.
+- Webhook de Vercel (`api/index.js`): una firma malformada (no-hex) devuelve 401 en vez de 500, alineado con Cloud Functions (la validación previa a `timingSafeEqual` evita que un probe barato fuerce un retry).
 
 ### Changed
 - `targetSdk` de Android a API 36 (Android 16): requisito de Google Play (API 35 desde ago-2025, API 36 desde ago-2026). `compileSdk` ya era 36.
 - Migrado de `flutter_markdown` (discontinuado) a `flutter_markdown_plus` (fork mantenido, mismo API).
 
 ### Added
-- +10 tests de regresión backend (firma/retry de webhook, validación de pagos).
+- Tests del webhook LIVE de Vercel (`api/index.js`): 15 tests nuevos (verificación de firma HMAC, retry 5xx ante fallo de MP, crédito idempotente de pagos aprobados, validación de `adminCreditDonation` con coerción de monto string→número y gate de auth 401/403). Jest sube a 232/232.
+- `functions/jest.config.js`: `moduleDirectories` para resolver deps desde `functions/node_modules`; los tests de `api/` quedan incluidos en `npm test` (CI).
 
 ## [5.1.2] - 2026-08-15
 
