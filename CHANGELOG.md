@@ -28,6 +28,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - PR template for GitHub
 - Release notes template
 - +60 tests: cobertura de `SageEmotionService`, widgets comunes (TapScale, SkipToContent, KeyboardAwareLayout, StatCardWidget), learning (QuizFeedbackCard, QuizOptionButton), home (HeroMissionCard), auth (AuthSocialButtons), sage_chat (QuickChips, MessageBubble), ranking (CurrentUserRankBar), animaciones (ParticleBurst), onboarding (LegalTextBlock, WizardSummaryRow).
+- Accesibilidad: live regions de accesibilidad para el temporizador y el veredicto del quiz, semántica de accesibilidad en el calendario semanal (día completado/hoy), tests de widgets de a11y (quiz + calendario).
+- Reforzadas las Firestore Security Rules: `validProfileUpdate()` valida tipo y rango de cada campo modificado, y `pending_payments` exige `amount is int == 0`.
 
 ### Changed
 - Git for Windows instalado; remote sin PAT embebido (usa Git Credential Manager).
@@ -41,7 +43,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Bug en `CurrentUserRankBar`: `rankingYourPosition` recibía `(rank, xp)` pero la firma generada es `(xp, rank)`; se mostraba "Tu posición: #5.0k · 3 XP" en lugar de "#3 · 5.0k XP".
 - ConnectivityService StreamSubscription memory leak
-- Missing theme extensions for mini-game screens## [5.1.0] - 2025-01-XX
+- Missing theme extensions for mini-game screens
+- 40 archivos muertos eliminados (sin referencias en `lib/`, `test/` ni `integration_test/`) y 3 carpetas vacías (`lib/extensions`, `lib/models/states`, `lib/ui/widgets/illustrations`).
+- Security hardening en Cloud Functions y API: `idempotencyKey`/`lessonId` sanitizados contra inyección de paths (regex `[A-Za-z0-9_-]`), `reason` de `addXp` whitelisteado contra field-path injection, `correctCount`/`totalQuestions` requieren enteros estrictos (anti-farm), `Number.isFinite` en montos, y `getProductDetails` nulo devuelve 400 en vez de 500.
+- L10n: placeholders sin declarar en metadata (`storeDailyChestReward`, `shareChestText`, `treasureChest`) en las 4 locales, y apóstrofos ICU escapados en francés (`shareChestText`).
+- Fix defensivo en `_unlockFirstStage` (lista de stages vacía).
+- Lint `prefer_const_constructors` aplicado en los nuevos tests.
+
+## [5.1.0] - 2025-01-XX
 
 ### Added
 - 200 learning sessions across 8 stages
