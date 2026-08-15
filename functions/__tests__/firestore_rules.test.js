@@ -260,7 +260,9 @@ describe('firestore.rules — pending_payments', () => {
   });
 
   test('max 10 keys per document', () => {
-    expect(RULES).toMatch(/request\.resource\.data\.keys\.size\(\)\s*<=\s*10/);
+    // keys() is a method in the rules language: missing parens is a syntax
+    // error that would fail `firebase deploy`.
+    expect(RULES).toMatch(/request\.resource\.data\.keys\(\)\.size\(\)\s*<=\s*10/);
   });
 
   test('update and delete are denied', () => {

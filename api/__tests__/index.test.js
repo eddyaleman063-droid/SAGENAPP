@@ -133,6 +133,8 @@ describe('api handlePaymentWebhook', () => {
     const log = admin._getDoc('payment_logs/pay_5');
     expect(log).toBeTruthy();
     expect(log.userId).toBe(AUTH_UID);
+    expect(log.amount).toBe(3);
+    expect(log.paymentAmount).toBe(3);
 
     const user = admin._getDoc(`users/${AUTH_UID}`);
     expect(user.total_donated).toBe(3);
@@ -144,6 +146,110 @@ describe('api handlePaymentWebhook', () => {
     expect(r2._status).toBe(200);
     const user2 = admin._getDoc(`users/${AUTH_UID}`);
     expect(user2.total_donated).toBe(3);
+  });
+
+  test('flips matching pending payments to completed', async () => {
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      json: async () => approvedPayment(),
+    });
+    admin._setDoc('pending_payments/owner_pay_6', {
+      userId: AUTH_UID, operationId: 'pay_6', status: 'pending',
+    });
+    const r = makeRes();
+    await webhookHandler()(signedWebhookReq({ type: 'payment', data: { id: 'pay_6' } }), r);
+    expect(r._status).toBe(200);
+    const flipped = admin._getDoc('pending_payments/owner_pay_6');
+    expect(flipped.status).toBe('completed');
+  });
+});
+
+describe('api registerPendingPayment', () => {
+  // Route: requireAuth, rateLimit, handler → the handler is index 2.
+  const registerHandler = () => app._handlers.post['/api/registerPendingPayment'][2];
+
+  function authedReq(body) {
+    return { method: 'POST', body, user: { uid: AUTH_UID } };
+  }
+
+  test('registers a pending payment and is idempotent on retry', async () => {
+    const r1 = makeRes();
+    await registerHandler()(authedReq({
+      paymentMethod: 'whatsapp', operationId: 'op-123', amount: 50, productId: 'donation_basic',
+    }), r1);
+    expect(r1._status).toBe(200);
+    expect(r1._body.result).toEqual(expect.objectContaining({ success: true, duplicate: false }));
+
+    const r2 = makeRes();
+    await registerHandler()(authedReq({
+      paymentMethod: 'whatsapp', operationId: 'op-123', amount: 50,
+    }), r2);
+    expect(r2._status).toBe(200);
+    expect(r2._body.result).toEqual(expect.objectContaining({ success: true, duplicate: true }));
+  });
+
+  test('rejects an unsupported payment method', async () => {
+    const r = makeRes();
+    await registerHandler()(authedReq({ paymentMethod: 'bitcoin', operationId: 'op-1', amount: 50 }), r);
+    expect(r._status).toBe(400);
+  });
+
+  test('rejects non-numeric or out-of-range amount', async () => {
+    const r1 = makeRes();
+    await registerHandler()(authedReq({ paymentMethod: 'yape', operationId: 'op-2', amount: '50' }), r1);
+    expect(r1._status).toBe(400);
+
+    const r2 = makeRes();
+    await registerHandler()(authedReq({ paymentMethod: 'yape', operationId: 'op-3', amount: 100001 }), r2);
+    expect(r2._status).toBe(400);
+  });
+
+  test('rejects malicious operationId (path injection)', async () => {
+    const r = makeRes();
+    await registerHandler()(authedReq({ paymentMethod: 'plin', operationId: '../admin/x', amount: 50 }), r);
+    expect(r._status).toBe(400);
+  });
+});
+
+describe('api checkPendingPaymentStatus', () => {
+  // Route: requireAuth, rateLimit, handler → the handler is index 2.
+  const checkHandler = () => app._handlers.all['/api/checkPendingPaymentStatus'][2];
+  const registerHandler = () => app._handlers.post['/api/registerPendingPayment'][2];
+
+  function authedReq(body) {
+    return { method: 'POST', body, user: { uid: AUTH_UID } };
+  }
+
+  test('returns not_found when nothing matches', async () => {
+    const r = makeRes();
+    await checkHandler()(authedReq({ pendingPaymentId: 'nope' }), r);
+    expect(r._status).toBe(200);
+    expect(r._body.result.status).toBe('not_found');
+  });
+
+  test('returns only the caller-own pending payment', async () => {
+    const rr = makeRes();
+    await registerHandler()(authedReq({ paymentMethod: 'yape', operationId: 'op-owner', amount: 25 }), rr);
+    const pendingId = rr._body.result.pendingPaymentId;
+
+    // Another user's pending with the same operationId must not leak.
+    admin._setDoc('pending_payments/other_user', {
+      userId: 'someone-else', operationId: 'op-owner', status: 'pending',
+    });
+    // Owner pending flipped by the webhook/admin.
+    const pendingDoc = admin._getDoc(`pending_payments/${pendingId}`);
+    admin._setDoc(`pending_payments/${pendingId}`, {
+      ...pendingDoc, status: 'completed', completedAt: { toMillis: () => 123 },
+    });
+
+    const r = makeRes();
+    await checkHandler()(authedReq({ pendingPaymentId: pendingId }), r);
+    expect(r._status).toBe(200);
+    expect(r._body.result.status).toBe('completed');
+
+    const rOther = makeRes();
+    await checkHandler()(authedReq({ pendingPaymentId: 'other_user' }), rOther);
+    expect(rOther._body.result.status).toBe('not_found');
   });
 });
 

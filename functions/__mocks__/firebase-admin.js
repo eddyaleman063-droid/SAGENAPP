@@ -35,12 +35,43 @@ class MockFirestore {
 
   collection(name) {
     const self = this;
-    return {
+    const buildQuery = (filters) => ({
       name,
+      _filters: filters,
       doc(id) {
         return self.doc(`${name}/${id}`);
       },
-    };
+      where(field, op, value) {
+        return buildQuery([...filters, { field, op, value }]);
+      },
+      get() {
+        const docs = [];
+        const prefix = `${name}/`;
+        for (const [path, data] of self._docs.entries()) {
+          if (!path.startsWith(prefix)) continue;
+          const docId = path.slice(prefix.length);
+          if (docId.includes('/')) continue;
+          let ok = true;
+          for (const f of filters) {
+            const actual = f.field === '__name__' ? docId : (data || {})[f.field];
+            if (f.op === '==' && actual !== f.value) {
+              ok = false;
+              break;
+            }
+          }
+          if (ok) {
+            docs.push({
+              id: docId,
+              ref: self.doc(path),
+              data: () => data,
+              exists: data !== undefined,
+            });
+          }
+        }
+        return Promise.resolve({ docs, forEach: (cb) => docs.forEach(cb) });
+      },
+    });
+    return buildQuery([]);
   }
 
   runTransaction(fn) {
