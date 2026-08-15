@@ -17,14 +17,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Changed
-- `targetSdk` de Android a API 36 (Android 16): requisito de Google Play (API 35 desde ago-2025, API 36 desde ago-2026). `compileSdk` ya era 36.
-- Migrado de `flutter_markdown` (discontinuado) a `flutter_markdown_plus` (fork mantenido, mismo API).
-
 ### Fixed
+- Barra de estado: el brillo de los íconos (estado + navegación) ahora sigue el tema activo (`AnnotatedRegion`), en vez de quedar fijo en blanco — en tema claro quedaban invisibles y con edge-to-edge forzado (API 35/36) se hacía más notorio.
+- `ios/Podfile` faltante: el proyecto iOS no podía compilar con plugins nativos (ni CocoaPods ni SPM). Se añade el Podfile canónico de Flutter 3.41.9; `pod install` lo integra al pbxproj.
+- CI `release.yml`: los artefactos (APK/AAB) no se adjuntaban al release (glob no recursivo) y el path del deploy a Firebase App Distribution apuntaba a `release/*.aab` que no existe; ahora apunta a la ruta real del AAB.
+- CI `pr_check.yml`: el check de formato y los tests corrían con `continue-on-error` (no gateaban); se quita. El diff para TODO/FIXME ahora se compara contra `origin/master`.
+- Manifest PWA (`web/manifest.json`): `background_color`/`theme_color` alineados al color de marca (`#1565C0`) en vez del azul por defecto de Flutter.
 - Webhooks de MercadoPago (Cloud Functions y Vercel): fallos transitorios (fetch a MP o error interno) devuelven 5xx para que MP reintente en vez de 200; el catch-all ya no traga errores.
 - `registerPendingPayment` y `adminCreditDonation`: validación de monto (rango 0..100000) y sanitización de `operationId`/`userId`/`idempotencyKey` (regex `[A-Za-z0-9_-]`) contra path-injection en ids de documentos.
 - Guards contra `data` nulo en callables.
+
+### Changed
+- `targetSdk` de Android a API 36 (Android 16): requisito de Google Play (API 35 desde ago-2025, API 36 desde ago-2026). `compileSdk` ya era 36.
+- Migrado de `flutter_markdown` (discontinuado) a `flutter_markdown_plus` (fork mantenido, mismo API).
 
 ### Added
 - +10 tests de regresión backend (firma/retry de webhook, validación de pagos).

@@ -27,10 +27,8 @@ jobs:
         run: flutter analyze --no-fatal-infos
       - name: Verify formatting
         run: dart format --set-exit-if-changed --output=none lib/ test/
-        continue-on-error: true
       - name: Run tests (fast subset)
         run: flutter test test/services/ test/utils/ test/extensions/ test/providers/ --timeout 60s
-        continue-on-error: true
       - name: Check for TODO/FIXME in changed files
         run: |
-          git diff --name-only origin/main...HEAD | grep '\.dart$' | xargs grep -l 'TODO\|FIXME\|HACK' 2>/dev/null | head -20 || true
+          git diff --name-only origin/master...HEAD | grep '\.dart$' | xargs grep -l 'TODO\|FIXME\|HACK' 2>/dev/null | head -20 || true

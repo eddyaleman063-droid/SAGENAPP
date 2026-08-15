@@ -109,8 +109,8 @@ jobs:
           draft: false
           prerelease: ${{ inputs.stage != 'stable' }}
           files: |
-            *.apk
-            *.aab
+            **/*.apk
+            **/*.aab
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -131,7 +131,7 @@ jobs:
           appId: ${{ secrets.FIREBASE_ANDROID_APP_ID }}
           serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           groups: internal-testers
-          file: release/*.aab
+          file: release-${{ inputs.version }}/build/app/outputs/bundle/release/app-release.aab
           releaseNotes: |
             SAGEN v${{ inputs.version }} (${{ inputs.stage }})
             ${{ needs.generate-changelog.outputs.changelog }}
