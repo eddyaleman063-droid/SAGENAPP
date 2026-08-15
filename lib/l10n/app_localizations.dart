@@ -3192,6 +3192,30 @@ abstract class AppLocalizations {
   /// **'Idioma'**
   String get languageTitle;
 
+  /// No description provided for @languageSpanish.
+  ///
+  /// In es, this message translates to:
+  /// **'Español'**
+  String get languageSpanish;
+
+  /// No description provided for @languageEnglish.
+  ///
+  /// In es, this message translates to:
+  /// **'Inglés'**
+  String get languageEnglish;
+
+  /// No description provided for @languageFrench.
+  ///
+  /// In es, this message translates to:
+  /// **'Francés'**
+  String get languageFrench;
+
+  /// No description provided for @languagePortuguese.
+  ///
+  /// In es, this message translates to:
+  /// **'Portugués'**
+  String get languagePortuguese;
+
   /// No description provided for @lastSync.
   ///
   /// In es, this message translates to:

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/l10n/app_localizations.dart';
+import 'package:sagen/ui/widgets/profile/language_selector.dart';
 import 'package:sagen/ui/widgets/profile/theme_selector.dart';
 import 'package:sagen/core/theme/app_colors.dart';
 
@@ -51,6 +52,7 @@ class SettingsSheet extends StatelessWidget {
           const SizedBox(height: AppSpacing.xl),
           ThemeSelector(dark: dark),
           const SizedBox(height: AppSpacing.xl),
+          const LanguageSelector(),
           const SizedBox(height: AppSpacing.md),
         ],
       ),

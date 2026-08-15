@@ -1699,6 +1699,18 @@ class AppLocalizationsPt extends AppLocalizations {
   String get languageTitle => 'Idioma';
 
   @override
+  String get languageSpanish => 'Espanhol';
+
+  @override
+  String get languageEnglish => 'Inglês';
+
+  @override
+  String get languageFrench => 'Francês';
+
+  @override
+  String get languagePortuguese => 'Português';
+
+  @override
   String get lastSync => 'Última sincronização';
 
   @override

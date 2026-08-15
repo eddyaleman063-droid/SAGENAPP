@@ -84,12 +84,11 @@ void main() async {
 /// Resolves the locale for the release error fallback from the persisted
 /// language preference; falls back to the system language.
 Locale _resolveErrorLocale(SharedPreferences prefs) {
+  const supported = ['es', 'en', 'fr', 'pt'];
   final saved = prefs.getString('app_language');
-  if (saved == 'en') return const Locale('en');
-  if (saved == 'es') return const Locale('es');
-  return WidgetsBinding.instance.platformDispatcher.locale.languageCode == 'en'
-      ? const Locale('en')
-      : const Locale('es');
+  if (saved != null && supported.contains(saved)) return Locale(saved);
+  final system = WidgetsBinding.instance.platformDispatcher.locale.languageCode;
+  return Locale(supported.contains(system) ? system : 'es');
 }
 
 /// Release-only last-resort fallback shown when a build throws an error that

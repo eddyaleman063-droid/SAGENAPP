@@ -4,7 +4,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../services/storage_service.dart';
 import 'prefs_provider.dart';
 
-enum AppLanguage { es, en }
+enum AppLanguage {
+  es('es'),
+  en('en'),
+  fr('fr'),
+  pt('pt');
+
+  const AppLanguage(this.code);
+  final String code;
+}
 
 class LanguageState {
   final AppLanguage language;
@@ -22,13 +30,19 @@ class LanguageState {
       );
 
   bool get isSpanish => language == AppLanguage.es;
-  Locale get locale =>
-      language == AppLanguage.es ? const Locale('es') : const Locale('en');
+  Locale get locale => Locale(language.code);
   bool get hasUserChosen => userExplicit;
 }
 
 class LanguageNotifier extends Notifier<LanguageState> {
   late StorageService _storage;
+
+  static AppLanguage? _languageFromCode(String code) {
+    for (final lang in AppLanguage.values) {
+      if (lang.code == code) return lang;
+    }
+    return null;
+  }
 
   @override
   LanguageState build() {
@@ -39,23 +53,22 @@ class LanguageNotifier extends Notifier<LanguageState> {
     final userExplicit = prefs.containsKey(key);
 
     if (userExplicit) {
-      final saved = _storage.getString(key, 'es');
+      final saved = prefs.getString(key) ?? 'es';
       return LanguageState(
-        language: saved == 'en' ? AppLanguage.en : AppLanguage.es,
+        language: _languageFromCode(saved) ?? AppLanguage.es,
         userExplicit: true,
       );
     }
 
-    final sysLocale = ui.PlatformDispatcher.instance.locale;
+    // Follow the system language when it maps to a supported locale.
+    final sysCode = ui.PlatformDispatcher.instance.locale.languageCode;
     return LanguageState(
-      language: sysLocale.languageCode == 'en'
-          ? AppLanguage.en
-          : AppLanguage.es,
+      language: _languageFromCode(sysCode) ?? AppLanguage.es,
     );
   }
 
   void setLanguage(AppLanguage lang) {
-    _storage.setString('app_language', lang == AppLanguage.es ? 'es' : 'en');
+    _storage.setString('app_language', lang.code);
     state = state.copyWith(language: lang, userExplicit: true);
   }
 }
