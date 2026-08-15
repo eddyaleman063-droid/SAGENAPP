@@ -22,6 +22,23 @@ void main() {
       expect(state.locale.languageCode, 'en');
     });
 
+    test('locale returns fr for French', () {
+      const state = LanguageState(language: AppLanguage.fr);
+      expect(state.locale.languageCode, 'fr');
+    });
+
+    test('locale returns pt for Portuguese', () {
+      const state = LanguageState(language: AppLanguage.pt);
+      expect(state.locale.languageCode, 'pt');
+    });
+
+    test('AppLanguage exposes its locale code', () {
+      expect(AppLanguage.es.code, 'es');
+      expect(AppLanguage.en.code, 'en');
+      expect(AppLanguage.fr.code, 'fr');
+      expect(AppLanguage.pt.code, 'pt');
+    });
+
     test('copyWith updates language', () {
       const state = LanguageState();
       final updated = state.copyWith(
@@ -73,6 +90,60 @@ void main() {
       final state = container.read(languageProvider);
       expect(state.language, AppLanguage.es);
       expect(state.isSpanish, true);
+    });
+
+    test('setLanguage to French', () {
+      final notifier = container.read(languageProvider.notifier);
+      notifier.setLanguage(AppLanguage.fr);
+      final state = container.read(languageProvider);
+      expect(state.language, AppLanguage.fr);
+      expect(state.hasUserChosen, true);
+    });
+
+    test('setLanguage to Portuguese', () {
+      final notifier = container.read(languageProvider.notifier);
+      notifier.setLanguage(AppLanguage.pt);
+      final state = container.read(languageProvider);
+      expect(state.language, AppLanguage.pt);
+      expect(state.hasUserChosen, true);
+    });
+
+    test('setLanguage persists fr code to storage', () async {
+      final notifier = container.read(languageProvider.notifier);
+      notifier.setLanguage(AppLanguage.fr);
+      final prefs = await SharedPreferences.getInstance();
+      expect(prefs.getString('app_language'), 'fr');
+    });
+
+    test('setLanguage persists pt code to storage', () async {
+      final notifier = container.read(languageProvider.notifier);
+      notifier.setLanguage(AppLanguage.pt);
+      final prefs = await SharedPreferences.getInstance();
+      expect(prefs.getString('app_language'), 'pt');
+    });
+
+    test('build restores a saved French preference', () async {
+      SharedPreferences.setMockInitialValues({'app_language': 'fr'});
+      final prefs = await SharedPreferences.getInstance();
+      final c = ProviderContainer(
+        overrides: [prefsProvider.overrideWithValue(prefs)],
+      );
+      addTearDown(c.dispose);
+      final state = c.read(languageProvider);
+      expect(state.language, AppLanguage.fr);
+      expect(state.hasUserChosen, true);
+    });
+
+    test('build restores a saved Portuguese preference', () async {
+      SharedPreferences.setMockInitialValues({'app_language': 'pt'});
+      final prefs = await SharedPreferences.getInstance();
+      final c = ProviderContainer(
+        overrides: [prefsProvider.overrideWithValue(prefs)],
+      );
+      addTearDown(c.dispose);
+      final state = c.read(languageProvider);
+      expect(state.language, AppLanguage.pt);
+      expect(state.hasUserChosen, true);
     });
   });
 }
