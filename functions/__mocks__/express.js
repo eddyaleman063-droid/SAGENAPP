@@ -1,15 +1,23 @@
 /**
  * Express stub for contract tests that load the Vercel API (api/index.js).
- * Only route registration is needed at require time.
+ * Records registered route handlers so tests can invoke them directly.
  */
 
 const noop = () => {};
 
+const handlers = {
+  use: [],
+  post: {},
+  get: {},
+  all: {},
+};
+
 const app = {
-  use: noop,
-  post: noop,
-  get: noop,
-  all: noop,
+  use: (fn) => { handlers.use.push(fn); },
+  post: (path, ...fns) => { handlers.post[path] = fns; },
+  get: (path, ...fns) => { handlers.get[path] = fns; },
+  all: (path, ...fns) => { handlers.all[path] = fns; },
+  _handlers: handlers,
   loadCatalog: null,
   getProductDetails: null,
 };

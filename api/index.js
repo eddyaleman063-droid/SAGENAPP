@@ -234,6 +234,13 @@ app.post('/api/handlePaymentWebhook', async (req, res) => {
         console.warn('Webhook missing signature', { paymentId: data.id });
         return res.status(401).send('Unauthorized');
       }
+      if (!/^[a-f0-9]{64}$/i.test(v1)) {
+        // Validate hex shape BEFORE timingSafeEqual: buffers of different
+        // lengths throw, turning a cheap malformed-signature probe into a
+        // 500 (and an MP retry). A malformed signature is a 401, drop it.
+        console.warn('Webhook malformed signature', { paymentId: data.id });
+        return res.status(401).send('Unauthorized');
+      }
       const rawBody = req.rawBody
         ? req.rawBody.toString('utf8')
         : JSON.stringify(req.body);
