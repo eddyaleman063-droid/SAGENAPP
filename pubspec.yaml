@@ -1,7 +1,7 @@
 name: sagen
 description: "SAGEN - Tu guía digital. Aprende ciberseguridad de forma inteligente."
 publish_to: 'none'
-version: 5.1.1+8
+version: 5.1.2+9
 
 environment:
   sdk: ^3.11.5
@@ -51,7 +51,7 @@ dependencies:
   connectivity_plus: ^6.1.4
   url_launcher: ^6.3.1
   flutter_markdown: ^0.7.6
-  lottie: ^3.1.3
+  lottie: ^3.3.3
   flutter_animate: ^4.5.2
   flutter_dynamic_icon_plus: ^1.4.1
   flutter_local_notifications: ^18.0.1
@@ -61,12 +61,12 @@ dependencies:
   cloud_functions: ^5.5.0
   local_auth: ^3.0.1
   go_router: ^17.3.0
-  audioplayers: ^6.1.0
+  audioplayers: ^6.7.1
   safe_device: ^1.4.1
   in_app_review: ^2.0.0
   sensors_plus: ^5.0.0
-  rive: ^0.13.0
-  confetti: ^0.7.0
+  rive: ^0.14.11
+  confetti: ^0.8.0
   package_info_plus: ^8.0.0
   flutter_timezone: ^5.1.0
 
@@ -78,7 +78,7 @@ dev_dependencies:
   flutter_lints: ^6.0.0
   mocktail: ^1.0.4
   fake_async: ^1.3.2
-  sqflite_common_ffi: ^2.3.0
+  sqflite_common_ffi: ^2.4.0
   firebase_core_platform_interface: 6.0.3
 
   # Code Generation

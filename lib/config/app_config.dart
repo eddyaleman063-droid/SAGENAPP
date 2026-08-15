@@ -7,11 +7,11 @@ class AppConfig {
   static const String appName = 'SAGEN';
   static const String appVersion = String.fromEnvironment(
     'APP_VERSION',
-    defaultValue: '5.1.1',
+    defaultValue: '5.1.2',
   );
   static const String appBuildNumber = String.fromEnvironment(
     'APP_BUILD',
-    defaultValue: '7',
+    defaultValue: '9',
   );
   static const String appTagline = 'Your digital guide';
   static const String appTaglineAlt = 'Learn cybersecurity the smart way';

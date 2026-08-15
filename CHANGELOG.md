@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.1.2] - 2026-08-15
+
 ### Added
 - `DailyChestCard` en la tienda: cofre diario reclamable (F-02 server-authoritative con `claimDailyChest` en Cloud Functions y `applyServerXp` local).
 - `tools/repo_guard.ps1` y protocolo `AGENTS.md`: lock de sesión y snapshots para evitar corrupción por sesiones en paralelo.
@@ -39,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added cacheWidth/cacheHeight to all Image.asset calls
 - Extracted shared StatChip/RewardBadge widgets from mini-games
 - Added surfaceTinted/borderSubtle to AppColorsX extension
+- Dependencias: bumps seguros same-major (`confetti` 0.8.0, `rive` 0.14.11 con migración del widget de llama a la nueva API `RiveWidgetBuilder`, `audioplayers` 6.7.1, `lottie` 3.3.3, `sqflite_common_ffi` 2.4.0+3). `json_annotation`/`json_serializable` quedan fijados porque las versiones nuevas exigen `build ^4`, incompatible con `freezed` 2.x.
 
 ### Fixed
 - Bug en `CurrentUserRankBar`: `rankingYourPosition` recibía `(rank, xp)` pero la firma generada es `(xp, rank)`; se mostraba "Tu posición: #5.0k · 3 XP" en lugar de "#3 · 5.0k XP".

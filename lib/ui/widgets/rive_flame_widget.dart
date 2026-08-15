@@ -87,10 +87,22 @@ class _RiveBodyState extends State<_RiveBody> {
 
   @override
   Widget build(BuildContext context) {
-    return rive.RiveAnimation.asset(
-      'assets/animations/flame.riv',
-      artboard: _artboardName,
-      fit: BoxFit.contain,
+    return rive.RiveWidgetBuilder(
+      fileLoader: rive.FileLoader.fromAsset(
+        'assets/animations/flame.riv',
+        riveFactory: rive.Factory.flutter,
+      ),
+      artboardSelector: rive.ArtboardNamed(_artboardName),
+      builder: (context, state) {
+        return switch (state) {
+          rive.RiveLoaded(:final controller) => rive.RiveWidget(
+              controller: controller,
+              fit: rive.Fit.contain,
+            ),
+          rive.RiveLoading() => const SizedBox.shrink(),
+          rive.RiveFailed() => const SizedBox.shrink(),
+        };
+      },
     );
   }
 }

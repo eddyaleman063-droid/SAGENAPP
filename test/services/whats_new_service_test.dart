@@ -11,8 +11,8 @@ void main() {
     PackageInfo.setMockInitialValues(
       appName: 'SAGEN',
       packageName: 'com.sagen.app',
-      version: '5.1.1',
-      buildNumber: '8',
+      version: '5.1.2',
+      buildNumber: '9',
       buildSignature: '',
     );
   });
@@ -21,7 +21,7 @@ void main() {
     final prefs = await SharedPreferences.getInstance();
     final service = WhatsNewService(prefs);
     expect(await service.shouldShow(), isFalse);
-    expect(prefs.getString('whats_new_last_version'), '5.1.1');
+    expect(prefs.getString('whats_new_last_version'), '5.1.2');
   });
 
   test('returns false when the version has not changed', () async {
@@ -50,7 +50,7 @@ void main() {
     final prefs = await SharedPreferences.getInstance();
     final service = WhatsNewService(prefs);
     expect(await service.shouldShow(), isTrue);
-    expect(prefs.getString('whats_new_last_version'), '5.1.1');
+    expect(prefs.getString('whats_new_last_version'), '5.1.2');
   });
 
   test('updates stored version after showing', () async {
