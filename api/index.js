@@ -161,6 +161,9 @@ app.post('/api/createPaymentPreference', requireAuth, rateLimit, async (req, res
     }
 
     const pkg = await getProductDetails(productId);
+    if (!pkg) {
+      return res.status(400).json({ error: 'invalid-argument', message: `Producto no encontrado: ${productId}` });
+    }
     if (pkg.amount !== amount) {
       return res.status(400).json({ error: 'invalid-argument', message: `Monto no coincide: esperado ${pkg.amount}` });
     }

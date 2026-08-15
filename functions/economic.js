@@ -93,7 +93,7 @@ exports.processDonation = functions.runWith({ maxInstances: 10 }).https.onCall(a
   }
 
   const { amount, method, idempotencyKey } = data;
-  if (typeof amount !== 'number' || amount <= 0) {
+  if (typeof amount !== 'number' || !Number.isFinite(amount) || amount <= 0) {
     throw new functions.https.HttpsError('invalid-argument', 'El monto debe ser mayor a 0');
   }
   if (amount > MAX_DONATION_AMOUNT) {
@@ -104,6 +104,9 @@ exports.processDonation = functions.runWith({ maxInstances: 10 }).https.onCall(a
   }
   if (!idempotencyKey || typeof idempotencyKey !== 'string') {
     throw new functions.https.HttpsError('invalid-argument', 'idempotencyKey requerido');
+  }
+  if (!/^[A-Za-z0-9_-]{1,128}$/.test(idempotencyKey)) {
+    throw new functions.https.HttpsError('invalid-argument', 'idempotencyKey invalido');
   }
 
   const userId = context.auth.uid;
@@ -180,7 +183,7 @@ exports.recordDonation = functions.runWith({ maxInstances: 10 }).https.onCall(as
   }
 
   const { amount, method, idempotencyKey } = data;
-  if (typeof amount !== 'number' || amount <= 0) {
+  if (typeof amount !== 'number' || !Number.isFinite(amount) || amount <= 0) {
     throw new functions.https.HttpsError('invalid-argument', 'El monto debe ser mayor a 0');
   }
   if (amount > MAX_DONATION_AMOUNT) {
@@ -188,6 +191,9 @@ exports.recordDonation = functions.runWith({ maxInstances: 10 }).https.onCall(as
   }
   if (!method || typeof method !== 'string') {
     throw new functions.https.HttpsError('invalid-argument', 'method requerido');
+  }
+  if (idempotencyKey && !/^[A-Za-z0-9_-]{1,128}$/.test(idempotencyKey)) {
+    throw new functions.https.HttpsError('invalid-argument', 'idempotencyKey invalido');
   }
 
   const userId = context.auth.uid;
@@ -253,8 +259,17 @@ exports.addXp = functions.runWith({ maxInstances: 10 }).https.onCall(async (data
     throw new functions.https.HttpsError('invalid-argument', 'idempotencyKey requerido');
   }
 
-  // Server-authoritative: ignore client amount, use predefined reward per reason
-  const reasonKey = reason || 'unknown';
+  // Guard against Firestore path/field-path injection: idempotencyKey is used
+  // as a document id and reason as a field name. Only [A-Za-z0-9_-] is allowed.
+  if (!/^[A-Za-z0-9_-]{1,128}$/.test(idempotencyKey)) {
+    throw new functions.https.HttpsError('invalid-argument', 'idempotencyKey invalido');
+  }
+
+  // Whitelist the reason: unknown reasons fall back to the default reward but
+  // are never used as a field name (prevents malicious field-path injection).
+  const reasonKey = Object.prototype.hasOwnProperty.call(REASON_REWARDS, reason)
+    ? reason
+    : 'unknown';
   const reward = REASON_REWARDS[reasonKey] || DEFAULT_REASON_REWARD;
   const xp = reward.xp;
 
@@ -486,6 +501,11 @@ exports.completeLesson = functions.runWith({ maxInstances: 10 }).https.onCall(as
     throw new functions.https.HttpsError('invalid-argument', 'lessonId requerido');
   }
 
+  // lessonId is interpolated into a Firestore doc id — only safe characters.
+  if (!/^[A-Za-z0-9_-]{1,100}$/.test(lessonId)) {
+    throw new functions.https.HttpsError('invalid-argument', 'lessonId invalido');
+  }
+
   // Server-authoritative rewards: ignore client-proposed values
   const xp = Math.min(getLessonXp(lessonId), MAX_XP_PER_LESSON);
 
@@ -592,8 +612,14 @@ exports.completeLesson = functions.runWith({ maxInstances: 10 }).https.onCall(as
       // for the perfect bonus and SP to apply. Inconsistent or missing claims
       // are treated as a non-perfect lesson (anti-farm).
       const gemsDailyData = dailyGemsDoc.data() || {};
-      const rawCorrect = parseInt(correctCount, 10);
-      const rawTotal = parseInt(totalQuestions, 10);
+      // Strict integer types only: strings like '15x' or fractional values are
+      // rejected (anti-farm). The client sends plain ints.
+      const rawCorrect = Number.isInteger(correctCount)
+        ? correctCount
+        : NaN;
+      const rawTotal = Number.isInteger(totalQuestions) && totalQuestions > 0
+        ? totalQuestions
+        : NaN;
       const reportedTotal = Number.isFinite(rawTotal) && rawTotal > 0
         ? Math.min(rawTotal, 20)
         : 0;

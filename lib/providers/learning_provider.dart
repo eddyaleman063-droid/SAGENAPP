@@ -279,6 +279,7 @@ class LearningNotifier extends Notifier<LearningState> {
   }
 
   List<Stage> _unlockFirstStage(List<Stage> stages) {
+    if (stages.isEmpty) return stages;
     return stages
         .map((s) => s.id == stages[0].id ? s.copyWith(unlocked: true) : s)
         .toList();

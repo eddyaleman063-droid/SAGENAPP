@@ -1314,6 +1314,11 @@
   "storeProtectStreak": "Protect your streak",
   "storeDailyChestClaim": "Claim",
   "storeDailyChestReward": "+{xp} XP!",
+  "@storeDailyChestReward": {
+    "placeholders": {
+      "xp": {}
+    }
+  },
   "storeDailyChestSubtitle": "Claim your free daily reward",
   "storeDailyChestTitle": "Daily Chest",
   "storePurchaseFailed": "Purchase validation failed. Please try again.",
@@ -1590,10 +1595,21 @@
   "demoModeOffline": "DEMO MODE — Offline",
   "errorSync": "Sync error",
   "shareChestText": "I got {items} from a {type} chest on SAGEN!",
+  "@shareChestText": {
+    "placeholders": {
+      "items": {},
+      "type": {}
+    }
+  },
   "paymentMethodsLocal": "WhatsApp / Yape / Plin",
   "paymentMethodsMercadoPago": "Mercado Pago",
   "streakFlame": "Streak flame",
   "treasureChest": "Treasure chest {type}",
+  "@treasureChest": {
+    "placeholders": {
+      "type": {}
+    }
+  },
   "errorRestart": "Restart",
   "chatEmptyDesc": "Ask anything about cybersecurity or choose a quick suggestion.",
   "continueButton": "Continue",

@@ -1314,6 +1314,11 @@
   "storeProtectStreak": "Protégez votre série",
   "storeDailyChestClaim": "Réclamer",
   "storeDailyChestReward": "+{xp} XP !",
+  "@storeDailyChestReward": {
+    "placeholders": {
+      "xp": {}
+    }
+  },
   "storeDailyChestSubtitle": "Réclamez votre récompense quotidienne gratuite",
   "storeDailyChestTitle": "Coffre quotidien",
   "storePurchaseFailed": "Échec de la validation de l''achat. Veuillez réessayer.",
@@ -1589,11 +1594,22 @@
   "chatTypingIndicator": "Sage écrit...",
   "demoModeOffline": "MODE DÉMO — Hors ligne",
   "errorSync": "Erreur de synchronisation",
-  "shareChestText": "Jai obtenu {items} dun coffre {type} sur SAGEN !",
+  "shareChestText": "J''ai obtenu {items} d''un coffre {type} sur SAGEN !",
+  "@shareChestText": {
+    "placeholders": {
+      "items": {},
+      "type": {}
+    }
+  },
   "paymentMethodsLocal": "WhatsApp / Yape / Plin",
   "paymentMethodsMercadoPago": "Mercado Pago",
   "streakFlame": "Flamme de série",
   "treasureChest": "Coffre au trésor {type}",
+  "@treasureChest": {
+    "placeholders": {
+      "type": {}
+    }
+  },
   "errorRestart": "Redémarrer",
   "chatEmptyDesc": "Posez une question sur la cybersécurité ou choisissez une suggestion.",
   "continueButton": "Continuer",

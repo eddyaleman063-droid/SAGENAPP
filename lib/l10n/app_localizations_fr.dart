@@ -4990,7 +4990,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String shareChestText(Object items, Object type) {
-    return 'Jai obtenu $items dun coffre $type sur SAGEN !';
+    return 'J\'ai obtenu $items d\'un coffre $type sur SAGEN !';
   }
 
   @override

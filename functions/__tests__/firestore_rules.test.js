@@ -141,6 +141,21 @@ describe('firestore.rules — users collection', () => {
     expect(RULES).toMatch(/data\.keys\(\)\.hasOnly\(profileKeys\(\)\)/);
     expect(RULES).toMatch(/function\s+profileKeys\(\)/);
   });
+
+  test('isProfileUpdate validates types and ranges for changed fields', () => {
+    // The update path must re-validate types/ranges (not just key allowlist),
+    // otherwise a compromised client could write e.g. age as a string.
+    expect(RULES).toMatch(/function\s+validProfileUpdate\(diff, data\)/);
+    expect(RULES).toMatch(/data\.age is int && data\.age >= 13 && data\.age <= 120/);
+    expect(RULES).toMatch(/data\.firstName is string && data\.firstName\.size\(\) <= 50/);
+    expect(RULES).toMatch(/data\.email\.matches\('/);
+    expect(RULES).toMatch(/data\.updatedBy == request\.auth\.uid/);
+    expect(RULES).toMatch(/diff\.affectedKeys\(\)\.hasOnly\(profileKeys\(\)\)/);
+  });
+
+  test('pending_payments amount must be int zero', () => {
+    expect(RULES).toMatch(/pending_payments[\s\S]*?amount is int[\s\S]*?amount == 0/);
+  });
 });
 
 // ──────────────────────────────────────────────

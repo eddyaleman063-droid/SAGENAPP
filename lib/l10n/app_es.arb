@@ -1276,6 +1276,11 @@
   "storeProtectStreak": "Protege tu racha",
   "storeDailyChestClaim": "Reclamar",
   "storeDailyChestReward": "¡+{xp} XP!",
+  "@storeDailyChestReward": {
+    "placeholders": {
+      "xp": {}
+    }
+  },
   "storeDailyChestSubtitle": "Reclama tu recompensa diaria gratuita",
   "storeDailyChestTitle": "Cofre diario",
   "storePurchaseFailed": "Error al validar la compra. Inténtalo de nuevo.",
@@ -1552,10 +1557,21 @@
   "demoModeOffline": "MODO DEMO — Sin conexión",
   "errorSync": "Error de sincronización",
   "shareChestText": "¡Obtuve {items} de un cofre {type} en SAGEN!",
+  "@shareChestText": {
+    "placeholders": {
+      "items": {},
+      "type": {}
+    }
+  },
   "paymentMethodsLocal": "WhatsApp / Yape / Plin",
   "paymentMethodsMercadoPago": "Mercado Pago",
   "streakFlame": "Llama de racha",
   "treasureChest": "Cofre del tesoro {type}",
+  "@treasureChest": {
+    "placeholders": {
+      "type": {}
+    }
+  },
   "errorRestart": "Reiniciar",
   "chatEmptyDesc": "Pregunta sobre ciberseguridad o elige una sugerencia rápida.",
   "continueButton": "Continuar",

@@ -1314,6 +1314,11 @@
   "storeProtectStreak": "Proteja sua sequência",
   "storeDailyChestClaim": "Reivindicar",
   "storeDailyChestReward": "+{xp} XP!",
+  "@storeDailyChestReward": {
+    "placeholders": {
+      "xp": {}
+    }
+  },
   "storeDailyChestSubtitle": "Resgate sua recompensa diária gratuita",
   "storeDailyChestTitle": "Baú diário",
   "storePurchaseFailed": "Falha na validação da compra. Tente novamente.",
@@ -1590,10 +1595,21 @@
   "demoModeOffline": "MODO DEMO — Offline",
   "errorSync": "Erro de sincronização",
   "shareChestText": "Recebi {items} de um baú {type} no SAGEN!",
+  "@shareChestText": {
+    "placeholders": {
+      "items": {},
+      "type": {}
+    }
+  },
   "paymentMethodsLocal": "WhatsApp / Yape / Plin",
   "paymentMethodsMercadoPago": "Mercado Pago",
   "streakFlame": "Chama de sequência",
   "treasureChest": "Baú do tesouro {type}",
+  "@treasureChest": {
+    "placeholders": {
+      "type": {}
+    }
+  },
   "errorRestart": "Reiniciar",
   "chatEmptyDesc": "Pergunte sobre cibersegurança ou escolha uma sugestão rápida.",
   "continueButton": "Continuar",

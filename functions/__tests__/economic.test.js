@@ -599,4 +599,52 @@ describe('completeLesson', () => {
     expect(result.sagenPass.dailyCapped).toBe(false);
     expect(result.sagenPass.premium).toBe(true);
   });
+
+  test('addXp rejects path-injecting idempotencyKey', async () => {
+    setUserDoc(AUTH_UID, { learning_total_xp: 0, learning_level: 1 });
+    await expect(
+      economic.addXp(
+        { reason: 'lesson_reward', idempotencyKey: 'a/b/c' },
+        makeContext()
+      )
+    ).rejects.toThrow();
+  });
+
+  test('completeLesson rejects malicious lessonId with path chars', async () => {
+    setUserDoc(AUTH_UID, { learning_total_xp: 0, learning_level: 1 });
+    await expect(
+      economic.completeLesson({ lessonId: 'lesson/../admin' }, makeContext())
+    ).rejects.toThrow();
+  });
+
+  test('completeLesson treats non-integer correctCount as non-perfect', async () => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    setUserDoc(AUTH_UID, {
+      learning_total_xp: 0,
+      learning_level: 1,
+      currentStreak: 0,
+      longestStreak: 0,
+      streak_last_activity: { toDate: () => yesterday },
+      lessonsCompleted: 0,
+      learning_gems: 0,
+    });
+    const result = await economic.completeLesson(
+      { lessonId: 'lesson-1', perfect: true, correctCount: '15x', totalQuestions: '15y' },
+      makeContext()
+    );
+    expect(result.gems.perfect).toBe(false);
+    // Only the first-lesson-of-day bonus applies — string answers earn nothing.
+    expect(result.gems.added).toBe(10);
+  });
+
+  test('processDonation rejects path-injecting idempotencyKey', async () => {
+    setUserDoc(AUTH_UID, { total_donated: 0 });
+    await expect(
+      economic.processDonation(
+        { amount: 25, method: 'mercadopago', idempotencyKey: 'donation/../x' },
+        makeContext()
+      )
+    ).rejects.toThrow();
+  });
 });

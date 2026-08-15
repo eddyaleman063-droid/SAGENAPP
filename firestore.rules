@@ -98,10 +98,54 @@ service cloud.firestore {
         && data.updatedBy == request.auth.uid;
     }
 
-    // UPDATE: only CHANGED keys must be profile fields
-    // diff().affectedKeys() tolerates existing server-written economic fields
+    // UPDATE: only CHANGED keys must be profile fields, and each changed
+    // field must pass the same type/range validation as on create.
+    // diff().affectedKeys() tolerates existing server-written economic fields.
     function isProfileUpdate() {
-      return request.resource.data.diff(resource.data).affectedKeys().hasOnly(profileKeys());
+      let diff = request.resource.data.diff(resource.data);
+      return diff.affectedKeys().hasOnly(profileKeys())
+        && validProfileUpdate(diff, request.resource.data);
+    }
+
+    // Validates each changed field (if present) with the same constraints as
+    // isProfileCreate. Unchanged fields are not re-validated.
+    function validProfileUpdate(diff, data) {
+      return (!diff.affectedKeys().hasAny(['firstName'])
+              || data.firstName is string && data.firstName.size() <= 50)
+        && (!diff.affectedKeys().hasAny(['lastName'])
+              || data.lastName is string && data.lastName.size() <= 50)
+        && (!diff.affectedKeys().hasAny(['email'])
+              || data.email is string && data.email.size() <= 254
+                 && data.email.matches('^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,}$'))
+        && (!diff.affectedKeys().hasAny(['age'])
+              || data.age is int && data.age >= 13 && data.age <= 120)
+        && (!diff.affectedKeys().hasAny(['photoUrl'])
+              || data.photoUrl is string && data.photoUrl.size() <= 500
+                 && (data.photoUrl.size() == 0 || data.photoUrl.matches('^https://')))
+        && (!diff.affectedKeys().hasAny(['onboardingCompleted'])
+              || data.onboardingCompleted is bool)
+        && (!diff.affectedKeys().hasAny(['dailyGoalMinutes'])
+              || data.dailyGoalMinutes is int
+                 && data.dailyGoalMinutes >= 0 && data.dailyGoalMinutes <= 480)
+        && (!diff.affectedKeys().hasAny(['dailyLessonsGoal'])
+              || data.dailyLessonsGoal is int
+                 && data.dailyLessonsGoal >= 0 && data.dailyLessonsGoal <= 50)
+        && (!diff.affectedKeys().hasAny(['preferredLanguage'])
+              || data.preferredLanguage is string
+                 && data.preferredLanguage.size() <= 10)
+        && (!diff.affectedKeys().hasAny(['referralSource'])
+              || data.referralSource is string
+                 && data.referralSource.size() <= 50)
+        && (!diff.affectedKeys().hasAny(['routeType'])
+              || data.routeType is string && data.routeType.size() <= 20)
+        && (!diff.affectedKeys().hasAny(['motivation'])
+              || data.motivation is string && data.motivation.size() <= 200)
+        && (!diff.affectedKeys().hasAny(['lastLoginDate'])
+              || data.lastLoginDate is string && data.lastLoginDate.size() <= 30)
+        && (!diff.affectedKeys().hasAny(['updatedAt'])
+              || data.updatedAt is string && data.updatedAt.size() <= 30)
+        && (!diff.affectedKeys().hasAny(['updatedBy'])
+              || data.updatedBy == request.auth.uid);
     }
 
     // Transaction logs — server-only (Cloud Functions admin SDK)
@@ -122,6 +166,7 @@ service cloud.firestore {
                     && request.resource.data.operationId is string
                     && request.resource.data.operationId.size() > 0
                     && request.resource.data.operationId.size() <= 100
+                    && request.resource.data.amount is int
                     && request.resource.data.amount == 0
                     && request.resource.data.status == 'pending'
                     && request.resource.data.keys.size() <= 10;

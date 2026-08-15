@@ -308,6 +308,9 @@ exports.spendGems = functions.runWith({ maxInstances: 10 }).https.onCall(async (
   if (!itemId || typeof itemId !== 'string' || !idempotencyKey || typeof idempotencyKey !== 'string') {
     throw new functions.https.HttpsError('invalid-argument', 'itemId e idempotencyKey requeridos');
   }
+  if (!/^[A-Za-z0-9_-]{1,128}$/.test(idempotencyKey)) {
+    throw new functions.https.HttpsError('invalid-argument', 'idempotencyKey invalido');
+  }
 
   // Server-authoritative cost: the client amount is ignored when the item is
   // in the catalog. Unknown items are rejected (no forged-amount purchases).
