@@ -68,7 +68,8 @@ class GemNotifier extends Notifier<GemState> {
       // key like 'shop_$itemId' would make every later purchase a free
       // "duplicate". A fresh key makes each consumable re-purchase a real
       // charge while keeping the transaction_logs retry-safe.
-      final key = 'shop_${itemId}_${DateTime.now().microsecondsSinceEpoch}_${Random().nextInt(1 << 20)}';
+      final key =
+          'shop_${itemId}_${DateTime.now().microsecondsSinceEpoch}_${Random().nextInt(1 << 20)}';
       final result = await FirebaseFunctions.instance
           .httpsCallable('spendGems')
           .call({'itemId': itemId, 'idempotencyKey': key})
@@ -106,7 +107,9 @@ class GemNotifier extends Notifier<GemState> {
       final serverBalance = (data['balance'] as num?)?.toInt();
       if (serverBalance != null) syncBalance(serverBalance);
     } catch (e) {
-      AppLogger().warning('GemNotifier: failed to sync balance from server: $e');
+      AppLogger().warning(
+        'GemNotifier: failed to sync balance from server: $e',
+      );
     }
   }
 

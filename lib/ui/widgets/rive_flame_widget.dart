@@ -96,9 +96,9 @@ class _RiveBodyState extends State<_RiveBody> {
       builder: (context, state) {
         return switch (state) {
           rive.RiveLoaded(:final controller) => rive.RiveWidget(
-              controller: controller,
-              fit: rive.Fit.contain,
-            ),
+            controller: controller,
+            fit: rive.Fit.contain,
+          ),
           rive.RiveLoading() => const SizedBox.shrink(),
           rive.RiveFailed() => const SizedBox.shrink(),
         };

@@ -26,9 +26,11 @@ void main() {
   ) async {
     final semantics = tester.ensureSemantics();
     final now = DateTime.now();
-    final startOfWeek = DateTime(now.year, now.month, now.day).subtract(
-      Duration(days: now.weekday - 1),
-    );
+    final startOfWeek = DateTime(
+      now.year,
+      now.month,
+      now.day,
+    ).subtract(Duration(days: now.weekday - 1));
     final completedKey =
         '${startOfWeek.year.toString().padLeft(4, '0')}-${startOfWeek.month.toString().padLeft(2, '0')}-${startOfWeek.day.toString().padLeft(2, '0')}';
 
@@ -38,7 +40,10 @@ void main() {
     final l = AppLocalizations.of(
       tester.element(find.byType(WeeklyCalendarWidget)),
     )!;
-    expect(find.bySemanticsLabel(l.weekDayCompleted(l.dayShortMon)), findsOneWidget);
+    expect(
+      find.bySemanticsLabel(l.weekDayCompleted(l.dayShortMon)),
+      findsOneWidget,
+    );
     semantics.dispose();
     await tester.pumpWidget(const SizedBox());
   });

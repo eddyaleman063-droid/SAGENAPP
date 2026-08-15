@@ -319,24 +319,23 @@ class ShopNotifier extends Notifier<ShopState> {
     final catalog = ref.read(remoteConfigServiceProvider).shopCatalog;
     final items = catalog.isNotEmpty
         ? catalog
-              .map(
-                (e) {
-                  final id = e['id'] as String? ?? '';
-                  return ShopItem(
-                    id: id,
-                    name: e['name'] as String? ?? '',
-                    description: e['description'] as String? ?? '',
-                    iconAsset: e['iconAsset'] as String? ?? 'shield',
-                    isOwned: ownedSet.contains(id),
-                    supporterLevelRequired:
-                        (e['supporterLevelRequired'] as num?)?.toInt() ?? 1,
-                    gemCost: (e['gemCost'] as num?)?.toInt() ?? 100,
-                    category: _categoryFromString(e['category'] as String?),
-                    specialItemType: _specialTypeFromValue(e['specialItemType']) ??
-                        _specialTypeForId(id),
-                  );
-                },
-              )
+              .map((e) {
+                final id = e['id'] as String? ?? '';
+                return ShopItem(
+                  id: id,
+                  name: e['name'] as String? ?? '',
+                  description: e['description'] as String? ?? '',
+                  iconAsset: e['iconAsset'] as String? ?? 'shield',
+                  isOwned: ownedSet.contains(id),
+                  supporterLevelRequired:
+                      (e['supporterLevelRequired'] as num?)?.toInt() ?? 1,
+                  gemCost: (e['gemCost'] as num?)?.toInt() ?? 100,
+                  category: _categoryFromString(e['category'] as String?),
+                  specialItemType:
+                      _specialTypeFromValue(e['specialItemType']) ??
+                      _specialTypeForId(id),
+                );
+              })
               .where((i) => i.id.isNotEmpty)
               .toList()
         : _defaultItems

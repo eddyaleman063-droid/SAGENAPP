@@ -61,9 +61,10 @@ class InventoryService {
   /// Returns true when the server accepted the consumption.
   Future<bool> useItem(SpecialItemType type, {int quantity = 1}) async {
     try {
-      final result = await _functions
-          .httpsCallable('useInventoryItem')
-          .call({'itemName': type.name, 'quantity': quantity});
+      final result = await _functions.httpsCallable('useInventoryItem').call({
+        'itemName': type.name,
+        'quantity': quantity,
+      });
       final data = result.data;
       return data is Map && data['success'] == true;
     } catch (e) {

@@ -205,10 +205,12 @@ class LearningNotifier extends Notifier<LearningState> {
       // rollChestDrop derive the tier from the stale server counter, turning
       // milestone chests into bronze and locking the wrong idempotency key.
       if (serverLessonsCompleted != null) {
-        unawaited(_checkLessonChest(
-          serverLessonId ?? 'lesson_sync',
-          lessonsCompleted: serverLessonsCompleted,
-        ));
+        unawaited(
+          _checkLessonChest(
+            serverLessonId ?? 'lesson_sync',
+            lessonsCompleted: serverLessonsCompleted,
+          ),
+        );
       }
     } catch (e) {
       AppLogger().warning('_reconcileWithServer failed: $e');
@@ -642,7 +644,9 @@ class LearningNotifier extends Notifier<LearningState> {
           .addXp(reason: reason ?? 'lesson_reward', lessonId: lessonId);
       final serverTotalXp = (result?['totalXp'] as num?)?.toInt();
       final serverLevel = (result?['level'] as num?)?.toInt();
-      if (result?['duplicate'] != true && serverTotalXp != null && serverLevel != null) {
+      if (result?['duplicate'] != true &&
+          serverTotalXp != null &&
+          serverLevel != null) {
         final progressInLevel = serverTotalXp - (serverLevel - 1) * 100;
         state = state.copyWith(
           totalXpEarned: serverTotalXp,

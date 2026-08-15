@@ -29,16 +29,16 @@ void main() {
     tester,
   ) async {
     final semantics = tester.ensureSemantics();
-    await tester.pumpWidget(
-      _wrap(CyberQuizScreen(questions: _questions())),
-    );
+    await tester.pumpWidget(_wrap(CyberQuizScreen(questions: _questions())));
 
     await tester.tap(find.text('B'));
     await tester.pump();
     await tester.tap(find.byType(ElevatedButton).first);
     await tester.pump();
 
-    final l = AppLocalizations.of(tester.element(find.byType(CyberQuizScreen)))!;
+    final l = AppLocalizations.of(
+      tester.element(find.byType(CyberQuizScreen)),
+    )!;
     expect(find.bySemanticsLabel(l.quizVerdictCorrect), findsOneWidget);
     semantics.dispose();
     await tester.pump(const Duration(milliseconds: 300));
@@ -49,16 +49,16 @@ void main() {
     tester,
   ) async {
     final semantics = tester.ensureSemantics();
-    await tester.pumpWidget(
-      _wrap(CyberQuizScreen(questions: _questions())),
-    );
+    await tester.pumpWidget(_wrap(CyberQuizScreen(questions: _questions())));
 
     await tester.tap(find.text('A'));
     await tester.pump();
     await tester.tap(find.byType(ElevatedButton).first);
     await tester.pump();
 
-    final l = AppLocalizations.of(tester.element(find.byType(CyberQuizScreen)))!;
+    final l = AppLocalizations.of(
+      tester.element(find.byType(CyberQuizScreen)),
+    )!;
     expect(find.bySemanticsLabel(l.quizVerdictIncorrect), findsOneWidget);
     semantics.dispose();
     await tester.pump(const Duration(milliseconds: 300));
@@ -69,11 +69,11 @@ void main() {
     tester,
   ) async {
     final semantics = tester.ensureSemantics();
-    await tester.pumpWidget(
-      _wrap(CyberQuizScreen(questions: _questions())),
-    );
+    await tester.pumpWidget(_wrap(CyberQuizScreen(questions: _questions())));
 
-    final l = AppLocalizations.of(tester.element(find.byType(CyberQuizScreen)))!;
+    final l = AppLocalizations.of(
+      tester.element(find.byType(CyberQuizScreen)),
+    )!;
     expect(find.bySemanticsLabel(l.quizVerdictCorrect), findsNothing);
     expect(find.bySemanticsLabel(l.quizVerdictIncorrect), findsNothing);
     semantics.dispose();

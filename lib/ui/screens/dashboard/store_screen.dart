@@ -122,7 +122,9 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
         if (context.mounted) {
           SagenNotification.show(
             context,
-            message: _isOwned(item) ? l.storeAlreadyOwned : l.storePurchaseFailed,
+            message: _isOwned(item)
+                ? l.storeAlreadyOwned
+                : l.storePurchaseFailed,
             type: _isOwned(item)
                 ? NotificationType.info
                 : NotificationType.error,

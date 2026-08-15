@@ -21,11 +21,11 @@ import 'app_logger.dart';
 ///     otherwise fabricate infinite consumables).
 class ChestRewardRoller {
   ChestRewardRoller._({ChestDropService? dropService})
-      : _dropService = dropService ?? ChestDropService.instance;
+    : _dropService = dropService ?? ChestDropService.instance;
 
   @visibleForTesting
   ChestRewardRoller({ChestDropService? dropService})
-      : _dropService = dropService ?? ChestDropService.instance;
+    : _dropService = dropService ?? ChestDropService.instance;
   static final ChestRewardRoller instance = ChestRewardRoller._();
 
   final ChestDropService _dropService;

@@ -248,10 +248,11 @@ class StreakNotifier extends Notifier<StreakState> {
       if (serverStreak == null) return;
 
       final current = state.status;
-      final serverDiverged = serverStreak != current.currentStreak ||
+      final serverDiverged =
+          serverStreak != current.currentStreak ||
           serverLongest != current.longestStreak;
-      final serverBroke = result['streakBroken'] == true ||
-          result['freezeDenied'] == true;
+      final serverBroke =
+          result['streakBroken'] == true || result['freezeDenied'] == true;
 
       if (!serverDiverged && !serverBroke) return;
 
