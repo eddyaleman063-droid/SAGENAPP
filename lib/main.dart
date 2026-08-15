@@ -38,92 +38,17 @@ void main() async {
 
   _setupErrorHandlers(logger);
 
-  if (kReleaseMode) {
-    ErrorWidget.builder = (details) {
-      return MaterialApp(
-        home: Scaffold(
-          backgroundColor: PremiumColors.deepBackground,
-          body: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(AppSpacing.xxxl),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(
-                    Icons.shield_rounded,
-                    size: 48,
-                    color: PremiumColors.primary,
-                  ),
-                  const SizedBox(height: AppSpacing.lg),
-                  Text(
-                    'SAGEN',
-                    style: AppTextStyle.title.copyWith(color: Colors.white70),
-                  ),
-                  const SizedBox(height: AppSpacing.xxl),
-                  Text(
-                    'Something went wrong.\nReturning to a safe state...',
-                    textAlign: TextAlign.center,
-                    style: AppTextStyle.bodyMd.copyWith(
-                      color: Colors.white54,
-                      height: 1.5,
-                    ),
-                  ),
-                  const SizedBox(height: AppSpacing.xxl),
-                  ConstrainedBox(
-                    constraints: const BoxConstraints(
-                      minWidth: 80,
-                      minHeight: 80,
-                    ),
-                    child: GestureDetector(
-                      onTap: () {
-                        HapticFeedback.lightImpact();
-                        rootNavigatorKey.currentState?.popUntil(
-                          (route) => route.isFirst,
-                        );
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 24,
-                          vertical: 16,
-                        ),
-                        decoration: BoxDecoration(
-                          color: PremiumColors.primaryAccent,
-                          borderRadius: BorderRadius.circular(AppRadius.md),
-                        ),
-                        child: const Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Icons.home_rounded,
-                              color: Colors.white,
-                              size: 24,
-                            ),
-                            SizedBox(width: 12),
-                            Text(
-                              'Back to home',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      );
-    };
-  }
-
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   // Note: onboarding_done flag is set by the onboarding flow itself,
   // NOT here. This just checks if onboarding has been completed before.
+
+  if (kReleaseMode) {
+    // Release fallback for uncaught build errors: localized with the persisted
+    // language preference (falls back to the system language).
+    final errorLocale = _resolveErrorLocale(prefs);
+    ErrorWidget.builder = (details) =>
+        _ReleaseErrorFallback(locale: errorLocale);
+  }
 
   // Shared service instances — created here to guarantee a single instance
   // shared between the Riverpod tree and deferred initialization.
@@ -154,6 +79,120 @@ void main() async {
       cloudSyncService: cloudSyncService,
     ),
   );
+}
+
+/// Resolves the locale for the release error fallback from the persisted
+/// language preference; falls back to the system language.
+Locale _resolveErrorLocale(SharedPreferences prefs) {
+  final saved = prefs.getString('app_language');
+  if (saved == 'en') return const Locale('en');
+  if (saved == 'es') return const Locale('es');
+  return WidgetsBinding.instance.platformDispatcher.locale.languageCode == 'en'
+      ? const Locale('en')
+      : const Locale('es');
+}
+
+/// Release-only last-resort fallback shown when a build throws an error that
+/// escapes the in-app error boundary. Localized (es/en) via the app delegates.
+class _ReleaseErrorFallback extends StatelessWidget {
+  final Locale locale;
+  const _ReleaseErrorFallback({required this.locale});
+
+  void _goHome() {
+    HapticFeedback.lightImpact();
+    rootNavigatorKey.currentState?.popUntil((route) => route.isFirst);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    return MaterialApp(
+      locale: locale,
+      supportedLocales: const [Locale('es'), Locale('en')],
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      home: Scaffold(
+        backgroundColor: PremiumColors.deepBackground,
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(AppSpacing.xxxl),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.shield_rounded,
+                  size: 48,
+                  color: PremiumColors.primary,
+                ),
+                const SizedBox(height: AppSpacing.lg),
+                Text(
+                  'SAGEN',
+                  style: AppTextStyle.title.copyWith(color: Colors.white70),
+                ),
+                const SizedBox(height: AppSpacing.xxl),
+                Text(
+                  '${l?.errorSomethingWrong ?? 'Something went wrong'}\n'
+                  '${l?.errorUnexpected ?? 'Returning to a safe state...'}',
+                  textAlign: TextAlign.center,
+                  style: AppTextStyle.bodyMd.copyWith(
+                    color: Colors.white54,
+                    height: 1.5,
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.xxl),
+                ConstrainedBox(
+                  constraints: const BoxConstraints(
+                    minWidth: 80,
+                    minHeight: 80,
+                  ),
+                  child: Semantics(
+                    button: true,
+                    label: l?.errorRestartApp ?? 'Back to home',
+                    child: GestureDetector(
+                      onTap: _goHome,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 16,
+                        ),
+                        decoration: BoxDecoration(
+                          color: PremiumColors.primaryAccent,
+                          borderRadius: BorderRadius.circular(AppRadius.md),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(
+                              Icons.home_rounded,
+                              color: Colors.white,
+                              size: 24,
+                            ),
+                            const SizedBox(width: 12),
+                            Text(
+                              l?.errorRestartApp ?? 'Back to home',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 void _setupErrorHandlers(AppLogger logger) {
