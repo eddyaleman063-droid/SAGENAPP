@@ -36,12 +36,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fallback de error de release (`ErrorWidget.builder`): ahora es localizado (es/en) usando la preferencia de idioma persistida en vez de cadenas en inglés fijas; incluye etiqueta de accesibilidad en el botón.
 - `registerPendingPayment` en Vercel: ID determinístico `${userId}_${operationId}` como en Cloud Functions, para que un retry de red no cree pagos pendientes duplicados (responde `duplicate: true`).
 - `web/index.html`: `<meta name="theme-color">` al color de marca (`#1565C0`) para que aplique antes de cargar el manifest.
+- Selector de idioma: `AppLanguage` ahora soporta 4 idiomas (es/en/fr/pt) con código persistido; sin preferencia guardada la app sigue el idioma del sistema cuando está soportado (antes solo es/en y el resto caía en español).
 
 ### Added
 - Tests del webhook LIVE de Vercel (`api/index.js`): 15 tests nuevos (verificación de firma HMAC, retry 5xx ante fallo de MP, crédito idempotente de pagos aprobados, validación de `adminCreditDonation` con coerción de monto string→número y gate de auth 401/403). Jest sube a 232/232.
 - +8 tests más del API de Vercel (flip de `pending_payments` por webhook, dedupe y validación de `registerPendingPayment`, ownership en `checkPendingPaymentStatus`). Jest sube a 239/239.
 - `functions/__mocks__/firebase-admin.js`: soporte de `collection().where().get()` para que los tests del webhook verifiquen el flip real de `pending_payments` (antes caía en el catch silencioso).
 - Test de reglas: `firestore_rules.test.js` ahora afirma `keys().size()` y habría detectado el bug de sintaxis.
+- Selector de idioma en `SettingsSheet` (junto al de tema): grid 2×2 con Español/English/Français/Português, haptic, analytics y persistencia.
+- +9 tests del provider de idioma (fr/pt: locale, persistencia y restauración desde prefs). Flutter pasa a 1156 tests.
 
 ## [5.1.2] - 2026-08-15
 
