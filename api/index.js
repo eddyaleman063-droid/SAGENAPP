@@ -328,7 +328,8 @@ app.post('/api/handlePaymentWebhook', async (req, res) => {
 
       transaction.update(userRef, updateData);
       transaction.create(logRef, {
-        userId, amount, productId, bonuses, amount: payment.transaction_amount || 0,
+        userId, amount, productId, bonuses,
+        paymentAmount: payment.transaction_amount || 0,
         currency: payment.currency_id || 'PEN', paymentId, paymentMethod: payment.payment_method_id || 'unknown',
         status: payment.status, externalRef, createdAt: admin.firestore.FieldValue.serverTimestamp(),
       });
@@ -474,7 +475,14 @@ app.post('/api/registerPendingPayment', requireAuth, rateLimit, async (req, res)
     }
 
     const userId = req.user.uid;
-    const pendingRef = admin.firestore().collection('pending_payments').doc();
+    // Deterministic doc ID prevents duplicate pending payments when the client
+    // retries after a timeout (aligned with the Cloud Functions callable).
+    const pendingRef = admin.firestore().doc(`pending_payments/${userId}_${operationId}`);
+    const existing = await pendingRef.get();
+    if (existing.exists) {
+      console.log('Pending payment already registered', { userId, operationId });
+      return res.json({ result: { success: true, pendingPaymentId: pendingRef.id, duplicate: true } });
+    }
     await pendingRef.set({
       userId, paymentMethod, operationId, amount, productId: productId || null,
       status: 'pending', createdAt: admin.firestore.FieldValue.serverTimestamp(),
@@ -482,7 +490,7 @@ app.post('/api/registerPendingPayment', requireAuth, rateLimit, async (req, res)
     });
 
     console.log('Pending payment registered', { userId, paymentMethod, operationId, pendingId: pendingRef.id });
-    res.json({ result: { success: true, pendingPaymentId: pendingRef.id } });
+    res.json({ result: { success: true, pendingPaymentId: pendingRef.id, duplicate: false } });
   } catch (error) {
     console.error('registerPendingPayment error', error);
     res.status(500).json({ error: 'internal', message: 'Error al registrar el pago' });

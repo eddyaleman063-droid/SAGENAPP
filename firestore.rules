@@ -169,7 +169,7 @@ service cloud.firestore {
                     && request.resource.data.amount is int
                     && request.resource.data.amount == 0
                     && request.resource.data.status == 'pending'
-                    && request.resource.data.keys.size() <= 10;
+                    && request.resource.data.keys().size() <= 10;
       allow read: if request.auth != null
                   && (resource.data.userId == request.auth.uid
                       || get(/databases/$(database)/documents/admins/$(request.auth.uid)).exists);
