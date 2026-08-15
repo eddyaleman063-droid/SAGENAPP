@@ -17,6 +17,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- `targetSdk` de Android a API 36 (Android 16): requisito de Google Play (API 35 desde ago-2025, API 36 desde ago-2026). `compileSdk` ya era 36.
+- Migrado de `flutter_markdown` (discontinuado) a `flutter_markdown_plus` (fork mantenido, mismo API).
+
+### Fixed
+- Webhooks de MercadoPago (Cloud Functions y Vercel): fallos transitorios (fetch a MP o error interno) devuelven 5xx para que MP reintente en vez de 200; el catch-all ya no traga errores.
+- `registerPendingPayment` y `adminCreditDonation`: validación de monto (rango 0..100000) y sanitización de `operationId`/`userId`/`idempotencyKey` (regex `[A-Za-z0-9_-]`) contra path-injection en ids de documentos.
+- Guards contra `data` nulo en callables.
+
+### Added
+- +10 tests de regresión backend (firma/retry de webhook, validación de pagos).
+
 ## [5.1.2] - 2026-08-15
 
 ### Added

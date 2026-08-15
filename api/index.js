@@ -253,7 +253,9 @@ app.post('/api/handlePaymentWebhook', async (req, res) => {
 
     if (!response.ok) {
       console.error('Failed to fetch payment', { paymentId, status: response.status });
-      return res.status(200).send('OK');
+      // Return non-2xx so MercadoPago retries: an approved payment must never
+      // be silently dropped because of a transient API failure.
+      return res.status(502).send('Failed to fetch payment from MercadoPago');
     }
 
     const payment = await response.json();
@@ -343,8 +345,11 @@ app.post('/api/handlePaymentWebhook', async (req, res) => {
     console.log('Payment processed', { userId, amount, productId: productId || 'none' });
     return res.status(200).send('OK');
   } catch (error) {
+    // Return non-2xx so MercadoPago retries the webhook instead of silently
+    // swallowing an approved payment. 4xx paths above already returned, so any
+    // exception reaching here is transient/internal.
     console.error('Webhook handler error', error);
-    return res.status(200).send('OK');
+    return res.status(500).send('Internal error');
   }
 });
 
@@ -362,6 +367,15 @@ app.post('/api/adminCreditDonation', requireAdmin, async (req, res) => {
       : parseFloat(String(rawAmount ?? '').replace(',', '.'));
     if (!userId || !Number.isFinite(amount) || amount <= 0 || !idempotencyKey) {
       return res.status(400).json({ error: 'invalid-argument', message: 'userId, amount (número) e idempotencyKey requeridos' });
+    }
+    if (amount > 100000) {
+      return res.status(400).json({ error: 'invalid-argument', message: 'El monto excede el límite de 100000' });
+    }
+    if (!/^[A-Za-z0-9_-]{1,128}$/.test(userId)) {
+      return res.status(400).json({ error: 'invalid-argument', message: 'userId invalido' });
+    }
+    if (!/^[A-Za-z0-9_-]{1,128}$/.test(idempotencyKey)) {
+      return res.status(400).json({ error: 'invalid-argument', message: 'idempotencyKey invalido' });
     }
 
     const logRef = admin.firestore().doc(`payment_logs/${idempotencyKey}`);
@@ -436,7 +450,7 @@ app.post('/api/adminCreditDonation', requireAdmin, async (req, res) => {
 app.post('/api/registerPendingPayment', requireAuth, rateLimit, async (req, res) => {
   try {
     const { paymentMethod, operationId, amount, productId } = req.body;
-    if (!paymentMethod || !operationId) {
+    if (!paymentMethod || typeof paymentMethod !== 'string' || !operationId) {
       return res.status(400).json({ error: 'invalid-argument', message: 'paymentMethod y operationId requeridos' });
     }
 
@@ -445,10 +459,17 @@ app.post('/api/registerPendingPayment', requireAuth, rateLimit, async (req, res)
       return res.status(400).json({ error: 'invalid-argument', message: 'Método de pago no válido' });
     }
 
+    if (typeof amount !== 'number' || !Number.isFinite(amount) || amount <= 0 || amount > 100000) {
+      return res.status(400).json({ error: 'invalid-argument', message: 'El monto debe ser un número mayor a 0' });
+    }
+    if (typeof operationId !== 'string' || !/^[A-Za-z0-9_-]{1,128}$/.test(operationId)) {
+      return res.status(400).json({ error: 'invalid-argument', message: 'operationId invalido' });
+    }
+
     const userId = req.user.uid;
     const pendingRef = admin.firestore().collection('pending_payments').doc();
     await pendingRef.set({
-      userId, paymentMethod, operationId, amount: amount || 0, productId: productId || null,
+      userId, paymentMethod, operationId, amount, productId: productId || null,
       status: 'pending', createdAt: admin.firestore.FieldValue.serverTimestamp(),
       expiresAt: admin.firestore.Timestamp.fromDate(new Date(Date.now() + 24 * 60 * 60 * 1000)),
     });

@@ -291,7 +291,9 @@ exports.handlePaymentWebhook = functions.runWith({ maxInstances: 5 }).https.onRe
         paymentId,
         status: response.status,
       });
-      return res.status(200).send('OK');
+      // Return non-2xx so MercadoPago retries: an approved payment must never
+      // be silently dropped because of a transient API failure.
+      return res.status(502).send('Failed to fetch payment from MercadoPago');
     }
 
     const payment = await response.json();
@@ -412,8 +414,11 @@ exports.handlePaymentWebhook = functions.runWith({ maxInstances: 5 }).https.onRe
 
     return res.status(200).send('OK');
   } catch (error) {
+    // Return non-2xx so MercadoPago retries the webhook instead of silently
+    // swallowing an approved payment. 4xx paths above already returned, so any
+    // exception reaching here is transient/internal.
     functions.logger.error('Webhook handler error', error);
-    return res.status(200).send('OK');
+    return res.status(500).send('Internal error');
   }
 });
 
@@ -431,7 +436,7 @@ exports.handlePaymentWebhook = functions.runWith({ maxInstances: 5 }).https.onRe
  *     double-credit even if called concurrently with the same key.
  */
 exports.adminCreditDonation = functions.runWith({ maxInstances: 3 }).https.onCall(async (data, context) => {
-  const { userId, paymentMethod, productId, idempotencyKey } = data;
+  const { userId, paymentMethod, productId, idempotencyKey } = data || {};
 
   // Uso context.auth en vez de adminSecret
   if (!context.auth) {
@@ -464,10 +469,20 @@ exports.adminCreditDonation = functions.runWith({ maxInstances: 3 }).https.onCal
       'invalid-argument', 'userId y amount (número) requeridos'
     );
   }
-
-  if (!idempotencyKey) {
+  if (amount > 100000) {
     throw new functions.https.HttpsError(
-      'invalid-argument', 'idempotencyKey requerido'
+      'invalid-argument', `El monto excede el límite de 100000`
+    );
+  }
+  if (!/^[A-Za-z0-9_-]{1,128}$/.test(userId)) {
+    throw new functions.https.HttpsError(
+      'invalid-argument', 'userId invalido'
+    );
+  }
+
+  if (!idempotencyKey || !/^[A-Za-z0-9_-]{1,128}$/.test(idempotencyKey)) {
+    throw new functions.https.HttpsError(
+      'invalid-argument', 'idempotencyKey invalido'
     );
   }
 
@@ -573,8 +588,8 @@ exports.registerPendingPayment = functions.runWith({ maxInstances: 5 }).https.on
   }
   await checkRateLimit(context.auth.uid);
 
-  const { paymentMethod, operationId, amount, productId } = data;
-  if (!paymentMethod || !operationId) {
+  const { paymentMethod, operationId, amount, productId } = data || {};
+  if (!paymentMethod || typeof paymentMethod !== 'string' || !operationId) {
     throw new functions.https.HttpsError('invalid-argument', 'paymentMethod y operationId requeridos');
   }
 
@@ -583,34 +598,49 @@ exports.registerPendingPayment = functions.runWith({ maxInstances: 5 }).https.on
     throw new functions.https.HttpsError('invalid-argument', 'Método de pago no válido');
   }
 
-  const userId = context.auth.uid;
-
-  // Use operationId as doc ID to prevent duplicate pending payments
-  const pendingRef = admin.firestore().doc(`pending_payments/${userId}_${operationId}`);
-  const pendingDoc = await pendingRef.get();
-
-  if (pendingDoc.exists) {
-    return { success: true, pendingPaymentId: pendingRef.id, duplicate: true };
+  if (typeof amount !== 'number' || !Number.isFinite(amount) || amount <= 0 || amount > 100000) {
+    throw new functions.https.HttpsError('invalid-argument', 'El monto debe ser un número mayor a 0');
+  }
+  // Sanitize against path injection into the document id
+  // (`pending_payments/{userId}_{operationId}` must stay a single segment).
+  if (typeof operationId !== 'string' || !/^[A-Za-z0-9_-]{1,128}$/.test(operationId)) {
+    throw new functions.https.HttpsError('invalid-argument', 'operationId invalido');
   }
 
-  await pendingRef.set({
-    userId,
-    paymentMethod,
-    operationId,
-    amount: amount || 0,
-    productId: productId || null,
-    status: 'pending',
-    createdAt: admin.firestore.FieldValue.serverTimestamp(),
-    expiresAt: admin.firestore.Timestamp.fromDate(
-      new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 horas
-    ),
-  });
+  const userId = context.auth.uid;
 
-  functions.logger.info('Pending payment registered', {
-    userId, paymentMethod, operationId, pendingId: pendingRef.id,
-  });
+  try {
+    // Use operationId as doc ID to prevent duplicate pending payments
+    const pendingRef = admin.firestore().doc(`pending_payments/${userId}_${operationId}`);
+    const pendingDoc = await pendingRef.get();
 
-  return { success: true, pendingPaymentId: pendingRef.id, duplicate: false };
+    if (pendingDoc.exists) {
+      return { success: true, pendingPaymentId: pendingRef.id, duplicate: true };
+    }
+
+    await pendingRef.set({
+      userId,
+      paymentMethod,
+      operationId,
+      amount,
+      productId: productId || null,
+      status: 'pending',
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      expiresAt: admin.firestore.Timestamp.fromDate(
+        new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 horas
+      ),
+    });
+
+    functions.logger.info('Pending payment registered', {
+      userId, paymentMethod, operationId, pendingId: pendingRef.id,
+    });
+
+    return { success: true, pendingPaymentId: pendingRef.id, duplicate: false };
+  } catch (error) {
+    if (error instanceof functions.https.HttpsError) throw error;
+    functions.logger.error('registerPendingPayment error', error);
+    throw new functions.https.HttpsError('internal', 'Error al registrar el pago');
+  }
 });
 
 /**
@@ -632,7 +662,7 @@ exports.checkPendingPaymentStatus = functions.runWith({ maxInstances: 5 }).https
     throw new functions.https.HttpsError('unauthenticated', 'Debes iniciar sesión');
   }
 
-  const { pendingPaymentId } = data;
+  const { pendingPaymentId } = data || {};
   if (!pendingPaymentId || typeof pendingPaymentId !== 'string') {
     throw new functions.https.HttpsError('invalid-argument', 'pendingPaymentId requerido');
   }

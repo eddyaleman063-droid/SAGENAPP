@@ -32,7 +32,7 @@ android {
     defaultConfig {
         applicationId = "com.sagen.app"
         minSdk = flutter.minSdkVersion
-        targetSdk = 34
+        targetSdk = 36
         versionCode = 9
         versionName = "5.1.2"
         multiDexEnabled = true

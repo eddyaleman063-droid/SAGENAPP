@@ -199,6 +199,36 @@ describe('adminCreditDonation', () => {
     ).rejects.toThrow();
   });
 
+  test('rejects amount over the cap', async () => {
+    setAdminDoc(AUTH_UID, { role: 'admin' });
+    await expect(
+      index.adminCreditDonation(
+        { userId: 'target-user', amount: 100001, idempotencyKey: 'k' },
+        makeContext()
+      )
+    ).rejects.toThrow();
+  });
+
+  test('rejects userId with path-injection characters', async () => {
+    setAdminDoc(AUTH_UID, { role: 'admin' });
+    await expect(
+      index.adminCreditDonation(
+        { userId: 'target/../user', amount: 50, idempotencyKey: 'k' },
+        makeContext()
+      )
+    ).rejects.toThrow();
+  });
+
+  test('rejects invalid idempotencyKey', async () => {
+    setAdminDoc(AUTH_UID, { role: 'admin' });
+    await expect(
+      index.adminCreditDonation(
+        { userId: 'target-user', amount: 50, idempotencyKey: 'a/b' },
+        makeContext()
+      )
+    ).rejects.toThrow();
+  });
+
   test('rejects missing idempotencyKey', async () => {
     setAdminDoc(AUTH_UID, { role: 'admin' });
     await expect(
@@ -293,10 +323,46 @@ describe('registerPendingPayment', () => {
     ).rejects.toThrow();
   });
 
+  test('rejects non-numeric amount', async () => {
+    await expect(
+      index.registerPendingPayment(
+        { paymentMethod: 'whatsapp', operationId: 'op-3', amount: '10' },
+        makeContext()
+      )
+    ).rejects.toThrow();
+  });
+
+  test('rejects amount <= 0', async () => {
+    await expect(
+      index.registerPendingPayment(
+        { paymentMethod: 'whatsapp', operationId: 'op-4', amount: 0 },
+        makeContext()
+      )
+    ).rejects.toThrow();
+  });
+
+  test('rejects amount over the cap', async () => {
+    await expect(
+      index.registerPendingPayment(
+        { paymentMethod: 'whatsapp', operationId: 'op-5', amount: 100001 },
+        makeContext()
+      )
+    ).rejects.toThrow();
+  });
+
+  test('rejects operationId with path-injection characters', async () => {
+    await expect(
+      index.registerPendingPayment(
+        { paymentMethod: 'whatsapp', operationId: 'op/../../evil', amount: 10 },
+        makeContext()
+      )
+    ).rejects.toThrow();
+  });
+
   test('rejects unauthenticated user', async () => {
     await expect(
       index.registerPendingPayment(
-        { paymentMethod: 'whatsapp', operationId: 'op-3' },
+        { paymentMethod: 'whatsapp', operationId: 'op-6' },
         NO_AUTH
       )
     ).rejects.toThrow();
@@ -353,5 +419,69 @@ describe('checkPendingPaymentStatus', () => {
 describe('validatePurchase', () => {
   test('removed: real purchase flow uses spendGems, not validatePurchase (NUEVO-14)', () => {
     expect(typeof index.validatePurchase).toBe('undefined');
+  });
+});
+
+describe('handlePaymentWebhook', () => {
+  const crypto = require('crypto');
+  const WEBHOOK_SECRET = 'test-webhook-secret';
+  const origConfig = functions.config;
+
+  function signedReq(body, { signature } = {}) {
+    const rawBody = JSON.stringify(body);
+    const ts = '1752660000';
+    const expected = crypto
+      .createHmac('sha256', WEBHOOK_SECRET)
+      .update(`ts${ts}req${rawBody}`)
+      .digest('hex');
+    return {
+      method: 'POST',
+      body,
+      headers: {
+        origin: 'https://sagen-bdd3f.web.app',
+        'x-signature': signature === undefined ? `ts=${ts};v1=${expected}` : signature,
+      },
+    };
+  }
+
+  const res = () => ({
+    _status: 200,
+    _body: null,
+    status(code) { this._status = code; return this; },
+    send(body) { this._body = body; },
+  });
+
+  beforeEach(() => {
+    functions.config = jest.fn(() => ({
+      mercadopago: { webhook_secret: WEBHOOK_SECRET, access_token: 'test-token' },
+    }));
+  });
+
+  afterEach(() => {
+    functions.config = origConfig;
+    if (global.fetch && global.fetch.mockRestore) global.fetch.mockRestore();
+  });
+
+  test('rejects webhook without signature', async () => {
+    const r = res();
+    const req = { method: 'POST', body: { type: 'payment', data: { id: 'pay_1' } }, headers: {} };
+    await index.handlePaymentWebhook(req, r);
+    expect(r._status).toBe(401);
+  });
+
+  test('rejects webhook with mismatched signature', async () => {
+    const r = res();
+    const req = signedReq({ type: 'payment', data: { id: 'pay_1' } }, { signature: 'ts=1;v1=deadbeef' });
+    await index.handlePaymentWebhook(req, r);
+    expect(r._status).toBe(401);
+  });
+
+  test('returns 502 when MercadoPago fetch fails so MP retries', async () => {
+    global.fetch = jest.fn().mockResolvedValue({ ok: false, status: 500 });
+    const r = res();
+    const req = signedReq({ type: 'payment', data: { id: 'pay_2' } });
+    await index.handlePaymentWebhook(req, r);
+    expect(global.fetch).toHaveBeenCalled();
+    expect(r._status).toBe(502);
   });
 });

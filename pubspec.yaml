@@ -50,7 +50,7 @@ dependencies:
   speech_to_text: ^7.3.0
   connectivity_plus: ^6.1.4
   url_launcher: ^6.3.1
-  flutter_markdown: ^0.7.6
+  flutter_markdown_plus: ^1.0.12
   lottie: ^3.3.3
   flutter_animate: ^4.5.2
   flutter_dynamic_icon_plus: ^1.4.1
