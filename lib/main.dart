@@ -258,54 +258,59 @@ class _SagenAppState extends ConsumerState<SagenApp> {
     final lang = ref.watch(languageProvider);
     final router = ref.read(routerProvider);
 
-    return ErrorBoundary(
-      child: SyncCoordinator(
-        child: AmbientBackground(
-          child: MaterialApp.router(
-            builder: (context, child) {
-              final fontScale = ref
-                  .watch(experienceServiceProvider)
-                  .fontSizeScale;
-              final safeScale = fontScale.clamp(0.8, 1.5);
-              return MediaQuery(
-                data: MediaQuery.of(
-                  context,
-                ).copyWith(textScaler: TextScaler.linear(safeScale)),
-                child: ChestListener(child: child ?? const SizedBox.shrink()),
-              );
-            },
-            title: 'SAGEN',
-            debugShowCheckedModeBanner: false,
-            routerConfig: router,
-            theme: theme.currentTheme,
-            highContrastTheme: AppTheme.highContrastLight,
-            highContrastDarkTheme: AppTheme.highContrastDark,
-            key: ValueKey(lang.locale.languageCode),
-            locale: lang.hasUserChosen ? lang.locale : null,
-            supportedLocales: const [
-              Locale('es'),
-              Locale('en'),
-              Locale('fr'),
-              Locale('pt'),
-            ],
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            localeListResolutionCallback: (locales, supported) {
-              if (locales != null) {
-                for (final locale in locales) {
-                  for (final supportedLocale in supported) {
-                    if (supportedLocale.languageCode == locale.languageCode) {
-                      return supportedLocale;
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: theme.currentTheme.brightness == Brightness.dark
+          ? SystemUiOverlayStyle.light
+          : SystemUiOverlayStyle.dark,
+      child: ErrorBoundary(
+        child: SyncCoordinator(
+          child: AmbientBackground(
+            child: MaterialApp.router(
+              builder: (context, child) {
+                final fontScale = ref
+                    .watch(experienceServiceProvider)
+                    .fontSizeScale;
+                final safeScale = fontScale.clamp(0.8, 1.5);
+                return MediaQuery(
+                  data: MediaQuery.of(
+                    context,
+                  ).copyWith(textScaler: TextScaler.linear(safeScale)),
+                  child: ChestListener(child: child ?? const SizedBox.shrink()),
+                );
+              },
+              title: 'SAGEN',
+              debugShowCheckedModeBanner: false,
+              routerConfig: router,
+              theme: theme.currentTheme,
+              highContrastTheme: AppTheme.highContrastLight,
+              highContrastDarkTheme: AppTheme.highContrastDark,
+              key: ValueKey(lang.locale.languageCode),
+              locale: lang.hasUserChosen ? lang.locale : null,
+              supportedLocales: const [
+                Locale('es'),
+                Locale('en'),
+                Locale('fr'),
+                Locale('pt'),
+              ],
+              localizationsDelegates: const [
+                AppLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              localeListResolutionCallback: (locales, supported) {
+                if (locales != null) {
+                  for (final locale in locales) {
+                    for (final supportedLocale in supported) {
+                      if (supportedLocale.languageCode == locale.languageCode) {
+                        return supportedLocale;
+                      }
                     }
                   }
                 }
-              }
-              return supported.first;
-            },
+                return supported.first;
+              },
+            ),
           ),
         ),
       ),
