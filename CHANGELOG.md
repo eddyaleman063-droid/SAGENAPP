@@ -27,14 +27,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `registerPendingPayment` y `adminCreditDonation`: validación de monto (rango 0..100000) y sanitización de `operationId`/`userId`/`idempotencyKey` (regex `[A-Za-z0-9_-]`) contra path-injection en ids de documentos.
 - Guards contra `data` nulo en callables.
 - Webhook de Vercel (`api/index.js`): una firma malformada (no-hex) devuelve 401 en vez de 500, alineado con Cloud Functions (la validación previa a `timingSafeEqual` evita que un probe barato fuerce un retry).
+- `firestore.rules`: error de sintaxis que BLOQUEABA el deploy (`request.resource.data.keys.size() <= 10` — `keys()` es un método en el lenguaje de reglas; sin paréntesis es un parse error y `firebase deploy --only firestore:rules` fallaba). Corregido a `keys().size()`.
+- `api/index.js` (`payment_logs`): la clave `amount` estaba duplicada en el objeto de escritura y el segundo valor (`transaction_amount`) pisaba al monto acreditado. Alineado con Cloud Functions: ahora guarda `amount` (acreditado) y `paymentAmount` (bruto).
 
 ### Changed
 - `targetSdk` de Android a API 36 (Android 16): requisito de Google Play (API 35 desde ago-2025, API 36 desde ago-2026). `compileSdk` ya era 36.
 - Migrado de `flutter_markdown` (discontinuado) a `flutter_markdown_plus` (fork mantenido, mismo API).
+- Fallback de error de release (`ErrorWidget.builder`): ahora es localizado (es/en) usando la preferencia de idioma persistida en vez de cadenas en inglés fijas; incluye etiqueta de accesibilidad en el botón.
+- `registerPendingPayment` en Vercel: ID determinístico `${userId}_${operationId}` como en Cloud Functions, para que un retry de red no cree pagos pendientes duplicados (responde `duplicate: true`).
+- `web/index.html`: `<meta name="theme-color">` al color de marca (`#1565C0`) para que aplique antes de cargar el manifest.
 
 ### Added
 - Tests del webhook LIVE de Vercel (`api/index.js`): 15 tests nuevos (verificación de firma HMAC, retry 5xx ante fallo de MP, crédito idempotente de pagos aprobados, validación de `adminCreditDonation` con coerción de monto string→número y gate de auth 401/403). Jest sube a 232/232.
-- `functions/jest.config.js`: `moduleDirectories` para resolver deps desde `functions/node_modules`; los tests de `api/` quedan incluidos en `npm test` (CI).
+- +8 tests más del API de Vercel (flip de `pending_payments` por webhook, dedupe y validación de `registerPendingPayment`, ownership en `checkPendingPaymentStatus`). Jest sube a 239/239.
+- `functions/__mocks__/firebase-admin.js`: soporte de `collection().where().get()` para que los tests del webhook verifiquen el flip real de `pending_payments` (antes caía en el catch silencioso).
+- Test de reglas: `firestore_rules.test.js` ahora afirma `keys().size()` y habría detectado el bug de sintaxis.
 
 ## [5.1.2] - 2026-08-15
 
