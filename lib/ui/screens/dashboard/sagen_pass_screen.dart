@@ -7,6 +7,7 @@ import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/models/sagen_pass.dart';
 import 'package:sagen/providers/providers.dart';
 import 'package:sagen/ui/widgets/common/sagen_notification.dart';
+import 'package:sagen/ui/widgets/common/tip_row.dart';
 
 /// SAGEN Pass season screen: season progress, SP earning tips and the
 /// 50-level reward track with claimable rewards.
@@ -362,44 +363,17 @@ class _HowToEarnCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: AppSpacing.md),
-            _TipRow(icon: Icons.school_rounded, text: l.passHowToEarnLesson),
-            _TipRow(icon: Icons.star_rounded, text: l.passHowToEarnPerfect),
-            _TipRow(icon: Icons.replay_rounded, text: l.passHowToEarnReview),
-            _TipRow(icon: Icons.task_alt_rounded, text: l.passHowToEarnMission),
+            TipRow(icon: Icons.school_rounded, text: l.passHowToEarnLesson),
+            TipRow(icon: Icons.star_rounded, text: l.passHowToEarnPerfect),
+            TipRow(icon: Icons.replay_rounded, text: l.passHowToEarnReview),
+            TipRow(icon: Icons.task_alt_rounded, text: l.passHowToEarnMission),
             const Divider(height: AppSpacing.xl),
-            _TipRow(
+            TipRow(
               icon: Icons.info_outline_rounded,
               text: l.passHowToEarnDailyLimit,
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class _TipRow extends StatelessWidget {
-  final IconData icon;
-  final String text;
-
-  const _TipRow({required this.icon, required this.text});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: AppSpacing.xs),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(icon, size: 14, color: context.textTertiary),
-          const SizedBox(width: AppSpacing.sm),
-          Expanded(
-            child: Text(
-              text,
-              style: AppTextStyle.caption.copyWith(color: context.textTertiary),
-            ),
-          ),
-        ],
       ),
     );
   }

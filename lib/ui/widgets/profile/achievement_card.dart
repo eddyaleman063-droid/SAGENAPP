@@ -141,65 +141,39 @@ class AchievementCard extends StatelessWidget {
     );
   }
 
-  static String _localizedTitle(String id, AppLocalizations l) {
-    switch (id) {
-      case 'first_lesson':
-        return l.achievementFirstShield;
-      case 'five_lessons':
-        return l.achievementLearner;
-      case 'ten_lessons':
-        return l.achievementDigitalStudent;
-      case 'twenty_five_lessons':
-        return l.achievementGuardian;
-      case 'fifty_lessons':
-        return l.achievementCyberGuardian;
-      case 'stage_complete':
-        return l.achievementConqueror;
-      case 'all_stages':
-        return l.achievementDigitalMaster;
-      case 'streak_3':
-        return l.achievementConstant;
-      case 'streak_7':
-        return l.achievementDigitalWeek;
-      case 'streak_30':
-        return l.achievementLegendaryStreak;
-      case 'perfect_lesson':
-        return l.achievementPerfect;
-      case 'sage_talk':
-        return l.achievementCurious;
-      default:
-        return id;
-    }
-  }
+  static String _localizedTitle(String id, AppLocalizations l) =>
+      _titles[id]?.call(l) ?? id;
 
-  static String _localizedDescription(String id, AppLocalizations l) {
-    switch (id) {
-      case 'first_lesson':
-        return l.achievementFirstShieldDesc;
-      case 'five_lessons':
-        return l.achievementLearnerDesc;
-      case 'ten_lessons':
-        return l.achievementDigitalStudentDesc;
-      case 'twenty_five_lessons':
-        return l.achievementGuardianDesc;
-      case 'fifty_lessons':
-        return l.achievementCyberGuardianDesc;
-      case 'stage_complete':
-        return l.achievementConquerorDesc;
-      case 'all_stages':
-        return l.achievementDigitalMasterDesc;
-      case 'streak_3':
-        return l.achievementConstantDesc;
-      case 'streak_7':
-        return l.achievementDigitalWeekDesc;
-      case 'streak_30':
-        return l.achievementLegendaryStreakDesc;
-      case 'perfect_lesson':
-        return l.achievementPerfectDesc;
-      case 'sage_talk':
-        return l.achievementCuriousDesc;
-      default:
-        return id;
-    }
-  }
+  static String _localizedDescription(String id, AppLocalizations l) =>
+      _descriptions[id]?.call(l) ?? id;
+
+  static final Map<String, String Function(AppLocalizations)> _titles = {
+    'first_lesson': (l) => l.achievementFirstShield,
+    'five_lessons': (l) => l.achievementLearner,
+    'ten_lessons': (l) => l.achievementDigitalStudent,
+    'twenty_five_lessons': (l) => l.achievementGuardian,
+    'fifty_lessons': (l) => l.achievementCyberGuardian,
+    'stage_complete': (l) => l.achievementConqueror,
+    'all_stages': (l) => l.achievementDigitalMaster,
+    'streak_3': (l) => l.achievementConstant,
+    'streak_7': (l) => l.achievementDigitalWeek,
+    'streak_30': (l) => l.achievementLegendaryStreak,
+    'perfect_lesson': (l) => l.achievementPerfect,
+    'sage_talk': (l) => l.achievementCurious,
+  };
+
+  static final Map<String, String Function(AppLocalizations)> _descriptions = {
+    'first_lesson': (l) => l.achievementFirstShieldDesc,
+    'five_lessons': (l) => l.achievementLearnerDesc,
+    'ten_lessons': (l) => l.achievementDigitalStudentDesc,
+    'twenty_five_lessons': (l) => l.achievementGuardianDesc,
+    'fifty_lessons': (l) => l.achievementCyberGuardianDesc,
+    'stage_complete': (l) => l.achievementConquerorDesc,
+    'all_stages': (l) => l.achievementDigitalMasterDesc,
+    'streak_3': (l) => l.achievementConstantDesc,
+    'streak_7': (l) => l.achievementDigitalWeekDesc,
+    'streak_30': (l) => l.achievementLegendaryStreakDesc,
+    'perfect_lesson': (l) => l.achievementPerfectDesc,
+    'sage_talk': (l) => l.achievementCuriousDesc,
+  };
 }
