@@ -9388,6 +9388,30 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Vidas: {count}'**
   String resultLivesLabel(Object count);
+
+  /// No description provided for @storeNewChestHint.
+  ///
+  /// In es, this message translates to:
+  /// **'Nuevo cofre disponible'**
+  String get storeNewChestHint;
+
+  /// No description provided for @profilePhoto.
+  ///
+  /// In es, this message translates to:
+  /// **'Foto de perfil'**
+  String get profilePhoto;
+
+  /// No description provided for @gemBalanceLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Saldo de gemas: {count}'**
+  String gemBalanceLabel(Object count);
+
+  /// No description provided for @wizardStepLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Paso {step}'**
+  String wizardStepLabel(Object step);
 }
 
 class _AppLocalizationsDelegate

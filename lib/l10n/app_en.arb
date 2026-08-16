@@ -2203,5 +2203,19 @@
     "placeholders": {
       "count": {}
     }
+  },
+  "storeNewChestHint": "New chest available",
+  "profilePhoto": "Profile photo",
+  "gemBalanceLabel": "Gem balance: {count}",
+  "@gemBalanceLabel": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "wizardStepLabel": "Step {step}",
+  "@wizardStepLabel": {
+    "placeholders": {
+      "step": {}
+    }
   }
 }

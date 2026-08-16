@@ -58,6 +58,7 @@ class _SpeedSortScreenState extends ConsumerState<SpeedSortScreen> {
     _timer?.cancel();
     final random = Random();
     final categories = _buildCategoryValues(AppLocalizations.of(context)!);
+    if (categories.length < 2) return;
     final entries = categories.entries.toList()..shuffle(random);
     final selectedCategory = entries.first;
     final correctItems = List<String>.from(selectedCategory.value)
@@ -406,7 +407,9 @@ class _SpeedSortScreenState extends ConsumerState<SpeedSortScreen> {
           if (_completing)
             const Padding(
               padding: EdgeInsets.only(bottom: AppSpacing.lg),
-              child: CircularProgressIndicator(strokeWidth: 2),
+              child: ExcludeSemantics(
+                child: CircularProgressIndicator(strokeWidth: 2),
+              ),
             )
           else ...[
             TweenAnimationBuilder<int>(

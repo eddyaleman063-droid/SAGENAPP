@@ -82,6 +82,7 @@ class GemNotifier extends Notifier<GemState> {
           ? ShopPurchaseResult.success
           : ShopPurchaseResult.failure;
     } catch (e) {
+      AppLogger().error('GemProvider.spendShopGems failed', e);
       return ShopPurchaseResult.failure;
     }
   }

@@ -8,6 +8,7 @@ import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/providers/providers.dart';
 import 'package:sagen/services/auth_models.dart';
 import 'package:sagen/services/auth_service.dart';
+import 'package:sagen/services/app_logger.dart';
 import 'package:sagen/ui/widgets/common/sagen_notification.dart';
 import 'package:sagen/services/experience_service.dart';
 import 'package:sagen/ui/widgets/keyboard_aware_layout.dart';
@@ -68,7 +69,8 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
         message: e.localizedMessage(AppLocalizations.of(context)!),
         type: NotificationType.error,
       );
-    } catch (_) {
+    } catch (e) {
+      AppLogger().error('ForgotPassword: send reset email failed', e);
       if (!mounted) return;
       SagenNotification.show(
         context,
@@ -251,13 +253,16 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                               ),
                             ),
                             child: _isLoading
-                                ? SizedBox(
-                                    width: 22,
-                                    height: 22,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2.5,
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                        context.textPrimary,
+                                ? ExcludeSemantics(
+                                    child: SizedBox(
+                                      width: 22,
+                                      height: 22,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2.5,
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                              context.textPrimary,
+                                            ),
                                       ),
                                     ),
                                   )

@@ -45,7 +45,9 @@ class StoreHeader extends ConsumerWidget {
                 ),
               ),
               Semantics(
-                label: 'Saldo de gemas: $gemBalance',
+                label: AppLocalizations.of(
+                  context,
+                )!.gemBalanceLabel(gemBalance),
                 container: true,
                 child: Container(
                   padding: const EdgeInsets.symmetric(

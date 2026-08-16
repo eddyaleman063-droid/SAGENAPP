@@ -11,6 +11,7 @@ import '../../../core/theme/theme_constants.dart';
 import '../../../services/auth_models.dart';
 import '../../../services/auth_service.dart';
 import '../../../services/analytics_service.dart';
+import '../../../services/app_logger.dart';
 
 import 'package:sagen/ui/widgets/common/sagen_notification.dart';
 import 'package:sagen/core/theme/app_colors.dart';
@@ -103,7 +104,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           type: NotificationType.error,
         );
       }
-    } catch (_) {
+    } catch (e) {
+      AppLogger().error('Login: email login failed', e);
       if (!mounted) return;
       SagenNotification.show(
         context,
@@ -135,7 +137,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           type: NotificationType.error,
         );
       }
-    } catch (_) {
+    } catch (e) {
+      AppLogger().error('Login: Google login failed', e);
       if (!mounted) return;
       SagenNotification.show(
         context,
@@ -176,7 +179,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           type: NotificationType.error,
         );
       }
-    } catch (_) {
+    } catch (e) {
+      AppLogger().error('Login: Facebook login failed', e);
       if (!mounted) return;
       SagenNotification.show(
         context,
@@ -396,13 +400,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           elevation: 0,
                         ),
                         child: _isLoading
-                            ? SizedBox(
-                                width: 22,
-                                height: 22,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2.5,
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                    context.textPrimary,
+                            ? ExcludeSemantics(
+                                child: SizedBox(
+                                  width: 22,
+                                  height: 22,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2.5,
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                      context.textPrimary,
+                                    ),
                                   ),
                                 ),
                               )

@@ -2203,5 +2203,19 @@
     "placeholders": {
       "count": {}
     }
+  },
+  "storeNewChestHint": "Novo cofre disponível",
+  "profilePhoto": "Foto do perfil",
+  "gemBalanceLabel": "Saldo de gemas: {count}",
+  "@gemBalanceLabel": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "wizardStepLabel": "Etapa {step}",
+  "@wizardStepLabel": {
+    "placeholders": {
+      "step": {}
+    }
   }
 }

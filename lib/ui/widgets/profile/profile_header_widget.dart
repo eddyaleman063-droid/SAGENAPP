@@ -62,7 +62,7 @@ class ProfileHeaderWidget extends StatelessWidget {
           ),
           child: Column(
             children: [
-              _buildAvatar(),
+              _buildAvatar(context),
               const SizedBox(height: AppSpacing.lg),
               _buildName(l),
               const SizedBox(height: AppSpacing.xs),
@@ -76,7 +76,7 @@ class ProfileHeaderWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildAvatar() {
+  Widget _buildAvatar(BuildContext context) {
     return SizedBox(
       width: 90,
       height: 90,
@@ -119,7 +119,7 @@ class ProfileHeaderWidget extends StatelessWidget {
             ),
           ),
           Semantics(
-            label: 'Foto de perfil',
+            label: AppLocalizations.of(context)!.profilePhoto,
             excludeSemantics: true,
             child: Center(
               child: Container(

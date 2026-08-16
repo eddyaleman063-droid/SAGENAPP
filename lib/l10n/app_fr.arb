@@ -2203,5 +2203,19 @@
     "placeholders": {
       "count": {}
     }
+  },
+  "storeNewChestHint": "Nouveau coffre disponible",
+  "profilePhoto": "Photo de profil",
+  "gemBalanceLabel": "Solde de gemmes : {count}",
+  "@gemBalanceLabel": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "wizardStepLabel": "Étape {step}",
+  "@wizardStepLabel": {
+    "placeholders": {
+      "step": {}
+    }
   }
 }

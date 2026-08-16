@@ -5093,4 +5093,20 @@ class AppLocalizationsEs extends AppLocalizations {
   String resultLivesLabel(Object count) {
     return 'Vidas: $count';
   }
+
+  @override
+  String get storeNewChestHint => 'Nuevo cofre disponible';
+
+  @override
+  String get profilePhoto => 'Foto de perfil';
+
+  @override
+  String gemBalanceLabel(Object count) {
+    return 'Saldo de gemas: $count';
+  }
+
+  @override
+  String wizardStepLabel(Object step) {
+    return 'Paso $step';
+  }
 }

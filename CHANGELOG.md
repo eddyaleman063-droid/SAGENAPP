@@ -31,6 +31,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `api/index.js` (`payment_logs`): la clave `amount` estaba duplicada en el objeto de escritura y el segundo valor (`transaction_amount`) pisaba al monto acreditado. Alineado con Cloud Functions: ahora guarda `amount` (acreditado) y `paymentAmount` (bruto).
 - Catch blocks silenciosos en `FlexCardWidget.capture`, `StoreScreen._isOwned` y `HabitTransitionScreen` ahora loguean errores via `AppLogger` en vez de tragarlos silenciosamente.
 - `ProfileScreen` y `StoreScreen`: ahora muestran UI de error explícita (`errorMessage`) cuando falla la carga de datos, en vez de dejar la pantalla en estado vacío sin feedback.
+- `GemProvider.spendShopGems`: catch block ahora loguea errores de compra fallida en vez de fallar silenciosamente.
+- `LoginScreen`: catch blocks de email, Google y Facebook login ahora loguean errores via `AppLogger`.
+- `ForgotPasswordScreen`: catch block ahora loguea errores de envío de email de recuperación.
+- `SpeedSortScreen`: `_initGame` ahora valida que existan al menos 2 categorías antes de acceder a `entries[1]`, evitando `RangeError`.
 
 ### Changed
 - `targetSdk` de Android a API 36 (Android 16): requisito de Google Play (API 35 desde ago-2025, API 36 desde ago-2026). `compileSdk` ya era 36.
@@ -48,6 +52,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `store_screen.dart` optimizado: `ref.watch` ahora usa `.select` para solo reconstruir cuando cambia `isLoading` o `errorMessage`.
 - Widgets duplicados DRY: `_TipRow` privado de `store_screen` y `sagen_pass_screen` extraído a widget compartido `TipRow` (`lib/ui/widgets/common/tip_row.dart`).
 - `achievement_card.dart`: dos switches extensos refactorizados a maps lookup (`_titles`, `_descriptions`).
+- 5 archivos huérfanos eliminados (1,085 líneas): `cyber_quiz_screen.dart`, `weekly_calendar_widget.dart`, `error_retry_widget.dart`, `glass_card.dart`, `onboarding_progress_bar.dart` + tests asociados.
+- `_BenefitRow`/`_BenefitRow2` duplicados en `streak_intro_screen` y `profile_hook_screen` extraídos a widget compartido `BenefitRow` (`lib/ui/widgets/common/benefit_row.dart`).
+- `WizardSingleChoiceTile`/`WizardMultiChoiceTile` refactorizados: lógica de build compartida en `_WizardOptionTileBase` con flag `showCheckbox`.
+- Accesibilidad: `ExcludeSemantics` en 13 `CircularProgressIndicator` decorativos (5 en botones de auth/share/buy, 4 en mini-games, 1 en payment pending, 3 en store).
+- Strings hardcodeados en español localizados: `'Nuevo cofre disponible'`, `'Foto de perfil'`, `'Saldo de gemas'`, `'Paso N'` (4 claves l10n nuevas en es/en/fr/pt).
 
 ### Added
 - Tests del webhook LIVE de Vercel (`api/index.js`): 15 tests nuevos (verificación de firma HMAC, retry 5xx ante fallo de MP, crédito idempotente de pagos aprobados, validación de `adminCreditDonation` con coerción de monto string→número y gate de auth 401/403). Jest sube a 232/232.

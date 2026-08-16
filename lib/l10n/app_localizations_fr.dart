@@ -5138,4 +5138,20 @@ class AppLocalizationsFr extends AppLocalizations {
   String resultLivesLabel(Object count) {
     return 'Vies : $count';
   }
+
+  @override
+  String get storeNewChestHint => 'Nouveau coffre disponible';
+
+  @override
+  String get profilePhoto => 'Photo de profil';
+
+  @override
+  String gemBalanceLabel(Object count) {
+    return 'Solde de gemmes : $count';
+  }
+
+  @override
+  String wizardStepLabel(Object step) {
+    return 'Étape $step';
+  }
 }

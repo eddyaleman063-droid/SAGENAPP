@@ -44,7 +44,9 @@ class WizardTopBar extends StatelessWidget {
           const SizedBox(width: AppSpacing.sm),
           Expanded(
             child: Semantics(
-              label: 'Paso ${currentIndex + 1}',
+              label: AppLocalizations.of(
+                context,
+              )!.wizardStepLabel(currentIndex + 1),
               value: '${(progress * 100).round()}%',
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(3),

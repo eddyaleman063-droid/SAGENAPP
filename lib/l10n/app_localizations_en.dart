@@ -5068,4 +5068,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String resultLivesLabel(Object count) {
     return 'Lives: $count';
   }
+
+  @override
+  String get storeNewChestHint => 'New chest available';
+
+  @override
+  String get profilePhoto => 'Profile photo';
+
+  @override
+  String gemBalanceLabel(Object count) {
+    return 'Gem balance: $count';
+  }
+
+  @override
+  String wizardStepLabel(Object step) {
+    return 'Step $step';
+  }
 }
