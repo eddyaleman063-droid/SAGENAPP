@@ -29,6 +29,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Webhook de Vercel (`api/index.js`): una firma malformada (no-hex) devuelve 401 en vez de 500, alineado con Cloud Functions (la validación previa a `timingSafeEqual` evita que un probe barato fuerce un retry).
 - `firestore.rules`: error de sintaxis que BLOQUEABA el deploy (`request.resource.data.keys.size() <= 10` — `keys()` es un método en el lenguaje de reglas; sin paréntesis es un parse error y `firebase deploy --only firestore:rules` fallaba). Corregido a `keys().size()`.
 - `api/index.js` (`payment_logs`): la clave `amount` estaba duplicada en el objeto de escritura y el segundo valor (`transaction_amount`) pisaba al monto acreditado. Alineado con Cloud Functions: ahora guarda `amount` (acreditado) y `paymentAmount` (bruto).
+- Catch blocks silenciosos en `FlexCardWidget.capture`, `StoreScreen._isOwned` y `HabitTransitionScreen` ahora loguean errores via `AppLogger` en vez de tragarlos silenciosamente.
+- `ProfileScreen` y `StoreScreen`: ahora muestran UI de error explícita (`errorMessage`) cuando falla la carga de datos, en vez de dejar la pantalla en estado vacío sin feedback.
 
 ### Changed
 - `targetSdk` de Android a API 36 (Android 16): requisito de Google Play (API 35 desde ago-2025, API 36 desde ago-2026). `compileSdk` ya era 36.
@@ -42,6 +44,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Accesibilidad: progress indicators decorativos con `ExcludeSemantics` (5 en pass cards, gatekeeper, wizard, onboarding bar); el wizard_top_bar ahora anuncia paso y porcentaje.
 - Accesibilidad: iconos decorativos (flechas, diamantes, insignias) envueltos en `ExcludeSemantics` para evitar anuncios redundantes de TalkBack/VoiceOver.
 - Accesibilidad: tab Store ahora incluye `hint: 'Nuevo cofre disponible'` cuando el badge de cofre está visible; `selected` declarado explícitamente en todos los tabs.
+- `wizard_top_bar.dart` convertido de `ConsumerWidget` a `StatelessWidget` (el `ref` no se usaba).
+- `store_screen.dart` optimizado: `ref.watch` ahora usa `.select` para solo reconstruir cuando cambia `isLoading` o `errorMessage`.
+- Widgets duplicados DRY: `_TipRow` privado de `store_screen` y `sagen_pass_screen` extraído a widget compartido `TipRow` (`lib/ui/widgets/common/tip_row.dart`).
+- `achievement_card.dart`: dos switches extensos refactorizados a maps lookup (`_titles`, `_descriptions`).
 
 ### Added
 - Tests del webhook LIVE de Vercel (`api/index.js`): 15 tests nuevos (verificación de firma HMAC, retry 5xx ante fallo de MP, crédito idempotente de pagos aprobados, validación de `adminCreditDonation` con coerción de monto string→número y gate de auth 401/403). Jest sube a 232/232.

@@ -13,6 +13,7 @@ import 'package:sagen/ui/widgets/common/premium_loader.dart';
 import 'package:sagen/ui/widgets/common/sage_emotion_widget.dart';
 import 'package:sagen/services/sage_emotion_service.dart';
 import 'package:sagen/ui/widgets/common/sagen_notification.dart';
+import 'package:sagen/ui/widgets/common/tip_row.dart';
 import 'package:sagen/ui/widgets/store/header.dart';
 import 'package:sagen/ui/widgets/store/streak_fire_card.dart';
 import 'package:sagen/ui/widgets/store/shop_item_card.dart';
@@ -65,7 +66,8 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
     try {
       final items = ref.read(shopProvider).items;
       return items.any((i) => i.id == item.id && i.isOwned);
-    } catch (_) {
+    } catch (e) {
+      AppLogger().error('StoreScreen: _isOwned check failed', e);
       return false;
     }
   }
@@ -209,7 +211,9 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
     super.build(context);
     final l = AppLocalizations.of(context)!;
     final dark = Theme.of(context).brightness == Brightness.dark;
-    final learning = ref.watch(learningProvider);
+    final learning = ref.watch(
+      learningProvider.select((l) => (isLoading: l.isLoading, errorMessage: l.errorMessage)),
+    );
     final shop = ref.watch(shopProvider);
     final streak = ref.watch(streakProvider);
     final gemBalance = ref.watch(gemProvider.select((g) => g.balance));
@@ -219,6 +223,35 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
         loading: true,
         message: l.loading,
         child: Scaffold(backgroundColor: context.surfaceBackground),
+      );
+    }
+
+    if (learning.errorMessage != null) {
+      return Scaffold(
+        backgroundColor: context.surfaceBackground,
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.error_outline_rounded,
+                  size: 48,
+                  color: context.textTertiary,
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  l.errorContentLoadFailed,
+                  style: AppTextStyle.bodyLg.copyWith(
+                    color: context.textPrimary,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        ),
       );
     }
 
@@ -513,69 +546,18 @@ class _GemEarningTipsCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: AppSpacing.md),
-          _TipRow(
-            icon: Icons.school_rounded,
-            text: l.storeGemTipLesson,
-            dark: dark,
-          ),
-          _TipRow(
-            icon: Icons.star_rounded,
-            text: l.storeGemTipPerfect,
-            dark: dark,
-          ),
-          _TipRow(
-            icon: Icons.wb_sunny_rounded,
-            text: l.storeGemTipFirstLesson,
-            dark: dark,
-          ),
-          _TipRow(
-            icon: Icons.inventory_2_rounded,
-            text: l.storeGemTipChest,
-            dark: dark,
-          ),
-          _TipRow(
-            icon: Icons.task_alt_rounded,
-            text: l.storeGemTipMission,
-            dark: dark,
-          ),
-          _TipRow(
+          TipRow(icon: Icons.school_rounded, text: l.storeGemTipLesson),
+          TipRow(icon: Icons.star_rounded, text: l.storeGemTipPerfect),
+          TipRow(icon: Icons.wb_sunny_rounded, text: l.storeGemTipFirstLesson),
+          TipRow(icon: Icons.inventory_2_rounded, text: l.storeGemTipChest),
+          TipRow(icon: Icons.task_alt_rounded, text: l.storeGemTipMission),
+          TipRow(
             icon: Icons.local_fire_department_rounded,
             text: l.storeGemTipStreak,
-            dark: dark,
           ),
-          _TipRow(
+          TipRow(
             icon: Icons.emoji_events_rounded,
             text: l.storeGemTipAchievement,
-            dark: dark,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _TipRow extends StatelessWidget {
-  final IconData icon;
-  final String text;
-  final bool dark;
-  const _TipRow({required this.icon, required this.text, required this.dark});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: AppSpacing.xs),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ExcludeSemantics(
-            child: Icon(icon, size: 14, color: context.textTertiary),
-          ),
-          const SizedBox(width: AppSpacing.sm),
-          Expanded(
-            child: Text(
-              text,
-              style: AppTextStyle.caption.copyWith(color: context.textTertiary),
-            ),
           ),
         ],
       ),

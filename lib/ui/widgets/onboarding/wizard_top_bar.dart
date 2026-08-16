@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../config/onboarding_wizard_config.dart';
 import '../../../core/theme/theme_constants.dart';
 import 'package:sagen/services/experience_service.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 
-class WizardTopBar extends ConsumerWidget {
+class WizardTopBar extends StatelessWidget {
   final int currentIndex;
   final VoidCallback onBack;
 
@@ -16,7 +15,7 @@ class WizardTopBar extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
     final progress = (currentIndex + 1) / OnboardingWizardConfig.totalSteps;
     return Padding(

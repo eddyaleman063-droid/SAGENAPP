@@ -69,6 +69,35 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
       );
     }
 
+    if (learning.errorMessage != null) {
+      return Scaffold(
+        backgroundColor: context.surfaceBackground,
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.error_outline_rounded,
+                  size: 48,
+                  color: context.textTertiary,
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  l.errorContentLoadFailed,
+                  style: AppTextStyle.bodyLg.copyWith(
+                    color: context.textPrimary,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
       backgroundColor: context.surfaceBackground,
       floatingActionButton: Semantics(

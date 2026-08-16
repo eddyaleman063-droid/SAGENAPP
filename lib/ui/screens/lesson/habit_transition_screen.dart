@@ -6,6 +6,7 @@ import 'package:sagen/services/experience_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 import '../../../core/theme/theme_constants.dart';
+import '../../../services/app_logger.dart';
 import '../../../services/sage_emotion_service.dart';
 import '../../../services/streak_visibility_service.dart';
 import '../../widgets/common/sage_emotion_widget.dart';
@@ -100,7 +101,8 @@ class _HabitTransitionScreenState extends State<HabitTransitionScreen>
       } else {
         context.goNamed('main');
       }
-    } catch (_) {
+    } catch (e) {
+      AppLogger().error('HabitTransition: prefs check failed', e);
       if (!mounted) return;
       context.goNamed('main');
     }

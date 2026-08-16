@@ -5,6 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/l10n/app_localizations.dart';
+import 'package:sagen/services/app_logger.dart';
 
 class FlexCardWidget extends ConsumerStatefulWidget {
   final String displayName;
@@ -43,6 +44,7 @@ class FlexCardWidgetState extends ConsumerState<FlexCardWidget> {
       final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
       return byteData?.buffer.asUint8List();
     } catch (e) {
+      AppLogger().error('FlexCardWidget: capture failed', e);
       return null;
     }
   }
