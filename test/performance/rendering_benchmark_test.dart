@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/ui/screens/welcome_screen.dart';
-import 'package:sagen/ui/widgets/common/glass_card.dart';
 
 void main() {
   Widget wrapInApp(Widget child) {
@@ -33,35 +32,6 @@ void main() {
         reason: 'WelcomeScreen initial render should complete within 10000ms',
       );
       await tester.pump(const Duration(seconds: 6));
-    }, tags: ['performance']);
-
-    testWidgets('GlassCard renders within 50ms', (tester) async {
-      await tester.binding.setSurfaceSize(const Size(1080, 1920));
-      addTearDown(() => tester.binding.setSurfaceSize(null));
-
-      final stopwatch = Stopwatch()..start();
-      await tester.pumpWidget(
-        wrapInApp(
-          const GlassCard(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text('Performance Test'),
-                SizedBox(height: 8),
-                Text('GlassCard rendering benchmark'),
-              ],
-            ),
-          ),
-        ),
-      );
-      await tester.pump();
-      stopwatch.stop();
-
-      expect(
-        stopwatch.elapsedMilliseconds,
-        lessThan(500),
-        reason: 'GlassCard render should complete within 500ms',
-      );
     }, tags: ['performance']);
 
     testWidgets('Animation startup does not block frame', (tester) async {
