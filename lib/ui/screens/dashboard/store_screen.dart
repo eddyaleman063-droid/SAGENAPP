@@ -567,7 +567,9 @@ class _TipRow extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, size: 14, color: context.textTertiary),
+          ExcludeSemantics(
+            child: Icon(icon, size: 14, color: context.textTertiary),
+          ),
           const SizedBox(width: AppSpacing.sm),
           Expanded(
             child: Text(

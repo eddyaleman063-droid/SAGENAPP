@@ -111,10 +111,12 @@ class _PostLessonPromoState extends ConsumerState<PostLessonPromo> {
                           color: Colors.white.withValues(alpha: 0.2),
                           borderRadius: BorderRadius.circular(AppRadius.md),
                         ),
-                        child: const Icon(
-                          Icons.diamond_rounded,
-                          color: Colors.white,
-                          size: 22,
+                        child: const ExcludeSemantics(
+                          child: Icon(
+                            Icons.diamond_rounded,
+                            color: Colors.white,
+                            size: 22,
+                          ),
                         ),
                       ),
                       const SizedBox(width: AppSpacing.md),
@@ -139,10 +141,12 @@ class _PostLessonPromoState extends ConsumerState<PostLessonPromo> {
                           ],
                         ),
                       ),
-                      Icon(
-                        Icons.arrow_forward_ios_rounded,
-                        color: Colors.white.withValues(alpha: 0.7),
-                        size: 14,
+                      ExcludeSemantics(
+                        child: Icon(
+                          Icons.arrow_forward_ios_rounded,
+                          color: Colors.white.withValues(alpha: 0.7),
+                          size: 14,
+                        ),
                       ),
                     ],
                   ),

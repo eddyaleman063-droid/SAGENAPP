@@ -30,19 +30,21 @@ class OnboardingProgressBar extends ConsumerWidget {
           ),
           const SizedBox(width: AppSpacing.sm),
           Expanded(
-            child: Container(
-              height: 12,
-              decoration: BoxDecoration(
-                color: context.disabledBg,
-                borderRadius: BorderRadius.circular(AppRadius.xs),
-              ),
-              child: FractionallySizedBox(
-                alignment: AlignmentDirectional.centerStart,
-                widthFactor: progress,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: PremiumColors.primaryAccent,
-                    borderRadius: BorderRadius.circular(AppRadius.xs),
+            child: ExcludeSemantics(
+              child: Container(
+                height: 12,
+                decoration: BoxDecoration(
+                  color: context.disabledBg,
+                  borderRadius: BorderRadius.circular(AppRadius.xs),
+                ),
+                child: FractionallySizedBox(
+                  alignment: AlignmentDirectional.centerStart,
+                  widthFactor: progress,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: PremiumColors.primaryAccent,
+                      borderRadius: BorderRadius.circular(AppRadius.xs),
+                    ),
                   ),
                 ),
               ),

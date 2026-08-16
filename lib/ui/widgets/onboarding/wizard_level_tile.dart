@@ -100,13 +100,15 @@ class WizardLevelTile extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: AppSpacing.md),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(3),
-                child: LinearProgressIndicator(
-                  value: isSelected ? fill : 0.0,
-                  backgroundColor: context.shimmerBase,
-                  valueColor: AlwaysStoppedAnimation<Color>(accentColor),
-                  minHeight: 4,
+              ExcludeSemantics(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(3),
+                  child: LinearProgressIndicator(
+                    value: isSelected ? fill : 0.0,
+                    backgroundColor: context.shimmerBase,
+                    valueColor: AlwaysStoppedAnimation<Color>(accentColor),
+                    minHeight: 4,
+                  ),
                 ),
               ),
             ],

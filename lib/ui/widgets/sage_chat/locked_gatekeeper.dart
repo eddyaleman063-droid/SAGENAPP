@@ -78,15 +78,17 @@ class LockedGatekeeper extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(AppRadius.pill),
-                    child: LinearProgressIndicator(
-                      value: sage.progress,
-                      backgroundColor: context.subtleBorder,
-                      valueColor: const AlwaysStoppedAnimation<Color>(
-                        PremiumColors.primaryAccent,
+                  ExcludeSemantics(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(AppRadius.pill),
+                      child: LinearProgressIndicator(
+                        value: sage.progress,
+                        backgroundColor: context.subtleBorder,
+                        valueColor: const AlwaysStoppedAnimation<Color>(
+                          PremiumColors.primaryAccent,
+                        ),
+                        minHeight: 6,
                       ),
-                      minHeight: 6,
                     ),
                   ),
                   const SizedBox(height: AppSpacing.sm),

@@ -108,12 +108,14 @@ class ProfileHeaderWidget extends StatelessWidget {
                 ),
               ),
             ),
-          CircularProgressIndicator(
-            value: _levelProgress.clamp(0.0, 1.0),
-            strokeWidth: 3.5,
-            backgroundColor: Colors.white.withValues(alpha: 0.1),
-            valueColor: AlwaysStoppedAnimation<Color>(
-              hasGoldFrame ? PremiumColors.gold : PremiumColors.splashBlue,
+          ExcludeSemantics(
+            child: CircularProgressIndicator(
+              value: _levelProgress.clamp(0.0, 1.0),
+              strokeWidth: 3.5,
+              backgroundColor: Colors.white.withValues(alpha: 0.1),
+              valueColor: AlwaysStoppedAnimation<Color>(
+                hasGoldFrame ? PremiumColors.gold : PremiumColors.splashBlue,
+              ),
             ),
           ),
           Semantics(

@@ -44,15 +44,19 @@ class WizardTopBar extends ConsumerWidget {
           ),
           const SizedBox(width: AppSpacing.sm),
           Expanded(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(3),
-              child: LinearProgressIndicator(
-                value: progress,
-                backgroundColor: cs.onSurface.withValues(alpha: 0.08),
-                valueColor: AlwaysStoppedAnimation<Color>(
-                  PremiumColors.splashBlue.withValues(alpha: 0.8),
+            child: Semantics(
+              label: 'Paso ${currentIndex + 1}',
+              value: '${(progress * 100).round()}%',
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(3),
+                child: LinearProgressIndicator(
+                  value: progress,
+                  backgroundColor: cs.onSurface.withValues(alpha: 0.08),
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    PremiumColors.splashBlue.withValues(alpha: 0.8),
+                  ),
+                  minHeight: 4,
                 ),
-                minHeight: 4,
               ),
             ),
           ),

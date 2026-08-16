@@ -211,7 +211,9 @@ class _PremiumNavBar extends StatelessWidget {
           return Expanded(
             child: Semantics(
               button: true,
+              selected: selected,
               label: item.label,
+              hint: showChestBadge && i == 1 ? 'Nuevo cofre disponible' : null,
               child: GestureDetector(
                 onTap: () {
                   HapticFeedback.lightImpact();

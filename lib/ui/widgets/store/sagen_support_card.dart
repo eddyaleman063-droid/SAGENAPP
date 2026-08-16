@@ -72,10 +72,12 @@ class SagenSupportCard extends ConsumerWidget {
                     color: Colors.white.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(AppRadius.lg),
                   ),
-                  child: const Icon(
-                    Icons.diamond_rounded,
-                    color: Colors.white,
-                    size: 28,
+                  child: const ExcludeSemantics(
+                    child: Icon(
+                      Icons.diamond_rounded,
+                      color: Colors.white,
+                      size: 28,
+                    ),
                   ),
                 ),
                 const SizedBox(width: AppSpacing.md),
@@ -102,10 +104,12 @@ class SagenSupportCard extends ConsumerWidget {
                     ],
                   ),
                 ),
-                Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  color: Colors.white.withValues(alpha: 0.7),
-                  size: 16,
+                ExcludeSemantics(
+                  child: Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    color: Colors.white.withValues(alpha: 0.7),
+                    size: 16,
+                  ),
                 ),
               ],
             ),

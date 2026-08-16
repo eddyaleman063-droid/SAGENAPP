@@ -74,10 +74,12 @@ class SagenPassCard extends ConsumerWidget {
                     color: Colors.white.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(AppRadius.lg),
                   ),
-                  child: const Icon(
-                    Icons.workspace_premium_rounded,
-                    color: Colors.white,
-                    size: 26,
+                  child: const ExcludeSemantics(
+                    child: Icon(
+                      Icons.workspace_premium_rounded,
+                      color: Colors.white,
+                      size: 26,
+                    ),
                   ),
                 ),
                 const SizedBox(width: AppSpacing.md),
@@ -100,14 +102,18 @@ class SagenPassCard extends ConsumerWidget {
                         ),
                       ),
                       const SizedBox(height: 6),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(AppRadius.pill),
-                        child: LinearProgressIndicator(
-                          value: progress,
-                          minHeight: 5,
-                          backgroundColor: Colors.white.withValues(alpha: 0.2),
-                          valueColor: const AlwaysStoppedAnimation<Color>(
-                            PremiumColors.accentYellow,
+                      ExcludeSemantics(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(AppRadius.pill),
+                          child: LinearProgressIndicator(
+                            value: progress,
+                            minHeight: 5,
+                            backgroundColor: Colors.white.withValues(
+                              alpha: 0.2,
+                            ),
+                            valueColor: const AlwaysStoppedAnimation<Color>(
+                              PremiumColors.accentYellow,
+                            ),
                           ),
                         ),
                       ),
@@ -115,10 +121,12 @@ class SagenPassCard extends ConsumerWidget {
                   ),
                 ),
                 const SizedBox(width: AppSpacing.sm),
-                Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  color: Colors.white.withValues(alpha: 0.7),
-                  size: 16,
+                ExcludeSemantics(
+                  child: Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    color: Colors.white.withValues(alpha: 0.7),
+                    size: 16,
+                  ),
                 ),
               ],
             ),

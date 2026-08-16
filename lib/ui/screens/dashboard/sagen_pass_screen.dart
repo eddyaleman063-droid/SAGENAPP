@@ -291,14 +291,16 @@ class _PassHeader extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: AppSpacing.sm),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(AppRadius.pill),
-                child: LinearProgressIndicator(
-                  value: progress,
-                  minHeight: 10,
-                  backgroundColor: Colors.white.withValues(alpha: 0.25),
-                  valueColor: const AlwaysStoppedAnimation<Color>(
-                    PremiumColors.accentYellow,
+              ExcludeSemantics(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(AppRadius.pill),
+                  child: LinearProgressIndicator(
+                    value: progress,
+                    minHeight: 10,
+                    backgroundColor: Colors.white.withValues(alpha: 0.25),
+                    valueColor: const AlwaysStoppedAnimation<Color>(
+                      PremiumColors.accentYellow,
+                    ),
                   ),
                 ),
               ),
