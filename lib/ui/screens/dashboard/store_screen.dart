@@ -212,7 +212,9 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
     final l = AppLocalizations.of(context)!;
     final dark = Theme.of(context).brightness == Brightness.dark;
     final learning = ref.watch(
-      learningProvider.select((l) => (isLoading: l.isLoading, errorMessage: l.errorMessage)),
+      learningProvider.select(
+        (l) => (isLoading: l.isLoading, errorMessage: l.errorMessage),
+      ),
     );
     final shop = ref.watch(shopProvider);
     final streak = ref.watch(streakProvider);

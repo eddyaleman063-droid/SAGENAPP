@@ -63,13 +63,15 @@ class PaymentPendingScreen extends ConsumerWidget {
                         ? Stack(
                             alignment: Alignment.center,
                             children: [
-                              const SizedBox(
-                                width: 100,
-                                height: 100,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 3,
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                    PremiumColors.warning,
+                              const ExcludeSemantics(
+                                child: SizedBox(
+                                  width: 100,
+                                  height: 100,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 3,
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                      PremiumColors.warning,
+                                    ),
                                   ),
                                 ),
                               ),

@@ -203,11 +203,13 @@ class PaywallBottomSheet extends ConsumerWidget {
                         icon:
                             paymentState.status ==
                                 PaymentStatus.creatingPreference
-                            ? const SizedBox(
-                                width: 16,
-                                height: 16,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
+                            ? const ExcludeSemantics(
+                                child: SizedBox(
+                                  width: 16,
+                                  height: 16,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                  ),
                                 ),
                               )
                             : const Icon(Icons.payment_rounded, size: 18),

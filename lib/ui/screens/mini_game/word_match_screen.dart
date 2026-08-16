@@ -350,7 +350,9 @@ class _WordMatchScreenState extends ConsumerState<WordMatchScreen> {
           if (_completing)
             const Padding(
               padding: EdgeInsets.only(bottom: AppSpacing.lg),
-              child: CircularProgressIndicator(strokeWidth: 2),
+              child: ExcludeSemantics(
+                child: CircularProgressIndicator(strokeWidth: 2),
+              ),
             )
           else ...[
             TweenAnimationBuilder<int>(

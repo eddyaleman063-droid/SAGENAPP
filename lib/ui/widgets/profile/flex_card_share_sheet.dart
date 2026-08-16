@@ -85,12 +85,14 @@ class _FlexCardShareSheetState extends ConsumerState<FlexCardShareSheet> {
                 child: ElevatedButton.icon(
                   onPressed: _sharing ? null : _share,
                   icon: _sharing
-                      ? const SizedBox(
-                          width: 18,
-                          height: 18,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: Colors.white,
+                      ? const ExcludeSemantics(
+                          child: SizedBox(
+                            width: 18,
+                            height: 18,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Colors.white,
+                            ),
                           ),
                         )
                       : const Icon(Icons.share_rounded, size: 18),

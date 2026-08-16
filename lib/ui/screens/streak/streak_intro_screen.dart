@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sagen/core/theme/app_colors.dart';
 import '../../../core/theme/theme_constants.dart';
 import '../../../ui/widgets/common/sage_emotion_widget.dart';
+import '../../../ui/widgets/common/benefit_row.dart';
 import '../../../services/sage_emotion_service.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -94,17 +95,17 @@ class StreakIntroScreen extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    _BenefitRow(
+                    BenefitRow(
                       icon: Icons.shield_rounded,
                       text: l.streakStrongerShield,
                     ),
                     const SizedBox(height: AppSpacing.md),
-                    _BenefitRow(
+                    BenefitRow(
                       icon: Icons.auto_awesome_rounded,
                       text: l.streakRewards,
                     ),
                     const SizedBox(height: AppSpacing.md),
-                    _BenefitRow(
+                    BenefitRow(
                       icon: Icons.emoji_events_rounded,
                       text: l.streakAchievements,
                     ),
@@ -142,29 +143,6 @@ class StreakIntroScreen extends StatelessWidget {
           ).animate().fadeIn().slideY(begin: 0.05),
         ),
       ),
-    );
-  }
-}
-
-class _BenefitRow extends StatelessWidget {
-  final IconData icon;
-  final String text;
-
-  const _BenefitRow({required this.icon, required this.text});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Icon(icon, size: 20, color: PremiumColors.streakOrange),
-        const SizedBox(width: AppSpacing.md),
-        Expanded(
-          child: Text(
-            text,
-            style: AppTextStyle.subtitle.copyWith(color: context.textSecondary),
-          ),
-        ),
-      ],
     );
   }
 }

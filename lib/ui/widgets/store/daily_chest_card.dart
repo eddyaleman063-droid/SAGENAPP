@@ -163,12 +163,14 @@ class _ClaimButton extends StatelessWidget {
             color: enabled ? null : context.surfaceTinted,
           ),
           child: loading
-              ? const SizedBox(
-                  width: 14,
-                  height: 14,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    color: Colors.white,
+              ? const ExcludeSemantics(
+                  child: SizedBox(
+                    width: 14,
+                    height: 14,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Colors.white,
+                    ),
                   ),
                 )
               : Text(

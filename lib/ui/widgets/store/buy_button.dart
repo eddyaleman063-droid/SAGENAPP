@@ -74,12 +74,14 @@ class _BuyButtonState extends State<BuyButton> {
             mainAxisSize: MainAxisSize.min,
             children: [
               if (_purchasing || widget.isLoading)
-                const SizedBox(
-                  width: 14,
-                  height: 14,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    color: Colors.white,
+                const ExcludeSemantics(
+                  child: SizedBox(
+                    width: 14,
+                    height: 14,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Colors.white,
+                    ),
                   ),
                 )
               else ...[

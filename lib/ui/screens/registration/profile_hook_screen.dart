@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../../core/theme/theme_constants.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../ui/widgets/common/sage_emotion_widget.dart';
+import '../../../ui/widgets/common/benefit_row.dart';
 import '../../../services/sage_emotion_service.dart';
 import 'package:sagen/l10n/app_localizations.dart';
-import 'package:sagen/core/theme/app_colors.dart';
 
 class ProfileHookScreen extends StatelessWidget {
   final VoidCallback onCreateProfile;
@@ -66,19 +67,25 @@ class ProfileHookScreen extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    _BenefitRow2(
+                    BenefitRow(
                       icon: Icons.cloud_done_rounded,
                       text: l.regCloudSave,
+                      iconColor: PremiumColors.primary,
+                      textColor: context.textPrimary,
                     ),
                     const SizedBox(height: AppSpacing.md),
-                    _BenefitRow2(
+                    BenefitRow(
                       icon: Icons.local_fire_department_rounded,
                       text: l.regStreakSync,
+                      iconColor: PremiumColors.primary,
+                      textColor: context.textPrimary,
                     ),
                     const SizedBox(height: AppSpacing.md),
-                    _BenefitRow2(
+                    BenefitRow(
                       icon: Icons.auto_awesome_rounded,
                       text: l.regRewards,
+                      iconColor: PremiumColors.primary,
+                      textColor: context.textPrimary,
                     ),
                   ],
                 ),
@@ -127,29 +134,6 @@ class ProfileHookScreen extends StatelessWidget {
           ).animate().fadeIn().slideY(begin: 0.1),
         ),
       ),
-    );
-  }
-}
-
-class _BenefitRow2 extends StatelessWidget {
-  final IconData icon;
-  final String text;
-
-  const _BenefitRow2({required this.icon, required this.text});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Icon(icon, size: 20, color: PremiumColors.primary),
-        const SizedBox(width: AppSpacing.md),
-        Expanded(
-          child: Text(
-            text,
-            style: AppTextStyle.subtitle.copyWith(color: context.textPrimary),
-          ),
-        ),
-      ],
     );
   }
 }

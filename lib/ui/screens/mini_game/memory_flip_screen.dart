@@ -334,7 +334,9 @@ class _MemoryFlipScreenState extends ConsumerState<MemoryFlipScreen> {
           if (_completing)
             const Padding(
               padding: EdgeInsets.only(bottom: AppSpacing.lg),
-              child: CircularProgressIndicator(strokeWidth: 2),
+              child: ExcludeSemantics(
+                child: CircularProgressIndicator(strokeWidth: 2),
+              ),
             )
           else ...[
             TweenAnimationBuilder<int>(

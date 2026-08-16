@@ -188,10 +188,12 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
                           _resendEmail();
                         },
                   child: _sending
-                      ? const SizedBox(
-                          width: 18,
-                          height: 18,
-                          child: CircularProgressIndicator(strokeWidth: 2),
+                      ? const ExcludeSemantics(
+                          child: SizedBox(
+                            width: 18,
+                            height: 18,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          ),
                         )
                       : Text(
                           l.verifyEmailResendButton,
