@@ -82,7 +82,7 @@ class _GemRewardAnimationState extends State<GemRewardAnimation>
           final slideY = t < 0.3 ? 0 : -(t - 0.3) * 120;
 
           return Positioned(
-            top: MediaQuery.of(context).size.height * 0.35 + slideY,
+            top: MediaQuery.sizeOf(context).height * 0.35 + slideY,
             left: 0,
             right: 0,
             child: Opacity(

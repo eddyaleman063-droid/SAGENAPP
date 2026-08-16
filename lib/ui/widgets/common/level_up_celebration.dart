@@ -205,8 +205,8 @@ class _LevelUpCelebrationState extends State<LevelUpCelebration>
         final radius = 80.0 + t * 120.0 + rng.nextDouble() * 40;
         final opacity = max(0.0, 1.0 - t * 1.2);
         return Positioned(
-          left: MediaQuery.of(context).size.width / 2 + cos(angle) * radius - 3,
-          top: MediaQuery.of(context).size.height / 2 + sin(angle) * radius - 3,
+          left: MediaQuery.sizeOf(context).width / 2 + cos(angle) * radius - 3,
+          top: MediaQuery.sizeOf(context).height / 2 + sin(angle) * radius - 3,
           child: Opacity(
             opacity: opacity,
             child: Container(

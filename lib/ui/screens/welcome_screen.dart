@@ -20,13 +20,13 @@ class WelcomeScreen extends ConsumerWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom,
+            bottom: MediaQuery.viewInsetsOf(context).bottom,
           ),
           child: ConstrainedBox(
             constraints: BoxConstraints(
               minHeight:
-                  MediaQuery.of(context).size.height -
-                  MediaQuery.of(context).padding.vertical,
+                  MediaQuery.sizeOf(context).height -
+                  MediaQuery.paddingOf(context).vertical,
             ),
             child: Column(
               children: [
