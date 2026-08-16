@@ -37,6 +37,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `registerPendingPayment` en Vercel: ID determinístico `${userId}_${operationId}` como en Cloud Functions, para que un retry de red no cree pagos pendientes duplicados (responde `duplicate: true`).
 - `web/index.html`: `<meta name="theme-color">` al color de marca (`#1565C0`) para que aplique antes de cargar el manifest.
 - Selector de idioma: `AppLanguage` ahora soporta 4 idiomas (es/en/fr/pt) con código persistido; sin preferencia guardada la app sigue el idioma del sistema cuando está soportado (antes solo es/en y el resto caía en español).
+- Migrados campos deprecated de `ThemeData`: `cardColor` → `CardThemeData`, `dividerColor` → `DividerThemeData` (4 temas: light, dark, highContrastLight, highContrastDark).
+- `MediaQuery.of(context).size` → `MediaQuery.sizeOf(context)` + accessores targeteados (`viewInsetsOf`, `paddingOf`) en 3 archivos para reducir rebuilds innecesarios.
+- Accesibilidad: progress indicators decorativos con `ExcludeSemantics` (5 en pass cards, gatekeeper, wizard, onboarding bar); el wizard_top_bar ahora anuncia paso y porcentaje.
+- Accesibilidad: iconos decorativos (flechas, diamantes, insignias) envueltos en `ExcludeSemantics` para evitar anuncios redundantes de TalkBack/VoiceOver.
+- Accesibilidad: tab Store ahora incluye `hint: 'Nuevo cofre disponible'` cuando el badge de cofre está visible; `selected` declarado explícitamente en todos los tabs.
 
 ### Added
 - Tests del webhook LIVE de Vercel (`api/index.js`): 15 tests nuevos (verificación de firma HMAC, retry 5xx ante fallo de MP, crédito idempotente de pagos aprobados, validación de `adminCreditDonation` con coerción de monto string→número y gate de auth 401/403). Jest sube a 232/232.
