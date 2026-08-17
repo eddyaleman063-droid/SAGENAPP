@@ -537,6 +537,12 @@
   "homeAllCompleteDesc": "Vous avez maîtrisé toutes les leçons.",
   "homeContinue": "Continuer",
   "homeDefaultName": "Gardien",
+  "levelUpCelebrationLabel": "Niveau supérieur ! Nouveau niveau : {level}",
+  "@levelUpCelebrationLabel": {
+    "placeholders": {
+      "level": { "type": "int" }
+    }
+  },
   "homeLearningPath": "Parcours d''apprentissage",
   "homeTitle": "Votre bouclier numérique est actif",
   "homeViewAchievements": "Voir les succès",
@@ -920,6 +926,12 @@
   "profileTitle": "Mon Profil",
   "profileTotalXp": "XP Total",
   "profileXpLabel": "XP",
+  "xpValue": "{count} XP",
+  "@xpValue": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
   "progressRestored": "Progression restaurée depuis le cloud",
   "projectionBenefit1Subtitle": "Sécurisez vos réseaux sociaux et e-mails",
   "projectionBenefit1Title": "Protégez vos comptes",

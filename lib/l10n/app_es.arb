@@ -499,6 +499,12 @@
   "homeAllCompleteDesc": "Has dominado todas las lecciones.",
   "homeContinue": "Seguir",
   "homeDefaultName": "Guardián",
+  "levelUpCelebrationLabel": "¡Subiste de nivel! Nuevo nivel: {level}",
+  "@levelUpCelebrationLabel": {
+    "placeholders": {
+      "level": { "type": "int" }
+    }
+  },
   "homeLearningPath": "Ruta de aprendizaje",
   "homeTitle": "Tu escudo digital está activo",
   "homeViewAchievements": "Ver logros",
@@ -882,6 +888,12 @@
   "profileTitle": "Mi Perfil",
   "profileTotalXp": "XP Total",
   "profileXpLabel": "XP",
+  "xpValue": "{count} XP",
+  "@xpValue": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
   "progressRestored": "Progreso restaurado desde la nube",
   "projectionBenefit1Subtitle": "Asegura tus redes sociales y correos",
   "projectionBenefit1Title": "Protege tus cuentas",

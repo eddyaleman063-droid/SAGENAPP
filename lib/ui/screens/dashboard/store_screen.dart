@@ -213,7 +213,7 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
         (l) => (isLoading: l.isLoading, errorMessage: l.errorMessage),
       ),
     );
-    final shop = ref.watch(shopProvider);
+    final shop = ref.watch(shopProvider.select((s) => s.items));
     final streak = ref.watch(streakProvider);
     final gemBalance = ref.watch(gemProvider.select((g) => g.balance));
 
@@ -254,7 +254,7 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
       );
     }
 
-    final filteredItems = shop.items
+    final filteredItems = shop
         .where((i) => i.category == _selectedCategory)
         .toList();
 

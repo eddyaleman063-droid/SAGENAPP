@@ -55,7 +55,18 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
     final dark = Theme.of(context).brightness == Brightness.dark;
     final displayName = ref.watch(authProvider.select((a) => a.displayName));
     final photoUrl = ref.watch(authProvider.select((a) => a.photoUrl));
-    final learning = ref.watch(learningProvider);
+    final learning = ref.watch(
+      learningProvider.select(
+        (l) => (
+          currentLevel: l.currentLevel,
+          totalXpEarned: l.totalXpEarned,
+          nextLevelXp: l.nextLevelXp,
+          totalDonated: l.totalDonated,
+          isLoading: l.isLoading,
+          errorMessage: l.errorMessage,
+        ),
+      ),
+    );
     final currentStreak = ref.watch(
       streakProvider.select((s) => s.currentStreak),
     );

@@ -94,9 +94,9 @@ class InputBar extends StatelessWidget {
                       }
                     : null,
                 icon: const Icon(Icons.send_rounded, size: 18),
+                tooltip: AppLocalizations.of(context)!.sendMessage,
                 color: enabled ? Colors.white : context.textDisabled,
                 padding: EdgeInsets.zero,
-                tooltip: AppLocalizations.of(context)!.sendMessage,
               ),
             ),
           ),

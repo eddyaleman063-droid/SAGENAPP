@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../services/experience_service.dart';
 
@@ -31,7 +32,7 @@ class ExitConfirmationWrapper extends StatelessWidget {
                 onPressed: () {
                   ExperienceService.instance.lightHaptic();
                   Navigator.pop(ctx);
-                  Navigator.pop(context);
+                  context.pop();
                 },
                 child: Text(l.exitText),
               ),

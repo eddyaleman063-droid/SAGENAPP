@@ -104,7 +104,7 @@ class _LessonSessionScreenState extends ConsumerState<LessonSessionScreen>
                 onPressed: () {
                   HapticFeedback.lightImpact();
                   Navigator.pop(ctx);
-                  Navigator.pop(context);
+                  context.pop();
                 },
                 child: Text(l.exitText),
               ),

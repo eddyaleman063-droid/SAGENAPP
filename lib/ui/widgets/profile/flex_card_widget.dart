@@ -3,6 +3,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sagen/utils/string_utils.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/services/app_logger.dart';
@@ -49,15 +50,7 @@ class FlexCardWidgetState extends ConsumerState<FlexCardWidget> {
     }
   }
 
-  String get _initials {
-    final parts = widget.displayName.trim().split(' ');
-    if (parts.length >= 2) {
-      return '${parts.first[0]}${parts.last[0]}'.toUpperCase();
-    }
-    return widget.displayName.isNotEmpty
-        ? widget.displayName[0].toUpperCase()
-        : '?';
-  }
+  String get _initials => userInitials(widget.displayName);
 
   @override
   Widget build(BuildContext context) {
@@ -170,7 +163,7 @@ class FlexCardWidgetState extends ConsumerState<FlexCardWidget> {
                   ),
                   const SizedBox(width: AppSpacing.xs),
                   Text(
-                    '${widget.xp} XP',
+                    l.xpValue(widget.xp),
                     style: AppTextStyle.title.copyWith(
                       fontWeight: FontWeight.w600,
                       color: PremiumColors.xpColor,

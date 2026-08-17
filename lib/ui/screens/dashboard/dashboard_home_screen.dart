@@ -56,7 +56,16 @@ class _DashboardHomeScreenState extends ConsumerState<DashboardHomeScreen>
   Widget build(BuildContext context) {
     super.build(context);
     final dash = ref.watch(dashboardProvider);
-    final learning = ref.watch(learningProvider);
+    final learning = ref.watch(
+      learningProvider.select(
+        (l) => (
+          stages: l.stages,
+          isLoading: l.isLoading,
+          errorMessage: l.errorMessage,
+          totalDonated: l.totalDonated,
+        ),
+      ),
+    );
 
     final l = AppLocalizations.of(context)!;
 

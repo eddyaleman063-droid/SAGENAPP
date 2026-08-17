@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sagen/core/theme/app_colors.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
+import 'package:sagen/l10n/app_localizations.dart';
 
 class StatChip extends StatelessWidget {
   final String label;
@@ -44,6 +45,7 @@ class RewardBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: AppSpacing.xl,
@@ -63,7 +65,7 @@ class RewardBadge extends StatelessWidget {
           ),
           const SizedBox(width: AppSpacing.xs),
           Text(
-            '$xp XP',
+            l.xpValue(xp),
             style: AppTextStyle.bodyBold.copyWith(color: Colors.white),
           ),
         ],

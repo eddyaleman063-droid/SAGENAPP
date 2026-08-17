@@ -358,7 +358,7 @@ class _WordMatchScreenState extends ConsumerState<WordMatchScreen> {
                     ),
                     const SizedBox(width: AppSpacing.xs),
                     Text(
-                      '$value XP',
+                      l.xpValue(value),
                       style: AppTextStyle.bodyBold.copyWith(
                         color: Colors.white,
                       ),

@@ -70,7 +70,7 @@ class _LevelUpCelebrationState extends State<LevelUpCelebration>
     final l = AppLocalizations.of(context)!;
 
     return Semantics(
-      label: '¡Subiste de nivel! Nuevo nivel: ${widget.newLevel}',
+      label: l.levelUpCelebrationLabel(widget.newLevel),
       container: true,
       liveRegion: true,
       child: Material(

@@ -342,7 +342,7 @@ class _MemoryFlipScreenState extends ConsumerState<MemoryFlipScreen> {
                     ),
                     const SizedBox(width: AppSpacing.xs),
                     Text(
-                      '$value XP',
+                      l.xpValue(value),
                       style: AppTextStyle.bodyBold.copyWith(
                         color: Colors.white,
                       ),

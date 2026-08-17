@@ -39,7 +39,18 @@ class LessonsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l = AppLocalizations.of(context)!;
-    final learning = ref.watch(learningProvider);
+    final learning = ref.watch(
+      learningProvider.select(
+        (l) => (
+          stages: l.stages,
+          isLoading: l.isLoading,
+          errorMessage: l.errorMessage,
+          lessonsCompleted: l.lessonsCompleted,
+          currentLevel: l.currentLevel,
+          overallProgress: l.overallProgress,
+        ),
+      ),
+    );
     final stages = learning.stages;
 
     if (learning.isLoading) {

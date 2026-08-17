@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sagen/core/theme/app_colors.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/l10n/app_localizations.dart';
+import 'package:sagen/utils/string_utils.dart';
 
 class HomeHeader extends StatelessWidget {
   final String displayName;
@@ -84,14 +85,7 @@ class HomeHeader extends StatelessWidget {
     );
   }
 
-  String get _initials {
-    final parts = displayName.trim().split(RegExp(r'\s+'));
-    if (parts.isEmpty || displayName.trim().isEmpty) return 'G';
-    if (parts.length >= 2 && parts[0].isNotEmpty && parts[1].isNotEmpty) {
-      return '${parts[0][0]}${parts[1][0]}'.toUpperCase();
-    }
-    return parts[0].isNotEmpty ? parts[0][0].toUpperCase() : 'G';
-  }
+  String get _initials => userInitials(displayName);
 }
 
 class _Pill extends StatelessWidget {

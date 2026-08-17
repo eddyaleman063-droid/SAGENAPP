@@ -235,7 +235,7 @@ class ProfileHeaderWidget extends StatelessWidget {
                 ),
               ),
               Text(
-                '$_xpInLevel / $nextLevelXp XP',
+                '$_xpInLevel / ${l.xpValue(nextLevelXp)}',
                 style: AppTextStyle.label.copyWith(
                   color: Colors.white.withValues(alpha: 0.6),
                 ),

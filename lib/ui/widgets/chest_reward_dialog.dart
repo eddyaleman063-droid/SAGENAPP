@@ -256,7 +256,7 @@ class _RewardsPanel extends StatelessWidget {
               if (r.xp > 0)
                 _RewardChip(
                   icon: Icons.auto_awesome_rounded,
-                  label: '+${r.xp} XP',
+                  label: '+${l.xpValue(r.xp)}',
                   color: PremiumColors.xpColor,
                 ),
               if (r.streakShields != null && r.streakShields! > 0)
@@ -266,9 +266,9 @@ class _RewardsPanel extends StatelessWidget {
                   color: PremiumColors.premiumBlue,
                 ),
               if (r.xpBoost)
-                const _RewardChip(
+                _RewardChip(
                   icon: Icons.bolt_rounded,
-                  label: '×2 XP',
+                  label: '×2 ${l.profileXpLabel}',
                   color: PremiumColors.streakOrange,
                 ),
               for (final itemType in r.specialItems)

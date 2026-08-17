@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sagen/core/theme/app_colors.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
+import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/providers/leaderboard_provider.dart';
+import 'package:sagen/utils/string_utils.dart';
 
 const Color podiumSilver = PremiumColors.silver;
 const Color podiumGold = PremiumColors.gold;
@@ -81,19 +83,11 @@ class _PodiumAvatar extends StatelessWidget {
     this.crown = false,
   });
 
-  String get _initials {
-    final parts = entry.displayName.trim().split(RegExp(r'\s+'));
-    if (parts.length >= 2) {
-      return '${parts.first[0]}${parts.last[0]}'.toUpperCase();
-    }
-    if (parts.length == 1 && parts.first.isNotEmpty) {
-      return parts.first[0].toUpperCase();
-    }
-    return '?';
-  }
+  String get _initials => userInitials(entry.displayName);
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     final dark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -143,7 +137,7 @@ class _PodiumAvatar extends StatelessWidget {
           ),
         ),
         Text(
-          '${_formatXp(entry.totalXp)} XP',
+          '${_formatXp(entry.totalXp)} ${l.profileXpLabel}',
           style: AppTextStyle.label.copyWith(
             color: color,
             fontWeight: FontWeight.bold,

@@ -537,6 +537,12 @@
   "homeAllCompleteDesc": "You have mastered all lessons.",
   "homeContinue": "Continue",
   "homeDefaultName": "Guardian",
+  "levelUpCelebrationLabel": "Level up! New level: {level}",
+  "@levelUpCelebrationLabel": {
+    "placeholders": {
+      "level": { "type": "int" }
+    }
+  },
   "homeLearningPath": "Learning path",
   "homeTitle": "Your digital shield is active",
   "homeViewAchievements": "View achievements",
@@ -920,6 +926,12 @@
   "profileTitle": "My Profile",
   "profileTotalXp": "Total XP",
   "profileXpLabel": "XP",
+  "xpValue": "{count} XP",
+  "@xpValue": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
   "progressRestored": "Progress restored from cloud",
   "projectionBenefit1Subtitle": "Secure your social media and emails",
   "projectionBenefit1Title": "Protect your accounts",

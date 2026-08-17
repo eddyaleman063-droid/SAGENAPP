@@ -63,6 +63,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Navigator.of(context).maybePop()` → `context.pop()` en `SagenPassScreen` (GoRouter).
 - `GemProvider.awardDailyBonus` y `awardStreakMilestone`: if/else chains refactorizados a mapas de umbrales descendentes.
 - `StoreScreen._buyItem`: if/else chain de activación de temas refactorizado a `themeVariants` map.
+- Provider `.select` optimizado en `dashboard_home_screen`, `lessons_screen`, `profile_screen` y `store_screen`: reconstrucción selectiva evita re-renders innecesarios en 4 pantallas principales.
+- `userInitials()` helper extraído a `lib/utils/string_utils.dart` y compartido entre `HomeHeader`, `RankingTile`, `PodiumWidget` y `FlexCardWidget` (4 usos, eliminando duplicación).
+- `Navigator.pop(context)` / `Navigator.of(context).pop()` reemplazado por `context.pop()` (GoRouter) en `ExitConfirmationWrapper`, `FirstLessonScreen` y `LessonSessionScreen`.
+- 9 strings hardcodeados `'XP'` localizados via `l.xpValue()` (nueva clave l10n en es/en/fr/pt) en `ChestRewardDialog`, `PodiumWidget`, `ProfileHeaderWidget`, `FlexCardWidget` y 4 mini-game screens.
+- Label español en `LevelUpCelebration` localizado via `l.levelUpCelebrationLabel()` (nueva clave l10n en es/en/fr/pt).
+- Tooltips faltantes agregados a `IconButton` en `DailyStreakScreen` y `InputBar`.
 
 ### Added
 - Tests del webhook LIVE de Vercel (`api/index.js`): 15 tests nuevos (verificación de firma HMAC, retry 5xx ante fallo de MP, crédito idempotente de pagos aprobados, validación de `adminCreditDonation` con coerción de monto string→número y gate de auth 401/403). Jest sube a 232/232.
