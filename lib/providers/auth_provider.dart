@@ -256,8 +256,8 @@ class AuthNotifier extends Notifier<AuthState> {
           errorMessage: () => e.code,
         );
       }
-    } catch (_) {
-      AppLogger().warning('Auth: signInWithGoogle failed');
+    } catch (e) {
+      AppLogger().warning('Auth: signInWithGoogle failed: $e');
       _recordAuthError();
       state = state.copyWith(
         status: AuthStatus.error,
@@ -302,8 +302,8 @@ class AuthNotifier extends Notifier<AuthState> {
           errorMessage: () => e.code,
         );
       }
-    } catch (_) {
-      AppLogger().warning('Auth: signInWithFacebook failed');
+    } catch (e) {
+      AppLogger().warning('Auth: signInWithFacebook failed: $e');
       _recordAuthError();
       state = state.copyWith(
         status: AuthStatus.error,
@@ -349,8 +349,8 @@ class AuthNotifier extends Notifier<AuthState> {
         status: AuthStatus.error,
         errorMessage: () => e.code,
       );
-    } catch (_) {
-      AppLogger().warning('Auth: signUpWithEmail failed');
+    } catch (e) {
+      AppLogger().warning('Auth: signUpWithEmail failed: $e');
       _recordAuthError();
       state = state.copyWith(
         status: AuthStatus.error,
@@ -397,8 +397,8 @@ class AuthNotifier extends Notifier<AuthState> {
         status: AuthStatus.error,
         errorMessage: () => e.code,
       );
-    } catch (_) {
-      AppLogger().warning('Auth: signInWithEmail failed');
+    } catch (e) {
+      AppLogger().warning('Auth: signInWithEmail failed: $e');
       _recordAuthError();
       state = state.copyWith(
         status: AuthStatus.error,
@@ -414,8 +414,8 @@ class AuthNotifier extends Notifier<AuthState> {
     } on AuthException catch (e) {
       state = state.copyWith(errorMessage: () => e.code);
       rethrow;
-    } catch (_) {
-      AppLogger().warning('Auth: resendVerificationEmail failed');
+    } catch (e) {
+      AppLogger().warning('Auth: resendVerificationEmail failed: $e');
       state = state.copyWith(errorMessage: () => 'resend_error');
       rethrow;
     }
@@ -436,8 +436,8 @@ class AuthNotifier extends Notifier<AuthState> {
           errorMessage: () => 'not_verified',
         );
       }
-    } catch (_) {
-      AppLogger().warning('Auth: checkEmailVerified failed');
+    } catch (e) {
+      AppLogger().warning('Auth: checkEmailVerified failed: $e');
       state = state.copyWith(
         status: AuthStatus.unauthenticated,
         errorMessage: () => 'verify_error',
@@ -458,8 +458,8 @@ class AuthNotifier extends Notifier<AuthState> {
         status: AuthStatus.error,
         errorMessage: () => e.code,
       );
-    } catch (_) {
-      AppLogger().warning('Auth: sendPasswordResetEmail failed');
+    } catch (e) {
+      AppLogger().warning('Auth: sendPasswordResetEmail failed: $e');
       state = state.copyWith(
         status: AuthStatus.error,
         errorMessage: () => 'unknown',
@@ -481,8 +481,8 @@ class AuthNotifier extends Notifier<AuthState> {
         status: AuthStatus.error,
         errorMessage: () => e.code,
       );
-    } catch (_) {
-      AppLogger().warning('Auth: reauthenticate failed');
+    } catch (e) {
+      AppLogger().warning('Auth: reauthenticate failed: $e');
       state = state.copyWith(
         status: AuthStatus.error,
         errorMessage: () => 'reauth_error',
@@ -524,8 +524,8 @@ class AuthNotifier extends Notifier<AuthState> {
           errorMessage: () => e.code,
         );
         return;
-      } catch (_) {
-        AppLogger().warning('Auth: deleteAccount reauth failed');
+      } catch (e) {
+        AppLogger().warning('Auth: deleteAccount reauth failed: $e');
         state = state.copyWith(
           status: AuthStatus.error,
           errorMessage: () => 'reauth_error',

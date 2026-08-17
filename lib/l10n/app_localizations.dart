@@ -1926,6 +1926,24 @@ abstract class AppLocalizations {
   /// **'M'**
   String get dayShortWed;
 
+  /// No description provided for @streakStatusCompleted.
+  ///
+  /// In es, this message translates to:
+  /// **'completado'**
+  String get streakStatusCompleted;
+
+  /// No description provided for @streakStatusToday.
+  ///
+  /// In es, this message translates to:
+  /// **'hoy'**
+  String get streakStatusToday;
+
+  /// No description provided for @streakStatusPending.
+  ///
+  /// In es, this message translates to:
+  /// **'pendiente'**
+  String get streakStatusPending;
+
   /// No description provided for @daysLabel.
   ///
   /// In es, this message translates to:
@@ -2891,6 +2909,12 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Guardián'**
   String get homeDefaultName;
+
+  /// No description provided for @levelUpCelebrationLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'¡Subiste de nivel! Nuevo nivel: {level}'**
+  String levelUpCelebrationLabel(int level);
 
   /// No description provided for @homeLearningPath.
   ///
@@ -5146,6 +5170,12 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'XP'**
   String get profileXpLabel;
+
+  /// No description provided for @xpValue.
+  ///
+  /// In es, this message translates to:
+  /// **'{count} XP'**
+  String xpValue(int count);
 
   /// No description provided for @progressRestored.
   ///

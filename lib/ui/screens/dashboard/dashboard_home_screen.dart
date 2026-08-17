@@ -28,7 +28,6 @@ class DashboardHomeScreen extends ConsumerStatefulWidget {
 class _DashboardHomeScreenState extends ConsumerState<DashboardHomeScreen>
     with AutomaticKeepAliveClientMixin {
   Map<String, Stage>? _lessonStageCache;
-  int _lastStagesHashCode = 0;
   final _contentKey = GlobalKey();
 
   StageStatus _stageStatus(Stage stage) {
@@ -38,15 +37,11 @@ class _DashboardHomeScreenState extends ConsumerState<DashboardHomeScreen>
   }
 
   Stage? _findStage(List<Stage> stages, String lessonId) {
-    final hc = stages.hashCode;
-    if (hc != _lastStagesHashCode) {
-      _lastStagesHashCode = hc;
-      _lessonStageCache = {
-        for (final s in stages)
-          for (final l in s.lessons) l.id: s,
-      };
-    }
-    return _lessonStageCache?[lessonId];
+    _lessonStageCache = {
+      for (final s in stages)
+        for (final l in s.lessons) l.id: s,
+    };
+    return _lessonStageCache![lessonId];
   }
 
   @override

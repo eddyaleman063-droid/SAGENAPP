@@ -26,6 +26,8 @@ class CloudSyncService implements ICloudSyncService {
   final FirestoreService _firestoreService;
   final AppLogger _logger;
 
+  SharedPreferences? _prefs;
+
   bool _initialized = false;
   @override
   bool get isInitialized => _initialized;
@@ -301,6 +303,7 @@ class CloudSyncService implements ICloudSyncService {
   Future<void> init(SharedPreferences prefs) async {
     if (_initialized) return;
     _initialized = true;
+    _prefs = prefs;
 
     final lastSyncStr = prefs.getString(_lastSyncKey);
     if (lastSyncStr != null) {
@@ -479,13 +482,10 @@ class CloudSyncService implements ICloudSyncService {
           serializable[entry.key] = val;
         }
       }
-      SharedPreferences.getInstance()
-          .then((prefs) {
-            prefs.setString(_pendingWritesKey, jsonEncode(serializable));
-          })
-          .catchError((e) {
-            _logger.warning('Failed to persist pending writes: $e');
-          });
+      final prefs = _prefs;
+      if (prefs != null) {
+        prefs.setString(_pendingWritesKey, jsonEncode(serializable));
+      }
     } catch (e) {
       _logger.warning('CloudSync: _persistPendingWrites failed: $e');
     }
@@ -515,13 +515,7 @@ class CloudSyncService implements ICloudSyncService {
   }
 
   void _clearPersistedPendingWrites() {
-    SharedPreferences.getInstance()
-        .then((prefs) {
-          prefs.remove(_pendingWritesKey);
-        })
-        .catchError((e) {
-          _logger.warning('Failed to clear persisted pending writes: $e');
-        });
+    _prefs?.remove(_pendingWritesKey);
   }
 
   dynamic _getPrefValue(SharedPreferences prefs, String key) {

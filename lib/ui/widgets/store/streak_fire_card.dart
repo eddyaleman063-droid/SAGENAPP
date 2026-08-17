@@ -35,9 +35,7 @@ class StreakFireCard extends ConsumerWidget {
     final showOnboarding = curStreak == 0 && !isFrozen;
 
     return Semantics(
-      label:
-          AppLocalizations.of(context)?.streakFireCardLabel ??
-          AppLocalizations.of(context)!.streakFireCardA11y,
+      label: l.streakFireCardLabel,
       child: Container(
         padding: const EdgeInsets.all(AppSpacing.xl),
         decoration: BoxDecoration(

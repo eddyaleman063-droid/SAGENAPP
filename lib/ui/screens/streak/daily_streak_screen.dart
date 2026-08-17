@@ -474,10 +474,10 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
 
             final dayLabel = _dayLabels(l)[i];
             final dayStatus = (isToday && _circleFilled) || isPast
-                ? 'completado'
+                ? l.streakStatusCompleted
                 : isToday
-                ? 'hoy'
-                : 'pendiente';
+                ? l.streakStatusToday
+                : l.streakStatusPending;
             return Semantics(
               label: '$dayLabel: $dayStatus',
               container: true,
@@ -569,7 +569,7 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
   }
 
   Widget _buildMonthlyHeatmap(Color accent, bool dark) {
-    final streak = ref.read(streakProvider);
+    final streak = ref.watch(streakProvider);
     final heatmap = streak.heatmapData;
     final now = DateTime.now();
     final grayColor = dark

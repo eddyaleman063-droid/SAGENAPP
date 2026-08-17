@@ -18,7 +18,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed
-- Barra de estado: el brillo de los íconos (estado + navegación) ahora sigue el tema activo (`AnnotatedRegion`), en vez de quedar fijo en blanco — en tema claro quedaban invisibles y con edge-to-edge forzado (API 35/36) se hacía más notorio.
+- **Bug crítico de crash** en `streak_fire_card.dart`: fallback chain `?.label ?? !.a11y` causaba null assertion error; simplificado a `l.streakFireCardLabel` directo.
+- Cache rota en `dashboard_home_screen._findStage()`: usaba `List.hashCode` (identity-based en Dart) para invalidación, así que nunca se invalidaba. Ahora reconstruye el mapa en cada llamada.
+- `daily_streak_screen._buildMonthlyHeatmap()`: `ref.read(streakProvider)` dentro de `build()` no se reconstruía al cambiar datos de racha; cambiado a `ref.watch`.
+- `CloudSyncService`: `_persistPendingWrites()` y `_clearPersistedPendingWrites()` llamaban `SharedPreferences.getInstance()` creando instancias nuevas; ahora reutilizan la instancia inyectada via `init()`.
+- `payment_repository.dart`: 2 catch blocks silenciosos ahora loguean `$e` en vez de tragar el error.
+- `auth_provider.dart`: 9 catch blocks de autenticación ahora incluyen `$e` en el log para debugging.
+- `daily_streak_screen`: 3 labels de accesibilidad hardcoded en español (`'completado'`, `'hoy'`, `'pendiente'`) localizados via nuevas claves l10n `streakStatusCompleted`/`streakStatusToday`/`streakStatusPending` (es/en/fr/pt).
 - `ios/Podfile` faltante: el proyecto iOS no podía compilar con plugins nativos (ni CocoaPods ni SPM). Se añade el Podfile canónico de Flutter 3.41.9; `pod install` lo integra al pbxproj.
 - CI `release.yml`: los artefactos (APK/AAB) no se adjuntaban al release (glob no recursivo) y el path del deploy a Firebase App Distribution apuntaba a `release/*.aab` que no existe; ahora apunta a la ruta real del AAB.
 - CI `pr_check.yml`: el check de formato y los tests corrían con `continue-on-error` (no gateaban); se quita. El diff para TODO/FIXME ahora se compara contra `origin/master`.

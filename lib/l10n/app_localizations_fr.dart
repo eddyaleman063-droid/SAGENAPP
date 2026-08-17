@@ -1022,6 +1022,15 @@ class AppLocalizationsFr extends AppLocalizations {
   String get dayShortWed => 'M';
 
   @override
+  String get streakStatusCompleted => 'terminé';
+
+  @override
+  String get streakStatusToday => 'aujourd\'hui';
+
+  @override
+  String get streakStatusPending => 'en attente';
+
+  @override
   String get daysLabel => 'jours';
 
   @override
@@ -1546,6 +1555,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get homeDefaultName => 'Gardien';
+
+  @override
+  String levelUpCelebrationLabel(int level) {
+    return 'Niveau supérieur ! Nouveau niveau : $level';
+  }
 
   @override
   String get homeLearningPath => 'Parcours d\'apprentissage';
@@ -2795,6 +2809,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get profileXpLabel => 'XP';
+
+  @override
+  String xpValue(int count) {
+    return '$count XP';
+  }
 
   @override
   String get progressRestored => 'Progression restaurée depuis le cloud';
