@@ -9442,6 +9442,18 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Paso {step}'**
   String wizardStepLabel(Object step);
+
+  /// No description provided for @chestRewardShareText.
+  ///
+  /// In es, this message translates to:
+  /// **'¡Obtuve {items} de un cofre {type} en SAGEN!'**
+  String chestRewardShareText(Object items, Object type);
+
+  /// No description provided for @gemRainAnimationLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Animación de gemas cayendo'**
+  String get gemRainAnimationLabel;
 }
 
 class _AppLocalizationsDelegate

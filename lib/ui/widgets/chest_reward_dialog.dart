@@ -294,8 +294,10 @@ class _RewardsPanel extends StatelessWidget {
                       ];
                       ShareService.instance.shareImage(
                         Uint8List(0),
-                        text:
-                            'I got ${items.join(", ")} from a ${r.type.name} chest on SAGEN!',
+                        text: l.chestRewardShareText(
+                          items.join(', '),
+                          r.type.name,
+                        ),
                         source: 'chest_reward',
                       );
                     },
@@ -352,47 +354,50 @@ class _GemRewardChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [PremiumColors.accentCyan, PremiumColors.deepPurple],
-        ),
-        borderRadius: BorderRadius.circular(AppRadius.md),
-        boxShadow: [
-          BoxShadow(
-            color: PremiumColors.accentCyan.withValues(alpha: 0.3),
-            blurRadius: 8,
-            spreadRadius: 1,
+    return Semantics(
+      label: '+$gemCount gems',
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            colors: [PremiumColors.accentCyan, PremiumColors.deepPurple],
           ),
-        ],
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Transform.rotate(
-            angle: 0.785,
-            child: Container(
-              width: 14,
-              height: 14,
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Colors.white, PremiumColors.surfaceTintLight],
+          borderRadius: BorderRadius.circular(AppRadius.md),
+          boxShadow: [
+            BoxShadow(
+              color: PremiumColors.accentCyan.withValues(alpha: 0.3),
+              blurRadius: 8,
+              spreadRadius: 1,
+            ),
+          ],
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Transform.rotate(
+              angle: 0.785,
+              child: Container(
+                width: 14,
+                height: 14,
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Colors.white, PremiumColors.surfaceTintLight],
+                  ),
+                  borderRadius: BorderRadius.circular(2),
                 ),
-                borderRadius: BorderRadius.circular(2),
               ),
             ),
-          ),
-          const SizedBox(width: AppSpacing.xs),
-          Text(
-            '+$gemCount',
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
+            const SizedBox(width: AppSpacing.xs),
+            Text(
+              '+$gemCount',
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

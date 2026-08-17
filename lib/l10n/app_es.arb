@@ -2232,5 +2232,13 @@
     "placeholders": {
       "step": {}
     }
-  }
+  },
+  "chestRewardShareText": "¡Obtuve {items} de un cofre {type} en SAGEN!",
+  "@chestRewardShareText": {
+    "placeholders": {
+      "items": {},
+      "type": {}
+    }
+  },
+  "gemRainAnimationLabel": "Animación de gemas cayendo"
 }

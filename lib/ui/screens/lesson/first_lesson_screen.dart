@@ -93,15 +93,19 @@ class _FirstLessonScreenState extends ConsumerState<FirstLessonScreen> {
                 ),
               ),
               const SizedBox(height: AppSpacing.xxl),
-              ElevatedButton(
-                onPressed: () {
-                  HapticFeedback.lightImpact();
-                  setState(() {
-                    _loadError = null;
-                  });
-                  _startLessonWithTimeout();
-                },
-                child: Text(AppLocalizations.of(context)!.retry),
+              Semantics(
+                button: true,
+                label: AppLocalizations.of(context)!.retry,
+                child: ElevatedButton(
+                  onPressed: () {
+                    HapticFeedback.lightImpact();
+                    setState(() {
+                      _loadError = null;
+                    });
+                    _startLessonWithTimeout();
+                  },
+                  child: Text(AppLocalizations.of(context)!.retry),
+                ),
               ),
             ],
           ),

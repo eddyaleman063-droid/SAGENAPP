@@ -2232,5 +2232,13 @@
     "placeholders": {
       "step": {}
     }
-  }
+  },
+  "chestRewardShareText": "I got {items} from a {type} chest on SAGEN!",
+  "@chestRewardShareText": {
+    "placeholders": {
+      "items": {},
+      "type": {}
+    }
+  },
+  "gemRainAnimationLabel": "Gem rain animation"
 }

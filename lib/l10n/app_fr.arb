@@ -2232,5 +2232,13 @@
     "placeholders": {
       "step": {}
     }
-  }
+  },
+  "chestRewardShareText": "J'ai obtenu {items} d'un coffre {type} sur SAGEN !",
+  "@chestRewardShareText": {
+    "placeholders": {
+      "items": {},
+      "type": {}
+    }
+  },
+  "gemRainAnimationLabel": "Animation de pluie de gemmes"
 }

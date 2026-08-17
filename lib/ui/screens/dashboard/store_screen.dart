@@ -247,6 +247,16 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
                   ),
                   textAlign: TextAlign.center,
                 ),
+                const SizedBox(height: AppSpacing.xxl),
+                Semantics(
+                  button: true,
+                  label: l.retry,
+                  child: ElevatedButton.icon(
+                    onPressed: () => ref.invalidate(learningProvider),
+                    icon: const Icon(Icons.refresh_rounded),
+                    label: Text(l.retry),
+                  ),
+                ),
               ],
             ),
           ),

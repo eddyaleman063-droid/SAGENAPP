@@ -16,7 +16,7 @@ class GemRainAnimation extends StatefulWidget {
     return showGeneralDialog(
       context: context,
       barrierDismissible: false,
-      barrierLabel: 'GemRain',
+      barrierLabel: AppLocalizations.of(context)?.gemRainAnimationLabel ?? '',
       transitionDuration: const Duration(milliseconds: 300),
       pageBuilder: (ctx, a, b) => GemRainAnimation(gemCount: gemCount),
     );

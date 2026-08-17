@@ -2232,5 +2232,13 @@
     "placeholders": {
       "step": {}
     }
-  }
+  },
+  "chestRewardShareText": "Recebi {items} de um baú {type} no SAGEN!",
+  "@chestRewardShareText": {
+    "placeholders": {
+      "items": {},
+      "type": {}
+    }
+  },
+  "gemRainAnimationLabel": "Animação de chuva de gemas"
 }

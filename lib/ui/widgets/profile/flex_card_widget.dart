@@ -60,13 +60,13 @@ class FlexCardWidgetState extends ConsumerState<FlexCardWidget> {
       child: Container(
         width: 360,
         height: 640,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           color: PremiumColors.deepBackground,
           gradient: RadialGradient(
             center: Alignment.topCenter,
             radius: 1.2,
             colors: [
-              Color(0x334AC2DD),
+              PremiumColors.splashBlue.withValues(alpha: 0.2),
               PremiumColors.deepBackground,
               PremiumColors.deepBackground,
             ],
@@ -111,8 +111,10 @@ class FlexCardWidgetState extends ConsumerState<FlexCardWidget> {
                 ),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(AppRadius.xxl),
-                  color: const Color(0x334AC2DD),
-                  border: Border.all(color: const Color(0x664AC2DD)),
+                  color: PremiumColors.splashBlue.withValues(alpha: 0.2),
+                  border: Border.all(
+                    color: PremiumColors.splashBlue.withValues(alpha: 0.4),
+                  ),
                 ),
                 child: Text(
                   l.profileLevelValue(widget.level),
@@ -180,8 +182,10 @@ class FlexCardWidgetState extends ConsumerState<FlexCardWidget> {
                   ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(AppRadius.xxl),
-                    color: const Color(0x33FFD700),
-                    border: Border.all(color: const Color(0x44FFD700)),
+                    color: PremiumColors.gold.withValues(alpha: 0.2),
+                    border: Border.all(
+                      color: PremiumColors.gold.withValues(alpha: 0.26),
+                    ),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,

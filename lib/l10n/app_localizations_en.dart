@@ -5103,4 +5103,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String wizardStepLabel(Object step) {
     return 'Step $step';
   }
+
+  @override
+  String chestRewardShareText(Object items, Object type) {
+    return 'I got $items from a $type chest on SAGEN!';
+  }
+
+  @override
+  String get gemRainAnimationLabel => 'Gem rain animation';
 }
