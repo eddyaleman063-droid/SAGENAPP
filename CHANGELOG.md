@@ -69,6 +69,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 9 strings hardcodeados `'XP'` localizados via `l.xpValue()` (nueva clave l10n en es/en/fr/pt) en `ChestRewardDialog`, `PodiumWidget`, `ProfileHeaderWidget`, `FlexCardWidget` y 4 mini-game screens.
 - Label español en `LevelUpCelebration` localizado via `l.levelUpCelebrationLabel()` (nueva clave l10n en es/en/fr/pt).
 - Tooltips faltantes agregados a `IconButton` en `DailyStreakScreen` y `InputBar`.
+- 173 archivos muertos eliminados de `assets/content/`: batch files legacy (`st*_batch*`, `questions_st*_batch*`, `questions_st*_generated`, `batch3_data_*`), stage metadata no usada (`ac_st*.json`, `ac_st*_lessons.json`), `manifest.json`, `questions_default.json`, `questions_by_type.json`. Solo quedan los 9 archivos que la app carga en runtime (`stages.json` + `questions_ac_st{1-8}.json`). Reduce el tamaño del bundle en ~10 MB.
 
 ### Added
 - Tests del webhook LIVE de Vercel (`api/index.js`): 15 tests nuevos (verificación de firma HMAC, retry 5xx ante fallo de MP, crédito idempotente de pagos aprobados, validación de `adminCreditDonation` con coerción de monto string→número y gate de auth 401/403). Jest sube a 232/232.
