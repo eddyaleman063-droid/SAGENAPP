@@ -6,8 +6,7 @@ import 'package:sagen/ui/widgets/paywall_bottom_sheet.dart';
 import 'package:sagen/core/theme/app_colors.dart';
 
 class SupporterTiersSection extends StatelessWidget {
-  final bool dark;
-  const SupporterTiersSection({super.key, required this.dark});
+  const SupporterTiersSection({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +15,7 @@ class SupporterTiersSection extends StatelessWidget {
           .map(
             (pkg) => Padding(
               padding: const EdgeInsets.only(bottom: AppSpacing.md),
-              child: _TierCard(pkg: pkg, dark: dark),
+              child: _TierCard(pkg: pkg),
             ),
           )
           .toList(),
@@ -26,8 +25,7 @@ class SupporterTiersSection extends StatelessWidget {
 
 class _TierCard extends StatelessWidget {
   final DonationPackage pkg;
-  final bool dark;
-  const _TierCard({required this.pkg, required this.dark});
+  const _TierCard({required this.pkg});
 
   @override
   Widget build(BuildContext context) {

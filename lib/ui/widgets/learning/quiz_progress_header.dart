@@ -21,6 +21,7 @@ class QuizProgressHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Container(
       padding: const EdgeInsets.fromLTRB(
         AppSpacing.xl,
@@ -29,7 +30,7 @@ class QuizProgressHeader extends StatelessWidget {
         AppSpacing.md,
       ),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceContainerHigh,
+        color: colorScheme.surfaceContainerHigh,
         boxShadow: AppShadows.card(),
       ),
       child: Column(
@@ -47,9 +48,7 @@ class QuizProgressHeader extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.all(AppSpacing.md),
                     decoration: BoxDecoration(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.surfaceContainerHighest,
+                      color: colorScheme.surfaceContainerHighest,
                       borderRadius: BorderRadius.circular(AppRadius.sm),
                     ),
                     child: Icon(
@@ -74,9 +73,7 @@ class QuizProgressHeader extends StatelessWidget {
               Text(
                 '$current / $total',
                 style: AppTextStyle.subtitle.copyWith(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.onSurface.withValues(alpha: 0.54),
+                  color: colorScheme.onSurface.withValues(alpha: 0.54),
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -91,9 +88,7 @@ class QuizProgressHeader extends StatelessWidget {
               child: LinearProgressIndicator(
                 value: progress,
                 minHeight: 6,
-                backgroundColor: Theme.of(
-                  context,
-                ).colorScheme.surfaceContainerHighest,
+                backgroundColor: colorScheme.surfaceContainerHighest,
                 valueColor: const AlwaysStoppedAnimation<Color>(
                   PremiumColors.primary,
                 ),

@@ -7,14 +7,12 @@ import 'package:sagen/core/theme/app_colors.dart';
 
 class ShopItemCard extends StatelessWidget {
   final ShopItem item;
-  final bool dark;
   final bool isLoading;
   final int gemBalance;
   final VoidCallback onBuy;
   const ShopItemCard({
     super.key,
     required this.item,
-    required this.dark,
     this.isLoading = false,
     this.gemBalance = 0,
     required this.onBuy,

@@ -5,8 +5,7 @@ import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/providers/providers.dart';
 
 class StoreHeader extends ConsumerWidget {
-  final bool dark;
-  const StoreHeader({super.key, required this.dark});
+  const StoreHeader({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

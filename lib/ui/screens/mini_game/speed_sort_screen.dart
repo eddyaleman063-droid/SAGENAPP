@@ -6,6 +6,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:sagen/services/experience_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sagen/core/theme/app_colors.dart';
+import '../../widgets/common/exit_confirmation_wrapper.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/models/mini_game.dart';
@@ -149,35 +150,7 @@ class _SpeedSortScreenState extends ConsumerState<SpeedSortScreen> {
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
-    return PopScope(
-      canPop: false,
-      onPopInvokedWithResult: (didPop, result) {
-        if (didPop) return;
-        showDialog(
-          context: context,
-          builder: (ctx) => AlertDialog(
-            title: Text(l.miniGameExitTitle),
-            content: Text(l.miniGameExitContent),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  HapticFeedback.lightImpact();
-                  Navigator.pop(ctx);
-                },
-                child: Text(l.cancel),
-              ),
-              TextButton(
-                onPressed: () {
-                  HapticFeedback.lightImpact();
-                  Navigator.pop(ctx);
-                  Navigator.pop(context);
-                },
-                child: Text(l.exitText),
-              ),
-            ],
-          ),
-        );
-      },
+    return ExitConfirmationWrapper(
       child: Scaffold(
         appBar: AppBar(
           title: Text(l.miniGameSpeed),

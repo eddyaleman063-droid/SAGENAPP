@@ -72,11 +72,7 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
     }
   }
 
-  Future<void> _confirmAndBuy(
-    BuildContext context,
-    ShopItem item,
-    bool dark,
-  ) async {
+  Future<void> _confirmAndBuy(BuildContext context, ShopItem item) async {
     final l = AppLocalizations.of(context)!;
     final confirmed = await showDialog<bool>(
       context: context,
@@ -106,11 +102,11 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
       ),
     );
     if (confirmed == true && context.mounted) {
-      _buyItem(context, item, dark);
+      _buyItem(context, item);
     }
   }
 
-  void _buyItem(BuildContext context, ShopItem item, bool dark) async {
+  void _buyItem(BuildContext context, ShopItem item) async {
     if (_purchasingItems.contains(item.id)) return;
     final l = AppLocalizations.of(context)!;
     setState(() {
@@ -159,16 +155,18 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
       ref.read(shopProvider.notifier).unlockItem(item.id);
 
       // Apply purchase effects
+      const themeVariants = {
+        'theme_blue': 'blue',
+        'theme_purple': 'purple',
+        'theme_dark_fire': 'dark_fire',
+        'theme_cyber_neon': 'cyber_neon',
+      };
       if (item.id == 'xp_boost') {
         ref.read(shopProvider.notifier).activateXpBoost();
-      } else if (item.id == 'theme_blue') {
-        ref.read(themeProvider.notifier).setThemeVariant('blue');
-      } else if (item.id == 'theme_purple') {
-        ref.read(themeProvider.notifier).setThemeVariant('purple');
-      } else if (item.id == 'theme_dark_fire') {
-        ref.read(themeProvider.notifier).setThemeVariant('dark_fire');
-      } else if (item.id == 'theme_cyber_neon') {
-        ref.read(themeProvider.notifier).setThemeVariant('cyber_neon');
+      } else if (themeVariants.containsKey(item.id)) {
+        ref
+            .read(themeProvider.notifier)
+            .setThemeVariant(themeVariants[item.id]!);
       }
 
       // Add special items to inventory
@@ -210,7 +208,6 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
   Widget build(BuildContext context) {
     super.build(context);
     final l = AppLocalizations.of(context)!;
-    final dark = Theme.of(context).brightness == Brightness.dark;
     final learning = ref.watch(
       learningProvider.select(
         (l) => (isLoading: l.isLoading, errorMessage: l.errorMessage),
@@ -279,7 +276,7 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
                 },
                 child: CustomScrollView(
                   slivers: [
-                    SliverToBoxAdapter(child: StoreHeader(dark: dark)),
+                    const SliverToBoxAdapter(child: StoreHeader()),
                     SliverPadding(
                       padding: EdgeInsets.fromLTRB(
                         horizontalPadding,
@@ -335,8 +332,8 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
                       padding: EdgeInsets.symmetric(
                         horizontal: horizontalPadding,
                       ),
-                      sliver: SliverToBoxAdapter(
-                        child: SupporterTiersSection(dark: dark),
+                      sliver: const SliverToBoxAdapter(
+                        child: SupporterTiersSection(),
                       ),
                     ),
                     // Gem earning tips
@@ -347,8 +344,8 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
                         horizontalPadding,
                         AppSpacing.md,
                       ),
-                      sliver: SliverToBoxAdapter(
-                        child: _GemEarningTipsCard(dark: dark),
+                      sliver: const SliverToBoxAdapter(
+                        child: _GemEarningTipsCard(),
                       ),
                     ),
                     SliverPadding(
@@ -376,7 +373,6 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
                       sliver: SliverToBoxAdapter(
                         child: _CategoryTabs(
                           selected: _selectedCategory,
-                          dark: dark,
                           onChanged: (cat) =>
                               setState(() => _selectedCategory = cat),
                         ),
@@ -428,13 +424,11 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
                                     label: item.name,
                                     child: ShopItemCard(
                                       item: item,
-                                      dark: dark,
                                       isLoading: _purchasingItems.contains(
                                         item.id,
                                       ),
                                       gemBalance: gemBalance,
-                                      onBuy: () =>
-                                          _confirmAndBuy(ctx, item, dark),
+                                      onBuy: () => _confirmAndBuy(ctx, item),
                                     ),
                                   ),
                                 )
@@ -457,18 +451,14 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
 
 class _CategoryTabs extends StatelessWidget {
   final ShopCategory selected;
-  final bool dark;
   final ValueChanged<ShopCategory> onChanged;
 
-  const _CategoryTabs({
-    required this.selected,
-    required this.dark,
-    required this.onChanged,
-  });
+  const _CategoryTabs({required this.selected, required this.onChanged});
 
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
+    final dark = context.isDark;
     return SizedBox(
       height: 40,
       child: ListView.separated(
@@ -510,8 +500,7 @@ class _CategoryTabs extends StatelessWidget {
 }
 
 class _GemEarningTipsCard extends StatelessWidget {
-  final bool dark;
-  const _GemEarningTipsCard({required this.dark});
+  const _GemEarningTipsCard();
 
   @override
   Widget build(BuildContext context) {

@@ -27,17 +27,16 @@ class QuizOptionButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final colorScheme = Theme.of(context).colorScheme;
     Color bgColor;
     Color? borderColor;
     Color? textColor;
     String? prefix;
 
     if (disabled) {
-      bgColor = Theme.of(context).colorScheme.surfaceContainerHigh;
+      bgColor = colorScheme.surfaceContainerHigh;
       borderColor = Colors.transparent;
-      textColor = Theme.of(
-        context,
-      ).colorScheme.onSurface.withValues(alpha: 0.55);
+      textColor = colorScheme.onSurface.withValues(alpha: 0.55);
       prefix = '—';
     } else if (revealed) {
       if (correct) {
@@ -51,19 +50,13 @@ class QuizOptionButton extends ConsumerWidget {
         textColor = PremiumColors.error;
         prefix = '✗';
       } else {
-        bgColor = Theme.of(context).colorScheme.surfaceContainerHigh;
-        borderColor = Theme.of(
-          context,
-        ).colorScheme.onSurface.withValues(alpha: 0.12);
-        textColor = Theme.of(
-          context,
-        ).colorScheme.onSurface.withValues(alpha: 0.54);
+        bgColor = colorScheme.surfaceContainerHigh;
+        borderColor = colorScheme.onSurface.withValues(alpha: 0.12);
+        textColor = colorScheme.onSurface.withValues(alpha: 0.54);
       }
     } else {
-      bgColor = Theme.of(context).colorScheme.surfaceContainerHigh;
-      borderColor = Theme.of(
-        context,
-      ).colorScheme.onSurface.withValues(alpha: 0.12);
+      bgColor = colorScheme.surfaceContainerHigh;
+      borderColor = colorScheme.onSurface.withValues(alpha: 0.12);
       textColor = context.textPrimary;
     }
 

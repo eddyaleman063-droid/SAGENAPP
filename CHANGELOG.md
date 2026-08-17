@@ -57,6 +57,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `WizardSingleChoiceTile`/`WizardMultiChoiceTile` refactorizados: lógica de build compartida en `_WizardOptionTileBase` con flag `showCheckbox`.
 - Accesibilidad: `ExcludeSemantics` en 13 `CircularProgressIndicator` decorativos (5 en botones de auth/share/buy, 4 en mini-games, 1 en payment pending, 3 en store).
 - Strings hardcodeados en español localizados: `'Nuevo cofre disponible'`, `'Foto de perfil'`, `'Saldo de gemas'`, `'Paso N'` (4 claves l10n nuevas en es/en/fr/pt).
+- Mini-game exit dialog extraído a widget compartido `ExitConfirmationWrapper` (`lib/ui/widgets/common/exit_confirmation_wrapper.dart`): elimina 4× bloques idénticos de `PopScope` + `AlertDialog` en word_match, speed_sort, pattern_trace y memory_flip; usa `ExperienceService.lightHaptic()` en vez de `HapticFeedback.lightImpact()` directo.
+- `bool dark` threading eliminado en `store_screen.dart` + widgets de tienda: `StoreHeader`, `ShopItemCard`, `SupporterTiersSection`, `_CategoryTabs` y `_GemEarningTipsCard` ahora usan `context.isDark` (extensión existente en `app_colors.dart`), eliminando 8 parámetros `dark` innecesarios.
+- `colorScheme` cached en `QuizOptionButton` y `QuizProgressHeader`: `Theme.of(context).colorScheme` se invoca una vez por build en vez de 7 y 4 veces respectivamente.
+- `Navigator.of(context).maybePop()` → `context.pop()` en `SagenPassScreen` (GoRouter).
+- `GemProvider.awardDailyBonus` y `awardStreakMilestone`: if/else chains refactorizados a mapas de umbrales descendentes.
+- `StoreScreen._buyItem`: if/else chain de activación de temas refactorizado a `themeVariants` map.
 
 ### Added
 - Tests del webhook LIVE de Vercel (`api/index.js`): 15 tests nuevos (verificación de firma HMAC, retry 5xx ante fallo de MP, crédito idempotente de pagos aprobados, validación de `adminCreditDonation` con coerción de monto string→número y gate de auth 401/403). Jest sube a 232/232.

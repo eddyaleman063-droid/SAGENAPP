@@ -152,18 +152,13 @@ class GemNotifier extends Notifier<GemState> {
     const lastKey = 'last_daily_bonus_day';
     if (prefs.getString(lastKey) == today) return;
     prefs.setString(lastKey, today);
-    int gems;
-    if (dayStreak >= 30) {
-      gems = 30;
-    } else if (dayStreak >= 14) {
-      gems = 18;
-    } else if (dayStreak >= 7) {
-      gems = 12;
-    } else if (dayStreak >= 3) {
-      gems = 8;
-    } else {
-      gems = 5;
-    }
+    const thresholds = {30: 30, 14: 18, 7: 12, 3: 8};
+    final gems =
+        thresholds.entries
+            .where((e) => dayStreak >= e.key)
+            .map((e) => e.value)
+            .firstOrNull ??
+        5;
     addGems(gems, reason: 'daily_bonus');
     _persistEarnToServer('daily_bonus', {'dayStreak': dayStreak});
   }
@@ -206,24 +201,20 @@ class GemNotifier extends Notifier<GemState> {
   /// Award gems for reaching a streak milestone.
   /// Scales: 7d=15, 14d=30, 30d=60, 60d=100, 100d=150, 180d=250, 365d=500
   void awardStreakMilestone(int streakDays) {
-    int gems;
-    if (streakDays >= 365) {
-      gems = 500;
-    } else if (streakDays >= 180) {
-      gems = 250;
-    } else if (streakDays >= 100) {
-      gems = 150;
-    } else if (streakDays >= 60) {
-      gems = 100;
-    } else if (streakDays >= 30) {
-      gems = 60;
-    } else if (streakDays >= 14) {
-      gems = 30;
-    } else if (streakDays >= 7) {
-      gems = 15;
-    } else {
-      return;
-    }
+    const thresholds = {
+      365: 500,
+      180: 250,
+      100: 150,
+      60: 100,
+      30: 60,
+      14: 30,
+      7: 15,
+    };
+    final gems = thresholds.entries
+        .where((e) => streakDays >= e.key)
+        .map((e) => e.value)
+        .firstOrNull;
+    if (gems == null) return;
     addGems(gems, reason: 'streak_milestone');
     _persistEarnToServer('streak_milestone', {'streakDays': streakDays});
   }

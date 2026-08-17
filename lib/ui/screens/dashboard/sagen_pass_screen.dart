@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sagen/core/theme/app_colors.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/l10n/app_localizations.dart';
@@ -73,7 +74,7 @@ class _SagenPassScreenState extends ConsumerState<SagenPassScreen> {
               backgroundColor: context.surfaceBackground,
               elevation: 0,
               leading: IconButton(
-                onPressed: () => Navigator.of(context).maybePop(),
+                onPressed: () => context.pop(),
                 icon: const Icon(Icons.arrow_back_ios_new_rounded),
                 color: Colors.white,
                 tooltip: MaterialLocalizations.of(context).backButtonTooltip,
