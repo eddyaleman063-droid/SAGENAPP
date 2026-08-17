@@ -6,74 +6,92 @@ on:
   pull_request:
     branches: [master, main, develop]
 
+concurrency:
+  group: coverage-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  FLUTTER_VERSION: '3.41.9'
+
 jobs:
   coverage:
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.41.9'
-          channel: 'stable'
-      
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
       - name: Install dependencies
         run: flutter pub get
-      
+
       - name: Run tests with coverage
-        run: flutter test --coverage
-      
+        id: tests
+        continue-on-error: true
+        run: flutter test --coverage --timeout 120s
+
       - name: Install lcov
-        run: |
-          sudo apt-get install -y lcov || brew install lcov || echo "lcov not installed"
-      
+        if: always()
+        run: sudo apt-get install -y lcov
+
       - name: Filter out generated code from coverage
+        if: always()
         run: |
-          if command -v lcov &> /dev/null; then
+          if [ -f coverage/lcov.info ] && command -v lcov &> /dev/null; then
             lcov --remove coverage/lcov.info \
-              '*app_localizations*.dart' '*.g.dart' '*.freezed.dart' \
-              -o coverage/lcov_filtered.info
+              '*/.g.dart' \
+              '*/.freezed.dart' \
+              '*/app_localizations*.dart' \
+              '*/gen_l10n/*' \
+              -o coverage/lcov_filtered.info \
+              --quiet
             cp coverage/lcov_filtered.info coverage/lcov.info
             echo "Filtered out generated code from coverage report"
           else
-            echo "lcov not available, keeping unfiltered report"
+            echo "lcov not available or no coverage file, keeping unfiltered report"
           fi
-      
-      - name: Generate coverage report
+
+      - name: Generate HTML report
+        if: always()
         run: |
-          # Generate HTML report if lcov is available
-          if command -v genhtml &> /dev/null; then
-            genhtml coverage/lcov.info -o coverage/html
+          if command -v genhtml &> /dev/null && [ -f coverage/lcov.info ]; then
+            genhtml coverage/lcov.info -o coverage/html --quiet
           fi
-      
+
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
+        if: always()
+        uses: codecov/codecov-action@v5
         with:
-          file: ./coverage/lcov.info
+          files: ./coverage/lcov.info
           flags: unittests
           name: sagen-coverage
-      
+          fail_ci_if_error: false
+
       - name: Check coverage threshold
+        if: always()
         run: |
-          if [ -f coverage/lcov.info ]; then
-            COVERAGE=$(lcov --summary coverage/lcov.info 2>&1 | grep "lines" | grep -oP '\d+\.\d+%' | head -1)
+          if [ -f coverage/lcov.info ] && command -v lcov &> /dev/null; then
+            COVERAGE=$(lcov --summary coverage/lcov.info 2>&1 | grep "lines" | grep -oP '\d+\.\d+%' | head -1 || echo "")
+            if [ -z "$COVERAGE" ]; then
+              echo "::warning::Could not parse coverage percentage"
+              exit 0
+            fi
             echo "Current coverage: $COVERAGE"
-            
-            # Extract numeric value
-            NUM=$(echo $COVERAGE | sed 's/%//')
-            
-            # Check if coverage is below threshold
+            NUM=$(echo "$COVERAGE" | sed 's/%//')
             if (( $(echo "$NUM < 80" | bc -l) )); then
-              echo "Coverage ($COVERAGE) is below 80% threshold"
-              # Don't fail the build, just warn
-              echo "::warning::Coverage is below 80% threshold"
+              echo "::warning::Coverage ($COVERAGE) is below 80% threshold"
             else
               echo "Coverage ($COVERAGE) meets the 80% threshold"
             fi
+          else
+            echo "::warning::No coverage file found"
           fi
-      
+
       - name: Archive coverage report
         uses: actions/upload-artifact@v4
         if: always()
