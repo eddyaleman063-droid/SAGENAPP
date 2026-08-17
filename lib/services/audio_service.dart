@@ -62,7 +62,7 @@ class AudioService {
         try {
           await _player?.setSource(AssetSource(a));
         } catch (e) {
-          _logger.warning('AudioService.prewarm: failed to load $a');
+          _logger.warning('AudioService.prewarm: failed to load $a: $e');
         }
       }
     } catch (e) {
@@ -134,8 +134,8 @@ class AudioService {
         _logger.error('AudioService._play: ${next.asset}', e);
         try {
           await SystemSound.play(SystemSoundType.click);
-        } catch (_) {
-          _logger.warning('AudioService: fallback SystemSound also failed');
+        } catch (e) {
+          _logger.warning('AudioService: fallback SystemSound also failed: $e');
         }
       }
     }

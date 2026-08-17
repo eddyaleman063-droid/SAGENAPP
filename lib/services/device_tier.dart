@@ -36,8 +36,8 @@ int _readCpuCoresSync() {
       }
     }
     return cpus.isNotEmpty ? cpus.length : 0;
-  } catch (_) {
-    AppLogger().warning('DeviceTier: failed to read CPU core count');
+  } catch (e) {
+    AppLogger().warning('DeviceTier: failed to read CPU core count: $e');
     return 0;
   }
 }
@@ -93,9 +93,9 @@ class LowEndDeviceDetector {
 
     try {
       _tier = await compute(_detectTierFromSystem, null as dynamic);
-    } catch (_) {
+    } catch (e) {
       AppLogger().warning(
-        'DeviceTier: failed to detect device tier from system, defaulting to midRange',
+        'DeviceTier: failed to detect device tier from system, defaulting to midRange: $e',
       );
       _tier = DeviceTier.midRange;
     }

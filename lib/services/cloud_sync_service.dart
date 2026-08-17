@@ -162,8 +162,8 @@ class CloudSyncService implements ICloudSyncService {
   String? _currentUid() {
     try {
       return _authService.currentUser?.uid;
-    } catch (_) {
-      _logger.warning('CloudSync: _currentUid failed');
+    } catch (e) {
+      _logger.warning('CloudSync: _currentUid failed: $e');
       return null;
     }
   }

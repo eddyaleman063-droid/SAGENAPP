@@ -18,9 +18,9 @@ class _ColorConverter implements JsonConverter<Color, Object> {
       if (h.length == 6) h = 'FF$h';
       try {
         return Color(int.parse(h, radix: 16));
-      } catch (_) {
+      } catch (e) {
         AppLogger().warning(
-          'StageColorConverter: failed to parse color from hex',
+          'StageColorConverter: failed to parse color from hex: $e',
         );
         return PremiumColors.wizardOrange;
       }

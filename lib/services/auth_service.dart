@@ -223,8 +223,8 @@ class AuthService implements IAuthService {
       if (fbUser == null) return false;
       await fbUser.reload();
       return true;
-    } catch (_) {
-      _logger.warning('AuthService: _validateRestoredSession failed');
+    } catch (e) {
+      _logger.warning('AuthService: _validateRestoredSession failed: $e');
       return false;
     }
   }

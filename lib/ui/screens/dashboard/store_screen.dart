@@ -56,8 +56,8 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
       if (gemBalance < cost) return false;
 
       return true;
-    } catch (_) {
-      AppLogger().warning('StoreScreen: failed to validate purchase');
+    } catch (e) {
+      AppLogger().warning('StoreScreen: failed to validate purchase: $e');
       return false;
     }
   }
@@ -184,8 +184,8 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
         );
       }
     } catch (e) {
+      AppLogger().error('StoreScreen: gem purchase failed', e);
       if (context.mounted) {
-        final l = AppLocalizations.of(context)!;
         SagenNotification.show(
           context,
           message: l.storePurchaseFailed,

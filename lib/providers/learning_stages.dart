@@ -84,8 +84,8 @@ Color _parseColor(String hex) {
     var h = hex.replaceFirst('#', '');
     if (h.length == 6) h = 'FF$h';
     return Color(int.parse(h, radix: 16));
-  } catch (_) {
-    AppLogger().warning('Failed to parse color hex: $hex');
+  } catch (e) {
+    AppLogger().warning('Failed to parse color hex: $hex: $e');
     return PremiumColors.gradientActive[0];
   }
 }

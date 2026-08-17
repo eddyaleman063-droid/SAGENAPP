@@ -142,8 +142,8 @@ class SagenPassNotifier extends Notifier<SagenPass> {
   PassLevel? getLevel(int level) {
     try {
       return SagenPass.allLevels.firstWhere((l) => l.level == level);
-    } catch (_) {
-      AppLogger().warning('SagenPass: getLevel failed for level $level');
+    } catch (e) {
+      AppLogger().warning('SagenPass: getLevel failed for level $level: $e');
       return null;
     }
   }

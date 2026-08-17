@@ -193,8 +193,8 @@ class AchievementService {
   AchievementModel? getById(String id) {
     try {
       return _achievements.firstWhere((a) => a.id == id);
-    } catch (_) {
-      AppLogger().warning('AchievementService: getById failed for id: $id');
+    } catch (e) {
+      AppLogger().warning('AchievementService: getById failed for id: $id: $e');
       return null;
     }
   }

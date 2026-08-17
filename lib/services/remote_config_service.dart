@@ -227,8 +227,10 @@ class RemoteConfigService {
       _cachedShopCatalog = const [];
       _lastShopCatalogFetch = now;
       return const [];
-    } catch (_) {
-      _logger.warning('RemoteConfig: shopCatalog parse failed, using defaults');
+    } catch (e) {
+      _logger.warning(
+        'RemoteConfig: shopCatalog parse failed, using defaults: $e',
+      );
       _cachedShopCatalog = const [];
       _lastShopCatalogFetch = now;
       return const [];

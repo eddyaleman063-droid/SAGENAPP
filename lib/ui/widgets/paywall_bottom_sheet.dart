@@ -7,6 +7,7 @@ import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/models/product.dart';
 import 'package:sagen/providers/payment_provider.dart';
+import 'package:sagen/services/app_logger.dart';
 import 'package:sagen/ui/widgets/common/sagen_notification.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -92,6 +93,7 @@ class PaywallBottomSheet extends ConsumerWidget {
         }
       }
     } catch (e) {
+      AppLogger().error('Paywall: WhatsApp launch failed', e);
       if (context.mounted) {
         SagenNotification.show(
           context,
@@ -129,6 +131,7 @@ class PaywallBottomSheet extends ConsumerWidget {
         mode: LaunchMode.externalApplication,
       );
     } catch (e) {
+      AppLogger().error('Paywall: MP payment launch failed', e);
       if (context.mounted) {
         SagenNotification.show(
           context,

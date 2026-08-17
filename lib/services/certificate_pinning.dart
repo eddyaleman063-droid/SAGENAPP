@@ -50,7 +50,7 @@ class CertificatePinning {
       );
     } catch (e) {
       _logger.warning(
-        'CertificatePinning: no cert_pins.json found, using default pins only',
+        'CertificatePinning: no cert_pins.json found, using default pins only: $e',
       );
     }
   }

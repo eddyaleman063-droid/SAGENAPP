@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:rive/rive.dart' as rive;
 import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/l10n/app_localizations.dart';
+import 'package:sagen/services/app_logger.dart';
 
 /// Phases of the flame animation.
 enum FlamePhase { idle, charge, explode, float, frozen, defrosting }
@@ -44,8 +45,9 @@ class _RiveFlameWidgetState extends State<RiveFlameWidget> {
       await rootBundle.load('assets/animations/flame.riv');
       _cachedRiveAvailable = true;
       if (mounted) setState(() => _riveAvailable = true);
-    } catch (_) {
+    } catch (e) {
       _cachedRiveAvailable = false;
+      AppLogger().warning('RiveFlame: flame.riv not available: $e');
     }
   }
 

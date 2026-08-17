@@ -41,8 +41,8 @@ class EnergyNotifier extends Notifier<EnergyState> {
     EnergyState initial;
     try {
       initial = _load();
-    } catch (_) {
-      AppLogger().warning('Failed to load energy state: operation failed');
+    } catch (e) {
+      AppLogger().warning('Failed to load energy state: $e');
       initial = EnergyState(energy: _maxEnergy, lastRegen: DateTime.now());
     }
     _startRegen(initial.energy);

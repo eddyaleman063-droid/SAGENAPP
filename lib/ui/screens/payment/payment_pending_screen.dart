@@ -5,6 +5,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sagen/core/theme/app_colors.dart';
 import 'package:sagen/l10n/app_localizations.dart';
+import 'package:sagen/services/app_logger.dart';
 import '../../../core/theme/theme_constants.dart';
 import '../../../providers/payment_provider.dart';
 import '../../widgets/common/sagen_notification.dart';
@@ -150,6 +151,10 @@ class PaymentPendingScreen extends ConsumerWidget {
                           ref.read(paymentProvider.notifier).reset();
                           context.goNamed('main');
                         } catch (e) {
+                          AppLogger().error(
+                            'PaymentPending: go home failed',
+                            e,
+                          );
                           if (context.mounted) {
                             SagenNotification.show(
                               context,

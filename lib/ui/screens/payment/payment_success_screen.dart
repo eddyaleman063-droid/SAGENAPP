@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../core/theme/theme_constants.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../providers/payment_provider.dart';
+import '../../../services/app_logger.dart';
 import '../../widgets/common/sagen_notification.dart';
 
 class PaymentSuccessScreen extends ConsumerStatefulWidget {
@@ -120,6 +121,10 @@ class _PaymentSuccessScreenState extends ConsumerState<PaymentSuccessScreen>
                           ref.read(paymentProvider.notifier).reset();
                           context.goNamed('main');
                         } catch (e) {
+                          AppLogger().error(
+                            'PaymentSuccess: continue failed',
+                            e,
+                          );
                           if (mounted) {
                             SagenNotification.show(
                               context,

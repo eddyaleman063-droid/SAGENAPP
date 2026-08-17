@@ -352,8 +352,8 @@ class ReviewNotifier extends Notifier<ReviewState> {
         repetition: repMap,
         nextReviewDate: nrMap,
       );
-    } catch (_) {
-      AppLogger().warning('ReviewProvider: failed to load review state');
+    } catch (e) {
+      AppLogger().warning('ReviewProvider: failed to load review state: $e');
       state = const ReviewState();
     }
   }
