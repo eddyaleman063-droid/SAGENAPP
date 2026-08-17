@@ -39,8 +39,8 @@ class SagenPassRepositoryImpl implements SagenPassRepository {
     try {
       _cachedRaw = jsonDecode(raw) as Map<String, dynamic>;
       return _cachedRaw!;
-    } catch (_) {
-      AppLogger().warning('SagenPassRepository: corrupt JSON, resetting');
+    } catch (e) {
+      AppLogger().warning('SagenPassRepository: corrupt JSON, resetting: $e');
       return {};
     }
   }

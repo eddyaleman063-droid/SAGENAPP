@@ -120,9 +120,9 @@ class GamificationRepositoryImpl implements GamificationRepository {
         return Map<String, int>.from(_missionsCache!);
       }
       return {};
-    } catch (_) {
+    } catch (e) {
       AppLogger().warning(
-        'GamificationRepository: failed to decode missions JSON',
+        'GamificationRepository: failed to decode missions JSON: $e',
       );
       return _migrateCsvMissions(raw);
     }
@@ -143,9 +143,9 @@ class GamificationRepositoryImpl implements GamificationRepository {
         saveMissions(map);
       }
       return map;
-    } catch (_) {
+    } catch (e) {
       AppLogger().warning(
-        'GamificationRepository: failed to parse CSV missions',
+        'GamificationRepository: failed to parse CSV missions: $e',
       );
       return {};
     }

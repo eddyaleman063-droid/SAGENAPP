@@ -35,9 +35,9 @@ class ChestRepositoryImpl implements ChestRepository {
     try {
       final list = jsonDecode(raw) as List;
       return list.cast<Map<String, dynamic>>();
-    } catch (_) {
+    } catch (e) {
       AppLogger().warning(
-        'ChestRepository: failed to decode evolution history',
+        'ChestRepository: failed to decode evolution history: $e',
       );
       return [];
     }
@@ -65,9 +65,9 @@ class ChestRepositoryImpl implements ChestRepository {
         }
       }
       return result;
-    } catch (_) {
+    } catch (e) {
       AppLogger().warning(
-        'ChestRepository: failed to decode chest type counts',
+        'ChestRepository: failed to decode chest type counts: $e',
       );
       return {};
     }

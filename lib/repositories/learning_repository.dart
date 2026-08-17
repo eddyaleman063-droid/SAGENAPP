@@ -195,9 +195,9 @@ class LearningRepositoryImpl implements LearningRepository {
         _stages
           ..clear()
           ..addAll(list.map((j) => Stage.fromJson(j as Map<String, dynamic>)));
-      } catch (_) {
+      } catch (e) {
         AppLogger().warning(
-          'LearningRepository: failed to parse legacy stages JSON',
+          'LearningRepository: failed to parse legacy stages JSON: $e',
         );
         _stages.clear();
       }

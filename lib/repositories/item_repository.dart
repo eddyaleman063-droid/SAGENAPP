@@ -38,8 +38,10 @@ class ItemRepositoryImpl implements ItemRepository {
             _quantities[match.first] = (entry.value as num?)?.toInt() ?? 0;
           }
         }
-      } catch (_) {
-        AppLogger().warning('ItemRepository: failed to decode item quantities');
+      } catch (e) {
+        AppLogger().warning(
+          'ItemRepository: failed to decode item quantities: $e',
+        );
         _quantities = {};
       }
     }
@@ -59,9 +61,9 @@ class ItemRepositoryImpl implements ItemRepository {
                 : null;
           }
         }
-      } catch (_) {
+      } catch (e) {
         AppLogger().warning(
-          'ItemRepository: failed to decode active until dates',
+          'ItemRepository: failed to decode active until dates: $e',
         );
         _activeUntil = {};
       }
