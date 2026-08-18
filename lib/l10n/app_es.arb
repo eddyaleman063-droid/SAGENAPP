@@ -2240,5 +2240,6 @@
       "type": {}
     }
   },
-  "gemRainAnimationLabel": "Animación de gemas cayendo"
+  "gemRainAnimationLabel": "Animación de gemas cayendo",
+  "exitQuizLabel": "Salir del cuestionario"
 }

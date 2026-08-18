@@ -5146,4 +5146,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get gemRainAnimationLabel => 'Animação de chuva de gemas';
+
+  @override
+  String get exitQuizLabel => 'Sair do questionário';
 }

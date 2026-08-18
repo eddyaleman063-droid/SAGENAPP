@@ -9454,6 +9454,12 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Animación de gemas cayendo'**
   String get gemRainAnimationLabel;
+
+  /// No description provided for @exitQuizLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Salir del cuestionario'**
+  String get exitQuizLabel;
 }
 
 class _AppLocalizationsDelegate

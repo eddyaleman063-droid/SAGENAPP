@@ -314,7 +314,10 @@ class _QuizSummaryScreenState extends State<QuizSummaryScreen>
                         width: double.infinity,
                         height: 48,
                         child: OutlinedButton.icon(
-                          onPressed: widget.onRetry,
+                          onPressed: () {
+                            HapticFeedback.lightImpact();
+                            widget.onRetry?.call();
+                          },
                           icon: const Icon(Icons.refresh_rounded, size: 18),
                           label: Text(
                             l.sessionRetry,

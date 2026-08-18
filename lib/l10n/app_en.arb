@@ -2240,5 +2240,6 @@
       "type": {}
     }
   },
-  "gemRainAnimationLabel": "Gem rain animation"
+  "gemRainAnimationLabel": "Gem rain animation",
+  "exitQuizLabel": "Exit quiz"
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
@@ -64,7 +63,6 @@ class _PostLessonPromoState extends ConsumerState<PostLessonPromo> {
               label: l.promoPostLessonTitle,
               child: GestureDetector(
                 onTap: () {
-                  HapticFeedback.mediumImpact();
                   ref.read(experienceServiceProvider).lightHaptic();
                   setState(() => _showBanner = false);
                   PaywallBottomSheet.show(context);

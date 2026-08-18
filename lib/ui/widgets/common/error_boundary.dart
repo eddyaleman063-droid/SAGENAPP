@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sagen/core/theme/app_colors.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
@@ -88,7 +89,7 @@ class _ErrorFallback extends StatelessWidget {
                     child: SageEmotionWidget(emotion: SageEmotion.worried),
                   ),
                   Semantics(
-                    label: l?.errorSomethingWrong ?? 'Error',
+                    label: l?.errorSomethingWrong ?? '',
                     child: const SizedBox.shrink(),
                   ),
                   const SizedBox(height: AppSpacing.xxl),
@@ -112,7 +113,10 @@ class _ErrorFallback extends StatelessWidget {
                       button: true,
                       label: retryLabel,
                       child: ElevatedButton.icon(
-                        onPressed: onRetry,
+                        onPressed: () {
+                          HapticFeedback.lightImpact();
+                          onRetry?.call();
+                        },
                         icon: const Icon(Icons.refresh_rounded, size: 18),
                         label: Text(retryLabel),
                         style: ElevatedButton.styleFrom(

@@ -38,7 +38,7 @@ class QuizProgressHeader extends StatelessWidget {
           Row(
             children: [
               Semantics(
-                label: '${l10n(context).exitText} quiz',
+                label: l10n(context).exitQuizLabel,
                 button: true,
                 child: GestureDetector(
                   onTap: () {

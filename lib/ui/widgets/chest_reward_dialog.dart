@@ -355,7 +355,7 @@ class _GemRewardChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Semantics(
-      label: '+$gemCount gems',
+      label: '+$gemCount ${AppLocalizations.of(context)?.gems ?? "gems"}',
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
         decoration: BoxDecoration(

@@ -117,15 +117,12 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
       final isValid = await _validatePurchase(item.id, item.gemCost);
       if (!isValid) {
         exp.errorHaptic();
+        final owned = _isOwned(item);
         if (context.mounted) {
           SagenNotification.show(
             context,
-            message: _isOwned(item)
-                ? l.storeAlreadyOwned
-                : l.storePurchaseFailed,
-            type: _isOwned(item)
-                ? NotificationType.info
-                : NotificationType.error,
+            message: owned ? l.storeAlreadyOwned : l.storePurchaseFailed,
+            type: owned ? NotificationType.info : NotificationType.error,
           );
         }
         return;

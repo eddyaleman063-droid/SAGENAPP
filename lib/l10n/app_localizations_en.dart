@@ -5111,4 +5111,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get gemRainAnimationLabel => 'Gem rain animation';
+
+  @override
+  String get exitQuizLabel => 'Exit quiz';
 }

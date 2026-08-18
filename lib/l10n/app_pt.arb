@@ -2240,5 +2240,6 @@
       "type": {}
     }
   },
-  "gemRainAnimationLabel": "Animação de chuva de gemas"
+  "gemRainAnimationLabel": "Animação de chuva de gemas",
+  "exitQuizLabel": "Sair do questionário"
 }
