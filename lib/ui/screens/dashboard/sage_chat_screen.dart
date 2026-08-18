@@ -74,6 +74,7 @@ class _SageChatScreenState extends ConsumerState<SageChatScreen>
     super.build(context);
     final sageState = ref.watch(sageAiProvider);
     final dark = Theme.of(context).brightness == Brightness.dark;
+    final l = AppLocalizations.of(context)!;
 
     if (sageState.isLocked) {
       return Semantics(
@@ -111,7 +112,11 @@ class _SageChatScreenState extends ConsumerState<SageChatScreen>
               if (sageState.isLoading) const TypingIndicator(),
               if (sageState.suggestionChips.isNotEmpty)
                 QuickChips(
-                  chips: sageState.suggestionChips,
+                  chips: [
+                    l.sageChipWhatIsPhishing,
+                    l.sageChipCreateStrongPassword,
+                    l.sageChipIdentifyScam,
+                  ],
                   onTap: (t) => _onChipTap(t),
                   dark: dark,
                 ),

@@ -3621,7 +3621,7 @@ abstract class AppLocalizations {
   /// No description provided for @missionActiveLearnerTitle.
   ///
   /// In es, this message translates to:
-  /// **'Aprendiz activo'**
+  /// **'Aprendiz Activo'**
   String get missionActiveLearnerTitle;
 
   /// No description provided for @missionActiveStreakDesc.
@@ -3633,7 +3633,7 @@ abstract class AppLocalizations {
   /// No description provided for @missionActiveStreakTitle.
   ///
   /// In es, this message translates to:
-  /// **'Racha activa'**
+  /// **'Racha Activa'**
   String get missionActiveStreakTitle;
 
   /// No description provided for @missionChatWithSageDesc.
@@ -3645,7 +3645,7 @@ abstract class AppLocalizations {
   /// No description provided for @missionChatWithSageTitle.
   ///
   /// In es, this message translates to:
-  /// **'Habla con Sage'**
+  /// **'Chatea con Sage'**
   String get missionChatWithSageTitle;
 
   /// No description provided for @missionConsistentProtectorDesc.
@@ -3669,7 +3669,7 @@ abstract class AppLocalizations {
   /// No description provided for @missionDigitalDetectiveTitle.
   ///
   /// In es, this message translates to:
-  /// **'Detective digital'**
+  /// **'Detective Digital'**
   String get missionDigitalDetectiveTitle;
 
   /// No description provided for @missionExpressChallengeDesc.
@@ -3681,7 +3681,7 @@ abstract class AppLocalizations {
   /// No description provided for @missionExpressChallengeTitle.
   ///
   /// In es, this message translates to:
-  /// **'Desafío express'**
+  /// **'Desafío Express'**
   String get missionExpressChallengeTitle;
 
   /// No description provided for @missionPerfectLessonDesc.
@@ -3693,7 +3693,7 @@ abstract class AppLocalizations {
   /// No description provided for @missionPerfectLessonTitle.
   ///
   /// In es, this message translates to:
-  /// **'Lección perfecta'**
+  /// **'Lección Perfecta'**
   String get missionPerfectLessonTitle;
 
   /// No description provided for @missionPhishingHunterDesc.
@@ -3705,7 +3705,7 @@ abstract class AppLocalizations {
   /// No description provided for @missionPhishingHunterTitle.
   ///
   /// In es, this message translates to:
-  /// **'Cazador de phishing'**
+  /// **'Cazador de Phishing'**
   String get missionPhishingHunterTitle;
 
   /// No description provided for @missionProgress.
@@ -9460,6 +9460,324 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Salir del cuestionario'**
   String get exitQuizLabel;
+
+  /// No description provided for @shopItemFocusElixirName.
+  ///
+  /// In es, this message translates to:
+  /// **'Elixir de Foco'**
+  String get shopItemFocusElixirName;
+
+  /// No description provided for @shopItemFocusElixirDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'2x EXP por 15 minutos'**
+  String get shopItemFocusElixirDesc;
+
+  /// No description provided for @shopItemXpBoostName.
+  ///
+  /// In es, this message translates to:
+  /// **'Impulso de XP'**
+  String get shopItemXpBoostName;
+
+  /// No description provided for @shopItemXpBoostDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'2x XP en tu próxima lección'**
+  String get shopItemXpBoostDesc;
+
+  /// No description provided for @shopItemLuckBoostName.
+  ///
+  /// In es, this message translates to:
+  /// **'Impulso de Suerte'**
+  String get shopItemLuckBoostName;
+
+  /// No description provided for @shopItemLuckBoostDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'+15% rareza de cofres por 30 min'**
+  String get shopItemLuckBoostDesc;
+
+  /// No description provided for @shopItemSageMonocleName.
+  ///
+  /// In es, this message translates to:
+  /// **'Monocle de Sage'**
+  String get shopItemSageMonocleName;
+
+  /// No description provided for @shopItemSageMonocleDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'Elimina 2 respuestas incorrectas'**
+  String get shopItemSageMonocleDesc;
+
+  /// No description provided for @shopItemTimeWarpName.
+  ///
+  /// In es, this message translates to:
+  /// **'Warp del Tiempo'**
+  String get shopItemTimeWarpName;
+
+  /// No description provided for @shopItemTimeWarpDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'Salta el enfriamiento en la próxima revisión'**
+  String get shopItemTimeWarpDesc;
+
+  /// No description provided for @shopItemTitaniumShieldName.
+  ///
+  /// In es, this message translates to:
+  /// **'Escudo de Titanio'**
+  String get shopItemTitaniumShieldName;
+
+  /// No description provided for @shopItemTitaniumShieldDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'Protege tu racha si pierdes 1 día'**
+  String get shopItemTitaniumShieldDesc;
+
+  /// No description provided for @shopItemPhoenixFeatherName.
+  ///
+  /// In es, this message translates to:
+  /// **'Pluma de Fénix'**
+  String get shopItemPhoenixFeatherName;
+
+  /// No description provided for @shopItemPhoenixFeatherDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'Revive tu racha si se pierde'**
+  String get shopItemPhoenixFeatherDesc;
+
+  /// No description provided for @shopItemNeonFrameName.
+  ///
+  /// In es, this message translates to:
+  /// **'Marco Neón'**
+  String get shopItemNeonFrameName;
+
+  /// No description provided for @shopItemNeonFrameDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'Marco animado con brillo neón'**
+  String get shopItemNeonFrameDesc;
+
+  /// No description provided for @shopItemGalaxyFrameName.
+  ///
+  /// In es, this message translates to:
+  /// **'Marco Galaxia'**
+  String get shopItemGalaxyFrameName;
+
+  /// No description provided for @shopItemGalaxyFrameDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'Marco estelar galáctico'**
+  String get shopItemGalaxyFrameDesc;
+
+  /// No description provided for @shopItemDragonFrameName.
+  ///
+  /// In es, this message translates to:
+  /// **'Marco Dragón'**
+  String get shopItemDragonFrameName;
+
+  /// No description provided for @shopItemDragonFrameDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'Marco de fuego de dragón animado'**
+  String get shopItemDragonFrameDesc;
+
+  /// No description provided for @shopItemCrystalFrameName.
+  ///
+  /// In es, this message translates to:
+  /// **'Marco Cristal'**
+  String get shopItemCrystalFrameName;
+
+  /// No description provided for @shopItemCrystalFrameDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'Marco de hielo cristalino'**
+  String get shopItemCrystalFrameDesc;
+
+  /// No description provided for @shopItemSkullFrameName.
+  ///
+  /// In es, this message translates to:
+  /// **'Marco Calavera'**
+  String get shopItemSkullFrameName;
+
+  /// No description provided for @shopItemSkullFrameDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'Marco de llama de calavera legendario'**
+  String get shopItemSkullFrameDesc;
+
+  /// No description provided for @shopItemTitleStormBreakerName.
+  ///
+  /// In es, this message translates to:
+  /// **'Título: Rompetormentas'**
+  String get shopItemTitleStormBreakerName;
+
+  /// No description provided for @shopItemTitleStormBreakerDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'Título raro para tu perfil'**
+  String get shopItemTitleStormBreakerDesc;
+
+  /// No description provided for @shopItemTitleCyberSageName.
+  ///
+  /// In es, this message translates to:
+  /// **'Título: Sabio Ciber'**
+  String get shopItemTitleCyberSageName;
+
+  /// No description provided for @shopItemTitleCyberSageDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'Título exclusivo para tu perfil'**
+  String get shopItemTitleCyberSageDesc;
+
+  /// No description provided for @shopItemTitleShadowHackerName.
+  ///
+  /// In es, this message translates to:
+  /// **'Título: Hacker Sombrío'**
+  String get shopItemTitleShadowHackerName;
+
+  /// No description provided for @shopItemTitleShadowHackerDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'Título épico para tu perfil'**
+  String get shopItemTitleShadowHackerDesc;
+
+  /// No description provided for @shopItemTitleNightGuardianName.
+  ///
+  /// In es, this message translates to:
+  /// **'Título: Guardián Nocturno'**
+  String get shopItemTitleNightGuardianName;
+
+  /// No description provided for @shopItemTitleNightGuardianDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'Título exclusivo para tu perfil'**
+  String get shopItemTitleNightGuardianDesc;
+
+  /// No description provided for @shopItemTitleDigitalPhoenixName.
+  ///
+  /// In es, this message translates to:
+  /// **'Título: Fénix Digital'**
+  String get shopItemTitleDigitalPhoenixName;
+
+  /// No description provided for @shopItemTitleDigitalPhoenixDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'Título legendario para tu perfil'**
+  String get shopItemTitleDigitalPhoenixDesc;
+
+  /// No description provided for @shopItemEffectDigitalRainName.
+  ///
+  /// In es, this message translates to:
+  /// **'Efecto: Lluvia Digital'**
+  String get shopItemEffectDigitalRainName;
+
+  /// No description provided for @shopItemEffectDigitalRainDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'Efecto de lluvia Matrix animado'**
+  String get shopItemEffectDigitalRainDesc;
+
+  /// No description provided for @shopItemEffectFireTrailName.
+  ///
+  /// In es, this message translates to:
+  /// **'Efecto: Estela de Fuego'**
+  String get shopItemEffectFireTrailName;
+
+  /// No description provided for @shopItemEffectFireTrailDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'Efecto de estela de fuego animado'**
+  String get shopItemEffectFireTrailDesc;
+
+  /// No description provided for @shopItemThemeBlueName.
+  ///
+  /// In es, this message translates to:
+  /// **'Tema Azul Profundo'**
+  String get shopItemThemeBlueName;
+
+  /// No description provided for @shopItemThemeBlueDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'Apariencia azul premium'**
+  String get shopItemThemeBlueDesc;
+
+  /// No description provided for @shopItemThemePurpleName.
+  ///
+  /// In es, this message translates to:
+  /// **'Tema Púrpura'**
+  String get shopItemThemePurpleName;
+
+  /// No description provided for @shopItemThemePurpleDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'Apariencia púrpura premium'**
+  String get shopItemThemePurpleDesc;
+
+  /// No description provided for @shopItemThemeDarkFireName.
+  ///
+  /// In es, this message translates to:
+  /// **'Tema Fuego Oscuro'**
+  String get shopItemThemeDarkFireName;
+
+  /// No description provided for @shopItemThemeDarkFireDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'Tema de efectos de fuego oscuro'**
+  String get shopItemThemeDarkFireDesc;
+
+  /// No description provided for @shopItemThemeCyberNeonName.
+  ///
+  /// In es, this message translates to:
+  /// **'Tema Neón Ciber'**
+  String get shopItemThemeCyberNeonName;
+
+  /// No description provided for @shopItemThemeCyberNeonDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'Tema neón futurista'**
+  String get shopItemThemeCyberNeonDesc;
+
+  /// No description provided for @mission3QueriesTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'3 Consultas'**
+  String get mission3QueriesTitle;
+
+  /// No description provided for @mission3QueriesDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'Habla con Sage 3 veces sobre diferentes temas.'**
+  String get mission3QueriesDesc;
+
+  /// No description provided for @missionConstantProtectorTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Protector Constante'**
+  String get missionConstantProtectorTitle;
+
+  /// No description provided for @missionConstantProtectorDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'Completa 3 lecciones hoy.'**
+  String get missionConstantProtectorDesc;
+
+  /// No description provided for @sageChipWhatIsPhishing.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Qué es el phishing?'**
+  String get sageChipWhatIsPhishing;
+
+  /// No description provided for @sageChipCreateStrongPassword.
+  ///
+  /// In es, this message translates to:
+  /// **'Crear contraseña segura'**
+  String get sageChipCreateStrongPassword;
+
+  /// No description provided for @sageChipIdentifyScam.
+  ///
+  /// In es, this message translates to:
+  /// **'Identificar una estafa'**
+  String get sageChipIdentifyScam;
 }
 
 class _AppLocalizationsDelegate

@@ -1923,13 +1923,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get missionActiveLearnerDesc => 'Complete 1 security lesson.';
 
   @override
-  String get missionActiveLearnerTitle => 'Active learner';
+  String get missionActiveLearnerTitle => 'Active Learner';
 
   @override
   String get missionActiveStreakDesc => 'Maintain your learning streak today.';
 
   @override
-  String get missionActiveStreakTitle => 'Active streak';
+  String get missionActiveStreakTitle => 'Active Streak';
 
   @override
   String get missionChatWithSageDesc => 'Talk to Sage about digital security.';
@@ -1947,27 +1947,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String get missionDigitalDetectiveDesc => 'Analyze a suspicious link.';
 
   @override
-  String get missionDigitalDetectiveTitle => 'Digital detective';
+  String get missionDigitalDetectiveTitle => 'Digital Detective';
 
   @override
   String get missionExpressChallengeDesc =>
       'Complete a quick 30-second challenge.';
 
   @override
-  String get missionExpressChallengeTitle => 'Express challenge';
+  String get missionExpressChallengeTitle => 'Express Challenge';
 
   @override
   String get missionPerfectLessonDesc => 'Complete a lesson without mistakes.';
 
   @override
-  String get missionPerfectLessonTitle => 'Perfect lesson';
+  String get missionPerfectLessonTitle => 'Perfect Lesson';
 
   @override
   String get missionPhishingHunterDesc =>
       'Correctly detect a phishing attempt.';
 
   @override
-  String get missionPhishingHunterTitle => 'Phishing hunter';
+  String get missionPhishingHunterTitle => 'Phishing Hunter';
 
   @override
   String missionProgress(Object percent) {
@@ -5114,4 +5114,167 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get exitQuizLabel => 'Exit quiz';
+
+  @override
+  String get shopItemFocusElixirName => 'Focus Elixir';
+
+  @override
+  String get shopItemFocusElixirDesc => '2x EXP for 15 minutes';
+
+  @override
+  String get shopItemXpBoostName => 'XP Boost';
+
+  @override
+  String get shopItemXpBoostDesc => '2x XP on your next lesson';
+
+  @override
+  String get shopItemLuckBoostName => 'Luck Boost';
+
+  @override
+  String get shopItemLuckBoostDesc => '+15% chest rarity for 30 min';
+
+  @override
+  String get shopItemSageMonocleName => 'Sage\'s Monocle';
+
+  @override
+  String get shopItemSageMonocleDesc => 'Eliminates 2 wrong answers';
+
+  @override
+  String get shopItemTimeWarpName => 'Time Warp';
+
+  @override
+  String get shopItemTimeWarpDesc => 'Skip cooldown on next review';
+
+  @override
+  String get shopItemTitaniumShieldName => 'Titanium Shield';
+
+  @override
+  String get shopItemTitaniumShieldDesc =>
+      'Protects your streak if you miss 1 day';
+
+  @override
+  String get shopItemPhoenixFeatherName => 'Phoenix Feather';
+
+  @override
+  String get shopItemPhoenixFeatherDesc => 'Revives your streak if lost';
+
+  @override
+  String get shopItemNeonFrameName => 'Neon Frame';
+
+  @override
+  String get shopItemNeonFrameDesc => 'Animated frame with neon glow';
+
+  @override
+  String get shopItemGalaxyFrameName => 'Galaxy Frame';
+
+  @override
+  String get shopItemGalaxyFrameDesc => 'Galactic starframe';
+
+  @override
+  String get shopItemDragonFrameName => 'Dragon Frame';
+
+  @override
+  String get shopItemDragonFrameDesc => 'Animated dragon fire frame';
+
+  @override
+  String get shopItemCrystalFrameName => 'Crystal Frame';
+
+  @override
+  String get shopItemCrystalFrameDesc => 'Crystalline ice frame';
+
+  @override
+  String get shopItemSkullFrameName => 'Skull Frame';
+
+  @override
+  String get shopItemSkullFrameDesc => 'Legendary skull flame frame';
+
+  @override
+  String get shopItemTitleStormBreakerName => 'Title: Storm Breaker';
+
+  @override
+  String get shopItemTitleStormBreakerDesc => 'Rare title for your profile';
+
+  @override
+  String get shopItemTitleCyberSageName => 'Title: Cyber Sage';
+
+  @override
+  String get shopItemTitleCyberSageDesc => 'Exclusive title for your profile';
+
+  @override
+  String get shopItemTitleShadowHackerName => 'Title: Shadow Hacker';
+
+  @override
+  String get shopItemTitleShadowHackerDesc => 'Epic title for your profile';
+
+  @override
+  String get shopItemTitleNightGuardianName => 'Title: Night Guardian';
+
+  @override
+  String get shopItemTitleNightGuardianDesc =>
+      'Exclusive title for your profile';
+
+  @override
+  String get shopItemTitleDigitalPhoenixName => 'Title: Digital Phoenix';
+
+  @override
+  String get shopItemTitleDigitalPhoenixDesc =>
+      'Legendary title for your profile';
+
+  @override
+  String get shopItemEffectDigitalRainName => 'Effect: Digital Rain';
+
+  @override
+  String get shopItemEffectDigitalRainDesc => 'Animated Matrix rain effect';
+
+  @override
+  String get shopItemEffectFireTrailName => 'Effect: Fire Trail';
+
+  @override
+  String get shopItemEffectFireTrailDesc => 'Animated fire trail effect';
+
+  @override
+  String get shopItemThemeBlueName => 'Deep Blue Theme';
+
+  @override
+  String get shopItemThemeBlueDesc => 'Premium blue appearance';
+
+  @override
+  String get shopItemThemePurpleName => 'Purple Theme';
+
+  @override
+  String get shopItemThemePurpleDesc => 'Premium purple appearance';
+
+  @override
+  String get shopItemThemeDarkFireName => 'Dark Fire Theme';
+
+  @override
+  String get shopItemThemeDarkFireDesc => 'Dark fire effects theme';
+
+  @override
+  String get shopItemThemeCyberNeonName => 'Cyber Neon Theme';
+
+  @override
+  String get shopItemThemeCyberNeonDesc => 'Futuristic neon theme';
+
+  @override
+  String get mission3QueriesTitle => '3 Queries';
+
+  @override
+  String get mission3QueriesDesc =>
+      'Talk to Sage 3 times about different topics.';
+
+  @override
+  String get missionConstantProtectorTitle => 'Constant Protector';
+
+  @override
+  String get missionConstantProtectorDesc => 'Complete 3 lessons today.';
+
+  @override
+  String get sageChipWhatIsPhishing => 'What is phishing?';
+
+  @override
+  String get sageChipCreateStrongPassword => 'Create a strong password';
+
+  @override
+  String get sageChipIdentifyScam => 'Identify a scam';
 }

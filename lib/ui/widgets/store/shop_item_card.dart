@@ -4,6 +4,7 @@ import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/providers/shop_provider.dart';
 import 'package:sagen/ui/widgets/store/buy_button.dart';
 import 'package:sagen/core/theme/app_colors.dart';
+import 'package:sagen/utils/localized_names.dart';
 
 class ShopItemCard extends StatelessWidget {
   final ShopItem item;
@@ -48,9 +49,11 @@ class ShopItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final owned = item.isOwned;
+    final l = AppLocalizations.of(context)!;
 
     return Semantics(
-      label: '${item.name}, ${item.description}',
+      label:
+          '${shopItemLocalizedName(item.id, l)}, ${shopItemLocalizedDescription(item.id, l)}',
       button: true,
       enabled: !owned,
       child: Container(
@@ -94,7 +97,9 @@ class ShopItemCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    owned ? '${item.name} ✓' : item.name,
+                    owned
+                        ? '${shopItemLocalizedName(item.id, l)} ✓'
+                        : shopItemLocalizedName(item.id, l),
                     style: AppTextStyle.body.copyWith(
                       fontWeight: FontWeight.w600,
                       color: context.textPrimary,
@@ -102,7 +107,7 @@ class ShopItemCard extends StatelessWidget {
                   ),
                   const SizedBox(height: AppSpacing.xxs),
                   Text(
-                    item.description,
+                    shopItemLocalizedDescription(item.id, l),
                     style: AppTextStyle.caption.copyWith(
                       color: context.textTertiary,
                     ),

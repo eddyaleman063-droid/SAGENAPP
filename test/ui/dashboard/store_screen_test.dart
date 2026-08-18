@@ -97,8 +97,8 @@ void main() {
       await tester.drag(find.byType(CustomScrollView), const Offset(0, -600));
       await tester.pump(const Duration(seconds: 1));
 
-      expect(find.text('Boost de XP'), findsOneWidget);
-      expect(find.text('Tema azul'), findsOneWidget);
+      expect(find.text('Impulso de XP'), findsOneWidget);
+      expect(find.text('Tema Azul Profundo'), findsOneWidget);
       await tester.pumpAndSettle();
     });
 
