@@ -88,7 +88,7 @@ class _PodiumAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
-    final dark = Theme.of(context).brightness == Brightness.dark;
+    final dark = context.isDark;
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/theme_constants.dart';
 import '../../../providers/hardware_tier_provider.dart';
 import '../../../services/app_logger.dart';
@@ -68,7 +69,7 @@ class _AmbientBackgroundState extends ConsumerState<AmbientBackground>
     ref.watch(reduceAnimationsProvider);
     _setupAnimation();
 
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDark = context.isDark;
     final colors = isDark ? const [_darkA, _darkB] : const [_lightA, _lightB];
 
     if (_ctrl == null || !_ctrl!.isAnimating) {

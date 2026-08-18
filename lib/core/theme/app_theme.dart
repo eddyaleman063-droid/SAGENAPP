@@ -33,7 +33,7 @@ class AppTheme {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
     ),
     chipTheme: ChipThemeData(
-      backgroundColor: const Color(0xFFF0F4FF),
+      backgroundColor: PremiumColors.lightBg,
       selectedColor: PremiumColors.primary.withValues(alpha: 0.15),
       labelStyle: const TextStyle(color: PremiumColors.textDark),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),

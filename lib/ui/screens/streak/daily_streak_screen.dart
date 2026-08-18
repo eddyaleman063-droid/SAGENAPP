@@ -111,7 +111,7 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
   void _showMilestoneCelebration(int milestone) {
     ExperienceService.instance.mediumHaptic();
     final l = AppLocalizations.of(context)!;
-    final dark = Theme.of(context).brightness == Brightness.dark;
+    final dark = context.isDark;
 
     showDialog(
       context: context,
@@ -214,7 +214,7 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
-    final dark = Theme.of(context).brightness == Brightness.dark;
+    final dark = context.isDark;
     final bg = dark ? PremiumColors.darkBg : PremiumColors.lightBg;
     final bubbleColor = dark ? PremiumColors.darkSurface : Colors.white;
     final textColor = dark ? PremiumColors.textLight : PremiumColors.textDark;

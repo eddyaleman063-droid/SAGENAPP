@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/theme_constants.dart';
 
 enum NotificationType { success, error, info, warning }
@@ -12,7 +13,7 @@ class SagenNotification {
     NotificationType type = NotificationType.info,
     Duration duration = const Duration(seconds: 3),
   }) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDark = context.isDark;
 
     final Color backgroundColor;
     final Color textColor;

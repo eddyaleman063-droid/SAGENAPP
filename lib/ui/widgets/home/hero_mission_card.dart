@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/theme_constants.dart';
 
 class HeroMissionCard extends StatelessWidget {
@@ -18,7 +19,7 @@ class HeroMissionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dark = Theme.of(context).brightness == Brightness.dark;
+    final dark = context.isDark;
     return Container(
           margin: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
           decoration: BoxDecoration(

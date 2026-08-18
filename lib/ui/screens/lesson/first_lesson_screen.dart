@@ -61,7 +61,7 @@ class _FirstLessonScreenState extends ConsumerState<FirstLessonScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final dark = Theme.of(context).brightness == Brightness.dark;
+    final dark = context.isDark;
     final l = AppLocalizations.of(context)!;
     final lesson = ref.watch(firstLessonProvider);
     final notifier = ref.read(firstLessonProvider.notifier);

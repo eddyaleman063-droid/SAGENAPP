@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../config/onboarding_wizard_config.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/theme_constants.dart';
 import 'package:sagen/providers/providers.dart';
 import '../../../services/experience_service.dart';
@@ -44,9 +45,8 @@ class _OnboardingWizardScreenState
     super.dispose();
   }
 
-  Color get _bgColor => Theme.of(context).brightness == Brightness.dark
-      ? PremiumColors.deepBackground
-      : PremiumColors.lightBg;
+  Color get _bgColor =>
+      context.isDark ? PremiumColors.deepBackground : PremiumColors.lightBg;
 
   AppLocalizations get _l => AppLocalizations.of(context)!;
 

@@ -130,7 +130,7 @@ class _MotivationScreenState extends State<MotivationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final dark = Theme.of(context).brightness == Brightness.dark;
+    final dark = context.isDark;
     return Scaffold(
       backgroundColor: dark
           ? PremiumColors.deepBackground

@@ -146,7 +146,7 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen>
 
   @override
   Widget build(BuildContext context) {
-    final dark = Theme.of(context).brightness == Brightness.dark;
+    final dark = context.isDark;
     final isPerfect = widget.score.accuracyPercent >= 90;
     final isGood = widget.score.accuracyPercent >= 70;
     return PopScope(

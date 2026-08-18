@@ -75,7 +75,7 @@ class _PremiumLoaderState extends ConsumerState<PremiumLoader>
 
   @override
   Widget build(BuildContext context) {
-    final dark = Theme.of(context).brightness == Brightness.dark;
+    final dark = context.isDark;
 
     return RepaintBoundary(
       child: Stack(

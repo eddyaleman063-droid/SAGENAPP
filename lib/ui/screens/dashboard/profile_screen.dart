@@ -52,7 +52,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
   Widget build(BuildContext context) {
     super.build(context);
     final l = AppLocalizations.of(context)!;
-    final dark = Theme.of(context).brightness == Brightness.dark;
+    final dark = context.isDark;
     final displayName = ref.watch(authProvider.select((a) => a.displayName));
     final photoUrl = ref.watch(authProvider.select((a) => a.photoUrl));
     final learning = ref.watch(

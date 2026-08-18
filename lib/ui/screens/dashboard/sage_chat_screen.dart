@@ -73,7 +73,7 @@ class _SageChatScreenState extends ConsumerState<SageChatScreen>
   Widget build(BuildContext context) {
     super.build(context);
     final sageState = ref.watch(sageAiProvider);
-    final dark = Theme.of(context).brightness == Brightness.dark;
+    final dark = context.isDark;
     final l = AppLocalizations.of(context)!;
 
     if (sageState.isLocked) {

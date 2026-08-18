@@ -14,7 +14,7 @@ class SagenSupportCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l = AppLocalizations.of(context)!;
-    final dark = Theme.of(context).brightness == Brightness.dark;
+    final dark = context.isDark;
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(

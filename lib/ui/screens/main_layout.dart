@@ -188,7 +188,7 @@ class _PremiumNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dark = Theme.of(context).brightness == Brightness.dark;
+    final dark = context.isDark;
     final tabItems = _MainLayoutState.tabs(context);
     return Container(
       height: 84,

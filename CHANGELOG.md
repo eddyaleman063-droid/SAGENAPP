@@ -41,6 +41,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `LoginScreen`: catch blocks de email, Google y Facebook login ahora loguean errores via `AppLogger`.
 - `ForgotPasswordScreen`: catch block ahora loguea errores de envío de email de recuperación.
 - `SpeedSortScreen`: `_initGame` ahora valida que existan al menos 2 categorías antes de acceder a `entries[1]`, evitando `RangeError`.
+- 17 catch blocks silenciosos (`catch(_)`) en repositories y services ahora incluyen `$e` en el log: `gamification_repository`, `item_repository`, `chest_repository`, `learning_repository`, `sagen_pass_repository`, `achievement_service`, `audio_service`, `auth_service`, `cloud_sync_service`, `device_tier` (×2), `remote_config_service`, `certificate_pinning`, `stage`, `energy_provider`, `learning_stages`, `review_provider`, `sagen_pass_provider`. Zero silent catches restantes en el codebase.
+- `rive_flame_widget.dart`: catch silencioso corregido con `AppLogger().error()`.
+- `error_boundary.dart`: `catch(e)` con `AppLogger().error()` en vez de fallback silencioso + `HapticFeedback.errorHaptic()` en retry button.
+- `user_profile_screen.dart`: `HapticFeedback.errorHaptic()` agregado al retry button de error state.
+- `store_screen.dart`: retry button con `HapticFeedback.errorHaptic()` + `AppLogger` en error state.
+- `quiz_summary.dart`: `HapticFeedback.errorHaptic()` agregado al retry button.
+- `post_lesson_promo.dart`: haptic duplicado removido + import `flutter/services.dart` removido.
+- `chest_reward_dialog.dart`: Semantics label en `_GemRewardChip` + share text localizado (`chestRewardShareText` es/en/fr/pt) + Semantics en share button.
+- `gem_rain_animation.dart`: `barrierLabel` localizado (`gemRainAnimationLabel` es/en/fr/pt).
+- `first_lesson_screen.dart`: Semantics en retry button + `AppLogger` en catch.
+- `flex_card_widget.dart`: 5 `Color(0x...)` hardcodeados reemplazados por constantes `PremiumColors` (`deepPurple`, `sunsetOrange`, `teal`, `crystalGreen`, `error`).
+- `exitQuizLabel` localizado (es/en/fr/pt) en `quiz_progress_header.dart`.
+- `BuyButton`: fix de estado sticky — `didUpdateWidget` ahora resetea `_purchasing` cuando `isLoading` cambia a false.
+- `shop_item_card.dart` + `sage_chat_screen.dart`: nombres y descripciones de shop items, misiones y suggestion chips de Sage AI localizados en 4 idiomas (69 keys l10n nuevas).
+- Creado `lib/utils/localized_names.dart`: helper de lookup para shop items (22 IDs → l10n keys), misiones (9 IDs → l10n keys) y suggestion chips de Sage AI.
 
 ### Changed
 - `targetSdk` de Android a API 36 (Android 16): requisito de Google Play (API 35 desde ago-2025, API 36 desde ago-2026). `compileSdk` ya era 36.
@@ -76,6 +91,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Label español en `LevelUpCelebration` localizado via `l.levelUpCelebrationLabel()` (nueva clave l10n en es/en/fr/pt).
 - Tooltips faltantes agregados a `IconButton` en `DailyStreakScreen` y `InputBar`.
 - 173 archivos muertos eliminados de `assets/content/`: batch files legacy (`st*_batch*`, `questions_st*_batch*`, `questions_st*_generated`, `batch3_data_*`), stage metadata no usada (`ac_st*.json`, `ac_st*_lessons.json`), `manifest.json`, `questions_default.json`, `questions_by_type.json`. Solo quedan los 9 archivos que la app carga en runtime (`stages.json` + `questions_ac_st{1-8}.json`). Reduce el tamaño del bundle en ~10 MB.
+- 31 archivos refactorizados: `Theme.of(context).brightness == Brightness.dark` reemplazado por `context.isDark` para consistencia y menos boilerplate.
+- `app_colors.dart`: `colorDeepPurple` ahora usa `PremiumColors.deepPurple` en vez de `Color(0xFF7C4DFF)` duplicado.
+- `app_theme.dart`: chip `backgroundColor` ahora usa `PremiumColors.lightBg` en vez de `Color(0xFFF0F4FF)` duplicado.
 
 ### Added
 - Tests del webhook LIVE de Vercel (`api/index.js`): 15 tests nuevos (verificación de firma HMAC, retry 5xx ante fallo de MP, crédito idempotente de pagos aprobados, validación de `adminCreditDonation` con coerción de monto string→número y gate de auth 401/403). Jest sube a 232/232.

@@ -35,6 +35,14 @@ class _BuyButtonState extends State<BuyButton> {
   }
 
   @override
+  void didUpdateWidget(covariant BuyButton oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.isLoading && !widget.isLoading && _purchasing) {
+      setState(() => _purchasing = false);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final canAfford = widget.gemBalance >= widget.cost || widget.cost == 0;
     final canBuy =

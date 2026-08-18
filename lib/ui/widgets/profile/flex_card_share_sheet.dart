@@ -34,7 +34,7 @@ class _FlexCardShareSheetState extends ConsumerState<FlexCardShareSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final dark = Theme.of(context).brightness == Brightness.dark;
+    final dark = context.isDark;
     final l = AppLocalizations.of(context)!;
 
     return Container(

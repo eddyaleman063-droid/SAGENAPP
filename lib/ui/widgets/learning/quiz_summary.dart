@@ -49,7 +49,7 @@ class _QuizSummaryScreenState extends State<QuizSummaryScreen>
   @override
   Widget build(BuildContext context) {
     final l = l10n(context);
-    final dark = Theme.of(context).brightness == Brightness.dark;
+    final dark = context.isDark;
     final scorePercent = (widget.result.score * 100).round();
     final minutes = widget.result.timeTaken.inMinutes;
     final seconds = widget.result.timeTaken.inSeconds % 60;

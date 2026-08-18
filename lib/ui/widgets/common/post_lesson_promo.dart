@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:sagen/core/theme/app_colors.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/services/smart_promo_service.dart';
@@ -48,7 +49,7 @@ class _PostLessonPromoState extends ConsumerState<PostLessonPromo> {
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
-    final dark = Theme.of(context).brightness == Brightness.dark;
+    final dark = context.isDark;
 
     return Stack(
       children: [

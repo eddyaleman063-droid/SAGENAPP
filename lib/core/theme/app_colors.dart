@@ -69,5 +69,5 @@ extension AppColorsX on BuildContext {
   Color get colorError => PremiumColors.error;
   Color get colorInfo => PremiumColors.info;
   Color get colorAccentCyan => PremiumColors.accentCyan;
-  Color get colorDeepPurple => const Color(0xFF7C4DFF);
+  Color get colorDeepPurple => PremiumColors.deepPurple;
 }

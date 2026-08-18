@@ -87,7 +87,7 @@ class _ChestRewardDialogState extends State<ChestRewardDialog>
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
-    final dark = Theme.of(context).brightness == Brightness.dark;
+    final dark = context.isDark;
     final r = widget.reward;
 
     return Semantics(

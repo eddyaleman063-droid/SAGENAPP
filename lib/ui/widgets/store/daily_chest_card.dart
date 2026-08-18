@@ -57,7 +57,7 @@ class _DailyChestCardState extends ConsumerState<DailyChestCard> {
       gamificationProvider.select((g) => g.hasUnclaimedChest),
     );
     if (!hasUnclaimed) return const SizedBox.shrink();
-    final dark = Theme.of(context).brightness == Brightness.dark;
+    final dark = context.isDark;
 
     return Semantics(
       button: true,

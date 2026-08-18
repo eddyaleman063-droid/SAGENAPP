@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:sagen/services/experience_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sagen/l10n/app_localizations.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/theme_constants.dart';
 import '../../../services/app_logger.dart';
 import '../../../services/sage_emotion_service.dart';
@@ -110,7 +111,7 @@ class _HabitTransitionScreenState extends State<HabitTransitionScreen>
 
   @override
   Widget build(BuildContext context) {
-    final dark = Theme.of(context).brightness == Brightness.dark;
+    final dark = context.isDark;
     final bg = dark ? PremiumColors.darkBg : PremiumColors.lightBg;
     final bubbleColor = dark ? PremiumColors.darkSurface : Colors.white;
     final textColor = dark ? PremiumColors.textLight : PremiumColors.textDark;
