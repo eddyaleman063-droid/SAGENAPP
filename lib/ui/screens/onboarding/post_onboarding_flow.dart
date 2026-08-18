@@ -94,6 +94,7 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
       final auth = ref.read(authProvider);
       if (auth.isAuthenticated) {
         await _createProfile(auth, funnel);
+        if (!mounted) return;
         ref
             .read(analyticsServiceProvider)
             .track(AnalyticEvent.signUp, properties: {'method': 'google'});
@@ -118,6 +119,7 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
       final auth = ref.read(authProvider);
       if (auth.showVerificationScreen || auth.isAuthenticated) {
         await _createProfile(auth, funnel);
+        if (!mounted) return;
         ref
             .read(analyticsServiceProvider)
             .track(AnalyticEvent.signUp, properties: {'method': 'email'});
