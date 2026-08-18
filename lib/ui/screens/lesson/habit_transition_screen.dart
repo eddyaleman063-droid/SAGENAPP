@@ -86,12 +86,16 @@ class _HabitTransitionScreenState extends State<HabitTransitionScreen>
     super.dispose();
   }
 
+  bool _navigating = false;
+
   void _handleContinue() {
+    if (_navigating) return;
     ExperienceService.instance.lightHaptic();
     _pushNext();
   }
 
   Future<void> _pushNext() async {
+    _navigating = true;
     try {
       final prefs = await SharedPreferences.getInstance();
       final visibility = StreakVisibilityService(prefs);

@@ -180,29 +180,32 @@ class _FlameFallbackWidgetState extends State<_FlameFallbackWidget>
   Widget _buildIconFallback() {
     final phase = widget.phase ?? FlamePhase.idle;
     final color = _flameColor(phase);
-    return AnimatedBuilder(
-      animation: _pulseAnim,
-      builder: (context, _) {
-        final l = AppLocalizations.of(context)!;
-        return Transform.scale(
-          scale: _pulseAnim.value,
-          child: Semantics(
-            label: phase == FlamePhase.frozen || phase == FlamePhase.defrosting
-                ? l.streakShieldActive
-                : l.streakFlame,
-            child: Icon(
-              phase == FlamePhase.frozen || phase == FlamePhase.defrosting
-                  ? Icons.ac_unit_rounded
-                  : Icons.local_fire_department_rounded,
-              size: 48,
-              color: color,
-              shadows: [
-                Shadow(color: color.withValues(alpha: 0.5), blurRadius: 12),
-              ],
+    return RepaintBoundary(
+      child: AnimatedBuilder(
+        animation: _pulseAnim,
+        builder: (context, _) {
+          final l = AppLocalizations.of(context)!;
+          return Transform.scale(
+            scale: _pulseAnim.value,
+            child: Semantics(
+              label:
+                  phase == FlamePhase.frozen || phase == FlamePhase.defrosting
+                  ? l.streakShieldActive
+                  : l.streakFlame,
+              child: Icon(
+                phase == FlamePhase.frozen || phase == FlamePhase.defrosting
+                    ? Icons.ac_unit_rounded
+                    : Icons.local_fire_department_rounded,
+                size: 48,
+                color: color,
+                shadows: [
+                  Shadow(color: color.withValues(alpha: 0.5), blurRadius: 12),
+                ],
+              ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 

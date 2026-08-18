@@ -355,7 +355,7 @@ class _GemRewardChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Semantics(
-      label: '+$gemCount ${AppLocalizations.of(context)?.gems ?? "gems"}',
+      label: '+$gemCount ${AppLocalizations.of(context)?.gems ?? ''}',
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
         decoration: BoxDecoration(
@@ -541,62 +541,67 @@ class _SpecialItemChipState extends State<_SpecialItemChip>
   @override
   Widget build(BuildContext context) {
     final name = widget.itemType.displayName;
-    return AnimatedBuilder(
-      animation: _shimmerCtrl,
-      builder: (ctx, _) {
-        return Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.md,
-            vertical: AppSpacing.sm,
-          ),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                _color.withValues(alpha: 0.15),
-                _color.withValues(alpha: 0.05),
-                _color.withValues(alpha: 0.15),
-              ],
-              stops: [
-                (_shimmerCtrl.value - 0.3).clamp(0.0, 1.0),
-                _shimmerCtrl.value,
-                (_shimmerCtrl.value + 0.3).clamp(0.0, 1.0),
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
+    return RepaintBoundary(
+      child: AnimatedBuilder(
+        animation: _shimmerCtrl,
+        builder: (ctx, _) {
+          return Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppSpacing.md,
+              vertical: AppSpacing.sm,
             ),
-            borderRadius: BorderRadius.circular(AppRadius.md),
-            border: Border.all(
-              color: _color.withValues(alpha: 0.4),
-              width: 1.5,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: _color.withValues(alpha: 0.15),
-                blurRadius: 8,
-                spreadRadius: 1,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  _color.withValues(alpha: 0.15),
+                  _color.withValues(alpha: 0.05),
+                  _color.withValues(alpha: 0.15),
+                ],
+                stops: [
+                  (_shimmerCtrl.value - 0.3).clamp(0.0, 1.0),
+                  _shimmerCtrl.value,
+                  (_shimmerCtrl.value + 0.3).clamp(0.0, 1.0),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
               ),
-            ],
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ExcludeSemantics(child: Icon(_icon, size: 16, color: _color)),
-              const SizedBox(width: 4),
-              Text(name, style: AppTextStyle.bodyBold.copyWith(color: _color)),
-              if (_rarityLabel.isNotEmpty) ...[
-                const SizedBox(width: AppSpacing.xxs),
-                Text(
-                  _rarityLabel,
-                  style: AppTextStyle.label.copyWith(
-                    color: _color.withValues(alpha: 0.7),
-                    fontSize: 10,
-                  ),
+              borderRadius: BorderRadius.circular(AppRadius.md),
+              border: Border.all(
+                color: _color.withValues(alpha: 0.4),
+                width: 1.5,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: _color.withValues(alpha: 0.15),
+                  blurRadius: 8,
+                  spreadRadius: 1,
                 ),
               ],
-            ],
-          ),
-        );
-      },
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ExcludeSemantics(child: Icon(_icon, size: 16, color: _color)),
+                const SizedBox(width: 4),
+                Text(
+                  name,
+                  style: AppTextStyle.bodyBold.copyWith(color: _color),
+                ),
+                if (_rarityLabel.isNotEmpty) ...[
+                  const SizedBox(width: AppSpacing.xxs),
+                  Text(
+                    _rarityLabel,
+                    style: AppTextStyle.label.copyWith(
+                      color: _color.withValues(alpha: 0.7),
+                      fontSize: 10,
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

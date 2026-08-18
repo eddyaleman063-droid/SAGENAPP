@@ -22,6 +22,7 @@ class _PaymentSuccessScreenState extends ConsumerState<PaymentSuccessScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _scaleCtrl;
   late AnimationController _checkCtrl;
+  bool _navigated = false;
 
   @override
   void initState() {
@@ -115,25 +116,28 @@ class _PaymentSuccessScreenState extends ConsumerState<PaymentSuccessScreen>
                     button: true,
                     label: l.continueText,
                     child: FilledButton(
-                      onPressed: () async {
-                        HapticFeedback.lightImpact();
-                        try {
-                          ref.read(paymentProvider.notifier).reset();
-                          context.goNamed('main');
-                        } catch (e) {
-                          AppLogger().error(
-                            'PaymentSuccess: continue failed',
-                            e,
-                          );
-                          if (mounted) {
-                            SagenNotification.show(
-                              context,
-                              message: l.errorSomethingWrong,
-                              type: NotificationType.error,
-                            );
-                          }
-                        }
-                      },
+                      onPressed: _navigated
+                          ? null
+                          : () async {
+                              HapticFeedback.lightImpact();
+                              try {
+                                _navigated = true;
+                                ref.read(paymentProvider.notifier).reset();
+                                context.goNamed('main');
+                              } catch (e) {
+                                AppLogger().error(
+                                  'PaymentSuccess: continue failed',
+                                  e,
+                                );
+                                if (mounted) {
+                                  SagenNotification.show(
+                                    context,
+                                    message: l.errorSomethingWrong,
+                                    type: NotificationType.error,
+                                  );
+                                }
+                              }
+                            },
                       style: FilledButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(AppRadius.xl),

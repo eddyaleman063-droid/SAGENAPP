@@ -28,6 +28,7 @@ class QuizSummaryScreen extends StatefulWidget {
 class _QuizSummaryScreenState extends State<QuizSummaryScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _entranceCtrl;
+  bool _tapped = false;
 
   @override
   void initState() {
@@ -274,10 +275,13 @@ class _QuizSummaryScreenState extends State<QuizSummaryScreen>
                         button: true,
                         label: AppLocalizations.of(context)?.continueText ?? '',
                         child: ElevatedButton.icon(
-                          onPressed: () {
-                            ExperienceService.instance.lightHaptic();
-                            widget.onContinue();
-                          },
+                          onPressed: _tapped
+                              ? null
+                              : () {
+                                  setState(() => _tapped = true);
+                                  ExperienceService.instance.lightHaptic();
+                                  widget.onContinue();
+                                },
                           icon: const Icon(
                             Icons.arrow_forward_rounded,
                             size: 20,

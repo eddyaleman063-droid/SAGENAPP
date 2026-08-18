@@ -36,6 +36,7 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
   bool _streakFrozen = false;
   bool _showDefrosting = false;
   bool _circleFilled = false;
+  bool _navigating = false;
 
   List<String> _dayLabels(AppLocalizations l) => [
     l.dayAbbrMon,
@@ -204,6 +205,8 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
   }
 
   Future<void> _handleContinue() async {
+    if (_navigating) return;
+    _navigating = true;
     ExperienceService.instance.lightHaptic();
     final prefs = ref.read(prefsProvider);
     StreakVisibilityService(prefs).markShown();

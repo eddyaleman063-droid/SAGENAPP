@@ -11,11 +11,19 @@ import '../../../providers/payment_provider.dart';
 import '../../widgets/common/sagen_notification.dart';
 import '../../../utils/localized_names.dart';
 
-class PaymentPendingScreen extends ConsumerWidget {
+class PaymentPendingScreen extends ConsumerStatefulWidget {
   const PaymentPendingScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<PaymentPendingScreen> createState() =>
+      _PaymentPendingScreenState();
+}
+
+class _PaymentPendingScreenState extends ConsumerState<PaymentPendingScreen> {
+  bool _navigating = false;
+
+  @override
+  Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
     final payment = ref.watch(paymentProvider);
     final pollAttempts = payment.pollAttempts;
@@ -170,29 +178,32 @@ class PaymentPendingScreen extends ConsumerWidget {
                     button: true,
                     label: isFailed ? l.paymentTryAgain : l.paymentGoHome,
                     child: FilledButton(
-                      onPressed: () async {
-                        HapticFeedback.lightImpact();
-                        try {
-                          ref.read(paymentProvider.notifier).reset();
-                          if (isFailed) {
-                            context.go('/home');
-                          } else {
-                            context.goNamed('main');
-                          }
-                        } catch (e) {
-                          AppLogger().error(
-                            'PaymentPending: go home failed',
-                            e,
-                          );
-                          if (context.mounted) {
-                            SagenNotification.show(
-                              context,
-                              message: l.errorSomethingWrong,
-                              type: NotificationType.error,
-                            );
-                          }
-                        }
-                      },
+                      onPressed: _navigating
+                          ? null
+                          : () async {
+                              HapticFeedback.lightImpact();
+                              try {
+                                setState(() => _navigating = true);
+                                ref.read(paymentProvider.notifier).reset();
+                                if (isFailed) {
+                                  context.go('/home');
+                                } else {
+                                  context.goNamed('main');
+                                }
+                              } catch (e) {
+                                AppLogger().error(
+                                  'PaymentPending: go home failed',
+                                  e,
+                                );
+                                if (context.mounted) {
+                                  SagenNotification.show(
+                                    context,
+                                    message: l.errorSomethingWrong,
+                                    type: NotificationType.error,
+                                  );
+                                }
+                              }
+                            },
                       style: FilledButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(AppRadius.xl),
