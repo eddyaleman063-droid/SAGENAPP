@@ -161,3 +161,25 @@ String missionLocalizedDescription(String id, AppLocalizations l) {
       return id;
   }
 }
+
+/// Resolve payment error messages from provider to localized strings.
+String resolvePaymentError(String? errorMessage, AppLocalizations l) {
+  switch (errorMessage) {
+    case 'You must be signed in to donate':
+      return l.paymentErrorNotSignedIn;
+    case 'Could not get session. Please sign in again.':
+      return l.paymentErrorSessionExpired;
+    case 'Invalid product':
+      return l.paymentErrorInvalidProduct;
+    case 'Could not start payment. Please try again.':
+      return l.paymentErrorStartFailed;
+    case 'Could not register payment. Please try again.':
+      return l.paymentErrorRegisterFailed;
+    case 'Payment expired. Please try again.':
+      return l.paymentErrorExpired;
+    case 'Payment was cancelled or did not complete':
+      return l.paymentErrorCancelled;
+    default:
+      return errorMessage ?? l.paymentNotCompleted;
+  }
+}

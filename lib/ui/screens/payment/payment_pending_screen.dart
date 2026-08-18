@@ -9,6 +9,7 @@ import 'package:sagen/services/app_logger.dart';
 import '../../../core/theme/theme_constants.dart';
 import '../../../providers/payment_provider.dart';
 import '../../widgets/common/sagen_notification.dart';
+import '../../../utils/localized_names.dart';
 
 class PaymentPendingScreen extends ConsumerWidget {
   const PaymentPendingScreen({super.key});
@@ -19,6 +20,14 @@ class PaymentPendingScreen extends ConsumerWidget {
     final payment = ref.watch(paymentProvider);
     final pollAttempts = payment.pollAttempts;
     final isPolling = payment.status == PaymentStatus.waitingPayment;
+    final isFailed = payment.status == PaymentStatus.failed;
+    final isCompleted = payment.status == PaymentStatus.completed;
+
+    if (isCompleted) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (context.mounted) context.go('/home');
+      });
+    }
 
     return PopScope(
       canPop: false,
@@ -93,6 +102,20 @@ class PaymentPendingScreen extends ConsumerWidget {
                               ),
                             ],
                           )
+                        : isFailed
+                        ? Container(
+                            width: 100,
+                            height: 100,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: PremiumColors.error.withValues(alpha: 0.1),
+                            ),
+                            child: const Icon(
+                              Icons.error_outline_rounded,
+                              color: PremiumColors.error,
+                              size: 52,
+                            ),
+                          )
                         : Container(
                             width: 100,
                             height: 100,
@@ -112,14 +135,16 @@ class PaymentPendingScreen extends ConsumerWidget {
                 ),
                 const SizedBox(height: AppSpacing.xxl),
                 Text(
-                  l.paymentPending,
+                  isFailed ? l.paymentNotCompleted : l.paymentPending,
                   style: AppTextStyle.headlineMedium.copyWith(
-                    color: context.textPrimary,
+                    color: isFailed ? PremiumColors.error : context.textPrimary,
                   ),
                 ),
                 const SizedBox(height: AppSpacing.md),
                 Text(
-                  l.paymentPendingDescription,
+                  isFailed
+                      ? resolvePaymentError(payment.errorMessage, l)
+                      : l.paymentPendingDescription,
                   textAlign: TextAlign.center,
                   style: AppTextStyle.bodyMd.copyWith(
                     color: Theme.of(
@@ -143,13 +168,17 @@ class PaymentPendingScreen extends ConsumerWidget {
                   height: 52,
                   child: Semantics(
                     button: true,
-                    label: l.paymentGoHome,
+                    label: isFailed ? l.paymentTryAgain : l.paymentGoHome,
                     child: FilledButton(
                       onPressed: () async {
                         HapticFeedback.lightImpact();
                         try {
                           ref.read(paymentProvider.notifier).reset();
-                          context.goNamed('main');
+                          if (isFailed) {
+                            context.go('/home');
+                          } else {
+                            context.goNamed('main');
+                          }
                         } catch (e) {
                           AppLogger().error(
                             'PaymentPending: go home failed',
@@ -170,7 +199,7 @@ class PaymentPendingScreen extends ConsumerWidget {
                         ),
                       ),
                       child: Text(
-                        l.paymentGoHome,
+                        isFailed ? l.paymentTryAgain : l.paymentGoHome,
                         style: AppTextStyle.body.copyWith(
                           fontWeight: FontWeight.w600,
                           color: Colors.white,

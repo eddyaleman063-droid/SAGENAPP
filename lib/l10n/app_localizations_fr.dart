@@ -2540,6 +2540,32 @@ class AppLocalizationsFr extends AppLocalizations {
   String get paymentTryAgain => 'Réessayer';
 
   @override
+  String get paymentErrorNotSignedIn =>
+      'Vous devez être connecté pour faire un don.';
+
+  @override
+  String get paymentErrorSessionExpired =>
+      'Session expirée. Connectez-vous à nouveau.';
+
+  @override
+  String get paymentErrorInvalidProduct => 'Produit invalide.';
+
+  @override
+  String get paymentErrorStartFailed =>
+      'Impossible de démarrer le paiement. Réessayez.';
+
+  @override
+  String get paymentErrorRegisterFailed =>
+      'Impossible d\'enregistrer le paiement. Réessayez.';
+
+  @override
+  String get paymentErrorExpired => 'Le paiement a expiré. Réessayez.';
+
+  @override
+  String get paymentErrorCancelled =>
+      'Le paiement a été annulé ou n\'a pas abouti.';
+
+  @override
   String get paywallBasic => 'Basique';
 
   @override

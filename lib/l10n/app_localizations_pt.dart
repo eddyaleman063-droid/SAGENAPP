@@ -2521,6 +2521,32 @@ class AppLocalizationsPt extends AppLocalizations {
   String get paymentTryAgain => 'Tentar novamente';
 
   @override
+  String get paymentErrorNotSignedIn =>
+      'Você precisa estar conectado para doar.';
+
+  @override
+  String get paymentErrorSessionExpired =>
+      'Sessão expirada. Faça login novamente.';
+
+  @override
+  String get paymentErrorInvalidProduct => 'Produto inválido.';
+
+  @override
+  String get paymentErrorStartFailed =>
+      'Não foi possível iniciar o pagamento. Tente novamente.';
+
+  @override
+  String get paymentErrorRegisterFailed =>
+      'Não foi possível registrar o pagamento. Tente novamente.';
+
+  @override
+  String get paymentErrorExpired => 'O pagamento expirou. Tente novamente.';
+
+  @override
+  String get paymentErrorCancelled =>
+      'O pagamento foi cancelado ou não foi concluído.';
+
+  @override
   String get paywallBasic => 'Básico';
 
   @override

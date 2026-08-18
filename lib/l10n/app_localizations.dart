@@ -4692,6 +4692,48 @@ abstract class AppLocalizations {
   /// **'Intentar de nuevo'**
   String get paymentTryAgain;
 
+  /// No description provided for @paymentErrorNotSignedIn.
+  ///
+  /// In es, this message translates to:
+  /// **'Debes iniciar sesión para donar.'**
+  String get paymentErrorNotSignedIn;
+
+  /// No description provided for @paymentErrorSessionExpired.
+  ///
+  /// In es, this message translates to:
+  /// **'Sesión expirada. Inicia sesión de nuevo.'**
+  String get paymentErrorSessionExpired;
+
+  /// No description provided for @paymentErrorInvalidProduct.
+  ///
+  /// In es, this message translates to:
+  /// **'Producto inválido.'**
+  String get paymentErrorInvalidProduct;
+
+  /// No description provided for @paymentErrorStartFailed.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo iniciar el pago. Intenta de nuevo.'**
+  String get paymentErrorStartFailed;
+
+  /// No description provided for @paymentErrorRegisterFailed.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo registrar el pago. Intenta de nuevo.'**
+  String get paymentErrorRegisterFailed;
+
+  /// No description provided for @paymentErrorExpired.
+  ///
+  /// In es, this message translates to:
+  /// **'El pago expiró. Intenta de nuevo.'**
+  String get paymentErrorExpired;
+
+  /// No description provided for @paymentErrorCancelled.
+  ///
+  /// In es, this message translates to:
+  /// **'El pago fue cancelado o no se completó.'**
+  String get paymentErrorCancelled;
+
   /// No description provided for @paywallBasic.
   ///
   /// In es, this message translates to:
