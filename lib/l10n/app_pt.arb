@@ -1349,6 +1349,7 @@
   "storeDailyChestSubtitle": "Resgate sua recompensa diária gratuita",
   "storeDailyChestTitle": "Baú diário",
   "storePurchaseFailed": "Falha na validação da compra. Tente novamente.",
+  "storeNeedMoreGems": "Você precisa de mais {needed} gemas ({have}/{need})",
   "storePurchaseSuccess": "Compra realizada com sucesso!",
   "storeAlreadyOwned": "Você já possui este item.",
   "storeShieldLimitReached": "Limite de escudos atingido",

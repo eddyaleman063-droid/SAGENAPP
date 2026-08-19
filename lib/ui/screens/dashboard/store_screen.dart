@@ -33,45 +33,35 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
   final Set<String> _purchasingItems = {};
   ShopCategory _selectedCategory = ShopCategory.consumables;
 
-  Future<bool> _validatePurchase(String itemId, int cost) async {
+  Future<({bool owned, int? needed})?> _validatePurchase(
+    String itemId,
+    int cost,
+  ) async {
     try {
       final uid = ref.read(authServiceProvider).currentUser?.uid;
-      if (uid == null) return false;
+      if (uid == null) return (owned: false, needed: cost);
 
       // Sync authoritative balance from server before validating
       await ref.read(gemProvider.notifier).syncBalanceFromServer();
 
       final userRef = FirebaseFirestore.instance.collection('users').doc(uid);
       final inventoryRef = userRef.collection('inventory').doc('shop_items');
-
       final doc = await inventoryRef.get();
 
       if (doc.exists) {
         final data = doc.data();
         if (data != null && data['items'] is List) {
           final ownedItems = List<String>.from(data['items']);
-          if (ownedItems.contains(itemId)) return false;
+          if (ownedItems.contains(itemId)) return (owned: true, needed: null);
         }
       }
 
-      // Validate gem balance (now fresh from server)
       final gemBalance = ref.read(gemProvider).balance;
-      if (gemBalance < cost) return false;
-
-      return true;
+      if (gemBalance < cost) return (owned: false, needed: cost - gemBalance);
+      return null;
     } catch (e) {
       AppLogger().warning('StoreScreen: failed to validate purchase: $e');
-      return false;
-    }
-  }
-
-  bool _isOwned(ShopItem item) {
-    try {
-      final items = ref.read(shopProvider).items;
-      return items.any((i) => i.id == item.id && i.isOwned);
-    } catch (e) {
-      AppLogger().error('StoreScreen: _isOwned check failed', e);
-      return false;
+      return (owned: false, needed: cost);
     }
   }
 
@@ -117,15 +107,21 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
     });
     try {
       final exp = ref.read(experienceServiceProvider);
-      final isValid = await _validatePurchase(item.id, item.gemCost);
-      if (!isValid) {
+      final error = await _validatePurchase(item.id, item.gemCost);
+      if (error != null) {
         exp.errorHaptic();
-        final owned = _isOwned(item);
         if (context.mounted) {
+          final msg = error.owned
+              ? l.storeAlreadyOwned
+              : l.storeNeedMoreGems(
+                  error.needed ?? item.gemCost,
+                  ref.read(gemProvider).balance,
+                  item.gemCost,
+                );
           SagenNotification.show(
             context,
-            message: owned ? l.storeAlreadyOwned : l.storePurchaseFailed,
-            type: owned ? NotificationType.info : NotificationType.error,
+            message: msg,
+            type: error.owned ? NotificationType.info : NotificationType.error,
           );
         }
         return;

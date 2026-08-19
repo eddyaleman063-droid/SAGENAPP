@@ -177,11 +177,17 @@ class _GemPill extends StatelessWidget {
             ),
           ),
           const SizedBox(width: AppSpacing.xxs),
-          Text(
-            '$gems',
-            style: AppTextStyle.subtitle.copyWith(
-              fontWeight: FontWeight.bold,
-              color: PremiumColors.accentCyan,
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
+            transitionBuilder: (child, anim) =>
+                ScaleTransition(scale: anim, child: child),
+            child: Text(
+              '$gems',
+              key: ValueKey(gems),
+              style: AppTextStyle.subtitle.copyWith(
+                fontWeight: FontWeight.bold,
+                color: PremiumColors.accentCyan,
+              ),
             ),
           ),
         ],

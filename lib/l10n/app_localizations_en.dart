@@ -4088,6 +4088,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'Purchase validation failed. Please try again.';
 
   @override
+  String storeNeedMoreGems(Object have, Object need, Object needed) {
+    return 'You need $needed more gems ($have/$need)';
+  }
+
+  @override
   String get storePurchaseSuccess => 'Purchase successful!';
 
   @override

@@ -1349,6 +1349,7 @@
   "storeDailyChestSubtitle": "Réclamez votre récompense quotidienne gratuite",
   "storeDailyChestTitle": "Coffre quotidien",
   "storePurchaseFailed": "Échec de la validation de l''achat. Veuillez réessayer.",
+  "storeNeedMoreGems": "Il vous faut {needed} gemmes de plus ({have}/{need})",
   "storePurchaseSuccess": "Achat réussi!",
   "storeAlreadyOwned": "Vous possédez déjà cet article.",
   "storeShieldLimitReached": "Limite de boucliers atteinte",

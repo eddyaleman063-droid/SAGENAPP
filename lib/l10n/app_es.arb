@@ -1311,6 +1311,7 @@
   "storeDailyChestSubtitle": "Reclama tu recompensa diaria gratuita",
   "storeDailyChestTitle": "Cofre diario",
   "storePurchaseFailed": "Error al validar la compra. Inténtalo de nuevo.",
+  "storeNeedMoreGems": "Necesitas {needed} gemas más ({have}/{need})",
   "storePurchaseSuccess": "¡Compra exitosa!",
   "storeAlreadyOwned": "Ya tienes este artículo.",
   "storeShieldLimitReached": "Límite de protectores alcanzado",

@@ -1349,6 +1349,7 @@
   "storeDailyChestSubtitle": "Claim your free daily reward",
   "storeDailyChestTitle": "Daily Chest",
   "storePurchaseFailed": "Purchase validation failed. Please try again.",
+  "storeNeedMoreGems": "You need {needed} more gems ({have}/{need})",
   "storePurchaseSuccess": "Purchase successful!",
   "storeAlreadyOwned": "You already own this item.",
   "storeShieldLimitReached": "Shield limit reached",

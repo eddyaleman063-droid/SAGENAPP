@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -28,6 +29,11 @@ class GemState {
 class GemNotifier extends Notifier<GemState> {
   late final GemRepository _repo;
 
+  /// Broadcast stream that emits gem amounts when earned.
+  /// Listeners (e.g. root widget) can show reward animations.
+  final _rewardController = StreamController<int>.broadcast();
+  Stream<int> get onGemsEarned => _rewardController.stream;
+
   @override
   GemState build() {
     _repo = ref.read(gemRepositoryProvider);
@@ -47,6 +53,7 @@ class GemNotifier extends Notifier<GemState> {
     _repo.addGems(amount);
     _repo.save();
     state = _load();
+    _rewardController.add(amount);
   }
 
   bool spendGems(int amount, {String? reason}) {

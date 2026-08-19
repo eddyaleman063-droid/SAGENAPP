@@ -7625,6 +7625,12 @@ abstract class AppLocalizations {
   /// **'Error al validar la compra. Inténtalo de nuevo.'**
   String get storePurchaseFailed;
 
+  /// No description provided for @storeNeedMoreGems.
+  ///
+  /// In es, this message translates to:
+  /// **'Necesitas {needed} gemas más ({have}/{need})'**
+  String storeNeedMoreGems(Object have, Object need, Object needed);
+
   /// No description provided for @storePurchaseSuccess.
   ///
   /// In es, this message translates to:

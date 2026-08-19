@@ -8,6 +8,7 @@ import '../../core/theme/theme_constants.dart';
 import '../../services/analytics_service.dart';
 import '../../services/audio_service.dart';
 import '../widgets/common/level_up_celebration.dart';
+import '../widgets/common/gem_reward_animation.dart';
 import 'package:sagen/core/theme/app_colors.dart';
 
 import 'dashboard/dashboard_home_screen.dart';
@@ -29,6 +30,7 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
   bool _animating = false;
   StreamSubscription<int>? _tabSub;
   StreamSubscription<int>? _levelUpSub;
+  StreamSubscription<int>? _gemRewardSub;
 
   static List<_TabItem> tabs(BuildContext context) => [
     _TabItem(
@@ -67,12 +69,19 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
       AudioService.instance.playLevelUp();
       showLevelUpCelebration(context, newLevel);
     });
+    _gemRewardSub = ref.read(gemProvider.notifier).onGemsEarned.listen((
+      amount,
+    ) {
+      if (!mounted || amount < 5) return;
+      GemRewardAnimation.show(context, amount);
+    });
   }
 
   @override
   void dispose() {
     _tabSub?.cancel();
     _levelUpSub?.cancel();
+    _gemRewardSub?.cancel();
     _pageCtrl.dispose();
     super.dispose();
   }

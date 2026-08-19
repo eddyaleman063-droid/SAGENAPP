@@ -4144,6 +4144,11 @@ class AppLocalizationsFr extends AppLocalizations {
       'Échec de la validation de l\'achat. Veuillez réessayer.';
 
   @override
+  String storeNeedMoreGems(Object have, Object need, Object needed) {
+    return 'Il vous faut $needed gemmes de plus ($have/$need)';
+  }
+
+  @override
   String get storePurchaseSuccess => 'Achat réussi!';
 
   @override

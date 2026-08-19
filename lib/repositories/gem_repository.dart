@@ -47,8 +47,9 @@ class GemRepositoryImpl implements GemRepository {
   @override
   void addGems(int amount) {
     if (amount <= 0) return;
+    final before = _balance;
     _balance = (_balance + amount).clamp(0, 100000);
-    _totalEarned += amount;
+    _totalEarned += _balance - before;
   }
 
   @override
