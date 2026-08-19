@@ -70,6 +70,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
     final currentStreak = ref.watch(
       streakProvider.select((s) => s.currentStreak),
     );
+    final gemState = ref.watch(gemProvider);
     final achievements = ref.watch(achievementProvider);
 
     if (learning.isLoading) {
@@ -187,6 +188,49 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
                   )
                   .animate()
                   .fadeIn(delay: 200.ms, duration: 400.ms)
+                  .slideY(begin: 0.1),
+              SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        AppSpacing.xxl,
+                        AppSpacing.xs,
+                        AppSpacing.xxl,
+                        0,
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: StatCardWidget(
+                              icon: Icons.diamond_rounded,
+                              value: '${gemState.balance}',
+                              label: l.gems,
+                              iconColor: PremiumColors.accentCyan,
+                            ),
+                          ),
+                          const SizedBox(width: AppSpacing.md),
+                          Expanded(
+                            child: StatCardWidget(
+                              icon: Icons.trending_up_rounded,
+                              value: '${gemState.totalEarned}',
+                              label: l.profileGemsEarned,
+                              iconColor: PremiumColors.success,
+                            ),
+                          ),
+                          const SizedBox(width: AppSpacing.md),
+                          Expanded(
+                            child: StatCardWidget(
+                              icon: Icons.shopping_cart_rounded,
+                              value: '${gemState.totalSpent}',
+                              label: l.profileGemsSpent,
+                              iconColor: PremiumColors.deepPurple,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                  .animate()
+                  .fadeIn(delay: 300.ms, duration: 400.ms)
                   .slideY(begin: 0.1),
               const SliverToBoxAdapter(
                 child: Padding(

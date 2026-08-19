@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/providers/providers.dart';
 import 'package:sagen/services/experience_service.dart';
+import 'package:sagen/services/audio_service.dart';
 import 'package:sagen/services/app_logger.dart';
 import '../../../core/theme/theme_constants.dart';
 
@@ -184,6 +185,7 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
 
       if (!mounted) return;
       exp.successHaptic();
+      AudioService.instance.playPurchaseSuccess();
       if (context.mounted) {
         SagenNotification.show(
           context,

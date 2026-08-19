@@ -2828,6 +2828,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get profileStreak => 'Série';
 
   @override
+  String get profileGemsEarned => 'Gagnées';
+
+  @override
+  String get profileGemsSpent => 'Dépensées';
+
+  @override
   String get profileTitle => 'Mon Profil';
 
   @override

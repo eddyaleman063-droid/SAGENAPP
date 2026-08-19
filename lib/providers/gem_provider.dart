@@ -105,7 +105,9 @@ class GemNotifier extends Notifier<GemState> {
   /// Fetches the authoritative gem balance from the server (getGemsBalance)
   /// and reconciles the local cache. The local ledger is optimistic-only;
   /// the server is the single source of truth (NUEVO-03).
+  /// Also retries any pending offline gem earn persistence before syncing.
   Future<void> syncBalanceFromServer() async {
+    await _retryPendingEarns();
     try {
       final result = await FirebaseFunctions.instance
           .httpsCallable('getGemsBalance')
@@ -121,9 +123,13 @@ class GemNotifier extends Notifier<GemState> {
     }
   }
 
+  static const _keyPendingEarns = 'gems_pending_earn_queue';
+  static const _maxPendingEarns = 50;
+
   /// Persists a local-only gem award to the authoritative server ledger via
   /// earnGems, then reconciles the cache with the server's balance. The local
   /// credit stays optimistic; the server decides the real amount (caps apply).
+  /// On failure, queues the earn for later retry so gems are never lost.
   Future<void> _persistEarnToServer(
     String reason,
     Map<String, dynamic> meta,
@@ -137,9 +143,64 @@ class GemNotifier extends Notifier<GemState> {
       final serverBalance = (data['balance'] as num?)?.toInt();
       if (serverBalance != null) syncBalance(serverBalance);
     } catch (e) {
-      // Offline or server error: keep the optimistic local credit.
-      AppLogger().warning('GemNotifier: earnGems($reason) failed: $e');
+      // Offline or server error: queue for retry so gems are never lost.
+      _enqueuePendingEarn(reason, meta);
+      AppLogger().warning('GemNotifier: earnGems($reason) queued for retry');
     }
+  }
+
+  void _enqueuePendingEarn(String reason, Map<String, dynamic> meta) {
+    try {
+      final prefs = ref.read(prefsProvider);
+      final raw = prefs.getStringList(_keyPendingEarns) ?? [];
+      if (raw.length >= _maxPendingEarns) {
+        raw.removeRange(0, raw.length - _maxPendingEarns + 1);
+      }
+      raw.add('$reason|${DateTime.now().toIso8601String()}|${_encodeMeta(meta)}');
+      prefs.setStringList(_keyPendingEarns, raw);
+    } catch (e) {
+      AppLogger().warning('GemNotifier: failed to enqueue pending earn: $e');
+    }
+  }
+
+  Future<void> _retryPendingEarns() async {
+    try {
+      final prefs = ref.read(prefsProvider);
+      final raw = prefs.getStringList(_keyPendingEarns);
+      if (raw == null || raw.isEmpty) return;
+      final remaining = <String>[];
+      for (final entry in raw) {
+        final parts = entry.split('|');
+        if (parts.length < 3) continue;
+        final reason = parts[0];
+        final meta = _decodeMeta(parts[2]);
+        try {
+          await FirebaseFunctions.instance
+              .httpsCallable('earnGems')
+              .call({'reason': reason, 'meta': meta})
+              .timeout(const Duration(seconds: 10));
+        } catch (e) {
+          remaining.add(entry);
+        }
+      }
+      prefs.setStringList(_keyPendingEarns, remaining);
+    } catch (e) {
+      AppLogger().warning('GemNotifier: retry pending earns failed: $e');
+    }
+  }
+
+  static String _encodeMeta(Map<String, dynamic> meta) {
+    return meta.entries.map((e) => '${e.key}=${e.value}').join(',');
+  }
+
+  static Map<String, dynamic> _decodeMeta(String encoded) {
+    if (encoded.isEmpty) return const {};
+    return Map.fromEntries(
+      encoded.split(',').where((e) => e.contains('=')).map((e) {
+        final parts = e.split('=');
+        return MapEntry(parts[0], parts.sublist(1).join('='));
+      }),
+    );
   }
 
   /// Award gems from a lesson based on correct answers.
@@ -196,6 +257,7 @@ class GemNotifier extends Notifier<GemState> {
     if (prefs.getString(lastKey) == today) return;
     prefs.setString(lastKey, today);
     addGems(10, reason: 'first_lesson_of_day');
+    _persistEarnToServer('first_lesson_of_day', const {});
   }
 
   /// Whether the first-lesson-of-day bonus can still be awarded today.

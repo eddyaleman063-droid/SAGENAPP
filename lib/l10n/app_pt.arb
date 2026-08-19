@@ -933,6 +933,8 @@
   "profileLevel": "Nível",
   "profileLevelValue": "Nível {level}",
   "profileStreak": "Sequência",
+  "profileGemsEarned": "Ganhas",
+  "profileGemsSpent": "Gastas",
   "profileTitle": "Meu Perfil",
   "profileTotalXp": "XP Total",
   "profileXpLabel": "XP",

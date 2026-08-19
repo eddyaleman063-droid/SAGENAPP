@@ -5195,6 +5195,18 @@ abstract class AppLocalizations {
   /// **'Racha'**
   String get profileStreak;
 
+  /// No description provided for @profileGemsEarned.
+  ///
+  /// In es, this message translates to:
+  /// **'Ganadas'**
+  String get profileGemsEarned;
+
+  /// No description provided for @profileGemsSpent.
+  ///
+  /// In es, this message translates to:
+  /// **'Gastadas'**
+  String get profileGemsSpent;
+
   /// No description provided for @profileTitle.
   ///
   /// In es, this message translates to:

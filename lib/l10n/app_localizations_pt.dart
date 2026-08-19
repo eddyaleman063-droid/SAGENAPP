@@ -2806,6 +2806,12 @@ class AppLocalizationsPt extends AppLocalizations {
   String get profileStreak => 'Sequência';
 
   @override
+  String get profileGemsEarned => 'Ganhas';
+
+  @override
+  String get profileGemsSpent => 'Gastas';
+
+  @override
   String get profileTitle => 'Meu Perfil';
 
   @override

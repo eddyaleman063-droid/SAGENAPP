@@ -895,6 +895,8 @@
   "profileLevel": "Nivel",
   "profileLevelValue": "Nivel {level}",
   "profileStreak": "Racha",
+  "profileGemsEarned": "Ganadas",
+  "profileGemsSpent": "Gastadas",
   "profileTitle": "Mi Perfil",
   "profileTotalXp": "XP Total",
   "profileXpLabel": "XP",

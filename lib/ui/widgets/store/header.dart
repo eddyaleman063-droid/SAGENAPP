@@ -77,11 +77,17 @@ class StoreHeader extends ConsumerWidget {
                         ),
                       ),
                       const SizedBox(width: AppSpacing.xs),
-                      Text(
-                        '$gemBalance',
-                        style: AppTextStyle.subtitle.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                      AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 300),
+                        transitionBuilder: (child, anim) =>
+                            ScaleTransition(scale: anim, child: child),
+                        child: Text(
+                          '$gemBalance',
+                          key: ValueKey(gemBalance),
+                          style: AppTextStyle.subtitle.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ],

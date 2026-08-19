@@ -2784,6 +2784,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileStreak => 'Streak';
 
   @override
+  String get profileGemsEarned => 'Earned';
+
+  @override
+  String get profileGemsSpent => 'Spent';
+
+  @override
   String get profileTitle => 'My Profile';
 
   @override

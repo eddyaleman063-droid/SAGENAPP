@@ -2802,6 +2802,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get profileStreak => 'Racha';
 
   @override
+  String get profileGemsEarned => 'Ganadas';
+
+  @override
+  String get profileGemsSpent => 'Gastadas';
+
+  @override
   String get profileTitle => 'Mi Perfil';
 
   @override
