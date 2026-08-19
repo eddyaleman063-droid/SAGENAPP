@@ -38,6 +38,9 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
       final uid = ref.read(authServiceProvider).currentUser?.uid;
       if (uid == null) return false;
 
+      // Sync authoritative balance from server before validating
+      await ref.read(gemProvider.notifier).syncBalanceFromServer();
+
       final userRef = FirebaseFirestore.instance.collection('users').doc(uid);
       final inventoryRef = userRef.collection('inventory').doc('shop_items');
 
@@ -51,7 +54,7 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
         }
       }
 
-      // Validate gem balance
+      // Validate gem balance (now fresh from server)
       final gemBalance = ref.read(gemProvider).balance;
       if (gemBalance < cost) return false;
 
@@ -149,26 +152,38 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
         return;
       }
 
-      ref.read(shopProvider.notifier).unlockItem(item.id);
+      // Server confirmed the purchase — apply local effects. If local state
+      // updates fail, sync from server as fallback since the purchase is real.
+      try {
+        ref.read(shopProvider.notifier).unlockItem(item.id);
 
-      // Apply purchase effects
-      const themeVariants = {
-        'theme_blue': 'blue',
-        'theme_purple': 'purple',
-        'theme_dark_fire': 'dark_fire',
-        'theme_cyber_neon': 'cyber_neon',
-      };
-      if (item.id == 'xp_boost') {
-        ref.read(shopProvider.notifier).activateXpBoost();
-      } else if (themeVariants.containsKey(item.id)) {
-        ref
-            .read(themeProvider.notifier)
-            .setThemeVariant(themeVariants[item.id]!);
-      }
+        // Apply purchase effects
+        const themeVariants = {
+          'theme_blue': 'blue',
+          'theme_purple': 'purple',
+          'theme_dark_fire': 'dark_fire',
+          'theme_cyber_neon': 'cyber_neon',
+        };
+        if (item.id == 'xp_boost') {
+          ref.read(shopProvider.notifier).activateXpBoost();
+        } else if (themeVariants.containsKey(item.id)) {
+          ref
+              .read(themeProvider.notifier)
+              .setThemeVariant(themeVariants[item.id]!);
+        }
 
-      // Add special items to inventory
-      if (item.specialItemType != null) {
-        ref.read(itemProvider.notifier).addItem(item.specialItemType!);
+        // Add special items to inventory
+        if (item.specialItemType != null) {
+          ref.read(itemProvider.notifier).addItem(item.specialItemType!);
+        }
+      } catch (localError) {
+        AppLogger().warning(
+          'StoreScreen: local state update failed after purchase, syncing: $localError',
+        );
+        // Sync from server to recover correct state
+        await ref.read(itemProvider.notifier).syncFromServer();
+        await ref.read(gemProvider.notifier).syncBalanceFromServer();
+        ref.invalidate(shopProvider);
       }
 
       if (!mounted) return;

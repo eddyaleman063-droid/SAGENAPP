@@ -3650,6 +3650,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get sessionSummaryExp => 'EXP';
 
   @override
+  String get sessionSummaryGems => 'GEMAS';
+
+  @override
   String get sessionSummaryReceiveReward => 'RECEBER RECOMPENSA';
 
   @override

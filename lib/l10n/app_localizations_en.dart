@@ -3625,6 +3625,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sessionSummaryExp => 'EXP';
 
   @override
+  String get sessionSummaryGems => 'GEMS';
+
+  @override
   String get sessionSummaryReceiveReward => 'CLAIM REWARD';
 
   @override

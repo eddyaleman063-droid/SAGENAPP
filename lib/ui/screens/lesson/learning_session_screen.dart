@@ -95,11 +95,26 @@ class _LearningSessionScreenState extends ConsumerState<LearningSessionScreen> {
     ref.read(streakProvider.notifier).checkIn();
     ref.read(energyProvider.notifier).consumeForLesson();
 
+    final gemNotifier = ref.read(gemProvider.notifier);
+    final gemsBase = result.correctAnswers * 5;
+    final gemsPerfect = result.perfect ? 20 : 0;
+    final gemsFirstLesson = gemNotifier.canAwardFirstLessonOfDay ? 10 : 0;
+    final gemsEarned = gemsBase + gemsPerfect + gemsFirstLesson;
+
     if (!mounted) return;
     context.pushReplacement(
       '/quiz-summary',
       extra: _SummaryWrapper(
-        result: result,
+        result: QuizResult(
+          totalQuestions: result.totalQuestions,
+          correctAnswers: result.correctAnswers,
+          xpEarned: result.xpEarned,
+          gemsEarned: gemsEarned,
+          perfect: result.perfect,
+          timeTaken: result.timeTaken,
+          stageId: result.stageId,
+          lessonId: result.lessonId,
+        ),
         stageId: widget.stageId,
         lessonId: widget.lessonId,
       ),

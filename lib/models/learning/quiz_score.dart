@@ -4,6 +4,7 @@ class QuizScoreCalculator {
   final int totalQuestions;
   final int timeSpentSeconds;
   final int timeBudgetSeconds;
+  final int gemsEarned;
 
   static const int xpPerCorrect = 15;
   static const int perfectBonusXp = 30;
@@ -14,6 +15,7 @@ class QuizScoreCalculator {
     required this.totalQuestions,
     required this.timeSpentSeconds,
     this.timeBudgetSeconds = 0,
+    this.gemsEarned = 0,
   });
 
   bool get isPerfect => correctCount == totalQuestions && totalQuestions > 0;

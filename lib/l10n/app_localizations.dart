@@ -6731,6 +6731,12 @@ abstract class AppLocalizations {
   /// **'EXP'**
   String get sessionSummaryExp;
 
+  /// No description provided for @sessionSummaryGems.
+  ///
+  /// In es, this message translates to:
+  /// **'GEMAS'**
+  String get sessionSummaryGems;
+
   /// No description provided for @sessionSummaryReceiveReward.
   ///
   /// In es, this message translates to:

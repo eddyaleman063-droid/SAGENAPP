@@ -262,6 +262,48 @@ class _QuizSummaryScreenState extends State<QuizSummaryScreen>
                       ),
                     ),
                   ),
+                  if (r.gemsEarned > 0) ...[
+                    const SizedBox(height: AppSpacing.md),
+                    SlideTransition(
+                      position:
+                          Tween<Offset>(
+                            begin: const Offset(0, 0.3),
+                            end: Offset.zero,
+                          ).animate(
+                            CurvedAnimation(
+                              parent: _entranceCtrl,
+                              curve: const Interval(
+                                0.5,
+                                1.0,
+                                curve: Curves.easeOutCubic,
+                              ),
+                            ),
+                          ),
+                      child: FadeTransition(
+                        opacity: CurvedAnimation(
+                          parent: _entranceCtrl,
+                          curve: const Interval(
+                            0.5,
+                            1.0,
+                            curve: Curves.easeOut,
+                          ),
+                        ),
+                        child: _RewardRow(
+                          iconWidget: const ExcludeSemantics(
+                            child: Icon(
+                              Icons.diamond_rounded,
+                              size: 18,
+                              color: PremiumColors.accentCyan,
+                            ),
+                          ),
+                          label: l.gems,
+                          value: '+${r.gemsEarned}',
+                          color: PremiumColors.accentCyan,
+                          dark: dark,
+                        ),
+                      ),
+                    ),
+                  ],
                   const SizedBox(height: AppSpacing.huge),
                   FadeTransition(
                     opacity: CurvedAnimation(

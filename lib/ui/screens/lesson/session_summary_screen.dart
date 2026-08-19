@@ -200,6 +200,7 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen>
                         const SizedBox(height: AppSpacing.xxl),
                         _StatsGrid(
                           totalXp: _totalXp,
+                          gemsEarned: widget.score.gemsEarned,
                           accuracyPercent: widget.score.accuracyPercent,
                           timeSeconds: widget.score.timeSpentSeconds,
                           primaryColor: _primaryColor,
@@ -318,12 +319,14 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen>
 
 class _StatsGrid extends StatelessWidget {
   final int totalXp;
+  final int gemsEarned;
   final double accuracyPercent;
   final int timeSeconds;
   final Color primaryColor;
 
   const _StatsGrid({
     required this.totalXp,
+    required this.gemsEarned,
     required this.accuracyPercent,
     required this.timeSeconds,
     required this.primaryColor,
@@ -338,18 +341,91 @@ class _StatsGrid extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
-      child: Row(
+      child: Column(
         children: [
-          Expanded(
-            child: Semantics(
-              label: AppLocalizations.of(context)!.xpGainedLabel(totalXp),
+          Row(
+            children: [
+              Expanded(
+                child: Semantics(
+                  label: AppLocalizations.of(context)!.xpGainedLabel(totalXp),
+                  container: true,
+                  child: _StatBlock(
+                    icon: Icons.bolt_rounded,
+                    label: AppLocalizations.of(context)!.sessionSummaryExp,
+                    color: PremiumColors.streakOrange,
+                    child: TweenAnimationBuilder<double>(
+                      tween: Tween(begin: 0, end: totalXp.toDouble()),
+                      duration: const Duration(milliseconds: 1000),
+                      curve: Curves.easeOutCubic,
+                      builder: (context, val, _) => Text(
+                        '+${val.toInt()}',
+                        style: AppTextStyle.titleLg.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: valColor,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: AppSpacing.md),
+              Expanded(
+                child: Semantics(
+                  label: AppLocalizations.of(
+                    context,
+                  )!.accuracyPercentLabel(accuracyPercent.toStringAsFixed(0)),
+                  container: true,
+                  child: _StatBlock(
+                    icon: Icons.gps_fixed_rounded,
+                    label: AppLocalizations.of(context)!.sessionSummaryAccuracy,
+                    color: PremiumColors.success,
+                    child: TweenAnimationBuilder<double>(
+                      tween: Tween(begin: 0, end: accuracyPercent),
+                      duration: const Duration(milliseconds: 800),
+                      curve: Curves.easeOutCubic,
+                      builder: (context, val, _) => Text(
+                        '${val.toStringAsFixed(0)}%',
+                        style: AppTextStyle.titleLg.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: valColor,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: AppSpacing.md),
+              Expanded(
+                child: Semantics(
+                  label: AppLocalizations.of(context)!.timeLabel(timeFormatted),
+                  container: true,
+                  child: _StatBlock(
+                    icon: Icons.timer_outlined,
+                    label: AppLocalizations.of(context)!.sessionSummaryTime,
+                    color: PremiumColors.splashBlue,
+                    child: Text(
+                      timeFormatted,
+                      style: AppTextStyle.title.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: valColor,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          if (gemsEarned > 0) ...[
+            const SizedBox(height: AppSpacing.md),
+            Semantics(
+              label: AppLocalizations.of(context)!.sessionSummaryGems,
               container: true,
               child: _StatBlock(
-                icon: Icons.bolt_rounded,
-                label: AppLocalizations.of(context)!.sessionSummaryExp,
-                color: PremiumColors.streakOrange,
+                icon: Icons.diamond_rounded,
+                label: AppLocalizations.of(context)!.sessionSummaryGems,
+                color: PremiumColors.accentCyan,
                 child: TweenAnimationBuilder<double>(
-                  tween: Tween(begin: 0, end: totalXp.toDouble()),
+                  tween: Tween(begin: 0, end: gemsEarned.toDouble()),
                   duration: const Duration(milliseconds: 1000),
                   curve: Curves.easeOutCubic,
                   builder: (context, val, _) => Text(
@@ -362,52 +438,7 @@ class _StatsGrid extends StatelessWidget {
                 ),
               ),
             ),
-          ),
-          const SizedBox(width: AppSpacing.md),
-          Expanded(
-            child: Semantics(
-              label: AppLocalizations.of(
-                context,
-              )!.accuracyPercentLabel(accuracyPercent.toStringAsFixed(0)),
-              container: true,
-              child: _StatBlock(
-                icon: Icons.gps_fixed_rounded,
-                label: AppLocalizations.of(context)!.sessionSummaryAccuracy,
-                color: PremiumColors.success,
-                child: TweenAnimationBuilder<double>(
-                  tween: Tween(begin: 0, end: accuracyPercent),
-                  duration: const Duration(milliseconds: 800),
-                  curve: Curves.easeOutCubic,
-                  builder: (context, val, _) => Text(
-                    '${val.toStringAsFixed(0)}%',
-                    style: AppTextStyle.titleLg.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: valColor,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(width: AppSpacing.md),
-          Expanded(
-            child: Semantics(
-              label: AppLocalizations.of(context)!.timeLabel(timeFormatted),
-              container: true,
-              child: _StatBlock(
-                icon: Icons.timer_outlined,
-                label: AppLocalizations.of(context)!.sessionSummaryTime,
-                color: PremiumColors.splashBlue,
-                child: Text(
-                  timeFormatted,
-                  style: AppTextStyle.title.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: valColor,
-                  ),
-                ),
-              ),
-            ),
-          ),
+          ],
         ],
       ),
     );

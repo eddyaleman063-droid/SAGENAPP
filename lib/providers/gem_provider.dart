@@ -225,11 +225,4 @@ class GemNotifier extends Notifier<GemState> {
     addGems(12, reason: 'mission');
     _persistEarnToServer('mission', const {});
   }
-
-  /// Award gems for reviewing a lesson (spaced repetition).
-  /// 6 gems per review.
-  void awardReviewGems() {
-    addGems(6, reason: 'review');
-    _persistEarnToServer('review', const {});
-  }
 }

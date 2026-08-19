@@ -475,12 +475,10 @@ class LearningNotifier extends Notifier<LearningState> {
 
     // Calculate gems for offline queue sync (must match actual gem awards)
     final gemsBase = correctAnswers * 5;
-    final gemsPerfectBonus = perfectLesson ? gemsBase : 0;
     final gemsPerfectFlat = perfectLesson ? 20 : 0;
     final gemsFirstLesson =
         ref.read(gemProvider.notifier).canAwardFirstLessonOfDay ? 10 : 0;
-    final gemsEarned =
-        gemsBase + gemsPerfectBonus + gemsPerfectFlat + gemsFirstLesson;
+    final gemsEarned = gemsBase + gemsPerfectFlat + gemsFirstLesson;
 
     // Award gems for lesson completion
     ref
