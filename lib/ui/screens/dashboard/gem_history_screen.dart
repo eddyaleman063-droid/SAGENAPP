@@ -16,7 +16,6 @@ class GemHistoryScreen extends ConsumerWidget {
     final l = AppLocalizations.of(context)!;
     final gemState = ref.watch(gemProvider);
     final transactions = ref.read(gemProvider.notifier).transactions;
-    final dark = context.isDark;
 
     return Scaffold(
       backgroundColor: context.surfaceBackground,
@@ -25,9 +24,13 @@ class GemHistoryScreen extends ConsumerWidget {
           SliverAppBar(
             pinned: true,
             backgroundColor: PremiumColors.accentCyan,
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back_rounded),
-              onPressed: () => context.pop(),
+            leading: Semantics(
+              button: true,
+              label: l.closeButton,
+              child: IconButton(
+                icon: const Icon(Icons.arrow_back_rounded),
+                onPressed: () => context.pop(),
+              ),
             ),
             title: Text(
               l.gemHistoryTitle,
@@ -117,13 +120,12 @@ class GemHistoryScreen extends ConsumerWidget {
                 final now = DateTime.now();
                 final dateLabel = _formatDate(date, now, l);
 
-                return _TransactionTile(
-                  tx: tx,
-                  color: color,
-                  icon: icon,
-                  dateLabel: dateLabel,
-                  dark: dark,
-                ).animate().fadeIn(
+                  return _TransactionTile(
+                    tx: tx,
+                    color: color,
+                    icon: icon,
+                    dateLabel: dateLabel,
+                  ).animate().fadeIn(
                   delay: Duration(milliseconds: index * 30),
                   duration: 300.ms,
                 );
@@ -201,14 +203,12 @@ class _TransactionTile extends StatelessWidget {
   final Color color;
   final IconData icon;
   final String dateLabel;
-  final bool dark;
 
   const _TransactionTile({
     required this.tx,
     required this.color,
     required this.icon,
     required this.dateLabel,
-    required this.dark,
   });
 
   @override

@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class GemTransaction {
@@ -13,24 +14,48 @@ class GemTransaction {
     required this.balanceAfter,
   });
 
+  /// Encodes transaction as a JSON string for safe persistence.
+  /// Pipe delimiter was fragile — reason could contain special chars.
   String encode() =>
-      '$amount|$reason|${timestamp.millisecondsSinceEpoch}|$balanceAfter';
+      '{"a":$amount,"r":"${_escapeJson(reason)}","t":${timestamp.millisecondsSinceEpoch},"b":$balanceAfter}';
 
   static GemTransaction? decode(String raw) {
-    final parts = raw.split('|');
-    if (parts.length < 4) return null;
-    final amount = int.tryParse(parts[0]);
-    if (amount == null) return null;
-    final ts = int.tryParse(parts[2]);
-    if (ts == null) return null;
-    final bal = int.tryParse(parts[3]);
-    if (bal == null) return null;
-    return GemTransaction(
-      amount: amount,
-      reason: parts[1],
-      timestamp: DateTime.fromMillisecondsSinceEpoch(ts),
-      balanceAfter: bal,
-    );
+    try {
+      if (!raw.startsWith('{')) return null;
+      final a = _extractInt(raw, '"a":');
+      final r = _extractString(raw, '"r":');
+      final t = _extractInt(raw, '"t":');
+      final b = _extractInt(raw, '"b":');
+      if (a == null || r == null || t == null || b == null) return null;
+      return GemTransaction(
+        amount: a,
+        reason: r,
+        timestamp: DateTime.fromMillisecondsSinceEpoch(t),
+        balanceAfter: b,
+      );
+    } catch (_) {
+      return null;
+    }
+  }
+
+  static String _escapeJson(String s) =>
+      s.replaceAll('\\', '\\\\').replaceAll('"', '\\"');
+
+  static int? _extractInt(String json, String key) {
+    final idx = json.indexOf(key);
+    if (idx == -1) return null;
+    final start = idx + key.length;
+    final end = json.indexOf(RegExp(r'[,}]'), start);
+    return int.tryParse(json.substring(start, end == -1 ? json.length : end));
+  }
+
+  static String? _extractString(String json, String key) {
+    final idx = json.indexOf(key);
+    if (idx == -1) return null;
+    final start = json.indexOf('"', idx + key.length) + 1;
+    final end = json.indexOf('"', start);
+    if (start == 0 || end == -1) return null;
+    return json.substring(start, end).replaceAll('\\"', '"');
   }
 }
 
@@ -88,7 +113,7 @@ class GemRepositoryImpl implements GemRepository {
   int get totalSpent => _totalSpent;
 
   @override
-  List<GemTransaction> get transactions => _transactions;
+  List<GemTransaction> get transactions => UnmodifiableListView(_transactions);
 
   void _logTransaction(int amount, String reason) {
     _transactions.insert(

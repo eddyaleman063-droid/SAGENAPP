@@ -54,7 +54,7 @@ class _BuyButtonState extends State<BuyButton> {
           ? (isFree ? l.free : '${widget.cost} ${l.gems}')
           : (!canAfford
                 ? '${l.gems} ${widget.gemBalance}/${widget.cost}'
-                : l.free),
+                : l.storeAlreadyOwned),
       button: true,
       enabled: canBuy,
       child: GestureDetector(
@@ -78,60 +78,60 @@ class _BuyButtonState extends State<BuyButton> {
                 : null,
             color: canBuy ? null : context.surfaceTinted,
           ),
-          child: Row(
+          child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (_purchasing || widget.isLoading)
-                const ExcludeSemantics(
-                  child: SizedBox(
-                    width: 14,
-                    height: 14,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      color: Colors.white,
-                    ),
-                  ),
-                )
-              else ...[
-                ExcludeSemantics(
-                  child: Transform.rotate(
-                    angle: 0.785,
-                    child: Container(
-                      width: 10,
-                      height: 10,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: canBuy
-                              ? [Colors.white, Colors.white70]
-                              : [Colors.white24, Colors.white10],
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (_purchasing || widget.isLoading)
+                    const ExcludeSemantics(
+                      child: SizedBox(
+                        width: 14,
+                        height: 14,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.white,
                         ),
-                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    )
+                  else ...[
+                    ExcludeSemantics(
+                      child: Transform.rotate(
+                        angle: 0.785,
+                        child: Container(
+                          width: 10,
+                          height: 10,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: canBuy
+                                  ? [Colors.white, Colors.white70]
+                                  : [Colors.white24, Colors.white10],
+                            ),
+                            borderRadius: BorderRadius.circular(2),
+                          ),
+                        ),
                       ),
                     ),
+                    const SizedBox(width: AppSpacing.xs),
+                  ],
+                  Text(
+                    isFree ? l.free : '${widget.cost}',
+                    style: AppTextStyle.subtitle.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: canBuy ? Colors.white : context.subtle,
+                    ),
                   ),
-                ),
-                const SizedBox(width: AppSpacing.xs),
-              ],
-              Text(
-                isFree ? AppLocalizations.of(context)!.free : '${widget.cost}',
-                style: AppTextStyle.subtitle.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: canBuy ? Colors.white : context.subtle,
-                ),
+                ],
               ),
               if (!canAfford && !isFree && !_purchasing && !widget.isLoading)
-                Padding(
-                  padding: const EdgeInsets.only(top: 2),
-                  child: Text(
-                    l.storeNeedMoreGems(
-                      widget.cost - widget.gemBalance,
-                      widget.gemBalance,
-                      widget.cost,
-                    ),
-                    style: AppTextStyle.tiny.copyWith(
-                      color: PremiumColors.error,
-                    ),
+                Text(
+                  l.storeNeedMoreGems(
+                    widget.cost - widget.gemBalance,
+                    widget.gemBalance,
+                    widget.cost,
                   ),
+                  style: AppTextStyle.tiny.copyWith(color: PremiumColors.error),
                 ),
             ],
           ),

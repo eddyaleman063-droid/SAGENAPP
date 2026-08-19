@@ -99,19 +99,20 @@ class StoreHeader extends ConsumerWidget {
               Semantics(
                 button: true,
                 label: l.gemHistoryTitle,
-                child: GestureDetector(
-                  onTap: () => context.pushNamed('gem-history'),
-                  child: Container(
-                    padding: const EdgeInsets.all(AppSpacing.xs),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.2),
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.history_rounded,
+                    size: 18,
+                    color: Colors.white,
+                  ),
+                  onPressed: () => context.pushNamed('gem-history'),
+                  style: IconButton.styleFrom(
+                    backgroundColor: Colors.white.withValues(alpha: 0.2),
+                    shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(AppRadius.pill),
                     ),
-                    child: const Icon(
-                      Icons.history_rounded,
-                      size: 18,
-                      color: Colors.white,
-                    ),
+                    padding: const EdgeInsets.all(AppSpacing.xs),
+                    minimumSize: Size.zero,
                   ),
                 ),
               ),

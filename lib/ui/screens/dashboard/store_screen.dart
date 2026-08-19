@@ -439,17 +439,13 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
                                   padding: const EdgeInsets.only(
                                     bottom: AppSpacing.md,
                                   ),
-                                  child: Semantics(
-                                    button: true,
-                                    label: item.name,
-                                    child: ShopItemCard(
-                                      item: item,
-                                      isLoading: _purchasingItems.contains(
-                                        item.id,
-                                      ),
-                                      gemBalance: gemBalance,
-                                      onBuy: () => _confirmAndBuy(ctx, item),
+                                  child: ShopItemCard(
+                                    item: item,
+                                    isLoading: _purchasingItems.contains(
+                                      item.id,
                                     ),
+                                    gemBalance: gemBalance,
+                                    onBuy: () => _confirmAndBuy(ctx, item),
                                   ),
                                 )
                                 .animate()
