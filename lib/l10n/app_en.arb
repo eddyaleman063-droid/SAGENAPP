@@ -251,6 +251,8 @@
   "challenge_social_awareness_title": "Social Awareness",
   "challenge_streak_milestone_desc": "Maintain a {count}-day streak",
   "challenge_streak_milestone_title": "Streak Milestone",
+  "gemMilestoneTitle": "Gem Collector!",
+  "gemMilestoneDesc": "You''ve earned {count} gems total! Keep collecting!",
   "challenge_talk_sage_desc": "Chat with Sage {count} time(s)",
   "challenge_talk_sage_title": "Chat with Sage",
   "challenge_test_password_desc": "Test {count} password(s)",

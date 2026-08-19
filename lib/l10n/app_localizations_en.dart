@@ -631,6 +631,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get challenge_streak_milestone_title => 'Streak Milestone';
 
   @override
+  String get gemMilestoneTitle => 'Gem Collector!';
+
+  @override
+  String gemMilestoneDesc(Object count) {
+    return 'You\'ve earned $count gems total! Keep collecting!';
+  }
+
+  @override
   String challenge_talk_sage_desc(Object count) {
     return 'Chat with Sage $count time(s)';
   }

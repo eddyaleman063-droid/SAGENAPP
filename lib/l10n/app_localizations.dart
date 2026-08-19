@@ -1248,6 +1248,18 @@ abstract class AppLocalizations {
   /// **'Hito de Racha'**
   String get challenge_streak_milestone_title;
 
+  /// No description provided for @gemMilestoneTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'¡Coleccionista de Gemas!'**
+  String get gemMilestoneTitle;
+
+  /// No description provided for @gemMilestoneDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'¡Has obtenido {count} gemas en total! ¡Sigue coleccionando!'**
+  String gemMilestoneDesc(Object count);
+
   /// No description provided for @challenge_talk_sage_desc.
   ///
   /// In es, this message translates to:

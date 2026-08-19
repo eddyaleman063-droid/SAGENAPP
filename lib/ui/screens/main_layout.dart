@@ -2,13 +2,17 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/providers/providers.dart';
 import '../../core/theme/theme_constants.dart';
 import '../../services/analytics_service.dart';
 import '../../services/audio_service.dart';
+import '../../services/experience_service.dart';
 import '../widgets/common/level_up_celebration.dart';
 import '../widgets/common/gem_reward_animation.dart';
+import '../widgets/common/sage_emotion_widget.dart';
+import '../../services/sage_emotion_service.dart';
 import 'package:sagen/core/theme/app_colors.dart';
 
 import 'dashboard/dashboard_home_screen.dart';
@@ -31,6 +35,7 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
   StreamSubscription<int>? _tabSub;
   StreamSubscription<int>? _levelUpSub;
   StreamSubscription<int>? _gemRewardSub;
+  StreamSubscription<int>? _gemMilestoneSub;
 
   static List<_TabItem> tabs(BuildContext context) => [
     _TabItem(
@@ -73,7 +78,14 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
       amount,
     ) {
       if (!mounted || amount < 5) return;
+      AudioService.instance.playClank();
       GemRewardAnimation.show(context, amount);
+    });
+    _gemMilestoneSub = ref.read(gemProvider.notifier).onGemMilestone.listen((
+      milestone,
+    ) {
+      if (!mounted) return;
+      _showGemMilestoneCelebration(milestone);
     });
   }
 
@@ -82,8 +94,72 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
     _tabSub?.cancel();
     _levelUpSub?.cancel();
     _gemRewardSub?.cancel();
+    _gemMilestoneSub?.cancel();
     _pageCtrl.dispose();
     super.dispose();
+  }
+
+  void _showGemMilestoneCelebration(int milestone) {
+    ExperienceService.instance.mediumHaptic();
+    AudioService.instance.playMilestone();
+    final l = AppLocalizations.of(context)!;
+    final dark = context.isDark;
+
+    showDialog(
+      context: context,
+      barrierColor: Colors.black54,
+      builder: (ctx) => Dialog(
+        backgroundColor: dark ? PremiumColors.darkCard : Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadius.xxl),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(AppSpacing.xxl),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SageEmotionWidget(
+                emotion: SageEmotion.celebrating,
+                size: 80,
+                animated: true,
+              ),
+              const SizedBox(height: AppSpacing.lg),
+              Text(
+                l.gemMilestoneTitle,
+                style: AppTextStyle.titleLg.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: PremiumColors.accentCyan,
+                ),
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              Text(
+                l.gemMilestoneDesc(milestone),
+                textAlign: TextAlign.center,
+                style: AppTextStyle.bodyMd.copyWith(
+                  color: context.textSecondary,
+                ),
+              ),
+              const SizedBox(height: AppSpacing.xl),
+              SizedBox(
+                width: double.infinity,
+                child: Semantics(
+                  button: true,
+                  label: l.closeButton,
+                  child: ElevatedButton(
+                    onPressed: () => ctx.pop(),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: PremiumColors.accentCyan,
+                      foregroundColor: Colors.white,
+                    ),
+                    child: Text(l.closeButton),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   void _onTabTap(int index) {

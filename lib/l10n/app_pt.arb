@@ -251,6 +251,8 @@
   "challenge_social_awareness_title": "Consciência Social",
   "challenge_streak_milestone_desc": "Mantenha uma sequência de {count} dias",
   "challenge_streak_milestone_title": "Marco de Sequência",
+  "gemMilestoneTitle": "Coleccionador de Gemas!",
+  "gemMilestoneDesc": "Você ganhou {count} gemas no total! Continue coleccionando!",
   "challenge_talk_sage_desc": "Converse com Sage {count} vez(es)",
   "challenge_talk_sage_title": "Conversar com Sage",
   "challenge_test_password_desc": "Teste {count} senha(s)",

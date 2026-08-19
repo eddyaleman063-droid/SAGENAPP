@@ -34,6 +34,13 @@ class GemNotifier extends Notifier<GemState> {
   final _rewardController = StreamController<int>.broadcast();
   Stream<int> get onGemsEarned => _rewardController.stream;
 
+  /// Broadcast stream that emits gem milestone thresholds when reached.
+  final _milestoneController = StreamController<int>.broadcast();
+  Stream<int> get onGemMilestone => _milestoneController.stream;
+
+  /// Milestones: when totalEarned crosses these thresholds, celebrate.
+  static const gemMilestones = [100, 500, 1000, 5000, 10000];
+
   @override
   GemState build() {
     _repo = ref.read(gemRepositoryProvider);
@@ -50,10 +57,20 @@ class GemNotifier extends Notifier<GemState> {
 
   void addGems(int amount, {String? reason}) {
     if (amount <= 0) return;
+    final prevEarned = _repo.totalEarned;
     _repo.addGems(amount);
     _repo.save();
     state = _load();
     _rewardController.add(amount);
+    _checkMilestones(prevEarned, state.totalEarned);
+  }
+
+  void _checkMilestones(int prevEarned, int newEarned) {
+    for (final m in gemMilestones) {
+      if (prevEarned < m && newEarned >= m) {
+        _milestoneController.add(m);
+      }
+    }
   }
 
   bool spendGems(int amount, {String? reason}) {
@@ -156,7 +173,9 @@ class GemNotifier extends Notifier<GemState> {
       if (raw.length >= _maxPendingEarns) {
         raw.removeRange(0, raw.length - _maxPendingEarns + 1);
       }
-      raw.add('$reason|${DateTime.now().toIso8601String()}|${_encodeMeta(meta)}');
+      raw.add(
+        '$reason|${DateTime.now().toIso8601String()}|${_encodeMeta(meta)}',
+      );
       prefs.setStringList(_keyPendingEarns, raw);
     } catch (e) {
       AppLogger().warning('GemNotifier: failed to enqueue pending earn: $e');
