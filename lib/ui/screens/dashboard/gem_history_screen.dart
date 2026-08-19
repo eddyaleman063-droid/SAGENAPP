@@ -15,7 +15,7 @@ class GemHistoryScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l = AppLocalizations.of(context)!;
     final gemState = ref.watch(gemProvider);
-    final transactions = ref.read(gemProvider.notifier).transactions;
+    final transactions = gemState.transactions;
 
     return Scaffold(
       backgroundColor: context.surfaceBackground,

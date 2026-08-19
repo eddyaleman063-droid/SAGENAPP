@@ -131,6 +131,8 @@ class _BuyButtonState extends State<BuyButton> {
                     widget.gemBalance,
                     widget.cost,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: AppTextStyle.tiny.copyWith(color: PremiumColors.error),
                 ),
             ],

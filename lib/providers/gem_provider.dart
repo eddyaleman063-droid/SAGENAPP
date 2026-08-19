@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:math';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,14 +15,26 @@ class GemState {
   final int balance;
   final int totalEarned;
   final int totalSpent;
+  final List<GemTransaction> transactions;
 
-  const GemState({this.balance = 0, this.totalEarned = 0, this.totalSpent = 0});
+  const GemState({
+    this.balance = 0,
+    this.totalEarned = 0,
+    this.totalSpent = 0,
+    this.transactions = const [],
+  });
 
-  GemState copyWith({int? balance, int? totalEarned, int? totalSpent}) {
+  GemState copyWith({
+    int? balance,
+    int? totalEarned,
+    int? totalSpent,
+    List<GemTransaction>? transactions,
+  }) {
     return GemState(
       balance: balance ?? this.balance,
       totalEarned: totalEarned ?? this.totalEarned,
       totalSpent: totalSpent ?? this.totalSpent,
+      transactions: transactions ?? this.transactions,
     );
   }
 }
@@ -63,6 +76,7 @@ class GemNotifier extends Notifier<GemState> {
       balance: _repo.balance,
       totalEarned: _repo.totalEarned,
       totalSpent: _repo.totalSpent,
+      transactions: _repo.transactions,
     );
   }
 
@@ -223,17 +237,18 @@ class GemNotifier extends Notifier<GemState> {
   }
 
   static String _encodeMeta(Map<String, dynamic> meta) {
-    return meta.entries.map((e) => '${e.key}=${e.value}').join(',');
+    return jsonEncode(meta);
   }
 
   static Map<String, dynamic> _decodeMeta(String encoded) {
     if (encoded.isEmpty) return const {};
-    return Map.fromEntries(
-      encoded.split(',').where((e) => e.contains('=')).map((e) {
-        final parts = e.split('=');
-        return MapEntry(parts[0], parts.sublist(1).join('='));
-      }),
-    );
+    try {
+      final decoded = jsonDecode(encoded);
+      if (decoded is Map<String, dynamic>) return decoded;
+      return const {};
+    } catch (_) {
+      return const {};
+    }
   }
 
   /// Award gems from a lesson based on correct answers.
