@@ -9856,6 +9856,102 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Identificar una estafa'**
   String get sageChipIdentifyScam;
+
+  /// No description provided for @gemHistoryTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Historial de Gemas'**
+  String get gemHistoryTitle;
+
+  /// No description provided for @gemHistoryEmpty.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin transacciones aún'**
+  String get gemHistoryEmpty;
+
+  /// No description provided for @gemHistoryJustNow.
+  ///
+  /// In es, this message translates to:
+  /// **'Ahora mismo'**
+  String get gemHistoryJustNow;
+
+  /// No description provided for @gemHistoryMinutesAgo.
+  ///
+  /// In es, this message translates to:
+  /// **'Hace {count}m'**
+  String gemHistoryMinutesAgo(Object count);
+
+  /// No description provided for @gemHistoryHoursAgo.
+  ///
+  /// In es, this message translates to:
+  /// **'Hace {count}h'**
+  String gemHistoryHoursAgo(Object count);
+
+  /// No description provided for @gemHistoryYesterday.
+  ///
+  /// In es, this message translates to:
+  /// **'Ayer'**
+  String get gemHistoryYesterday;
+
+  /// No description provided for @gemHistoryDaysAgo.
+  ///
+  /// In es, this message translates to:
+  /// **'Hace {count}d'**
+  String gemHistoryDaysAgo(Object count);
+
+  /// No description provided for @gemReasonLesson.
+  ///
+  /// In es, this message translates to:
+  /// **'Lección'**
+  String get gemReasonLesson;
+
+  /// No description provided for @gemReasonPerfectLesson.
+  ///
+  /// In es, this message translates to:
+  /// **'Lección Perfecta'**
+  String get gemReasonPerfectLesson;
+
+  /// No description provided for @gemReasonFirstLesson.
+  ///
+  /// In es, this message translates to:
+  /// **'Primera Lección del Día'**
+  String get gemReasonFirstLesson;
+
+  /// No description provided for @gemReasonDailyBonus.
+  ///
+  /// In es, this message translates to:
+  /// **'Bono Diario'**
+  String get gemReasonDailyBonus;
+
+  /// No description provided for @gemReasonStreakMilestone.
+  ///
+  /// In es, this message translates to:
+  /// **'Hito de Racha'**
+  String get gemReasonStreakMilestone;
+
+  /// No description provided for @gemReasonAchievement.
+  ///
+  /// In es, this message translates to:
+  /// **'Logro'**
+  String get gemReasonAchievement;
+
+  /// No description provided for @gemReasonMission.
+  ///
+  /// In es, this message translates to:
+  /// **'Misión'**
+  String get gemReasonMission;
+
+  /// No description provided for @gemReasonShop.
+  ///
+  /// In es, this message translates to:
+  /// **'Compra en Tienda'**
+  String get gemReasonShop;
+
+  /// No description provided for @gemCapWarning.
+  ///
+  /// In es, this message translates to:
+  /// **'¡El saldo de gemas se acerca al límite de 100,000!'**
+  String get gemCapWarning;
 }
 
 class _AppLocalizationsDelegate

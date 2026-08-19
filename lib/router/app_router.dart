@@ -14,6 +14,7 @@ import '../ui/screens/onboarding/post_onboarding_flow.dart';
 import '../ui/screens/main_layout.dart';
 import '../ui/screens/dashboard/lessons_screen.dart';
 import '../ui/screens/dashboard/sagen_pass_screen.dart';
+import '../ui/screens/dashboard/gem_history_screen.dart';
 import '../ui/screens/dashboard/user_profile_screen.dart';
 import '../ui/screens/lesson/lesson_session_screen.dart';
 import '../ui/screens/lesson/lesson_results_screen.dart';
@@ -336,6 +337,25 @@ final routerProvider = Provider<GoRouter>((ref) {
         pageBuilder: (context, state) => CustomTransitionPage<void>(
           key: state.pageKey,
           child: const SagenPassScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              SlideTransition(
+                position:
+                    Tween<Offset>(
+                      begin: const Offset(1, 0),
+                      end: Offset.zero,
+                    ).animate(
+                      CurvedAnimation(parent: animation, curve: Curves.easeOut),
+                    ),
+                child: child,
+              ),
+        ),
+      ),
+      GoRoute(
+        path: '/gem-history',
+        name: 'gem-history',
+        pageBuilder: (context, state) => CustomTransitionPage<void>(
+          key: state.pageKey,
+          child: const GemHistoryScreen(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) =>
               SlideTransition(
                 position:

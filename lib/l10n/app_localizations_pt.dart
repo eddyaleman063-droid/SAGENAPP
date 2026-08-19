@@ -5362,4 +5362,59 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get sageChipIdentifyScam => 'Identificar um golpe';
+
+  @override
+  String get gemHistoryTitle => 'Histórico de Gemas';
+
+  @override
+  String get gemHistoryEmpty => 'Nenhuma transação ainda';
+
+  @override
+  String get gemHistoryJustNow => 'Agora';
+
+  @override
+  String gemHistoryMinutesAgo(Object count) {
+    return 'Há ${count}m';
+  }
+
+  @override
+  String gemHistoryHoursAgo(Object count) {
+    return 'Há ${count}h';
+  }
+
+  @override
+  String get gemHistoryYesterday => 'Ontem';
+
+  @override
+  String gemHistoryDaysAgo(Object count) {
+    return 'Há ${count}d';
+  }
+
+  @override
+  String get gemReasonLesson => 'Lição';
+
+  @override
+  String get gemReasonPerfectLesson => 'Lição Perfeita';
+
+  @override
+  String get gemReasonFirstLesson => 'Primeira Lição do Dia';
+
+  @override
+  String get gemReasonDailyBonus => 'Bônus Diário';
+
+  @override
+  String get gemReasonStreakMilestone => 'Marco de Sequência';
+
+  @override
+  String get gemReasonAchievement => 'Conquista';
+
+  @override
+  String get gemReasonMission => 'Missão';
+
+  @override
+  String get gemReasonShop => 'Compra na Loja';
+
+  @override
+  String get gemCapWarning =>
+      'Saldo de gemas se aproximando do limite de 100.000!';
 }

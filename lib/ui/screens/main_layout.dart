@@ -13,6 +13,7 @@ import '../widgets/common/level_up_celebration.dart';
 import '../widgets/common/gem_reward_animation.dart';
 import '../widgets/common/sage_emotion_widget.dart';
 import '../../services/sage_emotion_service.dart';
+import '../widgets/common/sagen_notification.dart';
 import 'package:sagen/core/theme/app_colors.dart';
 
 import 'dashboard/dashboard_home_screen.dart';
@@ -36,6 +37,7 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
   StreamSubscription<int>? _levelUpSub;
   StreamSubscription<int>? _gemRewardSub;
   StreamSubscription<int>? _gemMilestoneSub;
+  StreamSubscription<void>? _gemCapWarningSub;
 
   static List<_TabItem> tabs(BuildContext context) => [
     _TabItem(
@@ -87,6 +89,14 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
       if (!mounted) return;
       _showGemMilestoneCelebration(milestone);
     });
+    _gemCapWarningSub = ref.read(gemProvider.notifier).onCapWarning.listen((_) {
+      if (!mounted) return;
+      SagenNotification.show(
+        context,
+        message: AppLocalizations.of(context)!.gemCapWarning,
+        type: NotificationType.warning,
+      );
+    });
   }
 
   @override
@@ -95,6 +105,7 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
     _levelUpSub?.cancel();
     _gemRewardSub?.cancel();
     _gemMilestoneSub?.cancel();
+    _gemCapWarningSub?.cancel();
     _pageCtrl.dispose();
     super.dispose();
   }

@@ -5398,4 +5398,58 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get sageChipIdentifyScam => 'Identifier une arnaque';
+
+  @override
+  String get gemHistoryTitle => 'Historique des Gemmes';
+
+  @override
+  String get gemHistoryEmpty => 'Aucune transaction';
+
+  @override
+  String get gemHistoryJustNow => 'À l\'instant';
+
+  @override
+  String gemHistoryMinutesAgo(Object count) {
+    return 'Il y a ${count}m';
+  }
+
+  @override
+  String gemHistoryHoursAgo(Object count) {
+    return 'Il y a ${count}h';
+  }
+
+  @override
+  String get gemHistoryYesterday => 'Hier';
+
+  @override
+  String gemHistoryDaysAgo(Object count) {
+    return 'Il y a ${count}j';
+  }
+
+  @override
+  String get gemReasonLesson => 'Leçon';
+
+  @override
+  String get gemReasonPerfectLesson => 'Leçon Parfaite';
+
+  @override
+  String get gemReasonFirstLesson => 'Première Leçon du Jour';
+
+  @override
+  String get gemReasonDailyBonus => 'Bonus Quotidien';
+
+  @override
+  String get gemReasonStreakMilestone => 'Jalon de Série';
+
+  @override
+  String get gemReasonAchievement => 'Succès';
+
+  @override
+  String get gemReasonMission => 'Mission';
+
+  @override
+  String get gemReasonShop => 'Achat en Boutique';
+
+  @override
+  String get gemCapWarning => 'Solde de gemmes proche de la limite de 100 000!';
 }

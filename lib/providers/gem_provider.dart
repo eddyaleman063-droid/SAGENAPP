@@ -38,6 +38,10 @@ class GemNotifier extends Notifier<GemState> {
   final _milestoneController = StreamController<int>.broadcast();
   Stream<int> get onGemMilestone => _milestoneController.stream;
 
+  /// Broadcast stream that emits when gem balance approaches cap (>=95000).
+  final _capWarningController = StreamController<void>.broadcast();
+  Stream<void> get onCapWarning => _capWarningController.stream;
+
   /// Milestones: when totalEarned crosses these thresholds, celebrate.
   static const gemMilestones = [100, 500, 1000, 5000, 10000];
 
@@ -55,14 +59,17 @@ class GemNotifier extends Notifier<GemState> {
     );
   }
 
+  List<GemTransaction> get transactions => _repo.transactions;
+
   void addGems(int amount, {String? reason}) {
     if (amount <= 0) return;
     final prevEarned = _repo.totalEarned;
-    _repo.addGems(amount);
+    _repo.addGems(amount, reason: reason ?? 'unknown');
     _repo.save();
     state = _load();
     _rewardController.add(amount);
     _checkMilestones(prevEarned, state.totalEarned);
+    if (state.balance >= 95000) _capWarningController.add(null);
   }
 
   void _checkMilestones(int prevEarned, int newEarned) {
@@ -74,7 +81,7 @@ class GemNotifier extends Notifier<GemState> {
   }
 
   bool spendGems(int amount, {String? reason}) {
-    final success = _repo.spendGems(amount);
+    final success = _repo.spendGems(amount, reason: reason ?? 'shop');
     if (success) {
       _repo.save();
       state = _load();

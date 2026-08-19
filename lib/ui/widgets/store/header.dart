@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/providers/providers.dart';
@@ -91,6 +92,26 @@ class StoreHeader extends ConsumerWidget {
                         ),
                       ),
                     ],
+                  ),
+                ),
+              ),
+              const SizedBox(width: AppSpacing.sm),
+              Semantics(
+                button: true,
+                label: l.gemHistoryTitle,
+                child: GestureDetector(
+                  onTap: () => context.pushNamed('gem-history'),
+                  child: Container(
+                    padding: const EdgeInsets.all(AppSpacing.xs),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.2),
+                      borderRadius: BorderRadius.circular(AppRadius.pill),
+                    ),
+                    child: const Icon(
+                      Icons.history_rounded,
+                      size: 18,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),

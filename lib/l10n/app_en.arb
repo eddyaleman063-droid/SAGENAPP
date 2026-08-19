@@ -2321,5 +2321,21 @@
   "missionConstantProtectorDesc": "Complete 3 lessons today.",
   "sageChipWhatIsPhishing": "What is phishing?",
   "sageChipCreateStrongPassword": "Create a strong password",
-  "sageChipIdentifyScam": "Identify a scam"
+  "sageChipIdentifyScam": "Identify a scam",
+  "gemHistoryTitle": "Gem History",
+  "gemHistoryEmpty": "No transactions yet",
+  "gemHistoryJustNow": "Just now",
+  "gemHistoryMinutesAgo": "{count}m ago",
+  "gemHistoryHoursAgo": "{count}h ago",
+  "gemHistoryYesterday": "Yesterday",
+  "gemHistoryDaysAgo": "{count}d ago",
+  "gemReasonLesson": "Lesson",
+  "gemReasonPerfectLesson": "Perfect Lesson",
+  "gemReasonFirstLesson": "First Lesson of Day",
+  "gemReasonDailyBonus": "Daily Bonus",
+  "gemReasonStreakMilestone": "Streak Milestone",
+  "gemReasonAchievement": "Achievement",
+  "gemReasonMission": "Mission",
+  "gemReasonShop": "Shop Purchase",
+  "gemCapWarning": "Gem balance approaching the 100,000 cap!"
 }

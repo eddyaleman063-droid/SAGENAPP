@@ -2321,5 +2321,21 @@
   "missionConstantProtectorDesc": "Completa 3 lecciones hoy.",
   "sageChipWhatIsPhishing": "¿Qué es el phishing?",
   "sageChipCreateStrongPassword": "Crear contraseña segura",
-  "sageChipIdentifyScam": "Identificar una estafa"
+  "sageChipIdentifyScam": "Identificar una estafa",
+  "gemHistoryTitle": "Historial de Gemas",
+  "gemHistoryEmpty": "Sin transacciones aún",
+  "gemHistoryJustNow": "Ahora mismo",
+  "gemHistoryMinutesAgo": "Hace {count}m",
+  "gemHistoryHoursAgo": "Hace {count}h",
+  "gemHistoryYesterday": "Ayer",
+  "gemHistoryDaysAgo": "Hace {count}d",
+  "gemReasonLesson": "Lección",
+  "gemReasonPerfectLesson": "Lección Perfecta",
+  "gemReasonFirstLesson": "Primera Lección del Día",
+  "gemReasonDailyBonus": "Bono Diario",
+  "gemReasonStreakMilestone": "Hito de Racha",
+  "gemReasonAchievement": "Logro",
+  "gemReasonMission": "Misión",
+  "gemReasonShop": "Compra en Tienda",
+  "gemCapWarning": "¡El saldo de gemas se acerca al límite de 100,000!"
 }
