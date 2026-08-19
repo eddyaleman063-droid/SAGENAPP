@@ -28,18 +28,17 @@ class GemState {
 
 class GemNotifier extends Notifier<GemState> {
   late final GemRepository _repo;
+  late final StreamController<int> _rewardController;
+  late final StreamController<int> _milestoneController;
+  late final StreamController<void> _capWarningController;
 
   /// Broadcast stream that emits gem amounts when earned.
-  /// Listeners (e.g. root widget) can show reward animations.
-  final _rewardController = StreamController<int>.broadcast();
   Stream<int> get onGemsEarned => _rewardController.stream;
 
   /// Broadcast stream that emits gem milestone thresholds when reached.
-  final _milestoneController = StreamController<int>.broadcast();
   Stream<int> get onGemMilestone => _milestoneController.stream;
 
   /// Broadcast stream that emits when gem balance approaches cap (>=95000).
-  final _capWarningController = StreamController<void>.broadcast();
   Stream<void> get onCapWarning => _capWarningController.stream;
 
   /// Milestones: when totalEarned crosses these thresholds, celebrate.
@@ -48,6 +47,14 @@ class GemNotifier extends Notifier<GemState> {
   @override
   GemState build() {
     _repo = ref.read(gemRepositoryProvider);
+    _rewardController = StreamController<int>.broadcast();
+    _milestoneController = StreamController<int>.broadcast();
+    _capWarningController = StreamController<void>.broadcast();
+    ref.onDispose(() {
+      _rewardController.close();
+      _milestoneController.close();
+      _capWarningController.close();
+    });
     return _load();
   }
 

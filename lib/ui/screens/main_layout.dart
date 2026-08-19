@@ -38,6 +38,8 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
   StreamSubscription<int>? _gemRewardSub;
   StreamSubscription<int>? _gemMilestoneSub;
   StreamSubscription<void>? _gemCapWarningSub;
+  Timer? _gemDebounce;
+  int _pendingGemAmount = 0;
 
   static List<_TabItem> tabs(BuildContext context) => [
     _TabItem(
@@ -79,9 +81,18 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
     _gemRewardSub = ref.read(gemProvider.notifier).onGemsEarned.listen((
       amount,
     ) {
-      if (!mounted || amount < 5) return;
-      AudioService.instance.playClank();
-      GemRewardAnimation.show(context, amount);
+      if (!mounted) return;
+      _pendingGemAmount += amount;
+      _gemDebounce?.cancel();
+      _gemDebounce = Timer(const Duration(milliseconds: 500), () {
+        if (!mounted || _pendingGemAmount < 5) {
+          _pendingGemAmount = 0;
+          return;
+        }
+        AudioService.instance.playClank();
+        GemRewardAnimation.show(context, _pendingGemAmount);
+        _pendingGemAmount = 0;
+      });
     });
     _gemMilestoneSub = ref.read(gemProvider.notifier).onGemMilestone.listen((
       milestone,
@@ -106,6 +117,7 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
     _gemRewardSub?.cancel();
     _gemMilestoneSub?.cancel();
     _gemCapWarningSub?.cancel();
+    _gemDebounce?.cancel();
     _pageCtrl.dispose();
     super.dispose();
   }

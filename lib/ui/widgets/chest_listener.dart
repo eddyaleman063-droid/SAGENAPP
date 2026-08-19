@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sagen/providers/providers.dart';
 import 'package:sagen/services/analytics_service.dart';
 import 'package:sagen/services/app_logger.dart';
-import 'package:sagen/ui/widgets/common/gem_reward_animation.dart';
 
 import '../../services/chest_event_bus.dart';
 import 'chest_reward_dialog.dart';
@@ -117,14 +116,8 @@ class _ChestListenerState extends ConsumerState<ChestListener> {
       }
 
       if (data.xp > 0 || data.gems > 0) {
-        // Las gemas del cofre ya fueron acreditadas por el servidor en
-        // rollChestDrop; aquí solo se reflejan en el saldo local (que actúa
-        // como caché) usando la cantidad exacta devuelta por el servidor.
         if (data.gems > 0) {
           ref.read(gemProvider.notifier).addGems(data.gems, reason: 'chest');
-        }
-        if (mounted) {
-          GemRewardAnimation.show(context, data.gems > 0 ? data.gems : 0);
         }
       }
 

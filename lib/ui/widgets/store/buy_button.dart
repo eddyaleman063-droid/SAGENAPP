@@ -119,6 +119,20 @@ class _BuyButtonState extends State<BuyButton> {
                   color: canBuy ? Colors.white : context.subtle,
                 ),
               ),
+              if (!canAfford && !isFree && !_purchasing && !widget.isLoading)
+                Padding(
+                  padding: const EdgeInsets.only(top: 2),
+                  child: Text(
+                    l.storeNeedMoreGems(
+                      widget.cost - widget.gemBalance,
+                      widget.gemBalance,
+                      widget.cost,
+                    ),
+                    style: AppTextStyle.tiny.copyWith(
+                      color: PremiumColors.error,
+                    ),
+                  ),
+                ),
             ],
           ),
         ),
