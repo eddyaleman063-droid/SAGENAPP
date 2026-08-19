@@ -44,6 +44,7 @@ class GemNotifier extends Notifier<GemState> {
   late final StreamController<int> _rewardController;
   late final StreamController<int> _milestoneController;
   late final StreamController<void> _capWarningController;
+  bool _capWarningFired = false;
 
   /// Broadcast stream that emits gem amounts when earned.
   Stream<int> get onGemsEarned => _rewardController.stream;
@@ -82,6 +83,9 @@ class GemNotifier extends Notifier<GemState> {
 
   List<GemTransaction> get transactions => _repo.transactions;
 
+  /// Adds [amount] gems to the local balance, logs a transaction,
+  /// emits on [onGemsEarned], and checks milestone thresholds.
+  /// No-ops if [amount] <= 0.
   void addGems(int amount, {String? reason}) {
     if (amount <= 0) return;
     final prevEarned = _repo.totalEarned;
@@ -90,7 +94,10 @@ class GemNotifier extends Notifier<GemState> {
     state = _load();
     _rewardController.add(amount);
     _checkMilestones(prevEarned, state.totalEarned);
-    if (state.balance >= 95000) _capWarningController.add(null);
+    if (state.balance >= 95000 && !_capWarningFired) {
+      _capWarningController.add(null);
+      _capWarningFired = true;
+    }
   }
 
   void _checkMilestones(int prevEarned, int newEarned) {
@@ -101,11 +108,15 @@ class GemNotifier extends Notifier<GemState> {
     }
   }
 
+  /// Spends [amount] gems from the local balance. Returns `true` if
+  /// sufficient funds; `false` otherwise. Resets cap warning flag
+  /// when balance drops below 95 000.
   bool spendGems(int amount, {String? reason}) {
     final success = _repo.spendGems(amount, reason: reason ?? 'shop');
     if (success) {
       _repo.save();
       state = _load();
+      if (state.balance < 95000) _capWarningFired = false;
     }
     return success;
   }
@@ -179,30 +190,44 @@ class GemNotifier extends Notifier<GemState> {
     String reason,
     Map<String, dynamic> meta,
   ) async {
+    final idempotencyKey =
+        '${reason}_${DateTime.now().microsecondsSinceEpoch}_${Random().nextInt(1 << 20)}';
     try {
       final result = await FirebaseFunctions.instance
           .httpsCallable('earnGems')
-          .call({'reason': reason, 'meta': meta})
+          .call({
+            'reason': reason,
+            'meta': meta,
+            'idempotencyKey': idempotencyKey,
+          })
           .timeout(const Duration(seconds: 10));
       final data = result.data as Map<String, dynamic>;
       final serverBalance = (data['balance'] as num?)?.toInt();
       if (serverBalance != null) syncBalance(serverBalance);
     } catch (e) {
       // Offline or server error: queue for retry so gems are never lost.
-      _enqueuePendingEarn(reason, meta);
+      _enqueuePendingEarn(reason, meta, idempotencyKey);
       AppLogger().warning('GemNotifier: earnGems($reason) queued for retry');
     }
   }
 
-  void _enqueuePendingEarn(String reason, Map<String, dynamic> meta) {
+  void _enqueuePendingEarn(
+    String reason,
+    Map<String, dynamic> meta,
+    String idempotencyKey,
+  ) {
     try {
       final prefs = ref.read(prefsProvider);
       final raw = prefs.getStringList(_keyPendingEarns) ?? [];
       if (raw.length >= _maxPendingEarns) {
-        raw.removeRange(0, raw.length - _maxPendingEarns + 1);
+        final evicted = raw.length - _maxPendingEarns + 1;
+        AppLogger().warning(
+          'GemNotifier: pending earn queue full, evicting $evicted oldest entries',
+        );
+        raw.removeRange(0, evicted);
       }
       raw.add(
-        '$reason|${DateTime.now().toIso8601String()}|${_encodeMeta(meta)}',
+        '$reason|${DateTime.now().toIso8601String()}|${_encodeMeta(meta)}|$idempotencyKey',
       );
       prefs.setStringList(_keyPendingEarns, raw);
     } catch (e) {
@@ -221,10 +246,15 @@ class GemNotifier extends Notifier<GemState> {
         if (parts.length < 3) continue;
         final reason = parts[0];
         final meta = _decodeMeta(parts[2]);
+        final idempotencyKey = parts.length > 3 ? parts[3] : null;
         try {
+          final payload = <String, dynamic>{'reason': reason, 'meta': meta};
+          if (idempotencyKey != null) {
+            payload['idempotencyKey'] = idempotencyKey;
+          }
           await FirebaseFunctions.instance
               .httpsCallable('earnGems')
-              .call({'reason': reason, 'meta': meta})
+              .call(payload)
               .timeout(const Duration(seconds: 10));
         } catch (e) {
           remaining.add(entry);

@@ -55,7 +55,7 @@ class GemHistoryScreen extends ConsumerWidget {
                 AppSpacing.xxl,
                 AppSpacing.lg,
                 AppSpacing.xxl,
-                AppSpacing.sm,
+                AppSpacing.lg,
               ),
               child: Row(
                 children: [

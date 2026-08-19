@@ -17,7 +17,6 @@ class _StoreHeaderState extends ConsumerState<StoreHeader>
   late final AnimationController _glowController;
   late final Animation<double> _glowAnimation;
   int _prevBalance = 0;
-  bool _initialised = false;
 
   @override
   void initState() {
@@ -38,23 +37,14 @@ class _StoreHeaderState extends ConsumerState<StoreHeader>
     super.dispose();
   }
 
-  void _onBalanceChanged(int newBalance) {
-    if (!_initialised) {
-      _prevBalance = newBalance;
-      _initialised = true;
-      return;
-    }
-    if (newBalance > _prevBalance) {
-      _glowController.forward(from: 0);
-    }
-    _prevBalance = newBalance;
-  }
-
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
     final gemBalance = ref.watch(gemProvider.select((g) => g.balance));
-    _onBalanceChanged(gemBalance);
+    if (gemBalance > _prevBalance && _prevBalance > 0) {
+      _glowController.forward(from: 0);
+    }
+    _prevBalance = gemBalance;
     return Container(
       padding: const EdgeInsets.fromLTRB(
         AppSpacing.xxl,
