@@ -13,7 +13,11 @@ void main() {
 
       // App should render something (splash, login, or onboarding)
       final hasScaffold = find.byType(Scaffold).evaluate().isNotEmpty;
-      expect(hasScaffold, true, reason: 'App must render at least a Scaffold on launch');
+      expect(
+        hasScaffold,
+        true,
+        reason: 'App must render at least a Scaffold on launch',
+      );
     });
 
     testWidgets('2. Splash transitions to welcome or login', (tester) async {
@@ -22,16 +26,25 @@ void main() {
 
       // Should have navigated past splash to some interactive screen
       final hasTextField = find.byType(TextFormField).evaluate().isNotEmpty;
-      final hasBottomNav = find.byType(BottomNavigationBar).evaluate().isNotEmpty;
-      final hasButtons = find.byType(ElevatedButton).evaluate().isNotEmpty ||
+      final hasBottomNav = find
+          .byType(BottomNavigationBar)
+          .evaluate()
+          .isNotEmpty;
+      final hasButtons =
+          find.byType(ElevatedButton).evaluate().isNotEmpty ||
           find.byType(TextButton).evaluate().isNotEmpty ||
           find.byType(OutlinedButton).evaluate().isNotEmpty;
 
-      expect(hasTextField || hasBottomNav || hasButtons, true,
-          reason: 'App should transition from splash to login or dashboard');
+      expect(
+        hasTextField || hasBottomNav || hasButtons,
+        true,
+        reason: 'App should transition from splash to login or dashboard',
+      );
     });
 
-    testWidgets('3. Login screen renders all fields when accessible', (tester) async {
+    testWidgets('3. Login screen renders all fields when accessible', (
+      tester,
+    ) async {
       app.main();
       await tester.pumpAndSettle(const Duration(seconds: 5));
 
@@ -39,17 +52,24 @@ void main() {
       if (emailField.evaluate().isEmpty) return; // Not on login screen
 
       // Login should have at least email field
-      expect(emailField.evaluate().isNotEmpty, true,
-          reason: 'Login screen should have text input fields');
+      expect(
+        emailField.evaluate().isNotEmpty,
+        true,
+        reason: 'Login screen should have text input fields',
+      );
 
       // Look for login-specific text
-      final hasLoginText = find.textContaining('Iniciar').evaluate().isNotEmpty ||
+      final hasLoginText =
+          find.textContaining('Iniciar').evaluate().isNotEmpty ||
           find.textContaining('Login').evaluate().isNotEmpty ||
           find.textContaining('Email').evaluate().isNotEmpty ||
           find.textContaining('email').evaluate().isNotEmpty;
 
-      expect(hasLoginText || emailField.evaluate().isNotEmpty, true,
-          reason: 'Login screen should show login-related text');
+      expect(
+        hasLoginText || emailField.evaluate().isNotEmpty,
+        true,
+        reason: 'Login screen should show login-related text',
+      );
     });
 
     testWidgets('4. Register screen renders when accessible', (tester) async {
@@ -71,8 +91,8 @@ void main() {
       final link = registerLink.evaluate().isNotEmpty
           ? registerLink.first
           : signUpLink.evaluate().isNotEmpty
-              ? signUpLink.first
-              : createAccount.first;
+          ? signUpLink.first
+          : createAccount.first;
 
       expect(link, findsOneWidget, reason: 'Register link should be present');
     });
@@ -90,12 +110,16 @@ void main() {
         await tester.pumpAndSettle(const Duration(milliseconds: 500));
 
         // After tapping register, should show register-related content
-        final hasRegisterContent = find.textContaining('Crear cuenta').evaluate().isNotEmpty ||
+        final hasRegisterContent =
+            find.textContaining('Crear cuenta').evaluate().isNotEmpty ||
             find.textContaining('Registro').evaluate().isNotEmpty ||
             find.byType(TextFormField).evaluate().length >= 2;
 
-        expect(hasRegisterContent || find.byType(Scaffold).evaluate().isNotEmpty, true,
-            reason: 'Register screen should be accessible from login');
+        expect(
+          hasRegisterContent || find.byType(Scaffold).evaluate().isNotEmpty,
+          true,
+          reason: 'Register screen should be accessible from login',
+        );
       } else if (signUpLink.evaluate().isNotEmpty) {
         await tester.tap(signUpLink.first);
         await tester.pumpAndSettle(const Duration(milliseconds: 500));
@@ -103,16 +127,24 @@ void main() {
       }
     });
 
-    testWidgets('6. App handles authentication state correctly', (tester) async {
+    testWidgets('6. App handles authentication state correctly', (
+      tester,
+    ) async {
       app.main();
       await tester.pumpAndSettle(const Duration(seconds: 5));
 
       // App should not crash and should show a valid screen
       final hasScaffold = find.byType(Scaffold).evaluate().isNotEmpty;
-      expect(hasScaffold, true, reason: 'App should always show a valid screen');
+      expect(
+        hasScaffold,
+        true,
+        reason: 'App should always show a valid screen',
+      );
     });
 
-    testWidgets('7. App has semantic structure for accessibility', (tester) async {
+    testWidgets('7. App has semantic structure for accessibility', (
+      tester,
+    ) async {
       app.main();
       await tester.pumpAndSettle(const Duration(seconds: 5));
 
@@ -120,7 +152,9 @@ void main() {
       expect(hasSemantics, true, reason: 'App should have semantic labels');
     });
 
-    testWidgets('8. App handles rapid navigation without crash', (tester) async {
+    testWidgets('8. App handles rapid navigation without crash', (
+      tester,
+    ) async {
       app.main();
       await tester.pumpAndSettle(const Duration(seconds: 5));
 
@@ -138,8 +172,11 @@ void main() {
       await tester.pumpAndSettle(const Duration(milliseconds: 500));
 
       // App should not crash
-      expect(find.byType(Scaffold).evaluate().isNotEmpty, true,
-          reason: 'Rapid navigation should not crash the app');
+      expect(
+        find.byType(Scaffold).evaluate().isNotEmpty,
+        true,
+        reason: 'Rapid navigation should not crash the app',
+      );
     });
   });
 }

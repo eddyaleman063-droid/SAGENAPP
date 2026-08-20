@@ -1,7 +1,6 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sagen/core/theme/app_colors.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
@@ -146,10 +145,13 @@ class _PostOnboardingWelcomeScreenState
                 button: true,
                 label: AppLocalizations.of(context)!.continueText,
                 child: GestureDetector(
-                  onTapDown: (_) => setState(() => _isPressed = true),
+                  onTapDown: (_) {
+                    ExperienceService.instance.mediumHaptic();
+                    setState(() => _isPressed = true);
+                  },
                   onTapUp: (_) {
                     setState(() => _isPressed = false);
-                    HapticFeedback.lightImpact();
+                    ExperienceService.instance.lightHaptic();
                     widget.onContinue?.call();
                   },
                   onTapCancel: () => setState(() => _isPressed = false),

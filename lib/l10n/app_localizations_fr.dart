@@ -4466,6 +4466,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get summaryLearning => 'Apprentissage';
 
   @override
+  String get summaryPreferences => 'Préférences';
+
+  @override
   String get summaryMotivations => 'Motivations';
 
   @override

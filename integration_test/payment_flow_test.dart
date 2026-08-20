@@ -27,11 +27,15 @@ void main() {
         await tester.tap(items.at(1));
         await tester.pumpAndSettle(const Duration(milliseconds: 500));
 
-        final hasStoreContent = find.textContaining('Tienda').evaluate().isNotEmpty ||
+        final hasStoreContent =
+            find.textContaining('Tienda').evaluate().isNotEmpty ||
             find.textContaining('Store').evaluate().isNotEmpty ||
             find.byIcon(Icons.diamond_rounded).evaluate().isNotEmpty;
-        expect(hasStoreContent || find.byType(Scaffold).evaluate().isNotEmpty, true,
-            reason: 'Store tab should be accessible');
+        expect(
+          hasStoreContent || find.byType(Scaffold).evaluate().isNotEmpty,
+          true,
+          reason: 'Store tab should be accessible',
+        );
       }
     });
 
@@ -47,9 +51,15 @@ void main() {
         await tester.tap(items.at(1));
         await tester.pumpAndSettle(const Duration(milliseconds: 500));
 
-        final hasGems = find.byIcon(Icons.diamond_rounded).evaluate().isNotEmpty;
-        expect(hasGems || find.byType(Scaffold).evaluate().isNotEmpty, true,
-            reason: 'Store should display gem-related content');
+        final hasGems = find
+            .byIcon(Icons.diamond_rounded)
+            .evaluate()
+            .isNotEmpty;
+        expect(
+          hasGems || find.byType(Scaffold).evaluate().isNotEmpty,
+          true,
+          reason: 'Store should display gem-related content',
+        );
       }
     });
 
@@ -71,8 +81,11 @@ void main() {
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
         }
 
-        expect(find.byType(Scaffold).evaluate().isNotEmpty, true,
-            reason: 'Tapping store item should not crash');
+        expect(
+          find.byType(Scaffold).evaluate().isNotEmpty,
+          true,
+          reason: 'Tapping store item should not crash',
+        );
       }
     });
 
@@ -94,10 +107,16 @@ void main() {
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
 
           final hasDialog = find.byType(AlertDialog).evaluate().isNotEmpty;
-          final hasConfirm = find.textContaining('Confirmar').evaluate().isNotEmpty ||
+          final hasConfirm =
+              find.textContaining('Confirmar').evaluate().isNotEmpty ||
               find.textContaining('Aceptar').evaluate().isNotEmpty;
-          expect(hasDialog || hasConfirm || find.byType(Scaffold).evaluate().isNotEmpty, true,
-              reason: 'Purchase should show confirmation dialog');
+          expect(
+            hasDialog ||
+                hasConfirm ||
+                find.byType(Scaffold).evaluate().isNotEmpty,
+            true,
+            reason: 'Purchase should show confirmation dialog',
+          );
         }
       }
     });
@@ -126,11 +145,16 @@ void main() {
       }
       await tester.pumpAndSettle(const Duration(milliseconds: 500));
 
-      expect(find.byType(Scaffold).evaluate().isNotEmpty, true,
-          reason: 'Rapid tab navigation should not crash');
+      expect(
+        find.byType(Scaffold).evaluate().isNotEmpty,
+        true,
+        reason: 'Rapid tab navigation should not crash',
+      );
     });
 
-    testWidgets('8. Store handles insufficient gems gracefully', (tester) async {
+    testWidgets('8. Store handles insufficient gems gracefully', (
+      tester,
+    ) async {
       app.main();
       await tester.pumpAndSettle(const Duration(seconds: 5));
 
@@ -142,10 +166,14 @@ void main() {
         await tester.tap(items.at(1));
         await tester.pumpAndSettle(const Duration(milliseconds: 500));
 
-        final hasError = find.textContaining('Error').evaluate().isNotEmpty ||
+        final hasError =
+            find.textContaining('Error').evaluate().isNotEmpty ||
             find.textContaining('insuficiente').evaluate().isNotEmpty;
-        expect(hasError || find.byType(Scaffold).evaluate().isNotEmpty, true,
-            reason: 'Store should handle errors gracefully');
+        expect(
+          hasError || find.byType(Scaffold).evaluate().isNotEmpty,
+          true,
+          reason: 'Store should handle errors gracefully',
+        );
       }
     });
   });

@@ -16,11 +16,17 @@ void main() {
   if (!hasCwebp) {
     print('cwebp not found. Install it:');
     print('  choco install webp');
-    print('  or download from https://developers.google.com/speed/webp/download');
+    print(
+      '  or download from https://developers.google.com/speed/webp/download',
+    );
     exit(1);
   }
 
-  final pngs = dir.listSync().whereType<File>().where((f) => f.path.endsWith('.png')).toList();
+  final pngs = dir
+      .listSync()
+      .whereType<File>()
+      .where((f) => f.path.endsWith('.png'))
+      .toList();
   print('Found ${pngs.length} PNG files');
 
   int totalSaved = 0;
@@ -30,9 +36,11 @@ void main() {
     final name = png.path.split(Platform.pathSeparator).last;
     final webpPath = png.path.replaceAll('.png', '.webp');
     final result = Process.runSync('cwebp', [
-      '-q', '80',
+      '-q',
+      '80',
       png.path,
-      '-o', webpPath,
+      '-o',
+      webpPath,
     ]);
 
     if (result.exitCode != 0) {
@@ -53,5 +61,7 @@ void main() {
   }
 
   final finalSize = totalOriginal - totalSaved;
-  print('Done: $totalOriginal bytes -> $finalSize bytes (saved $totalSaved B, ${totalOriginal > 0 ? (totalSaved / totalOriginal * 100).toStringAsFixed(1) : '0.0'}%)');
+  print(
+    'Done: $totalOriginal bytes -> $finalSize bytes (saved $totalSaved B, ${totalOriginal > 0 ? (totalSaved / totalOriginal * 100).toStringAsFixed(1) : '0.0'}%)',
+  );
 }

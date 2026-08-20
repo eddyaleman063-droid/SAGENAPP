@@ -351,10 +351,12 @@ class _MotivationScreenState extends State<MotivationScreen> {
                                 ),
                               ),
                               child: isSelected
-                                  ? Icon(
-                                      Icons.check,
-                                      size: 16,
-                                      color: context.textPrimary,
+                                  ? ExcludeSemantics(
+                                      child: Icon(
+                                        Icons.check,
+                                        size: 16,
+                                        color: context.textPrimary,
+                                      ),
                                     )
                                   : null,
                             ),

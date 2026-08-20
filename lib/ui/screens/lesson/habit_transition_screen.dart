@@ -1,26 +1,28 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sagen/services/experience_service.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/theme_constants.dart';
+import '../../../providers/providers.dart';
 import '../../../services/app_logger.dart';
 import '../../../services/sage_emotion_service.dart';
 import '../../../services/streak_visibility_service.dart';
 import '../../widgets/common/sage_emotion_widget.dart';
 import '../../widgets/rive_flame_widget.dart';
 
-class HabitTransitionScreen extends StatefulWidget {
+class HabitTransitionScreen extends ConsumerStatefulWidget {
   const HabitTransitionScreen({super.key});
 
   @override
-  State<HabitTransitionScreen> createState() => _HabitTransitionScreenState();
+  ConsumerState<HabitTransitionScreen> createState() =>
+      _HabitTransitionScreenState();
 }
 
-class _HabitTransitionScreenState extends State<HabitTransitionScreen>
+class _HabitTransitionScreenState extends ConsumerState<HabitTransitionScreen>
     with SingleTickerProviderStateMixin {
   late final AnimationController _ctrl;
   late final Animation<double> _sageFade;
@@ -97,7 +99,7 @@ class _HabitTransitionScreenState extends State<HabitTransitionScreen>
   Future<void> _pushNext() async {
     _navigating = true;
     try {
-      final prefs = await SharedPreferences.getInstance();
+      final prefs = ref.read(prefsProvider);
       final visibility = StreakVisibilityService(prefs);
       if (!mounted) return;
 

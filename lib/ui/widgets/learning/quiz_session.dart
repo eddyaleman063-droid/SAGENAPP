@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/providers/providers.dart';
@@ -88,7 +87,7 @@ class _QuizSessionState extends ConsumerState<QuizSession>
 
   Future<void> _saveProgress() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
+      final prefs = ref.read(prefsProvider);
       final ids = widget.challenges.map((c) => c.id).toList();
       await prefs.setStringList(_progressKey, [
         widget.stageId,
@@ -104,7 +103,7 @@ class _QuizSessionState extends ConsumerState<QuizSession>
 
   Future<void> _loadProgress() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
+      final prefs = ref.read(prefsProvider);
       final data = prefs.getStringList(_progressKey);
       if (data == null || data.length < 5) return;
       final savedStageId = data[0];
@@ -137,7 +136,7 @@ class _QuizSessionState extends ConsumerState<QuizSession>
 
   Future<void> _clearProgress() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
+      final prefs = ref.read(prefsProvider);
       await prefs.remove(_progressKey);
     } catch (e) {
       AppLogger().warning('QuizSession._clearProgress failed: $e');

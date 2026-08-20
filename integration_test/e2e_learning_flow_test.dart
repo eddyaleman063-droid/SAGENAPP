@@ -12,17 +12,26 @@ void main() {
       await tester.pumpAndSettle(const Duration(seconds: 5));
 
       // App should show either login, onboarding, or dashboard
-      final hasLogin = find.textContaining('Iniciar').evaluate().isNotEmpty ||
+      final hasLogin =
+          find.textContaining('Iniciar').evaluate().isNotEmpty ||
           find.textContaining('Login').evaluate().isNotEmpty ||
           find.textContaining('Email').evaluate().isNotEmpty;
-      final hasOnboarding = find.byType(BottomNavigationBar).evaluate().isNotEmpty;
+      final hasOnboarding = find
+          .byType(BottomNavigationBar)
+          .evaluate()
+          .isNotEmpty;
       final hasWelcome = find.textContaining('SAGEN').evaluate().isNotEmpty;
 
-      expect(hasLogin || hasOnboarding || hasWelcome, true,
-          reason: 'App must show login, onboarding, or dashboard on launch');
+      expect(
+        hasLogin || hasOnboarding || hasWelcome,
+        true,
+        reason: 'App must show login, onboarding, or dashboard on launch',
+      );
     });
 
-    testWidgets('2. Login screen has email and password fields', (tester) async {
+    testWidgets('2. Login screen has email and password fields', (
+      tester,
+    ) async {
       app.main();
       await tester.pumpAndSettle(const Duration(seconds: 5));
 
@@ -30,7 +39,11 @@ void main() {
       final emailField = find.byType(TextFormField).first;
       if (emailField.evaluate().isEmpty) return; // Skip if not on login
 
-      expect(emailField, findsOneWidget, reason: 'Login must have input fields');
+      expect(
+        emailField,
+        findsOneWidget,
+        reason: 'Login must have input fields',
+      );
     });
 
     testWidgets('3. Onboarding screens are navigable', (tester) async {
@@ -67,17 +80,26 @@ void main() {
       if (navBar.evaluate().isEmpty) return; // Not on dashboard
 
       // Dashboard should show some learning content
-      final hasLessons = find.textContaining('Leccion').evaluate().isNotEmpty ||
+      final hasLessons =
+          find.textContaining('Leccion').evaluate().isNotEmpty ||
           find.textContaining('Etapa').evaluate().isNotEmpty ||
           find.textContaining('Aprender').evaluate().isNotEmpty;
-      final hasStreak = find.byIcon(Icons.local_fire_department_rounded).evaluate().isNotEmpty;
+      final hasStreak = find
+          .byIcon(Icons.local_fire_department_rounded)
+          .evaluate()
+          .isNotEmpty;
       final hasGems = find.byIcon(Icons.diamond_rounded).evaluate().isNotEmpty;
 
-      expect(hasLessons || hasStreak || hasGems, true,
-          reason: 'Dashboard should show learning content, streak, or gems');
+      expect(
+        hasLessons || hasStreak || hasGems,
+        true,
+        reason: 'Dashboard should show learning content, streak, or gems',
+      );
     });
 
-    testWidgets('5. Lesson screen is accessible from dashboard', (tester) async {
+    testWidgets('5. Lesson screen is accessible from dashboard', (
+      tester,
+    ) async {
       app.main();
       await tester.pumpAndSettle(const Duration(seconds: 5));
 
@@ -101,10 +123,16 @@ void main() {
 
       // Check that the app has basic semantic structure
       final hasSemantics = find.byType(Semantics).evaluate().isNotEmpty;
-      expect(hasSemantics, true, reason: 'App should have semantic labels for accessibility');
+      expect(
+        hasSemantics,
+        true,
+        reason: 'App should have semantic labels for accessibility',
+      );
     });
 
-    testWidgets('7. App handles rapid navigation without crash', (tester) async {
+    testWidgets('7. App handles rapid navigation without crash', (
+      tester,
+    ) async {
       app.main();
       await tester.pumpAndSettle(const Duration(seconds: 5));
 
@@ -139,10 +167,14 @@ void main() {
         await tester.pumpAndSettle(const Duration(milliseconds: 500));
 
         // Profile should show some user info
-        final hasProfile = find.byIcon(Icons.person_rounded).evaluate().isNotEmpty ||
+        final hasProfile =
+            find.byIcon(Icons.person_rounded).evaluate().isNotEmpty ||
             find.textContaining('Perfil').evaluate().isNotEmpty;
-        expect(hasProfile || items.evaluate().length >= 4, true,
-            reason: 'Profile screen should be accessible');
+        expect(
+          hasProfile || items.evaluate().length >= 4,
+          true,
+          reason: 'Profile screen should be accessible',
+        );
       }
     });
   });

@@ -1,7 +1,6 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sagen/services/experience_service.dart';
@@ -41,7 +40,7 @@ class _StartingPointScreenState extends ConsumerState<StartingPointScreen> {
 
   void _onTapUp(TapUpDetails _) {
     setState(() => _isPressed = false);
-    HapticFeedback.lightImpact();
+    ExperienceService.instance.lightHaptic();
     if (_selectedCard != null) {
       ref.read(diagnosticPathProvider.notifier).state = _selectedCard == 0
           ? DiagnosticPath.beginner
@@ -308,9 +307,8 @@ class _StartingPointScreenState extends ConsumerState<StartingPointScreen> {
       label: title,
       child: GestureDetector(
         onTap: () {
-          HapticFeedback.lightImpact();
-          setState(() => _selectedCard = index);
           ExperienceService.instance.lightHaptic();
+          setState(() => _selectedCard = index);
         },
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),

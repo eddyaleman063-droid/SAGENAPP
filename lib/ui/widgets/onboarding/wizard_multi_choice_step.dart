@@ -52,7 +52,6 @@ class WizardMultiChoiceStep extends ConsumerWidget {
                       option: config.options[i],
                       isSelected: selected.contains(config.options[i].value),
                       onTap: () {
-                        ref.read(experienceServiceProvider).lightHaptic();
                         final updated = List<String>.from(selected);
                         if (updated.contains(config.options[i].value)) {
                           updated.remove(config.options[i].value);

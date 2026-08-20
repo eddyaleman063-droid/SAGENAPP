@@ -51,7 +51,6 @@ class WizardSingleChoiceStep extends ConsumerWidget {
                       option: config.options[i],
                       isSelected: selected == config.options[i].value,
                       onTap: () {
-                        ref.read(experienceServiceProvider).lightHaptic();
                         ref
                             .read(onboardingWizardProvider.notifier)
                             .setSectionData(stepIndex, config.options[i].value);

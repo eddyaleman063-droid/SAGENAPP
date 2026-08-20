@@ -20,12 +20,19 @@ void main() {
       // All buttons should be wrapped in Semantics
       for (final finder in [buttons, filledButtons, textButtons, iconButtons]) {
         for (final button in finder.evaluate()) {
-          final hasSemantics = find.ancestor(
-            of: find.byWidget(button.widget),
-            matching: find.byType(Semantics),
-          ).evaluate().isNotEmpty;
+          final hasSemantics = find
+              .ancestor(
+                of: find.byWidget(button.widget),
+                matching: find.byType(Semantics),
+              )
+              .evaluate()
+              .isNotEmpty;
           // Button should have Semantics ancestor
-          expect(hasSemantics, true, reason: 'Button missing Semantics wrapper');
+          expect(
+            hasSemantics,
+            true,
+            reason: 'Button missing Semantics wrapper',
+          );
         }
       }
     });

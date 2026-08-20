@@ -31,9 +31,10 @@ class WizardConfirmationStep extends ConsumerWidget {
     final referral = state.sectionData[1] as String? ?? '—';
     final knowledge = state.sectionData[2] as String? ?? '—';
     final reasons = (state.sectionData[3] as List<String>?) ?? [];
-    final habits = (state.sectionData[4] as List<String>?) ?? [];
-    final goal = state.sectionData[5] as String? ?? '—';
-    final commitments = (state.sectionData[6] as List<String>?) ?? [];
+    final habits = state.sectionData[4] as String? ?? '—';
+    final prefer = (state.sectionData[5] as List<String>?) ?? [];
+    final goal = state.sectionData[6] as String? ?? '—';
+    final commitments = (state.sectionData[7] as List<String>?) ?? [];
     final config = stepConfig;
 
     return Padding(
@@ -58,10 +59,11 @@ class WizardConfirmationStep extends ConsumerWidget {
                 label: l.summaryMotivations,
                 value: reasons.join(', '),
               ),
-            if (habits.isNotEmpty)
+            WizardSummaryRow(label: l.summaryLearning, value: habits),
+            if (prefer.isNotEmpty)
               WizardSummaryRow(
-                label: l.summaryLearning,
-                value: habits.join(', '),
+                label: l.summaryPreferences,
+                value: prefer.join(', '),
               ),
             WizardSummaryRow(label: l.summaryDailyGoal, value: l.minutes(goal)),
             if (commitments.isNotEmpty)

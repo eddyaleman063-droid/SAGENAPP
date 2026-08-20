@@ -1,7 +1,6 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sagen/services/experience_service.dart';
 import 'package:sagen/core/theme/app_colors.dart';
@@ -213,7 +212,7 @@ class _RouteSelectionScreenState extends State<RouteSelectionScreen> {
                       label: title,
                       child: GestureDetector(
                         onTap: () {
-                          HapticFeedback.lightImpact();
+                          ExperienceService.instance.lightHaptic();
                           setState(() => _selectedRouteIndex = index);
                         },
                         child: AnimatedContainer(
@@ -252,10 +251,12 @@ class _RouteSelectionScreenState extends State<RouteSelectionScreen> {
                                 ),
                               ),
                               if (isSelected)
-                                const Icon(
-                                  Icons.check_circle_rounded,
-                                  color: PremiumColors.primaryAccent,
-                                  size: 22,
+                                const ExcludeSemantics(
+                                  child: Icon(
+                                    Icons.check_circle_rounded,
+                                    color: PremiumColors.primaryAccent,
+                                    size: 22,
+                                  ),
                                 ),
                             ],
                           ),
@@ -280,12 +281,14 @@ class _RouteSelectionScreenState extends State<RouteSelectionScreen> {
                 label: AppLocalizations.of(context)!.continueText,
                 child: GestureDetector(
                   onTapDown: _selectedRouteIndex != null
-                      ? (_) => setState(() => _isPressed = true)
+                      ? (_) {
+                          ExperienceService.instance.mediumHaptic();
+                          setState(() => _isPressed = true);
+                        }
                       : null,
                   onTapUp: _selectedRouteIndex != null
                       ? (_) {
                           setState(() => _isPressed = false);
-                          HapticFeedback.lightImpact();
                           ExperienceService.instance.lightHaptic();
                           widget.onContinue?.call();
                         }

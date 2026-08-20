@@ -141,7 +141,7 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              SageEmotionWidget(
+              const SageEmotionWidget(
                 emotion: SageEmotion.celebrating,
                 size: 80,
                 animated: true,

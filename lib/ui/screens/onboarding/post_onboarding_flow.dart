@@ -59,11 +59,13 @@ class PostOnboardingFlow extends ConsumerStatefulWidget {
 
 class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
   int _step = 0;
+  bool _bridgedWizardData = false;
 
   static const int _totalSteps = 16;
 
   void _advance() {
     setState(() => _step++);
+    _skipConditionalSteps();
     ref.read(analyticsServiceProvider).trackOnboardingStep(_step);
   }
 
@@ -78,9 +80,20 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
     ref.read(analyticsServiceProvider).trackOnboardingStep(_step);
   }
 
-  void _goToHome() {
+  void _skipConditionalSteps() {
+    final funnel = ref.read(registrationFunnelProvider);
+    if (_step == 11 && funnel.authMethod != 'email') {
+      setState(() => _step = 13);
+    }
+    if (_step == 12 && funnel.authMethod != 'email') {
+      setState(() => _step = 13);
+    }
+  }
+
+  Future<void> _goToHome() async {
     ref.read(registrationFunnelProvider.notifier).skipToHome();
-    ref.read(authProvider.notifier).markOnboardingCompleted();
+    await ref.read(authProvider.notifier).markOnboardingCompleted();
+    if (!mounted) return;
     ref.read(analyticsServiceProvider).track(AnalyticEvent.tutorialComplete);
     context.goNamed('main');
   }
@@ -158,6 +171,7 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
           'post_onboarding: _createProfile attempt $attempt failed: $e',
         );
         if (attempt < 2) await Future.delayed(const Duration(seconds: 1));
+        if (!mounted) return;
       }
     }
     if (mounted) {
@@ -263,8 +277,10 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
 
     if (_step >= _totalSteps) return const ProfileSuccessScreen();
 
-    // Bridge wizard data to downstream providers (one-time)
-    _bridgeWizardData();
+    if (!_bridgedWizardData) {
+      _bridgedWizardData = true;
+      _bridgeWizardData();
+    }
 
     if (_step == 10) {
       return AuthMethodScreen(
@@ -279,10 +295,6 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
       if (state.authMethod == 'email') {
         return EmailInputScreen(onContinue: _advance);
       }
-      // Defer jump to post-frame to avoid setState during build
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) _jumpToStep(13);
-      });
       return const SizedBox.shrink();
     }
 
@@ -291,10 +303,6 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
       if (state.authMethod == 'email') {
         return PasswordInputScreen(onContinue: _advance);
       }
-      // Defer jump to post-frame to avoid setState during build
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) _jumpToStep(13);
-      });
       return const SizedBox.shrink();
     }
 

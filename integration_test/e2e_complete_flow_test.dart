@@ -11,8 +11,11 @@ void main() {
       app.main();
       await tester.pumpAndSettle(const Duration(seconds: 5));
 
-      expect(find.byType(Scaffold).evaluate().isNotEmpty, true,
-          reason: 'App must render a Scaffold on launch');
+      expect(
+        find.byType(Scaffold).evaluate().isNotEmpty,
+        true,
+        reason: 'App must render a Scaffold on launch',
+      );
     });
 
     testWidgets('2. Splash screen transitions', (tester) async {
@@ -27,11 +30,16 @@ void main() {
       app.main();
       await tester.pumpAndSettle(const Duration(seconds: 5));
 
-      final hasInteractive = find.byType(TextFormField).evaluate().isNotEmpty ||
+      final hasInteractive =
+          find.byType(TextFormField).evaluate().isNotEmpty ||
           find.byType(ElevatedButton).evaluate().isNotEmpty ||
           find.byType(TextButton).evaluate().isNotEmpty ||
           find.byType(GestureDetector).evaluate().isNotEmpty;
-      expect(hasInteractive, true, reason: 'Welcome screen should have interactive elements');
+      expect(
+        hasInteractive,
+        true,
+        reason: 'Welcome screen should have interactive elements',
+      );
     });
 
     testWidgets('4. Navigation between screens works', (tester) async {
@@ -48,20 +56,30 @@ void main() {
         await tester.pumpAndSettle(const Duration(milliseconds: 500));
       }
 
-      expect(find.byType(Scaffold).evaluate().isNotEmpty, true,
-          reason: 'Navigation should work without crash');
+      expect(
+        find.byType(Scaffold).evaluate().isNotEmpty,
+        true,
+        reason: 'Navigation should work without crash',
+      );
     });
 
     testWidgets('5. Dashboard shows learning content', (tester) async {
       app.main();
       await tester.pumpAndSettle(const Duration(seconds: 5));
 
-      final hasLearning = find.textContaining('Leccion').evaluate().isNotEmpty ||
+      final hasLearning =
+          find.textContaining('Leccion').evaluate().isNotEmpty ||
           find.textContaining('Etapa').evaluate().isNotEmpty ||
           find.textContaining('Aprender').evaluate().isNotEmpty ||
-          find.byIcon(Icons.local_fire_department_rounded).evaluate().isNotEmpty;
-      expect(hasLearning || find.byType(Scaffold).evaluate().isNotEmpty, true,
-          reason: 'Dashboard should show learning-related content');
+          find
+              .byIcon(Icons.local_fire_department_rounded)
+              .evaluate()
+              .isNotEmpty;
+      expect(
+        hasLearning || find.byType(Scaffold).evaluate().isNotEmpty,
+        true,
+        reason: 'Dashboard should show learning-related content',
+      );
     });
 
     testWidgets('6. Profile screen is accessible', (tester) async {
@@ -77,8 +95,11 @@ void main() {
         }
       }
 
-      expect(find.byType(Scaffold).evaluate().isNotEmpty, true,
-          reason: 'Profile screen should be accessible');
+      expect(
+        find.byType(Scaffold).evaluate().isNotEmpty,
+        true,
+        reason: 'Profile screen should be accessible',
+      );
     });
 
     testWidgets('7. Settings can be accessed', (tester) async {
@@ -91,8 +112,11 @@ void main() {
         await tester.pumpAndSettle(const Duration(milliseconds: 500));
       }
 
-      expect(find.byType(Scaffold).evaluate().isNotEmpty, true,
-          reason: 'Settings should be accessible');
+      expect(
+        find.byType(Scaffold).evaluate().isNotEmpty,
+        true,
+        reason: 'Settings should be accessible',
+      );
     });
 
     testWidgets('8. Theme switching works', (tester) async {
@@ -105,19 +129,26 @@ void main() {
         await tester.pumpAndSettle(const Duration(milliseconds: 500));
       }
 
-      expect(find.byType(Scaffold).evaluate().isNotEmpty, true,
-          reason: 'Theme switching should not crash');
+      expect(
+        find.byType(Scaffold).evaluate().isNotEmpty,
+        true,
+        reason: 'Theme switching should not crash',
+      );
     });
 
     testWidgets('9. Localization is applied correctly', (tester) async {
       app.main();
       await tester.pumpAndSettle(const Duration(seconds: 5));
 
-      final hasLocalized = find.textContaining('SAGEN').evaluate().isNotEmpty ||
+      final hasLocalized =
+          find.textContaining('SAGEN').evaluate().isNotEmpty ||
           find.textContaining('Aprende').evaluate().isNotEmpty ||
           find.textContaining('Ciberseguridad').evaluate().isNotEmpty;
-      expect(hasLocalized || find.byType(Scaffold).evaluate().isNotEmpty, true,
-          reason: 'Localization should be applied');
+      expect(
+        hasLocalized || find.byType(Scaffold).evaluate().isNotEmpty,
+        true,
+        reason: 'Localization should be applied',
+      );
     });
 
     testWidgets('10. App handles back navigation', (tester) async {
@@ -127,8 +158,11 @@ void main() {
       await tester.pageBack();
       await tester.pumpAndSettle(const Duration(milliseconds: 500));
 
-      expect(find.byType(Scaffold).evaluate().isNotEmpty, true,
-          reason: 'Back navigation should work');
+      expect(
+        find.byType(Scaffold).evaluate().isNotEmpty,
+        true,
+        reason: 'Back navigation should work',
+      );
     });
 
     testWidgets('11. App handles app lifecycle changes', (tester) async {
@@ -140,16 +174,22 @@ void main() {
       await tester.binding.setSurfaceSize(const Size(1080, 1920));
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
-      expect(find.byType(Scaffold).evaluate().isNotEmpty, true,
-          reason: 'App should handle resize without crash');
+      expect(
+        find.byType(Scaffold).evaluate().isNotEmpty,
+        true,
+        reason: 'App should handle resize without crash',
+      );
     });
 
     testWidgets('12. Error boundaries are in place', (tester) async {
       app.main();
       await tester.pumpAndSettle(const Duration(seconds: 5));
 
-      expect(find.byType(Scaffold).evaluate().isNotEmpty, true,
-          reason: 'Error boundaries should prevent crashes');
+      expect(
+        find.byType(Scaffold).evaluate().isNotEmpty,
+        true,
+        reason: 'Error boundaries should prevent crashes',
+      );
     });
   });
 }

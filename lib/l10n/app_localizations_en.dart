@@ -4404,6 +4404,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get summaryLearning => 'Learning';
 
   @override
+  String get summaryPreferences => 'Preferences';
+
+  @override
   String get summaryMotivations => 'Motivations';
 
   @override

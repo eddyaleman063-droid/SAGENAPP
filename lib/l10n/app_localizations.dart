@@ -8183,6 +8183,12 @@ abstract class AppLocalizations {
   /// **'Aprendizaje'**
   String get summaryLearning;
 
+  /// No description provided for @summaryPreferences.
+  ///
+  /// In es, this message translates to:
+  /// **'Preferencias'**
+  String get summaryPreferences;
+
   /// No description provided for @summaryMotivations.
   ///
   /// In es, this message translates to:
