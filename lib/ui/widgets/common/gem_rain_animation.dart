@@ -382,7 +382,7 @@ class _GemPilePainter extends CustomPainter {
   final int count;
   final double progress;
   static final _paint = Paint()..isAntiAlias = true;
-  final _rng = Random(42);
+  static final _rng = Random(42);
 
   _GemPilePainter({required this.count, required this.progress});
 

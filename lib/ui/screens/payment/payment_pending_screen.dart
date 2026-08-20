@@ -25,7 +25,15 @@ class _PaymentPendingScreenState extends ConsumerState<PaymentPendingScreen> {
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
-    final payment = ref.watch(paymentProvider);
+    final payment = ref.watch(
+      paymentProvider.select(
+        (p) => (
+          status: p.status,
+          pollAttempts: p.pollAttempts,
+          errorMessage: p.errorMessage,
+        ),
+      ),
+    );
     final pollAttempts = payment.pollAttempts;
     final isPolling = payment.status == PaymentStatus.waitingPayment;
     final isFailed = payment.status == PaymentStatus.failed;

@@ -13,7 +13,7 @@ class AgeInputScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l = AppLocalizations.of(context)!;
-    final state = ref.watch(registrationFunnelProvider);
+    final hasAge = ref.watch(registrationFunnelProvider.select((s) => s.age));
     final ageValid = ref.watch(funnelAgeValidProvider);
 
     return Scaffold(
@@ -68,7 +68,7 @@ class AgeInputScreen extends ConsumerWidget {
                   },
                 ),
               ),
-              if (state.age > 0 && !ageValid)
+              if (hasAge > 0 && !ageValid)
                 Padding(
                   padding: const EdgeInsets.only(top: AppSpacing.sm),
                   child: Text(

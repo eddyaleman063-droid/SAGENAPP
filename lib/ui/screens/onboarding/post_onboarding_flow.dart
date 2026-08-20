@@ -291,16 +291,20 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
     }
 
     if (_step == 11) {
-      final state = ref.watch(registrationFunnelProvider);
-      if (state.authMethod == 'email') {
+      final authMethod = ref.watch(
+        registrationFunnelProvider.select((s) => s.authMethod),
+      );
+      if (authMethod == 'email') {
         return EmailInputScreen(onContinue: _advance);
       }
       return const SizedBox.shrink();
     }
 
     if (_step == 12) {
-      final state = ref.watch(registrationFunnelProvider);
-      if (state.authMethod == 'email') {
+      final authMethod = ref.watch(
+        registrationFunnelProvider.select((s) => s.authMethod),
+      );
+      if (authMethod == 'email') {
         return PasswordInputScreen(onContinue: _advance);
       }
       return const SizedBox.shrink();

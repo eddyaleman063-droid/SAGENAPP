@@ -99,7 +99,11 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
-    final auth = ref.watch(authProvider);
+    final auth = ref.watch(
+      authProvider.select(
+        (a) => (email: a.email, isAuthenticated: a.isAuthenticated),
+      ),
+    );
 
     return Scaffold(
       backgroundColor: context.surfaceDeep,

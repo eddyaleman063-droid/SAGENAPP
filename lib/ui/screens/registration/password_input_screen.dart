@@ -14,7 +14,9 @@ class PasswordInputScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l = AppLocalizations.of(context)!;
-    final state = ref.watch(registrationFunnelProvider);
+    final hasPassword = ref.watch(
+      registrationFunnelProvider.select((s) => s.password.isNotEmpty),
+    );
     final passwordValid = ref.watch(funnelPasswordValidProvider);
 
     return Scaffold(
@@ -43,7 +45,7 @@ class PasswordInputScreen extends ConsumerWidget {
               ),
               const SizedBox(height: AppSpacing.xxl),
               const _PasswordField(),
-              if (state.password.isNotEmpty && !passwordValid)
+              if (hasPassword && !passwordValid)
                 Padding(
                   padding: const EdgeInsets.only(top: AppSpacing.sm),
                   child: Text(

@@ -36,11 +36,16 @@ class _DashboardHomeScreenState extends ConsumerState<DashboardHomeScreen>
     return StageStatus.inProgress;
   }
 
+  List<Stage>? _cachedStages;
+
   Stage? _findStage(List<Stage> stages, String lessonId) {
-    _lessonStageCache = {
-      for (final s in stages)
-        for (final l in s.lessons) l.id: s,
-    };
+    if (!identical(_cachedStages, stages)) {
+      _cachedStages = stages;
+      _lessonStageCache = {
+        for (final s in stages)
+          for (final l in s.lessons) l.id: s,
+      };
+    }
     return _lessonStageCache![lessonId];
   }
 

@@ -72,33 +72,39 @@ final onboardingWizardProvider =
     >(OnboardingWizardNotifier.new);
 
 final onboardingCanContinueProvider = Provider.autoDispose<bool>((ref) {
-  final state = ref.watch(onboardingWizardProvider);
-  switch (state.currentIndex) {
+  final currentIndex = ref.watch(
+    onboardingWizardProvider.select((s) => s.currentIndex),
+  );
+  final sectionData = ref.watch(
+    onboardingWizardProvider.select((s) => s.sectionData[currentIndex]),
+  );
+  switch (currentIndex) {
     case 1:
-      return state.sectionData[1] != null;
+      return sectionData != null;
     case 2:
-      return state.sectionData[2] != null;
+      return sectionData != null;
     case 3:
-      final d = state.sectionData[3];
-      return d != null && (d is List && d.isNotEmpty);
+      return sectionData != null &&
+          (sectionData is List && sectionData.isNotEmpty);
     case 4:
-      return state.sectionData[4] != null;
+      return sectionData != null;
     case 5:
-      final d = state.sectionData[5];
-      return d != null && (d is List && d.isNotEmpty);
+      return sectionData != null &&
+          (sectionData is List && sectionData.isNotEmpty);
     case 6:
-      return state.sectionData[6] != null;
+      return sectionData != null;
     case 7:
-      final d = state.sectionData[7];
-      return d != null && (d is List && d.isNotEmpty);
+      return sectionData != null &&
+          (sectionData is List && sectionData.isNotEmpty);
     default:
       return true;
   }
 });
 
 final onboardingWizardSelectionsProvider = Provider.autoDispose<int>((ref) {
-  final state = ref.watch(onboardingWizardProvider);
-  final data = state.sectionData[7];
+  final data = ref.watch(
+    onboardingWizardProvider.select((s) => s.sectionData[7]),
+  );
   if (data is List) return data.length;
   return 0;
 });

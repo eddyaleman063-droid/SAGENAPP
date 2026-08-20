@@ -572,8 +572,7 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
   }
 
   Widget _buildMonthlyHeatmap(Color accent, bool dark) {
-    final streak = ref.watch(streakProvider);
-    final heatmap = streak.heatmapData;
+    final heatmap = ref.watch(streakProvider.select((s) => s.heatmapData));
     final now = DateTime.now();
     final grayColor = dark
         ? PremiumColors.streakInactiveDark
