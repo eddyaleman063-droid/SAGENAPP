@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/theme_constants.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../providers/payment_provider.dart';
 import '../../../services/app_logger.dart';
+import '../../../services/experience_service.dart';
 import '../../widgets/common/sagen_notification.dart';
 
 class PaymentSuccessScreen extends ConsumerStatefulWidget {
@@ -35,7 +35,7 @@ class _PaymentSuccessScreenState extends ConsumerState<PaymentSuccessScreen>
       vsync: this,
       duration: const Duration(milliseconds: 400),
     );
-    HapticFeedback.heavyImpact();
+    ExperienceService.instance.heavyHaptic();
     _scaleCtrl.forward().then((_) => _checkCtrl.forward());
   }
 
@@ -119,7 +119,7 @@ class _PaymentSuccessScreenState extends ConsumerState<PaymentSuccessScreen>
                       onPressed: _navigated
                           ? null
                           : () async {
-                              HapticFeedback.lightImpact();
+                              ExperienceService.instance.lightHaptic();
                               try {
                                 _navigated = true;
                                 ref.read(paymentProvider.notifier).reset();

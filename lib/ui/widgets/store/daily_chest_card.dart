@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sagen/core/theme/app_colors.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/providers/providers.dart';
+import 'package:sagen/services/experience_service.dart';
 import 'package:sagen/ui/widgets/common/sagen_notification.dart';
 
 /// Daily chest claim card shown on the Store screen.
@@ -144,7 +144,7 @@ class _ClaimButton extends StatelessWidget {
       child: GestureDetector(
         onTap: enabled
             ? () {
-                HapticFeedback.lightImpact();
+                ExperienceService.instance.lightHaptic();
                 onTap!();
               }
             : null,

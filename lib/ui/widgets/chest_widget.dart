@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:sagen/services/experience_service.dart';
 import '../../l10n/app_localizations.dart';
 import '../../models/chest_type.dart';
 import 'chest_painter.dart';
@@ -58,7 +58,7 @@ class _ChestWidgetState extends State<ChestWidget>
   void _onAnimate() {
     if (_ctrl.value >= _anticipationEnd && !_showingOpen) {
       _showingOpen = true;
-      HapticFeedback.mediumImpact();
+      ExperienceService.instance.mediumHaptic();
       if (mounted) setState(() {});
     }
   }

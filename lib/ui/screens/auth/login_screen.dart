@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -12,6 +11,7 @@ import '../../../services/auth_models.dart';
 import '../../../services/auth_service.dart';
 import '../../../services/analytics_service.dart';
 import '../../../services/app_logger.dart';
+import '../../../services/experience_service.dart';
 
 import 'package:sagen/ui/widgets/common/sagen_notification.dart';
 import 'package:sagen/core/theme/app_colors.dart';
@@ -383,7 +383,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       child: ElevatedButton(
                         onPressed: _fieldsValid && !_isLoading
                             ? () {
-                                HapticFeedback.lightImpact();
+                                ExperienceService.instance.lightHaptic();
                                 _handleLogin();
                               }
                             : null,

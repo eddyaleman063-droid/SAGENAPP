@@ -1,6 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:sagen/services/experience_service.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 
@@ -71,7 +71,7 @@ class _GemRainAnimationState extends State<GemRainAnimation>
     _rainCtrl.addListener(() {
       final landed = _gems.where((g) => g.hasLanded(_rainCtrl.value)).length;
       if (landed != _landedCount) {
-        HapticFeedback.lightImpact();
+        ExperienceService.instance.lightHaptic();
         setState(() => _landedCount = landed);
       }
     });
@@ -81,7 +81,7 @@ class _GemRainAnimationState extends State<GemRainAnimation>
         _pileCtrl.forward();
         Future.delayed(const Duration(milliseconds: 400), () {
           if (mounted) {
-            HapticFeedback.heavyImpact();
+            ExperienceService.instance.heavyHaptic();
             setState(() => _showTotal = true);
             _glowCtrl.forward();
           }

@@ -125,7 +125,19 @@ class _WizardButtonState extends ConsumerState<WizardButton>
     _shimmerAnim = Tween<double>(begin: -2.0, end: 2.0).animate(
       CurvedAnimation(parent: _shimmerCtrl, curve: Curves.easeInOutSine),
     );
-    _shimmerCtrl.repeat();
+    if (widget.enabled) _shimmerCtrl.repeat();
+  }
+
+  @override
+  void didUpdateWidget(WizardButton old) {
+    super.didUpdateWidget(old);
+    if (widget.enabled != old.enabled) {
+      if (widget.enabled) {
+        _shimmerCtrl.repeat();
+      } else {
+        _shimmerCtrl.stop();
+      }
+    }
   }
 
   @override

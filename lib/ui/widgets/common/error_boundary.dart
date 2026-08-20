@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:sagen/services/experience_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sagen/core/theme/app_colors.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
@@ -114,7 +114,7 @@ class _ErrorFallback extends StatelessWidget {
                       label: retryLabel,
                       child: ElevatedButton.icon(
                         onPressed: () {
-                          HapticFeedback.lightImpact();
+                          ExperienceService.instance.lightHaptic();
                           onRetry?.call();
                         },
                         icon: const Icon(Icons.refresh_rounded, size: 18),

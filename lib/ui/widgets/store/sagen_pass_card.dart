@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
@@ -16,7 +15,15 @@ class SagenPassCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l = AppLocalizations.of(context)!;
     final dark = context.isDark;
-    final pass = ref.watch(sagenPassProvider);
+    final pass = ref.watch(
+      sagenPassProvider.select(
+        (p) => (
+          isMaxLevel: p.isMaxLevel,
+          progressFraction: p.progressFraction,
+          currentLevel: p.currentLevel,
+        ),
+      ),
+    );
     final progress = pass.isMaxLevel ? 1.0 : pass.progressFraction;
 
     return Padding(
@@ -31,7 +38,6 @@ class SagenPassCard extends ConsumerWidget {
         label: l.sagenPassTitle,
         child: GestureDetector(
           onTap: () {
-            HapticFeedback.mediumImpact();
             ref.read(experienceServiceProvider).lightHaptic();
             context.pushNamed('pass');
           },

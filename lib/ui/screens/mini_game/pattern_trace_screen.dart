@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:sagen/services/experience_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -376,7 +375,7 @@ class _PatternTraceScreenState extends ConsumerState<PatternTraceScreen> {
             label: l.miniGamePlayAgain,
             child: FilledButton(
               onPressed: () {
-                HapticFeedback.lightImpact();
+                ExperienceService.instance.lightHaptic();
                 setState(() => _initGame());
               },
               child: Text(l.miniGamePlayAgain),

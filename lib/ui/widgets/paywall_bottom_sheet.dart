@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sagen/config/app_config.dart';
 import 'package:sagen/core/theme/app_colors.dart';
@@ -8,6 +7,7 @@ import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/models/product.dart';
 import 'package:sagen/providers/payment_provider.dart';
 import 'package:sagen/services/app_logger.dart';
+import 'package:sagen/services/experience_service.dart';
 import 'package:sagen/ui/widgets/common/sagen_notification.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -144,7 +144,7 @@ class PaywallBottomSheet extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l = AppLocalizations.of(context)!;
-    final paymentState = ref.watch(paymentProvider);
+    final paymentStatus = ref.watch(paymentProvider.select((p) => p.status));
 
     return Container(
       decoration: BoxDecoration(
@@ -199,13 +199,10 @@ class PaywallBottomSheet extends ConsumerWidget {
                       width: double.infinity,
                       child: TextButton.icon(
                         onPressed:
-                            paymentState.status ==
-                                PaymentStatus.creatingPreference
+                            paymentStatus == PaymentStatus.creatingPreference
                             ? null
                             : () => _processMpPayment(context, ref, pkg),
-                        icon:
-                            paymentState.status ==
-                                PaymentStatus.creatingPreference
+                        icon: paymentStatus == PaymentStatus.creatingPreference
                             ? const ExcludeSemantics(
                                 child: SizedBox(
                                   width: 16,
@@ -262,7 +259,7 @@ class _PackageCard extends StatelessWidget {
       hint: l.paywallPackageLabel(pkg.localizedLabel(l).toLowerCase()),
       child: GestureDetector(
         onTap: () {
-          HapticFeedback.lightImpact();
+          ExperienceService.instance.lightHaptic();
           onTap();
         },
         child: Container(

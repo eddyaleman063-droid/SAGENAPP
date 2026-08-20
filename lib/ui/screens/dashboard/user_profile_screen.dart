@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -72,7 +72,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     label: l.retry,
                     child: ElevatedButton(
                       onPressed: () {
-                        HapticFeedback.lightImpact();
+                        ExperienceService.instance.lightHaptic();
                         setState(() => _retryKey++);
                       },
                       child: Text(l.retry),

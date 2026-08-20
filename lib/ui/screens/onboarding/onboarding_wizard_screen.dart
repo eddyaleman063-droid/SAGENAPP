@@ -109,13 +109,18 @@ class _OnboardingWizardScreenState
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(onboardingWizardProvider);
+    final currentIndex = ref.watch(
+      onboardingWizardProvider.select((s) => s.currentIndex),
+    );
+    final sectionDataHash = ref.watch(
+      onboardingWizardProvider.select((s) => s.sectionData.hashCode),
+    );
     final canContinue = ref.watch(onboardingCanContinueProvider);
     final wizardSteps = OnboardingWizardConfig.localizedSteps(_l);
-    final config = wizardSteps[state.currentIndex];
+    final config = wizardSteps[currentIndex];
 
     return PopScope(
-      canPop: state.currentIndex == 0,
+      canPop: currentIndex == 0,
       onPopInvokedWithResult: (didPop, _) {
         if (!didPop) _goBack();
       },
@@ -124,13 +129,15 @@ class _OnboardingWizardScreenState
         body: SafeArea(
           child: Column(
             children: [
-              WizardTopBar(currentIndex: state.currentIndex, onBack: _goBack),
+              WizardTopBar(currentIndex: currentIndex, onBack: _goBack),
               WizardSageSection(
-                key: ValueKey(
-                  'sage_${state.currentIndex}_${state.sectionData.hashCode}',
-                ),
+                key: ValueKey('sage_${currentIndex}_$sectionDataHash'),
                 emotion: config.emotion,
-                message: _sageMessageForStep(state.currentIndex, state, _l),
+                message: _sageMessageForStep(
+                  currentIndex,
+                  ref.read(onboardingWizardProvider),
+                  _l,
+                ),
               ),
               Expanded(
                 child: PageView.builder(
@@ -141,7 +148,7 @@ class _OnboardingWizardScreenState
                 ),
               ),
               WizardBottomBar(
-                currentIndex: state.currentIndex,
+                currentIndex: currentIndex,
                 canContinue: canContinue,
                 onNext: _goNext,
                 onComplete: _completeWizard,

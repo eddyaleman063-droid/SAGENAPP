@@ -1,6 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:sagen/services/experience_service.dart';
 import '../../../core/theme/theme_constants.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 
@@ -27,7 +27,7 @@ class _LevelUpCelebrationState extends State<LevelUpCelebration>
   @override
   void initState() {
     super.initState();
-    HapticFeedback.heavyImpact();
+    ExperienceService.instance.heavyHaptic();
 
     _mainCtrl = AnimationController(
       vsync: this,

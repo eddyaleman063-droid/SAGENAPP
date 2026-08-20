@@ -1,7 +1,6 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sagen/services/experience_service.dart';
 import 'package:sagen/core/theme/app_colors.dart';
@@ -39,7 +38,7 @@ class _ProjectionScreenState extends State<ProjectionScreen> {
 
   void _onTapUp(TapUpDetails _) {
     setState(() => _isPressed = false);
-    HapticFeedback.lightImpact();
+    ExperienceService.instance.lightHaptic();
     widget.onContinue?.call();
   }
 

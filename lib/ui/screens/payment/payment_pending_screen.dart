@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sagen/core/theme/app_colors.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/services/app_logger.dart';
+import 'package:sagen/services/experience_service.dart';
 import '../../../core/theme/theme_constants.dart';
 import '../../../providers/payment_provider.dart';
 import '../../widgets/common/sagen_notification.dart';
@@ -57,14 +57,14 @@ class _PaymentPendingScreenState extends ConsumerState<PaymentPendingScreen> {
             actions: [
               TextButton(
                 onPressed: () {
-                  HapticFeedback.lightImpact();
+                  ExperienceService.instance.lightHaptic();
                   Navigator.pop(ctx);
                 },
                 child: Text(l.cancel),
               ),
               TextButton(
                 onPressed: () {
-                  HapticFeedback.lightImpact();
+                  ExperienceService.instance.lightHaptic();
                   Navigator.pop(ctx);
                   context.go('/home');
                 },
@@ -189,7 +189,7 @@ class _PaymentPendingScreenState extends ConsumerState<PaymentPendingScreen> {
                       onPressed: _navigating
                           ? null
                           : () async {
-                              HapticFeedback.lightImpact();
+                              ExperienceService.instance.lightHaptic();
                               try {
                                 setState(() => _navigating = true);
                                 ref.read(paymentProvider.notifier).reset();

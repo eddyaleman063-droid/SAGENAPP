@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:sagen/services/experience_service.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -98,7 +98,7 @@ class _FirstLessonScreenState extends ConsumerState<FirstLessonScreen> {
                 label: AppLocalizations.of(context)!.retry,
                 child: ElevatedButton(
                   onPressed: () {
-                    HapticFeedback.lightImpact();
+                    ExperienceService.instance.lightHaptic();
                     setState(() {
                       _loadError = null;
                     });
@@ -149,14 +149,14 @@ class _FirstLessonScreenState extends ConsumerState<FirstLessonScreen> {
             actions: [
               TextButton(
                 onPressed: () {
-                  HapticFeedback.lightImpact();
+                  ExperienceService.instance.lightHaptic();
                   Navigator.pop(ctx);
                 },
                 child: Text(l.cancel),
               ),
               TextButton(
                 onPressed: () {
-                  HapticFeedback.lightImpact();
+                  ExperienceService.instance.lightHaptic();
                   Navigator.pop(ctx);
                   context.pop();
                 },
@@ -353,7 +353,7 @@ class _QuestionBody extends StatelessWidget {
                 onTap: showFeedback
                     ? null
                     : () {
-                        HapticFeedback.lightImpact();
+                        ExperienceService.instance.lightHaptic();
                         onSelect(i);
                       },
                 child: AnimatedContainer(
@@ -447,7 +447,7 @@ class _QuestionBody extends StatelessWidget {
               height: 48,
               child: ElevatedButton(
                 onPressed: () {
-                  HapticFeedback.lightImpact();
+                  ExperienceService.instance.lightHaptic();
                   onNext();
                 },
                 style: ElevatedButton.styleFrom(

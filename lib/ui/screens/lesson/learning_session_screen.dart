@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:sagen/services/experience_service.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/theme/app_colors.dart';
@@ -191,14 +191,14 @@ class _LearningSessionScreenState extends ConsumerState<LearningSessionScreen> {
                         actions: [
                           TextButton(
                             onPressed: () {
-                              HapticFeedback.lightImpact();
+                              ExperienceService.instance.lightHaptic();
                               Navigator.of(ctx).pop(false);
                             },
                             child: Text(l.cancel),
                           ),
                           TextButton(
                             onPressed: () {
-                              HapticFeedback.lightImpact();
+                              ExperienceService.instance.lightHaptic();
                               Navigator.of(ctx).pop(true);
                             },
                             child: Text(l.closeButton),
@@ -331,7 +331,7 @@ class _PreTestWelcome extends StatelessWidget {
                 height: 54,
                 child: ElevatedButton(
                   onPressed: () {
-                    HapticFeedback.mediumImpact();
+                    ExperienceService.instance.mediumHaptic();
                     onStart();
                   },
                   style: ElevatedButton.styleFrom(

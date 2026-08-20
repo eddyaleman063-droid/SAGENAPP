@@ -1,6 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:sagen/services/experience_service.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
 
 /// Spectacular floating "+N gems" animation with particle burst.
@@ -55,7 +55,7 @@ class _GemRewardAnimationState extends State<GemRewardAnimation>
     });
 
     _ctrl.forward().then((_) => widget.onComplete?.call());
-    HapticFeedback.mediumImpact();
+    ExperienceService.instance.mediumHaptic();
   }
 
   @override

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
+import 'package:sagen/services/experience_service.dart';
 
 class QuickChips extends StatelessWidget {
   final List<String> chips;
@@ -30,7 +30,7 @@ class QuickChips extends StatelessWidget {
             label: chips[i],
             child: GestureDetector(
               onTap: () {
-                HapticFeedback.lightImpact();
+                ExperienceService.instance.lightHaptic();
                 onTap(chips[i]);
               },
               child: Container(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:sagen/core/theme/app_colors.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/l10n/app_localizations.dart';
@@ -38,7 +37,7 @@ class _QuizSummaryScreenState extends State<QuizSummaryScreen>
       duration: const Duration(milliseconds: 1200),
     );
     _entranceCtrl.forward();
-    HapticFeedback.heavyImpact();
+    ExperienceService.instance.heavyHaptic();
   }
 
   @override
@@ -361,7 +360,7 @@ class _QuizSummaryScreenState extends State<QuizSummaryScreen>
                         height: 48,
                         child: OutlinedButton.icon(
                           onPressed: () {
-                            HapticFeedback.lightImpact();
+                            ExperienceService.instance.lightHaptic();
                             widget.onRetry?.call();
                           },
                           icon: const Icon(Icons.refresh_rounded, size: 18),

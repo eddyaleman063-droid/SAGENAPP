@@ -1,5 +1,6 @@
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
 import 'package:go_router/go_router.dart';
 import 'package:sagen/services/experience_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -287,7 +288,7 @@ class _RewardsPanel extends StatelessWidget {
                   label: l.shareProfile,
                   child: OutlinedButton.icon(
                     onPressed: () {
-                      HapticFeedback.lightImpact();
+                      ExperienceService.instance.lightHaptic();
                       final items = [
                         ...r.specialItems.map((e) => e.displayName),
                         ...r.cosmeticUnlocks.map((e) => e.displayName),
@@ -323,7 +324,7 @@ class _RewardsPanel extends StatelessWidget {
                   label: l.chestCollect,
                   child: ElevatedButton(
                     onPressed: () {
-                      HapticFeedback.mediumImpact();
+                      ExperienceService.instance.mediumHaptic();
                       onDismiss();
                     },
                     style: ElevatedButton.styleFrom(

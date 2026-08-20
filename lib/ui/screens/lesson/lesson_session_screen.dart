@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sagen/providers/providers.dart';
@@ -95,14 +94,14 @@ class _LessonSessionScreenState extends ConsumerState<LessonSessionScreen>
             actions: [
               TextButton(
                 onPressed: () {
-                  HapticFeedback.lightImpact();
+                  ExperienceService.instance.lightHaptic();
                   Navigator.pop(ctx);
                 },
                 child: Text(l.cancel),
               ),
               TextButton(
                 onPressed: () {
-                  HapticFeedback.lightImpact();
+                  ExperienceService.instance.lightHaptic();
                   Navigator.pop(ctx);
                   context.pop();
                 },
@@ -407,7 +406,7 @@ class _BottomBar extends ConsumerWidget {
           child: ElevatedButton(
             onPressed: isFeedback
                 ? () {
-                    HapticFeedback.lightImpact();
+                    ExperienceService.instance.lightHaptic();
                     ref.read(sessionProvider.notifier).onFeedbackDismissed();
                     ref.read(sessionProvider.notifier).nextQuestion();
                   }

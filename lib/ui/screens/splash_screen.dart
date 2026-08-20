@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:sagen/services/experience_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sagen/core/theme/app_colors.dart';
 import '../../core/theme/theme_constants.dart';
@@ -78,7 +78,7 @@ class _SplashScreenState extends State<SplashScreen>
           '',
       child: GestureDetector(
         onTap: () {
-          HapticFeedback.lightImpact();
+          ExperienceService.instance.lightHaptic();
           _navigateToWelcome();
         },
         child: AnimatedBuilder(

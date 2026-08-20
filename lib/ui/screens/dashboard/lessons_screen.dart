@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:intl/intl.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/providers/providers.dart';
+import '../../../services/experience_service.dart';
 import '../../../core/theme/theme_constants.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../models/learning/lesson.dart';
@@ -642,7 +642,7 @@ class _SessionGroupState extends State<_SessionGroup> {
                   )!.expandSession(widget.session.title),
             child: GestureDetector(
               onTap: () {
-                HapticFeedback.lightImpact();
+                ExperienceService.instance.lightHaptic();
                 setState(() => _expanded = !_expanded);
               },
               child: Padding(

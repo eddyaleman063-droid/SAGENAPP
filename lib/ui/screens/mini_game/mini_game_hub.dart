@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:sagen/services/experience_service.dart';
@@ -105,7 +104,7 @@ class _GameCard extends StatelessWidget {
       label: '$title - $description',
       child: GestureDetector(
         onTap: () {
-          HapticFeedback.lightImpact();
+          ExperienceService.instance.lightHaptic();
           onTap();
         },
         child: Container(

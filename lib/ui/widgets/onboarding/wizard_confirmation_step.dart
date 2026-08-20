@@ -27,14 +27,16 @@ class WizardConfirmationStep extends ConsumerWidget {
     final textSecondary = cs.onSurface.withValues(alpha: 0.7);
     final l = AppLocalizations.of(context)!;
 
-    final state = ref.watch(onboardingWizardProvider);
-    final referral = state.sectionData[1] as String? ?? '—';
-    final knowledge = state.sectionData[2] as String? ?? '—';
-    final reasons = (state.sectionData[3] as List<String>?) ?? [];
-    final habits = state.sectionData[4] as String? ?? '—';
-    final prefer = (state.sectionData[5] as List<String>?) ?? [];
-    final goal = state.sectionData[6] as String? ?? '—';
-    final commitments = (state.sectionData[7] as List<String>?) ?? [];
+    final sectionData = ref.watch(
+      onboardingWizardProvider.select((s) => s.sectionData),
+    );
+    final referral = sectionData[1] as String? ?? '—';
+    final knowledge = sectionData[2] as String? ?? '—';
+    final reasons = (sectionData[3] as List<String>?) ?? [];
+    final habits = sectionData[4] as String? ?? '—';
+    final prefer = (sectionData[5] as List<String>?) ?? [];
+    final goal = sectionData[6] as String? ?? '—';
+    final commitments = (sectionData[7] as List<String>?) ?? [];
     final config = stepConfig;
 
     return Padding(

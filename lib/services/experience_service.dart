@@ -132,6 +132,11 @@ class ExperienceService {
     HapticFeedback.mediumImpact();
   }
 
+  void heavyHaptic() {
+    if (!_hapticEnabled) return;
+    HapticFeedback.heavyImpact();
+  }
+
   void successHaptic() => FeedbackCoordinator.instance.success();
   void errorHaptic() => FeedbackCoordinator.instance.error();
   void chestOpenHaptic() => FeedbackCoordinator.instance.chestOpen();

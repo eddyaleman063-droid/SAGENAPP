@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
@@ -34,7 +34,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
   }
 
   Future<void> _sendReset() async {
-    HapticFeedback.lightImpact();
+    ExperienceService.instance.lightHaptic();
     final email = _emailCtrl.text.trim();
     if (email.isEmpty) {
       SagenNotification.show(

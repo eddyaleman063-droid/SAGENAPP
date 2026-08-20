@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:sagen/services/experience_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -292,7 +291,7 @@ class _SpeedSortScreenState extends ConsumerState<SpeedSortScreen> {
             label: AppLocalizations.of(context)!.correct,
             child: GestureDetector(
               onTap: () {
-                HapticFeedback.lightImpact();
+                ExperienceService.instance.lightHaptic();
                 _onSort(index, true);
               },
               child: Container(
@@ -316,7 +315,7 @@ class _SpeedSortScreenState extends ConsumerState<SpeedSortScreen> {
             label: AppLocalizations.of(context)!.incorrect,
             child: GestureDetector(
               onTap: () {
-                HapticFeedback.lightImpact();
+                ExperienceService.instance.lightHaptic();
                 _onSort(index, false);
               },
               child: Container(
@@ -431,7 +430,7 @@ class _SpeedSortScreenState extends ConsumerState<SpeedSortScreen> {
             label: l.miniGamePlayAgain,
             child: FilledButton(
               onPressed: () {
-                HapticFeedback.lightImpact();
+                ExperienceService.instance.lightHaptic();
                 setState(() => _initGame());
               },
               child: Text(l.miniGamePlayAgain),
