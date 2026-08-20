@@ -50,7 +50,16 @@ class _DashboardHomeScreenState extends ConsumerState<DashboardHomeScreen>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final dash = ref.watch(dashboardProvider);
+    final dash = ref.watch(
+      dashboardProvider.select(
+        (d) => (
+          displayName: d.displayName,
+          currentStreak: d.currentStreak,
+          nextLesson: d.nextLesson,
+          nextLessonStageTitle: d.nextLessonStageTitle,
+        ),
+      ),
+    );
     final learning = ref.watch(
       learningProvider.select(
         (l) => (

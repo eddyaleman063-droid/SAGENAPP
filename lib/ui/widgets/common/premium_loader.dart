@@ -43,14 +43,7 @@ class _PremiumLoaderState extends ConsumerState<PremiumLoader>
       duration: const Duration(milliseconds: 300),
     );
     if (widget.loading) _fadeCtrl.forward();
-    _quoteTimer = Timer.periodic(const Duration(seconds: 6), (_) {
-      if (!mounted) return;
-      setState(
-        () => _currentQuote = ref
-            .read(motivationalQuotesServiceProvider)
-            .random(),
-      );
-    });
+    if (widget.loading) _startQuoteTimer();
   }
 
   @override
@@ -59,10 +52,25 @@ class _PremiumLoaderState extends ConsumerState<PremiumLoader>
     if (widget.loading != old.loading) {
       if (widget.loading) {
         _fadeCtrl.forward();
+        _startQuoteTimer();
       } else {
         _fadeCtrl.reverse();
+        _quoteTimer?.cancel();
+        _quoteTimer = null;
       }
     }
+  }
+
+  void _startQuoteTimer() {
+    _quoteTimer?.cancel();
+    _quoteTimer = Timer.periodic(const Duration(seconds: 6), (_) {
+      if (!mounted) return;
+      setState(
+        () => _currentQuote = ref
+            .read(motivationalQuotesServiceProvider)
+            .random(),
+      );
+    });
   }
 
   @override

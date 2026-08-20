@@ -48,7 +48,7 @@ class LessonResultsScreen extends ConsumerWidget {
     final session = ref.watch(sessionProvider);
 
     Lesson? currentLesson;
-    for (final s in ref.watch(learningProvider).stages) {
+    for (final s in ref.watch(learningProvider.select((l) => l.stages))) {
       for (final ls in s.lessons) {
         if (ls.id == lessonId) {
           currentLesson = ls;

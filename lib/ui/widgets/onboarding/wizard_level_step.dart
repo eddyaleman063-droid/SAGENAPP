@@ -21,8 +21,11 @@ class WizardLevelStep extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final config = stepConfig;
-    final state = ref.watch(onboardingWizardProvider);
-    final selected = state.sectionData[stepIndex] as String?;
+    final selected = ref.watch(
+      onboardingWizardProvider.select(
+        (s) => s.sectionData[stepIndex] as String?,
+      ),
+    );
     final textPrimary = context.textPrimary;
 
     return Padding(

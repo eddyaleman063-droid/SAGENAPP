@@ -28,12 +28,16 @@ class WizardCommitmentStep extends ConsumerWidget {
     final textPrimary = context.textPrimary;
 
     final config = stepConfig;
-    final state = ref.watch(onboardingWizardProvider);
     final selected =
-        (state.sectionData[stepIndex] as List<String>?) ?? <String>[];
+        ref.watch(
+          onboardingWizardProvider.select(
+            (s) => s.sectionData[stepIndex] as List<String>?,
+          ),
+        ) ??
+        <String>[];
     final l = AppLocalizations.of(context)!;
     final sageMsg = sageMessageForStep != null
-        ? sageMessageForStep!(stepIndex, state, l)
+        ? sageMessageForStep!(stepIndex, ref.read(onboardingWizardProvider), l)
         : config.sageMessage;
 
     return Padding(

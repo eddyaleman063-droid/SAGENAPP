@@ -28,8 +28,11 @@ class WizardGoalStep extends ConsumerWidget {
     final exp = ref.read(experienceServiceProvider);
 
     final config = stepConfig;
-    final state = ref.watch(onboardingWizardProvider);
-    final selected = state.sectionData[stepIndex] as String?;
+    final selected = ref.watch(
+      onboardingWizardProvider.select(
+        (s) => s.sectionData[stepIndex] as String?,
+      ),
+    );
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),

@@ -1,7 +1,6 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sagen/services/experience_service.dart';
@@ -118,7 +117,7 @@ class _MotivationScreenState extends State<MotivationScreen> {
 
   void _onTapUp(TapUpDetails _) {
     setState(() => _isPressed = false);
-    HapticFeedback.lightImpact();
+    ExperienceService.instance.lightHaptic();
     widget.onContinue?.call();
   }
 
@@ -131,6 +130,8 @@ class _MotivationScreenState extends State<MotivationScreen> {
   @override
   Widget build(BuildContext context) {
     final dark = context.isDark;
+    final l = AppLocalizations.of(context)!;
+    final options = _buildOptions(l);
     return Scaffold(
       backgroundColor: dark
           ? PremiumColors.deepBackground
@@ -273,12 +274,10 @@ class _MotivationScreenState extends State<MotivationScreen> {
               child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
                 padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
-                itemCount: _buildOptions(AppLocalizations.of(context)!).length,
+                itemCount: options.length,
                 itemBuilder: (context, index) {
                   final isSelected = _selections[index];
-                  final opt = _buildOptions(
-                    AppLocalizations.of(context)!,
-                  )[index];
+                  final opt = options[index];
                   return Semantics(
                     key: ValueKey('motivation_$index'),
                     button: true,
@@ -286,7 +285,7 @@ class _MotivationScreenState extends State<MotivationScreen> {
                     label: opt["label"] is String ? opt["label"] as String : '',
                     child: GestureDetector(
                       onTap: () {
-                        HapticFeedback.lightImpact();
+                        ExperienceService.instance.lightHaptic();
                         _toggle(index);
                       },
                       child: AnimatedContainer(

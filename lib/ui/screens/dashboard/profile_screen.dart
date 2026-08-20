@@ -70,8 +70,24 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
     final currentStreak = ref.watch(
       streakProvider.select((s) => s.currentStreak),
     );
-    final gemState = ref.watch(gemProvider);
-    final achievements = ref.watch(achievementProvider);
+    final gemState = ref.watch(
+      gemProvider.select(
+        (g) => (
+          balance: g.balance,
+          totalEarned: g.totalEarned,
+          totalSpent: g.totalSpent,
+        ),
+      ),
+    );
+    final achievements = ref.watch(
+      achievementProvider.select(
+        (a) => (
+          unlockedCount: a.unlockedCount,
+          totalCount: a.totalCount,
+          achievements: a.achievements,
+        ),
+      ),
+    );
 
     if (learning.isLoading) {
       return PremiumLoader(
