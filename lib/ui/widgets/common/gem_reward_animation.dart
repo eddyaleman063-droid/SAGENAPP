@@ -98,7 +98,7 @@ class _GemRewardAnimationState extends State<GemRewardAnimation>
                     // Main badge
                     Semantics(
                       liveRegion: true,
-                      label: '+${widget.amount} gems',
+                      label: '+${widget.amount} gems earned',
                       child: Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 24,
@@ -228,12 +228,6 @@ class _ParticleWidget extends StatelessWidget {
               gradient: RadialGradient(
                 colors: [particle.color, particle.color.withValues(alpha: 0.3)],
               ),
-              boxShadow: [
-                BoxShadow(
-                  color: particle.color.withValues(alpha: 0.5),
-                  blurRadius: 4,
-                ),
-              ],
             ),
           ),
         ),

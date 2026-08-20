@@ -26,19 +26,37 @@ class BuyButton extends StatefulWidget {
 
 class _BuyButtonState extends State<BuyButton> {
   bool _purchasing = false;
+  bool _showSuccess = false;
 
   void _onTap() {
     if (_purchasing) return;
     ExperienceService.instance.mediumHaptic();
-    setState(() => _purchasing = true);
+    setState(() {
+      _purchasing = true;
+      _showSuccess = false;
+    });
     widget.onBuy();
   }
 
   @override
   void didUpdateWidget(covariant BuyButton oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.isLoading && !widget.isLoading && _purchasing) {
-      setState(() => _purchasing = false);
+    if (!mounted) return;
+    final loadingFinished =
+        oldWidget.isLoading && !widget.isLoading && _purchasing;
+    final itemBecameOwned = oldWidget.canBuy && !widget.canBuy && _purchasing;
+    if (loadingFinished || itemBecameOwned) {
+      if (itemBecameOwned) {
+        setState(() {
+          _purchasing = false;
+          _showSuccess = true;
+        });
+        Future<void>.delayed(const Duration(milliseconds: 600), () {
+          if (mounted) setState(() => _showSuccess = false);
+        });
+      } else {
+        setState(() => _purchasing = false);
+      }
     }
   }
 
@@ -58,17 +76,17 @@ class _BuyButtonState extends State<BuyButton> {
       button: true,
       enabled: canBuy,
       child: GestureDetector(
-        onTap: canBuy
-            ? () {
-                HapticFeedback.lightImpact();
-                _onTap();
-              }
-            : null,
-        child: Container(
+        onTap: canBuy ? _onTap : null,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppRadius.md),
-            gradient: canBuy
+            gradient: _showSuccess
+                ? const LinearGradient(
+                    colors: [Color(0xFF2ECC71), Color(0xFF27AE60)],
+                  )
+                : canBuy
                 ? const LinearGradient(
                     colors: [
                       PremiumColors.accentCyan,
@@ -76,7 +94,9 @@ class _BuyButtonState extends State<BuyButton> {
                     ],
                   )
                 : null,
-            color: canBuy ? null : context.surfaceTinted,
+            color: _showSuccess
+                ? null
+                : (canBuy ? null : context.surfaceTinted),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -93,6 +113,14 @@ class _BuyButtonState extends State<BuyButton> {
                           strokeWidth: 2,
                           color: Colors.white,
                         ),
+                      ),
+                    )
+                  else if (_showSuccess)
+                    const ExcludeSemantics(
+                      child: Icon(
+                        Icons.check_rounded,
+                        size: 16,
+                        color: Colors.white,
                       ),
                     )
                   else ...[
@@ -116,10 +144,12 @@ class _BuyButtonState extends State<BuyButton> {
                     const SizedBox(width: AppSpacing.xs),
                   ],
                   Text(
-                    isFree ? l.free : '${widget.cost}',
+                    _showSuccess
+                        ? l.storeAlreadyOwned
+                        : (isFree ? l.free : '${widget.cost}'),
                     style: AppTextStyle.subtitle.copyWith(
                       fontWeight: FontWeight.w600,
-                      color: canBuy ? Colors.white : context.subtle,
+                      color: Colors.white,
                     ),
                   ),
                 ],
