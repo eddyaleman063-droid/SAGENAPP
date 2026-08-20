@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class GemTransaction {
@@ -14,18 +15,22 @@ class GemTransaction {
     required this.balanceAfter,
   });
 
-  /// Encodes transaction as a JSON string for safe persistence.
-  /// Pipe delimiter was fragile — reason could contain special chars.
-  String encode() =>
-      '{"a":$amount,"r":"${_escapeJson(reason)}","t":${timestamp.millisecondsSinceEpoch},"b":$balanceAfter}';
+  String encode() => jsonEncode({
+    'a': amount,
+    'r': reason,
+    't': timestamp.millisecondsSinceEpoch,
+    'b': balanceAfter,
+  });
 
   static GemTransaction? decode(String raw) {
     try {
       if (!raw.startsWith('{')) return null;
-      final a = _extractInt(raw, '"a":');
-      final r = _extractString(raw, '"r":');
-      final t = _extractInt(raw, '"t":');
-      final b = _extractInt(raw, '"b":');
+      final map = jsonDecode(raw);
+      if (map is! Map<String, dynamic>) return null;
+      final a = map['a'] as int?;
+      final r = map['r'] as String?;
+      final t = map['t'] as int?;
+      final b = map['b'] as int?;
       if (a == null || r == null || t == null || b == null) return null;
       return GemTransaction(
         amount: a,
@@ -36,26 +41,6 @@ class GemTransaction {
     } catch (_) {
       return null;
     }
-  }
-
-  static String _escapeJson(String s) =>
-      s.replaceAll('\\', '\\\\').replaceAll('"', '\\"');
-
-  static int? _extractInt(String json, String key) {
-    final idx = json.indexOf(key);
-    if (idx == -1) return null;
-    final start = idx + key.length;
-    final end = json.indexOf(RegExp(r'[,}]'), start);
-    return int.tryParse(json.substring(start, end == -1 ? json.length : end));
-  }
-
-  static String? _extractString(String json, String key) {
-    final idx = json.indexOf(key);
-    if (idx == -1) return null;
-    final start = json.indexOf('"', idx + key.length) + 1;
-    final end = json.indexOf('"', start);
-    if (start == 0 || end == -1) return null;
-    return json.substring(start, end).replaceAll('\\"', '"');
   }
 }
 

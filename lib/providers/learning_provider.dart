@@ -481,9 +481,7 @@ class LearningNotifier extends Notifier<LearningState> {
     final gemsEarned = gemsBase + gemsPerfectFlat + gemsFirstLesson;
 
     // Award gems for lesson completion
-    ref
-        .read(gemProvider.notifier)
-        .awardLessonGems(correctAnswers, perfectLesson);
+    ref.read(gemProvider.notifier).awardLessonGems(correctAnswers);
     if (perfectLesson) ref.read(gemProvider.notifier).awardPerfectLessonBonus();
     ref.read(gemProvider.notifier).awardFirstLessonOfDay();
 

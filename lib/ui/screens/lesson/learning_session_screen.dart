@@ -83,6 +83,12 @@ class _LearningSessionScreenState extends ConsumerState<LearningSessionScreen> {
   }
 
   void _onComplete(QuizResult result) {
+    final gemNotifier = ref.read(gemProvider.notifier);
+    final gemsBase = result.correctAnswers * 5;
+    final gemsPerfect = result.perfect ? 20 : 0;
+    final gemsFirstLesson = gemNotifier.canAwardFirstLessonOfDay ? 10 : 0;
+    final gemsEarned = gemsBase + gemsPerfect + gemsFirstLesson;
+
     ref
         .read(learningProvider.notifier)
         .completeLesson(
@@ -94,12 +100,6 @@ class _LearningSessionScreenState extends ConsumerState<LearningSessionScreen> {
         );
     ref.read(streakProvider.notifier).checkIn();
     ref.read(energyProvider.notifier).consumeForLesson();
-
-    final gemNotifier = ref.read(gemProvider.notifier);
-    final gemsBase = result.correctAnswers * 5;
-    final gemsPerfect = result.perfect ? 20 : 0;
-    final gemsFirstLesson = gemNotifier.canAwardFirstLessonOfDay ? 10 : 0;
-    final gemsEarned = gemsBase + gemsPerfect + gemsFirstLesson;
 
     if (!mounted) return;
     context.pushReplacement(

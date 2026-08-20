@@ -120,12 +120,12 @@ class GemHistoryScreen extends ConsumerWidget {
                 final now = DateTime.now();
                 final dateLabel = _formatDate(date, now, l);
 
-                  return _TransactionTile(
-                    tx: tx,
-                    color: color,
-                    icon: icon,
-                    dateLabel: dateLabel,
-                  ).animate().fadeIn(
+                return _TransactionTile(
+                  tx: tx,
+                  color: color,
+                  icon: icon,
+                  dateLabel: dateLabel,
+                ).animate().fadeIn(
                   delay: Duration(milliseconds: index * 30),
                   duration: 300.ms,
                 );

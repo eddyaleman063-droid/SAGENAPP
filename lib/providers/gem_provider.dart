@@ -285,7 +285,7 @@ class GemNotifier extends Notifier<GemState> {
   /// Base: 5 gems per correct answer. The perfect bonus is a FLAT +20
   /// (awardPerfectLessonBonus), matching the server formula — the base is not
   /// doubled (NUEVO-03).
-  void awardLessonGems(int correctAnswers, bool isPerfect) {
+  void awardLessonGems(int correctAnswers) {
     final base = correctAnswers * 5;
     if (base > 0) addGems(base, reason: 'lesson');
   }
