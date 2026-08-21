@@ -34,7 +34,7 @@ class _WordMatchScreenState extends ConsumerState<WordMatchScreen> {
   bool _rewarded = false;
   bool _completing = false;
   Timer? _timer;
-  int _timeRemaining = 60;
+  late final ValueNotifier<int> _timeRemaining;
 
   static List<(String, String)> _buildPairs(AppLocalizations l) => [
     ('Phishing', l.miniGamePhishingDef),
@@ -48,7 +48,7 @@ class _WordMatchScreenState extends ConsumerState<WordMatchScreen> {
   @override
   void initState() {
     super.initState();
-    // Will be initialized in didChangeDependencies when context is available
+    _timeRemaining = ValueNotifier(widget.config.timeLimit.inSeconds);
   }
 
   @override
@@ -78,17 +78,17 @@ class _WordMatchScreenState extends ConsumerState<WordMatchScreen> {
     _mistakes = 0;
     _gameComplete = false;
     _rewarded = false;
-    _timeRemaining = widget.config.timeLimit.inSeconds;
+    _timeRemaining.value = widget.config.timeLimit.inSeconds;
     _timer = Timer.periodic(const Duration(seconds: 1), (t) {
       if (!mounted) {
         t.cancel();
         return;
       }
-      if (_timeRemaining <= 0) {
+      if (_timeRemaining.value <= 0) {
         t.cancel();
         _completeGame();
       } else {
-        setState(() => _timeRemaining--);
+        _timeRemaining.value--;
       }
     });
   }
@@ -96,6 +96,7 @@ class _WordMatchScreenState extends ConsumerState<WordMatchScreen> {
   @override
   void dispose() {
     _timer?.cancel();
+    _timeRemaining.dispose();
     super.dispose();
   }
 
@@ -167,24 +168,27 @@ class _WordMatchScreenState extends ConsumerState<WordMatchScreen> {
           actions: [
             Padding(
               padding: const EdgeInsets.all(AppSpacing.lg),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.timer_rounded,
-                    size: 18,
-                    color: _timeRemaining < 10
-                        ? PremiumColors.error
-                        : context.textPrimary,
-                  ),
-                  const SizedBox(width: AppSpacing.xxs),
-                  Text(
-                    '$_timeRemaining',
-                    style: AppTextStyle.titleSmall.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: context.textPrimary,
+              child: ValueListenableBuilder<int>(
+                valueListenable: _timeRemaining,
+                builder: (_, remaining, child) => Row(
+                  children: [
+                    Icon(
+                      Icons.timer_rounded,
+                      size: 18,
+                      color: remaining < 10
+                          ? PremiumColors.error
+                          : context.textPrimary,
                     ),
-                  ),
-                ],
+                    const SizedBox(width: AppSpacing.xxs),
+                    Text(
+                      '$remaining',
+                      style: AppTextStyle.titleSmall.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: context.textPrimary,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

@@ -7,6 +7,7 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/theme_constants.dart';
 import 'package:sagen/providers/providers.dart';
 import '../../../services/experience_service.dart';
+import '../../widgets/common/error_boundary.dart';
 import '../../widgets/onboarding/wizard_top_bar.dart';
 import '../../widgets/onboarding/wizard_sage_section.dart';
 import '../../widgets/onboarding/wizard_bottom_bar.dart';
@@ -80,6 +81,7 @@ class _OnboardingWizardScreenState
     // Snapshot wizard data before autoDispose clears the provider
     final data = ref.read(onboardingWizardProvider).sectionData;
     ref.read(wizardBridgeProvider.notifier).capture(data);
+    ref.read(onboardingWizardProvider.notifier).markCompleted();
     context.goNamed('onboarding-flow');
   }
 
@@ -115,8 +117,6 @@ class _OnboardingWizardScreenState
     final currentIndex = ref.watch(
       onboardingWizardProvider.select((s) => s.currentIndex),
     );
-    // Watch sectionData to rebuild sage message when selections change
-    ref.watch(onboardingWizardProvider.select((s) => s.sectionData));
     final canContinue = ref.watch(onboardingCanContinueProvider);
     final wizardSteps = OnboardingWizardConfig.localizedSteps(_l);
     final config = wizardSteps[currentIndex];
@@ -133,7 +133,9 @@ class _OnboardingWizardScreenState
             children: [
               WizardTopBar(currentIndex: currentIndex, onBack: _goBack),
               WizardSageSection(
-                key: ValueKey('sage_$currentIndex'),
+                key: ValueKey(
+                  'sage_${currentIndex}_${_sageMessageForStep(currentIndex, ref.read(onboardingWizardProvider), _l)}',
+                ),
                 emotion: config.emotion,
                 message: _sageMessageForStep(
                   currentIndex,
@@ -163,34 +165,36 @@ class _OnboardingWizardScreenState
   }
 
   Widget _buildStep(int index, List<WizardStepConfig> wizardSteps) {
+    Widget step;
     switch (index) {
       case 0:
-        return const WizardPresentationStep();
+        step = const WizardPresentationStep();
       case 1:
-        return WizardSingleChoiceStep(stepIndex: 1, stepConfig: wizardSteps[1]);
+        step = WizardSingleChoiceStep(stepIndex: 1, stepConfig: wizardSteps[1]);
       case 2:
-        return WizardLevelStep(stepIndex: 2, stepConfig: wizardSteps[2]);
+        step = WizardLevelStep(stepIndex: 2, stepConfig: wizardSteps[2]);
       case 3:
-        return WizardMultiChoiceStep(stepIndex: 3, stepConfig: wizardSteps[3]);
+        step = WizardMultiChoiceStep(stepIndex: 3, stepConfig: wizardSteps[3]);
       case 4:
-        return WizardSingleChoiceStep(stepIndex: 4, stepConfig: wizardSteps[4]);
+        step = WizardSingleChoiceStep(stepIndex: 4, stepConfig: wizardSteps[4]);
       case 5:
-        return WizardMultiChoiceStep(stepIndex: 5, stepConfig: wizardSteps[5]);
+        step = WizardMultiChoiceStep(stepIndex: 5, stepConfig: wizardSteps[5]);
       case 6:
-        return WizardGoalStep(stepIndex: 6, stepConfig: wizardSteps[6]);
+        step = WizardGoalStep(stepIndex: 6, stepConfig: wizardSteps[6]);
       case 7:
-        return WizardCommitmentStep(
+        step = WizardCommitmentStep(
           stepIndex: 7,
           stepConfig: wizardSteps[7],
           sageMessageForStep: _sageMessageForStep,
         );
       case 8:
-        return WizardConfirmationStep(
+        step = WizardConfirmationStep(
           stepConfig: wizardSteps[8],
           sageMessageForStep: _sageMessageForStep,
         );
       default:
-        return const SizedBox.shrink();
+        step = const SizedBox.shrink();
     }
+    return ErrorBoundary(child: step);
   }
 }

@@ -1,5 +1,10 @@
+import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../config/onboarding_wizard_config.dart';
+import 'prefs_provider.dart';
+
+const _kWizardKey = 'onboarding_wizard_state';
+const _kWizardDoneKey = 'onboarding_wizard_completed';
 
 class OnboardingWizardState {
   final int currentIndex;
@@ -19,24 +24,61 @@ class OnboardingWizardState {
       sectionData: sectionData ?? this.sectionData,
     );
   }
+
+  Map<String, dynamic> toJson() => {
+    'currentIndex': currentIndex,
+    'sectionData': sectionData.map((k, v) => MapEntry(k.toString(), v)),
+  };
+
+  factory OnboardingWizardState.fromJson(Map<String, dynamic> json) {
+    final raw = json['sectionData'] as Map<String, dynamic>? ?? {};
+    return OnboardingWizardState(
+      currentIndex: (json['currentIndex'] as num?)?.toInt() ?? 0,
+      sectionData: raw.map((k, v) => MapEntry(int.tryParse(k) ?? 0, v)),
+    );
+  }
 }
 
 class OnboardingWizardNotifier
     extends AutoDisposeNotifier<OnboardingWizardState> {
   @override
-  OnboardingWizardState build() => const OnboardingWizardState();
+  OnboardingWizardState build() {
+    final completed = ref.read(prefsProvider).getBool(_kWizardDoneKey) ?? false;
+    if (completed) return const OnboardingWizardState();
+    return _load();
+  }
+
+  OnboardingWizardState _load() {
+    try {
+      final raw = ref.read(prefsProvider).getString(_kWizardKey);
+      if (raw != null && raw.isNotEmpty) {
+        final json = jsonDecode(raw) as Map<String, dynamic>;
+        return OnboardingWizardState.fromJson(json);
+      }
+    } catch (_) {}
+    return const OnboardingWizardState();
+  }
+
+  void _persist() {
+    try {
+      final prefs = ref.read(prefsProvider);
+      prefs.setString(_kWizardKey, jsonEncode(state.toJson()));
+    } catch (_) {}
+  }
 
   void setCurrentIndex(int index) {
     const maxIndex = OnboardingWizardConfig.totalSteps > 0
         ? OnboardingWizardConfig.totalSteps - 1
         : 0;
     state = state.copyWith(currentIndex: index.clamp(0, maxIndex));
+    _persist();
   }
 
   void setSectionData(int index, dynamic data) {
     final updated = Map<int, dynamic>.from(state.sectionData);
     updated[index] = data;
     state = state.copyWith(sectionData: updated);
+    _persist();
   }
 
   void nextStep() {
@@ -45,17 +87,32 @@ class OnboardingWizardNotifier
         : 0;
     if (state.currentIndex < maxIndex) {
       state = state.copyWith(currentIndex: state.currentIndex + 1);
+      _persist();
     }
   }
 
   void previousStep() {
     if (state.currentIndex > 0) {
       state = state.copyWith(currentIndex: state.currentIndex - 1);
+      _persist();
     }
   }
 
   void reset() {
     state = const OnboardingWizardState();
+    try {
+      final prefs = ref.read(prefsProvider);
+      prefs.remove(_kWizardKey);
+      prefs.setBool(_kWizardDoneKey, false);
+    } catch (_) {}
+  }
+
+  void markCompleted() {
+    try {
+      final prefs = ref.read(prefsProvider);
+      prefs.setBool(_kWizardDoneKey, true);
+      prefs.remove(_kWizardKey);
+    } catch (_) {}
   }
 
   T? getData<T>(int index) {

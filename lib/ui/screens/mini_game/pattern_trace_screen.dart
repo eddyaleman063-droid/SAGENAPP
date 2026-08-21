@@ -33,7 +33,7 @@ class _PatternTraceScreenState extends ConsumerState<PatternTraceScreen> {
   bool _waitingForInput = false;
   int? _highlightedIndex;
   Timer? _timer;
-  int _timeRemaining = 60;
+  late final ValueNotifier<int> _timeRemaining;
   int _score = 0;
 
   Timer? _patternTimer;
@@ -41,6 +41,7 @@ class _PatternTraceScreenState extends ConsumerState<PatternTraceScreen> {
   @override
   void initState() {
     super.initState();
+    _timeRemaining = ValueNotifier(widget.config.timeLimit.inSeconds);
     _initGame();
   }
 
@@ -48,6 +49,7 @@ class _PatternTraceScreenState extends ConsumerState<PatternTraceScreen> {
   void dispose() {
     _timer?.cancel();
     _patternTimer?.cancel();
+    _timeRemaining.dispose();
     super.dispose();
   }
 
@@ -58,17 +60,17 @@ class _PatternTraceScreenState extends ConsumerState<PatternTraceScreen> {
     _score = 0;
     _gameComplete = false;
     _rewarded = false;
-    _timeRemaining = widget.config.timeLimit.inSeconds;
+    _timeRemaining.value = widget.config.timeLimit.inSeconds;
     _timer = Timer.periodic(const Duration(seconds: 1), (t) {
       if (!mounted) {
         t.cancel();
         return;
       }
-      if (_timeRemaining <= 0) {
+      if (_timeRemaining.value <= 0) {
         t.cancel();
         _completeGame();
       } else {
-        setState(() => _timeRemaining--);
+        _timeRemaining.value--;
       }
     });
     _startRound();
@@ -170,24 +172,27 @@ class _PatternTraceScreenState extends ConsumerState<PatternTraceScreen> {
           actions: [
             Padding(
               padding: const EdgeInsets.all(AppSpacing.lg),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.timer_rounded,
-                    size: 18,
-                    color: _timeRemaining < 10
-                        ? PremiumColors.error
-                        : context.textPrimary,
-                  ),
-                  const SizedBox(width: AppSpacing.xxs),
-                  Text(
-                    '$_timeRemaining',
-                    style: AppTextStyle.titleSmall.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: context.textPrimary,
+              child: ValueListenableBuilder<int>(
+                valueListenable: _timeRemaining,
+                builder: (_, remaining, child) => Row(
+                  children: [
+                    Icon(
+                      Icons.timer_rounded,
+                      size: 18,
+                      color: remaining < 10
+                          ? PremiumColors.error
+                          : context.textPrimary,
                     ),
-                  ),
-                ],
+                    const SizedBox(width: AppSpacing.xxs),
+                    Text(
+                      '$remaining',
+                      style: AppTextStyle.titleSmall.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: context.textPrimary,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

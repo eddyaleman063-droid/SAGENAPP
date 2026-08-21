@@ -55,8 +55,6 @@ class _MessageListState extends State<MessageList> {
       return const EmptyChat();
     }
 
-    _scheduleScroll();
-
     final showStreaming =
         widget.sage.isStreaming && widget.sage.streamingText.isNotEmpty;
     final extraItem = showStreaming ? 1 : 0;
