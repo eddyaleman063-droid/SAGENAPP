@@ -87,13 +87,11 @@ class _OnboardingWizardScreenState
 
   String _sageMessageForStep(
     int index,
-    OnboardingWizardState wizardState,
+    dynamic data,
     AppLocalizations l,
-    List<WizardStepConfig> steps,
+    WizardStepConfig config,
   ) {
-    final config = steps[index];
     if (index == 7) {
-      final data = wizardState.sectionData[7];
       if (data is List && data.length == 1) {
         final val = data.first.toString();
         switch (val) {
@@ -121,13 +119,10 @@ class _OnboardingWizardScreenState
     final canContinue = ref.watch(onboardingCanContinueProvider);
     final wizardSteps = OnboardingWizardConfig.localizedSteps(_l);
     final config = wizardSteps[currentIndex];
-    final wizardState = ref.read(onboardingWizardProvider);
-    final sageMsg = _sageMessageForStep(
-      currentIndex,
-      wizardState,
-      _l,
-      wizardSteps,
+    final currentData = ref.watch(
+      onboardingWizardProvider.select((s) => s.sectionData[currentIndex]),
     );
+    final sageMsg = _sageMessageForStep(currentIndex, currentData, _l, config);
 
     return PopScope(
       canPop: currentIndex == 0,
@@ -184,18 +179,9 @@ class _OnboardingWizardScreenState
       case 6:
         step = WizardGoalStep(stepIndex: 6, stepConfig: wizardSteps[6]);
       case 7:
-        step = WizardCommitmentStep(
-          stepIndex: 7,
-          stepConfig: wizardSteps[7],
-          sageMessageForStep: (i, s, l) =>
-              _sageMessageForStep(i, s, l, wizardSteps),
-        );
+        step = WizardCommitmentStep(stepIndex: 7, stepConfig: wizardSteps[7]);
       case 8:
-        step = WizardConfirmationStep(
-          stepConfig: wizardSteps[8],
-          sageMessageForStep: (i, s, l) =>
-              _sageMessageForStep(i, s, l, wizardSteps),
-        );
+        step = WizardConfirmationStep(stepConfig: wizardSteps[8]);
       default:
         step = const SizedBox.shrink();
     }

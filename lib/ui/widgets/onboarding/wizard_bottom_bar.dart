@@ -76,7 +76,6 @@ class WizardBottomBar extends ConsumerWidget {
               label: l.skipText,
               child: TextButton(
                 onPressed: () {
-                  exp.lightHaptic();
                   onComplete();
                 },
                 child: Text(
@@ -164,7 +163,6 @@ class _WizardButtonState extends ConsumerState<WizardButton>
             borderRadius: BorderRadius.circular(AppRadius.lg),
             onTap: widget.enabled
                 ? () {
-                    exp.lightHaptic();
                     widget.onPressed();
                   }
                 : null,

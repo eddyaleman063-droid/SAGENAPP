@@ -34,7 +34,6 @@ class _ProfileSuccessScreenState extends ConsumerState<ProfileSuccessScreen>
     );
     _enterCtrl.forward();
     _confettiCtrl.play();
-    ref.read(authProvider.notifier).markOnboardingCompleted();
   }
 
   @override

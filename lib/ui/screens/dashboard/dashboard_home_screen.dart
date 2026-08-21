@@ -11,6 +11,7 @@ import '../../../ui/widgets/home/home_header.dart';
 import '../../../ui/widgets/home/hero_mission_card.dart';
 import '../../../ui/widgets/home/learning_track_tile.dart';
 import '../../../ui/widgets/shimmer_loading.dart';
+import '../../../ui/widgets/shimmer_scope.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sagen/core/theme/app_colors.dart';
 
@@ -334,87 +335,89 @@ class _DashboardShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: Padding(
+    return ShimmerScope(
+      child: SafeArea(
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(
+                  AppSpacing.xxl,
+                  MediaQuery.paddingOf(context).top + AppSpacing.lg,
+                  AppSpacing.xxl,
+                  AppSpacing.lg,
+                ),
+                child: const Row(
+                  children: [
+                    ShimmerLoading(
+                      width: 44,
+                      height: 44,
+                      borderRadius: AppRadius.pill,
+                    ),
+                    SizedBox(width: AppSpacing.md),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ShimmerLoading(width: 80, height: 12),
+                          SizedBox(height: AppSpacing.xxs),
+                          ShimmerLoading(width: 120, height: 18),
+                        ],
+                      ),
+                    ),
+                    ShimmerLoading(
+                      width: 60,
+                      height: 28,
+                      borderRadius: AppRadius.pill,
+                    ),
+                    SizedBox(width: AppSpacing.sm),
+                    ShimmerLoading(
+                      width: 60,
+                      height: 28,
+                      borderRadius: AppRadius.pill,
+                    ),
+                    SizedBox(width: AppSpacing.sm),
+                    ShimmerLoading(
+                      width: 60,
+                      height: 28,
+                      borderRadius: AppRadius.pill,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SliverPadding(
               padding: EdgeInsets.fromLTRB(
                 AppSpacing.xxl,
-                MediaQuery.paddingOf(context).top + AppSpacing.lg,
+                0,
                 AppSpacing.xxl,
-                AppSpacing.lg,
+                AppSpacing.xxl,
               ),
-              child: const Row(
-                children: [
-                  ShimmerLoading(
-                    width: 44,
-                    height: 44,
-                    borderRadius: AppRadius.pill,
-                  ),
-                  SizedBox(width: AppSpacing.md),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ShimmerLoading(width: 80, height: 12),
-                        SizedBox(height: AppSpacing.xxs),
-                        ShimmerLoading(width: 120, height: 18),
-                      ],
-                    ),
-                  ),
-                  ShimmerLoading(
-                    width: 60,
-                    height: 28,
-                    borderRadius: AppRadius.pill,
-                  ),
-                  SizedBox(width: AppSpacing.sm),
-                  ShimmerLoading(
-                    width: 60,
-                    height: 28,
-                    borderRadius: AppRadius.pill,
-                  ),
-                  SizedBox(width: AppSpacing.sm),
-                  ShimmerLoading(
-                    width: 60,
-                    height: 28,
-                    borderRadius: AppRadius.pill,
-                  ),
-                ],
+              sliver: SliverToBoxAdapter(
+                child: ShimmerLoading(
+                  width: double.infinity,
+                  height: 140,
+                  borderRadius: AppRadius.xl,
+                ),
               ),
             ),
-          ),
-          const SliverPadding(
-            padding: EdgeInsets.fromLTRB(
-              AppSpacing.xxl,
-              0,
-              AppSpacing.xxl,
-              AppSpacing.xxl,
-            ),
-            sliver: SliverToBoxAdapter(
-              child: ShimmerLoading(
-                width: double.infinity,
-                height: 140,
-                borderRadius: AppRadius.xl,
+            const SliverPadding(
+              padding: EdgeInsets.fromLTRB(
+                AppSpacing.xxl,
+                0,
+                AppSpacing.xxl,
+                _kBottomNavPadding,
+              ),
+              sliver: SliverToBoxAdapter(
+                child: ShimmerLoading(
+                  width: double.infinity,
+                  height: 200,
+                  borderRadius: AppRadius.xl,
+                ),
               ),
             ),
-          ),
-          const SliverPadding(
-            padding: EdgeInsets.fromLTRB(
-              AppSpacing.xxl,
-              0,
-              AppSpacing.xxl,
-              _kBottomNavPadding,
-            ),
-            sliver: SliverToBoxAdapter(
-              child: ShimmerLoading(
-                width: double.infinity,
-                height: 200,
-                borderRadius: AppRadius.xl,
-              ),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

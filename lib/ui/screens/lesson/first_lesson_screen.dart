@@ -11,6 +11,7 @@ import 'package:sagen/providers/providers.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/ui/widgets/common/premium_loader.dart';
 import 'package:sagen/ui/widgets/shimmer_loading.dart';
+import 'package:sagen/ui/widgets/shimmer_scope.dart';
 import 'package:sagen/services/sage_emotion_service.dart';
 import 'package:sagen/ui/widgets/common/sage_emotion_widget.dart';
 
@@ -257,30 +258,32 @@ class _FirstLessonShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ShimmerLoading(width: 280, height: 20),
-          SizedBox(height: AppSpacing.xxl),
-          ShimmerLoading(
-            width: double.infinity,
-            height: 56,
-            borderRadius: AppRadius.lg,
-          ),
-          SizedBox(height: AppSpacing.md),
-          ShimmerLoading(
-            width: double.infinity,
-            height: 56,
-            borderRadius: AppRadius.lg,
-          ),
-          SizedBox(height: AppSpacing.md),
-          ShimmerLoading(
-            width: double.infinity,
-            height: 56,
-            borderRadius: AppRadius.lg,
-          ),
-        ],
+    return const ShimmerScope(
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ShimmerLoading(width: 280, height: 20),
+            SizedBox(height: AppSpacing.xxl),
+            ShimmerLoading(
+              width: double.infinity,
+              height: 56,
+              borderRadius: AppRadius.lg,
+            ),
+            SizedBox(height: AppSpacing.md),
+            ShimmerLoading(
+              width: double.infinity,
+              height: 56,
+              borderRadius: AppRadius.lg,
+            ),
+            SizedBox(height: AppSpacing.md),
+            ShimmerLoading(
+              width: double.infinity,
+              height: 56,
+              borderRadius: AppRadius.lg,
+            ),
+          ],
+        ),
       ),
     );
   }

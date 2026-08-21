@@ -20,7 +20,7 @@ class RouteSelectionScreen extends StatefulWidget {
 
 class _RouteSelectionScreenState extends State<RouteSelectionScreen> {
   int? _selectedRouteIndex;
-  bool _isPressed = false;
+  final ValueNotifier<bool> _isPressed = ValueNotifier(false);
 
   static const _progressValue = 0.35;
 
@@ -29,6 +29,12 @@ class _RouteSelectionScreenState extends State<RouteSelectionScreen> {
     ('💻', l.routeSelection2),
     ('⚙️', l.routeSelection3),
   ];
+
+  @override
+  void dispose() {
+    _isPressed.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -283,50 +289,52 @@ class _RouteSelectionScreenState extends State<RouteSelectionScreen> {
                   onTapDown: _selectedRouteIndex != null
                       ? (_) {
                           ExperienceService.instance.mediumHaptic();
-                          setState(() => _isPressed = true);
+                          _isPressed.value = true;
                         }
                       : null,
                   onTapUp: _selectedRouteIndex != null
                       ? (_) {
-                          setState(() => _isPressed = false);
-                          ExperienceService.instance.lightHaptic();
+                          _isPressed.value = false;
                           widget.onContinue?.call();
                         }
                       : null,
                   onTapCancel: _selectedRouteIndex != null
-                      ? () => setState(() => _isPressed = false)
+                      ? () => _isPressed.value = false
                       : null,
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 80),
-                    transform: _isPressed
-                        ? Matrix4.translationValues(0, 4, 0)
-                        : Matrix4.identity(),
-                    height: 54,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: _selectedRouteIndex != null
-                          ? PremiumColors.primaryAccent
-                          : context.surfaceCard,
-                      borderRadius: BorderRadius.circular(AppRadius.xl),
-                      boxShadow: _isPressed || _selectedRouteIndex == null
-                          ? []
-                          : [
-                              const BoxShadow(
-                                color: PremiumColors.primaryDark,
-                                offset: Offset(0, 4),
-                                blurRadius: 0,
-                              ),
-                            ],
-                    ),
-                    child: Center(
-                      child: Text(
-                        AppLocalizations.of(context)!.continueText,
-                        style: AppTextStyle.titleSmall.copyWith(
-                          color: _selectedRouteIndex != null
-                              ? context.textPrimary
-                              : context.subtle,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 1.5,
+                  child: ValueListenableBuilder<bool>(
+                    valueListenable: _isPressed,
+                    builder: (context, pressed, _) => AnimatedContainer(
+                      duration: const Duration(milliseconds: 80),
+                      transform: pressed
+                          ? Matrix4.translationValues(0, 4, 0)
+                          : Matrix4.identity(),
+                      height: 54,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: _selectedRouteIndex != null
+                            ? PremiumColors.primaryAccent
+                            : context.surfaceCard,
+                        borderRadius: BorderRadius.circular(AppRadius.xl),
+                        boxShadow: pressed || _selectedRouteIndex == null
+                            ? []
+                            : [
+                                const BoxShadow(
+                                  color: PremiumColors.primaryDark,
+                                  offset: Offset(0, 4),
+                                  blurRadius: 0,
+                                ),
+                              ],
+                      ),
+                      child: Center(
+                        child: Text(
+                          AppLocalizations.of(context)!.continueText,
+                          style: AppTextStyle.titleSmall.copyWith(
+                            color: _selectedRouteIndex != null
+                                ? context.textPrimary
+                                : context.subtle,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 1.5,
+                          ),
                         ),
                       ),
                     ),

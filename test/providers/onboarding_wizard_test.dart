@@ -22,28 +22,24 @@ void main() {
       expect(state.sectionData, isEmpty);
     });
 
-    test('setCurrentIndex clamps within bounds', () {
-      notifier.setCurrentIndex(-1);
-      expect(container.read(onboardingWizardProvider).currentIndex, 0);
-      notifier.setCurrentIndex(99);
-      expect(container.read(onboardingWizardProvider).currentIndex, 8);
-      notifier.setCurrentIndex(4);
-      expect(container.read(onboardingWizardProvider).currentIndex, 4);
-    });
-
     test('nextStep advances by one', () {
       notifier.nextStep();
       expect(container.read(onboardingWizardProvider).currentIndex, 1);
     });
 
     test('nextStep stops at last index', () {
-      notifier.setCurrentIndex(8);
+      for (var i = 0; i < 8; i++) {
+        notifier.nextStep();
+      }
+      expect(container.read(onboardingWizardProvider).currentIndex, 8);
       notifier.nextStep();
       expect(container.read(onboardingWizardProvider).currentIndex, 8);
     });
 
     test('previousStep goes back by one', () {
-      notifier.setCurrentIndex(3);
+      for (var i = 0; i < 3; i++) {
+        notifier.nextStep();
+      }
       notifier.previousStep();
       expect(container.read(onboardingWizardProvider).currentIndex, 2);
     });
@@ -75,7 +71,6 @@ void main() {
     test('reset clears all state', () {
       notifier.setSectionData(1, 'Google');
       notifier.setSectionData(3, <String>['shield']);
-      notifier.setCurrentIndex(5);
       notifier.reset();
       final state = container.read(onboardingWizardProvider);
       expect(state.currentIndex, 0);
@@ -108,7 +103,9 @@ void main() {
 
     test('index 2 requires single selection', () {
       final notifier = container.read(onboardingWizardProvider.notifier);
-      notifier.setCurrentIndex(2);
+      for (var i = 0; i < 2; i++) {
+        notifier.nextStep();
+      }
       expect(container.read(onboardingCanContinueProvider), false);
       notifier.setSectionData(2, '3');
       expect(container.read(onboardingCanContinueProvider), true);
@@ -116,7 +113,9 @@ void main() {
 
     test('index 3 requires non-empty multi selection', () {
       final notifier = container.read(onboardingWizardProvider.notifier);
-      notifier.setCurrentIndex(3);
+      for (var i = 0; i < 3; i++) {
+        notifier.nextStep();
+      }
       expect(container.read(onboardingCanContinueProvider), false);
       notifier.setSectionData(3, <String>['shield']);
       expect(container.read(onboardingCanContinueProvider), true);
@@ -124,7 +123,9 @@ void main() {
 
     test('index 4 requires single selection', () {
       final notifier = container.read(onboardingWizardProvider.notifier);
-      notifier.setCurrentIndex(4);
+      for (var i = 0; i < 4; i++) {
+        notifier.nextStep();
+      }
       expect(container.read(onboardingCanContinueProvider), false);
       notifier.setSectionData(4, 'accounts');
       expect(container.read(onboardingCanContinueProvider), true);
@@ -132,7 +133,9 @@ void main() {
 
     test('index 5 requires non-empty multi selection', () {
       final notifier = container.read(onboardingWizardProvider.notifier);
-      notifier.setCurrentIndex(5);
+      for (var i = 0; i < 5; i++) {
+        notifier.nextStep();
+      }
       expect(container.read(onboardingCanContinueProvider), false);
       notifier.setSectionData(5, <String>['quiz']);
       expect(container.read(onboardingCanContinueProvider), true);
@@ -140,7 +143,9 @@ void main() {
 
     test('index 6 requires single selection', () {
       final notifier = container.read(onboardingWizardProvider.notifier);
-      notifier.setCurrentIndex(6);
+      for (var i = 0; i < 6; i++) {
+        notifier.nextStep();
+      }
       expect(container.read(onboardingCanContinueProvider), false);
       notifier.setSectionData(6, '10');
       expect(container.read(onboardingCanContinueProvider), true);
@@ -148,7 +153,9 @@ void main() {
 
     test('index 7 requires non-empty multi selection', () {
       final notifier = container.read(onboardingWizardProvider.notifier);
-      notifier.setCurrentIndex(7);
+      for (var i = 0; i < 7; i++) {
+        notifier.nextStep();
+      }
       expect(container.read(onboardingCanContinueProvider), false);
       notifier.setSectionData(7, <String>['7']);
       expect(container.read(onboardingCanContinueProvider), true);
@@ -156,7 +163,9 @@ void main() {
 
     test('index 8 always allows continue', () {
       final notifier = container.read(onboardingWizardProvider.notifier);
-      notifier.setCurrentIndex(8);
+      for (var i = 0; i < 8; i++) {
+        notifier.nextStep();
+      }
       expect(container.read(onboardingCanContinueProvider), true);
     });
   });

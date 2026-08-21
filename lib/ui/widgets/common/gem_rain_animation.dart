@@ -381,10 +381,27 @@ class _GemPile extends StatelessWidget {
 class _GemPilePainter extends CustomPainter {
   final int count;
   final double progress;
+  final List<_PileGem> _gems;
   static final _paint = Paint()..isAntiAlias = true;
-  static final _rng = Random(42);
 
-  _GemPilePainter({required this.count, required this.progress});
+  _GemPilePainter({required this.count, required this.progress})
+    : _gems = _precompute(count);
+
+  static final Map<int, List<_PileGem>> _cache = {};
+
+  static List<_PileGem> _precompute(int count) {
+    return _cache.putIfAbsent(count, () {
+      final rng = Random(42);
+      return List.generate(count, (i) {
+        return _PileGem(
+          xJitter: rng.nextDouble(),
+          yJitter: rng.nextDouble(),
+          sizeJitter: rng.nextDouble(),
+          rotationJitter: rng.nextDouble(),
+        );
+      });
+    });
+  }
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -392,15 +409,16 @@ class _GemPilePainter extends CustomPainter {
     final pileWidth = size.width * 0.6;
     final startX = (size.width - pileWidth) / 2;
 
-    for (int i = 0; i < visibleCount; i++) {
-      final x = startX + _rng.nextDouble() * pileWidth;
+    for (int i = 0; i < visibleCount && i < _gems.length; i++) {
+      final gem = _gems[i];
+      final x = startX + gem.xJitter * pileWidth;
       final row = i ~/ 8;
-      final y = size.height - 20 - row * 12.0 - _rng.nextDouble() * 8;
-      final gemSize = 12.0 + _rng.nextDouble() * 6.0;
+      final y = size.height - 20 - row * 12.0 - gem.yJitter * 8;
+      final gemSize = 12.0 + gem.sizeJitter * 6.0;
 
       canvas.save();
       canvas.translate(x, y);
-      canvas.rotate(_rng.nextDouble() * 0.4 - 0.2);
+      canvas.rotate(gem.rotationJitter * 0.4 - 0.2);
 
       // Glow
       _paint.color = PremiumColors.accentCyan.withValues(alpha: 0.15);
@@ -447,4 +465,17 @@ class _GemPilePainter extends CustomPainter {
   @override
   bool shouldRepaint(_GemPilePainter old) =>
       old.progress != progress || old.count != count;
+}
+
+class _PileGem {
+  final double xJitter;
+  final double yJitter;
+  final double sizeJitter;
+  final double rotationJitter;
+  const _PileGem({
+    required this.xJitter,
+    required this.yJitter,
+    required this.sizeJitter,
+    required this.rotationJitter,
+  });
 }

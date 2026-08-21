@@ -11,14 +11,8 @@ import 'wizard_summary_row.dart' show WizardSummaryRow;
 
 class WizardConfirmationStep extends ConsumerWidget {
   final WizardStepConfig stepConfig;
-  final String Function(int, OnboardingWizardState, AppLocalizations)?
-  sageMessageForStep;
 
-  const WizardConfirmationStep({
-    super.key,
-    required this.stepConfig,
-    this.sageMessageForStep,
-  });
+  const WizardConfirmationStep({super.key, required this.stepConfig});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

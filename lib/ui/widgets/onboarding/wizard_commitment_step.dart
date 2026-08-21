@@ -6,21 +6,17 @@ import 'package:sagen/providers/providers.dart';
 import '../../../config/onboarding_wizard_config.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/theme_constants.dart';
-import '../../../l10n/app_localizations.dart';
 import 'wizard_commitment_tile.dart';
 import 'wizard_sage_section.dart';
 
 class WizardCommitmentStep extends ConsumerWidget {
   final int stepIndex;
   final WizardStepConfig stepConfig;
-  final String Function(int, OnboardingWizardState, AppLocalizations)?
-  sageMessageForStep;
 
   const WizardCommitmentStep({
     super.key,
     required this.stepIndex,
     required this.stepConfig,
-    this.sageMessageForStep,
   });
 
   @override
@@ -35,10 +31,7 @@ class WizardCommitmentStep extends ConsumerWidget {
           ),
         ) ??
         <String>[];
-    final l = AppLocalizations.of(context)!;
-    final sageMsg = sageMessageForStep != null
-        ? sageMessageForStep!(stepIndex, ref.read(onboardingWizardProvider), l)
-        : config.sageMessage;
+    final sageMsg = config.sageMessage;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),

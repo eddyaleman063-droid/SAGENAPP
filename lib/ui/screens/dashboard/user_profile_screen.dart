@@ -7,6 +7,7 @@ import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/services/experience_service.dart';
 import 'package:sagen/ui/widgets/shimmer_loading.dart';
+import 'package:sagen/ui/widgets/shimmer_scope.dart';
 import 'package:sagen/ui/widgets/common/sage_emotion_widget.dart';
 import 'package:sagen/services/sage_emotion_service.dart';
 import 'package:sagen/core/theme/app_colors.dart';
@@ -21,6 +22,18 @@ class UserProfileScreen extends StatefulWidget {
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
   int _retryKey = 0;
+  late Stream<DocumentSnapshot> _userStream;
+
+  @override
+  void initState() {
+    super.initState();
+    _userStream = _createStream();
+  }
+
+  Stream<DocumentSnapshot> _createStream() => FirebaseFirestore.instance
+      .collection('users')
+      .doc(widget.uid)
+      .snapshots();
 
   @override
   Widget build(BuildContext context) {
@@ -44,10 +57,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       ),
       body: StreamBuilder<DocumentSnapshot>(
         key: ValueKey(_retryKey),
-        stream: FirebaseFirestore.instance
-            .collection('users')
-            .doc(widget.uid)
-            .snapshots(),
+        stream: _userStream,
         builder: (context, snapshot) {
           final l = AppLocalizations.of(context)!;
           if (snapshot.hasError) {
@@ -73,7 +83,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     child: ElevatedButton(
                       onPressed: () {
                         ExperienceService.instance.lightHaptic();
-                        setState(() => _retryKey++);
+                        setState(() {
+                          _retryKey++;
+                          _userStream = _createStream();
+                        });
                       },
                       child: Text(l.retry),
                     ),
@@ -228,20 +241,22 @@ class _ProfileShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ShimmerLoading(width: 88, height: 88, borderRadius: AppRadius.pill),
-          SizedBox(height: AppSpacing.lg),
-          ShimmerLoading(width: 140, height: 20),
-          SizedBox(height: AppSpacing.xl),
-          ShimmerLoading(width: 180, height: 14),
-          SizedBox(height: AppSpacing.sm),
-          ShimmerLoading(width: 120, height: 14),
-          SizedBox(height: AppSpacing.sm),
-          ShimmerLoading(width: 150, height: 14),
-        ],
+    return const ShimmerScope(
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ShimmerLoading(width: 88, height: 88, borderRadius: AppRadius.pill),
+            SizedBox(height: AppSpacing.lg),
+            ShimmerLoading(width: 140, height: 20),
+            SizedBox(height: AppSpacing.xl),
+            ShimmerLoading(width: 180, height: 14),
+            SizedBox(height: AppSpacing.sm),
+            ShimmerLoading(width: 120, height: 14),
+            SizedBox(height: AppSpacing.sm),
+            ShimmerLoading(width: 150, height: 14),
+          ],
+        ),
       ),
     );
   }

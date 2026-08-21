@@ -12,6 +12,7 @@ import '../../../models/learning/session.dart';
 import '../../../models/learning/stage.dart';
 
 import '../../../ui/widgets/shimmer_loading.dart';
+import '../../../ui/widgets/shimmer_scope.dart';
 import '../../../ui/widgets/common/sage_emotion_widget.dart';
 import '../../../services/sage_emotion_service.dart';
 import 'package:go_router/go_router.dart';
@@ -56,48 +57,50 @@ class LessonsScreen extends ConsumerWidget {
     if (learning.isLoading) {
       return Scaffold(
         backgroundColor: context.surfaceBackground,
-        body: SafeArea(
-          child: CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(
-                    AppSpacing.xxl,
-                    AppSpacing.lg,
-                    AppSpacing.xxl,
-                    AppSpacing.lg,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const ShimmerLoading(width: 140, height: 22),
-                      const SizedBox(height: AppSpacing.lg),
-                      const ShimmerLoading(width: 100, height: 14),
-                      const SizedBox(height: AppSpacing.xs),
-                      const ShimmerLoading(width: 50, height: 28),
-                      const SizedBox(height: AppSpacing.md),
-                      const ShimmerLoading(
-                        width: double.infinity,
-                        height: 4,
-                        borderRadius: AppRadius.pill,
-                      ),
-                      const SizedBox(height: AppSpacing.xxl),
-                      ...List.generate(
-                        3,
-                        (_) => const Padding(
-                          padding: EdgeInsets.only(bottom: AppSpacing.md),
-                          child: ShimmerLoading(
-                            width: double.infinity,
-                            height: 120,
-                            borderRadius: AppRadius.xl,
+        body: ShimmerScope(
+          child: SafeArea(
+            child: CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(
+                      AppSpacing.xxl,
+                      AppSpacing.lg,
+                      AppSpacing.xxl,
+                      AppSpacing.lg,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const ShimmerLoading(width: 140, height: 22),
+                        const SizedBox(height: AppSpacing.lg),
+                        const ShimmerLoading(width: 100, height: 14),
+                        const SizedBox(height: AppSpacing.xs),
+                        const ShimmerLoading(width: 50, height: 28),
+                        const SizedBox(height: AppSpacing.md),
+                        const ShimmerLoading(
+                          width: double.infinity,
+                          height: 4,
+                          borderRadius: AppRadius.pill,
+                        ),
+                        const SizedBox(height: AppSpacing.xxl),
+                        ...List.generate(
+                          3,
+                          (_) => const Padding(
+                            padding: EdgeInsets.only(bottom: AppSpacing.md),
+                            child: ShimmerLoading(
+                              width: double.infinity,
+                              height: 120,
+                              borderRadius: AppRadius.xl,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       );

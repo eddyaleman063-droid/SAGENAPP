@@ -46,7 +46,10 @@ class OnboardingWizardNotifier
 
   @override
   OnboardingWizardState build() {
-    ref.onDispose(() => _persistTimer?.cancel());
+    ref.onDispose(() {
+      _persistTimer?.cancel();
+      _persist();
+    });
     final completed = ref.read(prefsProvider).getBool(_kWizardDoneKey) ?? false;
     if (completed) return const OnboardingWizardState();
     return _load();
@@ -73,14 +76,6 @@ class OnboardingWizardNotifier
       final prefs = ref.read(prefsProvider);
       prefs.setString(_kWizardKey, jsonEncode(state.toJson()));
     } catch (_) {}
-  }
-
-  void setCurrentIndex(int index) {
-    const maxIndex = OnboardingWizardConfig.totalSteps > 0
-        ? OnboardingWizardConfig.totalSteps - 1
-        : 0;
-    state = state.copyWith(currentIndex: index.clamp(0, maxIndex));
-    _persist();
   }
 
   void setSectionData(int index, dynamic data) {
@@ -123,12 +118,6 @@ class OnboardingWizardNotifier
       prefs.remove(_kWizardKey);
     } catch (_) {}
   }
-
-  T? getData<T>(int index) {
-    final d = state.sectionData[index];
-    if (d is T) return d;
-    return null;
-  }
 }
 
 final onboardingWizardProvider =
@@ -167,14 +156,6 @@ final onboardingCanContinueProvider = Provider.autoDispose<bool>((ref) {
   }
 });
 
-final onboardingWizardSelectionsProvider = Provider.autoDispose<int>((ref) {
-  final data = ref.watch(
-    onboardingWizardProvider.select((s) => s.sectionData[7]),
-  );
-  if (data is List) return data.length;
-  return 0;
-});
-
 /// Snapshot of wizard sectionData bridged to post-onboarding flow.
 /// Saved before navigating away from wizard; consumed once by bridge.
 class WizardBridge extends Notifier<Map<int, dynamic>> {
@@ -183,12 +164,6 @@ class WizardBridge extends Notifier<Map<int, dynamic>> {
 
   void capture(Map<int, dynamic> data) {
     state = Map<int, dynamic>.from(data);
-  }
-
-  T? get<T>(int index) {
-    final d = state[index];
-    if (d is T) return d;
-    return null;
   }
 
   void reset() {

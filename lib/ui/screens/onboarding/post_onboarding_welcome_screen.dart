@@ -21,7 +21,13 @@ class PostOnboardingWelcomeScreen extends StatefulWidget {
 
 class _PostOnboardingWelcomeScreenState
     extends State<PostOnboardingWelcomeScreen> {
-  bool _isPressed = false;
+  final ValueNotifier<bool> _isPressed = ValueNotifier(false);
+
+  @override
+  void dispose() {
+    _isPressed.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -147,41 +153,43 @@ class _PostOnboardingWelcomeScreenState
                 child: GestureDetector(
                   onTapDown: (_) {
                     ExperienceService.instance.mediumHaptic();
-                    setState(() => _isPressed = true);
+                    _isPressed.value = true;
                   },
                   onTapUp: (_) {
-                    setState(() => _isPressed = false);
-                    ExperienceService.instance.lightHaptic();
+                    _isPressed.value = false;
                     widget.onContinue?.call();
                   },
-                  onTapCancel: () => setState(() => _isPressed = false),
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 80),
-                    transform: _isPressed
-                        ? Matrix4.translationValues(0, 4, 0)
-                        : Matrix4.identity(),
-                    height: 54,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: PremiumColors.primaryAccent,
-                      borderRadius: BorderRadius.circular(AppRadius.xl),
-                      boxShadow: _isPressed
-                          ? []
-                          : [
-                              const BoxShadow(
-                                color: PremiumColors.primaryDark,
-                                offset: Offset(0, 4),
-                                blurRadius: 0,
-                              ),
-                            ],
-                    ),
-                    child: Center(
-                      child: Text(
-                        AppLocalizations.of(context)!.continueText,
-                        style: AppTextStyle.titleSmall.copyWith(
-                          color: context.textPrimary,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 1.5,
+                  onTapCancel: () => _isPressed.value = false,
+                  child: ValueListenableBuilder<bool>(
+                    valueListenable: _isPressed,
+                    builder: (context, pressed, _) => AnimatedContainer(
+                      duration: const Duration(milliseconds: 80),
+                      transform: pressed
+                          ? Matrix4.translationValues(0, 4, 0)
+                          : Matrix4.identity(),
+                      height: 54,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: PremiumColors.primaryAccent,
+                        borderRadius: BorderRadius.circular(AppRadius.xl),
+                        boxShadow: pressed
+                            ? []
+                            : [
+                                const BoxShadow(
+                                  color: PremiumColors.primaryDark,
+                                  offset: Offset(0, 4),
+                                  blurRadius: 0,
+                                ),
+                              ],
+                      ),
+                      child: Center(
+                        child: Text(
+                          AppLocalizations.of(context)!.continueText,
+                          style: AppTextStyle.titleSmall.copyWith(
+                            color: context.textPrimary,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 1.5,
+                          ),
                         ),
                       ),
                     ),

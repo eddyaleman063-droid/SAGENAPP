@@ -14,6 +14,7 @@ import '../../widgets/common/sage_emotion_widget.dart';
 import '../../../services/sage_emotion_service.dart';
 import '../../widgets/profile/flex_card_widget.dart';
 import '../../widgets/shimmer_loading.dart';
+import '../../widgets/shimmer_scope.dart';
 import 'package:sagen/core/theme/app_colors.dart';
 
 class RankingScreen extends ConsumerStatefulWidget {
@@ -426,51 +427,53 @@ class _RankingShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(
-          AppSpacing.xxl,
-          AppSpacing.lg,
-          AppSpacing.xxl,
-          0,
-        ),
-        child: Column(
-          children: [
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ShimmerLoading(
-                  width: 80,
-                  height: 80,
-                  borderRadius: AppRadius.pill,
-                ),
-                SizedBox(width: AppSpacing.md),
-                ShimmerLoading(
-                  width: 80,
-                  height: 80,
-                  borderRadius: AppRadius.pill,
-                ),
-                SizedBox(width: AppSpacing.md),
-                ShimmerLoading(
-                  width: 80,
-                  height: 80,
-                  borderRadius: AppRadius.pill,
-                ),
-              ],
-            ),
-            const SizedBox(height: AppSpacing.xxl),
-            ...List.generate(
-              5,
-              (i) => const Padding(
-                padding: EdgeInsets.only(bottom: AppSpacing.md),
-                child: ShimmerLoading(
-                  width: double.infinity,
-                  height: 56,
-                  borderRadius: AppRadius.lg,
+    return ShimmerScope(
+      child: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(
+            AppSpacing.xxl,
+            AppSpacing.lg,
+            AppSpacing.xxl,
+            0,
+          ),
+          child: Column(
+            children: [
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ShimmerLoading(
+                    width: 80,
+                    height: 80,
+                    borderRadius: AppRadius.pill,
+                  ),
+                  SizedBox(width: AppSpacing.md),
+                  ShimmerLoading(
+                    width: 80,
+                    height: 80,
+                    borderRadius: AppRadius.pill,
+                  ),
+                  SizedBox(width: AppSpacing.md),
+                  ShimmerLoading(
+                    width: 80,
+                    height: 80,
+                    borderRadius: AppRadius.pill,
+                  ),
+                ],
+              ),
+              const SizedBox(height: AppSpacing.xxl),
+              ...List.generate(
+                5,
+                (i) => const Padding(
+                  padding: EdgeInsets.only(bottom: AppSpacing.md),
+                  child: ShimmerLoading(
+                    width: double.infinity,
+                    height: 56,
+                    borderRadius: AppRadius.lg,
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

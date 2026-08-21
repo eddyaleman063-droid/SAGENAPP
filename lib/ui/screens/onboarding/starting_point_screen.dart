@@ -23,7 +23,7 @@ class StartingPointScreen extends ConsumerStatefulWidget {
 
 class _StartingPointScreenState extends ConsumerState<StartingPointScreen> {
   int? _selectedCard;
-  bool _isPressed = false;
+  final ValueNotifier<bool> _isPressed = ValueNotifier(false);
 
   static const double _progressValue = 0.98;
 
@@ -34,13 +34,12 @@ class _StartingPointScreenState extends ConsumerState<StartingPointScreen> {
   bool get _badgeOnCard2 => _assessmentLevel != null && _assessmentLevel! >= 2;
 
   void _onTapDown(TapDownDetails _) {
-    setState(() => _isPressed = true);
+    _isPressed.value = true;
     ExperienceService.instance.mediumHaptic();
   }
 
   void _onTapUp(TapUpDetails _) {
-    setState(() => _isPressed = false);
-    ExperienceService.instance.lightHaptic();
+    _isPressed.value = false;
     if (_selectedCard != null) {
       ref.read(diagnosticPathProvider.notifier).state = _selectedCard == 0
           ? DiagnosticPath.beginner
@@ -50,10 +49,16 @@ class _StartingPointScreenState extends ConsumerState<StartingPointScreen> {
   }
 
   void _onTapCancel() {
-    setState(() => _isPressed = false);
+    _isPressed.value = false;
   }
 
   bool get _canContinue => _selectedCard != null;
+
+  @override
+  void dispose() {
+    _isPressed.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -244,39 +249,42 @@ class _StartingPointScreenState extends ConsumerState<StartingPointScreen> {
                   onTapDown: _canContinue ? _onTapDown : null,
                   onTapUp: _canContinue ? _onTapUp : null,
                   onTapCancel: _canContinue ? _onTapCancel : null,
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 80),
-                    transform: _isPressed
-                        ? Matrix4.translationValues(0, 4, 0)
-                        : Matrix4.identity(),
-                    height: 54,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: _canContinue
-                          ? PremiumColors.primaryAccent
-                          : dark
-                          ? PremiumColors.darkCard
-                          : context.surfaceCard,
-                      borderRadius: BorderRadius.circular(AppRadius.xl),
-                      boxShadow: _isPressed || !_canContinue
-                          ? []
-                          : [
-                              const BoxShadow(
-                                color: PremiumColors.primaryDark,
-                                offset: Offset(0, 4),
-                                blurRadius: 0,
-                              ),
-                            ],
-                    ),
-                    child: Center(
-                      child: Text(
-                        AppLocalizations.of(context)!.continueText,
-                        style: AppTextStyle.titleSmall.copyWith(
-                          color: _canContinue
-                              ? context.textPrimary
-                              : context.textDisabled,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 1.5,
+                  child: ValueListenableBuilder<bool>(
+                    valueListenable: _isPressed,
+                    builder: (context, pressed, _) => AnimatedContainer(
+                      duration: const Duration(milliseconds: 80),
+                      transform: pressed
+                          ? Matrix4.translationValues(0, 4, 0)
+                          : Matrix4.identity(),
+                      height: 54,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: _canContinue
+                            ? PremiumColors.primaryAccent
+                            : dark
+                            ? PremiumColors.darkCard
+                            : context.surfaceCard,
+                        borderRadius: BorderRadius.circular(AppRadius.xl),
+                        boxShadow: pressed || !_canContinue
+                            ? []
+                            : [
+                                const BoxShadow(
+                                  color: PremiumColors.primaryDark,
+                                  offset: Offset(0, 4),
+                                  blurRadius: 0,
+                                ),
+                              ],
+                      ),
+                      child: Center(
+                        child: Text(
+                          AppLocalizations.of(context)!.continueText,
+                          style: AppTextStyle.titleSmall.copyWith(
+                            color: _canContinue
+                                ? context.textPrimary
+                                : context.textDisabled,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 1.5,
+                          ),
                         ),
                       ),
                     ),
