@@ -273,9 +273,19 @@ class _RewardsPanel extends StatelessWidget {
                   color: PremiumColors.streakOrange,
                 ),
               for (final itemType in r.specialItems)
-                _SpecialItemChip(itemType: itemType),
+                _SpecialItemChip(
+                  itemType: itemType,
+                  reduceAnimations: ProviderScope.containerOf(
+                    context,
+                  ).read(lowEndDeviceDetectorProvider).reduceAnimations,
+                ),
               for (final cosmeticType in r.cosmeticUnlocks)
-                _SpecialItemChip(itemType: cosmeticType),
+                _SpecialItemChip(
+                  itemType: cosmeticType,
+                  reduceAnimations: ProviderScope.containerOf(
+                    context,
+                  ).read(lowEndDeviceDetectorProvider).reduceAnimations,
+                ),
             ],
           ),
           const SizedBox(height: AppSpacing.xxl),
@@ -443,7 +453,11 @@ class _RewardChip extends StatelessWidget {
 
 class _SpecialItemChip extends StatefulWidget {
   final SpecialItemType itemType;
-  const _SpecialItemChip({required this.itemType});
+  final bool reduceAnimations;
+  const _SpecialItemChip({
+    required this.itemType,
+    this.reduceAnimations = false,
+  });
 
   @override
   State<_SpecialItemChip> createState() => _SpecialItemChipState();
@@ -459,7 +473,10 @@ class _SpecialItemChipState extends State<_SpecialItemChip>
     _shimmerCtrl = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 2000),
-    )..repeat();
+    );
+    if (!widget.reduceAnimations) {
+      _shimmerCtrl.repeat();
+    }
   }
 
   @override

@@ -9,6 +9,17 @@ import '../models/learning/challenge.dart';
 import '../models/learning/lesson_type.dart';
 import 'app_logger.dart';
 
+List<Map<String, dynamic>> _computeDecodeJson(String jsonStr) {
+  final decoded = jsonDecode(jsonStr);
+  if (decoded is! List) return [];
+  return decoded.whereType<Map<String, dynamic>>().toList();
+}
+
+String _computeChecksum(String content) {
+  final bytes = Uint8List.fromList(utf8.encode(content));
+  return md5.convert(bytes).toString();
+}
+
 /// SQLite-backed question database for offline quiz content.
 class LocalQuestionDB {
   static final LocalQuestionDB instance = LocalQuestionDB._();
@@ -90,22 +101,6 @@ class LocalQuestionDB {
         }
       },
     );
-  }
-
-  static List<Map<String, dynamic>> _decodeJson(String jsonStr) {
-    try {
-      final decoded = jsonDecode(jsonStr);
-      if (decoded is! List) return [];
-      return decoded.whereType<Map<String, dynamic>>().toList();
-    } catch (e) {
-      AppLogger().warning('[LocalQuestionDB] _decodeJson error: $e');
-      return [];
-    }
-  }
-
-  static String _computeChecksum(String content) {
-    final bytes = Uint8List.fromList(utf8.encode(content));
-    return md5.convert(bytes).toString();
   }
 
   Future<String?> _getStoredChecksum(Database db, String key) async {
@@ -213,7 +208,7 @@ class LocalQuestionDB {
       final jsonStr = await rootBundle.loadString(
         'assets/content/questions_$stageId.json',
       );
-      final currentChecksum = _computeChecksum(jsonStr);
+      final currentChecksum = await compute(_computeChecksum, jsonStr);
       final storedChecksum = await _getStoredChecksum(db, 'stage_$stageId');
 
       if (storedChecksum == currentChecksum) {
@@ -224,7 +219,7 @@ class LocalQuestionDB {
       }
 
       AppLogger().info('Seeding stage $stageId into local DB...');
-      final decoded = _decodeJson(jsonStr);
+      final decoded = await compute(_computeDecodeJson, jsonStr);
 
       // Clear old data for this stage if checksum changed
       if (storedChecksum != null) {

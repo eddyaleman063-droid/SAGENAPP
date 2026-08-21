@@ -193,7 +193,7 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
 
   void _bridgeWizardData() {
     try {
-      final wizardData = ref.read(onboardingWizardProvider).sectionData;
+      final wizardData = ref.read(wizardBridgeProvider);
 
       // Bridge wizard level (step 2, stored as "1"-"5") to assessmentLevelProvider (0-indexed)
       final wizardLevel = wizardData[2];

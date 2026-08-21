@@ -1,9 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rive/rive.dart' as rive;
 import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/l10n/app_localizations.dart';
+import 'package:sagen/providers/hardware_tier_provider.dart';
 import 'package:sagen/services/app_logger.dart';
 
 /// Phases of the flame animation.
@@ -15,17 +17,17 @@ enum FlamePhase { idle, charge, explode, float, frozen, defrosting }
 /// Place a file at `assets/animations/flame.riv` with artboards named
 /// `idle`, `charge`, `explode`, `float`, `frozen`, `defrosting` to
 /// enable Rive rendering (cross-platform iOS/Android).
-class RiveFlameWidget extends StatefulWidget {
+class RiveFlameWidget extends ConsumerStatefulWidget {
   final FlamePhase? phase;
   final int? streak;
 
   const RiveFlameWidget({super.key, this.phase, this.streak});
 
   @override
-  State<RiveFlameWidget> createState() => _RiveFlameWidgetState();
+  ConsumerState<RiveFlameWidget> createState() => _RiveFlameWidgetState();
 }
 
-class _RiveFlameWidgetState extends State<RiveFlameWidget> {
+class _RiveFlameWidgetState extends ConsumerState<RiveFlameWidget> {
   static bool? _cachedRiveAvailable;
 
   @override
@@ -56,7 +58,10 @@ class _RiveFlameWidgetState extends State<RiveFlameWidget> {
     if (_riveAvailable) {
       return _RiveBody(phase: widget.phase, streak: widget.streak);
     }
-    return _FlameFallbackWidget(phase: widget.phase);
+    return _FlameFallbackWidget(
+      phase: widget.phase,
+      reduceAnimations: ref.read(reduceAnimationsProvider),
+    );
   }
 }
 
@@ -114,7 +119,8 @@ class _RiveBodyState extends State<_RiveBody> {
 /// On other platforms, uses an animated icon fallback.
 class _FlameFallbackWidget extends StatefulWidget {
   final FlamePhase? phase;
-  const _FlameFallbackWidget({this.phase});
+  final bool reduceAnimations;
+  const _FlameFallbackWidget({this.phase, this.reduceAnimations = false});
 
   @override
   State<_FlameFallbackWidget> createState() => _FlameFallbackWidgetState();
@@ -137,7 +143,8 @@ class _FlameFallbackWidgetState extends State<_FlameFallbackWidget>
       begin: 0.7,
       end: 1.0,
     ).animate(CurvedAnimation(parent: _ctrl, curve: Curves.easeInOut));
-    if (defaultTargetPlatform != TargetPlatform.android) {
+    if (defaultTargetPlatform != TargetPlatform.android &&
+        !widget.reduceAnimations) {
       _ctrl.repeat(reverse: true);
     }
   }

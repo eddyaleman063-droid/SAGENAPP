@@ -77,6 +77,9 @@ class _OnboardingWizardScreenState
 
   void _completeWizard() {
     _exp.mediumHaptic();
+    // Snapshot wizard data before autoDispose clears the provider
+    final data = ref.read(onboardingWizardProvider).sectionData;
+    ref.read(wizardBridgeProvider.notifier).capture(data);
     context.goNamed('onboarding-flow');
   }
 

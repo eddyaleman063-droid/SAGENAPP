@@ -108,3 +108,28 @@ final onboardingWizardSelectionsProvider = Provider.autoDispose<int>((ref) {
   if (data is List) return data.length;
   return 0;
 });
+
+/// Snapshot of wizard sectionData bridged to post-onboarding flow.
+/// Saved before navigating away from wizard; consumed once by bridge.
+class WizardBridge extends Notifier<Map<int, dynamic>> {
+  @override
+  Map<int, dynamic> build() => {};
+
+  void capture(Map<int, dynamic> data) {
+    state = Map<int, dynamic>.from(data);
+  }
+
+  T? get<T>(int index) {
+    final d = state[index];
+    if (d is T) return d;
+    return null;
+  }
+
+  void reset() {
+    state = {};
+  }
+}
+
+final wizardBridgeProvider = NotifierProvider<WizardBridge, Map<int, dynamic>>(
+  WizardBridge.new,
+);

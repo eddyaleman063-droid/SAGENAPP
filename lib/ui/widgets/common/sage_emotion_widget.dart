@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/theme/theme_constants.dart';
+import '../../../providers/hardware_tier_provider.dart';
 import '../../../providers/service_providers.dart';
 import '../../../services/experience_service.dart';
 import '../../../services/sage_emotion_service.dart';
@@ -125,9 +126,10 @@ class _LiveSageImageState extends ConsumerState<_LiveSageImage>
   }
 
   void _updateBreathing() {
-    final shouldBreathe = ref
-        .read(sageEmotionServiceProvider)
-        .canIdleBreathe(_displayed);
+    final reduced = ref.read(reduceAnimationsProvider);
+    final shouldBreathe =
+        !reduced &&
+        ref.read(sageEmotionServiceProvider).canIdleBreathe(_displayed);
     if (shouldBreathe == _idleBreathe) return;
     _idleBreathe = shouldBreathe;
     _breatheCtrl?.dispose();

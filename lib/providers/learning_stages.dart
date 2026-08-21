@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../core/theme/theme_constants.dart';
@@ -11,13 +12,19 @@ List<Stage> _cachedStages = [];
 
 List<Stage> get defaultStages => _cachedStages.isNotEmpty ? _cachedStages : [];
 
+List<Map<String, dynamic>> _decodeStagesJson(String jsonStr) {
+  final decoded = jsonDecode(jsonStr);
+  if (decoded is! List) return [];
+  return decoded.whereType<Map<String, dynamic>>().toList();
+}
+
 Future<List<Stage>> loadStagesFromAssets() async {
   if (_cachedStages.isNotEmpty) return _cachedStages;
   try {
     final jsonStr = await rootBundle.loadString('assets/content/stages.json');
-    final decoded = jsonDecode(jsonStr);
-    if (decoded is! List) return [];
-    _cachedStages = decoded.whereType<Map<String, dynamic>>().map((s) {
+    final decoded = await compute(_decodeStagesJson, jsonStr);
+    if (decoded.isEmpty) return [];
+    _cachedStages = decoded.map((s) {
       final accentHex = s['accent'] as String? ?? '#FF6F00';
       final accentColor = _parseColor(accentHex);
 
