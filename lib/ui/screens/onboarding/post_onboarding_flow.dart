@@ -63,6 +63,17 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
 
   static const int _totalSteps = 16;
 
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!_bridgedWizardData) {
+        _bridgedWizardData = true;
+        _bridgeWizardData();
+      }
+    });
+  }
+
   void _advance() {
     setState(() => _step++);
     _skipConditionalSteps();
@@ -71,7 +82,12 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
 
   void _goBack() {
     if (_step > 0) {
-      setState(() => _step--);
+      final funnel = ref.read(registrationFunnelProvider);
+      var prev = _step - 1;
+      if ((prev == 11 || prev == 12) && funnel.authMethod != 'email') {
+        prev = 10;
+      }
+      setState(() => _step = prev);
     }
   }
 
@@ -245,12 +261,8 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
     ),
     // 9: Age input
     (ctx, a) => AgeInputScreen(onContinue: a.advance),
-    // 10: Auth method
-    (ctx, a) => AuthMethodScreen(
-      onContinue: () {
-        a.onAuthMethodSelected('google');
-      },
-    ),
+    // 10: Auth method (handled inline in build())
+    null,
     // 11: Email input (conditional)
     null,
     // 12: Password input (conditional)
@@ -276,11 +288,6 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
     );
 
     if (_step >= _totalSteps) return const ProfileSuccessScreen();
-
-    if (!_bridgedWizardData) {
-      _bridgedWizardData = true;
-      _bridgeWizardData();
-    }
 
     if (_step == 10) {
       return AuthMethodScreen(

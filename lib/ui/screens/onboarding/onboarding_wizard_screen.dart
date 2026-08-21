@@ -115,9 +115,8 @@ class _OnboardingWizardScreenState
     final currentIndex = ref.watch(
       onboardingWizardProvider.select((s) => s.currentIndex),
     );
-    final sectionDataHash = ref.watch(
-      onboardingWizardProvider.select((s) => s.sectionData.hashCode),
-    );
+    // Watch sectionData to rebuild sage message when selections change
+    ref.watch(onboardingWizardProvider.select((s) => s.sectionData));
     final canContinue = ref.watch(onboardingCanContinueProvider);
     final wizardSteps = OnboardingWizardConfig.localizedSteps(_l);
     final config = wizardSteps[currentIndex];
@@ -134,7 +133,7 @@ class _OnboardingWizardScreenState
             children: [
               WizardTopBar(currentIndex: currentIndex, onBack: _goBack),
               WizardSageSection(
-                key: ValueKey('sage_${currentIndex}_$sectionDataHash'),
+                key: ValueKey('sage_$currentIndex'),
                 emotion: config.emotion,
                 message: _sageMessageForStep(
                   currentIndex,
@@ -147,7 +146,7 @@ class _OnboardingWizardScreenState
                   controller: _pageCtrl,
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: OnboardingWizardConfig.totalSteps,
-                  itemBuilder: (context, i) => _buildStep(i),
+                  itemBuilder: (context, i) => _buildStep(i, wizardSteps),
                 ),
               ),
               WizardBottomBar(
@@ -163,8 +162,7 @@ class _OnboardingWizardScreenState
     );
   }
 
-  Widget _buildStep(int index) {
-    final wizardSteps = OnboardingWizardConfig.localizedSteps(_l);
+  Widget _buildStep(int index, List<WizardStepConfig> wizardSteps) {
     switch (index) {
       case 0:
         return const WizardPresentationStep();
