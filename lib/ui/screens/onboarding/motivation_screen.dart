@@ -24,14 +24,14 @@ class _MotivationScreenState extends State<MotivationScreen> {
 
   static const double _progressValue = 0.80;
 
-  List<Map<String, dynamic>> _buildOptions(AppLocalizations l) => [
-    {"label": l.motivationCareer, "icon": Icons.work},
-    {"label": l.motivationStudies, "icon": Icons.school},
-    {"label": l.motivationFun, "icon": Icons.celebration},
-    {"label": l.motivationMind, "icon": Icons.psychology},
-    {"label": l.motivationConnect, "icon": Icons.people},
-    {"label": l.motivationTravel, "icon": Icons.flight},
-    {"label": l.motivationOther, "icon": Icons.more_horiz},
+  List<(String, IconData)> _buildOptions(AppLocalizations l) => [
+    (l.motivationCareer, Icons.work),
+    (l.motivationStudies, Icons.school),
+    (l.motivationFun, Icons.celebration),
+    (l.motivationMind, Icons.psychology),
+    (l.motivationConnect, Icons.people),
+    (l.motivationTravel, Icons.flight),
+    (l.motivationOther, Icons.more_horiz),
   ];
 
   int get _selectedCount => _selections.where((s) => s).length;
@@ -132,6 +132,7 @@ class _MotivationScreenState extends State<MotivationScreen> {
     final dark = context.isDark;
     final l = AppLocalizations.of(context)!;
     final options = _buildOptions(l);
+    final dialogMsg = _dialogText(l);
     return Scaffold(
       backgroundColor: dark
           ? PremiumColors.deepBackground
@@ -227,10 +228,8 @@ class _MotivationScreenState extends State<MotivationScreen> {
                             child: AnimatedSwitcher(
                               duration: const Duration(milliseconds: 250),
                               child: Text(
-                                _dialogText(AppLocalizations.of(context)!),
-                                key: ValueKey(
-                                  _dialogText(AppLocalizations.of(context)!),
-                                ),
+                                dialogMsg,
+                                key: ValueKey(dialogMsg),
                                 style: AppTextStyle.body.copyWith(
                                   color: context.textPrimary,
                                   height: 1.4,
@@ -277,12 +276,12 @@ class _MotivationScreenState extends State<MotivationScreen> {
                 itemCount: options.length,
                 itemBuilder: (context, index) {
                   final isSelected = _selections[index];
-                  final opt = options[index];
+                  final (label, icon) = options[index];
                   return Semantics(
                     key: ValueKey('motivation_$index'),
                     button: true,
                     selected: isSelected,
-                    label: opt["label"] is String ? opt["label"] as String : '',
+                    label: label,
                     child: GestureDetector(
                       onTap: () {
                         ExperienceService.instance.lightHaptic();
@@ -312,9 +311,7 @@ class _MotivationScreenState extends State<MotivationScreen> {
                         child: Row(
                           children: [
                             Icon(
-                              opt["icon"] is IconData
-                                  ? opt["icon"] as IconData
-                                  : Icons.star,
+                              icon,
                               color: isSelected
                                   ? PremiumColors.primaryAccent
                                   : context.textSecondary,
@@ -323,9 +320,7 @@ class _MotivationScreenState extends State<MotivationScreen> {
                             const SizedBox(width: AppSpacing.lg),
                             Expanded(
                               child: Text(
-                                opt["label"] is String
-                                    ? opt["label"] as String
-                                    : '',
+                                label,
                                 style: AppTextStyle.body.copyWith(
                                   color: context.textPrimary,
                                   fontWeight: FontWeight.w500,

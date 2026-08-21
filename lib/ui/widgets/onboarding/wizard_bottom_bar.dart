@@ -125,14 +125,16 @@ class _WizardButtonState extends ConsumerState<WizardButton>
     _shimmerAnim = Tween<double>(begin: -2.0, end: 2.0).animate(
       CurvedAnimation(parent: _shimmerCtrl, curve: Curves.easeInOutSine),
     );
-    if (widget.enabled) _shimmerCtrl.repeat();
+    if (widget.enabled && !ref.read(reduceAnimationsProvider)) {
+      _shimmerCtrl.repeat();
+    }
   }
 
   @override
   void didUpdateWidget(WizardButton old) {
     super.didUpdateWidget(old);
     if (widget.enabled != old.enabled) {
-      if (widget.enabled) {
+      if (widget.enabled && !ref.read(reduceAnimationsProvider)) {
         _shimmerCtrl.repeat();
       } else {
         _shimmerCtrl.stop();
@@ -150,9 +152,38 @@ class _WizardButtonState extends ConsumerState<WizardButton>
   Widget build(BuildContext context) {
     final exp = ref.read(experienceServiceProvider);
     final cs = Theme.of(context).colorScheme;
+    final reduced = ref.watch(reduceAnimationsProvider);
     return AnimatedBuilder(
       animation: _shimmerAnim,
-      builder: (context, _) {
+      child: Material(
+        color: Colors.transparent,
+        child: Semantics(
+          button: true,
+          label: widget.label,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(AppRadius.lg),
+            onTap: widget.enabled
+                ? () {
+                    exp.lightHaptic();
+                    widget.onPressed();
+                  }
+                : null,
+            child: Center(
+              child: AnimatedDefaultTextStyle(
+                duration: AppMotion.fast,
+                style: AppTextStyle.titleSmall.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: widget.enabled
+                      ? Colors.white
+                      : cs.onSurface.withValues(alpha: 0.25),
+                ),
+                child: Text(widget.label),
+              ),
+            ),
+          ),
+        ),
+      ),
+      builder: (context, child) {
         return AnimatedContainer(
           duration: AppMotion.normal,
           curve: AppEasing.entrance,
@@ -160,7 +191,7 @@ class _WizardButtonState extends ConsumerState<WizardButton>
           height: 54,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppRadius.lg),
-            gradient: widget.enabled
+            gradient: widget.enabled && !reduced
                 ? LinearGradient(
                     colors: [
                       PremiumColors.splashBlue,
@@ -185,34 +216,7 @@ class _WizardButtonState extends ConsumerState<WizardButton>
                   ]
                 : null,
           ),
-          child: Material(
-            color: Colors.transparent,
-            child: Semantics(
-              button: true,
-              label: widget.label,
-              child: InkWell(
-                borderRadius: BorderRadius.circular(AppRadius.lg),
-                onTap: widget.enabled
-                    ? () {
-                        exp.lightHaptic();
-                        widget.onPressed();
-                      }
-                    : null,
-                child: Center(
-                  child: AnimatedDefaultTextStyle(
-                    duration: AppMotion.fast,
-                    style: AppTextStyle.titleSmall.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: widget.enabled
-                          ? Colors.white
-                          : cs.onSurface.withValues(alpha: 0.25),
-                    ),
-                    child: Text(widget.label),
-                  ),
-                ),
-              ),
-            ),
-          ),
+          child: child,
         );
       },
     );

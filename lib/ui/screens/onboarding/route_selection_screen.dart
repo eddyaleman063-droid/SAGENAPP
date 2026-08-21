@@ -33,6 +33,8 @@ class _RouteSelectionScreenState extends State<RouteSelectionScreen> {
   @override
   Widget build(BuildContext context) {
     final dark = context.isDark;
+    final l = AppLocalizations.of(context)!;
+    final routes = _routes(l);
     return Scaffold(
       backgroundColor: dark
           ? PremiumColors.deepBackground
@@ -198,14 +200,12 @@ class _RouteSelectionScreenState extends State<RouteSelectionScreen> {
                   padding: const EdgeInsets.symmetric(
                     horizontal: AppSpacing.xxl,
                   ),
-                  itemCount: _routes(AppLocalizations.of(context)!).length,
+                  itemCount: routes.length,
                   separatorBuilder: (_, _) =>
                       const SizedBox(height: AppSpacing.md),
                   itemBuilder: (context, index) {
                     final isSelected = _selectedRouteIndex == index;
-                    final (emoji, title) = _routes(
-                      AppLocalizations.of(context)!,
-                    )[index];
+                    final (emoji, title) = routes[index];
                     return Semantics(
                       button: true,
                       selected: isSelected,

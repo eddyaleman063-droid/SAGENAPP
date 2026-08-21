@@ -27,16 +27,44 @@ class WizardConfirmationStep extends ConsumerWidget {
     final textSecondary = cs.onSurface.withValues(alpha: 0.7);
     final l = AppLocalizations.of(context)!;
 
-    final sectionData = ref.watch(
-      onboardingWizardProvider.select((s) => s.sectionData),
+    final referral =
+        ref.watch(
+          onboardingWizardProvider.select((s) => s.sectionData[1] as String?),
+        ) ??
+        '—';
+    final knowledge =
+        ref.watch(
+          onboardingWizardProvider.select((s) => s.sectionData[2] as String?),
+        ) ??
+        '—';
+    final reasons = ref.watch(
+      onboardingWizardProvider.select((s) => s.sectionData[3]),
     );
-    final referral = sectionData[1] as String? ?? '—';
-    final knowledge = sectionData[2] as String? ?? '—';
-    final reasons = (sectionData[3] as List<String>?) ?? [];
-    final habits = sectionData[4] as String? ?? '—';
-    final prefer = (sectionData[5] as List<String>?) ?? [];
-    final goal = sectionData[6] as String? ?? '—';
-    final commitments = (sectionData[7] as List<String>?) ?? [];
+    final reasonsList = reasons is List
+        ? reasons.map((e) => e.toString()).toList()
+        : <String>[];
+    final habits =
+        ref.watch(
+          onboardingWizardProvider.select((s) => s.sectionData[4] as String?),
+        ) ??
+        '—';
+    final prefer = ref.watch(
+      onboardingWizardProvider.select((s) => s.sectionData[5]),
+    );
+    final preferList = prefer is List
+        ? prefer.map((e) => e.toString()).toList()
+        : <String>[];
+    final goal =
+        ref.watch(
+          onboardingWizardProvider.select((s) => s.sectionData[6] as String?),
+        ) ??
+        '—';
+    final commitments = ref.watch(
+      onboardingWizardProvider.select((s) => s.sectionData[7]),
+    );
+    final commitmentsList = commitments is List
+        ? commitments.map((e) => e.toString()).toList()
+        : <String>[];
     final config = stepConfig;
 
     return Padding(
@@ -56,22 +84,22 @@ class WizardConfirmationStep extends ConsumerWidget {
             const SizedBox(height: AppSpacing.lg),
             WizardSummaryRow(label: l.summaryOrigin, value: referral),
             WizardSummaryRow(label: l.summaryKnowledge, value: knowledge),
-            if (reasons.isNotEmpty)
+            if (reasonsList.isNotEmpty)
               WizardSummaryRow(
                 label: l.summaryMotivations,
-                value: reasons.join(', '),
+                value: reasonsList.join(', '),
               ),
             WizardSummaryRow(label: l.summaryLearning, value: habits),
-            if (prefer.isNotEmpty)
+            if (preferList.isNotEmpty)
               WizardSummaryRow(
                 label: l.summaryPreferences,
-                value: prefer.join(', '),
+                value: preferList.join(', '),
               ),
             WizardSummaryRow(label: l.summaryDailyGoal, value: l.minutes(goal)),
-            if (commitments.isNotEmpty)
+            if (commitmentsList.isNotEmpty)
               WizardSummaryRow(
                 label: l.summaryCommitment,
-                value: l.commitDays(commitments.length),
+                value: l.commitDays(commitmentsList.length),
               ),
             const SizedBox(height: AppSpacing.xl),
             Container(

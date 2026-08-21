@@ -3,11 +3,41 @@ import 'package:flutter/gestures.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 
-class LegalTextBlock extends StatelessWidget {
+class LegalTextBlock extends StatefulWidget {
   final VoidCallback? onTerms;
   final VoidCallback? onPrivacy;
 
   const LegalTextBlock({super.key, this.onTerms, this.onPrivacy});
+
+  @override
+  State<LegalTextBlock> createState() => _LegalTextBlockState();
+}
+
+class _LegalTextBlockState extends State<LegalTextBlock> {
+  late final TapGestureRecognizer _termsRecognizer;
+  late final TapGestureRecognizer _privacyRecognizer;
+
+  @override
+  void initState() {
+    super.initState();
+    _termsRecognizer = TapGestureRecognizer()..onTap = widget.onTerms ?? () {};
+    _privacyRecognizer = TapGestureRecognizer()
+      ..onTap = widget.onPrivacy ?? () {};
+  }
+
+  @override
+  void didUpdateWidget(LegalTextBlock old) {
+    super.didUpdateWidget(old);
+    _termsRecognizer.onTap = widget.onTerms ?? () {};
+    _privacyRecognizer.onTap = widget.onPrivacy ?? () {};
+  }
+
+  @override
+  void dispose() {
+    _termsRecognizer.dispose();
+    _privacyRecognizer.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +59,7 @@ class LegalTextBlock extends StatelessWidget {
               style: AppTextStyle.tiny.copyWith(
                 color: PremiumColors.primaryAccent.withValues(alpha: 0.8),
               ),
-              recognizer: TapGestureRecognizer()..onTap = onTerms ?? () {},
+              recognizer: _termsRecognizer,
             ),
             TextSpan(text: l.legalAnd),
             TextSpan(
@@ -37,7 +67,7 @@ class LegalTextBlock extends StatelessWidget {
               style: AppTextStyle.tiny.copyWith(
                 color: PremiumColors.primaryAccent.withValues(alpha: 0.8),
               ),
-              recognizer: TapGestureRecognizer()..onTap = onPrivacy ?? () {},
+              recognizer: _privacyRecognizer,
             ),
           ],
         ),

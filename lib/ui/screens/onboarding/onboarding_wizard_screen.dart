@@ -89,8 +89,9 @@ class _OnboardingWizardScreenState
     int index,
     OnboardingWizardState wizardState,
     AppLocalizations l,
+    List<WizardStepConfig> steps,
   ) {
-    final config = OnboardingWizardConfig.localizedSteps(_l)[index];
+    final config = steps[index];
     if (index == 7) {
       final data = wizardState.sectionData[7];
       if (data is List && data.length == 1) {
@@ -120,6 +121,13 @@ class _OnboardingWizardScreenState
     final canContinue = ref.watch(onboardingCanContinueProvider);
     final wizardSteps = OnboardingWizardConfig.localizedSteps(_l);
     final config = wizardSteps[currentIndex];
+    final wizardState = ref.read(onboardingWizardProvider);
+    final sageMsg = _sageMessageForStep(
+      currentIndex,
+      wizardState,
+      _l,
+      wizardSteps,
+    );
 
     return PopScope(
       canPop: currentIndex == 0,
@@ -133,15 +141,9 @@ class _OnboardingWizardScreenState
             children: [
               WizardTopBar(currentIndex: currentIndex, onBack: _goBack),
               WizardSageSection(
-                key: ValueKey(
-                  'sage_${currentIndex}_${_sageMessageForStep(currentIndex, ref.read(onboardingWizardProvider), _l)}',
-                ),
+                key: ValueKey('sage_${currentIndex}_$sageMsg'),
                 emotion: config.emotion,
-                message: _sageMessageForStep(
-                  currentIndex,
-                  ref.read(onboardingWizardProvider),
-                  _l,
-                ),
+                message: sageMsg,
               ),
               Expanded(
                 child: PageView.builder(
@@ -185,12 +187,14 @@ class _OnboardingWizardScreenState
         step = WizardCommitmentStep(
           stepIndex: 7,
           stepConfig: wizardSteps[7],
-          sageMessageForStep: _sageMessageForStep,
+          sageMessageForStep: (i, s, l) =>
+              _sageMessageForStep(i, s, l, wizardSteps),
         );
       case 8:
         step = WizardConfirmationStep(
           stepConfig: wizardSteps[8],
-          sageMessageForStep: _sageMessageForStep,
+          sageMessageForStep: (i, s, l) =>
+              _sageMessageForStep(i, s, l, wizardSteps),
         );
       default:
         step = const SizedBox.shrink();

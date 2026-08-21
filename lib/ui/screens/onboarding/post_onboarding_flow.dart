@@ -59,13 +59,22 @@ class PostOnboardingFlow extends ConsumerStatefulWidget {
 
 class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
   int _step = 0;
-  bool _bridgedWizardData = false;
 
   static const int _totalSteps = 16;
 
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) _bridgeWizardData();
+    });
+  }
+
   void _advance() {
-    setState(() => _step++);
-    _skipConditionalSteps();
+    setState(() {
+      _step++;
+      _skipConditionalSteps();
+    });
     ref.read(analyticsServiceProvider).trackOnboardingStep(_step);
   }
 
@@ -83,10 +92,10 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
   void _skipConditionalSteps() {
     final funnel = ref.read(registrationFunnelProvider);
     if (_step == 11 && funnel.authMethod != 'email') {
-      setState(() => _step = 13);
+      _step = 13;
     }
     if (_step == 12 && funnel.authMethod != 'email') {
-      setState(() => _step = 13);
+      _step = 13;
     }
   }
 
@@ -215,6 +224,7 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
     } catch (e) {
       AppLogger().warning('post_onboarding: _bridgeWizardData failed: $e');
     }
+    ref.read(wizardBridgeProvider.notifier).reset();
   }
 
   static final List<_StepBuilder?> _stepBuilders = [
@@ -276,11 +286,6 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
     );
 
     if (_step >= _totalSteps) return const ProfileSuccessScreen();
-
-    if (!_bridgedWizardData) {
-      _bridgedWizardData = true;
-      _bridgeWizardData();
-    }
 
     if (_step == 10) {
       return AuthMethodScreen(

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../config/onboarding_wizard_config.dart';
@@ -41,8 +42,11 @@ class OnboardingWizardState {
 
 class OnboardingWizardNotifier
     extends AutoDisposeNotifier<OnboardingWizardState> {
+  Timer? _persistTimer;
+
   @override
   OnboardingWizardState build() {
+    ref.onDispose(() => _persistTimer?.cancel());
     final completed = ref.read(prefsProvider).getBool(_kWizardDoneKey) ?? false;
     if (completed) return const OnboardingWizardState();
     return _load();
@@ -57,6 +61,11 @@ class OnboardingWizardNotifier
       }
     } catch (_) {}
     return const OnboardingWizardState();
+  }
+
+  void _schedulePersist() {
+    _persistTimer?.cancel();
+    _persistTimer = Timer(const Duration(milliseconds: 300), _persist);
   }
 
   void _persist() {
@@ -78,7 +87,7 @@ class OnboardingWizardNotifier
     final updated = Map<int, dynamic>.from(state.sectionData);
     updated[index] = data;
     state = state.copyWith(sectionData: updated);
-    _persist();
+    _schedulePersist();
   }
 
   void nextStep() {
