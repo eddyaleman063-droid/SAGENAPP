@@ -400,19 +400,23 @@ class _RankingFlexCardShareSheetState
 
   Future<void> _share() async {
     setState(() => _sharing = true);
-    final bytes = await _flexCardKey.currentState?.capture();
-    if (!mounted) return;
-    if (bytes != null) {
-      await ref
-          .read(shareServiceProvider)
-          .shareImage(
-            bytes,
-            text: AppLocalizations.of(context)?.flexCardJoinAlliance,
-            source: 'ranking',
-          );
-    }
-    if (mounted) {
-      context.pop();
+    try {
+      final bytes = await _flexCardKey.currentState?.capture();
+      if (!mounted) return;
+      if (bytes != null) {
+        await ref
+            .read(shareServiceProvider)
+            .shareImage(
+              bytes,
+              text: AppLocalizations.of(context)?.flexCardJoinAlliance,
+              source: 'ranking',
+            );
+      }
+      if (mounted) {
+        context.pop();
+      }
+    } finally {
+      if (mounted) setState(() => _sharing = false);
     }
   }
 }

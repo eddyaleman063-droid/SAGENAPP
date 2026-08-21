@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../config/onboarding_wizard_config.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/theme_constants.dart';
-import '../../../providers/providers.dart';
 import '../../../services/experience_service.dart';
 
-class WizardSingleChoiceTile extends ConsumerWidget {
+class WizardSingleChoiceTile extends StatelessWidget {
   final WizardOption option;
   final bool isSelected;
   final VoidCallback onTap;
@@ -19,7 +17,7 @@ class WizardSingleChoiceTile extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return _WizardOptionTileBase(
       option: option,
       isSelected: isSelected,
@@ -29,7 +27,7 @@ class WizardSingleChoiceTile extends ConsumerWidget {
   }
 }
 
-class WizardMultiChoiceTile extends ConsumerWidget {
+class WizardMultiChoiceTile extends StatelessWidget {
   final WizardOption option;
   final bool isSelected;
   final VoidCallback onTap;
@@ -42,7 +40,7 @@ class WizardMultiChoiceTile extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return _WizardOptionTileBase(
       option: option,
       isSelected: isSelected,
@@ -52,7 +50,7 @@ class WizardMultiChoiceTile extends ConsumerWidget {
   }
 }
 
-class _WizardOptionTileBase extends ConsumerWidget {
+class _WizardOptionTileBase extends StatelessWidget {
   final WizardOption option;
   final bool isSelected;
   final VoidCallback onTap;
@@ -66,7 +64,7 @@ class _WizardOptionTileBase extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
     final textPrimary = context.textPrimary;
     final textSecondary = cs.onSurface.withValues(alpha: 0.7);
@@ -87,7 +85,7 @@ class _WizardOptionTileBase extends ConsumerWidget {
           onTap();
         },
         child: AnimatedContainer(
-          duration: ref.read(experienceServiceProvider).fast,
+          duration: const Duration(milliseconds: 250),
           curve: AppEasing.entrance,
           padding: const EdgeInsets.symmetric(
             horizontal: AppSpacing.lg,

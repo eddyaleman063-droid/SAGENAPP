@@ -8,7 +8,7 @@ import 'package:sagen/ui/widgets/common/sagen_notification.dart';
 import 'package:sagen/ui/widgets/store/buy_button.dart';
 
 class StreakFireCard extends ConsumerWidget {
-  final StreakState streak;
+  final ({int currentStreak, bool isStreakFrozen}) streak;
   const StreakFireCard({super.key, required this.streak});
 
   Color _fireColor(BuildContext context) {

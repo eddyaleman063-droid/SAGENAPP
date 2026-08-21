@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../config/onboarding_wizard_config.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/theme_constants.dart';
-import '../../../providers/providers.dart';
 import '../../../services/experience_service.dart';
 
-class WizardCommitmentTile extends ConsumerWidget {
+class WizardCommitmentTile extends StatelessWidget {
   final WizardOption option;
   final bool isSelected;
   final VoidCallback onTap;
@@ -19,7 +17,7 @@ class WizardCommitmentTile extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
     final textPrimary = context.textPrimary;
     final textSecondary = cs.onSurface.withValues(alpha: 0.7);
@@ -37,7 +35,7 @@ class WizardCommitmentTile extends ConsumerWidget {
           onTap();
         },
         child: AnimatedContainer(
-          duration: ref.read(experienceServiceProvider).fast,
+          duration: const Duration(milliseconds: 250),
           curve: AppEasing.entrance,
           padding: const EdgeInsets.all(AppSpacing.lg),
           decoration: BoxDecoration(

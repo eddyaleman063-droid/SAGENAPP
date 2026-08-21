@@ -37,7 +37,7 @@ class WizardTopBar extends StatelessWidget {
                 ExperienceService.instance.lightHaptic();
                 onBack();
               },
-              splashRadius: 20,
+              padding: const EdgeInsets.all(18),
               tooltip: AppLocalizations.of(context)!.backButton,
             ),
           ),

@@ -8,7 +8,13 @@ import 'package:sagen/models/chat_message.dart';
 class MessageBubble extends StatelessWidget {
   final ChatMessage message;
   final bool isUser;
-  const MessageBubble({super.key, required this.message, required this.isUser});
+  final bool isStreaming;
+  const MessageBubble({
+    super.key,
+    required this.message,
+    required this.isUser,
+    this.isStreaming = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -64,10 +70,12 @@ class MessageBubble extends StatelessWidget {
                     : null,
                 color: isUser ? null : context.surfaceCard,
               ),
-              child: isUser
+              child: isUser || isStreaming
                   ? Text(
                       message.text,
-                      style: AppTextStyle.body.copyWith(color: Colors.white),
+                      style: AppTextStyle.body.copyWith(
+                        color: isUser ? Colors.white : context.textPrimary,
+                      ),
                     )
                   : MarkdownBody(
                       data: message.text,

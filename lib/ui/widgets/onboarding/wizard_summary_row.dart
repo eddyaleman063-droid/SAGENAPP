@@ -15,8 +15,8 @@ class WizardSummaryRow extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            width: 100,
+          Flexible(
+            flex: 2,
             child: Text(
               label,
               style: AppTextStyle.subtitle.copyWith(
@@ -25,7 +25,9 @@ class WizardSummaryRow extends StatelessWidget {
               ),
             ),
           ),
-          Expanded(
+          const SizedBox(width: AppSpacing.sm),
+          Flexible(
+            flex: 5,
             child: Text(
               value,
               style: AppTextStyle.subtitle.copyWith(

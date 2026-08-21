@@ -224,7 +224,12 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
       ),
     );
     final shop = ref.watch(shopProvider.select((s) => s.items));
-    final streak = ref.watch(streakProvider);
+    final streak = ref.watch(
+      streakProvider.select(
+        (s) =>
+            (currentStreak: s.currentStreak, isStreakFrozen: s.isStreakFrozen),
+      ),
+    );
     final gemBalance = ref.watch(gemProvider.select((g) => g.balance));
 
     if (learning.isLoading) {

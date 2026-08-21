@@ -80,6 +80,7 @@ class _MessageListState extends State<MessageList> {
                 time: DateTime.now(),
               ),
               isUser: false,
+              isStreaming: true,
             );
           }
           final idx = showStreaming ? i - 1 : i;
@@ -90,7 +91,7 @@ class _MessageListState extends State<MessageList> {
           return _AnimatedMessageBubble(
             index: idx,
             child: MessageBubble(
-              key: ValueKey('msg_${messages.length - 1 - idx}'),
+              key: ValueKey('msg_${msg.time.millisecondsSinceEpoch}'),
               message: msg,
               isUser: isUser,
             ),

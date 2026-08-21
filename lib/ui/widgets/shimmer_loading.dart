@@ -26,12 +26,26 @@ class _ShimmerLoadingState extends State<ShimmerLoading>
     with SingleTickerProviderStateMixin {
   AnimationController? _ownCtrl;
   AnimationController? _sharedCtrl;
+  late Animation<double> _anim;
+  bool _controllerInitialized = false;
 
   AnimationController get _ctrl => _sharedCtrl ?? _ownCtrl!;
 
   @override
   void initState() {
     super.initState();
+    _initController();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _initController();
+  }
+
+  void _initController() {
+    if (_controllerInitialized) return;
+    _controllerInitialized = true;
     _sharedCtrl = ShimmerScope.maybeOf(context);
     if (_sharedCtrl == null) {
       _ownCtrl = AnimationController(
@@ -40,6 +54,10 @@ class _ShimmerLoadingState extends State<ShimmerLoading>
       );
       _ownCtrl!.repeat();
     }
+    _anim = Tween<double>(
+      begin: -2.0,
+      end: 2.0,
+    ).animate(CurvedAnimation(parent: _ctrl, curve: Curves.easeInOutSine));
   }
 
   @override
@@ -50,17 +68,12 @@ class _ShimmerLoadingState extends State<ShimmerLoading>
 
   @override
   Widget build(BuildContext context) {
-    final anim = Tween<double>(
-      begin: -2.0,
-      end: 2.0,
-    ).animate(CurvedAnimation(parent: _ctrl, curve: Curves.easeInOutSine));
-
     final base = widget.baseColor ?? context.surfaceTinted;
     final highlight = widget.highlightColor ?? context.borderSubtle;
 
     return RepaintBoundary(
       child: AnimatedBuilder(
-        animation: anim,
+        animation: _anim,
         builder: (context, _) {
           return Container(
             width: widget.width,
@@ -70,8 +83,8 @@ class _ShimmerLoadingState extends State<ShimmerLoading>
               gradient: LinearGradient(
                 colors: [base, highlight, base],
                 stops: const [0.0, 0.5, 1.0],
-                begin: Alignment(anim.value - 1, 0),
-                end: Alignment(anim.value + 1, 0),
+                begin: Alignment(_anim.value - 1, 0),
+                end: Alignment(_anim.value + 1, 0),
               ),
             ),
           );
