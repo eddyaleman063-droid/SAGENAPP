@@ -44,6 +44,7 @@ class _QuizSessionState extends ConsumerState<QuizSession>
   int? _selectedIndex;
   bool _answered = false;
   bool _monocleUsed = false;
+  List<int>? _monocleVisibleIndices;
   late final DateTime _startTime;
   late AnimationController _feedbackCtrl;
   late Animation<double> _feedbackAnim;
@@ -55,6 +56,9 @@ class _QuizSessionState extends ConsumerState<QuizSession>
   static const _prefix = 'quiz_progress_';
 
   Challenge get _current => widget.challenges[_currentIndex];
+  int get _effectiveCorrectIndex => _current.isCorrectIndexValid
+      ? _current.correctIndex
+      : 0.clamp(0, _current.options.length - 1);
   bool get _isLast => _currentIndex >= widget.challenges.length - 1;
 
   @override
@@ -154,9 +158,7 @@ class _QuizSessionState extends ConsumerState<QuizSession>
   void _selectAnswer(int index) {
     if (_answered) return;
     // Validate correctIndex is within bounds; clamp if corrupted
-    final validCorrectIndex = _current.isCorrectIndexValid
-        ? _current.correctIndex
-        : 0.clamp(0, _current.options.length - 1);
+    final validCorrectIndex = _effectiveCorrectIndex;
     final correct = index == validCorrectIndex;
     ExperienceService.instance.mediumHaptic();
     setState(() {
@@ -185,9 +187,7 @@ class _QuizSessionState extends ConsumerState<QuizSession>
 
   List<int> _getMonocleFilteredIndices() {
     if (!_monocleUsed) return List.generate(_current.options.length, (i) => i);
-    final validCorrectIndex = _current.isCorrectIndexValid
-        ? _current.correctIndex
-        : 0.clamp(0, _current.options.length - 1);
+    final validCorrectIndex = _effectiveCorrectIndex;
     final wrongIndices = <int>[];
     for (int i = 0; i < _current.options.length; i++) {
       if (i != validCorrectIndex) wrongIndices.add(i);
@@ -206,7 +206,10 @@ class _QuizSessionState extends ConsumerState<QuizSession>
     final items = ref.read(itemProvider.notifier);
     if (!items.hasItem(SpecialItemType.sageMonocle)) return;
     items.consumeItem(SpecialItemType.sageMonocle);
-    setState(() => _monocleUsed = true);
+    setState(() {
+      _monocleUsed = true;
+      _monocleVisibleIndices = _getMonocleFilteredIndices();
+    });
   }
 
   void _next() {
@@ -221,6 +224,7 @@ class _QuizSessionState extends ConsumerState<QuizSession>
         _selectedIndex = null;
         _answered = false;
         _monocleUsed = false;
+        _monocleVisibleIndices = null;
       });
       _saveProgress();
       _optionCtrl.reset();
@@ -365,7 +369,8 @@ class _QuizSessionState extends ConsumerState<QuizSession>
                     ),
                   ),
                 ...List.generate(_current.options.length, (i) {
-                  final visibleIndices = _getMonocleFilteredIndices();
+                  final visibleIndices =
+                      _monocleVisibleIndices ?? _getMonocleFilteredIndices();
                   if (!visibleIndices.contains(i)) {
                     return const SizedBox.shrink();
                   }
@@ -385,7 +390,7 @@ class _QuizSessionState extends ConsumerState<QuizSession>
                       index: i,
                       text: _current.options[i],
                       selected: _selectedIndex == i,
-                      correct: _current.correctIndex == i,
+                      correct: _effectiveCorrectIndex == i,
                       revealed: _answered,
                       onTap: () => _selectAnswer(i),
                     ),
@@ -395,7 +400,7 @@ class _QuizSessionState extends ConsumerState<QuizSession>
                   FadeTransition(
                     opacity: _feedbackAnim,
                     child: QuizFeedbackCard(
-                      correct: _selectedIndex == _current.correctIndex,
+                      correct: _selectedIndex == _effectiveCorrectIndex,
                       explanation: _current.explanation,
                     ),
                   ),

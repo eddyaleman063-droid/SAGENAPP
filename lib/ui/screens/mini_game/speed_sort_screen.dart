@@ -52,7 +52,14 @@ class _SpeedSortScreenState extends ConsumerState<SpeedSortScreen> {
   void initState() {
     super.initState();
     _timeRemaining = ValueNotifier(widget.config.timeLimit.inSeconds);
-    _initGame();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_items.isEmpty) {
+      _initGame();
+    }
   }
 
   void _initGame() {
@@ -296,7 +303,6 @@ class _SpeedSortScreenState extends ConsumerState<SpeedSortScreen> {
             label: AppLocalizations.of(context)!.correct,
             child: GestureDetector(
               onTap: () {
-                ExperienceService.instance.lightHaptic();
                 _onSort(index, true);
               },
               child: Container(
@@ -320,7 +326,6 @@ class _SpeedSortScreenState extends ConsumerState<SpeedSortScreen> {
             label: AppLocalizations.of(context)!.incorrect,
             child: GestureDetector(
               onTap: () {
-                ExperienceService.instance.lightHaptic();
                 _onSort(index, false);
               },
               child: Container(

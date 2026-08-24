@@ -142,6 +142,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
           onRefresh: () async {
             ref.invalidate(learningProvider);
             ref.invalidate(achievementProvider);
+            await Future<void>.delayed(const Duration(milliseconds: 500));
           },
           child: CustomScrollView(
             slivers: [

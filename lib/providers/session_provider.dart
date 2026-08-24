@@ -137,7 +137,10 @@ class SessionNotifier extends AutoDisposeNotifier<SessionState> {
     }
     final challenge = state.currentChallenge;
     if (challenge == null) return;
-    final feedbackCorrect = selectedIndex == challenge.correctIndex;
+    final validCorrectIndex = challenge.isCorrectIndexValid
+        ? challenge.correctIndex
+        : 0.clamp(0, challenge.options.length - 1);
+    final feedbackCorrect = selectedIndex == validCorrectIndex;
     final newLives = feedbackCorrect
         ? state.lives
         : (state.lives > 0 ? state.lives - 1 : 0);

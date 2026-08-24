@@ -129,15 +129,19 @@ class GemHistoryScreen extends ConsumerWidget {
                 final now = DateTime.now();
                 final dateLabel = _formatDate(date, now, l);
 
-                return _TransactionTile(
+                final tile = _TransactionTile(
                   tx: tx,
                   color: color,
                   icon: icon,
                   dateLabel: dateLabel,
-                ).animate().fadeIn(
-                  delay: Duration(milliseconds: index * 30),
-                  duration: 300.ms,
                 );
+                if (index < 15) {
+                  return tile.animate().fadeIn(
+                    delay: Duration(milliseconds: index * 30),
+                    duration: 300.ms,
+                  );
+                }
+                return tile;
               }, childCount: transactions.length),
             ),
           const SliverPadding(padding: EdgeInsets.only(bottom: 80)),

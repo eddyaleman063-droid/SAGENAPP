@@ -190,6 +190,10 @@ class PaymentNotifier extends AutoDisposeNotifier<PaymentState> {
         _logger.warning(
           'registerPendingPayment: no idToken, skipping server registration',
         );
+        state = state.copyWith(
+          status: PaymentStatus.failed,
+          errorMessage: 'Authentication expired. Please try again.',
+        );
         return;
       }
       final opId =

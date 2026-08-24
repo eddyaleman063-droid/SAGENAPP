@@ -102,10 +102,9 @@ class SettingsActions extends ConsumerWidget {
                   ref.read(experienceServiceProvider).lightHaptic();
                   context.pop();
                   ref.read(notificationServiceProvider).cancelAll();
-                  await ref.read(authProvider.notifier).signOut();
-                  if (ctx.mounted) {
-                    ctx.goNamed('welcome');
-                  }
+                  try {
+                    await ref.read(authProvider.notifier).signOut();
+                  } catch (_) {}
                 },
                 child: Text(
                   l.settingsLogout,

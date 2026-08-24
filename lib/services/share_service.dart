@@ -51,4 +51,17 @@ class ShareService {
       }
     }
   }
+
+  Future<bool> shareText(String text, {String? source}) async {
+    try {
+      await SharePlus.instance.share(ShareParams(text: text));
+      if (source != null) {
+        _analytics.trackFlexCardShared(source);
+      }
+      return true;
+    } catch (e) {
+      _logger.error('Share text failed', e);
+      return false;
+    }
+  }
 }

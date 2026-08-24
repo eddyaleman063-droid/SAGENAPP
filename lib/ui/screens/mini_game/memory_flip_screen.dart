@@ -229,7 +229,6 @@ class _MemoryFlipScreenState extends ConsumerState<MemoryFlipScreen> {
           : AppLocalizations.of(context)!.miniGameHiddenCard,
       child: GestureDetector(
         onTap: () {
-          ExperienceService.instance.lightHaptic();
           _onCardTap(index);
         },
         child: AnimatedContainer(

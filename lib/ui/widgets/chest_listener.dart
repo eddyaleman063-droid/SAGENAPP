@@ -116,10 +116,8 @@ class _ChestListenerState extends ConsumerState<ChestListener> {
         ref.read(shopProvider.notifier).activateXpBoost();
       }
 
-      if (data.xp > 0 || data.gems > 0) {
-        if (data.gems > 0) {
-          ref.read(gemProvider.notifier).addGems(data.gems, reason: 'chest');
-        }
+      if (data.gems > 0) {
+        ref.read(gemProvider.notifier).addGems(data.gems, reason: 'chest');
       }
 
       if (data.specialItems.isNotEmpty || data.cosmeticUnlocks.isNotEmpty) {

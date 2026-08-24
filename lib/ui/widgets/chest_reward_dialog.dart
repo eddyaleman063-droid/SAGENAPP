@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 
 import 'package:go_router/go_router.dart';
@@ -303,12 +302,8 @@ class _RewardsPanel extends StatelessWidget {
                         ...r.specialItems.map((e) => e.displayName),
                         ...r.cosmeticUnlocks.map((e) => e.displayName),
                       ];
-                      ShareService.instance.shareImage(
-                        Uint8List(0),
-                        text: l.chestRewardShareText(
-                          items.join(', '),
-                          r.type.name,
-                        ),
+                      ShareService.instance.shareText(
+                        l.chestRewardShareText(items.join(', '), r.type.name),
                         source: 'chest_reward',
                       );
                     },

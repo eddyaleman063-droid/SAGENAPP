@@ -445,7 +445,9 @@ class _FeedbackBody extends StatelessWidget {
     final correct = session.feedbackCorrect;
     final challenge = session.currentChallenge;
     if (challenge == null) return const SizedBox.shrink();
-    final correctOption = challenge.options[challenge.correctIndex];
+    final correctOption = challenge.isCorrectIndexValid
+        ? challenge.options[challenge.correctIndex]
+        : null;
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(AppSpacing.xxl),
@@ -497,7 +499,7 @@ class _FeedbackBody extends StatelessWidget {
                       color: PremiumColors.success.withValues(alpha: 0.1),
                     ),
                     child: Text(
-                      l.sessionCorrectAnswer(correctOption),
+                      l.sessionCorrectAnswer(correctOption ?? '—'),
                       style: AppTextStyle.subtitle.copyWith(
                         fontWeight: FontWeight.w500,
                         color: PremiumColors.success,

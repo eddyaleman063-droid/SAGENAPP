@@ -268,7 +268,7 @@ class _RankingContent extends ConsumerWidget {
             },
           ),
         ),
-        if (!isInTop50 && currentEntry != null && entries.isNotEmpty)
+        if (currentEntry != null)
           Positioned(
             left: AppSpacing.xxl,
             right: AppSpacing.xxl,

@@ -243,7 +243,6 @@ class _WordMatchScreenState extends ConsumerState<WordMatchScreen> {
       label: item.text,
       child: GestureDetector(
         onTap: () {
-          ExperienceService.instance.lightHaptic();
           _onItemTap(index);
         },
         child: AnimatedContainer(
