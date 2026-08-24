@@ -21,6 +21,7 @@ import 'services/deep_link_service.dart';
 import 'ui/widgets/common/ambient_background.dart';
 import 'ui/widgets/common/error_boundary.dart';
 import 'ui/widgets/chest_listener.dart';
+import 'ui/widgets/common/emotion_listener.dart';
 import 'ui/widgets/common/sync_coordinator.dart';
 
 void main() async {
@@ -313,7 +314,11 @@ class _SagenAppState extends ConsumerState<SagenApp> {
                   data: MediaQuery.of(
                     context,
                   ).copyWith(textScaler: TextScaler.linear(safeScale)),
-                  child: ChestListener(child: child ?? const SizedBox.shrink()),
+                  child: EmotionListener(
+                    child: ChestListener(
+                      child: child ?? const SizedBox.shrink(),
+                    ),
+                  ),
                 );
               },
               title: 'SAGEN',

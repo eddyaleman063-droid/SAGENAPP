@@ -1,22 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sagen/core/theme/app_colors.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/l10n/app_localizations.dart';
+import 'package:sagen/providers/mascot_reaction_provider.dart';
 import 'package:sagen/services/sage_emotion_service.dart';
 import '../common/sage_emotion_widget.dart';
 
-class EmptyChat extends StatelessWidget {
+class EmptyChat extends ConsumerWidget {
   const EmptyChat({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final reaction = ref.watch(mascotReactionProvider);
+    final emotion = reaction.overrideEmotion ?? SageEmotion.curious;
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const ExcludeSemantics(
+          ExcludeSemantics(
             child: SageEmotionWidget(
-              emotion: SageEmotion.curious,
+              emotion: emotion,
               size: 80,
               animated: true,
             ),

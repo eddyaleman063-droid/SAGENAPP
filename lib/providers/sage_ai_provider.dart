@@ -75,6 +75,7 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
   late final AiService _primaryService;
   late final LocalFallbackService _fallbackService;
   StreamSubscription<String>? _streamSub;
+  Timer? _streamFlushTimer;
 
   static DateTime _lastSendTime = DateTime.now().subtract(
     const Duration(seconds: 5),
@@ -90,7 +91,9 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
   @override
   SageAiChatState build() {
     _streamSub?.cancel();
+    _streamFlushTimer?.cancel();
     _streamSub = null;
+    _streamFlushTimer = null;
     _primaryService = ref.watch(aiServiceProvider);
     _fallbackService = LocalFallbackService();
     // Contexto leído al construir; se refresca al enviar mensajes. No se
@@ -181,6 +184,7 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
         : _fallbackService;
 
     await _streamSub?.cancel();
+    _streamFlushTimer?.cancel();
     final buffer = StringBuffer();
     _streamSub = service
         .generateStream(
@@ -196,18 +200,27 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
               state = state.copyWith(status: SageAiChatStatus.streaming);
             }
             buffer.write(chunk);
-            state = state.copyWith(streamingText: buffer.toString());
+            _scheduleStreamFlush(buffer);
           },
           onDone: () {
+            _streamFlushTimer?.cancel();
             _finalizeResponse(text);
           },
           onError: (Object e) {
+            _streamFlushTimer?.cancel();
             AppLogger().error('SageAiProvider stream error', e);
             ref.read(emotionEventBusProvider).fire(EmotionEventType.chatError);
             _fallbackResponse(text);
           },
         );
     return true;
+  }
+
+  void _scheduleStreamFlush(StringBuffer buffer) {
+    if (_streamFlushTimer != null && _streamFlushTimer!.isActive) return;
+    _streamFlushTimer = Timer(const Duration(milliseconds: 50), () {
+      state = state.copyWith(streamingText: buffer.toString());
+    });
   }
 
   void _finalizeResponse(String lastQuestion) {
@@ -221,6 +234,7 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
 
   void _fallbackResponse(String lastQuestion) {
     _streamSub?.cancel();
+    _streamFlushTimer?.cancel();
     _streamSub = null;
 
     state = state.copyWith(status: SageAiChatStatus.loading);
@@ -240,12 +254,14 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
               state = state.copyWith(status: SageAiChatStatus.streaming);
             }
             buffer.write(chunk);
-            state = state.copyWith(streamingText: buffer.toString());
+            _scheduleStreamFlush(buffer);
           },
           onDone: () {
+            _streamFlushTimer?.cancel();
             _applyAssistantMessage(state.streamingText.trim());
           },
           onError: (_) {
+            _streamFlushTimer?.cancel();
             _showConnectionWeak();
           },
         );
@@ -314,7 +330,9 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
 
   void cancelStream() {
     _streamSub?.cancel();
+    _streamFlushTimer?.cancel();
     _streamSub = null;
+    _streamFlushTimer = null;
     final text = state.streamingText.trim();
     if (text.isNotEmpty) {
       _applyAssistantMessage(text);

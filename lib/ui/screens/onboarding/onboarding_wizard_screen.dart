@@ -36,7 +36,11 @@ class _OnboardingWizardScreenState
   @override
   void initState() {
     super.initState();
-    _pageCtrl = PageController();
+    final savedIndex = ref
+        .read(onboardingWizardProvider)
+        .currentIndex
+        .clamp(0, OnboardingWizardConfig.totalSteps - 1);
+    _pageCtrl = PageController(initialPage: savedIndex);
   }
 
   @override

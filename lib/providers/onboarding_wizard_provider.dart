@@ -35,7 +35,12 @@ class OnboardingWizardState {
     final raw = json['sectionData'] as Map<String, dynamic>? ?? {};
     return OnboardingWizardState(
       currentIndex: (json['currentIndex'] as num?)?.toInt() ?? 0,
-      sectionData: raw.map((k, v) => MapEntry(int.tryParse(k) ?? 0, v)),
+      sectionData: raw.map(
+        (k, v) => MapEntry(
+          int.tryParse(k) ?? 0,
+          v is List ? List<Object?>.from(v) : v,
+        ),
+      ),
     );
   }
 }

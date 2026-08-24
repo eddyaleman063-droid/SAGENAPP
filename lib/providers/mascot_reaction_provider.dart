@@ -4,16 +4,10 @@ import '../services/sage_emotion_service.dart';
 
 class MascotReactionState {
   final SageEmotion? overrideEmotion;
-  final SageEmotion? overlayEmotion;
-  final double overlayStrength;
 
-  const MascotReactionState({
-    this.overrideEmotion,
-    this.overlayEmotion,
-    this.overlayStrength = 0.3,
-  });
+  const MascotReactionState({this.overrideEmotion});
 
-  bool get isActive => overrideEmotion != null || overlayEmotion != null;
+  bool get isActive => overrideEmotion != null;
 }
 
 class MascotReactionNotifier extends AutoDisposeNotifier<MascotReactionState> {
@@ -35,21 +29,6 @@ class MascotReactionNotifier extends AutoDisposeNotifier<MascotReactionState> {
   }) {
     _clearTimer?.cancel();
     state = MascotReactionState(overrideEmotion: emotion);
-    _clearTimer = Timer(duration, () {
-      if (!_disposed) state = const MascotReactionState();
-    });
-  }
-
-  void triggerOverlay(
-    SageEmotion emotion, {
-    Duration duration = const Duration(seconds: 8),
-    double strength = 0.3,
-  }) {
-    _clearTimer?.cancel();
-    state = MascotReactionState(
-      overlayEmotion: emotion,
-      overlayStrength: strength,
-    );
     _clearTimer = Timer(duration, () {
       if (!_disposed) state = const MascotReactionState();
     });

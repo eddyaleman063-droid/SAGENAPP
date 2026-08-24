@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,7 +8,6 @@ import 'package:sagen/providers/providers.dart';
 import '../../../core/theme/theme_constants.dart';
 import '../../../services/analytics_service.dart';
 
-import '../../widgets/common/emotion_listener.dart';
 import '../../widgets/sage_chat/locked_gatekeeper.dart';
 import '../../widgets/sage_chat/header.dart';
 import '../../widgets/sage_chat/message_list.dart';
@@ -93,55 +93,53 @@ class _SageChatScreenState extends ConsumerState<SageChatScreen>
       );
     }
 
-    return EmotionListener(
-      child: Scaffold(
-        backgroundColor: dark ? PremiumColors.darkBg : PremiumColors.lightBg,
-        body: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          child: SafeArea(
-            child: Column(
-              children: [
-                SageChatHeader(
-                  sage: sageState,
-                  onClear: () =>
-                      ref.read(sageAiProvider.notifier).clearMessages(),
-                ),
-                Expanded(
-                  child: MessageList(sage: sageState, scrollCtrl: _scrollCtrl),
-                ),
-                if (sageState.lastError != null)
-                  _ErrorBanner(
-                    message: _resolveLastError(l, sageState.lastError!),
-                    dark: dark,
-                    onDismiss: () =>
-                        ref.read(sageAiProvider.notifier).clearError(),
-                    onRetry: () {
-                      final msgs = sageState.messages;
-                      if (msgs.isNotEmpty) {
-                        final lastUser = msgs.lastWhere(
-                          (m) => m.role.name == 'user',
-                          orElse: () => msgs.last,
-                        );
-                        ref
-                            .read(sageAiProvider.notifier)
-                            .sendMessage(lastUser.text);
-                      }
-                    },
-                  ),
-                if (sageState.isLoading) const TypingIndicator(),
-                InputBar(
-                  controller: _textCtrl,
-                  focusNode: _focusNode,
+    return Scaffold(
+      backgroundColor: dark ? PremiumColors.darkBg : PremiumColors.lightBg,
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: SafeArea(
+          child: Column(
+            children: [
+              SageChatHeader(
+                isBusy: sageState.isBusy,
+                hasMessages: sageState.messages.isNotEmpty,
+                onClear: () =>
+                    ref.read(sageAiProvider.notifier).clearMessages(),
+              ),
+              Expanded(
+                child: MessageList(sage: sageState, scrollCtrl: _scrollCtrl),
+              ),
+              if (sageState.lastError != null)
+                _ErrorBanner(
+                  message: _resolveLastError(l, sageState.lastError!),
                   dark: dark,
-                  enabled: !sageState.isBusy,
-                  isStreaming: sageState.isStreaming,
-                  onSend: () => _send(_textCtrl.text),
-                  onStop: () =>
-                      ref.read(sageAiProvider.notifier).cancelStream(),
+                  onDismiss: () =>
+                      ref.read(sageAiProvider.notifier).clearError(),
+                  onRetry: () {
+                    final msgs = sageState.messages;
+                    if (msgs.isNotEmpty) {
+                      final lastUser = msgs.lastWhere(
+                        (m) => m.role.name == 'user',
+                        orElse: () => msgs.last,
+                      );
+                      ref
+                          .read(sageAiProvider.notifier)
+                          .sendMessage(lastUser.text);
+                    }
+                  },
                 ),
-              ],
-            ).animate().fadeIn(),
-          ),
+              if (sageState.isLoading) const TypingIndicator(),
+              InputBar(
+                controller: _textCtrl,
+                focusNode: _focusNode,
+                dark: dark,
+                enabled: !sageState.isBusy,
+                isStreaming: sageState.isStreaming,
+                onSend: () => _send(_textCtrl.text),
+                onStop: () => ref.read(sageAiProvider.notifier).cancelStream(),
+              ),
+            ],
+          ).animate().fadeIn(),
         ),
       ),
     );
@@ -165,12 +163,20 @@ class _ErrorBanner extends StatefulWidget {
 }
 
 class _ErrorBannerState extends State<_ErrorBanner> {
+  Timer? _dismissTimer;
+
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 8), () {
+    _dismissTimer = Timer(const Duration(seconds: 8), () {
       if (mounted) widget.onDismiss?.call();
     });
+  }
+
+  @override
+  void dispose() {
+    _dismissTimer?.cancel();
+    super.dispose();
   }
 
   @override

@@ -22,7 +22,7 @@ class SageEmotionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final s = size.clamp(40.0, 200.0);
+    final s = size.clamp(24.0, 200.0);
 
     return RepaintBoundary(
       child: Semantics(
