@@ -8,13 +8,7 @@ import 'message_bubble.dart';
 class MessageList extends StatefulWidget {
   final SageAiChatState sage;
   final ScrollController scrollCtrl;
-  final bool dark;
-  const MessageList({
-    super.key,
-    required this.sage,
-    required this.scrollCtrl,
-    required this.dark,
-  });
+  const MessageList({super.key, required this.sage, required this.scrollCtrl});
 
   @override
   State<MessageList> createState() => _MessageListState();
@@ -117,7 +111,7 @@ class _AnimatedMessageBubble extends StatefulWidget {
 
 class _AnimatedMessageBubbleState extends State<_AnimatedMessageBubble>
     with SingleTickerProviderStateMixin {
-  late AnimationController _ctrl;
+  AnimationController? _ctrl;
   late Animation<Offset> _slideAnim;
   late Animation<double> _fadeAnim;
 
@@ -132,21 +126,29 @@ class _AnimatedMessageBubbleState extends State<_AnimatedMessageBubble>
     _slideAnim = Tween<Offset>(
       begin: const Offset(0, 0.15),
       end: Offset.zero,
-    ).animate(CurvedAnimation(parent: _ctrl, curve: Curves.easeOut));
-    _fadeAnim = CurvedAnimation(parent: _ctrl, curve: Curves.easeIn);
+    ).animate(CurvedAnimation(parent: _ctrl!, curve: Curves.easeOut));
+    _fadeAnim = CurvedAnimation(parent: _ctrl!, curve: Curves.easeIn);
+    _ctrl!.addStatusListener((status) {
+      if (status == AnimationStatus.completed && mounted) {
+        _ctrl?.dispose();
+        _ctrl = null;
+      }
+    });
     Future.delayed(Duration(milliseconds: delay), () {
-      if (mounted) _ctrl.forward();
+      if (mounted) _ctrl?.forward();
     });
   }
 
   @override
   void dispose() {
-    _ctrl.dispose();
+    _ctrl?.dispose();
+    _ctrl = null;
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    if (_ctrl == null) return widget.child;
     return SlideTransition(
       position: _slideAnim,
       child: FadeTransition(opacity: _fadeAnim, child: widget.child),

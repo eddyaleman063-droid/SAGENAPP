@@ -2340,5 +2340,7 @@
   "gemReasonAchievement": "Succès",
   "gemReasonMission": "Mission",
   "gemReasonShop": "Achat en Boutique",
-  "gemCapWarning": "Solde de gemmes proche de la limite de 100 000!"
+  "gemCapWarning": "Solde de gemmes proche de la limite de 100 000!",
+  "close": "Fermer",
+  "stop": "Arrêter"
 }

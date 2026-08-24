@@ -5389,4 +5389,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get gemCapWarning => 'Gem balance approaching the 100,000 cap!';
+
+  @override
+  String get close => 'Close';
+
+  @override
+  String get stop => 'Stop';
 }

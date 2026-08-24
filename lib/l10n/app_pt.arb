@@ -2340,5 +2340,7 @@
   "gemReasonAchievement": "Conquista",
   "gemReasonMission": "Missão",
   "gemReasonShop": "Compra na Loja",
-  "gemCapWarning": "Saldo de gemas se aproximando do limite de 100.000!"
+  "gemCapWarning": "Saldo de gemas se aproximando do limite de 100.000!",
+  "close": "Fechar",
+  "stop": "Parar"
 }

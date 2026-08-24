@@ -5428,4 +5428,10 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get gemCapWarning =>
       'Saldo de gemas se aproximando do limite de 100.000!';
+
+  @override
+  String get close => 'Fechar';
+
+  @override
+  String get stop => 'Parar';
 }

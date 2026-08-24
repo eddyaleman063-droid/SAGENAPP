@@ -2340,5 +2340,7 @@
   "gemReasonAchievement": "Achievement",
   "gemReasonMission": "Mission",
   "gemReasonShop": "Shop Purchase",
-  "gemCapWarning": "Gem balance approaching the 100,000 cap!"
+  "gemCapWarning": "Gem balance approaching the 100,000 cap!",
+  "close": "Close",
+  "stop": "Stop"
 }

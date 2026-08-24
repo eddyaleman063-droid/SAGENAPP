@@ -5463,4 +5463,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get gemCapWarning => 'Solde de gemmes proche de la limite de 100 000!';
+
+  @override
+  String get close => 'Fermer';
+
+  @override
+  String get stop => 'Arrêter';
 }

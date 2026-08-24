@@ -69,12 +69,6 @@ class SageAiChatState {
   bool get isBusy =>
       status == SageAiChatStatus.loading ||
       status == SageAiChatStatus.streaming;
-
-  List<String> get suggestionChips => [
-    'What is phishing?',
-    'Create a strong password',
-    'Identify a scam',
-  ];
 }
 
 class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
@@ -316,6 +310,21 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
     }
     recent.add(userMsg);
     return recent;
+  }
+
+  void cancelStream() {
+    _streamSub?.cancel();
+    _streamSub = null;
+    final text = state.streamingText.trim();
+    if (text.isNotEmpty) {
+      _applyAssistantMessage(text);
+    } else {
+      state = state.copyWith(streamingText: '', status: SageAiChatStatus.idle);
+    }
+  }
+
+  void clearError() {
+    state = state.copyWith(lastError: () => null, errorMessage: () => null);
   }
 
   void clearMessages() {

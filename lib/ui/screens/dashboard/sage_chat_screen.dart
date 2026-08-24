@@ -7,11 +7,11 @@ import 'package:sagen/providers/providers.dart';
 import '../../../core/theme/theme_constants.dart';
 import '../../../services/analytics_service.dart';
 
+import '../../widgets/common/emotion_listener.dart';
 import '../../widgets/sage_chat/locked_gatekeeper.dart';
 import '../../widgets/sage_chat/header.dart';
 import '../../widgets/sage_chat/message_list.dart';
 import '../../widgets/sage_chat/typing_indicator.dart';
-import '../../widgets/sage_chat/quick_chips.dart';
 import '../../widgets/sage_chat/input_bar.dart';
 
 class SageChatScreen extends ConsumerStatefulWidget {
@@ -61,12 +61,6 @@ class _SageChatScreenState extends ConsumerState<SageChatScreen>
     _scrollDown();
   }
 
-  void _onChipTap(String text) {
-    ref.read(experienceServiceProvider).lightHaptic();
-    ref.read(sageAiProvider.notifier).sendMessage(text);
-    _scrollDown();
-  }
-
   String _resolveLastError(AppLocalizations l, String key) {
     switch (key) {
       case 'daily_limit':
@@ -99,61 +93,85 @@ class _SageChatScreenState extends ConsumerState<SageChatScreen>
       );
     }
 
-    return Scaffold(
-      backgroundColor: dark ? PremiumColors.darkBg : PremiumColors.lightBg,
-      body: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: SafeArea(
-          child: Column(
-            children: [
-              SageChatHeader(
-                dark: dark,
-                sage: sageState,
-                onClear: () =>
-                    ref.read(sageAiProvider.notifier).clearMessages(),
-              ),
-              Expanded(
-                child: MessageList(
+    return EmotionListener(
+      child: Scaffold(
+        backgroundColor: dark ? PremiumColors.darkBg : PremiumColors.lightBg,
+        body: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: SafeArea(
+            child: Column(
+              children: [
+                SageChatHeader(
                   sage: sageState,
-                  scrollCtrl: _scrollCtrl,
-                  dark: dark,
+                  onClear: () =>
+                      ref.read(sageAiProvider.notifier).clearMessages(),
                 ),
-              ),
-              if (sageState.lastError != null)
-                _ErrorBanner(
-                  message: _resolveLastError(l, sageState.lastError!),
-                  dark: dark,
+                Expanded(
+                  child: MessageList(sage: sageState, scrollCtrl: _scrollCtrl),
                 ),
-              if (sageState.isLoading) const TypingIndicator(),
-              if (sageState.suggestionChips.isNotEmpty)
-                QuickChips(
-                  chips: [
-                    l.sageChipWhatIsPhishing,
-                    l.sageChipCreateStrongPassword,
-                    l.sageChipIdentifyScam,
-                  ],
-                  onTap: (t) => _onChipTap(t),
+                if (sageState.lastError != null)
+                  _ErrorBanner(
+                    message: _resolveLastError(l, sageState.lastError!),
+                    dark: dark,
+                    onDismiss: () =>
+                        ref.read(sageAiProvider.notifier).clearError(),
+                    onRetry: () {
+                      final msgs = sageState.messages;
+                      if (msgs.isNotEmpty) {
+                        final lastUser = msgs.lastWhere(
+                          (m) => m.role.name == 'user',
+                          orElse: () => msgs.last,
+                        );
+                        ref
+                            .read(sageAiProvider.notifier)
+                            .sendMessage(lastUser.text);
+                      }
+                    },
+                  ),
+                if (sageState.isLoading) const TypingIndicator(),
+                InputBar(
+                  controller: _textCtrl,
+                  focusNode: _focusNode,
                   dark: dark,
+                  enabled: !sageState.isBusy,
+                  isStreaming: sageState.isStreaming,
+                  onSend: () => _send(_textCtrl.text),
+                  onStop: () =>
+                      ref.read(sageAiProvider.notifier).cancelStream(),
                 ),
-              InputBar(
-                controller: _textCtrl,
-                focusNode: _focusNode,
-                dark: dark,
-                enabled: !sageState.isBusy,
-                onSend: () => _send(_textCtrl.text),
-              ),
-            ],
-          ).animate().fadeIn(),
+              ],
+            ).animate().fadeIn(),
+          ),
         ),
       ),
     );
   }
 }
 
-class _ErrorBanner extends StatelessWidget {
+class _ErrorBanner extends StatefulWidget {
   final String message;
   final bool dark;
-  const _ErrorBanner({required this.message, required this.dark});
+  final VoidCallback? onDismiss;
+  final VoidCallback? onRetry;
+  const _ErrorBanner({
+    required this.message,
+    required this.dark,
+    this.onDismiss,
+    this.onRetry,
+  });
+
+  @override
+  State<_ErrorBanner> createState() => _ErrorBannerState();
+}
+
+class _ErrorBannerState extends State<_ErrorBanner> {
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(seconds: 8), () {
+      if (mounted) widget.onDismiss?.call();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -177,9 +195,35 @@ class _ErrorBanner extends StatelessWidget {
           const SizedBox(width: AppSpacing.sm),
           Expanded(
             child: Text(
-              message,
+              widget.message,
               style: AppTextStyle.caption.copyWith(
                 color: context.textSecondary,
+              ),
+            ),
+          ),
+          if (widget.onRetry != null)
+            Semantics(
+              button: true,
+              label: AppLocalizations.of(context)?.retry ?? 'Retry',
+              child: GestureDetector(
+                onTap: widget.onRetry,
+                child: const Icon(
+                  Icons.refresh_rounded,
+                  size: 16,
+                  color: PremiumColors.error,
+                ),
+              ),
+            ),
+          const SizedBox(width: AppSpacing.sm),
+          Semantics(
+            button: true,
+            label: AppLocalizations.of(context)?.close ?? 'Close',
+            child: GestureDetector(
+              onTap: widget.onDismiss,
+              child: const Icon(
+                Icons.close_rounded,
+                size: 14,
+                color: PremiumColors.error,
               ),
             ),
           ),

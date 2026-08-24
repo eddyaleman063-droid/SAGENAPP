@@ -33,9 +33,16 @@ class LocalFallbackService implements AiService {
     List<String> weakTopics = const [],
   }) async* {
     final fullResponse = await generate(messages);
-    for (int i = 0; i < fullResponse.length; i++) {
-      yield fullResponse[i];
-      await Future.delayed(const Duration(milliseconds: 10));
+    final words = fullResponse.split(RegExp(r'(\s+)'));
+    final buffer = StringBuffer();
+    for (int i = 0; i < words.length; i++) {
+      buffer.write(words[i]);
+      if (i < words.length - 1) buffer.write(' ');
+      if ((i + 1) % 4 == 0 || i == words.length - 1) {
+        yield buffer.toString();
+        buffer.clear();
+        await Future.delayed(const Duration(milliseconds: 40));
+      }
     }
   }
 

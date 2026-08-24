@@ -5414,4 +5414,10 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get gemCapWarning =>
       '¡El saldo de gemas se acerca al límite de 100,000!';
+
+  @override
+  String get close => 'Cerrar';
+
+  @override
+  String get stop => 'Detener';
 }

@@ -2342,5 +2342,7 @@
   "gemReasonAchievement": "Logro",
   "gemReasonMission": "Misión",
   "gemReasonShop": "Compra en Tienda",
-  "gemCapWarning": "¡El saldo de gemas se acerca al límite de 100,000!"
+  "gemCapWarning": "¡El saldo de gemas se acerca al límite de 100,000!",
+  "close": "Cerrar",
+  "stop": "Detener"
 }

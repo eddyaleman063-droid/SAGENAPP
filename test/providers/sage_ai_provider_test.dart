@@ -88,14 +88,5 @@ void main() {
       expect(state.errorMessage, isNull);
       expect(state.streamingText, '');
     });
-
-    test('suggestionChips returns expected list', () {
-      final state = container.read(sageAiProvider);
-      expect(state.suggestionChips, [
-        'What is phishing?',
-        'Create a strong password',
-        'Identify a scam',
-      ]);
-    });
   });
 }

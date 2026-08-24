@@ -3,25 +3,23 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/l10n/app_localizations.dart';
+import 'package:sagen/providers/mascot_reaction_provider.dart';
 import 'package:sagen/providers/sage_ai_provider.dart';
 import 'package:sagen/services/sage_emotion_service.dart';
 import '../common/sage_emotion_widget.dart';
 
 class SageChatHeader extends ConsumerWidget {
-  final bool dark;
   final SageAiChatState sage;
   final VoidCallback? onClear;
-  const SageChatHeader({
-    super.key,
-    required this.dark,
-    required this.sage,
-    this.onClear,
-  });
+  const SageChatHeader({super.key, required this.sage, this.onClear});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l = AppLocalizations.of(context)!;
-    final mascotEmotion = sage.isBusy ? SageEmotion.thinking : SageEmotion.calm;
+    final reaction = ref.watch(mascotReactionProvider);
+    final mascotEmotion =
+        reaction.overrideEmotion ??
+        (sage.isBusy ? SageEmotion.thinking : SageEmotion.calm);
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: AppSpacing.xxl,

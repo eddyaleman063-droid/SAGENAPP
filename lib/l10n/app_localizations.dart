@@ -9970,6 +9970,18 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'¡El saldo de gemas se acerca al límite de 100,000!'**
   String get gemCapWarning;
+
+  /// No description provided for @close.
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar'**
+  String get close;
+
+  /// No description provided for @stop.
+  ///
+  /// In es, this message translates to:
+  /// **'Detener'**
+  String get stop;
 }
 
 class _AppLocalizationsDelegate

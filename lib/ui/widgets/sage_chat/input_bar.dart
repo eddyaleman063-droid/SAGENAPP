@@ -10,7 +10,9 @@ class InputBar extends StatelessWidget {
   final FocusNode focusNode;
   final bool dark;
   final bool enabled;
+  final bool isStreaming;
   final VoidCallback onSend;
+  final VoidCallback? onStop;
   const InputBar({
     super.key,
     required this.controller,
@@ -18,6 +20,8 @@ class InputBar extends StatelessWidget {
     required this.dark,
     required this.enabled,
     required this.onSend,
+    this.isStreaming = false,
+    this.onStop,
   });
 
   @override
@@ -51,6 +55,7 @@ class InputBar extends StatelessWidget {
                 textInputAction: TextInputAction.send,
                 onSubmitted: enabled ? (_) => onSend() : null,
                 decoration: InputDecoration(
+                  counterText: '',
                   hintText:
                       AppLocalizations.of(context)?.chatHint ??
                       AppLocalizations.of(context)?.chatInputHint ??
@@ -74,33 +79,57 @@ class InputBar extends StatelessWidget {
             ),
           ),
           const SizedBox(width: AppSpacing.sm),
-          Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              gradient: enabled
-                  ? const LinearGradient(colors: PremiumColors.gradientSage)
-                  : null,
-              color: enabled ? null : context.subtle,
-            ),
-            child: Semantics(
-              button: true,
-              label: AppLocalizations.of(context)!.sendMessage,
-              child: IconButton(
-                onPressed: enabled
-                    ? () {
-                        ExperienceService.instance.lightHaptic();
-                        onSend();
-                      }
+          if (isStreaming)
+            Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: PremiumColors.error.withValues(alpha: 0.9),
+              ),
+              child: Semantics(
+                button: true,
+                label: AppLocalizations.of(context)?.stop ?? 'Stop',
+                child: IconButton(
+                  onPressed: () {
+                    ExperienceService.instance.lightHaptic();
+                    onStop?.call();
+                  },
+                  icon: const Icon(Icons.stop_rounded, size: 22),
+                  tooltip: AppLocalizations.of(context)?.stop ?? 'Stop',
+                  color: Colors.white,
+                  padding: EdgeInsets.zero,
+                ),
+              ),
+            )
+          else
+            Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: enabled
+                    ? const LinearGradient(colors: PremiumColors.gradientSage)
                     : null,
-                icon: const Icon(Icons.send_rounded, size: 18),
-                tooltip: AppLocalizations.of(context)!.sendMessage,
-                color: enabled ? Colors.white : context.textDisabled,
-                padding: EdgeInsets.zero,
+                color: enabled ? null : context.subtle,
+              ),
+              child: Semantics(
+                button: true,
+                label: AppLocalizations.of(context)!.sendMessage,
+                child: IconButton(
+                  onPressed: enabled
+                      ? () {
+                          ExperienceService.instance.lightHaptic();
+                          onSend();
+                        }
+                      : null,
+                  icon: const Icon(Icons.send_rounded, size: 18),
+                  tooltip: AppLocalizations.of(context)!.sendMessage,
+                  color: enabled ? Colors.white : context.textDisabled,
+                  padding: EdgeInsets.zero,
+                ),
               ),
             ),
-          ),
         ],
       ),
     );
