@@ -20,13 +20,30 @@ class SageEmotionWidget extends StatelessWidget {
     this.animated = true,
   });
 
+  static final _nameCache = <SageEmotion, String>{};
+
+  static String _friendlyName(SageEmotion e) {
+    return _nameCache.putIfAbsent(e, () {
+      final raw = e.name;
+      final buf = StringBuffer(raw[0].toUpperCase());
+      for (var i = 1; i < raw.length; i++) {
+        final c = raw[i];
+        if (c == c.toUpperCase() && raw[i - 1] != raw[i - 1].toUpperCase()) {
+          buf.write(' ');
+        }
+        buf.write(c);
+      }
+      return buf.toString();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final s = size.clamp(24.0, 200.0);
 
     return RepaintBoundary(
       child: Semantics(
-        label: semanticLabel ?? emotion.name,
+        label: semanticLabel ?? _friendlyName(emotion),
         child: animated
             ? _LiveSageImage(emotion: emotion, size: s)
             : _StaticSageImage(emotion: emotion, size: s),
@@ -84,12 +101,11 @@ class _LiveSageImage extends ConsumerStatefulWidget {
 }
 
 class _LiveSageImageState extends ConsumerState<_LiveSageImage>
-    with TickerProviderStateMixin {
-  late AnimationController _transCtrl;
-
+    with SingleTickerProviderStateMixin {
   AnimationController? _breatheCtrl;
   SageEmotion _displayed = SageEmotion.calm;
   bool _idleBreathe = false;
+  bool _skipNextTransition = false;
   int _decodeSize = 0;
 
   @override
@@ -97,11 +113,6 @@ class _LiveSageImageState extends ConsumerState<_LiveSageImage>
     super.initState();
     _displayed = widget.emotion;
     ref.read(sageEmotionServiceProvider).ensurePrecached(widget.emotion);
-    _transCtrl = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 300),
-    );
-    _transCtrl.forward();
     _updateBreathing();
   }
 
@@ -110,18 +121,15 @@ class _LiveSageImageState extends ConsumerState<_LiveSageImage>
     super.didUpdateWidget(old);
     if (old.emotion == widget.emotion) return;
     final service = ref.read(sageEmotionServiceProvider);
-    if (!service.shouldAnimateEmotionChange(old.emotion, widget.emotion)) {
-      _displayed = widget.emotion;
-      _updateBreathing();
-      if (mounted) setState(() {});
-      return;
-    }
-    if (service.isSignificantMoodShift(old.emotion, widget.emotion)) {
+    _skipNextTransition = !service.shouldAnimateEmotionChange(
+      old.emotion,
+      widget.emotion,
+    );
+    if (!_skipNextTransition &&
+        service.isSignificantMoodShift(old.emotion, widget.emotion)) {
       ExperienceService.instance.lightHaptic();
     }
     _displayed = widget.emotion;
-    _transCtrl.reset();
-    _transCtrl.forward();
     _updateBreathing();
   }
 
@@ -145,7 +153,6 @@ class _LiveSageImageState extends ConsumerState<_LiveSageImage>
 
   @override
   void dispose() {
-    _transCtrl.dispose();
     _breatheCtrl?.dispose();
     super.dispose();
   }
@@ -158,26 +165,23 @@ class _LiveSageImageState extends ConsumerState<_LiveSageImage>
     return s;
   }
 
-  Listenable get _listenable {
-    if (_breatheCtrl != null) {
-      return Listenable.merge([_transCtrl, _breatheCtrl!]);
-    }
-    return _transCtrl;
-  }
-
   @override
   Widget build(BuildContext context) {
     final dpr = MediaQuery.devicePixelRatioOf(context);
     _decodeSize = (widget.size * dpr).round().clamp(0, 600);
 
     final imageChild = AnimatedSwitcher(
-      duration: const Duration(milliseconds: 300),
-      transitionBuilder: (child, animation) {
-        return ScaleTransition(
-          scale: animation,
-          child: FadeTransition(opacity: animation, child: child),
-        );
-      },
+      duration: _skipNextTransition
+          ? Duration.zero
+          : const Duration(milliseconds: 300),
+      transitionBuilder: _skipNextTransition
+          ? (child, _) => child
+          : (child, animation) {
+              return ScaleTransition(
+                scale: animation,
+                child: FadeTransition(opacity: animation, child: child),
+              );
+            },
       child: Image.asset(
         _displayed.assetPath,
         key: ValueKey(_displayed.assetPath),
@@ -195,8 +199,10 @@ class _LiveSageImageState extends ConsumerState<_LiveSageImage>
       ),
     );
 
+    if (_breatheCtrl == null) return imageChild;
+
     return AnimatedBuilder(
-      animation: _listenable,
+      animation: _breatheCtrl!,
       builder: (context, child) {
         return Transform.scale(scale: _computeScale(), child: child);
       },

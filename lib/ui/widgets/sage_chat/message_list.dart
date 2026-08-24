@@ -88,7 +88,7 @@ class _MessageListState extends State<MessageList> {
             index: idx,
             child: MessageBubble(
               key: ValueKey(
-                'msg_${msg.time.microsecondsSinceEpoch}_${msg.role.name}_$idx',
+                'msg_${msg.time.microsecondsSinceEpoch}_${msg.role.name}',
               ),
               message: msg,
               isUser: isUser,

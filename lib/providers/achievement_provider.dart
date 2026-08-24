@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/achievement_service.dart';
+import '../services/emotion_event_bus.dart';
 import 'providers.dart';
 
 class AchievementState {
@@ -69,12 +70,13 @@ class AchievementNotifier extends Notifier<AchievementState> {
         totalCount: service.totalCount,
         progress: service.progress,
       );
-      // Deliver XP reward through the learning provider
       ref
           .read(learningProvider.notifier)
           .addXp(xpReward, reason: 'achievement');
-      // Award gems from achievement
       ref.read(gemProvider.notifier).awardAchievementGems(xpReward);
+      ref
+          .read(emotionEventBusProvider)
+          .fire(EmotionEventType.achievementUnlocked);
     }
     return xpReward > 0;
   }

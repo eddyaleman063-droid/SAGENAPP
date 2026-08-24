@@ -107,6 +107,7 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
         .toList();
     ref.onDispose(() {
       _streamSub?.cancel();
+      _streamFlushTimer?.cancel();
     });
     return SageAiChatState(
       messages: _messages,

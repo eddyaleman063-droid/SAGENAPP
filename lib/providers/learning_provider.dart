@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../l10n/app_localizations.dart';
 import '../models/learning/stage.dart';
 import '../models/learning/lesson.dart';
+import '../services/emotion_event_bus.dart';
 
 import '../services/app_logger.dart';
 import 'providers.dart';
@@ -468,6 +469,9 @@ class LearningNotifier extends Notifier<LearningState> {
       currentLevel: finalCurrentLevel,
     );
     if (didLevelUp && !_disposed) _levelUpController.add(newLevel);
+    if (didLevelUp && !_disposed) {
+      ref.read(emotionEventBusProvider).fire(EmotionEventType.levelledUp);
+    }
 
     ref.read(analyticsServiceProvider).trackLessonComplete(lessonId);
     _checkUnlocks();
@@ -482,7 +486,10 @@ class LearningNotifier extends Notifier<LearningState> {
 
     // Award gems for lesson completion
     ref.read(gemProvider.notifier).awardLessonGems(correctAnswers);
-    if (perfectLesson) ref.read(gemProvider.notifier).awardPerfectLessonBonus();
+    if (perfectLesson) {
+      ref.read(gemProvider.notifier).awardPerfectLessonBonus();
+      ref.read(emotionEventBusProvider).fire(EmotionEventType.perfectLesson);
+    }
     ref.read(gemProvider.notifier).awardFirstLessonOfDay();
 
     _save();
@@ -630,6 +637,9 @@ class LearningNotifier extends Notifier<LearningState> {
       currentLevel: didLevelUp ? newLevel : state.currentLevel,
     );
     if (didLevelUp && !_disposed) _levelUpController.add(newLevel);
+    if (didLevelUp && !_disposed) {
+      ref.read(emotionEventBusProvider).fire(EmotionEventType.levelledUp);
+    }
 
     try {
       // Server-authoritative: amount is ignored server-side, reward based on reason.
@@ -680,6 +690,9 @@ class LearningNotifier extends Notifier<LearningState> {
       currentLevel: didLevelUp ? newLevel : state.currentLevel,
     );
     if (didLevelUp && !_disposed) _levelUpController.add(newLevel);
+    if (didLevelUp && !_disposed) {
+      ref.read(emotionEventBusProvider).fire(EmotionEventType.levelledUp);
+    }
     _repo.saveXp(state.xp);
     _repo.saveTotalXp(state.totalXpEarned);
     _repo.saveLevel(state.currentLevel);

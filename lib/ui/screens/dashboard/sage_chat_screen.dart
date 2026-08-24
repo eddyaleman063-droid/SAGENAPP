@@ -4,6 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sagen/core/theme/app_colors.dart';
 import 'package:sagen/l10n/app_localizations.dart';
+import 'package:sagen/models/chat_message.dart';
 import 'package:sagen/providers/providers.dart';
 import '../../../core/theme/theme_constants.dart';
 import '../../../services/analytics_service.dart';
@@ -78,17 +79,18 @@ class _SageChatScreenState extends ConsumerState<SageChatScreen>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final sageState = ref.watch(sageAiProvider);
     final dark = context.isDark;
     final l = AppLocalizations.of(context)!;
 
-    if (sageState.isLocked) {
+    final isLocked = ref.watch(sageAiProvider.select((s) => s.isLocked));
+    if (isLocked) {
+      final blockedLabel = l.chatBlocked;
       return Semantics(
         button: true,
-        label: AppLocalizations.of(context)!.chatBlocked,
+        label: blockedLabel,
         child: GestureDetector(
           onTap: () => ref.read(experienceServiceProvider).errorHaptic(),
-          child: LockedGatekeeper(sage: sageState, dark: dark),
+          child: LockedGatekeeper(sage: ref.watch(sageAiProvider), dark: dark),
         ),
       );
     }
@@ -100,41 +102,25 @@ class _SageChatScreenState extends ConsumerState<SageChatScreen>
         child: SafeArea(
           child: Column(
             children: [
-              SageChatHeader(
-                isBusy: sageState.isBusy,
-                hasMessages: sageState.messages.isNotEmpty,
+              _ChatHeaderSection(
+                scrollCtrl: _scrollCtrl,
                 onClear: () =>
                     ref.read(sageAiProvider.notifier).clearMessages(),
               ),
-              Expanded(
-                child: MessageList(sage: sageState, scrollCtrl: _scrollCtrl),
+              Expanded(child: _ChatMessagesSection(scrollCtrl: _scrollCtrl)),
+              _ChatErrorBannerSection(
+                lastErrorResolver: (key) => _resolveLastError(l, key),
+                dark: dark,
               ),
-              if (sageState.lastError != null)
-                _ErrorBanner(
-                  message: _resolveLastError(l, sageState.lastError!),
-                  dark: dark,
-                  onDismiss: () =>
-                      ref.read(sageAiProvider.notifier).clearError(),
-                  onRetry: () {
-                    final msgs = sageState.messages;
-                    if (msgs.isNotEmpty) {
-                      final lastUser = msgs.lastWhere(
-                        (m) => m.role.name == 'user',
-                        orElse: () => msgs.last,
-                      );
-                      ref
-                          .read(sageAiProvider.notifier)
-                          .sendMessage(lastUser.text);
-                    }
-                  },
-                ),
-              if (sageState.isLoading) const TypingIndicator(),
+              const _ChatTypingSection(),
               InputBar(
                 controller: _textCtrl,
                 focusNode: _focusNode,
                 dark: dark,
-                enabled: !sageState.isBusy,
-                isStreaming: sageState.isStreaming,
+                enabled: !ref.watch(sageAiProvider.select((s) => s.isBusy)),
+                isStreaming: ref.watch(
+                  sageAiProvider.select((s) => s.isStreaming),
+                ),
                 onSend: () => _send(_textCtrl.text),
                 onStop: () => ref.read(sageAiProvider.notifier).cancelStream(),
               ),
@@ -143,6 +129,77 @@ class _SageChatScreenState extends ConsumerState<SageChatScreen>
         ),
       ),
     );
+  }
+}
+
+class _ChatHeaderSection extends ConsumerWidget {
+  final ScrollController scrollCtrl;
+  final VoidCallback? onClear;
+  const _ChatHeaderSection({required this.scrollCtrl, this.onClear});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isBusy = ref.watch(sageAiProvider.select((s) => s.isBusy));
+    final hasMessages = ref.watch(
+      sageAiProvider.select((s) => s.messages.isNotEmpty),
+    );
+    return SageChatHeader(
+      isBusy: isBusy,
+      hasMessages: hasMessages,
+      onClear: onClear,
+    );
+  }
+}
+
+class _ChatMessagesSection extends ConsumerWidget {
+  final ScrollController scrollCtrl;
+  const _ChatMessagesSection({required this.scrollCtrl});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final sageState = ref.watch(sageAiProvider);
+    return MessageList(sage: sageState, scrollCtrl: scrollCtrl);
+  }
+}
+
+class _ChatErrorBannerSection extends ConsumerWidget {
+  final String Function(String key) lastErrorResolver;
+  final bool dark;
+  const _ChatErrorBannerSection({
+    required this.lastErrorResolver,
+    required this.dark,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final lastError = ref.watch(sageAiProvider.select((s) => s.lastError));
+    if (lastError == null) return const SizedBox.shrink();
+    final messages = ref.watch(sageAiProvider.select((s) => s.messages));
+    return _ErrorBanner(
+      message: lastErrorResolver(lastError),
+      dark: dark,
+      onDismiss: () => ref.read(sageAiProvider.notifier).clearError(),
+      onRetry: () {
+        if (messages.isNotEmpty) {
+          final lastUser = messages.lastWhere(
+            (m) => m.role == ChatRole.user,
+            orElse: () => messages.last,
+          );
+          ref.read(sageAiProvider.notifier).sendMessage(lastUser.text);
+        }
+      },
+    );
+  }
+}
+
+class _ChatTypingSection extends ConsumerWidget {
+  const _ChatTypingSection();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isLoading = ref.watch(sageAiProvider.select((s) => s.isLoading));
+    if (!isLoading) return const SizedBox.shrink();
+    return const TypingIndicator();
   }
 }
 

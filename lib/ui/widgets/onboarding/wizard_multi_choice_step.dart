@@ -21,13 +21,11 @@ class WizardMultiChoiceStep extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final config = stepConfig;
+    final raw = ref.watch(
+      onboardingWizardProvider.select((s) => s.sectionData[stepIndex]),
+    );
     final selected =
-        ref.watch(
-          onboardingWizardProvider.select(
-            (s) => s.sectionData[stepIndex] as List<String>?,
-          ),
-        ) ??
-        <String>[];
+        (raw is List ? raw.whereType<String>().toList() : null) ?? <String>[];
     final textPrimary = context.textPrimary;
 
     return Padding(

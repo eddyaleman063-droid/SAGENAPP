@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/map_utils.dart';
+import '../services/emotion_event_bus.dart';
 
 import '../services/analytics_service.dart';
 import '../services/app_logger.dart';
@@ -426,6 +427,10 @@ class StreakNotifier extends Notifier<StreakState> {
 
       final newStatus = _service.checkIn();
 
+      if (oldStreak > 0 && newStatus.currentStreak < oldStreak) {
+        ref.read(emotionEventBusProvider).fire(EmotionEventType.streakLost);
+      }
+
       // Phoenix Feather: revive streak if it would have been lost
       if (usePhoenixFeather &&
           newStatus.currentStreak < oldStreak &&
@@ -528,6 +533,9 @@ class StreakNotifier extends Notifier<StreakState> {
 
       if (milestone != null) {
         ref.read(gemProvider.notifier).awardStreakMilestone(milestone);
+        ref
+            .read(emotionEventBusProvider)
+            .fire(EmotionEventType.streakMilestone);
       }
 
       ref.read(gemProvider.notifier).awardDailyBonus(newStatus.currentStreak);

@@ -45,7 +45,7 @@ class _EmotionListenerState extends ConsumerState<EmotionListener> {
       case EmotionEventType.chatReceived:
         return SageEmotion.excited;
       case EmotionEventType.chatError:
-        return SageEmotion.shocked;
+        return SageEmotion.worried;
       case EmotionEventType.lessonCompleted:
         return SageEmotion.proud;
       case EmotionEventType.perfectLesson:
