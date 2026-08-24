@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sagen/providers/providers.dart';
 import 'package:sagen/services/analytics_service.dart';
 import 'package:sagen/services/app_logger.dart';
+import 'package:sagen/services/emotion_event_bus.dart';
 
 import '../../services/chest_event_bus.dart';
 import 'chest_reward_dialog.dart';
@@ -129,6 +130,15 @@ class _ChestListenerState extends ConsumerState<ChestListener> {
         for (final cosmeticType in data.cosmeticUnlocks) {
           itemNotifier.addItem(cosmeticType);
         }
+        ref
+            .read(emotionEventBusProvider)
+            .fire(EmotionEventType.achievementUnlocked);
+      }
+
+      if (data.streakShields != null && data.streakShields! > 0) {
+        ref
+            .read(emotionEventBusProvider)
+            .fire(EmotionEventType.streakMilestone);
       }
     } catch (e) {
       AppLogger().error('ChestListener: reward delivery failed: $e');

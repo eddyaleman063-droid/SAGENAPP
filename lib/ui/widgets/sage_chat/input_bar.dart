@@ -49,7 +49,6 @@ class InputBar extends StatelessWidget {
                 controller: controller,
                 focusNode: focusNode,
                 enabled: enabled,
-                maxLength: 500,
                 maxLines: 4,
                 inputFormatters: [LengthLimitingTextInputFormatter(500)],
                 textInputAction: TextInputAction.send,

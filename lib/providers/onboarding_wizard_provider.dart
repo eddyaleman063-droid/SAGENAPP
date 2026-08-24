@@ -33,8 +33,12 @@ class OnboardingWizardState {
 
   factory OnboardingWizardState.fromJson(Map<String, dynamic> json) {
     final raw = json['sectionData'] as Map<String, dynamic>? ?? {};
+    const maxIndex = OnboardingWizardConfig.totalSteps - 1;
     return OnboardingWizardState(
-      currentIndex: (json['currentIndex'] as num?)?.toInt() ?? 0,
+      currentIndex: ((json['currentIndex'] as num?)?.toInt() ?? 0).clamp(
+        0,
+        maxIndex,
+      ),
       sectionData: raw.map(
         (k, v) => MapEntry(
           int.tryParse(k) ?? 0,
@@ -119,6 +123,7 @@ class OnboardingWizardNotifier
 
   void markCompleted() {
     _completed = true;
+    _persistTimer?.cancel();
     try {
       final prefs = ref.read(prefsProvider);
       prefs.setBool(_kWizardDoneKey, true);

@@ -205,10 +205,13 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
           },
           onDone: () {
             _streamFlushTimer?.cancel();
+            _streamFlushTimer = null;
+            state = state.copyWith(streamingText: buffer.toString());
             _finalizeResponse(text);
           },
           onError: (Object e) {
             _streamFlushTimer?.cancel();
+            _streamFlushTimer = null;
             AppLogger().error('SageAiProvider stream error', e);
             ref.read(emotionEventBusProvider).fire(EmotionEventType.chatError);
             _fallbackResponse(text);
@@ -259,10 +262,13 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
           },
           onDone: () {
             _streamFlushTimer?.cancel();
-            _applyAssistantMessage(state.streamingText.trim());
+            _streamFlushTimer = null;
+            final finalText = buffer.toString().trim();
+            _applyAssistantMessage(finalText);
           },
           onError: (_) {
             _streamFlushTimer?.cancel();
+            _streamFlushTimer = null;
             _showConnectionWeak();
           },
         );
