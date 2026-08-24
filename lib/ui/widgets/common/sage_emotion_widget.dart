@@ -170,37 +170,37 @@ class _LiveSageImageState extends ConsumerState<_LiveSageImage>
     final dpr = MediaQuery.devicePixelRatioOf(context);
     _decodeSize = (widget.size * dpr).round().clamp(0, 600);
 
+    final imageChild = AnimatedSwitcher(
+      duration: const Duration(milliseconds: 300),
+      transitionBuilder: (child, animation) {
+        return ScaleTransition(
+          scale: animation,
+          child: FadeTransition(opacity: animation, child: child),
+        );
+      },
+      child: Image.asset(
+        _displayed.assetPath,
+        key: ValueKey(_displayed.assetPath),
+        width: widget.size,
+        height: widget.size,
+        cacheWidth: _decodeSize,
+        cacheHeight: _decodeSize,
+        gaplessPlayback: true,
+        filterQuality: FilterQuality.high,
+        fit: BoxFit.contain,
+        isAntiAlias: true,
+        errorBuilder: (context, error, stackTrace) {
+          return _buildPlaceholder();
+        },
+      ),
+    );
+
     return AnimatedBuilder(
       animation: _listenable,
       builder: (context, child) {
-        return Transform.scale(
-          scale: _computeScale(),
-          child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 300),
-            transitionBuilder: (child, animation) {
-              return ScaleTransition(
-                scale: animation,
-                child: FadeTransition(opacity: animation, child: child),
-              );
-            },
-            child: Image.asset(
-              _displayed.assetPath,
-              key: ValueKey(_displayed.assetPath),
-              width: widget.size,
-              height: widget.size,
-              cacheWidth: _decodeSize,
-              cacheHeight: _decodeSize,
-              gaplessPlayback: true,
-              filterQuality: FilterQuality.high,
-              fit: BoxFit.contain,
-              isAntiAlias: true,
-              errorBuilder: (context, error, stackTrace) {
-                return _buildPlaceholder();
-              },
-            ),
-          ),
-        );
+        return Transform.scale(scale: _computeScale(), child: child);
       },
+      child: imageChild,
     );
   }
 

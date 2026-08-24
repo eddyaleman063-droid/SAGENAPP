@@ -121,6 +121,7 @@ class GeminiApiClient {
     }
     _requestTimestamps.add(now);
 
+    bool yielded = false;
     for (int attempt = 0; attempt <= _maxRetries; attempt++) {
       try {
         final systemPrompt = _promptBuilder.buildSystemInstruction(
@@ -164,14 +165,16 @@ class GeminiApiClient {
           buffer = lines.removeLast();
 
           for (final line in lines) {
-            if (line.startsWith('data: ')) {
-              final data = line.substring(6).trim();
+            final cleaned = line.replaceAll('\r', '');
+            if (cleaned.startsWith('data: ')) {
+              final data = cleaned.substring(6).trim();
               if (data == '[DONE]') return;
               try {
                 final parsed = jsonDecode(data) as Map<String, dynamic>;
                 final text = parsed['text'] as String?;
                 if (text != null && text.isNotEmpty) {
                   yield text;
+                  yielded = true;
                 }
               } catch (e) {
                 _logger.warning(
@@ -182,19 +185,23 @@ class GeminiApiClient {
           }
         }
 
-        if (buffer.trim().isNotEmpty && buffer.startsWith('data: ')) {
-          final data = buffer.substring(6).trim();
-          if (data != '[DONE]') {
-            try {
-              final parsed = jsonDecode(data) as Map<String, dynamic>;
-              final text = parsed['text'] as String?;
-              if (text != null && text.isNotEmpty) {
-                yield text;
+        if (buffer.trim().isNotEmpty) {
+          final cleaned = buffer.replaceAll('\r', '');
+          if (cleaned.startsWith('data: ')) {
+            final data = cleaned.substring(6).trim();
+            if (data != '[DONE]') {
+              try {
+                final parsed = jsonDecode(data) as Map<String, dynamic>;
+                final text = parsed['text'] as String?;
+                if (text != null && text.isNotEmpty) {
+                  yield text;
+                  yielded = true;
+                }
+              } catch (e) {
+                _logger.warning(
+                  'GeminiApiClient: failed to parse final SSE buffer: $e',
+                );
               }
-            } catch (e) {
-              _logger.warning(
-                'GeminiApiClient: failed to parse final SSE buffer: $e',
-              );
             }
           }
         }
@@ -207,6 +214,7 @@ class GeminiApiClient {
       } on AiException {
         rethrow;
       } catch (e) {
+        if (yielded) rethrow;
         if (attempt < _maxRetries) {
           final base = AppConfig.geminiRetryDelay * (attempt + 1);
           final jitter = Duration(milliseconds: _jitter.nextInt(1000));

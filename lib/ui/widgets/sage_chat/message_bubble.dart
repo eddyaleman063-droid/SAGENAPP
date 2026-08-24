@@ -4,6 +4,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:sagen/core/theme/app_colors.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/models/chat_message.dart';
+import 'package:sagen/services/sage_emotion_service.dart';
+import 'package:sagen/ui/widgets/common/sage_emotion_widget.dart';
 
 class MessageBubble extends StatelessWidget {
   final ChatMessage message;
@@ -27,20 +29,10 @@ class MessageBubble extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           if (!isUser) ...[
-            ExcludeSemantics(
-              child: Container(
-                width: 28,
-                height: 28,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: LinearGradient(colors: PremiumColors.gradientSage),
-                ),
-                child: const Icon(
-                  Icons.auto_awesome_rounded,
-                  size: 14,
-                  color: Colors.white,
-                ),
-              ),
+            const SageEmotionWidget(
+              emotion: SageEmotion.calm,
+              size: 28,
+              animated: false,
             ),
             const SizedBox(width: AppSpacing.sm),
           ],
@@ -70,12 +62,10 @@ class MessageBubble extends StatelessWidget {
                     : null,
                 color: isUser ? null : context.surfaceCard,
               ),
-              child: isUser || isStreaming
+              child: isUser
                   ? Text(
                       message.text,
-                      style: AppTextStyle.body.copyWith(
-                        color: isUser ? Colors.white : context.textPrimary,
-                      ),
+                      style: AppTextStyle.body.copyWith(color: Colors.white),
                     )
                   : MarkdownBody(
                       data: message.text,

@@ -192,6 +192,6 @@ final firstLessonProvider =
       FirstLessonNotifier.new,
     );
 
-final diagnosticPathProvider = StateProvider.autoDispose<DiagnosticPath>(
+final diagnosticPathProvider = StateProvider<DiagnosticPath>(
   (ref) => DiagnosticPath.beginner,
 );

@@ -5367,6 +5367,14 @@ class AppLocalizationsPt extends AppLocalizations {
   String get sageChipIdentifyScam => 'Identificar um golpe';
 
   @override
+  String get sageDailyLimitReached =>
+      'Você atingiu o limite diário de mensagens do Sage. Tente novamente amanhã.';
+
+  @override
+  String get sageConnectionWeak =>
+      'Minha conexão mental está fraca neste momento, mas continue praticando e pergunte novamente mais tarde.';
+
+  @override
   String get gemHistoryTitle => 'Histórico de Gemas';
 
   @override

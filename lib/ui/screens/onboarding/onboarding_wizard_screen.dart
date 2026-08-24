@@ -21,8 +21,7 @@ import '../../widgets/onboarding/wizard_confirmation_step.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 
 class OnboardingWizardScreen extends ConsumerStatefulWidget {
-  final bool isFirstLaunch;
-  const OnboardingWizardScreen({super.key, this.isFirstLaunch = false});
+  const OnboardingWizardScreen({super.key});
 
   @override
   ConsumerState<OnboardingWizardScreen> createState() =>
@@ -72,7 +71,11 @@ class _OnboardingWizardScreenState
       notifier.previousStep();
       _animateToPage(ref.read(onboardingWizardProvider).currentIndex);
     } else {
-      context.pop();
+      if (context.canPop()) {
+        context.pop();
+      } else {
+        context.goNamed('welcome');
+      }
     }
   }
 

@@ -5353,6 +5353,14 @@ class AppLocalizationsEs extends AppLocalizations {
   String get sageChipIdentifyScam => 'Identificar una estafa';
 
   @override
+  String get sageDailyLimitReached =>
+      'Alcanzaste el límite diario de mensajes con Sage. Vuelve mañana.';
+
+  @override
+  String get sageConnectionWeak =>
+      'Mi conexión mental está un poco débil ahora mismo, pero sigue practicando y pregúntame más tarde.';
+
+  @override
   String get gemHistoryTitle => 'Historial de Gemas';
 
   @override

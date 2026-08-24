@@ -9863,6 +9863,18 @@ abstract class AppLocalizations {
   /// **'Identificar una estafa'**
   String get sageChipIdentifyScam;
 
+  /// No description provided for @sageDailyLimitReached.
+  ///
+  /// In es, this message translates to:
+  /// **'Alcanzaste el límite diario de mensajes con Sage. Vuelve mañana.'**
+  String get sageDailyLimitReached;
+
+  /// No description provided for @sageConnectionWeak.
+  ///
+  /// In es, this message translates to:
+  /// **'Mi conexión mental está un poco débil ahora mismo, pero sigue practicando y pregúntame más tarde.'**
+  String get sageConnectionWeak;
+
   /// No description provided for @gemHistoryTitle.
   ///
   /// In es, this message translates to:

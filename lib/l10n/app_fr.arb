@@ -2323,6 +2323,8 @@
   "sageChipWhatIsPhishing": "Qu''est-ce que le phishing ?",
   "sageChipCreateStrongPassword": "Créer un mot de passe solide",
   "sageChipIdentifyScam": "Identifier une arnaque",
+  "sageDailyLimitReached": "Vous avez atteint la limite quotidienne de messages pour Sage. Réessayez demain.",
+  "sageConnectionWeak": "Ma connexion mentale est faible en ce moment, mais continue de t''entraîner et pose-moi la question plus tard.",
   "gemHistoryTitle": "Historique des Gemmes",
   "gemHistoryEmpty": "Aucune transaction",
   "gemHistoryJustNow": "À l''instant",

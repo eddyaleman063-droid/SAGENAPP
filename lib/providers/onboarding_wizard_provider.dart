@@ -43,12 +43,13 @@ class OnboardingWizardState {
 class OnboardingWizardNotifier
     extends AutoDisposeNotifier<OnboardingWizardState> {
   Timer? _persistTimer;
+  bool _completed = false;
 
   @override
   OnboardingWizardState build() {
     ref.onDispose(() {
       _persistTimer?.cancel();
-      _persist();
+      if (!_completed) _persist();
     });
     final completed = ref.read(prefsProvider).getBool(_kWizardDoneKey) ?? false;
     if (completed) return const OnboardingWizardState();
@@ -112,6 +113,7 @@ class OnboardingWizardNotifier
   }
 
   void markCompleted() {
+    _completed = true;
     try {
       final prefs = ref.read(prefsProvider);
       prefs.setBool(_kWizardDoneKey, true);

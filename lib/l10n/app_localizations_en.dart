@@ -5329,6 +5329,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sageChipIdentifyScam => 'Identify a scam';
 
   @override
+  String get sageDailyLimitReached =>
+      'You\'ve reached your daily limit of Sage messages. Try again tomorrow.';
+
+  @override
+  String get sageConnectionWeak =>
+      'My mental connection is weak right now, but keep practicing and ask me again later.';
+
+  @override
   String get gemHistoryTitle => 'Gem History';
 
   @override

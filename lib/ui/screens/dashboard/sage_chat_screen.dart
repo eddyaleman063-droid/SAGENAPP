@@ -47,14 +47,15 @@ class _SageChatScreenState extends ConsumerState<SageChatScreen>
     });
   }
 
-  void _send(String text) {
+  Future<void> _send(String text) async {
     if (text.trim().isEmpty) return;
     ref.read(experienceServiceProvider).lightHaptic();
+    final sent = await ref.read(sageAiProvider.notifier).sendMessage(text);
+    if (!sent) return;
     AnalyticsService.instance.track(
       AnalyticEvent.tutorQuery,
       properties: {'query': text},
     );
-    ref.read(sageAiProvider.notifier).sendMessage(text);
     _textCtrl.clear();
     _focusNode.unfocus();
     _scrollDown();
@@ -64,6 +65,17 @@ class _SageChatScreenState extends ConsumerState<SageChatScreen>
     ref.read(experienceServiceProvider).lightHaptic();
     ref.read(sageAiProvider.notifier).sendMessage(text);
     _scrollDown();
+  }
+
+  String _resolveLastError(AppLocalizations l, String key) {
+    switch (key) {
+      case 'daily_limit':
+        return l.sageDailyLimitReached;
+      case 'connection_weak':
+        return l.sageConnectionWeak;
+      default:
+        return l.errorGeneric;
+    }
   }
 
   @override
@@ -107,8 +119,11 @@ class _SageChatScreenState extends ConsumerState<SageChatScreen>
                   dark: dark,
                 ),
               ),
-              if (sageState.errorMessage != null)
-                _ErrorBanner(message: sageState.errorMessage!, dark: dark),
+              if (sageState.lastError != null)
+                _ErrorBanner(
+                  message: _resolveLastError(l, sageState.lastError!),
+                  dark: dark,
+                ),
               if (sageState.isLoading) const TypingIndicator(),
               if (sageState.suggestionChips.isNotEmpty)
                 QuickChips(

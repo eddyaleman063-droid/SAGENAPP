@@ -317,34 +317,17 @@ class _GemRainPainter extends CustomPainter {
       );
 
       // Diamond body
-      final gradient = LinearGradient(
-        colors: [
-          Color.fromARGB(
-            255,
-            (0 + gem.hue).round().clamp(0, 255),
-            (229 + gem.hue * 0.5).round().clamp(0, 255),
-            255,
-          ),
-          PremiumColors.deepPurple,
-          Color.fromARGB(
-            255,
-            (0 + gem.hue).round().clamp(0, 255),
-            (229 + gem.hue * 0.5).round().clamp(0, 255),
-            255,
-          ),
-        ],
-      );
-
+      paint.shader = null;
+      final hueR = (0 + gem.hue).round().clamp(0, 255);
+      final hueG = (229 + gem.hue * 0.5).round().clamp(0, 255);
+      paint.color = Color.fromARGB(255, hueR, hueG, 255);
       final rect = RRect.fromRectAndRadius(
         Rect.fromCenter(center: Offset.zero, width: gem.size, height: gem.size),
         const Radius.circular(2),
       );
-
-      paint.shader = gradient.createShader(rect.outerRect);
       canvas.drawRRect(rect, paint);
 
       // Inner highlight
-      paint.shader = null;
       paint.color = Colors.white.withValues(alpha: 0.6 * opacity);
       final highlight = RRect.fromRectAndRadius(
         Rect.fromCenter(

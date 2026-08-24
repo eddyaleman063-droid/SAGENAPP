@@ -37,7 +37,9 @@ class _MessageListState extends State<MessageList> {
     _scrollScheduled = true;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollScheduled = false;
-      if (mounted && widget.scrollCtrl.hasClients) {
+      if (mounted &&
+          widget.scrollCtrl.hasClients &&
+          widget.scrollCtrl.offset < 64) {
         widget.scrollCtrl.animateTo(
           0,
           duration: const Duration(milliseconds: 100),
@@ -91,7 +93,9 @@ class _MessageListState extends State<MessageList> {
           return _AnimatedMessageBubble(
             index: idx,
             child: MessageBubble(
-              key: ValueKey('msg_${msg.time.millisecondsSinceEpoch}'),
+              key: ValueKey(
+                'msg_${msg.time.microsecondsSinceEpoch}_${msg.role.name}_$idx',
+              ),
               message: msg,
               isUser: isUser,
             ),

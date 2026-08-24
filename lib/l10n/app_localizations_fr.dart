@@ -5403,6 +5403,14 @@ class AppLocalizationsFr extends AppLocalizations {
   String get sageChipIdentifyScam => 'Identifier une arnaque';
 
   @override
+  String get sageDailyLimitReached =>
+      'Vous avez atteint la limite quotidienne de messages pour Sage. Réessayez demain.';
+
+  @override
+  String get sageConnectionWeak =>
+      'Ma connexion mentale est faible en ce moment, mais continue de t\'entraîner et pose-moi la question plus tard.';
+
+  @override
   String get gemHistoryTitle => 'Historique des Gemmes';
 
   @override
