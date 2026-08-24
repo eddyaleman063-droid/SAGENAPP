@@ -474,6 +474,7 @@ class LearningNotifier extends Notifier<LearningState> {
     }
 
     ref.read(analyticsServiceProvider).trackLessonComplete(lessonId);
+    ref.read(emotionEventBusProvider).fire(EmotionEventType.lessonCompleted);
     _checkUnlocks();
     _checkAchievements(perfectLesson);
 

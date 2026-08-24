@@ -3,24 +3,20 @@ import '../models/chest_type.dart';
 import 'chest_event_bus.dart';
 import 'chest_reward_roller.dart';
 import 'audio_service.dart';
-import 'emotion_event_bus.dart';
 
 /// Calculates XP and gem rewards for lesson completion.
 class LearningRewardService {
   final ChestRewardRoller _roller;
   final ChestEventBus _eventBus;
   final AudioService _audio;
-  final EmotionEventBus _emotionBus;
 
   LearningRewardService({
     ChestRewardRoller? roller,
     ChestEventBus? eventBus,
     AudioService? audio,
-    EmotionEventBus? emotionBus,
   }) : _roller = roller ?? ChestRewardRoller.instance,
        _eventBus = eventBus ?? ChestEventBus.instance,
-       _audio = audio ?? AudioService.instance,
-       _emotionBus = emotionBus ?? EmotionEventBus.instance;
+       _audio = audio ?? AudioService.instance;
 
   static final LearningRewardService instance = LearningRewardService();
 
@@ -67,6 +63,5 @@ class LearningRewardService {
   void emitRewardEffects(ChestRewardData data) {
     _eventBus.fire(data);
     _audio.playChestOpen();
-    _emotionBus.fire(EmotionEventType.lessonCompleted);
   }
 }

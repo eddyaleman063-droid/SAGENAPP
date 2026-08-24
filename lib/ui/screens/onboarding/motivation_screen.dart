@@ -22,7 +22,7 @@ class _MotivationScreenState extends State<MotivationScreen> {
   final List<bool> _selections = List.generate(7, (_) => false);
   final ValueNotifier<bool> _isPressed = ValueNotifier(false);
 
-  static const double _progressValue = 0.80;
+  static const double _progressValue = 0.50;
 
   @override
   void dispose() {

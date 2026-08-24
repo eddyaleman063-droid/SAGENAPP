@@ -52,29 +52,31 @@ class _TypingIndicatorState extends State<TypingIndicator>
           AppSpacing.xxl,
           AppSpacing.sm,
         ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: List.generate(3, (i) {
-            return AnimatedBuilder(
-              animation: _ctrl,
-              builder: (_, child) {
+        child: AnimatedBuilder(
+          animation: _ctrl,
+          builder: (context, _) {
+            return Row(
+              mainAxisSize: MainAxisSize.min,
+              children: List.generate(3, (i) {
                 final t = (_ctrl.value - i * 0.2).clamp(0.0, 1.0);
                 final scale = 0.4 + 0.6 * (t < 0.5 ? t * 2 : (1 - t) * 2);
-                return Transform.scale(scale: scale, child: child);
-              },
-              child: Padding(
-                padding: EdgeInsets.only(right: i < 2 ? 6 : 0),
-                child: Container(
-                  width: 8,
-                  height: 8,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: context.textTertiary,
+                return Transform.scale(
+                  scale: scale,
+                  child: Padding(
+                    padding: EdgeInsets.only(right: i < 2 ? 6 : 0),
+                    child: Container(
+                      width: 8,
+                      height: 8,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: context.textTertiary,
+                      ),
+                    ),
                   ),
-                ),
-              ),
+                );
+              }),
             );
-          }),
+          },
         ),
       ),
     );

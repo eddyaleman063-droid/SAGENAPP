@@ -22,7 +22,7 @@ class _RouteSelectionScreenState extends State<RouteSelectionScreen> {
   int? _selectedRouteIndex;
   final ValueNotifier<bool> _isPressed = ValueNotifier(false);
 
-  static const _progressValue = 0.35;
+  static const _progressValue = 0.30;
 
   List<(String, String)> _routes(AppLocalizations l) => [
     ('🛡️', l.routeSelection1),

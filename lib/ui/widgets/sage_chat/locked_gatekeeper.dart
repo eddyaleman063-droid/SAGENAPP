@@ -44,12 +44,10 @@ class LockedGatekeeper extends StatelessWidget {
                 shape: BoxShape.circle,
                 color: PremiumColors.primaryAccent.withValues(alpha: 0.1),
               ),
-              child: const ClipOval(
-                child: SageEmotionWidget(
-                  emotion: SageEmotion.thinking,
-                  size: 112,
-                  animated: true,
-                ),
+              child: const SageEmotionWidget(
+                emotion: SageEmotion.thinking,
+                size: 112,
+                animated: true,
               ),
             ),
             const SizedBox(height: AppSpacing.xxl),

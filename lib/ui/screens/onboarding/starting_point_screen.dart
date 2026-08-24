@@ -25,7 +25,7 @@ class _StartingPointScreenState extends ConsumerState<StartingPointScreen> {
   int? _selectedCard;
   final ValueNotifier<bool> _isPressed = ValueNotifier(false);
 
-  static const double _progressValue = 0.98;
+  static const double _progressValue = 0.90;
 
   int? get _assessmentLevel => ref.watch(assessmentLevelProvider);
 

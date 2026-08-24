@@ -21,15 +21,7 @@ class ProjectionScreen extends StatefulWidget {
 class _ProjectionScreenState extends State<ProjectionScreen> {
   final ValueNotifier<bool> _isPressed = ValueNotifier(false);
 
-  static const double _progressValue = 0.95;
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ExperienceService.instance.lightHaptic();
-    });
-  }
+  static const double _progressValue = 0.70;
 
   @override
   void dispose() {

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sagen/providers/hardware_tier_provider.dart';
 
 class ShimmerScope extends StatefulWidget {
   final Widget child;
@@ -28,7 +30,11 @@ class _ShimmerScopeState extends State<ShimmerScope>
   void initState() {
     super.initState();
     _ctrl = AnimationController(vsync: this, duration: widget.duration);
-    _ctrl.repeat();
+    final reduced = ProviderScope.containerOf(
+      context,
+      listen: false,
+    ).read(reduceAnimationsProvider);
+    if (!reduced) _ctrl.repeat();
   }
 
   @override
