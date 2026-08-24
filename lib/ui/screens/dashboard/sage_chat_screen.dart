@@ -157,8 +157,21 @@ class _ChatMessagesSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final sageState = ref.watch(sageAiProvider);
-    return MessageList(sage: sageState, scrollCtrl: scrollCtrl);
+    final sageState = ref.watch(
+      sageAiProvider.select(
+        (s) => (
+          messages: s.messages,
+          isStreaming: s.isStreaming,
+          streamingText: s.streamingText,
+        ),
+      ),
+    );
+    return MessageList(
+      messages: sageState.messages,
+      isStreaming: sageState.isStreaming,
+      streamingText: sageState.streamingText,
+      scrollCtrl: scrollCtrl,
+    );
   }
 }
 
@@ -174,12 +187,12 @@ class _ChatErrorBannerSection extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final lastError = ref.watch(sageAiProvider.select((s) => s.lastError));
     if (lastError == null) return const SizedBox.shrink();
-    final messages = ref.watch(sageAiProvider.select((s) => s.messages));
     return _ErrorBanner(
       message: lastErrorResolver(lastError),
       dark: dark,
       onDismiss: () => ref.read(sageAiProvider.notifier).clearError(),
       onRetry: () {
+        final messages = ref.read(sageAiProvider).messages;
         if (messages.isNotEmpty) {
           final lastUser = messages.lastWhere(
             (m) => m.role == ChatRole.user,

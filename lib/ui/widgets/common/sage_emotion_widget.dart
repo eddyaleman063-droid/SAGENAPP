@@ -57,11 +57,20 @@ class _StaticSageImage extends StatelessWidget {
   final double size;
   const _StaticSageImage({required this.emotion, required this.size});
 
+  static final Set<SageEmotion> _precacheScheduled = {};
+
   @override
   Widget build(BuildContext context) {
-    ProviderScope.containerOf(
-      context,
-    ).read(sageEmotionServiceProvider).ensurePrecached(emotion);
+    if (!_precacheScheduled.contains(emotion)) {
+      _precacheScheduled.add(emotion);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!context.mounted) return;
+        ProviderScope.containerOf(
+          context,
+          listen: false,
+        ).read(sageEmotionServiceProvider).ensurePrecached(emotion);
+      });
+    }
     final dpr = MediaQuery.devicePixelRatioOf(context);
     final decodeSize = (size * dpr).round().clamp(0, 600);
     return Image.asset(

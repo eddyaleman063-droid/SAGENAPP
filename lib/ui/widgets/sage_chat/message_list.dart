@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/models/chat_message.dart';
-import 'package:sagen/providers/sage_ai_provider.dart';
 import 'empty_chat.dart';
 import 'message_bubble.dart';
 
 class MessageList extends StatefulWidget {
-  final SageAiChatState sage;
+  final List<ChatMessage> messages;
+  final bool isStreaming;
+  final String streamingText;
   final ScrollController scrollCtrl;
-  const MessageList({super.key, required this.sage, required this.scrollCtrl});
+  const MessageList({
+    super.key,
+    required this.messages,
+    required this.isStreaming,
+    required this.streamingText,
+    required this.scrollCtrl,
+  });
 
   @override
   State<MessageList> createState() => _MessageListState();
@@ -20,8 +27,8 @@ class _MessageListState extends State<MessageList> {
   @override
   void didUpdateWidget(MessageList oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.sage.messages.length != oldWidget.sage.messages.length ||
-        widget.sage.streamingText != oldWidget.sage.streamingText) {
+    if (widget.messages.length != oldWidget.messages.length ||
+        widget.streamingText != oldWidget.streamingText) {
       _scheduleScroll();
     }
   }
@@ -45,14 +52,13 @@ class _MessageListState extends State<MessageList> {
 
   @override
   Widget build(BuildContext context) {
-    final messages = widget.sage.messages;
+    final messages = widget.messages;
 
     if (messages.isEmpty) {
       return const EmptyChat();
     }
 
-    final showStreaming =
-        widget.sage.isStreaming && widget.sage.streamingText.isNotEmpty;
+    final showStreaming = widget.isStreaming && widget.streamingText.isNotEmpty;
     final extraItem = showStreaming ? 1 : 0;
 
     return RepaintBoundary(
@@ -72,7 +78,7 @@ class _MessageListState extends State<MessageList> {
               key: const ValueKey('streaming'),
               message: ChatMessage(
                 role: ChatRole.assistant,
-                text: widget.sage.streamingText,
+                text: widget.streamingText,
                 time: DateTime.now(),
               ),
               isUser: false,

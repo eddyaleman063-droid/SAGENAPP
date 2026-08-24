@@ -58,7 +58,7 @@ class _ConfettiWidgetState extends State<ConfettiWidget>
     super.initState();
     final rng = Random();
     final palette = widget._effectiveColors;
-    _particles = List.generate(widget.particleCount, (_) {
+    _particles = List.generate(widget.particleCount, (i) {
       return _Particle(
         x: rng.nextDouble(),
         startY: -0.1 - rng.nextDouble() * 0.2,
@@ -67,7 +67,7 @@ class _ConfettiWidgetState extends State<ConfettiWidget>
         rotation: rng.nextDouble() * 2 * pi,
         rotationSpeed: (rng.nextDouble() - 0.5) * 8,
         size: 4 + rng.nextDouble() * 6,
-        color: palette[rng.nextInt(palette.length)],
+        color: palette[i % palette.length],
         shape: rng.nextBool() ? _Shape.rect : _Shape.circle,
         wobbleAmp: 0.02 + rng.nextDouble() * 0.04,
         wobbleFreq: 2 + rng.nextDouble() * 3,

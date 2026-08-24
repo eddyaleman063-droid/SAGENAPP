@@ -12,8 +12,10 @@ class EmptyChat extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final reaction = ref.watch(mascotReactionProvider);
-    final emotion = reaction.overrideEmotion ?? SageEmotion.curious;
+    final overrideEmotion = ref.watch(
+      mascotReactionProvider.select((r) => r.overrideEmotion),
+    );
+    final emotion = overrideEmotion ?? SageEmotion.curious;
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

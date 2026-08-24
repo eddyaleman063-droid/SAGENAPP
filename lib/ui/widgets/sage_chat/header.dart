@@ -21,10 +21,11 @@ class SageChatHeader extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l = AppLocalizations.of(context)!;
-    final reaction = ref.watch(mascotReactionProvider);
+    final overrideEmotion = ref.watch(
+      mascotReactionProvider.select((r) => r.overrideEmotion),
+    );
     final mascotEmotion =
-        reaction.overrideEmotion ??
-        (isBusy ? SageEmotion.thinking : SageEmotion.calm);
+        overrideEmotion ?? (isBusy ? SageEmotion.thinking : SageEmotion.calm);
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: AppSpacing.xxl,
