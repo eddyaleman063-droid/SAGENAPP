@@ -81,7 +81,9 @@ class _WizardOptionTileBase extends StatelessWidget {
       label: option.label,
       child: GestureDetector(
         onTap: () {
-          ExperienceService.instance.lightHaptic();
+          if (!isSelected) {
+            ExperienceService.instance.lightHaptic();
+          }
           onTap();
         },
         child: AnimatedContainer(

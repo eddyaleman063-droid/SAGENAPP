@@ -153,6 +153,11 @@ class _WizardButtonState extends ConsumerState<WizardButton>
     final exp = ref.read(experienceServiceProvider);
     final cs = Theme.of(context).colorScheme;
     final reduced = ref.watch(reduceAnimationsProvider);
+    if (reduced && _shimmerCtrl.isAnimating) {
+      _shimmerCtrl.stop();
+    } else if (!reduced && !_shimmerCtrl.isAnimating && widget.enabled) {
+      _shimmerCtrl.repeat();
+    }
     return AnimatedBuilder(
       animation: _shimmerAnim,
       child: Material(

@@ -136,8 +136,7 @@ class _AnimatedMessageBubbleState extends State<_AnimatedMessageBubble>
     _fadeAnim = CurvedAnimation(parent: _ctrl!, curve: Curves.easeIn);
     _ctrl!.addStatusListener((status) {
       if (status == AnimationStatus.completed && mounted) {
-        _ctrl?.dispose();
-        _ctrl = null;
+        _ctrl?.stop();
       }
     });
     Future.delayed(Duration(milliseconds: delay), () {

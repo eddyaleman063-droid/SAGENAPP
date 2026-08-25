@@ -255,12 +255,8 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
     ),
     // 9: Age input
     (ctx, a) => AgeInputScreen(onContinue: a.advance),
-    // 10: Auth method
-    (ctx, a) => AuthMethodScreen(
-      onContinue: () {
-        a.onAuthMethodSelected('google');
-      },
-    ),
+    // 10: Auth method (overridden inline at _step == 10)
+    null,
     // 11: Email input (conditional)
     null,
     // 12: Password input (conditional)

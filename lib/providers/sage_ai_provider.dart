@@ -129,9 +129,10 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
     );
   }
 
-  Future<bool> sendMessage(String text) async {
+  Future<bool> sendMessage(String text, {bool isRetry = false}) async {
     if (state.isLocked || text.trim().isEmpty || state.isBusy) return false;
-    if (DateTime.now().difference(_lastSendTime) < _throttleDuration) {
+    if (!isRetry &&
+        DateTime.now().difference(_lastSendTime) < _throttleDuration) {
       return false;
     }
 

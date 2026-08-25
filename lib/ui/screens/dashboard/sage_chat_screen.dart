@@ -198,7 +198,9 @@ class _ChatErrorBannerSection extends ConsumerWidget {
             (m) => m.role == ChatRole.user,
             orElse: () => messages.last,
           );
-          ref.read(sageAiProvider.notifier).sendMessage(lastUser.text);
+          ref
+              .read(sageAiProvider.notifier)
+              .sendMessage(lastUser.text, isRetry: true);
         }
       },
     );
@@ -233,22 +235,6 @@ class _ErrorBanner extends StatefulWidget {
 }
 
 class _ErrorBannerState extends State<_ErrorBanner> {
-  Timer? _dismissTimer;
-
-  @override
-  void initState() {
-    super.initState();
-    _dismissTimer = Timer(const Duration(seconds: 8), () {
-      if (mounted) widget.onDismiss?.call();
-    });
-  }
-
-  @override
-  void dispose() {
-    _dismissTimer?.cancel();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(

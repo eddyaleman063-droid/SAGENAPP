@@ -37,12 +37,14 @@ class _PremiumLoaderState extends ConsumerState<PremiumLoader>
       vsync: this,
       duration: const Duration(seconds: 3),
     );
-    _pulseCtrl.repeat(reverse: true);
     _fadeCtrl = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 300),
     );
-    if (widget.loading) _fadeCtrl.forward();
+    if (widget.loading) {
+      _pulseCtrl.repeat(reverse: true);
+      _fadeCtrl.forward();
+    }
     if (widget.loading) _startQuoteTimer();
   }
 
@@ -51,9 +53,12 @@ class _PremiumLoaderState extends ConsumerState<PremiumLoader>
     super.didUpdateWidget(old);
     if (widget.loading != old.loading) {
       if (widget.loading) {
+        _pulseCtrl.repeat(reverse: true);
         _fadeCtrl.forward();
         _startQuoteTimer();
       } else {
+        _pulseCtrl.stop();
+        _pulseCtrl.reset();
         _fadeCtrl.reverse();
         _quoteTimer?.cancel();
         _quoteTimer = null;

@@ -115,7 +115,6 @@ class _LiveSageImageState extends ConsumerState<_LiveSageImage>
   SageEmotion _displayed = SageEmotion.calm;
   bool _idleBreathe = false;
   bool _skipNextTransition = false;
-  int _decodeSize = 0;
 
   @override
   void initState() {
@@ -177,7 +176,7 @@ class _LiveSageImageState extends ConsumerState<_LiveSageImage>
   @override
   Widget build(BuildContext context) {
     final dpr = MediaQuery.devicePixelRatioOf(context);
-    _decodeSize = (widget.size * dpr).round().clamp(0, 600);
+    final decodeSize = (widget.size * dpr).round().clamp(0, 600);
 
     final imageChild = AnimatedSwitcher(
       duration: _skipNextTransition
@@ -196,8 +195,8 @@ class _LiveSageImageState extends ConsumerState<_LiveSageImage>
         key: ValueKey(_displayed.assetPath),
         width: widget.size,
         height: widget.size,
-        cacheWidth: _decodeSize,
-        cacheHeight: _decodeSize,
+        cacheWidth: decodeSize,
+        cacheHeight: decodeSize,
         gaplessPlayback: true,
         filterQuality: FilterQuality.high,
         fit: BoxFit.contain,

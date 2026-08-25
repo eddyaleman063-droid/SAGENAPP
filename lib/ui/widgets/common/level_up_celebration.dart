@@ -43,7 +43,7 @@ class _LevelUpCelebrationState extends State<LevelUpCelebration>
     );
     _particleCtrl = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 2000),
+      duration: const Duration(milliseconds: 2800),
     );
 
     _mainCtrl.forward();

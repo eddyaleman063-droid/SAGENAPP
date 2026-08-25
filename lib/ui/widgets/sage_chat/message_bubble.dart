@@ -24,6 +24,7 @@ class MessageBubble extends StatefulWidget {
 
 class _MessageBubbleState extends State<MessageBubble> {
   String _lastText = '';
+  bool _lastDark = false;
   Widget? _cachedMarkdown;
 
   @override
@@ -62,6 +63,11 @@ class _MessageBubbleState extends State<MessageBubble> {
   }
 
   Widget _buildMarkdown(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    if (isDark != _lastDark) {
+      _lastDark = isDark;
+      _cachedMarkdown = null;
+    }
     _cachedMarkdown ??= MarkdownBody(
       data: widget.message.text,
       styleSheet: _buildStyleSheet(context),
