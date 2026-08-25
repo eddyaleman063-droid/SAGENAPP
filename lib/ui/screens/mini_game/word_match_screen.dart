@@ -377,7 +377,8 @@ class _WordMatchScreenState extends ConsumerState<WordMatchScreen> {
             child: FilledButton(
               onPressed: () {
                 ExperienceService.instance.lightHaptic();
-                setState(() => _initGame(_pairs));
+                _initGame(_pairs);
+                setState(() {});
               },
               child: Text(l.miniGamePlayAgain),
             ),

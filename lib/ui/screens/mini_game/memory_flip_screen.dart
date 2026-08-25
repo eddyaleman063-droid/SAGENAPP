@@ -362,7 +362,8 @@ class _MemoryFlipScreenState extends ConsumerState<MemoryFlipScreen> {
             child: FilledButton(
               onPressed: () {
                 ExperienceService.instance.lightHaptic();
-                setState(() => _initGame());
+                _initGame();
+                setState(() {});
               },
               child: Text(l.miniGamePlayAgain),
             ),

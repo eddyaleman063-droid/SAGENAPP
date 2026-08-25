@@ -27,57 +27,40 @@ class _SyncCoordinatorState extends ConsumerState<SyncCoordinator> {
       if (next.isAuthenticated) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (!mounted) return;
-          try {
-            ref.read(streakProvider.notifier).reload();
-          } catch (e) {
-            AppLogger().error('SyncCoordinator: streak reload failed', e);
-            if (context.mounted) {
-              SagenNotification.show(
-                context,
-                message: AppLocalizations.of(context)?.errorGeneric ?? '',
-                type: NotificationType.error,
-              );
-            }
-          }
-          try {
-            ref.read(learningProvider.notifier).reload();
-          } catch (e) {
-            AppLogger().error('SyncCoordinator: learning reload failed', e);
-            if (context.mounted) {
-              SagenNotification.show(
-                context,
-                message: AppLocalizations.of(context)?.errorGeneric ?? '',
-                type: NotificationType.error,
-              );
-            }
-          }
-          try {
-            ref.read(protectionProvider.notifier).reload();
-          } catch (e) {
-            AppLogger().error('SyncCoordinator: protection reload failed', e);
-            if (context.mounted) {
-              SagenNotification.show(
-                context,
-                message: AppLocalizations.of(context)?.errorGeneric ?? '',
-                type: NotificationType.error,
-              );
-            }
-          }
-          try {
-            ref.read(missionProvider.notifier).reload();
-          } catch (e) {
-            AppLogger().error('SyncCoordinator: mission reload failed', e);
-            if (context.mounted) {
-              SagenNotification.show(
-                context,
-                message: AppLocalizations.of(context)?.errorGeneric ?? '',
-                type: NotificationType.error,
-              );
-            }
-          }
+          _safeReload(
+            'streak',
+            () => ref.read(streakProvider.notifier).reload(),
+          );
+          _safeReload(
+            'learning',
+            () => ref.read(learningProvider.notifier).reload(),
+          );
+          _safeReload(
+            'protection',
+            () => ref.read(protectionProvider.notifier).reload(),
+          );
+          _safeReload(
+            'mission',
+            () => ref.read(missionProvider.notifier).reload(),
+          );
         });
       }
     });
+  }
+
+  void _safeReload(String name, VoidCallback reload) {
+    try {
+      reload();
+    } catch (e) {
+      AppLogger().error('SyncCoordinator: $name reload failed', e);
+      if (context.mounted) {
+        SagenNotification.show(
+          context,
+          message: AppLocalizations.of(context)?.errorGeneric ?? '',
+          type: NotificationType.error,
+        );
+      }
+    }
   }
 
   @override

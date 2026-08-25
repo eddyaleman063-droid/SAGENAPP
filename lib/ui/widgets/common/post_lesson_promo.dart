@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -24,6 +25,7 @@ class PostLessonPromo extends ConsumerStatefulWidget {
 
 class _PostLessonPromoState extends ConsumerState<PostLessonPromo> {
   bool _showBanner = false;
+  Timer? _hideTimer;
 
   @override
   void didUpdateWidget(PostLessonPromo oldWidget) {
@@ -39,11 +41,17 @@ class _PostLessonPromoState extends ConsumerState<PostLessonPromo> {
       await service.recordPromoShown();
       if (mounted) {
         setState(() => _showBanner = true);
-        Future.delayed(const Duration(seconds: 6), () {
+        _hideTimer = Timer(const Duration(seconds: 6), () {
           if (mounted) setState(() => _showBanner = false);
         });
       }
     }
+  }
+
+  @override
+  void dispose() {
+    _hideTimer?.cancel();
+    super.dispose();
   }
 
   @override

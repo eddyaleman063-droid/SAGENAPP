@@ -381,7 +381,8 @@ class _PatternTraceScreenState extends ConsumerState<PatternTraceScreen> {
             child: FilledButton(
               onPressed: () {
                 ExperienceService.instance.lightHaptic();
-                setState(() => _initGame());
+                _initGame();
+                setState(() {});
               },
               child: Text(l.miniGamePlayAgain),
             ),

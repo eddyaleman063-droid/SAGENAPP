@@ -119,7 +119,7 @@ class ShopItemCard extends StatelessWidget {
               SizedBox(
                 width: 78,
                 child: Text(
-                  AppLocalizations.of(context)!.acquired,
+                  l.acquired,
                   textAlign: TextAlign.center,
                   style: AppTextStyle.caption.copyWith(
                     fontWeight: FontWeight.w600,

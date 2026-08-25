@@ -30,10 +30,16 @@ class WizardConfirmationStep extends ConsumerWidget {
     final allSteps = OnboardingWizardConfig.localizedSteps(l);
 
     final referral = ref.watch(
-      onboardingWizardProvider.select((s) => s.sectionData[1] as String?),
+      onboardingWizardProvider.select((s) {
+        final raw = s.sectionData[1];
+        return raw is String ? raw : raw?.toString();
+      }),
     );
     final knowledge = ref.watch(
-      onboardingWizardProvider.select((s) => s.sectionData[2] as String?),
+      onboardingWizardProvider.select((s) {
+        final raw = s.sectionData[2];
+        return raw is String ? raw : raw?.toString();
+      }),
     );
     final reasons = ref.watch(
       onboardingWizardProvider.select((s) => s.sectionData[3]),
@@ -42,7 +48,10 @@ class WizardConfirmationStep extends ConsumerWidget {
         ? reasons.map((e) => e.toString()).toList()
         : <String>[];
     final habits = ref.watch(
-      onboardingWizardProvider.select((s) => s.sectionData[4] as String?),
+      onboardingWizardProvider.select((s) {
+        final raw = s.sectionData[4];
+        return raw is String ? raw : raw?.toString();
+      }),
     );
     final prefer = ref.watch(
       onboardingWizardProvider.select((s) => s.sectionData[5]),
@@ -51,7 +60,10 @@ class WizardConfirmationStep extends ConsumerWidget {
         ? prefer.map((e) => e.toString()).toList()
         : <String>[];
     final goal = ref.watch(
-      onboardingWizardProvider.select((s) => s.sectionData[6] as String?),
+      onboardingWizardProvider.select((s) {
+        final raw = s.sectionData[6];
+        return raw is String ? raw : raw?.toString();
+      }),
     );
     final commitments = ref.watch(
       onboardingWizardProvider.select((s) => s.sectionData[7]),

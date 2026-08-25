@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sagen/core/theme/app_colors.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
@@ -26,6 +27,7 @@ class BuyButton extends StatefulWidget {
 class _BuyButtonState extends State<BuyButton> {
   bool _purchasing = false;
   bool _showSuccess = false;
+  Timer? _successTimer;
 
   void _onTap() {
     if (_purchasing) return;
@@ -46,17 +48,24 @@ class _BuyButtonState extends State<BuyButton> {
     final itemBecameOwned = oldWidget.canBuy && !widget.canBuy && _purchasing;
     if (loadingFinished || itemBecameOwned) {
       if (itemBecameOwned) {
+        _successTimer?.cancel();
         setState(() {
           _purchasing = false;
           _showSuccess = true;
         });
-        Future<void>.delayed(const Duration(milliseconds: 600), () {
+        _successTimer = Timer(const Duration(milliseconds: 600), () {
           if (mounted) setState(() => _showSuccess = false);
         });
       } else {
         setState(() => _purchasing = false);
       }
     }
+  }
+
+  @override
+  void dispose() {
+    _successTimer?.cancel();
+    super.dispose();
   }
 
   @override

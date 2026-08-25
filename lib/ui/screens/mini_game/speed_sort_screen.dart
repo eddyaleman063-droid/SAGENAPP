@@ -21,7 +21,7 @@ class SpeedSortScreen extends ConsumerStatefulWidget {
 }
 
 class _SpeedSortScreenState extends ConsumerState<SpeedSortScreen> {
-  late List<_SortItem> _items;
+  List<_SortItem> _items = [];
   int _correct = 0;
   int _mistakes = 0;
   bool _gameComplete = false;
@@ -441,7 +441,8 @@ class _SpeedSortScreenState extends ConsumerState<SpeedSortScreen> {
             child: FilledButton(
               onPressed: () {
                 ExperienceService.instance.lightHaptic();
-                setState(() => _initGame());
+                _initGame();
+                setState(() {});
               },
               child: Text(l.miniGamePlayAgain),
             ),
