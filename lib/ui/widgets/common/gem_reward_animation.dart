@@ -14,8 +14,12 @@ class GemRewardAnimation extends StatefulWidget {
     final overlay = Overlay.of(context);
     late OverlayEntry entry;
     entry = OverlayEntry(
-      builder: (_) =>
-          GemRewardAnimation(amount: amount, onComplete: () => entry.remove()),
+      builder: (_) => GemRewardAnimation(
+        amount: amount,
+        onComplete: () {
+          if (entry.mounted) entry.remove();
+        },
+      ),
     );
     overlay.insert(entry);
   }

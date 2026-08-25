@@ -27,6 +27,7 @@ class TapScale extends StatefulWidget {
 class _TapScaleState extends State<TapScale>
     with SingleTickerProviderStateMixin {
   late AnimationController _ctrl;
+  late CurvedAnimation _curvedAnim;
   late Animation<double> _anim;
 
   @override
@@ -39,10 +40,8 @@ class _TapScaleState extends State<TapScale>
         reduceAnimations: widget.reduceAnimations,
       ),
     );
-    _anim = Tween<double>(
-      begin: 1.0,
-      end: widget.scale,
-    ).animate(CurvedAnimation(parent: _ctrl, curve: Curves.easeInOut));
+    _curvedAnim = CurvedAnimation(parent: _ctrl, curve: Curves.easeInOut);
+    _anim = Tween<double>(begin: 1.0, end: widget.scale).animate(_curvedAnim);
   }
 
   @override
@@ -59,6 +58,7 @@ class _TapScaleState extends State<TapScale>
 
   @override
   void dispose() {
+    _curvedAnim.dispose();
     _ctrl.dispose();
     super.dispose();
   }

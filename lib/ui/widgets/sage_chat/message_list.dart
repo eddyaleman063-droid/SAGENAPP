@@ -120,6 +120,8 @@ class _AnimatedMessageBubbleState extends State<_AnimatedMessageBubble>
     with SingleTickerProviderStateMixin {
   AnimationController? _ctrl;
   Timer? _startTimer;
+  late CurvedAnimation _slideCurve;
+  late CurvedAnimation _fadeCurve;
   late Animation<Offset> _slideAnim;
   late Animation<double> _fadeAnim;
 
@@ -131,11 +133,13 @@ class _AnimatedMessageBubbleState extends State<_AnimatedMessageBubble>
       vsync: this,
       duration: const Duration(milliseconds: 350),
     );
+    _slideCurve = CurvedAnimation(parent: _ctrl!, curve: Curves.easeOut);
+    _fadeCurve = CurvedAnimation(parent: _ctrl!, curve: Curves.easeIn);
     _slideAnim = Tween<Offset>(
       begin: const Offset(0, 0.15),
       end: Offset.zero,
-    ).animate(CurvedAnimation(parent: _ctrl!, curve: Curves.easeOut));
-    _fadeAnim = CurvedAnimation(parent: _ctrl!, curve: Curves.easeIn);
+    ).animate(_slideCurve);
+    _fadeAnim = _fadeCurve;
     _ctrl!.addStatusListener((status) {
       if (status == AnimationStatus.completed && mounted) {
         _ctrl?.stop();
@@ -149,6 +153,8 @@ class _AnimatedMessageBubbleState extends State<_AnimatedMessageBubble>
   @override
   void dispose() {
     _startTimer?.cancel();
+    _slideCurve.dispose();
+    _fadeCurve.dispose();
     _ctrl?.dispose();
     _ctrl = null;
     super.dispose();

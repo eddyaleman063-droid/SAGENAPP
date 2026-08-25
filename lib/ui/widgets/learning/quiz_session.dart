@@ -47,11 +47,12 @@ class _QuizSessionState extends ConsumerState<QuizSession>
   List<int>? _monocleVisibleIndices;
   late final DateTime _startTime;
   late AnimationController _feedbackCtrl;
-  late Animation<double> _feedbackAnim;
+  late CurvedAnimation _feedbackAnim;
   late AnimationController _questionCtrl;
+  late CurvedAnimation _questionSlideCurve;
   late Animation<double> _questionSlide;
   late AnimationController _optionCtrl;
-  late Animation<double> _optionStagger;
+  late CurvedAnimation _optionStagger;
 
   static const _prefix = 'quiz_progress_';
 
@@ -74,9 +75,14 @@ class _QuizSessionState extends ConsumerState<QuizSession>
       vsync: this,
       duration: AppMotion.normal,
     );
-    _questionSlide = Tween<double>(begin: 0.08, end: 0.0).animate(
-      CurvedAnimation(parent: _questionCtrl, curve: AppEasing.entrance),
+    _questionSlideCurve = CurvedAnimation(
+      parent: _questionCtrl,
+      curve: AppEasing.entrance,
     );
+    _questionSlide = Tween<double>(
+      begin: 0.08,
+      end: 0.0,
+    ).animate(_questionSlideCurve);
     _optionCtrl = AnimationController(vsync: this, duration: AppMotion.normal);
     _optionStagger = CurvedAnimation(
       parent: _optionCtrl,
@@ -149,6 +155,9 @@ class _QuizSessionState extends ConsumerState<QuizSession>
 
   @override
   void dispose() {
+    _feedbackAnim.dispose();
+    _questionSlideCurve.dispose();
+    _optionStagger.dispose();
     _feedbackCtrl.dispose();
     _questionCtrl.dispose();
     _optionCtrl.dispose();

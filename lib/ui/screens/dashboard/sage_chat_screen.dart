@@ -52,7 +52,7 @@ class _SageChatScreenState extends ConsumerState<SageChatScreen>
     if (text.trim().isEmpty) return;
     ref.read(experienceServiceProvider).lightHaptic();
     final sent = await ref.read(sageAiProvider.notifier).sendMessage(text);
-    if (!sent) return;
+    if (!sent || !mounted) return;
     AnalyticsService.instance.track(
       AnalyticEvent.tutorQuery,
       properties: {'query': text},
