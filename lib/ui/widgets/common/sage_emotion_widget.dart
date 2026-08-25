@@ -112,7 +112,7 @@ class _LiveSageImage extends ConsumerStatefulWidget {
 class _LiveSageImageState extends ConsumerState<_LiveSageImage>
     with SingleTickerProviderStateMixin {
   AnimationController? _breatheCtrl;
-  SageEmotion _displayed = SageEmotion.calm;
+  late SageEmotion _displayed;
   bool _idleBreathe = false;
   bool _skipNextTransition = false;
 

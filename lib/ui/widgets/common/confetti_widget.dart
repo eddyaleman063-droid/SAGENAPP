@@ -137,7 +137,7 @@ class _Particle {
 class _ConfettiPainter extends CustomPainter {
   final List<_Particle> particles;
   final double progress;
-  static final _paint = Paint();
+  final _paint = Paint();
 
   _ConfettiPainter({required this.particles, required this.progress});
 

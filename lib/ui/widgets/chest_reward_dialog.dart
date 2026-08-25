@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:go_router/go_router.dart';
@@ -39,6 +40,8 @@ class _ChestRewardDialogState extends State<ChestRewardDialog>
   bool _showRewards = false;
   bool _dismissed = false;
   bool _gemRainShown = false;
+  Timer? _revealTimer;
+  Timer? _gemRainTimer;
 
   @override
   void initState() {
@@ -53,7 +56,7 @@ class _ChestRewardDialogState extends State<ChestRewardDialog>
     if (_dismissed) return;
     final exp = ExperienceService.instance;
     exp.mediumHaptic();
-    Future.delayed(const Duration(milliseconds: 1500), () {
+    _revealTimer = Timer(const Duration(milliseconds: 1500), () {
       if (_dismissed || !mounted) return;
       setState(() => _showRewards = true);
       _revealCtrl.forward();
@@ -62,7 +65,7 @@ class _ChestRewardDialogState extends State<ChestRewardDialog>
       if (widget.reward.xp > 0 && !_gemRainShown) {
         _gemRainShown = true;
         final gemCount = (widget.reward.xp / 3).round().clamp(2, 75);
-        Future.delayed(const Duration(milliseconds: 300), () {
+        _gemRainTimer = Timer(const Duration(milliseconds: 300), () {
           if (mounted && !_dismissed) {
             GemRainAnimation.show(context, gemCount: gemCount);
           }
@@ -80,6 +83,8 @@ class _ChestRewardDialogState extends State<ChestRewardDialog>
 
   @override
   void dispose() {
+    _revealTimer?.cancel();
+    _gemRainTimer?.cancel();
     _revealCtrl.dispose();
     super.dispose();
   }

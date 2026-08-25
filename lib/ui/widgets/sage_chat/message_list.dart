@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/models/chat_message.dart';
@@ -118,6 +119,7 @@ class _AnimatedMessageBubble extends StatefulWidget {
 class _AnimatedMessageBubbleState extends State<_AnimatedMessageBubble>
     with SingleTickerProviderStateMixin {
   AnimationController? _ctrl;
+  Timer? _startTimer;
   late Animation<Offset> _slideAnim;
   late Animation<double> _fadeAnim;
 
@@ -139,13 +141,14 @@ class _AnimatedMessageBubbleState extends State<_AnimatedMessageBubble>
         _ctrl?.stop();
       }
     });
-    Future.delayed(Duration(milliseconds: delay), () {
+    _startTimer = Timer(Duration(milliseconds: delay), () {
       if (mounted) _ctrl?.forward();
     });
   }
 
   @override
   void dispose() {
+    _startTimer?.cancel();
     _ctrl?.dispose();
     _ctrl = null;
     super.dispose();

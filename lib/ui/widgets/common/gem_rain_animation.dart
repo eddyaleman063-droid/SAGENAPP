@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:sagen/services/experience_service.dart';
@@ -34,6 +35,8 @@ class _GemRainAnimationState extends State<GemRainAnimation>
   late List<_FallingGem> _gems;
   int _landedCount = 0;
   bool _showTotal = false;
+  Timer? _totalTimer;
+  Timer? _dismissTimer;
   final _rng = Random();
 
   @override
@@ -79,14 +82,14 @@ class _GemRainAnimationState extends State<GemRainAnimation>
     _rainCtrl.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         _pileCtrl.forward();
-        Future.delayed(const Duration(milliseconds: 400), () {
+        _totalTimer = Timer(const Duration(milliseconds: 400), () {
           if (mounted) {
             ExperienceService.instance.heavyHaptic();
             setState(() => _showTotal = true);
             _glowCtrl.forward();
           }
         });
-        Future.delayed(const Duration(milliseconds: 2800), () {
+        _dismissTimer = Timer(const Duration(milliseconds: 2800), () {
           if (mounted) {
             Navigator.of(context).pop();
             widget.onComplete?.call();
@@ -100,6 +103,8 @@ class _GemRainAnimationState extends State<GemRainAnimation>
 
   @override
   void dispose() {
+    _totalTimer?.cancel();
+    _dismissTimer?.cancel();
     _rainCtrl.dispose();
     _pileCtrl.dispose();
     _glowCtrl.dispose();
@@ -365,7 +370,7 @@ class _GemPilePainter extends CustomPainter {
   final int count;
   final double progress;
   final List<_PileGem> _gems;
-  static final _paint = Paint()..isAntiAlias = true;
+  final _paint = Paint()..isAntiAlias = true;
 
   _GemPilePainter({required this.count, required this.progress})
     : _gems = _precompute(count);

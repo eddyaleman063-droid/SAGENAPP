@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sagen/services/experience_service.dart';
 import '../../../core/theme/theme_constants.dart';
@@ -23,6 +24,7 @@ class _LevelUpCelebrationState extends State<LevelUpCelebration>
   late AnimationController _ringCtrl;
   late AnimationController _textCtrl;
   late AnimationController _particleCtrl;
+  Timer? _completionTimer;
 
   @override
   void initState() {
@@ -51,13 +53,14 @@ class _LevelUpCelebrationState extends State<LevelUpCelebration>
     _textCtrl.forward();
     _particleCtrl.repeat();
 
-    Future.delayed(const Duration(milliseconds: 2800), () {
+    _completionTimer = Timer(const Duration(milliseconds: 2800), () {
       if (mounted) widget.onComplete();
     });
   }
 
   @override
   void dispose() {
+    _completionTimer?.cancel();
     _mainCtrl.dispose();
     _ringCtrl.dispose();
     _textCtrl.dispose();

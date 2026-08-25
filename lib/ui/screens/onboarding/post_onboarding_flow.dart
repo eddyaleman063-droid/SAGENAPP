@@ -113,6 +113,7 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
       if (!mounted) return;
       final auth = ref.read(authProvider);
       if (auth.isAuthenticated) {
+        ref.read(registrationFunnelProvider.notifier).clearSensitiveData();
         await _createProfile(auth, funnel);
         if (!mounted) return;
         ref
@@ -289,10 +290,20 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
 
     if (_step == 10) {
       if (_isAuthenticating) {
-        return const Center(
+        return Center(
           child: Padding(
-            padding: EdgeInsets.all(32),
-            child: CircularProgressIndicator(),
+            padding: const EdgeInsets.all(32),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const CircularProgressIndicator(),
+                const SizedBox(height: 24),
+                TextButton(
+                  onPressed: () => setState(() => _isAuthenticating = false),
+                  child: Text(AppLocalizations.of(context)!.cancel),
+                ),
+              ],
+            ),
           ),
         );
       }

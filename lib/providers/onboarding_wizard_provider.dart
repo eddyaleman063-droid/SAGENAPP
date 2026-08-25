@@ -170,7 +170,7 @@ final onboardingCanContinueProvider = Provider.autoDispose<bool>((ref) {
 
 /// Snapshot of wizard sectionData bridged to post-onboarding flow.
 /// Saved before navigating away from wizard; consumed once by bridge.
-class WizardBridge extends Notifier<Map<int, dynamic>> {
+class WizardBridge extends AutoDisposeNotifier<Map<int, dynamic>> {
   @override
   Map<int, dynamic> build() => {};
 
@@ -183,6 +183,7 @@ class WizardBridge extends Notifier<Map<int, dynamic>> {
   }
 }
 
-final wizardBridgeProvider = NotifierProvider<WizardBridge, Map<int, dynamic>>(
-  WizardBridge.new,
-);
+final wizardBridgeProvider =
+    NotifierProvider.autoDispose<WizardBridge, Map<int, dynamic>>(
+      WizardBridge.new,
+    );

@@ -90,11 +90,7 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
 
   @override
   SageAiChatState build() {
-    _streamSub?.cancel();
-    _streamFlushTimer?.cancel();
-    _streamSub = null;
-    _streamFlushTimer = null;
-    _primaryService = ref.watch(aiServiceProvider);
+    _primaryService = ref.read(aiServiceProvider);
     _fallbackService = LocalFallbackService();
     // Contexto leído al construir; se refresca al enviar mensajes. No se
     // observan learning/review aquí para que completar una lección no
