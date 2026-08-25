@@ -90,7 +90,16 @@ class _SageChatScreenState extends ConsumerState<SageChatScreen>
         label: blockedLabel,
         child: GestureDetector(
           onTap: () => ref.read(experienceServiceProvider).errorHaptic(),
-          child: LockedGatekeeper(sage: ref.watch(sageAiProvider), dark: dark),
+          child: LockedGatekeeper(
+            lessonsCompleted: ref.watch(
+              sageAiProvider.select((s) => s.lessonsCompleted),
+            ),
+            lessonsRequired: ref.watch(
+              sageAiProvider.select((s) => s.lessonsRequired),
+            ),
+            progress: ref.watch(sageAiProvider.select((s) => s.progress)),
+            dark: dark,
+          ),
         ),
       );
     }

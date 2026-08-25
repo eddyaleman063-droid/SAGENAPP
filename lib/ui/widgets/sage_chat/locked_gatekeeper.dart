@@ -2,14 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:sagen/core/theme/app_colors.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/l10n/app_localizations.dart';
-import 'package:sagen/providers/sage_ai_provider.dart';
 import 'package:sagen/services/sage_emotion_service.dart';
 import '../common/sage_emotion_widget.dart';
 
 class LockedGatekeeper extends StatelessWidget {
-  final SageAiChatState sage;
+  final int lessonsCompleted;
+  final int lessonsRequired;
+  final double progress;
   final bool dark;
-  const LockedGatekeeper({super.key, required this.sage, required this.dark});
+  const LockedGatekeeper({
+    super.key,
+    required this.lessonsCompleted,
+    required this.lessonsRequired,
+    required this.progress,
+    required this.dark,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +87,7 @@ class LockedGatekeeper extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(AppRadius.pill),
                       child: LinearProgressIndicator(
-                        value: sage.progress,
+                        value: progress,
                         backgroundColor: context.subtleBorder,
                         valueColor: const AlwaysStoppedAnimation<Color>(
                           PremiumColors.primaryAccent,
@@ -91,10 +98,7 @@ class LockedGatekeeper extends StatelessWidget {
                   ),
                   const SizedBox(height: AppSpacing.sm),
                   Text(
-                    l.tutorLessonsProgress(
-                      sage.lessonsCompleted,
-                      sage.lessonsRequired,
-                    ),
+                    l.tutorLessonsProgress(lessonsCompleted, lessonsRequired),
                     style: AppTextStyle.subtitle.copyWith(
                       fontWeight: FontWeight.w600,
                       color: PremiumColors.primaryAccent,
@@ -141,23 +145,11 @@ class LockedGatekeeper extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: AppSpacing.sm),
-                    _SampleMessage(
-                      text: l.tutorSampleQuestion1,
-                      isUser: true,
-                      dark: dark,
-                    ),
+                    _SampleMessage(text: l.tutorSampleQuestion1, isUser: true),
                     const SizedBox(height: AppSpacing.xs),
-                    _SampleMessage(
-                      text: l.tutorSampleAnswer1,
-                      isUser: false,
-                      dark: dark,
-                    ),
+                    _SampleMessage(text: l.tutorSampleAnswer1, isUser: false),
                     const SizedBox(height: AppSpacing.xs),
-                    _SampleMessage(
-                      text: l.tutorSampleQuestion2,
-                      isUser: true,
-                      dark: dark,
-                    ),
+                    _SampleMessage(text: l.tutorSampleQuestion2, isUser: true),
                   ],
                 ),
               ),
@@ -170,8 +162,8 @@ class LockedGatekeeper extends StatelessWidget {
   }
 
   String _motivationalMessage(AppLocalizations l) {
-    final done = sage.lessonsCompleted;
-    final need = sage.lessonsRequired - done;
+    final done = lessonsCompleted;
+    final need = lessonsRequired - done;
     if (need <= 0) return '';
     if (need <= 3) return l.tutorMotivationAlmost(need);
     if (need <= 5) return l.tutorMotivationGood(need);
@@ -182,12 +174,7 @@ class LockedGatekeeper extends StatelessWidget {
 class _SampleMessage extends StatelessWidget {
   final String text;
   final bool isUser;
-  final bool dark;
-  const _SampleMessage({
-    required this.text,
-    required this.isUser,
-    required this.dark,
-  });
+  const _SampleMessage({required this.text, required this.isUser});
 
   @override
   Widget build(BuildContext context) {

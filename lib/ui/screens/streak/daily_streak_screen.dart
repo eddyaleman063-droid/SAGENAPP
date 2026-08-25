@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -26,6 +27,9 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
   late final Animation<double> _fireFade;
   late final Animation<double> _fireScale;
   late final AnimationController _resetCtrl;
+  Timer? _circleTimer;
+  Timer? _resetTimer;
+  Timer? _milestoneTimer;
 
   String? _message;
 
@@ -83,12 +87,12 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _fetchStreakData();
       _entryCtrl.forward();
-      Future.delayed(const Duration(milliseconds: 900), () {
+      _circleTimer = Timer(const Duration(milliseconds: 900), () {
         if (!mounted) return;
         setState(() => _circleFilled = true);
         ExperienceService.instance.mediumHaptic();
         if (_isWeeklyReset) {
-          Future.delayed(const Duration(milliseconds: 600), () {
+          _resetTimer = Timer(const Duration(milliseconds: 600), () {
             if (mounted) _resetCtrl.forward();
           });
         }
@@ -102,7 +106,7 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
     if (streak.justHitMilestone) {
       final milestone = streak.lastMilestone;
       ref.read(streakProvider.notifier).clearMilestone();
-      Future.delayed(const Duration(milliseconds: 1200), () {
+      _milestoneTimer = Timer(const Duration(milliseconds: 1200), () {
         if (!mounted) return;
         _showMilestoneCelebration(milestone!);
       });
@@ -199,6 +203,9 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
 
   @override
   void dispose() {
+    _circleTimer?.cancel();
+    _resetTimer?.cancel();
+    _milestoneTimer?.cancel();
     _entryCtrl.dispose();
     _resetCtrl.dispose();
     super.dispose();

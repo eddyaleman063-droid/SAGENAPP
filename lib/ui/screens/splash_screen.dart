@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sagen/services/experience_service.dart';
 import 'package:go_router/go_router.dart';
@@ -21,6 +22,7 @@ class _SplashScreenState extends State<SplashScreen>
   late Animation<double> _textFadeAnim;
   late Animation<Offset> _textSlideAnim;
   bool _phase2 = false;
+  Timer? _phaseTimer;
 
   @override
   void initState() {
@@ -47,7 +49,7 @@ class _SplashScreenState extends State<SplashScreen>
     _textCtrl.forward();
 
     // Phase 1: 1 segundo estatico
-    Future.delayed(const Duration(milliseconds: 1000), () {
+    _phaseTimer = Timer(const Duration(milliseconds: 1000), () {
       if (!mounted) return;
       setState(() => _phase2 = true);
       _bgCtrl.forward().then((_) => _navigateToWelcome());
@@ -62,6 +64,7 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   void dispose() {
+    _phaseTimer?.cancel();
     _bgCtrl.dispose();
     _textCtrl.dispose();
     super.dispose();

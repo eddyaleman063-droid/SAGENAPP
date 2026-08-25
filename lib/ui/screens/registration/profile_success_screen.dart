@@ -23,6 +23,8 @@ class _ProfileSuccessScreenState extends ConsumerState<ProfileSuccessScreen>
     with SingleTickerProviderStateMixin {
   late ConfettiController _confettiCtrl;
   late AnimationController _enterCtrl;
+  late CurvedAnimation _enterElastic;
+  late CurvedAnimation _enterFade;
 
   @override
   void initState() {
@@ -32,6 +34,11 @@ class _ProfileSuccessScreenState extends ConsumerState<ProfileSuccessScreen>
       vsync: this,
       duration: const Duration(milliseconds: 800),
     );
+    _enterElastic = CurvedAnimation(
+      parent: _enterCtrl,
+      curve: Curves.elasticOut,
+    );
+    _enterFade = CurvedAnimation(parent: _enterCtrl, curve: Curves.easeIn);
     _enterCtrl.forward();
     _confettiCtrl.play();
   }
@@ -39,6 +46,8 @@ class _ProfileSuccessScreenState extends ConsumerState<ProfileSuccessScreen>
   @override
   void dispose() {
     _confettiCtrl.dispose();
+    _enterElastic.dispose();
+    _enterFade.dispose();
     _enterCtrl.dispose();
     super.dispose();
   }
@@ -77,10 +86,7 @@ class _ProfileSuccessScreenState extends ConsumerState<ProfileSuccessScreen>
                 children: [
                   const Spacer(flex: 2),
                   ScaleTransition(
-                    scale: CurvedAnimation(
-                      parent: _enterCtrl,
-                      curve: Curves.elasticOut,
-                    ),
+                    scale: _enterElastic,
                     child: const SizedBox(
                       width: 120,
                       height: 120,
@@ -94,10 +100,7 @@ class _ProfileSuccessScreenState extends ConsumerState<ProfileSuccessScreen>
                   ),
                   const SizedBox(height: AppSpacing.xxl),
                   FadeTransition(
-                    opacity: CurvedAnimation(
-                      parent: _enterCtrl,
-                      curve: Curves.easeIn,
-                    ),
+                    opacity: _enterFade,
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: AppSpacing.xl,
@@ -132,10 +135,7 @@ class _ProfileSuccessScreenState extends ConsumerState<ProfileSuccessScreen>
                   ),
                   const SizedBox(height: AppSpacing.xl),
                   FadeTransition(
-                    opacity: CurvedAnimation(
-                      parent: _enterCtrl,
-                      curve: Curves.easeIn,
-                    ),
+                    opacity: _enterFade,
                     child: Text(
                       l.regWelcomeSagen,
                       style: AppTextStyle.headlineLarge.copyWith(
@@ -145,10 +145,7 @@ class _ProfileSuccessScreenState extends ConsumerState<ProfileSuccessScreen>
                   ),
                   const SizedBox(height: AppSpacing.md),
                   FadeTransition(
-                    opacity: CurvedAnimation(
-                      parent: _enterCtrl,
-                      curve: Curves.easeIn,
-                    ),
+                    opacity: _enterFade,
                     child: Text(
                       l.regReadyForLesson,
                       textAlign: TextAlign.center,

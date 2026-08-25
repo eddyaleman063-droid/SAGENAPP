@@ -24,6 +24,8 @@ class _LevelUpCelebrationState extends State<LevelUpCelebration>
   late AnimationController _ringCtrl;
   late AnimationController _textCtrl;
   late AnimationController _particleCtrl;
+  late CurvedAnimation _mainElastic;
+  late CurvedAnimation _textFade;
   Timer? _completionTimer;
 
   @override
@@ -48,6 +50,9 @@ class _LevelUpCelebrationState extends State<LevelUpCelebration>
       duration: const Duration(milliseconds: 2800),
     );
 
+    _mainElastic = CurvedAnimation(parent: _mainCtrl, curve: Curves.elasticOut);
+    _textFade = CurvedAnimation(parent: _textCtrl, curve: Curves.easeIn);
+
     _mainCtrl.forward();
     _ringCtrl.forward();
     _textCtrl.forward();
@@ -61,6 +66,8 @@ class _LevelUpCelebrationState extends State<LevelUpCelebration>
   @override
   void dispose() {
     _completionTimer?.cancel();
+    _mainElastic.dispose();
+    _textFade.dispose();
     _mainCtrl.dispose();
     _ringCtrl.dispose();
     _textCtrl.dispose();
@@ -86,10 +93,7 @@ class _LevelUpCelebrationState extends State<LevelUpCelebration>
                 ...List.generate(24, (i) => _buildParticle(i)),
                 Center(
                   child: ScaleTransition(
-                    scale: CurvedAnimation(
-                      parent: _mainCtrl,
-                      curve: Curves.elasticOut,
-                    ),
+                    scale: _mainElastic,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -154,10 +158,7 @@ class _LevelUpCelebrationState extends State<LevelUpCelebration>
                         ),
                         const SizedBox(height: AppSpacing.xl),
                         FadeTransition(
-                          opacity: CurvedAnimation(
-                            parent: _textCtrl,
-                            curve: Curves.easeIn,
-                          ),
+                          opacity: _textFade,
                           child: Text(
                             l.profileLevelValue(widget.newLevel),
                             style: AppTextStyle.headlineLarge.copyWith(
@@ -168,10 +169,7 @@ class _LevelUpCelebrationState extends State<LevelUpCelebration>
                         ),
                         const SizedBox(height: AppSpacing.sm),
                         FadeTransition(
-                          opacity: CurvedAnimation(
-                            parent: _textCtrl,
-                            curve: Curves.easeIn,
-                          ),
+                          opacity: _textFade,
                           child: Text(
                             l.xpLevelUp,
                             style: AppTextStyle.bodyMd.copyWith(
