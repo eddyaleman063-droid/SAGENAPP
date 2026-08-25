@@ -236,7 +236,11 @@ void showLevelUpCelebration(BuildContext context, int newLevel) {
       pageBuilder: (context, animation, secondaryAnimation) =>
           LevelUpCelebration(
             newLevel: newLevel,
-            onComplete: () => Navigator.of(context).pop(),
+            onComplete: () {
+              if (Navigator.of(context).mounted) {
+                Navigator.of(context).pop();
+              }
+            },
           ),
       transitionsBuilder: (context, animation, secondaryAnimation, child) =>
           child,

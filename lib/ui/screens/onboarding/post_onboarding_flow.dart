@@ -180,8 +180,8 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
         AppLogger().warning(
           'post_onboarding: _createProfile attempt $attempt failed: $e',
         );
-        if (attempt < 2) await Future.delayed(const Duration(seconds: 1));
         if (!mounted) return;
+        if (attempt < 2) await Future.delayed(const Duration(seconds: 1));
       }
     }
     if (mounted) {

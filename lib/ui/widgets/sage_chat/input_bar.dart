@@ -26,6 +26,7 @@ class InputBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     return Container(
       padding: EdgeInsets.fromLTRB(
         AppSpacing.xxl,
@@ -41,10 +42,7 @@ class InputBar extends StatelessWidget {
         children: [
           Expanded(
             child: Semantics(
-              label:
-                  AppLocalizations.of(context)?.chatHint ??
-                  AppLocalizations.of(context)?.chatInputHint ??
-                  '',
+              label: l?.chatHint ?? l?.chatInputHint ?? '',
               child: TextField(
                 controller: controller,
                 focusNode: focusNode,
@@ -55,10 +53,7 @@ class InputBar extends StatelessWidget {
                 onSubmitted: enabled ? (_) => onSend() : null,
                 decoration: InputDecoration(
                   counterText: '',
-                  hintText:
-                      AppLocalizations.of(context)?.chatHint ??
-                      AppLocalizations.of(context)?.chatInputHint ??
-                      '',
+                  hintText: l?.chatHint ?? l?.chatInputHint ?? '',
                   hintStyle: AppTextStyle.bodyMd.copyWith(
                     color: context.textTertiary,
                   ),
@@ -95,7 +90,7 @@ class InputBar extends StatelessWidget {
                     onStop?.call();
                   },
                   icon: const Icon(Icons.stop_rounded, size: 22),
-                  tooltip: AppLocalizations.of(context)?.stop ?? 'Stop',
+                  tooltip: l?.stop ?? 'Stop',
                   color: Colors.white,
                   padding: EdgeInsets.zero,
                 ),
@@ -114,7 +109,7 @@ class InputBar extends StatelessWidget {
               ),
               child: Semantics(
                 button: true,
-                label: AppLocalizations.of(context)!.sendMessage,
+                label: l?.sendMessage ?? '',
                 child: IconButton(
                   onPressed: enabled
                       ? () {
@@ -123,7 +118,7 @@ class InputBar extends StatelessWidget {
                         }
                       : null,
                   icon: const Icon(Icons.send_rounded, size: 18),
-                  tooltip: AppLocalizations.of(context)!.sendMessage,
+                  tooltip: l?.sendMessage ?? '',
                   color: enabled ? Colors.white : context.textDisabled,
                   padding: EdgeInsets.zero,
                 ),

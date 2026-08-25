@@ -72,6 +72,7 @@ class _GemRainAnimationState extends State<GemRainAnimation>
     );
 
     _rainCtrl.addListener(() {
+      if (!mounted) return;
       final landed = _gems.where((g) => g.hasLanded(_rainCtrl.value)).length;
       if (landed != _landedCount) {
         ExperienceService.instance.lightHaptic();

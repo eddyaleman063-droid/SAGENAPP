@@ -27,6 +27,7 @@ class WizardOption {
   final IconData icon;
   final Color? color;
   final String? subtitle;
+  final String? imageAsset;
 
   const WizardOption({
     required this.label,
@@ -34,6 +35,7 @@ class WizardOption {
     required this.icon,
     this.color,
     this.subtitle,
+    this.imageAsset,
   });
 }
 
@@ -60,6 +62,7 @@ class OnboardingWizardConfig {
           label: l.wizardGoogle,
           value: 'Google',
           icon: Icons.g_mobiledata_rounded,
+          imageAsset: 'assets/ui/google_logo.png',
         ),
         WizardOption(
           label: l.wizardFacebook,

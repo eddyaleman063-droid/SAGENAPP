@@ -104,11 +104,22 @@ class _WizardOptionTileBase extends StatelessWidget {
           child: Row(
             children: [
               ExcludeSemantics(
-                child: Icon(
-                  option.icon,
-                  size: 22,
-                  color: isSelected ? iconSelectedColor : iconColor,
-                ),
+                child: option.imageAsset != null
+                    ? Image.asset(
+                        option.imageAsset!,
+                        width: 22,
+                        height: 22,
+                        errorBuilder: (_, _, _) => Icon(
+                          option.icon,
+                          size: 22,
+                          color: isSelected ? iconSelectedColor : iconColor,
+                        ),
+                      )
+                    : Icon(
+                        option.icon,
+                        size: 22,
+                        color: isSelected ? iconSelectedColor : iconColor,
+                      ),
               ),
               const SizedBox(width: AppSpacing.md),
               Expanded(
