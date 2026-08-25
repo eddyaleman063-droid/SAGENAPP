@@ -114,6 +114,7 @@ class _WizardButtonState extends ConsumerState<WizardButton>
     with SingleTickerProviderStateMixin {
   late AnimationController _shimmerCtrl;
   late Animation<double> _shimmerAnim;
+  bool _lastReduced = false;
 
   @override
   void initState() {
@@ -125,7 +126,8 @@ class _WizardButtonState extends ConsumerState<WizardButton>
     _shimmerAnim = Tween<double>(begin: -2.0, end: 2.0).animate(
       CurvedAnimation(parent: _shimmerCtrl, curve: Curves.easeInOutSine),
     );
-    if (widget.enabled && !ref.read(reduceAnimationsProvider)) {
+    _lastReduced = ref.read(reduceAnimationsProvider);
+    if (widget.enabled && !_lastReduced) {
       _shimmerCtrl.repeat();
     }
   }
@@ -133,8 +135,10 @@ class _WizardButtonState extends ConsumerState<WizardButton>
   @override
   void didUpdateWidget(WizardButton old) {
     super.didUpdateWidget(old);
-    if (widget.enabled != old.enabled) {
-      if (widget.enabled && !ref.read(reduceAnimationsProvider)) {
+    final reduced = ref.read(reduceAnimationsProvider);
+    if (widget.enabled != old.enabled || reduced != _lastReduced) {
+      _lastReduced = reduced;
+      if (widget.enabled && !reduced) {
         _shimmerCtrl.repeat();
       } else {
         _shimmerCtrl.stop();
@@ -153,11 +157,6 @@ class _WizardButtonState extends ConsumerState<WizardButton>
     final exp = ref.read(experienceServiceProvider);
     final cs = Theme.of(context).colorScheme;
     final reduced = ref.watch(reduceAnimationsProvider);
-    if (reduced && _shimmerCtrl.isAnimating) {
-      _shimmerCtrl.stop();
-    } else if (!reduced && !_shimmerCtrl.isAnimating && widget.enabled) {
-      _shimmerCtrl.repeat();
-    }
     return AnimatedBuilder(
       animation: _shimmerAnim,
       child: Material(

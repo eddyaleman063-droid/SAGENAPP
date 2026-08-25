@@ -1,5 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+final _emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+final _passwordRegex = RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$');
+
 class RegistrationFunnelState {
   final bool isGuest;
   final int age;
@@ -97,17 +100,12 @@ final funnelAgeValidProvider = Provider.autoDispose<bool>((ref) {
 
 final funnelEmailValidProvider = Provider.autoDispose<bool>((ref) {
   final state = ref.watch(registrationFunnelProvider);
-  final emailRegex = RegExp(
-    r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
-  );
-  return emailRegex.hasMatch(state.email);
+  return _emailRegex.hasMatch(state.email);
 });
 
 final funnelPasswordValidProvider = Provider.autoDispose<bool>((ref) {
   final state = ref.watch(registrationFunnelProvider);
-  return RegExp(
-    r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$',
-  ).hasMatch(state.password);
+  return _passwordRegex.hasMatch(state.password);
 });
 
 final funnelNameValidProvider = Provider.autoDispose<bool>((ref) {

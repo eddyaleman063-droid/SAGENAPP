@@ -175,6 +175,7 @@ class SageEmotionService {
     );
     stream.addListener(listener);
     bool removed = false;
+    bool success = false;
     try {
       await completer.future.timeout(
         const Duration(seconds: 5),
@@ -185,12 +186,13 @@ class SageEmotionService {
           }
         },
       );
+      success = !removed;
     } finally {
       if (!removed) {
         stream.removeListener(listener);
       }
     }
-    _precached.add(emotion);
+    if (success) _precached.add(emotion);
   }
 
   bool shouldAnimateEmotionChange(SageEmotion old, SageEmotion next) {

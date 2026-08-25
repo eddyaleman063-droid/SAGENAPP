@@ -218,7 +218,7 @@ class _ChatTypingSection extends ConsumerWidget {
   }
 }
 
-class _ErrorBanner extends StatefulWidget {
+class _ErrorBanner extends StatelessWidget {
   final String message;
   final bool dark;
   final VoidCallback? onDismiss;
@@ -230,11 +230,6 @@ class _ErrorBanner extends StatefulWidget {
     this.onRetry,
   });
 
-  @override
-  State<_ErrorBanner> createState() => _ErrorBannerState();
-}
-
-class _ErrorBannerState extends State<_ErrorBanner> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -257,22 +252,25 @@ class _ErrorBannerState extends State<_ErrorBanner> {
           const SizedBox(width: AppSpacing.sm),
           Expanded(
             child: Text(
-              widget.message,
+              message,
               style: AppTextStyle.caption.copyWith(
                 color: context.textSecondary,
               ),
             ),
           ),
-          if (widget.onRetry != null)
+          if (onRetry != null)
             Semantics(
               button: true,
               label: AppLocalizations.of(context)?.retry ?? 'Retry',
               child: GestureDetector(
-                onTap: widget.onRetry,
-                child: const Icon(
-                  Icons.refresh_rounded,
-                  size: 16,
-                  color: PremiumColors.error,
+                onTap: onRetry,
+                child: const Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Icon(
+                    Icons.refresh_rounded,
+                    size: 16,
+                    color: PremiumColors.error,
+                  ),
                 ),
               ),
             ),
@@ -281,11 +279,14 @@ class _ErrorBannerState extends State<_ErrorBanner> {
             button: true,
             label: AppLocalizations.of(context)?.close ?? 'Close',
             child: GestureDetector(
-              onTap: widget.onDismiss,
-              child: const Icon(
-                Icons.close_rounded,
-                size: 14,
-                color: PremiumColors.error,
+              onTap: onDismiss,
+              child: const Padding(
+                padding: EdgeInsets.all(16),
+                child: Icon(
+                  Icons.close_rounded,
+                  size: 14,
+                  color: PremiumColors.error,
+                ),
               ),
             ),
           ),

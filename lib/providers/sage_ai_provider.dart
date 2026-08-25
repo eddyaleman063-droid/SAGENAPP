@@ -329,7 +329,7 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
     final start = state.messages.length > AppConfig.maxContextMessages * 2
         ? state.messages.length - AppConfig.maxContextMessages * 2
         : 0;
-    for (int i = start; i < state.messages.length - 1; i++) {
+    for (int i = start; i < state.messages.length - 2; i++) {
       recent.add(state.messages[i]);
     }
     recent.add(userMsg);

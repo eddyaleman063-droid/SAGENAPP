@@ -59,6 +59,7 @@ class PostOnboardingFlow extends ConsumerStatefulWidget {
 
 class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
   int _step = 0;
+  bool _isAuthenticating = false;
 
   static const int _totalSteps = 16;
 
@@ -94,9 +95,6 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
     if (_step == 11 && funnel.authMethod != 'email') {
       _step = 13;
     }
-    if (_step == 12 && funnel.authMethod != 'email') {
-      _step = 13;
-    }
   }
 
   Future<void> _goToHome() async {
@@ -130,16 +128,18 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
         );
       }
     } else if (funnel.authMethod == 'email') {
+      final email = funnel.email;
       final password = funnel.password;
-      ref.read(registrationFunnelProvider.notifier).clearSensitiveData();
+      final displayName = '${funnel.name} ${funnel.surname}'.trim();
       await authNotifier.signUpWithEmail(
-        displayName: '${funnel.name} ${funnel.surname}'.trim(),
-        email: funnel.email,
+        displayName: displayName,
+        email: email,
         password: password,
       );
       if (!mounted) return;
       final auth = ref.read(authProvider);
       if (auth.showVerificationScreen || auth.isAuthenticated) {
+        ref.read(registrationFunnelProvider.notifier).clearSensitiveData();
         await _createProfile(auth, funnel);
         if (!mounted) return;
         ref
@@ -194,7 +194,11 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
 
   void _onAuthMethodSelected(String method) {
     if (method == 'google') {
-      _completeRegistration();
+      if (_isAuthenticating) return;
+      setState(() => _isAuthenticating = true);
+      _completeRegistration().whenComplete(() {
+        if (mounted) setState(() => _isAuthenticating = false);
+      });
     } else {
       _advance();
     }
@@ -284,6 +288,14 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
     if (_step >= _totalSteps) return const ProfileSuccessScreen();
 
     if (_step == 10) {
+      if (_isAuthenticating) {
+        return const Center(
+          child: Padding(
+            padding: EdgeInsets.all(32),
+            child: CircularProgressIndicator(),
+          ),
+        );
+      }
       return AuthMethodScreen(
         onContinue: () => _onAuthMethodSelected(
           ref.read(registrationFunnelProvider).authMethod,
