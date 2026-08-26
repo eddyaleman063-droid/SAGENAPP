@@ -144,6 +144,41 @@ class SageEmotionService {
     SageEmotion.happyWings,
   };
 
+  static const _neutralSet = {
+    SageEmotion.calm,
+    SageEmotion.neutral,
+    SageEmotion.happy,
+  };
+
+  static const _closeSet = {
+    SageEmotion.happy,
+    SageEmotion.happyWings,
+    SageEmotion.excited,
+    SageEmotion.excitedWave,
+    SageEmotion.laughing,
+    SageEmotion.lol,
+  };
+
+  static const _negativeSet = {
+    SageEmotion.worried,
+    SageEmotion.sadSoft,
+    SageEmotion.crying,
+    SageEmotion.depressed,
+    SageEmotion.angry,
+    SageEmotion.annoyed,
+  };
+
+  static const _intenseSet = {
+    SageEmotion.furious,
+    SageEmotion.aggressive,
+    SageEmotion.crying,
+    SageEmotion.depressed,
+    SageEmotion.shocked,
+    SageEmotion.angry,
+    SageEmotion.scared,
+    SageEmotion.distressed,
+  };
+
   Future<void> initialize() async {
     if (_initialized) return;
     _initialized = true;
@@ -164,80 +199,44 @@ class SageEmotionService {
     final provider = AssetImage(emotion.assetPath);
     final stream = provider.resolve(ImageConfiguration.empty);
     final completer = Completer<void>();
+    bool timedOut = false;
     final listener = ImageStreamListener(
       (image, sync) {
         image.dispose();
         if (!completer.isCompleted) completer.complete();
       },
       onError: (exception, stackTrace) {
-        if (!completer.isCompleted) completer.complete();
+        if (!completer.isCompleted)
+          completer.completeError(exception, stackTrace);
       },
     );
     stream.addListener(listener);
-    bool removed = false;
-    bool success = false;
     try {
       await completer.future.timeout(
         const Duration(seconds: 5),
         onTimeout: () {
-          if (!removed) {
-            stream.removeListener(listener);
-            removed = true;
-          }
+          timedOut = true;
+          stream.removeListener(listener);
         },
       );
-      success = !removed;
-    } finally {
-      if (!removed) {
-        stream.removeListener(listener);
-      }
+      if (!timedOut) _precached.add(emotion);
+    } catch (_) {
+      stream.removeListener(listener);
     }
-    if (success) _precached.add(emotion);
   }
 
   bool shouldAnimateEmotionChange(SageEmotion old, SageEmotion next) {
     if (old == next) return false;
     if (old == SageEmotion.crying || next == SageEmotion.crying) return true;
     if (old == SageEmotion.furious || next == SageEmotion.furious) return true;
-    final neutralSet = {
-      SageEmotion.calm,
-      SageEmotion.neutral,
-      SageEmotion.happy,
-    };
-    if (neutralSet.contains(old) && neutralSet.contains(next)) return false;
-    final closeSet = {
-      SageEmotion.happy,
-      SageEmotion.happyWings,
-      SageEmotion.excited,
-      SageEmotion.excitedWave,
-      SageEmotion.laughing,
-      SageEmotion.lol,
-    };
-    if (closeSet.contains(old) && closeSet.contains(next)) return false;
-    final negativeSet = {
-      SageEmotion.worried,
-      SageEmotion.sadSoft,
-      SageEmotion.crying,
-      SageEmotion.depressed,
-      SageEmotion.angry,
-      SageEmotion.annoyed,
-    };
-    if (negativeSet.contains(old) && negativeSet.contains(next)) return false;
+    if (_neutralSet.contains(old) && _neutralSet.contains(next)) return false;
+    if (_closeSet.contains(old) && _closeSet.contains(next)) return false;
+    if (_negativeSet.contains(old) && _negativeSet.contains(next)) return false;
     return true;
   }
 
   bool isSignificantMoodShift(SageEmotion old, SageEmotion next) {
-    final intense = {
-      SageEmotion.furious,
-      SageEmotion.aggressive,
-      SageEmotion.crying,
-      SageEmotion.depressed,
-      SageEmotion.shocked,
-      SageEmotion.angry,
-      SageEmotion.scared,
-      SageEmotion.distressed,
-    };
-    return intense.contains(old) || intense.contains(next);
+    return _intenseSet.contains(old) || _intenseSet.contains(next);
   }
 
   bool canIdleBreathe(SageEmotion emotion) {

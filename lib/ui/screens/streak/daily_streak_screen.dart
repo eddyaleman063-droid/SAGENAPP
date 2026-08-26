@@ -24,8 +24,8 @@ class DailyStreakScreen extends ConsumerStatefulWidget {
 class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
     with TickerProviderStateMixin {
   late final AnimationController _entryCtrl;
-  late final Animation<double> _fireFade;
-  late final Animation<double> _fireScale;
+  late final CurvedAnimation _fireFade;
+  late final CurvedAnimation _fireScale;
   late final AnimationController _resetCtrl;
   Timer? _circleTimer;
   Timer? _resetTimer;
@@ -206,6 +206,8 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
     _circleTimer?.cancel();
     _resetTimer?.cancel();
     _milestoneTimer?.cancel();
+    _fireFade.dispose();
+    _fireScale.dispose();
     _entryCtrl.dispose();
     _resetCtrl.dispose();
     super.dispose();

@@ -17,9 +17,11 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
   late AnimationController _bgCtrl;
+  late CurvedAnimation _bgCurve;
   late Animation<Color?> _bgAnim;
   late AnimationController _textCtrl;
-  late Animation<double> _textFadeAnim;
+  late CurvedAnimation _textFadeAnim;
+  late CurvedAnimation _textSlideCurve;
   late Animation<Offset> _textSlideAnim;
   bool _phase2 = false;
   Timer? _phaseTimer;
@@ -31,20 +33,22 @@ class _SplashScreenState extends State<SplashScreen>
       vsync: this,
       duration: const Duration(milliseconds: 800),
     );
+    _bgCurve = CurvedAnimation(parent: _bgCtrl, curve: Curves.easeInOut);
     _bgAnim = ColorTween(
       begin: PremiumColors.splashBlue,
       end: PremiumColors.deepBackground,
-    ).animate(CurvedAnimation(parent: _bgCtrl, curve: Curves.easeInOut));
+    ).animate(_bgCurve);
 
     _textCtrl = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 800),
     );
     _textFadeAnim = CurvedAnimation(parent: _textCtrl, curve: Curves.easeIn);
+    _textSlideCurve = CurvedAnimation(parent: _textCtrl, curve: Curves.easeOut);
     _textSlideAnim = Tween<Offset>(
       begin: const Offset(0, 0.1),
       end: Offset.zero,
-    ).animate(CurvedAnimation(parent: _textCtrl, curve: Curves.easeOut));
+    ).animate(_textSlideCurve);
 
     _textCtrl.forward();
 
@@ -65,6 +69,9 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   void dispose() {
     _phaseTimer?.cancel();
+    _bgCurve.dispose();
+    _textFadeAnim.dispose();
+    _textSlideCurve.dispose();
     _bgCtrl.dispose();
     _textCtrl.dispose();
     super.dispose();

@@ -25,9 +25,13 @@ class HabitTransitionScreen extends ConsumerStatefulWidget {
 class _HabitTransitionScreenState extends ConsumerState<HabitTransitionScreen>
     with SingleTickerProviderStateMixin {
   late final AnimationController _ctrl;
+  late final CurvedAnimation _sageFadeCurve;
   late final Animation<double> _sageFade;
+  late final CurvedAnimation _sageSlideCurve;
   late final Animation<Offset> _sageSlide;
+  late final CurvedAnimation _bubbleFadeCurve;
   late final Animation<double> _bubbleFade;
+  late final CurvedAnimation _bubbleScaleCurve;
   late final Animation<double> _bubbleScale;
 
   String _message = '';
@@ -58,32 +62,40 @@ class _HabitTransitionScreenState extends ConsumerState<HabitTransitionScreen>
       duration: const Duration(milliseconds: 1200),
     );
 
-    _sageFade = CurvedAnimation(
+    _sageFadeCurve = CurvedAnimation(
       parent: _ctrl,
       curve: const Interval(0.0, 0.5, curve: Curves.easeOutCubic),
     );
-    _sageSlide = Tween<Offset>(begin: const Offset(0, 0.3), end: Offset.zero)
-        .animate(
-          CurvedAnimation(
-            parent: _ctrl,
-            curve: const Interval(0.0, 0.5, curve: Curves.easeOutCubic),
-          ),
-        );
+    _sageFade = _sageFadeCurve;
+    _sageSlideCurve = CurvedAnimation(
+      parent: _ctrl,
+      curve: const Interval(0.0, 0.5, curve: Curves.easeOutCubic),
+    );
+    _sageSlide = Tween<Offset>(
+      begin: const Offset(0, 0.3),
+      end: Offset.zero,
+    ).animate(_sageSlideCurve);
 
-    _bubbleFade = CurvedAnimation(
+    _bubbleFadeCurve = CurvedAnimation(
       parent: _ctrl,
       curve: const Interval(0.35, 0.55, curve: Curves.easeOut),
     );
-    _bubbleScale = CurvedAnimation(
+    _bubbleFade = _bubbleFadeCurve;
+    _bubbleScaleCurve = CurvedAnimation(
       parent: _ctrl,
       curve: const Interval(0.35, 1.0, curve: Curves.elasticOut),
     );
+    _bubbleScale = _bubbleScaleCurve;
 
     _ctrl.forward();
   }
 
   @override
   void dispose() {
+    _sageFadeCurve.dispose();
+    _sageSlideCurve.dispose();
+    _bubbleFadeCurve.dispose();
+    _bubbleScaleCurve.dispose();
     _ctrl.dispose();
     super.dispose();
   }

@@ -45,6 +45,22 @@ class _LessonSessionScreenState extends ConsumerState<LessonSessionScreen>
           .read(sessionProvider.notifier)
           .startSession(widget.stageId, widget.lessonId);
     });
+    ref.listen<SessionState>(sessionProvider, (prev, next) {
+      if (next.phase == SessionPhase.completed && !_navigatedToResults) {
+        _navigatedToResults = true;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (context.mounted) {
+            context.goNamed(
+              'lesson-results',
+              pathParameters: {
+                'stageId': widget.stageId,
+                'lessonId': widget.lessonId,
+              },
+            );
+          }
+        });
+      }
+    });
   }
 
   @override
@@ -61,21 +77,6 @@ class _LessonSessionScreenState extends ConsumerState<LessonSessionScreen>
   @override
   Widget build(BuildContext context) {
     final session = ref.watch(sessionProvider);
-
-    if (session.phase == SessionPhase.completed && !_navigatedToResults) {
-      _navigatedToResults = true;
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (context.mounted) {
-          context.goNamed(
-            'lesson-results',
-            pathParameters: {
-              'stageId': widget.stageId,
-              'lessonId': widget.lessonId,
-            },
-          );
-        }
-      });
-    }
 
     if (session.phase == SessionPhase.gameOver) {
       return _GameOverOverlay(session: session);

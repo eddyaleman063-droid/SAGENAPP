@@ -81,7 +81,10 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
 
   void _goBack() {
     if (_step > 0) {
-      setState(() => _step--);
+      setState(() {
+        _step--;
+        _reverseSkipConditionalSteps();
+      });
     }
   }
 
@@ -94,6 +97,13 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
     final funnel = ref.read(registrationFunnelProvider);
     if (_step == 11 && funnel.authMethod != 'email') {
       _step = 13;
+    }
+  }
+
+  void _reverseSkipConditionalSteps() {
+    final funnel = ref.read(registrationFunnelProvider);
+    if (_step == 13 && funnel.authMethod != 'email') {
+      _step = 11;
     }
   }
 

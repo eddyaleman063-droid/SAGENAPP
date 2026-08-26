@@ -211,7 +211,7 @@ class _TitlePanel extends StatelessWidget {
   }
 }
 
-class _RewardsPanel extends StatelessWidget {
+class _RewardsPanel extends StatefulWidget {
   final ChestRewardData reward;
   final AnimationController animation;
   final VoidCallback onDismiss;
@@ -223,12 +223,34 @@ class _RewardsPanel extends StatelessWidget {
   });
 
   @override
+  State<_RewardsPanel> createState() => _RewardsPanelState();
+}
+
+class _RewardsPanelState extends State<_RewardsPanel> {
+  late final CurvedAnimation _fadeCurve;
+
+  @override
+  void initState() {
+    super.initState();
+    _fadeCurve = CurvedAnimation(
+      parent: widget.animation,
+      curve: Curves.easeOut,
+    );
+  }
+
+  @override
+  void dispose() {
+    _fadeCurve.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
-    final r = reward;
+    final r = widget.reward;
 
     return FadeTransition(
-      opacity: CurvedAnimation(parent: animation, curve: Curves.easeOut),
+      opacity: _fadeCurve,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -335,7 +357,7 @@ class _RewardsPanel extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       ExperienceService.instance.mediumHaptic();
-                      onDismiss();
+                      widget.onDismiss();
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: r.type.color,

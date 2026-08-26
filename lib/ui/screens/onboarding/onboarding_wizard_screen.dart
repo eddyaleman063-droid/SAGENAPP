@@ -139,30 +139,18 @@ class _OnboardingWizardScreenState
       child: Scaffold(
         backgroundColor: _bgColor,
         body: SafeArea(
-          child: Column(
-            children: [
-              WizardTopBar(currentIndex: currentIndex, onBack: _goBack),
-              WizardSageSection(
-                key: ValueKey('sage_${currentIndex}_$sageMsg'),
-                emotion: config.emotion,
-                message: sageMsg,
-              ),
-              Expanded(
-                child: PageView.builder(
-                  controller: _pageCtrl,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: OnboardingWizardConfig.totalSteps,
-                  itemBuilder: (context, i) => _buildStep(i, wizardSteps),
-                ),
-              ),
-              WizardBottomBar(
-                currentIndex: currentIndex,
-                canContinue: canContinue,
-                onNext: _goNext,
-                onComplete: _completeWizard,
-              ),
-            ],
-          ).animate().fadeIn().slideY(begin: 0.05),
+          child: _WizardContent(
+            key: const ValueKey('wizard_content'),
+            currentIndex: currentIndex,
+            canContinue: canContinue,
+            wizardSteps: wizardSteps,
+            sageMsg: sageMsg,
+            pageCtrl: _pageCtrl,
+            buildStep: _buildStep,
+            onGoBack: _goBack,
+            onGoNext: _goNext,
+            onComplete: _completeWizard,
+          ),
         ),
       ),
     );
@@ -193,5 +181,58 @@ class _OnboardingWizardScreenState
         step = const SizedBox.shrink();
     }
     return ErrorBoundary(child: step);
+  }
+}
+
+class _WizardContent extends StatelessWidget {
+  final int currentIndex;
+  final bool canContinue;
+  final List<WizardStepConfig> wizardSteps;
+  final String sageMsg;
+  final PageController pageCtrl;
+  final Widget Function(int, List<WizardStepConfig>) buildStep;
+  final VoidCallback onGoBack;
+  final VoidCallback onGoNext;
+  final VoidCallback onComplete;
+
+  const _WizardContent({
+    super.key,
+    required this.currentIndex,
+    required this.canContinue,
+    required this.wizardSteps,
+    required this.sageMsg,
+    required this.pageCtrl,
+    required this.buildStep,
+    required this.onGoBack,
+    required this.onGoNext,
+    required this.onComplete,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        WizardTopBar(currentIndex: currentIndex, onBack: onGoBack),
+        WizardSageSection(
+          key: ValueKey('sage_${currentIndex}_$sageMsg'),
+          emotion: wizardSteps[currentIndex].emotion,
+          message: sageMsg,
+        ),
+        Expanded(
+          child: PageView.builder(
+            controller: pageCtrl,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: OnboardingWizardConfig.totalSteps,
+            itemBuilder: (context, i) => buildStep(i, wizardSteps),
+          ),
+        ),
+        WizardBottomBar(
+          currentIndex: currentIndex,
+          canContinue: canContinue,
+          onNext: onGoNext,
+          onComplete: onComplete,
+        ),
+      ],
+    ).animate().fadeIn().slideY(begin: 0.05);
   }
 }
