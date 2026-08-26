@@ -130,6 +130,7 @@ class _FlameFallbackWidgetState extends State<_FlameFallbackWidget>
     with SingleTickerProviderStateMixin {
   static const _channel = MethodChannel('com.sagen.app/flame_animation');
   late AnimationController _ctrl;
+  late CurvedAnimation _pulseCurve;
   late Animation<double> _pulseAnim;
 
   @override
@@ -139,10 +140,8 @@ class _FlameFallbackWidgetState extends State<_FlameFallbackWidget>
       vsync: this,
       duration: const Duration(seconds: 2),
     );
-    _pulseAnim = Tween<double>(
-      begin: 0.7,
-      end: 1.0,
-    ).animate(CurvedAnimation(parent: _ctrl, curve: Curves.easeInOut));
+    _pulseCurve = CurvedAnimation(parent: _ctrl, curve: Curves.easeInOut);
+    _pulseAnim = Tween<double>(begin: 0.7, end: 1.0).animate(_pulseCurve);
     if (defaultTargetPlatform != TargetPlatform.android &&
         !widget.reduceAnimations) {
       _ctrl.repeat(reverse: true);
@@ -167,6 +166,7 @@ class _FlameFallbackWidgetState extends State<_FlameFallbackWidget>
 
   @override
   void dispose() {
+    _pulseCurve.dispose();
     _ctrl.dispose();
     super.dispose();
   }

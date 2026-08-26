@@ -29,6 +29,18 @@ class _QuizSummaryScreenState extends State<QuizSummaryScreen>
   late AnimationController _entranceCtrl;
   bool _tapped = false;
 
+  late final CurvedAnimation _scaleCurve;
+  late final CurvedAnimation _titleFade;
+  late final CurvedAnimation _subtitleFade;
+  late final CurvedAnimation _xpSlide;
+  late final CurvedAnimation _xpFade;
+  late final CurvedAnimation _streakSlide;
+  late final CurvedAnimation _streakFade;
+  late final CurvedAnimation _gemsSlide;
+  late final CurvedAnimation _gemsFade;
+  late final CurvedAnimation _continueFade;
+  late final CurvedAnimation _retryFade;
+
   @override
   void initState() {
     super.initState();
@@ -36,12 +48,67 @@ class _QuizSummaryScreenState extends State<QuizSummaryScreen>
       vsync: this,
       duration: const Duration(milliseconds: 1200),
     );
+    _scaleCurve = CurvedAnimation(
+      parent: _entranceCtrl,
+      curve: const Interval(0.0, 0.5, curve: Curves.elasticOut),
+    );
+    _titleFade = CurvedAnimation(
+      parent: _entranceCtrl,
+      curve: const Interval(0.2, 0.6, curve: Curves.easeOut),
+    );
+    _subtitleFade = CurvedAnimation(
+      parent: _entranceCtrl,
+      curve: const Interval(0.3, 0.7, curve: Curves.easeOut),
+    );
+    _xpSlide = CurvedAnimation(
+      parent: _entranceCtrl,
+      curve: const Interval(0.3, 0.8, curve: Curves.easeOutCubic),
+    );
+    _xpFade = CurvedAnimation(
+      parent: _entranceCtrl,
+      curve: const Interval(0.3, 0.8, curve: Curves.easeOut),
+    );
+    _streakSlide = CurvedAnimation(
+      parent: _entranceCtrl,
+      curve: const Interval(0.45, 0.95, curve: Curves.easeOutCubic),
+    );
+    _streakFade = CurvedAnimation(
+      parent: _entranceCtrl,
+      curve: const Interval(0.45, 0.95, curve: Curves.easeOut),
+    );
+    _gemsSlide = CurvedAnimation(
+      parent: _entranceCtrl,
+      curve: const Interval(0.5, 1.0, curve: Curves.easeOutCubic),
+    );
+    _gemsFade = CurvedAnimation(
+      parent: _entranceCtrl,
+      curve: const Interval(0.5, 1.0, curve: Curves.easeOut),
+    );
+    _continueFade = CurvedAnimation(
+      parent: _entranceCtrl,
+      curve: const Interval(0.6, 1.0, curve: Curves.easeOut),
+    );
+    _retryFade = CurvedAnimation(
+      parent: _entranceCtrl,
+      curve: const Interval(0.7, 1.0, curve: Curves.easeOut),
+    );
     _entranceCtrl.forward();
     ExperienceService.instance.heavyHaptic();
   }
 
   @override
   void dispose() {
+    _scaleCurve.dispose();
+    _titleFade.dispose();
+    _subtitleFade.dispose();
+    _xpSlide.dispose();
+    _xpFade.dispose();
+    _streakSlide.dispose();
+    _streakFade.dispose();
+    _gemsSlide.dispose();
+    _gemsFade.dispose();
+    _continueFade.dispose();
+    _retryFade.dispose();
     _entranceCtrl.dispose();
     super.dispose();
   }
@@ -86,10 +153,7 @@ class _QuizSummaryScreenState extends State<QuizSummaryScreen>
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   ScaleTransition(
-                    scale: CurvedAnimation(
-                      parent: _entranceCtrl,
-                      curve: const Interval(0.0, 0.5, curve: Curves.elasticOut),
-                    ),
+                    scale: _scaleCurve,
                     child: Container(
                       width: 100,
                       height: 100,
@@ -146,10 +210,7 @@ class _QuizSummaryScreenState extends State<QuizSummaryScreen>
                   ),
                   const SizedBox(height: AppSpacing.xxl),
                   FadeTransition(
-                    opacity: CurvedAnimation(
-                      parent: _entranceCtrl,
-                      curve: const Interval(0.2, 0.6, curve: Curves.easeOut),
-                    ),
+                    opacity: _titleFade,
                     child: Text(
                       r.perfect
                           ? l.summaryPerfect
@@ -164,10 +225,7 @@ class _QuizSummaryScreenState extends State<QuizSummaryScreen>
                   ),
                   const SizedBox(height: AppSpacing.sm),
                   FadeTransition(
-                    opacity: CurvedAnimation(
-                      parent: _entranceCtrl,
-                      curve: const Interval(0.3, 0.7, curve: Curves.easeOut),
-                    ),
+                    opacity: _subtitleFade,
                     child: Text(
                       l.correctAnswers(r.correctAnswers, r.totalQuestions),
                       style: AppTextStyle.bodyMd.copyWith(
@@ -187,25 +245,12 @@ class _QuizSummaryScreenState extends State<QuizSummaryScreen>
                     ),
                   const SizedBox(height: AppSpacing.xxxl),
                   SlideTransition(
-                    position:
-                        Tween<Offset>(
-                          begin: const Offset(0, 0.3),
-                          end: Offset.zero,
-                        ).animate(
-                          CurvedAnimation(
-                            parent: _entranceCtrl,
-                            curve: const Interval(
-                              0.3,
-                              0.8,
-                              curve: Curves.easeOutCubic,
-                            ),
-                          ),
-                        ),
+                    position: Tween<Offset>(
+                      begin: const Offset(0, 0.3),
+                      end: Offset.zero,
+                    ).animate(_xpSlide),
                     child: FadeTransition(
-                      opacity: CurvedAnimation(
-                        parent: _entranceCtrl,
-                        curve: const Interval(0.3, 0.8, curve: Curves.easeOut),
-                      ),
+                      opacity: _xpFade,
                       child: _RewardRow(
                         iconWidget: const ExcludeSemantics(
                           child: Icon(
@@ -223,29 +268,12 @@ class _QuizSummaryScreenState extends State<QuizSummaryScreen>
                   ),
                   const SizedBox(height: AppSpacing.md),
                   SlideTransition(
-                    position:
-                        Tween<Offset>(
-                          begin: const Offset(0, 0.3),
-                          end: Offset.zero,
-                        ).animate(
-                          CurvedAnimation(
-                            parent: _entranceCtrl,
-                            curve: const Interval(
-                              0.45,
-                              0.95,
-                              curve: Curves.easeOutCubic,
-                            ),
-                          ),
-                        ),
+                    position: Tween<Offset>(
+                      begin: const Offset(0, 0.3),
+                      end: Offset.zero,
+                    ).animate(_streakSlide),
                     child: FadeTransition(
-                      opacity: CurvedAnimation(
-                        parent: _entranceCtrl,
-                        curve: const Interval(
-                          0.45,
-                          0.95,
-                          curve: Curves.easeOut,
-                        ),
-                      ),
+                      opacity: _streakFade,
                       child: _RewardRow(
                         iconWidget: const ExcludeSemantics(
                           child: Icon(
@@ -264,29 +292,12 @@ class _QuizSummaryScreenState extends State<QuizSummaryScreen>
                   if (r.gemsEarned > 0) ...[
                     const SizedBox(height: AppSpacing.md),
                     SlideTransition(
-                      position:
-                          Tween<Offset>(
-                            begin: const Offset(0, 0.3),
-                            end: Offset.zero,
-                          ).animate(
-                            CurvedAnimation(
-                              parent: _entranceCtrl,
-                              curve: const Interval(
-                                0.5,
-                                1.0,
-                                curve: Curves.easeOutCubic,
-                              ),
-                            ),
-                          ),
+                      position: Tween<Offset>(
+                        begin: const Offset(0, 0.3),
+                        end: Offset.zero,
+                      ).animate(_gemsSlide),
                       child: FadeTransition(
-                        opacity: CurvedAnimation(
-                          parent: _entranceCtrl,
-                          curve: const Interval(
-                            0.5,
-                            1.0,
-                            curve: Curves.easeOut,
-                          ),
-                        ),
+                        opacity: _gemsFade,
                         child: _RewardRow(
                           iconWidget: const ExcludeSemantics(
                             child: Icon(
@@ -305,10 +316,7 @@ class _QuizSummaryScreenState extends State<QuizSummaryScreen>
                   ],
                   const SizedBox(height: AppSpacing.huge),
                   FadeTransition(
-                    opacity: CurvedAnimation(
-                      parent: _entranceCtrl,
-                      curve: const Interval(0.6, 1.0, curve: Curves.easeOut),
-                    ),
+                    opacity: _continueFade,
                     child: SizedBox(
                       width: double.infinity,
                       height: 52,
@@ -351,10 +359,7 @@ class _QuizSummaryScreenState extends State<QuizSummaryScreen>
                   if (widget.onRetry != null) ...[
                     const SizedBox(height: AppSpacing.md),
                     FadeTransition(
-                      opacity: CurvedAnimation(
-                        parent: _entranceCtrl,
-                        curve: const Interval(0.7, 1.0, curve: Curves.easeOut),
-                      ),
+                      opacity: _retryFade,
                       child: SizedBox(
                         width: double.infinity,
                         height: 48,

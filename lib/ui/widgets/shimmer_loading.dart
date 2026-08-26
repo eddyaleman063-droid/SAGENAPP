@@ -26,6 +26,7 @@ class _ShimmerLoadingState extends State<ShimmerLoading>
     with SingleTickerProviderStateMixin {
   AnimationController? _ownCtrl;
   AnimationController? _sharedCtrl;
+  CurvedAnimation? _curve;
   late Animation<double> _anim;
   bool _controllerInitialized = false;
 
@@ -54,14 +55,13 @@ class _ShimmerLoadingState extends State<ShimmerLoading>
       );
       _ownCtrl!.repeat();
     }
-    _anim = Tween<double>(
-      begin: -2.0,
-      end: 2.0,
-    ).animate(CurvedAnimation(parent: _ctrl, curve: Curves.easeInOutSine));
+    _curve = CurvedAnimation(parent: _ctrl, curve: Curves.easeInOutSine);
+    _anim = Tween<double>(begin: -2.0, end: 2.0).animate(_curve!);
   }
 
   @override
   void dispose() {
+    _curve?.dispose();
     _ownCtrl?.dispose();
     super.dispose();
   }

@@ -113,6 +113,7 @@ class WizardButton extends ConsumerStatefulWidget {
 class _WizardButtonState extends ConsumerState<WizardButton>
     with SingleTickerProviderStateMixin {
   late AnimationController _shimmerCtrl;
+  late CurvedAnimation _shimmerCurve;
   late Animation<double> _shimmerAnim;
   bool _lastReduced = false;
 
@@ -123,9 +124,11 @@ class _WizardButtonState extends ConsumerState<WizardButton>
       vsync: this,
       duration: const Duration(milliseconds: 1800),
     );
-    _shimmerAnim = Tween<double>(begin: -2.0, end: 2.0).animate(
-      CurvedAnimation(parent: _shimmerCtrl, curve: Curves.easeInOutSine),
+    _shimmerCurve = CurvedAnimation(
+      parent: _shimmerCtrl,
+      curve: Curves.easeInOutSine,
     );
+    _shimmerAnim = Tween<double>(begin: -2.0, end: 2.0).animate(_shimmerCurve);
     _lastReduced = ref.read(reduceAnimationsProvider);
     if (widget.enabled && !_lastReduced) {
       _shimmerCtrl.repeat();
@@ -148,6 +151,7 @@ class _WizardButtonState extends ConsumerState<WizardButton>
 
   @override
   void dispose() {
+    _shimmerCurve.dispose();
     _shimmerCtrl.dispose();
     super.dispose();
   }

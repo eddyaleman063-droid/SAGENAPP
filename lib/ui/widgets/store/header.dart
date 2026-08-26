@@ -15,6 +15,7 @@ class StoreHeader extends ConsumerStatefulWidget {
 class _StoreHeaderState extends ConsumerState<StoreHeader>
     with SingleTickerProviderStateMixin {
   late final AnimationController _glowController;
+  late final CurvedAnimation _glowCurve;
   late final Animation<double> _glowAnimation;
   int _prevBalance = 0;
 
@@ -25,10 +26,11 @@ class _StoreHeaderState extends ConsumerState<StoreHeader>
       vsync: this,
       duration: const Duration(milliseconds: 800),
     );
-    _glowAnimation = Tween<double>(
-      begin: 0,
-      end: 1,
-    ).animate(CurvedAnimation(parent: _glowController, curve: Curves.easeOut));
+    _glowCurve = CurvedAnimation(
+      parent: _glowController,
+      curve: Curves.easeOut,
+    );
+    _glowAnimation = Tween<double>(begin: 0, end: 1).animate(_glowCurve);
     _prevBalance = ref.read(gemProvider.select((g) => g.balance));
     ref.listen<int>(gemProvider.select((g) => g.balance), (prev, next) {
       if (next > _prevBalance && _prevBalance > 0) {
@@ -40,6 +42,7 @@ class _StoreHeaderState extends ConsumerState<StoreHeader>
 
   @override
   void dispose() {
+    _glowCurve.dispose();
     _glowController.dispose();
     super.dispose();
   }

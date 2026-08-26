@@ -21,6 +21,7 @@ class PaymentSuccessScreen extends ConsumerStatefulWidget {
 class _PaymentSuccessScreenState extends ConsumerState<PaymentSuccessScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _scaleCtrl;
+  late CurvedAnimation _scaleCurve;
   late AnimationController _checkCtrl;
   bool _navigated = false;
 
@@ -31,6 +32,7 @@ class _PaymentSuccessScreenState extends ConsumerState<PaymentSuccessScreen>
       vsync: this,
       duration: const Duration(milliseconds: 600),
     );
+    _scaleCurve = CurvedAnimation(parent: _scaleCtrl, curve: Curves.elasticOut);
     _checkCtrl = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 400),
@@ -41,6 +43,7 @@ class _PaymentSuccessScreenState extends ConsumerState<PaymentSuccessScreen>
 
   @override
   void dispose() {
+    _scaleCurve.dispose();
     _scaleCtrl.dispose();
     _checkCtrl.dispose();
     super.dispose();
@@ -64,10 +67,7 @@ class _PaymentSuccessScreenState extends ConsumerState<PaymentSuccessScreen>
               mainAxisSize: MainAxisSize.min,
               children: [
                 ScaleTransition(
-                  scale: CurvedAnimation(
-                    parent: _scaleCtrl,
-                    curve: Curves.elasticOut,
-                  ),
+                  scale: _scaleCurve,
                   child: Semantics(
                     label:
                         AppLocalizations.of(context)?.thankYouForSupport ?? '',

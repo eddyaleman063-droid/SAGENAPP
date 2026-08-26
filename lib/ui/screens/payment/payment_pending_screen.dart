@@ -23,6 +23,19 @@ class _PaymentPendingScreenState extends ConsumerState<PaymentPendingScreen> {
   bool _navigating = false;
 
   @override
+  void initState() {
+    super.initState();
+    ref.listen<PaymentStatus>(paymentProvider.select((p) => p.status), (
+      prev,
+      next,
+    ) {
+      if (next == PaymentStatus.completed && mounted) {
+        context.go('/home');
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
     final payment = ref.watch(
@@ -37,13 +50,6 @@ class _PaymentPendingScreenState extends ConsumerState<PaymentPendingScreen> {
     final pollAttempts = payment.pollAttempts;
     final isPolling = payment.status == PaymentStatus.waitingPayment;
     final isFailed = payment.status == PaymentStatus.failed;
-    final isCompleted = payment.status == PaymentStatus.completed;
-
-    if (isCompleted) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (context.mounted) context.go('/home');
-      });
-    }
 
     return PopScope(
       canPop: false,

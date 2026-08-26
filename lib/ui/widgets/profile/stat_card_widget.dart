@@ -24,7 +24,7 @@ class StatCardWidget extends StatefulWidget {
 class _StatCardWidgetState extends State<StatCardWidget>
     with SingleTickerProviderStateMixin {
   late AnimationController _ctrl;
-  late Animation<double> _scaleAnim;
+  late CurvedAnimation _scaleAnim;
 
   @override
   void initState() {
@@ -39,6 +39,7 @@ class _StatCardWidgetState extends State<StatCardWidget>
 
   @override
   void dispose() {
+    _scaleAnim.dispose();
     _ctrl.dispose();
     super.dispose();
   }

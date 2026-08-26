@@ -26,6 +26,7 @@ class LessonSessionScreen extends ConsumerStatefulWidget {
 class _LessonSessionScreenState extends ConsumerState<LessonSessionScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _slideCtrl;
+  late CurvedAnimation _slideCurve;
   late Animation<Offset> _slideAnim;
   bool _navigatedToResults = false;
 
@@ -36,10 +37,14 @@ class _LessonSessionScreenState extends ConsumerState<LessonSessionScreen>
       vsync: this,
       duration: const Duration(milliseconds: 350),
     );
+    _slideCurve = CurvedAnimation(
+      parent: _slideCtrl,
+      curve: Curves.easeOutCubic,
+    );
     _slideAnim = Tween<Offset>(
       begin: const Offset(0.3, 0),
       end: Offset.zero,
-    ).animate(CurvedAnimation(parent: _slideCtrl, curve: Curves.easeOutCubic));
+    ).animate(_slideCurve);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref
           .read(sessionProvider.notifier)
@@ -65,6 +70,7 @@ class _LessonSessionScreenState extends ConsumerState<LessonSessionScreen>
 
   @override
   void dispose() {
+    _slideCurve.dispose();
     _slideCtrl.dispose();
     super.dispose();
   }

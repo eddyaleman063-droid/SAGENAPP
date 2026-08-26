@@ -21,6 +21,7 @@ class WizardTopBar extends StatefulWidget {
 class _WizardTopBarState extends State<WizardTopBar>
     with SingleTickerProviderStateMixin {
   late final AnimationController _progressCtrl;
+  late CurvedAnimation _progressCurve;
   late Animation<double> _progressAnim;
   double _displayedProgress = 0;
 
@@ -33,9 +34,14 @@ class _WizardTopBarState extends State<WizardTopBar>
       vsync: this,
       duration: const Duration(milliseconds: 350),
     );
-    _progressAnim = Tween<double>(begin: target, end: target).animate(
-      CurvedAnimation(parent: _progressCtrl, curve: Curves.easeOutCubic),
+    _progressCurve = CurvedAnimation(
+      parent: _progressCtrl,
+      curve: Curves.easeOutCubic,
     );
+    _progressAnim = Tween<double>(
+      begin: target,
+      end: target,
+    ).animate(_progressCurve);
     _displayedProgress = target;
   }
 
@@ -45,10 +51,10 @@ class _WizardTopBarState extends State<WizardTopBar>
     if (widget.currentIndex != old.currentIndex) {
       final newTarget =
           (widget.currentIndex + 1) / OnboardingWizardConfig.totalSteps;
-      _progressAnim = Tween<double>(begin: _displayedProgress, end: newTarget)
-          .animate(
-            CurvedAnimation(parent: _progressCtrl, curve: Curves.easeOutCubic),
-          );
+      _progressAnim = Tween<double>(
+        begin: _displayedProgress,
+        end: newTarget,
+      ).animate(_progressCurve);
       _progressCtrl
         ..reset()
         ..forward().then((_) {
@@ -59,6 +65,7 @@ class _WizardTopBarState extends State<WizardTopBar>
 
   @override
   void dispose() {
+    _progressCurve.dispose();
     _progressCtrl.dispose();
     super.dispose();
   }
