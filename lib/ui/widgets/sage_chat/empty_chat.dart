@@ -26,7 +26,6 @@ class EmptyChat extends ConsumerWidget {
               emotion: emotion,
               size: 80,
               animated: true,
-              semanticLabel: l?.chatEmptyTitle ?? '',
             ),
           ),
           const SizedBox(height: AppSpacing.xl),

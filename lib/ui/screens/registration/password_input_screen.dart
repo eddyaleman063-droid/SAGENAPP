@@ -105,8 +105,9 @@ class _PasswordFieldState extends ConsumerState<_PasswordField> {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     return Semantics(
-      label: AppLocalizations.of(context)!.regPasswordTitle,
+      label: l.regPasswordTitle,
       child: TextField(
         maxLength: 128,
         obscureText: _obscured,
@@ -131,9 +132,7 @@ class _PasswordFieldState extends ConsumerState<_PasswordField> {
           ),
           suffixIcon: Semantics(
             button: true,
-            label: _obscured
-                ? AppLocalizations.of(context)!.showPassword
-                : AppLocalizations.of(context)!.hidePassword,
+            label: _obscured ? l.showPassword : l.hidePassword,
             child: GestureDetector(
               onTap: () => setState(() => _obscured = !_obscured),
               child: Icon(

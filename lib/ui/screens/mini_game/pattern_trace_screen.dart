@@ -230,7 +230,7 @@ class _PatternTraceScreenState extends ConsumerState<PatternTraceScreen> {
                                 crossAxisSpacing: 12,
                               ),
                           itemCount: 9,
-                          itemBuilder: (ctx, i) => _buildDot(i),
+                          itemBuilder: (ctx, i) => _buildDot(i, l),
                         ),
                       ),
                     ),
@@ -252,12 +252,12 @@ class _PatternTraceScreenState extends ConsumerState<PatternTraceScreen> {
     );
   }
 
-  Widget _buildDot(int index) {
+  Widget _buildDot(int index, AppLocalizations l) {
     final isHighlighted = _highlightedIndex == index;
     final isCompleted = _userInput.contains(index);
     return Semantics(
       button: true,
-      label: AppLocalizations.of(context)!.dot(index + 1),
+      label: l.dot(index + 1),
       child: GestureDetector(
         onTap: () => _onDotTap(index),
         child: AnimatedContainer(

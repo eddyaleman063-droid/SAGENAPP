@@ -60,7 +60,7 @@ class PostOnboardingFlow extends ConsumerStatefulWidget {
 class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
   int _step = 0;
   bool _isAuthenticating = false;
-  bool _authCancelled = false;
+  int _authGeneration = 0;
 
   static const int _totalSteps = 16;
 
@@ -118,28 +118,28 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
 
   Future<void> _completeRegistration() async {
     if (_isAuthenticating) return;
-    _authCancelled = false;
+    final gen = ++_authGeneration;
     setState(() => _isAuthenticating = true);
     final authNotifier = ref.read(authProvider.notifier);
     final funnel = ref.read(registrationFunnelProvider);
     try {
       if (funnel.authMethod == 'google') {
         await authNotifier.signInWithGoogle();
-        if (!mounted || _authCancelled) return;
+        if (!mounted || gen != _authGeneration) return;
         final auth = ref.read(authProvider);
         if (auth.isAuthenticated) {
           ref.read(registrationFunnelProvider.notifier).clearSensitiveData();
-          await _createProfile(auth, funnel);
-          if (!mounted) return;
+          final profileOk = await _createProfile(auth, funnel);
+          if (!mounted || !profileOk) return;
           ref
               .read(analyticsServiceProvider)
               .track(AnalyticEvent.signUp, properties: {'method': 'google'});
           _jumpToStep(14);
-        } else if (auth.errorMessage != null) {
+        } else {
           SagenNotification.show(
             context,
             message: AuthException(
-              auth.errorMessage!,
+              auth.errorMessage ?? 'unknown_error',
             ).localizedMessage(AppLocalizations.of(context)!),
           );
         }
@@ -152,21 +152,21 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
           email: email,
           password: password,
         );
-        if (!mounted || _authCancelled) return;
+        if (!mounted || gen != _authGeneration) return;
         final auth = ref.read(authProvider);
         if (auth.showVerificationScreen || auth.isAuthenticated) {
           ref.read(registrationFunnelProvider.notifier).clearSensitiveData();
-          await _createProfile(auth, funnel);
-          if (!mounted) return;
+          final profileOk = await _createProfile(auth, funnel);
+          if (!mounted || !profileOk) return;
           ref
               .read(analyticsServiceProvider)
               .track(AnalyticEvent.signUp, properties: {'method': 'email'});
           _advance();
-        } else if (auth.errorMessage != null) {
+        } else {
           SagenNotification.show(
             context,
             message: AuthException(
-              auth.errorMessage!,
+              auth.errorMessage ?? 'unknown_error',
             ).localizedMessage(AppLocalizations.of(context)!),
           );
         }
@@ -184,12 +184,12 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
     }
   }
 
-  Future<void> _createProfile(
+  Future<bool> _createProfile(
     AuthState auth,
     RegistrationFunnelState funnel,
   ) async {
     final uid = ref.read(authServiceProvider).currentUser?.uid;
-    if (uid == null) return;
+    if (uid == null) return false;
     for (int attempt = 0; attempt < 3; attempt++) {
       try {
         await ref
@@ -201,12 +201,12 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
               email: funnel.email.isNotEmpty ? funnel.email : auth.email,
               age: funnel.age,
             );
-        return;
+        return true;
       } catch (e) {
         AppLogger().warning(
           'post_onboarding: _createProfile attempt $attempt failed: $e',
         );
-        if (!mounted) return;
+        if (!mounted) return false;
         if (attempt < 2) await Future.delayed(const Duration(seconds: 1));
       }
     }
@@ -217,6 +217,7 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
         type: NotificationType.error,
       );
     }
+    return false;
   }
 
   void _onAuthMethodSelected(String method) {
@@ -323,7 +324,7 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
                 TextButton(
                   onPressed: () => setState(() {
                     _isAuthenticating = false;
-                    _authCancelled = true;
+                    _authGeneration++;
                   }),
                   child: Text(AppLocalizations.of(context)!.cancel),
                 ),

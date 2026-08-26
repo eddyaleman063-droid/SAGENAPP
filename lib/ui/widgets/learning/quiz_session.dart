@@ -270,6 +270,7 @@ class _QuizSessionState extends ConsumerState<QuizSession>
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     final progress = widget.challenges.isEmpty
         ? 1.0
         : (_currentIndex / widget.challenges.length).clamp(0.0, 1.0);
@@ -313,9 +314,11 @@ class _QuizSessionState extends ConsumerState<QuizSession>
                 // Sage Monocle button — visible when user owns monocles
                 if (!_answered &&
                     !_monocleUsed &&
-                    ref
-                        .read(itemProvider.notifier)
-                        .hasItem(SpecialItemType.sageMonocle))
+                    ref.watch(
+                      itemProvider.select(
+                        (s) => s.quantity(SpecialItemType.sageMonocle) > 0,
+                      ),
+                    ))
                   Padding(
                     padding: const EdgeInsets.only(bottom: AppSpacing.md),
                     child: SizedBox(
@@ -324,7 +327,7 @@ class _QuizSessionState extends ConsumerState<QuizSession>
                         onPressed: _useMonocle,
                         icon: const Icon(Icons.visibility_rounded, size: 18),
                         label: Text(
-                          AppLocalizations.of(context)!.sageMonocleButton,
+                          l.sageMonocleButton,
                           style: AppTextStyle.label,
                         ),
                         style: OutlinedButton.styleFrom(
@@ -367,7 +370,7 @@ class _QuizSessionState extends ConsumerState<QuizSession>
                             ),
                             const SizedBox(width: 6),
                             Text(
-                              AppLocalizations.of(context)!.sageMonocleActive,
+                              l.sageMonocleActive,
                               style: AppTextStyle.label.copyWith(
                                 color: PremiumColors.premiumBlue,
                               ),

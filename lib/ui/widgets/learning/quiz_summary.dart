@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sagen/core/theme/app_colors.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
-import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/services/experience_service.dart';
 import 'package:sagen/ui/widgets/learning/quiz_session.dart';
 import 'package:sagen/ui/widgets/rive_flame_widget.dart';
@@ -322,7 +321,7 @@ class _QuizSummaryScreenState extends State<QuizSummaryScreen>
                       height: 52,
                       child: Semantics(
                         button: true,
-                        label: AppLocalizations.of(context)?.continueText ?? '',
+                        label: l.continueText,
                         child: ElevatedButton.icon(
                           onPressed: _tapped
                               ? null

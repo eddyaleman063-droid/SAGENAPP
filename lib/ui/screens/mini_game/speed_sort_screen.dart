@@ -228,7 +228,7 @@ class _SpeedSortScreenState extends ConsumerState<SpeedSortScreen> {
                     child: ListView.builder(
                       padding: const EdgeInsets.all(AppSpacing.lg),
                       itemCount: _items.length,
-                      itemBuilder: (ctx, i) => _buildItem(i),
+                      itemBuilder: (ctx, i) => _buildItem(i, l),
                     ).animate().fadeIn(duration: 300.ms),
                   ),
                 ],
@@ -237,7 +237,7 @@ class _SpeedSortScreenState extends ConsumerState<SpeedSortScreen> {
     );
   }
 
-  Widget _buildItem(int index) {
+  Widget _buildItem(int index, AppLocalizations l) {
     final item = _items[index];
     if (item.sorted) {
       return Padding(
@@ -300,7 +300,7 @@ class _SpeedSortScreenState extends ConsumerState<SpeedSortScreen> {
           const SizedBox(width: AppSpacing.sm),
           Semantics(
             button: true,
-            label: AppLocalizations.of(context)!.correct,
+            label: l.correct,
             child: GestureDetector(
               onTap: () {
                 _onSort(index, true);
@@ -323,7 +323,7 @@ class _SpeedSortScreenState extends ConsumerState<SpeedSortScreen> {
           const SizedBox(width: AppSpacing.sm),
           Semantics(
             button: true,
-            label: AppLocalizations.of(context)!.incorrect,
+            label: l.incorrect,
             child: GestureDetector(
               onTap: () {
                 _onSort(index, false);

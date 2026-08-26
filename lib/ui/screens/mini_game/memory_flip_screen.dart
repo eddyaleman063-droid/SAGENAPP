@@ -211,7 +211,7 @@ class _MemoryFlipScreenState extends ConsumerState<MemoryFlipScreen> {
                             crossAxisSpacing: 8,
                           ),
                       itemCount: 12,
-                      itemBuilder: (ctx, i) => _buildCard(i),
+                      itemBuilder: (ctx, i) => _buildCard(i, l),
                     ).animate().fadeIn(duration: 300.ms),
                   ),
                 ],
@@ -220,13 +220,11 @@ class _MemoryFlipScreenState extends ConsumerState<MemoryFlipScreen> {
     );
   }
 
-  Widget _buildCard(int index) {
+  Widget _buildCard(int index, AppLocalizations l) {
     final isRevealed = _flipped[index] || _matched[index];
     return Semantics(
       button: true,
-      label: isRevealed
-          ? _cards[index]
-          : AppLocalizations.of(context)!.miniGameHiddenCard,
+      label: isRevealed ? _cards[index] : l.miniGameHiddenCard,
       child: GestureDetector(
         onTap: () {
           _onCardTap(index);

@@ -239,13 +239,13 @@ class SageEmotionService {
         const Duration(seconds: 5),
         onTimeout: () {
           timedOut = true;
-          stream.removeListener(listener);
         },
       );
       if (!timedOut) _precached.add(emotion);
     } catch (e) {
-      stream.removeListener(listener);
       AppLogger().error('Precache failed for $emotion', e);
+    } finally {
+      stream.removeListener(listener);
     }
   }
 

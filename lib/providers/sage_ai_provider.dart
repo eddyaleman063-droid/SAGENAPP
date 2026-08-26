@@ -294,7 +294,7 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
     );
   }
 
-  void _applyAssistantMessage(String text) {
+  void _applyAssistantMessage(String text, {bool skipEmotion = false}) {
     _streamSub?.cancel();
     _streamSub = null;
     final messages = List<ChatMessage>.from(_messages);
@@ -314,8 +314,9 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
       lastError: () => null,
       status: SageAiChatStatus.idle,
     );
-
-    ref.read(emotionEventBusProvider).fire(EmotionEventType.chatReceived);
+    if (!skipEmotion) {
+      ref.read(emotionEventBusProvider).fire(EmotionEventType.chatReceived);
+    }
   }
 
   List<ChatMessage> _buildContextMessages(String currentText) {
@@ -343,7 +344,7 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
     _streamFlushTimer = null;
     final text = state.streamingText.trim();
     if (text.isNotEmpty) {
-      _applyAssistantMessage(text);
+      _applyAssistantMessage(text, skipEmotion: true);
     } else {
       state = state.copyWith(streamingText: '', status: SageAiChatStatus.idle);
     }
