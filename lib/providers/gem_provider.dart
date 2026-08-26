@@ -256,13 +256,14 @@ class GemNotifier extends Notifier<GemState> {
               .httpsCallable('earnGems')
               .call(payload)
               .timeout(const Duration(seconds: 10));
-        } catch (e) {
+        } catch (e, stack) {
+          AppLogger().warning('GemNotifier: earnGems retry failed', e, stack);
           remaining.add(entry);
         }
       }
       prefs.setStringList(_keyPendingEarns, remaining);
-    } catch (e) {
-      AppLogger().warning('GemNotifier: retry pending earns failed: $e');
+    } catch (e, stack) {
+      AppLogger().warning('GemNotifier: retry pending earns failed', e, stack);
     }
   }
 
@@ -276,7 +277,8 @@ class GemNotifier extends Notifier<GemState> {
       final decoded = jsonDecode(encoded);
       if (decoded is Map<String, dynamic>) return decoded;
       return const {};
-    } catch (_) {
+    } catch (e, stack) {
+      AppLogger().warning('GemNotifier: corrupt metadata', e, stack);
       return const {};
     }
   }

@@ -160,7 +160,8 @@ class PaymentNotifier extends AutoDisposeNotifier<PaymentState> {
       );
 
       return pref.initPoint;
-    } catch (e) {
+    } catch (e, stack) {
+      _logger.error('PaymentNotifier.initiateMercadoPago failed', e, stack);
       state = state.copyWith(
         status: PaymentStatus.failed,
         errorMessage: 'Could not start payment. Please try again.',
@@ -270,8 +271,8 @@ class PaymentNotifier extends AutoDisposeNotifier<PaymentState> {
           pendingPaymentId: null,
         );
       }
-    } catch (e) {
-      _logger.warning('Poll payment status failed: $e');
+    } catch (e, stack) {
+      _logger.warning('Poll payment status failed', e, stack);
     } finally {
       _polling = false;
     }
@@ -290,8 +291,8 @@ class PaymentNotifier extends AutoDisposeNotifier<PaymentState> {
       await ref.read(learningProvider.notifier).reload();
       final currentDonated = ref.read(learningProvider).totalDonated;
       state = state.copyWith(donatedAfter: currentDonated.toInt());
-    } catch (e) {
-      AppLogger().warning('PaymentNotifier.refreshGems failed: $e');
+    } catch (e, stack) {
+      AppLogger().error('PaymentNotifier.refreshGems failed', e, stack);
     }
   }
 

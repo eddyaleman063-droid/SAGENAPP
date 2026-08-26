@@ -230,7 +230,7 @@ class _DashboardHomeScreenState extends ConsumerState<DashboardHomeScreen>
                                     );
                                   }
                                 } else {
-                                  context.pushNamed('achievements');
+                                  context.goNamed('main');
                                 }
                               },
                             ),

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
@@ -84,7 +85,7 @@ class FlexCardWidgetState extends ConsumerState<FlexCardWidget> {
                 radius: 48,
                 backgroundColor: PremiumColors.darkCard,
                 backgroundImage: widget.photoUrl != null
-                    ? NetworkImage(widget.photoUrl!)
+                    ? CachedNetworkImageProvider(widget.photoUrl!)
                     : null,
                 child: widget.photoUrl == null
                     ? Text(

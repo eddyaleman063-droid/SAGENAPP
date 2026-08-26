@@ -166,17 +166,12 @@ class _ChatMessagesSection extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final sageState = ref.watch(
       sageAiProvider.select(
-        (s) => (
-          messages: s.messages,
-          isStreaming: s.isStreaming,
-          streamingText: s.streamingText,
-        ),
+        (s) => (messages: s.messages, isStreaming: s.isStreaming),
       ),
     );
     return MessageList(
       messages: sageState.messages,
       isStreaming: sageState.isStreaming,
-      streamingText: sageState.streamingText,
       scrollCtrl: scrollCtrl,
     );
   }

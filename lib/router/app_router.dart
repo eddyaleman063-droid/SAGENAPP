@@ -36,66 +36,91 @@ import '../models/mini_game.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
 
+/// Route sets used by the redirect logic.
+const _publicRoutes = {
+  '/welcome',
+  '/login',
+  '/forgot-password',
+  '/onboarding',
+  '/onboarding/flow',
+  '/payment/success',
+  '/payment/failure',
+  '/payment/pending',
+};
+
+const _preAuthRoutes = {
+  '/',
+  '/welcome',
+  '/login',
+  '/forgot-password',
+  '/verify-email',
+  '/onboarding',
+  '/onboarding/flow',
+};
+
+const _onboardingRoutes = {'/onboarding', '/onboarding/flow'};
+
+/// Helper: slide-from-right transition (most common).
+Widget _slideFromRight(
+  BuildContext context,
+  Animation<double> animation,
+  Animation<double> secondaryAnimation,
+  Widget child,
+) {
+  return SlideTransition(
+    position: Tween<Offset>(
+      begin: const Offset(1, 0),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(parent: animation, curve: Curves.easeOut)),
+    child: child,
+  );
+}
+
+/// Helper: slide-from-bottom + fade (payment screens).
+Widget _slideFromBottom(
+  BuildContext context,
+  Animation<double> animation,
+  Animation<double> secondaryAnimation,
+  Widget child,
+) {
+  return SlideTransition(
+    position: Tween<Offset>(
+      begin: const Offset(0, 0.4),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(parent: animation, curve: Curves.easeOut)),
+    child: FadeTransition(opacity: animation, child: child),
+  );
+}
+
+/// Helper: simple fade transition.
+Widget _fadeIn(
+  BuildContext context,
+  Animation<double> animation,
+  Animation<double> secondaryAnimation,
+  Widget child,
+) {
+  return FadeTransition(opacity: animation, child: child);
+}
+
+/// Convenience wrapper for [CustomTransitionPage] with [state.pageKey].
+CustomTransitionPage<void> _page(
+  GoRouterState state,
+  Widget child,
+  Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)
+  transition,
+) {
+  return CustomTransitionPage<void>(
+    key: state.pageKey,
+    child: child,
+    transitionsBuilder: transition,
+  );
+}
+
 final routerProvider = Provider<GoRouter>((ref) {
   final router = GoRouter(
     navigatorKey: rootNavigatorKey,
     initialLocation: '/',
-    redirect: (context, state) {
-      final auth = ref.read(authProvider);
-      final location = state.matchedLocation;
-
-      if (auth.isUninitialized || auth.isLoading) {
-        if (location != '/') return '/';
-        return null;
-      }
-
-      if (!auth.isAuthenticated) {
-        // Usuario logueado pero con email sin verificar: llevarlo a la
-        // pantalla de verificación en vez de tratarlo como un visitante.
-        // El flujo de onboarding continúa sin interrupción.
-        if (auth.pendingVerification && auth.uid != null) {
-          const onboardingRoutes = {'/onboarding', '/onboarding/flow'};
-          if (onboardingRoutes.contains(location)) return null;
-          if (location != '/verify-email') return '/verify-email';
-          return null;
-        }
-        if (location == '/') return '/welcome';
-        final publicRoutes = <String>{
-          '/welcome',
-          '/login',
-          '/forgot-password',
-          '/onboarding',
-          '/onboarding/flow',
-          '/payment/success',
-          '/payment/failure',
-          '/payment/pending',
-        };
-        if (!publicRoutes.contains(location)) return '/welcome';
-        return null;
-      }
-
-      if (auth.isAuthenticated) {
-        if (!auth.profileLoaded) return null;
-        final authRoutes = <String>{
-          '/',
-          '/welcome',
-          '/login',
-          '/forgot-password',
-          '/verify-email',
-          '/onboarding',
-          '/onboarding/flow',
-        };
-        if (authRoutes.contains(location)) {
-          return auth.onboardingCompleted ? '/main' : '/onboarding/flow';
-        }
-        if (!auth.onboardingCompleted && location != '/onboarding/flow') {
-          return '/onboarding/flow';
-        }
-        return null;
-      }
-
-      return null;
-    },
+    redirect: _redirect,
     routes: [
       GoRoute(
         path: '/',
@@ -105,12 +130,8 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/welcome',
         name: 'welcome',
-        pageBuilder: (context, state) => CustomTransitionPage<void>(
-          key: state.pageKey,
-          child: const WelcomeScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-              FadeTransition(opacity: animation, child: child),
-        ),
+        pageBuilder: (context, state) =>
+            _page(state, const WelcomeScreen(), _fadeIn),
       ),
       GoRoute(
         path: '/login',
@@ -118,171 +139,85 @@ final routerProvider = Provider<GoRouter>((ref) {
         pageBuilder: (context, state) {
           final isOnboarding =
               state.uri.queryParameters['onboarding'] == 'true';
-          return CustomTransitionPage<void>(
-            key: state.pageKey,
-            child: LoginScreen(isOnboarding: isOnboarding),
-            transitionsBuilder:
-                (context, animation, secondaryAnimation, child) =>
-                    SlideTransition(
-                      position:
-                          Tween<Offset>(
-                            begin: const Offset(1, 0),
-                            end: Offset.zero,
-                          ).animate(
-                            CurvedAnimation(
-                              parent: animation,
-                              curve: Curves.easeOut,
-                            ),
-                          ),
-                      child: child,
-                    ),
+          return _page(
+            state,
+            LoginScreen(isOnboarding: isOnboarding),
+            _slideFromRight,
           );
         },
       ),
       GoRoute(
         path: '/forgot-password',
         name: 'forgot-password',
-        pageBuilder: (context, state) => CustomTransitionPage<void>(
-          key: state.pageKey,
-          child: const ForgotPasswordScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-              FadeTransition(opacity: animation, child: child),
-        ),
+        pageBuilder: (context, state) =>
+            _page(state, const ForgotPasswordScreen(), _fadeIn),
       ),
       GoRoute(
         path: '/verify-email',
         name: 'verify-email',
-        pageBuilder: (context, state) => CustomTransitionPage<void>(
-          key: state.pageKey,
-          child: const VerifyEmailScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-              FadeTransition(opacity: animation, child: child),
-        ),
+        pageBuilder: (context, state) =>
+            _page(state, const VerifyEmailScreen(), _fadeIn),
       ),
       GoRoute(
         path: '/onboarding',
         name: 'onboarding',
-        pageBuilder: (context, state) => CustomTransitionPage<void>(
-          key: state.pageKey,
-          child: const OnboardingWizardScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-              SlideTransition(
-                position:
-                    Tween<Offset>(
-                      begin: const Offset(1, 0),
-                      end: Offset.zero,
-                    ).animate(
-                      CurvedAnimation(parent: animation, curve: Curves.easeOut),
-                    ),
-                child: child,
-              ),
-        ),
+        pageBuilder: (context, state) =>
+            _page(state, const OnboardingWizardScreen(), _slideFromRight),
       ),
       GoRoute(
         path: '/onboarding/flow',
         name: 'onboarding-flow',
-        pageBuilder: (context, state) => CustomTransitionPage<void>(
-          key: state.pageKey,
-          child: const PostOnboardingFlow(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-              FadeTransition(opacity: animation, child: child),
-        ),
+        pageBuilder: (context, state) =>
+            _page(state, const PostOnboardingFlow(), _fadeIn),
       ),
       GoRoute(
         path: '/main',
         name: 'main',
-        pageBuilder: (context, state) => CustomTransitionPage<void>(
-          key: state.pageKey,
-          child: const MainLayout(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-              FadeTransition(opacity: animation, child: child),
-        ),
+        pageBuilder: (context, state) =>
+            _page(state, const MainLayout(), _fadeIn),
       ),
       GoRoute(
         path: '/lessons',
         name: 'lessons',
-        pageBuilder: (context, state) => CustomTransitionPage<void>(
-          key: state.pageKey,
-          child: const LessonsScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-              SlideTransition(
-                position:
-                    Tween<Offset>(
-                      begin: const Offset(1, 0),
-                      end: Offset.zero,
-                    ).animate(
-                      CurvedAnimation(parent: animation, curve: Curves.easeOut),
-                    ),
-                child: child,
-              ),
-        ),
+        pageBuilder: (context, state) =>
+            _page(state, const LessonsScreen(), _slideFromRight),
       ),
       GoRoute(
         path: '/lesson/:stageId/:lessonId',
         name: 'lesson-session',
-        pageBuilder: (context, state) => CustomTransitionPage<void>(
-          key: state.pageKey,
-          child: LessonSessionScreen(
+        pageBuilder: (context, state) => _page(
+          state,
+          LessonSessionScreen(
             stageId: state.pathParameters['stageId']!,
             lessonId: state.pathParameters['lessonId']!,
             lessonTitle: state.extra as String? ?? '',
           ),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-              SlideTransition(
-                position:
-                    Tween<Offset>(
-                      begin: const Offset(1, 0),
-                      end: Offset.zero,
-                    ).animate(
-                      CurvedAnimation(parent: animation, curve: Curves.easeOut),
-                    ),
-                child: child,
-              ),
+          _slideFromRight,
         ),
       ),
       GoRoute(
         path: '/lesson/:stageId/:lessonId/results',
         name: 'lesson-results',
-        pageBuilder: (context, state) => CustomTransitionPage<void>(
-          key: state.pageKey,
-          child: LessonResultsScreen(
+        pageBuilder: (context, state) => _page(
+          state,
+          LessonResultsScreen(
             stageId: state.pathParameters['stageId']!,
             lessonId: state.pathParameters['lessonId']!,
           ),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-              SlideTransition(
-                position:
-                    Tween<Offset>(
-                      begin: const Offset(1, 0),
-                      end: Offset.zero,
-                    ).animate(
-                      CurvedAnimation(parent: animation, curve: Curves.easeOut),
-                    ),
-                child: child,
-              ),
+          _slideFromRight,
         ),
       ),
       GoRoute(
         path: '/learning/:stageId/:lessonId',
         name: 'learning-session',
-        pageBuilder: (context, state) => CustomTransitionPage<void>(
-          key: state.pageKey,
-          child: LearningSessionScreen(
+        pageBuilder: (context, state) => _page(
+          state,
+          LearningSessionScreen(
             stageId: state.pathParameters['stageId']!,
             lessonId: state.pathParameters['lessonId']!,
             lessonTitle: state.extra as String? ?? '',
           ),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-              SlideTransition(
-                position:
-                    Tween<Offset>(
-                      begin: const Offset(1, 0),
-                      end: Offset.zero,
-                    ).animate(
-                      CurvedAnimation(parent: animation, curve: Curves.easeOut),
-                    ),
-                child: child,
-              ),
+          _slideFromRight,
         ),
       ),
       GoRoute(
@@ -294,99 +229,44 @@ final routerProvider = Provider<GoRouter>((ref) {
               : null;
           if (score == null) {
             final l = AppLocalizations.of(context);
-            return CustomTransitionPage<void>(
-              key: state.pageKey,
-              child: Scaffold(body: Center(child: Text(l?.errorGeneric ?? ''))),
-              transitionsBuilder:
-                  (context, animation, secondaryAnimation, child) =>
-                      FadeTransition(opacity: animation, child: child),
+            return _page(
+              state,
+              Scaffold(body: Center(child: Text(l?.errorGeneric ?? ''))),
+              _fadeIn,
             );
           }
-          return CustomTransitionPage<void>(
-            key: state.pageKey,
-            child: SessionSummaryScreen(score: score),
-            transitionsBuilder:
-                (context, animation, secondaryAnimation, child) =>
-                    FadeTransition(opacity: animation, child: child),
-          );
+          return _page(state, SessionSummaryScreen(score: score), _fadeIn);
         },
       ),
       GoRoute(
         path: '/habit-transition',
         name: 'habit-transition',
-        pageBuilder: (context, state) => CustomTransitionPage<void>(
-          key: state.pageKey,
-          child: const HabitTransitionScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-              FadeTransition(opacity: animation, child: child),
-        ),
+        pageBuilder: (context, state) =>
+            _page(state, const HabitTransitionScreen(), _fadeIn),
       ),
       GoRoute(
         path: '/streak',
         name: 'streak',
-        pageBuilder: (context, state) => CustomTransitionPage<void>(
-          key: state.pageKey,
-          child: const DailyStreakScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-              FadeTransition(opacity: animation, child: child),
-        ),
+        pageBuilder: (context, state) =>
+            _page(state, const DailyStreakScreen(), _fadeIn),
       ),
       GoRoute(
         path: '/pass',
         name: 'pass',
-        pageBuilder: (context, state) => CustomTransitionPage<void>(
-          key: state.pageKey,
-          child: const SagenPassScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-              SlideTransition(
-                position:
-                    Tween<Offset>(
-                      begin: const Offset(1, 0),
-                      end: Offset.zero,
-                    ).animate(
-                      CurvedAnimation(parent: animation, curve: Curves.easeOut),
-                    ),
-                child: child,
-              ),
-        ),
+        pageBuilder: (context, state) =>
+            _page(state, const SagenPassScreen(), _slideFromRight),
       ),
       GoRoute(
         path: '/gem-history',
         name: 'gem-history',
-        pageBuilder: (context, state) => CustomTransitionPage<void>(
-          key: state.pageKey,
-          child: const GemHistoryScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-              SlideTransition(
-                position:
-                    Tween<Offset>(
-                      begin: const Offset(1, 0),
-                      end: Offset.zero,
-                    ).animate(
-                      CurvedAnimation(parent: animation, curve: Curves.easeOut),
-                    ),
-                child: child,
-              ),
-        ),
+        pageBuilder: (context, state) =>
+            _page(state, const GemHistoryScreen(), _slideFromRight),
       ),
       GoRoute(
         path: '/mini-games',
         name: 'mini-games',
-        pageBuilder: (context, state) => CustomTransitionPage<void>(
-          key: state.pageKey,
-          child: const MiniGameHub(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-              SlideTransition(
-                position:
-                    Tween<Offset>(
-                      begin: const Offset(1, 0),
-                      end: Offset.zero,
-                    ).animate(
-                      CurvedAnimation(parent: animation, curve: Curves.easeOut),
-                    ),
-                child: child,
-              ),
-        ),
+        pageBuilder: (context, state) =>
+            _page(state, const MiniGameHub(), _slideFromRight),
       ),
       GoRoute(
         path: '/mini-game/:type',
@@ -416,44 +296,16 @@ final routerProvider = Provider<GoRouter>((ref) {
                 config: MiniGameConfig(type: MiniGameType.patternTrace),
               );
           }
-          return CustomTransitionPage<void>(
-            key: state.pageKey,
-            child: child,
-            transitionsBuilder:
-                (context, animation, secondaryAnimation, child) =>
-                    SlideTransition(
-                      position:
-                          Tween<Offset>(
-                            begin: const Offset(1, 0),
-                            end: Offset.zero,
-                          ).animate(
-                            CurvedAnimation(
-                              parent: animation,
-                              curve: Curves.easeOut,
-                            ),
-                          ),
-                      child: child,
-                    ),
-          );
+          return _page(state, child, _slideFromRight);
         },
       ),
       GoRoute(
         path: '/profile/:uid',
         name: 'profile',
-        pageBuilder: (context, state) => CustomTransitionPage<void>(
-          key: state.pageKey,
-          child: UserProfileScreen(uid: state.pathParameters['uid']!),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-              SlideTransition(
-                position:
-                    Tween<Offset>(
-                      begin: const Offset(1, 0),
-                      end: Offset.zero,
-                    ).animate(
-                      CurvedAnimation(parent: animation, curve: Curves.easeOut),
-                    ),
-                child: child,
-              ),
+        pageBuilder: (context, state) => _page(
+          state,
+          UserProfileScreen(uid: state.pathParameters['uid']!),
+          _slideFromRight,
         ),
       ),
       GoRoute(
@@ -462,24 +314,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         pageBuilder: (context, state) {
           final donationParam = state.uri.queryParameters['donationAmount'];
           final donationAmount = double.tryParse(donationParam ?? '') ?? 0.0;
-          return CustomTransitionPage<void>(
-            key: state.pageKey,
-            child: PaymentSuccessScreen(donationAmount: donationAmount),
-            transitionsBuilder:
-                (context, animation, secondaryAnimation, child) =>
-                    SlideTransition(
-                      position:
-                          Tween<Offset>(
-                            begin: const Offset(0, 0.4),
-                            end: Offset.zero,
-                          ).animate(
-                            CurvedAnimation(
-                              parent: animation,
-                              curve: Curves.easeOut,
-                            ),
-                          ),
-                      child: FadeTransition(opacity: animation, child: child),
-                    ),
+          return _page(
+            state,
+            PaymentSuccessScreen(donationAmount: donationAmount),
+            _slideFromBottom,
           );
         },
       ),
@@ -488,64 +326,24 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: 'payment-failure',
         pageBuilder: (context, state) {
           final error = state.uri.queryParameters['error'];
-          return CustomTransitionPage<void>(
-            key: state.pageKey,
-            child: PaymentFailedScreen(error: error),
-            transitionsBuilder:
-                (context, animation, secondaryAnimation, child) =>
-                    SlideTransition(
-                      position:
-                          Tween<Offset>(
-                            begin: const Offset(0, 0.4),
-                            end: Offset.zero,
-                          ).animate(
-                            CurvedAnimation(
-                              parent: animation,
-                              curve: Curves.easeOut,
-                            ),
-                          ),
-                      child: FadeTransition(opacity: animation, child: child),
-                    ),
+          return _page(
+            state,
+            PaymentFailedScreen(error: error),
+            _slideFromBottom,
           );
         },
       ),
       GoRoute(
         path: '/privacy-policy',
         name: 'privacy-policy',
-        pageBuilder: (context, state) => CustomTransitionPage<void>(
-          key: state.pageKey,
-          child: const PrivacyPolicyScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-              SlideTransition(
-                position:
-                    Tween<Offset>(
-                      begin: const Offset(1, 0),
-                      end: Offset.zero,
-                    ).animate(
-                      CurvedAnimation(parent: animation, curve: Curves.easeOut),
-                    ),
-                child: child,
-              ),
-        ),
+        pageBuilder: (context, state) =>
+            _page(state, const PrivacyPolicyScreen(), _slideFromRight),
       ),
       GoRoute(
         path: '/payment/pending',
         name: 'payment-pending',
-        pageBuilder: (context, state) => CustomTransitionPage<void>(
-          key: state.pageKey,
-          child: const PaymentPendingScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-              SlideTransition(
-                position:
-                    Tween<Offset>(
-                      begin: const Offset(0, 0.4),
-                      end: Offset.zero,
-                    ).animate(
-                      CurvedAnimation(parent: animation, curve: Curves.easeOut),
-                    ),
-                child: FadeTransition(opacity: animation, child: child),
-              ),
-        ),
+        pageBuilder: (context, state) =>
+            _page(state, const PaymentPendingScreen(), _slideFromBottom),
       ),
     ],
     errorBuilder: (context, state) {
@@ -590,7 +388,7 @@ final routerProvider = Provider<GoRouter>((ref) {
                 ),
                 const SizedBox(height: 32),
                 ElevatedButton(
-                  onPressed: () => context.goNamed('welcome'),
+                  onPressed: () => context.goNamed('main'),
                   child: Text(l.notFoundBackHome),
                 ),
               ],
@@ -606,3 +404,37 @@ final routerProvider = Provider<GoRouter>((ref) {
 
   return router;
 });
+
+/// Centralized redirect logic.
+String? _redirect(BuildContext context, GoRouterState state) {
+  final auth = ProviderScope.containerOf(context).read(authProvider);
+  final location = state.matchedLocation;
+
+  // Phase 1: Still loading → force splash.
+  if (auth.isUninitialized || auth.isLoading) {
+    return location == '/' ? null : '/';
+  }
+
+  // Phase 2: Not authenticated.
+  if (!auth.isAuthenticated) {
+    if (auth.pendingVerification && auth.uid != null) {
+      if (_onboardingRoutes.contains(location)) return null;
+      if (location != '/verify-email') return '/verify-email';
+      return null;
+    }
+    if (location == '/') return '/welcome';
+    if (!_publicRoutes.contains(location)) return '/welcome';
+    return null;
+  }
+
+  // Phase 3: Authenticated.
+  if (!auth.profileLoaded) return null;
+  if (_preAuthRoutes.contains(location)) {
+    return auth.onboardingCompleted ? '/main' : '/onboarding/flow';
+  }
+  if (!auth.onboardingCompleted && !_onboardingRoutes.contains(location)) {
+    return '/onboarding/flow';
+  }
+
+  return null;
+}

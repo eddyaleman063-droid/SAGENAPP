@@ -40,45 +40,48 @@ void main() async {
   _setupErrorHandlers(logger);
 
   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  // Note: onboarding_done flag is set by the onboarding flow itself,
-  // NOT here. This just checks if onboarding has been completed before.
 
   if (kReleaseMode) {
-    // Release fallback for uncaught build errors: localized with the persisted
-    // language preference (falls back to the system language).
     final errorLocale = _resolveErrorLocale(prefs);
     ErrorWidget.builder = (details) =>
         _ReleaseErrorFallback(locale: errorLocale);
   }
 
-  // Shared service instances — created here to guarantee a single instance
-  // shared between the Riverpod tree and deferred initialization.
   final authService = AuthService(logger: logger);
   final cloudSyncService = CloudSyncService(
     authService: authService,
     logger: logger,
   );
 
-  runApp(
-    ProviderScope(
-      overrides: [
-        prefsProvider.overrideWithValue(prefs),
-        loggerProvider.overrideWithValue(logger),
-        authServiceProvider.overrideWithValue(authService),
-        cloudSyncServiceProvider.overrideWithValue(cloudSyncService),
-      ],
-      child: const SagenApp(),
-    ),
-  );
+  runZonedGuarded(
+    () {
+      runApp(
+        ProviderScope(
+          overrides: [
+            prefsProvider.overrideWithValue(prefs),
+            loggerProvider.overrideWithValue(logger),
+            authServiceProvider.overrideWithValue(authService),
+            cloudSyncServiceProvider.overrideWithValue(cloudSyncService),
+          ],
+          child: const SagenApp(),
+        ),
+      );
 
-  // Deferred initialization via centralized service initializer
-  Future.microtask(
-    () => ServiceInitializer.initialize(
-      prefs: prefs,
-      logger: logger,
-      authService: authService,
-      cloudSyncService: cloudSyncService,
-    ),
+      Future.microtask(
+        () => ServiceInitializer.initialize(
+          prefs: prefs,
+          logger: logger,
+          authService: authService,
+          cloudSyncService: cloudSyncService,
+        ),
+      );
+    },
+    (error, stack) {
+      logger.error('Uncaught zone error', error, stack);
+      if (kReleaseMode && Firebase.apps.isNotEmpty) {
+        FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+      }
+    },
   );
 }
 

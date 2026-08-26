@@ -30,7 +30,7 @@ class _PaymentPendingScreenState extends ConsumerState<PaymentPendingScreen> {
       next,
     ) {
       if (next == PaymentStatus.completed && mounted) {
-        context.go('/home');
+        context.go('/main');
       }
     });
   }
@@ -72,7 +72,7 @@ class _PaymentPendingScreenState extends ConsumerState<PaymentPendingScreen> {
                 onPressed: () {
                   ExperienceService.instance.lightHaptic();
                   Navigator.pop(ctx);
-                  context.go('/home');
+                  context.go('/main');
                 },
                 child: Text(l.exitText),
               ),
@@ -200,7 +200,7 @@ class _PaymentPendingScreenState extends ConsumerState<PaymentPendingScreen> {
                                 setState(() => _navigating = true);
                                 ref.read(paymentProvider.notifier).reset();
                                 if (isFailed) {
-                                  context.go('/home');
+                                  context.go('/main');
                                 } else {
                                   context.goNamed('main');
                                 }

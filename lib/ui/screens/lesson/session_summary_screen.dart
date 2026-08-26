@@ -153,7 +153,7 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen>
       canPop: false,
       onPopInvokedWithResult: (didPop, result) {
         if (didPop) return;
-        context.go('/home');
+        context.go('/main');
       },
       child: Scaffold(
         backgroundColor: dark ? PremiumColors.darkBg : PremiumColors.lightBg,

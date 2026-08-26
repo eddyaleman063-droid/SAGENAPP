@@ -555,8 +555,8 @@ class StreakNotifier extends Notifier<StreakState> {
         oldStreak: oldStreak,
       );
       _scheduleStreakReminder();
-    } catch (e) {
-      AppLogger().error('streak checkIn failed: $e');
+    } catch (e, stack) {
+      AppLogger().error('streak checkIn failed', e, stack);
     }
   }
 

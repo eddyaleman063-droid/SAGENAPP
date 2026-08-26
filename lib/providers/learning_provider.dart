@@ -213,8 +213,8 @@ class LearningNotifier extends Notifier<LearningState> {
           ),
         );
       }
-    } catch (e) {
-      AppLogger().warning('_reconcileWithServer failed: $e');
+    } catch (e, stack) {
+      AppLogger().warning('_reconcileWithServer failed: $e', e, stack);
     }
   }
 
@@ -266,7 +266,8 @@ class LearningNotifier extends Notifier<LearningState> {
       }
 
       state = state.copyWith(isLoading: false, errorMessage: () => null);
-    } catch (e) {
+    } catch (e, stack) {
+      AppLogger().error('LearningProvider._init failed', e, stack);
       state = state.copyWith(
         isLoading: false,
         errorMessage: () =>
@@ -718,7 +719,8 @@ class LearningNotifier extends Notifier<LearningState> {
     try {
       await _load();
       state = state.copyWith(errorMessage: () => null);
-    } catch (e) {
+    } catch (e, stack) {
+      AppLogger().error('LearningProvider.reload failed', e, stack);
       state = state.copyWith(
         errorMessage: () => 'Could not reload your progress. Please try again.',
       );

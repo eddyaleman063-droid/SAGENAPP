@@ -65,6 +65,7 @@ class ServiceInitializer {
           ? DefaultFirebaseOptions.ios
           : DefaultFirebaseOptions.android;
       await Firebase.initializeApp(options: options);
+      logger.markFirebaseReady();
       logger.info('Firebase initialized successfully');
       return true;
     } catch (e) {
@@ -82,6 +83,7 @@ class ServiceInitializer {
           ? DefaultFirebaseOptions.ios
           : DefaultFirebaseOptions.android;
       await Firebase.initializeApp(options: options);
+      logger.markFirebaseReady();
       logger.info('Firebase recovered and initialized successfully');
       return true;
     } catch (e2) {

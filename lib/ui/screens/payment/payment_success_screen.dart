@@ -57,7 +57,7 @@ class _PaymentSuccessScreenState extends ConsumerState<PaymentSuccessScreen>
       canPop: false,
       onPopInvokedWithResult: (didPop, result) {
         if (didPop) return;
-        context.go('/home');
+        context.go('/main');
       },
       child: Scaffold(
         body: Center(

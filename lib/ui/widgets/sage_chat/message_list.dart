@@ -1,35 +1,34 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/models/chat_message.dart';
+import 'package:sagen/providers/providers.dart';
 import 'empty_chat.dart';
 import 'message_bubble.dart';
 
-class MessageList extends StatefulWidget {
+class MessageList extends ConsumerStatefulWidget {
   final List<ChatMessage> messages;
   final bool isStreaming;
-  final String streamingText;
   final ScrollController scrollCtrl;
   const MessageList({
     super.key,
     required this.messages,
     required this.isStreaming,
-    required this.streamingText,
     required this.scrollCtrl,
   });
 
   @override
-  State<MessageList> createState() => _MessageListState();
+  ConsumerState<MessageList> createState() => _MessageListState();
 }
 
-class _MessageListState extends State<MessageList> {
+class _MessageListState extends ConsumerState<MessageList> {
   bool _scrollScheduled = false;
 
   @override
   void didUpdateWidget(MessageList oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.messages.length != oldWidget.messages.length ||
-        widget.streamingText != oldWidget.streamingText) {
+    if (widget.messages.length != oldWidget.messages.length) {
       _scheduleScroll();
     }
   }
@@ -61,9 +60,14 @@ class _MessageListState extends State<MessageList> {
       return const EmptyChat();
     }
 
-    final showStreaming = widget.isStreaming && widget.streamingText.isNotEmpty;
+    final streamingText = ref.watch(
+      sageAiProvider.select((s) => s.streamingText),
+    );
+    final showStreaming = widget.isStreaming && streamingText.isNotEmpty;
     final extraItem = showStreaming ? 1 : 0;
     final streamingTime = showStreaming ? DateTime.now() : DateTime(0);
+
+    if (showStreaming) _scheduleScroll();
 
     return RepaintBoundary(
       child: ListView.builder(
@@ -82,7 +86,7 @@ class _MessageListState extends State<MessageList> {
               key: const ValueKey('streaming'),
               message: ChatMessage(
                 role: ChatRole.assistant,
-                text: widget.streamingText,
+                text: streamingText,
                 time: streamingTime,
               ),
               isUser: false,
@@ -123,37 +127,42 @@ class _AnimatedMessageBubbleState extends State<_AnimatedMessageBubble>
     with SingleTickerProviderStateMixin {
   AnimationController? _ctrl;
   Timer? _startTimer;
-  late CurvedAnimation _slideCurve;
-  late CurvedAnimation _fadeCurve;
+  CurvedAnimation? _slideCurve;
+  CurvedAnimation? _fadeCurve;
   late Animation<Offset> _slideAnim;
   late Animation<double> _fadeAnim;
 
   @override
   void initState() {
     super.initState();
-    final delay = widget.index < 3 ? widget.index * 80 : 0;
-    _ctrl = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 350),
-    );
-    _slideCurve = CurvedAnimation(parent: _ctrl!, curve: Curves.easeOut);
-    _fadeCurve = CurvedAnimation(parent: _ctrl!, curve: Curves.easeIn);
-    _slideAnim = Tween<Offset>(
-      begin: const Offset(0, 0.15),
-      end: Offset.zero,
-    ).animate(_slideCurve);
-    _fadeAnim = _fadeCurve;
-    _startTimer = Timer(Duration(milliseconds: delay), () {
-      if (mounted) _ctrl?.forward();
-    });
+    if (widget.index < 3) {
+      final delay = widget.index * 80;
+      _ctrl = AnimationController(
+        vsync: this,
+        duration: const Duration(milliseconds: 350),
+      );
+      _slideCurve = CurvedAnimation(parent: _ctrl!, curve: Curves.easeOut);
+      _fadeCurve = CurvedAnimation(parent: _ctrl!, curve: Curves.easeIn);
+      _slideAnim = Tween<Offset>(
+        begin: const Offset(0, 0.15),
+        end: Offset.zero,
+      ).animate(_slideCurve!);
+      _fadeAnim = _fadeCurve!;
+      _startTimer = Timer(Duration(milliseconds: delay), () {
+        if (mounted) _ctrl?.forward();
+      });
+    } else {
+      _slideAnim = AlwaysStoppedAnimation(Offset.zero);
+      _fadeAnim = const AlwaysStoppedAnimation(1.0);
+    }
   }
 
   @override
   void dispose() {
     _startTimer?.cancel();
     _ctrl?.dispose();
-    _slideCurve.dispose();
-    _fadeCurve.dispose();
+    _slideCurve?.dispose();
+    _fadeCurve?.dispose();
     super.dispose();
   }
 

@@ -586,8 +586,8 @@ class AuthNotifier extends Notifier<AuthState> {
         'updatedAt': FieldValue.serverTimestamp(),
       }, SetOptions(merge: true));
       state = state.copyWith(onboardingCompleted: true);
-    } catch (e) {
-      AppLogger().warning('auth: markOnboardingCompleted failed: $e');
+    } catch (e, stack) {
+      AppLogger().error('auth: markOnboardingCompleted failed', e, stack);
     }
   }
 
