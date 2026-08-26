@@ -4,7 +4,7 @@ import '../../../core/theme/theme_constants.dart';
 import 'package:sagen/services/experience_service.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 
-class WizardTopBar extends StatelessWidget {
+class WizardTopBar extends StatefulWidget {
   final int currentIndex;
   final VoidCallback onBack;
 
@@ -15,9 +15,59 @@ class WizardTopBar extends StatelessWidget {
   });
 
   @override
+  State<WizardTopBar> createState() => _WizardTopBarState();
+}
+
+class _WizardTopBarState extends State<WizardTopBar>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _progressCtrl;
+  late Animation<double> _progressAnim;
+  double _displayedProgress = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    final target =
+        (widget.currentIndex + 1) / OnboardingWizardConfig.totalSteps;
+    _progressCtrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 350),
+    );
+    _progressAnim = Tween<double>(begin: target, end: target).animate(
+      CurvedAnimation(parent: _progressCtrl, curve: Curves.easeOutCubic),
+    );
+    _displayedProgress = target;
+  }
+
+  @override
+  void didUpdateWidget(WizardTopBar old) {
+    super.didUpdateWidget(old);
+    if (widget.currentIndex != old.currentIndex) {
+      final newTarget =
+          (widget.currentIndex + 1) / OnboardingWizardConfig.totalSteps;
+      _progressAnim = Tween<double>(begin: _displayedProgress, end: newTarget)
+          .animate(
+            CurvedAnimation(parent: _progressCtrl, curve: Curves.easeOutCubic),
+          );
+      _progressCtrl
+        ..reset()
+        ..forward().then((_) {
+          _displayedProgress = newTarget;
+        });
+    }
+  }
+
+  @override
+  void dispose() {
+    _progressCtrl.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
-    final progress = (currentIndex + 1) / OnboardingWizardConfig.totalSteps;
+    final targetProgress =
+        (widget.currentIndex + 1) / OnboardingWizardConfig.totalSteps;
     return Padding(
       padding: const EdgeInsets.fromLTRB(
         AppSpacing.xs,
@@ -35,7 +85,7 @@ class WizardTopBar extends StatelessWidget {
               color: cs.onSurface.withValues(alpha: 0.7),
               onPressed: () {
                 ExperienceService.instance.lightHaptic();
-                onBack();
+                widget.onBack();
               },
               padding: const EdgeInsets.all(18),
               tooltip: AppLocalizations.of(context)!.backButton,
@@ -46,18 +96,23 @@ class WizardTopBar extends StatelessWidget {
             child: Semantics(
               label: AppLocalizations.of(
                 context,
-              )!.wizardStepLabel(currentIndex + 1),
-              value: '${(progress * 100).round()}%',
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(3),
-                child: LinearProgressIndicator(
-                  value: progress,
-                  backgroundColor: cs.onSurface.withValues(alpha: 0.08),
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    PremiumColors.splashBlue.withValues(alpha: 0.8),
-                  ),
-                  minHeight: 4,
-                ),
+              )!.wizardStepLabel(widget.currentIndex + 1),
+              value: '${(targetProgress * 100).round()}%',
+              child: AnimatedBuilder(
+                animation: _progressAnim,
+                builder: (context, _) {
+                  return ClipRRect(
+                    borderRadius: BorderRadius.circular(3),
+                    child: LinearProgressIndicator(
+                      value: _progressAnim.value,
+                      backgroundColor: cs.onSurface.withValues(alpha: 0.08),
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        PremiumColors.splashBlue.withValues(alpha: 0.8),
+                      ),
+                      minHeight: 4,
+                    ),
+                  );
+                },
               ),
             ),
           ),

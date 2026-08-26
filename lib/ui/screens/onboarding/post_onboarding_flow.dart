@@ -103,7 +103,7 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
   void _reverseSkipConditionalSteps() {
     final funnel = ref.read(registrationFunnelProvider);
     if (_step == 13 && funnel.authMethod != 'email') {
-      _step = 11;
+      _step = 10;
     }
   }
 
@@ -116,55 +116,61 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
   }
 
   Future<void> _completeRegistration() async {
-    final authNotifier = ref.read(authProvider.notifier);
-    final funnel = ref.read(registrationFunnelProvider);
-    if (funnel.authMethod == 'google') {
-      await authNotifier.signInWithGoogle();
-      if (!mounted) return;
-      final auth = ref.read(authProvider);
-      if (auth.isAuthenticated) {
-        ref.read(registrationFunnelProvider.notifier).clearSensitiveData();
-        await _createProfile(auth, funnel);
+    if (_isAuthenticating) return;
+    _isAuthenticating = true;
+    try {
+      final authNotifier = ref.read(authProvider.notifier);
+      final funnel = ref.read(registrationFunnelProvider);
+      if (funnel.authMethod == 'google') {
+        await authNotifier.signInWithGoogle();
         if (!mounted) return;
-        ref
-            .read(analyticsServiceProvider)
-            .track(AnalyticEvent.signUp, properties: {'method': 'google'});
-        setState(() => _step = 14);
-      } else if (auth.errorMessage != null) {
-        SagenNotification.show(
-          context,
-          message: AuthException(
-            auth.errorMessage!,
-          ).localizedMessage(AppLocalizations.of(context)!),
+        final auth = ref.read(authProvider);
+        if (auth.isAuthenticated) {
+          ref.read(registrationFunnelProvider.notifier).clearSensitiveData();
+          await _createProfile(auth, funnel);
+          if (!mounted) return;
+          ref
+              .read(analyticsServiceProvider)
+              .track(AnalyticEvent.signUp, properties: {'method': 'google'});
+          _jumpToStep(14);
+        } else if (auth.errorMessage != null) {
+          SagenNotification.show(
+            context,
+            message: AuthException(
+              auth.errorMessage!,
+            ).localizedMessage(AppLocalizations.of(context)!),
+          );
+        }
+      } else if (funnel.authMethod == 'email') {
+        final email = funnel.email;
+        final password = funnel.password;
+        final displayName = '${funnel.name} ${funnel.surname}'.trim();
+        await authNotifier.signUpWithEmail(
+          displayName: displayName,
+          email: email,
+          password: password,
         );
-      }
-    } else if (funnel.authMethod == 'email') {
-      final email = funnel.email;
-      final password = funnel.password;
-      final displayName = '${funnel.name} ${funnel.surname}'.trim();
-      await authNotifier.signUpWithEmail(
-        displayName: displayName,
-        email: email,
-        password: password,
-      );
-      if (!mounted) return;
-      final auth = ref.read(authProvider);
-      if (auth.showVerificationScreen || auth.isAuthenticated) {
-        ref.read(registrationFunnelProvider.notifier).clearSensitiveData();
-        await _createProfile(auth, funnel);
         if (!mounted) return;
-        ref
-            .read(analyticsServiceProvider)
-            .track(AnalyticEvent.signUp, properties: {'method': 'email'});
-        _advance();
-      } else if (auth.errorMessage != null) {
-        SagenNotification.show(
-          context,
-          message: AuthException(
-            auth.errorMessage!,
-          ).localizedMessage(AppLocalizations.of(context)!),
-        );
+        final auth = ref.read(authProvider);
+        if (auth.showVerificationScreen || auth.isAuthenticated) {
+          ref.read(registrationFunnelProvider.notifier).clearSensitiveData();
+          await _createProfile(auth, funnel);
+          if (!mounted) return;
+          ref
+              .read(analyticsServiceProvider)
+              .track(AnalyticEvent.signUp, properties: {'method': 'email'});
+          _advance();
+        } else if (auth.errorMessage != null) {
+          SagenNotification.show(
+            context,
+            message: AuthException(
+              auth.errorMessage!,
+            ).localizedMessage(AppLocalizations.of(context)!),
+          );
+        }
       }
+    } finally {
+      _isAuthenticating = false;
     }
   }
 
@@ -205,11 +211,7 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
 
   void _onAuthMethodSelected(String method) {
     if (method == 'google') {
-      if (_isAuthenticating) return;
-      setState(() => _isAuthenticating = true);
-      _completeRegistration().whenComplete(() {
-        if (mounted) setState(() => _isAuthenticating = false);
-      });
+      _completeRegistration();
     } else {
       _advance();
     }
@@ -265,7 +267,7 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
       onCreateProfile: a.advance,
       onSkipToHome: () {
         a.ref.read(registrationFunnelProvider.notifier).skipToHome();
-        a.jumpToStep(15);
+        a.goToHome();
       },
     ),
     // 9: Age input

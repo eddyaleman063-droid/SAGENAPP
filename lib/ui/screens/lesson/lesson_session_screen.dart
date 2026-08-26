@@ -238,7 +238,7 @@ class _HudBar extends StatelessWidget {
   }
 }
 
-class _QuestionBody extends ConsumerWidget {
+class _QuestionBody extends ConsumerStatefulWidget {
   final SessionState session;
   final AnimationController animController;
   final Animation<Offset> slideAnim;
@@ -249,23 +249,44 @@ class _QuestionBody extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<_QuestionBody> createState() => _QuestionBodyState();
+}
+
+class _QuestionBodyState extends ConsumerState<_QuestionBody> {
+  @override
+  void initState() {
+    super.initState();
+    _forwardIfNeeded();
+  }
+
+  @override
+  void didUpdateWidget(_QuestionBody old) {
+    super.didUpdateWidget(old);
+    _forwardIfNeeded();
+  }
+
+  void _forwardIfNeeded() {
+    if (widget.animController.value == 0 &&
+        !widget.animController.isAnimating) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (widget.animController.value == 0 &&
+            !widget.animController.isAnimating) {
+          widget.animController.forward();
+        }
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
-    final challenge = session.currentChallenge;
+    final challenge = widget.session.currentChallenge;
     if (challenge == null) {
       return Center(child: Text(l.sessionLoading));
     }
 
-    if (animController.value == 0 && !animController.isAnimating) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (animController.value == 0 && !animController.isAnimating) {
-          animController.forward();
-        }
-      });
-    }
-
     return SlideTransition(
-      position: slideAnim,
+      position: widget.slideAnim,
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.xxl),
         child: Column(
@@ -284,7 +305,7 @@ class _QuestionBody extends ConsumerWidget {
             ...challenge.options.asMap().entries.map((entry) {
               final i = entry.key;
               final opt = entry.value;
-              final selected = session.feedbackSelected == i;
+              final selected = widget.session.feedbackSelected == i;
               return Padding(
                 padding: const EdgeInsets.only(bottom: AppSpacing.md),
                 child: _OptionTile(

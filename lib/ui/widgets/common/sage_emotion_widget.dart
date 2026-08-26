@@ -52,26 +52,36 @@ class SageEmotionWidget extends StatelessWidget {
   }
 }
 
-class _StaticSageImage extends StatelessWidget {
+class _StaticSageImage extends StatefulWidget {
   final SageEmotion emotion;
   final double size;
   const _StaticSageImage({required this.emotion, required this.size});
 
   @override
-  Widget build(BuildContext context) {
+  State<_StaticSageImage> createState() => _StaticSageImageState();
+}
+
+class _StaticSageImageState extends State<_StaticSageImage> {
+  @override
+  void initState() {
+    super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!context.mounted) return;
       ProviderScope.containerOf(
         context,
         listen: false,
-      ).read(sageEmotionServiceProvider).ensurePrecached(emotion);
+      ).read(sageEmotionServiceProvider).ensurePrecached(widget.emotion);
     });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final dpr = MediaQuery.devicePixelRatioOf(context);
-    final decodeSize = (size * dpr).round().clamp(0, 600);
+    final decodeSize = (widget.size * dpr).round().clamp(0, 600);
     return Image.asset(
-      emotion.assetPath,
-      width: size,
-      height: size,
+      widget.emotion.assetPath,
+      width: widget.size,
+      height: widget.size,
       cacheWidth: decodeSize,
       cacheHeight: decodeSize,
       gaplessPlayback: true,
@@ -84,13 +94,13 @@ class _StaticSageImage extends StatelessWidget {
 
   Widget _buildPlaceholder() {
     return Container(
-      width: size,
-      height: size,
+      width: widget.size,
+      height: widget.size,
       decoration: const BoxDecoration(
         color: PremiumColors.sagePlaceholder,
         shape: BoxShape.circle,
       ),
-      child: Icon(Icons.pets, color: Colors.white54, size: size * 0.5),
+      child: Icon(Icons.pets, color: Colors.white54, size: widget.size * 0.5),
     );
   }
 }

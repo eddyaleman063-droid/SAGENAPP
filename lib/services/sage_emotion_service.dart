@@ -206,8 +206,9 @@ class SageEmotionService {
         if (!completer.isCompleted) completer.complete();
       },
       onError: (exception, stackTrace) {
-        if (!completer.isCompleted)
+        if (!completer.isCompleted) {
           completer.completeError(exception, stackTrace);
+        }
       },
     );
     stream.addListener(listener);

@@ -32,7 +32,7 @@ class _MessageBubbleState extends State<MessageBubble> {
     super.didUpdateWidget(oldWidget);
     if (widget.message.text != _lastText) {
       _lastText = widget.message.text;
-      _cachedMarkdown = null;
+      if (!widget.isStreaming) _cachedMarkdown = null;
     }
   }
 
@@ -131,6 +131,13 @@ class _MessageBubbleState extends State<MessageBubble> {
                     ? Text(
                         widget.message.text,
                         style: AppTextStyle.body.copyWith(color: Colors.white),
+                      )
+                    : widget.isStreaming
+                    ? Text(
+                        widget.message.text,
+                        style: AppTextStyle.body.copyWith(
+                          color: context.textPrimary,
+                        ),
                       )
                     : _buildMarkdown(context),
               ),
