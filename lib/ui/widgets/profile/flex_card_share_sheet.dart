@@ -81,7 +81,7 @@ class _FlexCardShareSheetState extends ConsumerState<FlexCardShareSheet> {
               height: 48,
               child: Semantics(
                 button: true,
-                label: AppLocalizations.of(context)?.shareProfile ?? '',
+                label: l.shareProfile,
                 child: ElevatedButton.icon(
                   onPressed: _sharing ? null : _share,
                   icon: _sharing

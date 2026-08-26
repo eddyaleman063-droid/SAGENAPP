@@ -37,6 +37,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: context.surfaceBackground,
       appBar: AppBar(
@@ -44,14 +45,14 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         elevation: 0,
         leading: Semantics(
           button: true,
-          label: AppLocalizations.of(context)!.backButton,
+          label: l.backButton,
           child: IconButton(
             icon: Icon(Icons.arrow_back_rounded, color: context.iconSecondary),
             onPressed: () {
               ExperienceService.instance.lightHaptic();
               context.pop();
             },
-            tooltip: AppLocalizations.of(context)!.backButton,
+            tooltip: l.backButton,
           ),
         ),
       ),

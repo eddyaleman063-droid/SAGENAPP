@@ -96,7 +96,7 @@ class _FirstLessonScreenState extends ConsumerState<FirstLessonScreen> {
               const SizedBox(height: AppSpacing.xxl),
               Semantics(
                 button: true,
-                label: AppLocalizations.of(context)!.retry,
+                label: l.retry,
                 child: ElevatedButton(
                   onPressed: () {
                     ExperienceService.instance.lightHaptic();
@@ -105,7 +105,7 @@ class _FirstLessonScreenState extends ConsumerState<FirstLessonScreen> {
                     });
                     _startLessonWithTimeout();
                   },
-                  child: Text(AppLocalizations.of(context)!.retry),
+                  child: Text(l.retry),
                 ),
               ),
             ],
@@ -126,7 +126,7 @@ class _FirstLessonScreenState extends ConsumerState<FirstLessonScreen> {
     if (lesson.isComplete) {
       return PremiumLoader(
         loading: true,
-        message: AppLocalizations.of(context)!.loading,
+        message: l.loading,
         child: Scaffold(
           backgroundColor: dark
               ? PremiumColors.deepBackground

@@ -58,8 +58,8 @@ class _TapScaleState extends State<TapScale>
 
   @override
   void dispose() {
-    _curvedAnim.dispose();
     _ctrl.dispose();
+    _curvedAnim.dispose();
     super.dispose();
   }
 

@@ -63,6 +63,7 @@ class _MessageListState extends State<MessageList> {
 
     final showStreaming = widget.isStreaming && widget.streamingText.isNotEmpty;
     final extraItem = showStreaming ? 1 : 0;
+    final streamingTime = showStreaming ? DateTime.now() : DateTime(0);
 
     return RepaintBoundary(
       child: ListView.builder(
@@ -82,7 +83,7 @@ class _MessageListState extends State<MessageList> {
               message: ChatMessage(
                 role: ChatRole.assistant,
                 text: widget.streamingText,
-                time: DateTime.now(),
+                time: streamingTime,
               ),
               isUser: false,
               isStreaming: true,
@@ -142,11 +143,6 @@ class _AnimatedMessageBubbleState extends State<_AnimatedMessageBubble>
       end: Offset.zero,
     ).animate(_slideCurve);
     _fadeAnim = _fadeCurve;
-    _ctrl!.addStatusListener((status) {
-      if (status == AnimationStatus.completed && mounted) {
-        _ctrl?.stop();
-      }
-    });
     _startTimer = Timer(Duration(milliseconds: delay), () {
       if (mounted) _ctrl?.forward();
     });

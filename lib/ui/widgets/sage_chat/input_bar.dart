@@ -83,7 +83,7 @@ class InputBar extends StatelessWidget {
               ),
               child: Semantics(
                 button: true,
-                label: AppLocalizations.of(context)?.stop ?? 'Stop',
+                label: l?.stop ?? 'Stop',
                 child: IconButton(
                   onPressed: () {
                     ExperienceService.instance.lightHaptic();

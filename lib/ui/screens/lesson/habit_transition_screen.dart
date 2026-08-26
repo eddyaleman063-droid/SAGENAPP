@@ -287,9 +287,10 @@ class _ContinueButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     return Semantics(
       button: true,
-      label: AppLocalizations.of(context)!.continueText,
+      label: l.continueText,
       child: SizedBox(
         width: double.infinity,
         height: 56,
@@ -318,7 +319,7 @@ class _ContinueButton extends StatelessWidget {
             child: Container(
               alignment: Alignment.center,
               child: Text(
-                AppLocalizations.of(context)!.continueText,
+                l.continueText,
                 style: AppTextStyle.titleSmall.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,

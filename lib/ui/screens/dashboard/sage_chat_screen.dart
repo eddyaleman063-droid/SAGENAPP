@@ -241,6 +241,7 @@ class _ErrorBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(
@@ -251,7 +252,7 @@ class _ErrorBanner extends StatelessWidget {
       child: Row(
         children: [
           Semantics(
-            label: AppLocalizations.of(context)?.errorGeneric ?? '',
+            label: l?.errorGeneric ?? '',
             child: const Icon(
               Icons.warning_amber_rounded,
               size: 16,
@@ -270,7 +271,7 @@ class _ErrorBanner extends StatelessWidget {
           if (onRetry != null)
             Semantics(
               button: true,
-              label: AppLocalizations.of(context)?.retry ?? 'Retry',
+              label: l?.retry ?? 'Retry',
               child: GestureDetector(
                 onTap: onRetry,
                 child: const Padding(
@@ -286,7 +287,7 @@ class _ErrorBanner extends StatelessWidget {
           const SizedBox(width: AppSpacing.sm),
           Semantics(
             button: true,
-            label: AppLocalizations.of(context)?.close ?? 'Close',
+            label: l?.close ?? 'Close',
             child: GestureDetector(
               onTap: onDismiss,
               child: const Padding(

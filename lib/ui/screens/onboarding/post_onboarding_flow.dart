@@ -172,7 +172,7 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
         }
       }
     } finally {
-      if (mounted) _isAuthenticating = false;
+      if (mounted) setState(() => _isAuthenticating = false);
     }
   }
 

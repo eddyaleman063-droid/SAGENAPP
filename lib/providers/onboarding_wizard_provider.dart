@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../config/onboarding_wizard_config.dart';
+import '../services/app_logger.dart';
 import 'prefs_provider.dart';
 
 const _kWizardKey = 'onboarding_wizard_state';
@@ -72,7 +73,9 @@ class OnboardingWizardNotifier
         final json = jsonDecode(raw) as Map<String, dynamic>;
         return OnboardingWizardState.fromJson(json);
       }
-    } catch (_) {}
+    } catch (e) {
+      AppLogger().error('Wizard: failed to load state', e);
+    }
     return const OnboardingWizardState();
   }
 
@@ -85,7 +88,9 @@ class OnboardingWizardNotifier
     try {
       final prefs = ref.read(prefsProvider);
       prefs.setString(_kWizardKey, jsonEncode(state.toJson()));
-    } catch (_) {}
+    } catch (e) {
+      AppLogger().error('Wizard: failed to persist state', e);
+    }
   }
 
   void setSectionData(int index, dynamic data) {
@@ -118,7 +123,9 @@ class OnboardingWizardNotifier
       final prefs = ref.read(prefsProvider);
       prefs.remove(_kWizardKey);
       prefs.setBool(_kWizardDoneKey, false);
-    } catch (_) {}
+    } catch (e) {
+      AppLogger().error('Wizard: failed to reset', e);
+    }
   }
 
   void markCompleted() {
@@ -128,7 +135,9 @@ class OnboardingWizardNotifier
       final prefs = ref.read(prefsProvider);
       prefs.setBool(_kWizardDoneKey, true);
       prefs.remove(_kWizardKey);
-    } catch (_) {}
+    } catch (e) {
+      AppLogger().error('Wizard: failed to mark completed', e);
+    }
   }
 }
 

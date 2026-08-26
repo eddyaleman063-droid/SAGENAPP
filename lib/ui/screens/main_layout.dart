@@ -41,27 +41,12 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
   Timer? _gemDebounce;
   int _pendingGemAmount = 0;
 
-  static List<_TabItem> tabs(BuildContext context) => [
-    _TabItem(
-      label: AppLocalizations.of(context)!.navHome,
-      icon: Icons.home_rounded,
-    ),
-    _TabItem(
-      label: AppLocalizations.of(context)!.navChest,
-      icon: Icons.card_giftcard_rounded,
-    ),
-    _TabItem(
-      label: AppLocalizations.of(context)!.navSage,
-      icon: Icons.auto_awesome_rounded,
-    ),
-    _TabItem(
-      label: AppLocalizations.of(context)!.navRanking,
-      icon: Icons.leaderboard_rounded,
-    ),
-    _TabItem(
-      label: AppLocalizations.of(context)!.navProfile,
-      icon: Icons.person_rounded,
-    ),
+  static List<_TabItem> tabs(AppLocalizations l) => [
+    _TabItem(label: l.navHome, icon: Icons.home_rounded),
+    _TabItem(label: l.navChest, icon: Icons.card_giftcard_rounded),
+    _TabItem(label: l.navSage, icon: Icons.auto_awesome_rounded),
+    _TabItem(label: l.navRanking, icon: Icons.leaderboard_rounded),
+    _TabItem(label: l.navProfile, icon: Icons.person_rounded),
   ];
 
   @override
@@ -297,7 +282,8 @@ class _PremiumNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dark = context.isDark;
-    final tabItems = _MainLayoutState.tabs(context);
+    final l = AppLocalizations.of(context)!;
+    final tabItems = _MainLayoutState.tabs(l);
     return Container(
       height: 84,
       decoration: BoxDecoration(
@@ -321,9 +307,7 @@ class _PremiumNavBar extends StatelessWidget {
               button: true,
               selected: selected,
               label: item.label,
-              hint: showChestBadge && i == 1
-                  ? AppLocalizations.of(context)!.storeNewChestHint
-                  : null,
+              hint: showChestBadge && i == 1 ? l.storeNewChestHint : null,
               child: GestureDetector(
                 onTap: () {
                   ExperienceService.instance.lightHaptic();

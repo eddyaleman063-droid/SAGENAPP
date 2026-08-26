@@ -139,8 +139,7 @@ class _LearningSessionScreenState extends ConsumerState<LearningSessionScreen> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Semantics(
-                          label:
-                              AppLocalizations.of(context)?.errorGeneric ?? '',
+                          label: l.errorGeneric,
                           child: const SageEmotionWidget(
                             emotion: SageEmotion.worried,
                           ),
