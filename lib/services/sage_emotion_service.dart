@@ -131,6 +131,7 @@ class SageEmotionService {
   SageEmotionService();
 
   final Set<SageEmotion> _precached = {};
+  final Map<SageEmotion, Future<void>> _inFlight = {};
   bool _initialized = false;
 
   static const _coreEmotions = {
@@ -191,10 +192,29 @@ class SageEmotionService {
 
   Future<void> ensurePrecached(SageEmotion emotion) async {
     if (_precached.contains(emotion)) return;
+    if (_inFlight.containsKey(emotion)) {
+      await _inFlight[emotion];
+      return;
+    }
     await _precache(emotion);
   }
 
   Future<void> _precache(SageEmotion emotion) async {
+    if (_precached.contains(emotion)) return;
+    if (_inFlight.containsKey(emotion)) {
+      await _inFlight[emotion];
+      return;
+    }
+    final future = _doPrecache(emotion);
+    _inFlight[emotion] = future;
+    try {
+      await future;
+    } finally {
+      _inFlight.remove(emotion);
+    }
+  }
+
+  Future<void> _doPrecache(SageEmotion emotion) async {
     if (_precached.contains(emotion)) return;
     final provider = AssetImage(emotion.assetPath);
     final stream = provider.resolve(ImageConfiguration.empty);

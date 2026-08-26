@@ -32,7 +32,7 @@ class _MessageBubbleState extends State<MessageBubble> {
     super.didUpdateWidget(oldWidget);
     if (widget.message.text != _lastText) {
       _lastText = widget.message.text;
-      if (!widget.isStreaming) _cachedMarkdown = null;
+      _cachedMarkdown = null;
     }
   }
 

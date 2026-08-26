@@ -249,14 +249,14 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
                       alignment: Alignment.centerLeft,
                       child: Semantics(
                         button: true,
-                        label: AppLocalizations.of(context)!.backButton,
+                        label: l.backButton,
                         child: IconButton(
                           icon: const Icon(Icons.arrow_back_rounded),
                           onPressed: () {
                             ExperienceService.instance.lightHaptic();
                             context.pop();
                           },
-                          tooltip: AppLocalizations.of(context)!.backButton,
+                          tooltip: l.backButton,
                         ),
                       ),
                     ),
@@ -267,10 +267,7 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
                     ),
                     SizedBox(
                       height: h * 0.38,
-                      child: _buildHeroSection(
-                        accent,
-                        AppLocalizations.of(context)!,
-                      ),
+                      child: _buildHeroSection(accent, l),
                     ),
                     SizedBox(
                       height: h * 0.18,
@@ -281,7 +278,7 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
                       child: _buildMonthlyHeatmap(accent, dark),
                     ),
                     const SizedBox(height: AppSpacing.xxl),
-                    _buildButton(AppLocalizations.of(context)!),
+                    _buildButton(l),
                     SizedBox(height: h * 0.04),
                   ],
                 ),

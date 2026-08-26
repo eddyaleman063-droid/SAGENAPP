@@ -220,7 +220,10 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
   void _scheduleStreamFlush(StringBuffer buffer) {
     if (_streamFlushTimer != null && _streamFlushTimer!.isActive) return;
     _streamFlushTimer = Timer(const Duration(milliseconds: 50), () {
-      state = state.copyWith(streamingText: buffer.toString());
+      final text = buffer.toString();
+      if (text != state.streamingText) {
+        state = state.copyWith(streamingText: text);
+      }
     });
   }
 

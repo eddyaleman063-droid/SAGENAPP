@@ -16,6 +16,7 @@ class EmptyChat extends ConsumerWidget {
       mascotReactionProvider.select((r) => r.overrideEmotion),
     );
     final emotion = overrideEmotion ?? SageEmotion.curious;
+    final l = AppLocalizations.of(context);
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -25,14 +26,12 @@ class EmptyChat extends ConsumerWidget {
               emotion: emotion,
               size: 80,
               animated: true,
-              semanticLabel: AppLocalizations.of(context)?.chatEmptyTitle ?? '',
+              semanticLabel: l?.chatEmptyTitle ?? '',
             ),
           ),
           const SizedBox(height: AppSpacing.xl),
           Text(
-            AppLocalizations.of(context)?.chatEmptyTitle ??
-                AppLocalizations.of(context)?.chatFallbackTitle ??
-                '',
+            l?.chatEmptyTitle ?? l?.chatFallbackTitle ?? '',
             style: AppTextStyle.title.copyWith(
               fontWeight: FontWeight.bold,
               color: context.textPrimary,
@@ -42,9 +41,7 @@ class EmptyChat extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl * 2),
             child: Text(
-              AppLocalizations.of(context)?.emptyChatSubtitle ??
-                  AppLocalizations.of(context)?.chatFallbackSubtitle ??
-                  '',
+              l?.emptyChatSubtitle ?? l?.chatFallbackSubtitle ?? '',
               textAlign: TextAlign.center,
               style: AppTextStyle.subtitle.copyWith(
                 color: context.textTertiary,

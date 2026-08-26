@@ -36,10 +36,11 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
   Future<void> _sendReset() async {
     ExperienceService.instance.lightHaptic();
     final email = _emailCtrl.text.trim();
+    final l = AppLocalizations.of(context)!;
     if (email.isEmpty) {
       SagenNotification.show(
         context,
-        message: AppLocalizations.of(context)!.authEnterEmailError,
+        message: l.authEnterEmailError,
         type: NotificationType.warning,
       );
       return;
@@ -47,7 +48,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
     if (!RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(email)) {
       SagenNotification.show(
         context,
-        message: AppLocalizations.of(context)!.authEmailInvalid,
+        message: l.authEmailInvalid,
         type: NotificationType.warning,
       );
       return;
@@ -85,6 +86,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     final dark = context.isDark;
+    final l = AppLocalizations.of(context)!;
     return PopScope(
       canPop: true,
       child: Scaffold(
@@ -95,7 +97,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
           backgroundColor: Colors.transparent,
           elevation: 0,
           title: Text(
-            AppLocalizations.of(context)!.authForgotPasswordTitle,
+            l.authForgotPasswordTitle,
             style: AppTextStyle.title.copyWith(
               fontWeight: FontWeight.bold,
               color: context.textPrimary,
@@ -104,14 +106,14 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
           centerTitle: false,
           leading: Semantics(
             button: true,
-            label: AppLocalizations.of(context)!.backButton,
+            label: l.backButton,
             child: IconButton(
               icon: Icon(Icons.arrow_back_rounded, color: context.textPrimary),
               onPressed: () {
                 ExperienceService.instance.lightHaptic();
                 context.pop();
               },
-              tooltip: AppLocalizations.of(context)!.backButton,
+              tooltip: l.backButton,
             ),
           ),
         ),
@@ -129,9 +131,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                       ),
                       const SizedBox(height: AppSpacing.xxl),
                       Text(
-                        AppLocalizations.of(
-                          context,
-                        )!.authRecoveryEmailSentTitle,
+                        l.authRecoveryEmailSentTitle,
                         style: AppTextStyle.headlineMedium.copyWith(
                           fontWeight: FontWeight.bold,
                           color: context.textPrimary,
@@ -139,7 +139,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                       ),
                       const SizedBox(height: AppSpacing.md),
                       Text(
-                        AppLocalizations.of(context)!.authRecoveryEmailSentDesc,
+                        l.authRecoveryEmailSentDesc,
                         textAlign: TextAlign.center,
                         style: AppTextStyle.bodyMd.copyWith(
                           color: context.textSecondary,
@@ -152,7 +152,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                         height: 52,
                         child: Semantics(
                           button: true,
-                          label: AppLocalizations.of(context)!.authBack,
+                          label: l.authBack,
                           child: ElevatedButton(
                             onPressed: () => context.pop(),
                             style: ElevatedButton.styleFrom(
@@ -164,7 +164,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                               ),
                             ),
                             child: Text(
-                              AppLocalizations.of(context)!.authBack,
+                              l.authBack,
                               style: AppTextStyle.body.copyWith(
                                 fontWeight: FontWeight.bold,
                                 color: context.textPrimary,
@@ -180,7 +180,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                     children: [
                       const SizedBox(height: AppSpacing.xxl),
                       Text(
-                        AppLocalizations.of(context)!.authForgotPasswordTitle,
+                        l.authForgotPasswordTitle,
                         style: AppTextStyle.headlineMedium.copyWith(
                           fontWeight: FontWeight.bold,
                           color: context.textPrimary,
@@ -188,7 +188,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                       ),
                       const SizedBox(height: AppSpacing.md),
                       Text(
-                        AppLocalizations.of(context)!.authForgotPasswordDesc,
+                        l.authForgotPasswordDesc,
                         style: AppTextStyle.bodyMd.copyWith(
                           color: context.textSecondary,
                           height: 1.5,
@@ -202,7 +202,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                           border: Border.all(color: context.borderSubtle),
                         ),
                         child: Semantics(
-                          label: AppLocalizations.of(context)!.regEmailTitle,
+                          label: l.regEmailTitle,
                           child: TextField(
                             controller: _emailCtrl,
                             maxLength: 254,
@@ -213,9 +213,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                               color: context.textPrimary,
                             ),
                             decoration: InputDecoration(
-                              hintText: AppLocalizations.of(
-                                context,
-                              )!.authEmailLabel,
+                              hintText: l.authEmailLabel,
                               hintStyle: AppTextStyle.body.copyWith(
                                 color: context.textSecondary,
                               ),
@@ -239,7 +237,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                         height: 52,
                         child: Semantics(
                           button: true,
-                          label: AppLocalizations.of(context)!.authSendLink,
+                          label: l.authSendLink,
                           child: ElevatedButton(
                             onPressed: _isLoading ? null : _sendReset,
                             style: ElevatedButton.styleFrom(
@@ -267,7 +265,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                                     ),
                                   )
                                 : Text(
-                                    AppLocalizations.of(context)!.authSendLink,
+                                    l.authSendLink,
                                     style: AppTextStyle.body.copyWith(
                                       fontWeight: FontWeight.bold,
                                     ),

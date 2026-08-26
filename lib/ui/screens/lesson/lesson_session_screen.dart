@@ -344,9 +344,10 @@ class _OptionTile extends StatelessWidget {
     required this.onTap,
   });
 
+  static const _letters = ['A', 'B', 'C', 'D'];
+
   @override
   Widget build(BuildContext context) {
-    final letters = ['A', 'B', 'C', 'D'];
     return Semantics(
       button: true,
       selected: selected,
@@ -383,7 +384,7 @@ class _OptionTile extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text(
-                    letters[index % letters.length],
+                    _letters[index % _letters.length],
                     style: AppTextStyle.subtitle.copyWith(
                       fontWeight: FontWeight.w600,
                       color: selected ? Colors.white : context.textTertiary,

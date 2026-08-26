@@ -51,15 +51,15 @@ class _WizardTopBarState extends State<WizardTopBar>
     if (widget.currentIndex != old.currentIndex) {
       final newTarget =
           (widget.currentIndex + 1) / OnboardingWizardConfig.totalSteps;
+      _progressCtrl.stop();
+      _displayedProgress = _progressAnim.value;
       _progressAnim = Tween<double>(
         begin: _displayedProgress,
         end: newTarget,
       ).animate(_progressCurve);
-      _progressCtrl
-        ..reset()
-        ..forward().then((_) {
-          _displayedProgress = newTarget;
-        });
+      _progressCtrl.forward(from: 0.0).then((_) {
+        _displayedProgress = newTarget;
+      });
     }
   }
 

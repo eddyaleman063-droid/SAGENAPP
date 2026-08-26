@@ -39,14 +39,16 @@ class _MessageListState extends State<MessageList> {
     _scrollScheduled = true;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollScheduled = false;
-      if (mounted &&
-          widget.scrollCtrl.hasClients &&
-          widget.scrollCtrl.offset < 64) {
-        widget.scrollCtrl.animateTo(
-          0,
-          duration: const Duration(milliseconds: 100),
-          curve: Curves.easeOut,
-        );
+      if (mounted && widget.scrollCtrl.hasClients) {
+        final pos = widget.scrollCtrl.position;
+        if (pos.maxScrollExtent > 0 &&
+            widget.scrollCtrl.offset > pos.maxScrollExtent - 64) {
+          widget.scrollCtrl.animateTo(
+            pos.maxScrollExtent,
+            duration: const Duration(milliseconds: 100),
+            curve: Curves.easeOut,
+          );
+        }
       }
     });
   }
@@ -153,10 +155,9 @@ class _AnimatedMessageBubbleState extends State<_AnimatedMessageBubble>
   @override
   void dispose() {
     _startTimer?.cancel();
+    _ctrl?.dispose();
     _slideCurve.dispose();
     _fadeCurve.dispose();
-    _ctrl?.dispose();
-    _ctrl = null;
     super.dispose();
   }
 

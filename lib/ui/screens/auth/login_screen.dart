@@ -32,6 +32,9 @@ class LoginScreen extends ConsumerStatefulWidget {
 }
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
+  static final _emailRegex = RegExp(
+    r'^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$',
+  );
   final _formKey = GlobalKey<FormState>();
   final _emailCtrl = TextEditingController();
   final _passwordCtrl = TextEditingController();
@@ -68,11 +71,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     _validateDebounce?.cancel();
     _validateDebounce = Timer(const Duration(milliseconds: 150), () {
       final email = _emailCtrl.text.trim();
-      final emailValid =
-          email.isNotEmpty &&
-          RegExp(
-            r'^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$',
-          ).hasMatch(email);
+      final emailValid = email.isNotEmpty && _emailRegex.hasMatch(email);
       final valid = emailValid && _passwordCtrl.text.isNotEmpty;
       if (valid != _fieldsValid && mounted) {
         setState(() => _fieldsValid = valid);
@@ -293,9 +292,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 if (v == null || v.trim().isEmpty) {
                                   return l.authEmailError;
                                 }
-                                if (!RegExp(
-                                  r'^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$',
-                                ).hasMatch(v.trim())) {
+                                if (!_emailRegex.hasMatch(v.trim())) {
                                   return l.authEmailInvalid;
                                 }
                                 return null;
