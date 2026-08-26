@@ -94,9 +94,7 @@ class _SageChatScreenState extends ConsumerState<SageChatScreen>
             lessonsCompleted: ref.watch(
               sageAiProvider.select((s) => s.lessonsCompleted),
             ),
-            lessonsRequired: ref.watch(
-              sageAiProvider.select((s) => s.lessonsRequired),
-            ),
+            lessonsRequired: 10,
             progress: ref.watch(sageAiProvider.select((s) => s.progress)),
             dark: dark,
           ),

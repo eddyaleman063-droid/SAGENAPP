@@ -171,6 +171,14 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
           );
         }
       }
+    } catch (e) {
+      AppLogger().error('Registration failed', e);
+      if (mounted) {
+        SagenNotification.show(
+          context,
+          message: AppLocalizations.of(context)?.errorGeneric ?? 'Error',
+        );
+      }
     } finally {
       if (mounted) setState(() => _isAuthenticating = false);
     }

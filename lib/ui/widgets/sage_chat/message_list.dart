@@ -159,7 +159,6 @@ class _AnimatedMessageBubbleState extends State<_AnimatedMessageBubble>
 
   @override
   Widget build(BuildContext context) {
-    if (_ctrl == null) return widget.child;
     return SlideTransition(
       position: _slideAnim,
       child: FadeTransition(opacity: _fadeAnim, child: widget.child),

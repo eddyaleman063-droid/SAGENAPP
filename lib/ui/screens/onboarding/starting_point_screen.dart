@@ -63,6 +63,7 @@ class _StartingPointScreenState extends ConsumerState<StartingPointScreen> {
   @override
   Widget build(BuildContext context) {
     final dark = context.isDark;
+    final l = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: dark
           ? PremiumColors.deepBackground
@@ -80,7 +81,7 @@ class _StartingPointScreenState extends ConsumerState<StartingPointScreen> {
                 children: [
                   Semantics(
                     button: true,
-                    label: AppLocalizations.of(context)!.backButton,
+                    label: l.backButton,
                     child: IconButton(
                       icon: Icon(
                         Icons.arrow_back,
@@ -90,7 +91,7 @@ class _StartingPointScreenState extends ConsumerState<StartingPointScreen> {
                         ExperienceService.instance.lightHaptic();
                         (widget.onBack ?? () => context.pop())();
                       },
-                      tooltip: AppLocalizations.of(context)!.backButton,
+                      tooltip: l.backButton,
                     ),
                   ),
                   const SizedBox(width: AppSpacing.sm),
@@ -156,7 +157,7 @@ class _StartingPointScreenState extends ConsumerState<StartingPointScreen> {
                               border: Border.all(color: context.borderSubtle),
                             ),
                             child: Text(
-                              AppLocalizations.of(context)!.onbStartingPerfecto,
+                              l.onbStartingPerfecto,
                               style: AppTextStyle.body.copyWith(
                                 color: context.textPrimary,
                                 height: 1.4,
@@ -205,10 +206,8 @@ class _StartingPointScreenState extends ConsumerState<StartingPointScreen> {
                         index: 0,
                         icon: Icons.menu_book,
                         iconColor: PremiumColors.onboardingAccentOrange,
-                        title: AppLocalizations.of(context)!.onbStartingTitle,
-                        subtitle: AppLocalizations.of(
-                          context,
-                        )!.onbStartingSubtitle,
+                        title: l.onbStartingTitle,
+                        subtitle: l.onbStartingSubtitle,
                         showBadge: _badgeOnCard1,
                         dark: dark,
                       ),
@@ -219,12 +218,8 @@ class _StartingPointScreenState extends ConsumerState<StartingPointScreen> {
                         index: 1,
                         icon: Icons.radar,
                         iconColor: PremiumColors.onboardingAccentCyan,
-                        title: AppLocalizations.of(
-                          context,
-                        )!.onbStartingExperienced,
-                        subtitle: AppLocalizations.of(
-                          context,
-                        )!.onbStartingExperiencedSub,
+                        title: l.onbStartingExperienced,
+                        subtitle: l.onbStartingExperiencedSub,
                         showBadge: _badgeOnCard2,
                         dark: dark,
                       ),
@@ -244,7 +239,7 @@ class _StartingPointScreenState extends ConsumerState<StartingPointScreen> {
               ),
               child: Semantics(
                 button: true,
-                label: AppLocalizations.of(context)!.continueText,
+                label: l.continueText,
                 child: GestureDetector(
                   onTapDown: _canContinue ? _onTapDown : null,
                   onTapUp: _canContinue ? _onTapUp : null,
@@ -277,7 +272,7 @@ class _StartingPointScreenState extends ConsumerState<StartingPointScreen> {
                       ),
                       child: Center(
                         child: Text(
-                          AppLocalizations.of(context)!.continueText,
+                          l.continueText,
                           style: AppTextStyle.titleSmall.copyWith(
                             color: _canContinue
                                 ? context.textPrimary

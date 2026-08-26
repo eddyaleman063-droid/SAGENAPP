@@ -107,11 +107,7 @@ class _PremiumLoaderState extends ConsumerState<PremiumLoader>
                     children: [
                       AnimatedBuilder(
                         animation: _pulseCtrl,
-                        builder: (_, child) => Transform.scale(
-                          scale: 0.85 + 0.15 * _pulseCtrl.value,
-                          child: child,
-                        ),
-                        child: Container(
+                        builder: (_, _) => Container(
                           width: 96,
                           height: 96,
                           decoration: BoxDecoration(
@@ -120,17 +116,20 @@ class _PremiumLoaderState extends ConsumerState<PremiumLoader>
                             boxShadow: [
                               BoxShadow(
                                 color: PremiumColors.primary.withValues(
-                                  alpha: 0.1 + 0.15 * (_pulseCtrl.value),
+                                  alpha: 0.1 + 0.15 * _pulseCtrl.value,
                                 ),
-                                blurRadius: 20 + 15 * (_pulseCtrl.value),
+                                blurRadius: 20 + 15 * _pulseCtrl.value,
                                 spreadRadius: 1,
                               ),
                             ],
                           ),
-                          child: const SageEmotionWidget(
-                            emotion: SageEmotion.thinking,
-                            size: 76,
-                            animated: false,
+                          child: Transform.scale(
+                            scale: 0.85 + 0.15 * _pulseCtrl.value,
+                            child: const SageEmotionWidget(
+                              emotion: SageEmotion.thinking,
+                              size: 76,
+                              animated: false,
+                            ),
                           ),
                         ),
                       ),

@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
+import 'app_logger.dart';
+
 enum SageEmotion {
   calm,
   happy,
@@ -241,8 +243,9 @@ class SageEmotionService {
         },
       );
       if (!timedOut) _precached.add(emotion);
-    } catch (_) {
+    } catch (e) {
       stream.removeListener(listener);
+      AppLogger().error('Precache failed for $emotion', e);
     }
   }
 

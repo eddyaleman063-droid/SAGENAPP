@@ -76,7 +76,7 @@ class _ProjectionScreenState extends State<ProjectionScreen> {
                           ExperienceService.instance.lightHaptic();
                           (widget.onBack ?? () => context.pop())();
                         },
-                        tooltip: AppLocalizations.of(context)!.backButton,
+                        tooltip: l.backButton,
                       ),
                     ),
                     const SizedBox(width: AppSpacing.sm),
@@ -262,7 +262,7 @@ class _ProjectionScreenState extends State<ProjectionScreen> {
                         ),
                         child: Center(
                           child: Text(
-                            AppLocalizations.of(context)!.continueText,
+                            l.continueText,
                             style: AppTextStyle.titleSmall.copyWith(
                               color: context.textPrimary,
                               fontWeight: FontWeight.w700,

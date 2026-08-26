@@ -58,7 +58,7 @@ class _RouteSelectionScreenState extends State<RouteSelectionScreen> {
                 children: [
                   Semantics(
                     button: true,
-                    label: AppLocalizations.of(context)!.backButton,
+                    label: l.backButton,
                     child: IconButton(
                       icon: Icon(
                         Icons.arrow_back,
@@ -68,7 +68,7 @@ class _RouteSelectionScreenState extends State<RouteSelectionScreen> {
                         ExperienceService.instance.lightHaptic();
                         (widget.onBack ?? () => context.pop())();
                       },
-                      tooltip: AppLocalizations.of(context)!.backButton,
+                      tooltip: l.backButton,
                     ),
                   ),
                   const SizedBox(width: AppSpacing.sm),
@@ -140,7 +140,7 @@ class _RouteSelectionScreenState extends State<RouteSelectionScreen> {
                               ),
                             ),
                             child: Text(
-                              AppLocalizations.of(context)!.onbRouteQuestion,
+                              l.onbRouteQuestion,
                               style: AppTextStyle.body.copyWith(
                                 color: context.textPrimary,
                                 height: 1.4,
@@ -190,7 +190,7 @@ class _RouteSelectionScreenState extends State<RouteSelectionScreen> {
                   bottom: AppSpacing.md,
                 ),
                 child: Text(
-                  AppLocalizations.of(context)!.onbRouteAvailable,
+                  l.onbRouteAvailable,
                   style: AppTextStyle.subtitle.copyWith(
                     color: context.textTertiary,
                     fontWeight: FontWeight.w500,
@@ -284,7 +284,7 @@ class _RouteSelectionScreenState extends State<RouteSelectionScreen> {
               ),
               child: Semantics(
                 button: true,
-                label: AppLocalizations.of(context)!.continueText,
+                label: l.continueText,
                 child: GestureDetector(
                   onTapDown: _selectedRouteIndex != null
                       ? (_) {
@@ -327,7 +327,7 @@ class _RouteSelectionScreenState extends State<RouteSelectionScreen> {
                       ),
                       child: Center(
                         child: Text(
-                          AppLocalizations.of(context)!.continueText,
+                          l.continueText,
                           style: AppTextStyle.titleSmall.copyWith(
                             color: _selectedRouteIndex != null
                                 ? context.textPrimary

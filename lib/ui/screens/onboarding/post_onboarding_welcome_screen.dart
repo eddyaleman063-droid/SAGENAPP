@@ -32,6 +32,7 @@ class _PostOnboardingWelcomeScreenState
   @override
   Widget build(BuildContext context) {
     final dark = context.isDark;
+    final l = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: dark
           ? PremiumColors.deepBackground
@@ -47,7 +48,7 @@ class _PostOnboardingWelcomeScreenState
                 children: [
                   Semantics(
                     button: true,
-                    label: AppLocalizations.of(context)!.backButton,
+                    label: l.backButton,
                     child: IconButton(
                       icon: Icon(
                         Icons.arrow_back,
@@ -57,7 +58,7 @@ class _PostOnboardingWelcomeScreenState
                         ExperienceService.instance.lightHaptic();
                         (widget.onBack ?? () => context.pop())();
                       },
-                      tooltip: AppLocalizations.of(context)!.backButton,
+                      tooltip: l.backButton,
                     ),
                   ),
                 ],
@@ -91,7 +92,7 @@ class _PostOnboardingWelcomeScreenState
                         ),
                       ),
                       child: Text(
-                        AppLocalizations.of(context)!.onbWelcomeMsg,
+                        l.onbWelcomeMsg,
                         textAlign: TextAlign.center,
                         style: AppTextStyle.body.copyWith(
                           color: context.textPrimary,
@@ -149,7 +150,7 @@ class _PostOnboardingWelcomeScreenState
               ),
               child: Semantics(
                 button: true,
-                label: AppLocalizations.of(context)!.continueText,
+                label: l.continueText,
                 child: GestureDetector(
                   onTapDown: (_) {
                     ExperienceService.instance.mediumHaptic();
@@ -184,7 +185,7 @@ class _PostOnboardingWelcomeScreenState
                       ),
                       child: Center(
                         child: Text(
-                          AppLocalizations.of(context)!.continueText,
+                          l.continueText,
                           style: AppTextStyle.titleSmall.copyWith(
                             color: context.textPrimary,
                             fontWeight: FontWeight.w700,

@@ -155,7 +155,7 @@ class _MotivationScreenState extends State<MotivationScreen> {
                 children: [
                   Semantics(
                     button: true,
-                    label: AppLocalizations.of(context)!.backButton,
+                    label: l.backButton,
                     child: IconButton(
                       icon: Icon(
                         Icons.arrow_back,
@@ -165,7 +165,7 @@ class _MotivationScreenState extends State<MotivationScreen> {
                         ExperienceService.instance.lightHaptic();
                         (widget.onBack ?? () => context.pop())();
                       },
-                      tooltip: AppLocalizations.of(context)!.backButton,
+                      tooltip: l.backButton,
                     ),
                   ),
                   const SizedBox(width: AppSpacing.sm),
@@ -378,7 +378,7 @@ class _MotivationScreenState extends State<MotivationScreen> {
               ),
               child: Semantics(
                 button: true,
-                label: AppLocalizations.of(context)!.continueText,
+                label: l.continueText,
                 child: GestureDetector(
                   onTapDown: _canContinue ? _onTapDown : null,
                   onTapUp: _canContinue ? _onTapUp : null,
@@ -409,7 +409,7 @@ class _MotivationScreenState extends State<MotivationScreen> {
                       ),
                       child: Center(
                         child: Text(
-                          AppLocalizations.of(context)!.continueText,
+                          l.continueText,
                           style: AppTextStyle.titleSmall.copyWith(
                             color: _canContinue
                                 ? context.textPrimary
