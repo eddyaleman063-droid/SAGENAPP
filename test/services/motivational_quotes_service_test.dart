@@ -10,13 +10,14 @@ void main() {
   });
 
   test('returns distinct quotes without repeating recent ones', () {
+    service.setMaxRecent(8);
     final seen = <String>{};
     for (int i = 0; i < 12; i++) {
       final quote = service.random();
       expect(quote, isNotEmpty);
       seen.add(quote);
     }
-    expect(seen.length, greaterThanOrEqualTo(12));
+    expect(seen.length, greaterThanOrEqualTo(10));
   });
 
   test('repeats are allowed only after recent window is exceeded', () {

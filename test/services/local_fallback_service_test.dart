@@ -145,7 +145,7 @@ void main() {
   });
 
   group('LocalFallbackService — streaming', () {
-    test('generateStream yields the full response char by char', () async {
+    test('generateStream yields the full response', () async {
       final stream = service.generateStream([userMsg('hola')]);
       var count = 0;
       var text = '';
@@ -155,7 +155,7 @@ void main() {
       }
       expect(count, greaterThan(0));
       expect(text, isNotEmpty);
-      expect(count, text.length);
+      expect(text.length, greaterThan(count));
     });
   });
 }

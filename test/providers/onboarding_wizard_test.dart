@@ -1,18 +1,25 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sagen/providers/onboarding_wizard_provider.dart';
+import 'package:sagen/providers/prefs_provider.dart';
 
 void main() {
   group('OnboardingWizardProvider', () {
     late ProviderContainer container;
-    late OnboardingWizardNotifier notifier;
+    late ProviderSubscription<OnboardingWizardState> sub;
 
-    setUp(() {
-      container = ProviderContainer();
-      notifier = container.read(onboardingWizardProvider.notifier);
+    setUp(() async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      container = ProviderContainer(
+        overrides: [prefsProvider.overrideWithValue(prefs)],
+      );
+      sub = container.listen(onboardingWizardProvider, (_, _) {});
     });
 
     tearDown(() {
+      sub.close();
       container.dispose();
     });
 
@@ -23,11 +30,12 @@ void main() {
     });
 
     test('nextStep advances by one', () {
-      notifier.nextStep();
+      container.read(onboardingWizardProvider.notifier).nextStep();
       expect(container.read(onboardingWizardProvider).currentIndex, 1);
     });
 
     test('nextStep stops at last index', () {
+      final notifier = container.read(onboardingWizardProvider.notifier);
       for (var i = 0; i < 8; i++) {
         notifier.nextStep();
       }
@@ -37,6 +45,7 @@ void main() {
     });
 
     test('previousStep goes back by one', () {
+      final notifier = container.read(onboardingWizardProvider.notifier);
       for (var i = 0; i < 3; i++) {
         notifier.nextStep();
       }
@@ -45,17 +54,20 @@ void main() {
     });
 
     test('previousStep stops at 0', () {
-      notifier.previousStep();
+      container.read(onboardingWizardProvider.notifier).previousStep();
       expect(container.read(onboardingWizardProvider).currentIndex, 0);
     });
 
     test('setSectionData stores value for given index', () {
-      notifier.setSectionData(1, 'Google');
+      container
+          .read(onboardingWizardProvider.notifier)
+          .setSectionData(1, 'Google');
       final state = container.read(onboardingWizardProvider);
       expect(state.sectionData[1], 'Google');
     });
 
     test('setSectionData overwrites existing value', () {
+      final notifier = container.read(onboardingWizardProvider.notifier);
       notifier.setSectionData(1, 'Google');
       notifier.setSectionData(1, 'YouTube');
       final state = container.read(onboardingWizardProvider);
@@ -63,12 +75,16 @@ void main() {
     });
 
     test('setSectionData stores list for multi choice', () {
-      notifier.setSectionData(3, <String>['shield', 'school']);
+      container.read(onboardingWizardProvider.notifier).setSectionData(
+        3,
+        <String>['shield', 'school'],
+      );
       final state = container.read(onboardingWizardProvider);
       expect(state.sectionData[3], <String>['shield', 'school']);
     });
 
     test('reset clears all state', () {
+      final notifier = container.read(onboardingWizardProvider.notifier);
       notifier.setSectionData(1, 'Google');
       notifier.setSectionData(3, <String>['shield']);
       notifier.reset();
@@ -80,12 +96,19 @@ void main() {
 
   group('onboardingCanContinueProvider', () {
     late ProviderContainer container;
+    late ProviderSubscription<OnboardingWizardState> sub;
 
-    setUp(() {
-      container = ProviderContainer();
+    setUp(() async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      container = ProviderContainer(
+        overrides: [prefsProvider.overrideWithValue(prefs)],
+      );
+      sub = container.listen(onboardingWizardProvider, (_, _) {});
     });
 
     tearDown(() {
+      sub.close();
       container.dispose();
     });
 

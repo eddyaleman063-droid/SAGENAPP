@@ -31,13 +31,6 @@ class _StoreHeaderState extends ConsumerState<StoreHeader>
       curve: Curves.easeOut,
     );
     _glowAnimation = Tween<double>(begin: 0, end: 1).animate(_glowCurve);
-    _prevBalance = ref.read(gemProvider.select((g) => g.balance));
-    ref.listen<int>(gemProvider.select((g) => g.balance), (prev, next) {
-      if (next > _prevBalance && _prevBalance > 0) {
-        _glowController.forward(from: 0);
-      }
-      _prevBalance = next;
-    });
   }
 
   @override
@@ -51,6 +44,12 @@ class _StoreHeaderState extends ConsumerState<StoreHeader>
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
     final gemBalance = ref.watch(gemProvider.select((g) => g.balance));
+    ref.listen<int>(gemProvider.select((g) => g.balance), (prev, next) {
+      if (next > _prevBalance && _prevBalance > 0) {
+        _glowController.forward(from: 0);
+      }
+      _prevBalance = next;
+    });
     return Container(
       padding: const EdgeInsets.fromLTRB(
         AppSpacing.xxl,

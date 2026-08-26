@@ -30,11 +30,18 @@ class _ShimmerScopeState extends State<ShimmerScope>
   void initState() {
     super.initState();
     _ctrl = AnimationController(vsync: this, duration: widget.duration);
-    final reduced = ProviderScope.containerOf(
-      context,
-      listen: false,
-    ).read(reduceAnimationsProvider);
-    if (!reduced) _ctrl.repeat();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      try {
+        final reduced = ProviderScope.containerOf(
+          context,
+          listen: false,
+        ).read(reduceAnimationsProvider);
+        if (!reduced) _ctrl.repeat();
+      } catch (_) {
+        _ctrl.repeat();
+      }
+    });
   }
 
   @override

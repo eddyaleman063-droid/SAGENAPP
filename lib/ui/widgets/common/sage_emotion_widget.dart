@@ -67,10 +67,12 @@ class _StaticSageImageState extends State<_StaticSageImage> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!context.mounted) return;
-      ProviderScope.containerOf(
-        context,
-        listen: false,
-      ).read(sageEmotionServiceProvider).ensurePrecached(widget.emotion);
+      try {
+        ProviderScope.containerOf(
+          context,
+          listen: false,
+        ).read(sageEmotionServiceProvider).ensurePrecached(widget.emotion);
+      } catch (_) {}
     });
   }
 

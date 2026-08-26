@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sagen/models/chat_message.dart';
+import 'package:sagen/ui/widgets/common/sage_emotion_widget.dart';
 import 'package:sagen/ui/widgets/sage_chat/message_bubble.dart';
 
 Widget _wrap({required ChatMessage message, required bool isUser}) {
-  return MaterialApp(
-    home: Scaffold(
-      body: MessageBubble(message: message, isUser: isUser),
+  return ProviderScope(
+    child: MaterialApp(
+      home: Scaffold(
+        body: MessageBubble(message: message, isUser: isUser),
+      ),
     ),
   );
 }
@@ -30,7 +34,8 @@ void main() {
     );
     await tester.pumpWidget(_wrap(message: message, isUser: false));
     expect(find.text('Hola, ¿en qué te ayudo?'), findsOneWidget);
-    expect(find.byIcon(Icons.auto_awesome_rounded), findsOneWidget);
+    expect(find.byType(SageEmotionWidget), findsOneWidget);
+    await tester.pump(Duration(seconds: 6));
   });
 
   testWidgets('renders markdown formatting for assistant text', (tester) async {
@@ -41,5 +46,6 @@ void main() {
     );
     await tester.pumpWidget(_wrap(message: message, isUser: false));
     expect(find.textContaining('XP'), findsOneWidget);
+    await tester.pump(Duration(seconds: 6));
   });
 }

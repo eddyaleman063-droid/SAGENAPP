@@ -35,28 +35,29 @@ class _ShimmerLoadingState extends State<ShimmerLoading>
   @override
   void initState() {
     super.initState();
-    _initController();
+    _ownCtrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1500),
+    );
+    _ownCtrl!.repeat();
+    _curve = CurvedAnimation(parent: _ctrl, curve: Curves.easeInOutSine);
+    _anim = Tween<double>(begin: -2.0, end: 2.0).animate(_curve!);
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _initController();
-  }
-
-  void _initController() {
     if (_controllerInitialized) return;
     _controllerInitialized = true;
-    _sharedCtrl = ShimmerScope.maybeOf(context);
-    if (_sharedCtrl == null) {
-      _ownCtrl = AnimationController(
-        vsync: this,
-        duration: const Duration(milliseconds: 1500),
-      );
-      _ownCtrl!.repeat();
+    final shared = ShimmerScope.maybeOf(context);
+    if (shared != null) {
+      _ownCtrl?.dispose();
+      _ownCtrl = null;
+      _sharedCtrl = shared;
+      _curve?.dispose();
+      _curve = CurvedAnimation(parent: _ctrl, curve: Curves.easeInOutSine);
+      _anim = Tween<double>(begin: -2.0, end: 2.0).animate(_curve!);
     }
-    _curve = CurvedAnimation(parent: _ctrl, curve: Curves.easeInOutSine);
-    _anim = Tween<double>(begin: -2.0, end: 2.0).animate(_curve!);
   }
 
   @override
