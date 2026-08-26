@@ -450,9 +450,10 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
     final grayText = context.textTertiary;
 
     return AnimatedBuilder(
-      animation: Listenable.merge([_resetCtrl]),
+      animation: _resetCtrl,
       builder: (context, _) {
         final rp = _resetCtrl.value;
+        final labels = _dayLabels(l);
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: List.generate(7, (i) {
@@ -481,7 +482,7 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
               showCheck = filled;
             }
 
-            final dayLabel = _dayLabels(l)[i];
+            final dayLabel = labels[i];
             final dayStatus = (isToday && _circleFilled) || isPast
                 ? l.streakStatusCompleted
                 : isToday

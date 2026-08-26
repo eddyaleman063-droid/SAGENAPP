@@ -346,7 +346,19 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
     if (text.isNotEmpty) {
       _applyAssistantMessage(text, skipEmotion: true);
     } else {
-      state = state.copyWith(streamingText: '', status: SageAiChatStatus.idle);
+      final messages = List<ChatMessage>.from(_messages);
+      final idx = messages.length - 1;
+      if (idx >= 0 &&
+          messages[idx].role == ChatRole.assistant &&
+          messages[idx].text.isEmpty) {
+        messages.removeAt(idx);
+      }
+      _messages = messages;
+      state = state.copyWith(
+        messages: () => messages,
+        streamingText: '',
+        status: SageAiChatStatus.idle,
+      );
     }
   }
 
@@ -356,7 +368,9 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
 
   void clearMessages() {
     _streamSub?.cancel();
+    _streamFlushTimer?.cancel();
     _streamSub = null;
+    _streamFlushTimer = null;
     _messages = const [];
     state = state.copyWith(
       messages: () => [],
