@@ -334,6 +334,7 @@ class _StatsGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     final valColor = context.textPrimary;
     final minutes = (timeSeconds ~/ 60).toString().padLeft(2, '0');
     final secs = (timeSeconds % 60).toString().padLeft(2, '0');
@@ -347,11 +348,11 @@ class _StatsGrid extends StatelessWidget {
             children: [
               Expanded(
                 child: Semantics(
-                  label: AppLocalizations.of(context)!.xpGainedLabel(totalXp),
+                  label: l.xpGainedLabel(totalXp),
                   container: true,
                   child: _StatBlock(
                     icon: Icons.bolt_rounded,
-                    label: AppLocalizations.of(context)!.sessionSummaryExp,
+                    label: l.sessionSummaryExp,
                     color: PremiumColors.streakOrange,
                     child: TweenAnimationBuilder<double>(
                       tween: Tween(begin: 0, end: totalXp.toDouble()),
@@ -371,13 +372,13 @@ class _StatsGrid extends StatelessWidget {
               const SizedBox(width: AppSpacing.md),
               Expanded(
                 child: Semantics(
-                  label: AppLocalizations.of(
-                    context,
-                  )!.accuracyPercentLabel(accuracyPercent.toStringAsFixed(0)),
+                  label: l.accuracyPercentLabel(
+                    accuracyPercent.toStringAsFixed(0),
+                  ),
                   container: true,
                   child: _StatBlock(
                     icon: Icons.gps_fixed_rounded,
-                    label: AppLocalizations.of(context)!.sessionSummaryAccuracy,
+                    label: l.sessionSummaryAccuracy,
                     color: PremiumColors.success,
                     child: TweenAnimationBuilder<double>(
                       tween: Tween(begin: 0, end: accuracyPercent),
@@ -397,11 +398,11 @@ class _StatsGrid extends StatelessWidget {
               const SizedBox(width: AppSpacing.md),
               Expanded(
                 child: Semantics(
-                  label: AppLocalizations.of(context)!.timeLabel(timeFormatted),
+                  label: l.timeLabel(timeFormatted),
                   container: true,
                   child: _StatBlock(
                     icon: Icons.timer_outlined,
-                    label: AppLocalizations.of(context)!.sessionSummaryTime,
+                    label: l.sessionSummaryTime,
                     color: PremiumColors.splashBlue,
                     child: Text(
                       timeFormatted,
@@ -418,11 +419,11 @@ class _StatsGrid extends StatelessWidget {
           if (gemsEarned > 0) ...[
             const SizedBox(height: AppSpacing.md),
             Semantics(
-              label: AppLocalizations.of(context)!.sessionSummaryGems,
+              label: l.sessionSummaryGems,
               container: true,
               child: _StatBlock(
                 icon: Icons.diamond_rounded,
-                label: AppLocalizations.of(context)!.sessionSummaryGems,
+                label: l.sessionSummaryGems,
                 color: PremiumColors.accentCyan,
                 child: TweenAnimationBuilder<double>(
                   tween: Tween(begin: 0, end: gemsEarned.toDouble()),

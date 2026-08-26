@@ -80,12 +80,10 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     final dark = context.isDark;
+    final l = AppLocalizations.of(context);
     return Semantics(
       button: true,
-      label:
-          AppLocalizations.of(context)?.loading ??
-          AppLocalizations.of(context)?.tapToContinue ??
-          '',
+      label: l?.loading ?? l?.tapToContinue ?? '',
       child: GestureDetector(
         onTap: () {
           ExperienceService.instance.lightHaptic();
@@ -108,7 +106,7 @@ class _SplashScreenState extends State<SplashScreen>
                     child: FadeTransition(
                       opacity: _textFadeAnim,
                       child: Text(
-                        AppLocalizations.of(context)!.splashTitle,
+                        l!.splashTitle,
                         style: AppTextStyle.hero.copyWith(
                           fontWeight: FontWeight.w900,
                           color: context.textPrimary,
@@ -121,7 +119,7 @@ class _SplashScreenState extends State<SplashScreen>
                     Padding(
                       padding: const EdgeInsets.only(top: 32),
                       child: Semantics(
-                        label: AppLocalizations.of(context)?.loading ?? '',
+                        label: l.loading,
                         child: SizedBox(
                           width: 24,
                           height: 24,

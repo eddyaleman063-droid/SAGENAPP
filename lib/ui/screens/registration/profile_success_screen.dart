@@ -159,10 +159,13 @@ class _ProfileSuccessScreenState extends ConsumerState<ProfileSuccessScreen>
                     width: double.infinity,
                     height: 52,
                     child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         ExperienceService.instance.lightHaptic();
                         ref.read(registrationFunnelProvider.notifier).reset();
-                        context.goNamed('main');
+                        await ref
+                            .read(authProvider.notifier)
+                            .markOnboardingCompleted();
+                        if (context.mounted) context.goNamed('main');
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: PremiumColors.primaryAccent,

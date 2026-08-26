@@ -133,6 +133,7 @@ class _LiveSageImageState extends ConsumerState<_LiveSageImage>
   void didUpdateWidget(_LiveSageImage old) {
     super.didUpdateWidget(old);
     if (old.emotion == widget.emotion) return;
+    ref.read(sageEmotionServiceProvider).ensurePrecached(widget.emotion);
     final service = ref.read(sageEmotionServiceProvider);
     _skipNextTransition = !service.shouldAnimateEmotionChange(
       old.emotion,

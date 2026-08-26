@@ -96,7 +96,7 @@ class _ChestRewardDialogState extends State<ChestRewardDialog>
     final r = widget.reward;
 
     return Semantics(
-      label: AppLocalizations.of(context)!.chestRewardDialog,
+      label: l.chestRewardDialog,
       child: PopScope(
         canPop: !_dismissed,
         child: Scaffold(

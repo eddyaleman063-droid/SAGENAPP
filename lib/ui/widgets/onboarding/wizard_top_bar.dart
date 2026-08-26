@@ -73,6 +73,7 @@ class _WizardTopBarState extends State<WizardTopBar>
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final l = AppLocalizations.of(context)!;
     final targetProgress =
         (widget.currentIndex + 1) / OnboardingWizardConfig.totalSteps;
     return Padding(
@@ -86,7 +87,7 @@ class _WizardTopBarState extends State<WizardTopBar>
         children: [
           Semantics(
             button: true,
-            label: AppLocalizations.of(context)!.backButton,
+            label: l.backButton,
             child: IconButton(
               icon: const Icon(Icons.arrow_back_rounded, size: 22),
               color: cs.onSurface.withValues(alpha: 0.7),
@@ -95,15 +96,13 @@ class _WizardTopBarState extends State<WizardTopBar>
                 widget.onBack();
               },
               padding: const EdgeInsets.all(18),
-              tooltip: AppLocalizations.of(context)!.backButton,
+              tooltip: l.backButton,
             ),
           ),
           const SizedBox(width: AppSpacing.sm),
           Expanded(
             child: Semantics(
-              label: AppLocalizations.of(
-                context,
-              )!.wizardStepLabel(widget.currentIndex + 1),
+              label: l.wizardStepLabel(widget.currentIndex + 1),
               value: '${(targetProgress * 100).round()}%',
               child: AnimatedBuilder(
                 animation: _progressAnim,

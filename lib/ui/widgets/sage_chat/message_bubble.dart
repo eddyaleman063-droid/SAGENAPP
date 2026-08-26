@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:sagen/core/theme/app_colors.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/models/chat_message.dart';
+import 'package:sagen/providers/mascot_reaction_provider.dart';
 import 'package:sagen/services/sage_emotion_service.dart';
 import 'package:sagen/ui/widgets/common/sage_emotion_widget.dart';
 
-class MessageBubble extends StatefulWidget {
+class MessageBubble extends ConsumerStatefulWidget {
   final ChatMessage message;
   final bool isUser;
   final bool isStreaming;
@@ -19,10 +21,10 @@ class MessageBubble extends StatefulWidget {
   });
 
   @override
-  State<MessageBubble> createState() => _MessageBubbleState();
+  ConsumerState<MessageBubble> createState() => _MessageBubbleState();
 }
 
-class _MessageBubbleState extends State<MessageBubble> {
+class _MessageBubbleState extends ConsumerState<MessageBubble> {
   String _lastText = '';
   bool _lastDark = false;
   Widget? _cachedMarkdown;
@@ -92,12 +94,27 @@ class _MessageBubbleState extends State<MessageBubble> {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             if (!widget.isUser) ...[
-              const ExcludeSemantics(
-                child: SageEmotionWidget(
-                  emotion: SageEmotion.calm,
-                  size: 28,
-                  animated: false,
-                ),
+              ExcludeSemantics(
+                child: widget.isStreaming
+                    ? Consumer(
+                        builder: (context, ref, _) {
+                          final emotion = ref.watch(
+                            mascotReactionProvider.select(
+                              (r) => r.overrideEmotion ?? SageEmotion.thinking,
+                            ),
+                          );
+                          return SageEmotionWidget(
+                            emotion: emotion,
+                            size: 28,
+                            animated: true,
+                          );
+                        },
+                      )
+                    : const SageEmotionWidget(
+                        emotion: SageEmotion.calm,
+                        size: 28,
+                        animated: false,
+                      ),
               ),
               const SizedBox(width: AppSpacing.sm),
             ],

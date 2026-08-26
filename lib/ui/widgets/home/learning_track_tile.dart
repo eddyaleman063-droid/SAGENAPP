@@ -56,6 +56,7 @@ class _LearningTrackTileState extends ConsumerState<LearningTrackTile>
     final completed = widget.status == StageStatus.completed;
     final inProgress = widget.status == StageStatus.inProgress;
     final locked = widget.status == StageStatus.locked;
+    final l = AppLocalizations.of(context)!;
 
     final glowColor = inProgress
         ? PremiumColors.splashBlue
@@ -67,7 +68,7 @@ class _LearningTrackTileState extends ConsumerState<LearningTrackTile>
       button: !locked,
       enabled: !locked,
       label:
-          '${widget.stage.title}. ${widget.stage.subtitle}. ${AppLocalizations.of(context)!.stageProgress((widget.stage.progress * 100).round())}',
+          '${widget.stage.title}. ${widget.stage.subtitle}. ${l.stageProgress((widget.stage.progress * 100).round())}',
       child: Opacity(
         opacity: locked ? 0.5 : 1.0,
         child: Padding(
@@ -159,10 +160,9 @@ class _LearningTrackTileState extends ConsumerState<LearningTrackTile>
                           ClipRRect(
                             borderRadius: BorderRadius.circular(AppRadius.pill),
                             child: Semantics(
-                              label: AppLocalizations.of(context)!
-                                  .stageProgress(
-                                    (widget.stage.progress * 100).round(),
-                                  ),
+                              label: l.stageProgress(
+                                (widget.stage.progress * 100).round(),
+                              ),
                               value: '${(widget.stage.progress * 100).round()}',
                               child: LinearProgressIndicator(
                                 value: widget.stage.progress,

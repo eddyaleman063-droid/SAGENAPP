@@ -275,7 +275,7 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
                     ),
                     SizedBox(
                       height: h * 0.08,
-                      child: _buildMonthlyHeatmap(accent, dark),
+                      child: _buildMonthlyHeatmap(accent, dark, l),
                     ),
                     const SizedBox(height: AppSpacing.xxl),
                     _buildButton(l),
@@ -577,7 +577,7 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
     }
   }
 
-  Widget _buildMonthlyHeatmap(Color accent, bool dark) {
+  Widget _buildMonthlyHeatmap(Color accent, bool dark, AppLocalizations l) {
     final heatmap = ref.watch(streakProvider.select((s) => s.heatmapData));
     final now = DateTime.now();
     final grayColor = dark
@@ -585,7 +585,7 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
         : PremiumColors.streakInactiveLight;
 
     return Semantics(
-      label: AppLocalizations.of(context)!.activityMap30Days,
+      label: l.activityMap30Days,
       container: true,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

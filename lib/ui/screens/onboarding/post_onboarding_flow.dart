@@ -60,6 +60,7 @@ class PostOnboardingFlow extends ConsumerStatefulWidget {
 class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
   int _step = 0;
   bool _isAuthenticating = false;
+  bool _authCancelled = false;
 
   static const int _totalSteps = 16;
 
@@ -117,13 +118,14 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
 
   Future<void> _completeRegistration() async {
     if (_isAuthenticating) return;
-    _isAuthenticating = true;
+    _authCancelled = false;
+    setState(() => _isAuthenticating = true);
+    final authNotifier = ref.read(authProvider.notifier);
+    final funnel = ref.read(registrationFunnelProvider);
     try {
-      final authNotifier = ref.read(authProvider.notifier);
-      final funnel = ref.read(registrationFunnelProvider);
       if (funnel.authMethod == 'google') {
         await authNotifier.signInWithGoogle();
-        if (!mounted) return;
+        if (!mounted || _authCancelled) return;
         final auth = ref.read(authProvider);
         if (auth.isAuthenticated) {
           ref.read(registrationFunnelProvider.notifier).clearSensitiveData();
@@ -150,7 +152,7 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
           email: email,
           password: password,
         );
-        if (!mounted) return;
+        if (!mounted || _authCancelled) return;
         final auth = ref.read(authProvider);
         if (auth.showVerificationScreen || auth.isAuthenticated) {
           ref.read(registrationFunnelProvider.notifier).clearSensitiveData();
@@ -311,7 +313,10 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
                 const CircularProgressIndicator(),
                 const SizedBox(height: 24),
                 TextButton(
-                  onPressed: () => setState(() => _isAuthenticating = false),
+                  onPressed: () => setState(() {
+                    _isAuthenticating = false;
+                    _authCancelled = true;
+                  }),
                   child: Text(AppLocalizations.of(context)!.cancel),
                 ),
               ],

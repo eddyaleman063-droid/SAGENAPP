@@ -155,6 +155,7 @@ class _HudBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     return Container(
       padding: const EdgeInsets.fromLTRB(
         AppSpacing.lg,
@@ -173,7 +174,7 @@ class _HudBar extends StatelessWidget {
             children: [
               Semantics(
                 button: true,
-                label: AppLocalizations.of(context)!.closeButton,
+                label: l.closeButton,
                 child: IconButton(
                   icon: Icon(Icons.close_rounded, color: context.textTertiary),
                   onPressed: () {
@@ -185,7 +186,7 @@ class _HudBar extends StatelessWidget {
                     minWidth: 48,
                     minHeight: 48,
                   ),
-                  tooltip: AppLocalizations.of(context)!.closeButton,
+                  tooltip: l.closeButton,
                 ),
               ),
               Text(
@@ -196,9 +197,7 @@ class _HudBar extends StatelessWidget {
                 ),
               ),
               Semantics(
-                label: AppLocalizations.of(
-                  context,
-                )!.livesRemainingLabel(session.lives),
+                label: l.livesRemainingLabel(session.lives),
                 container: true,
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -221,9 +220,7 @@ class _HudBar extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.sm),
           Semantics(
-            label: AppLocalizations.of(
-              context,
-            )!.lessonProgress((session.progress * 100).toInt()),
+            label: l.lessonProgress((session.progress * 100).toInt()),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(AppRadius.pill),
               child: LinearProgressIndicator(
