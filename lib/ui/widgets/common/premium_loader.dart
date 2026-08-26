@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/theme_constants.dart';
+import '../../../providers/hardware_tier_provider.dart';
 import '../../../providers/service_providers.dart';
 import '../../../services/sage_emotion_service.dart';
 import 'sage_emotion_widget.dart';
@@ -28,38 +29,51 @@ class _PremiumLoaderState extends ConsumerState<PremiumLoader>
   late AnimationController _fadeCtrl;
   String _currentQuote = '';
   Timer? _quoteTimer;
+  bool _overlayVisible = false;
 
   @override
   void initState() {
     super.initState();
     _currentQuote = ref.read(motivationalQuotesServiceProvider).random();
+    final reduced = ref.read(reduceAnimationsProvider);
     _pulseCtrl = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 3),
+      duration: AppMotion.resolve(
+        const Duration(seconds: 3),
+        reduceAnimations: reduced,
+      ),
     );
     _fadeCtrl = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 300),
+      duration: AppMotion.resolve(
+        const Duration(milliseconds: 300),
+        reduceAnimations: reduced,
+      ),
     );
     if (widget.loading) {
-      _pulseCtrl.repeat(reverse: true);
+      _overlayVisible = true;
+      if (!reduced) _pulseCtrl.repeat(reverse: true);
       _fadeCtrl.forward();
+      _startQuoteTimer();
     }
-    if (widget.loading) _startQuoteTimer();
   }
 
   @override
   void didUpdateWidget(PremiumLoader old) {
     super.didUpdateWidget(old);
     if (widget.loading != old.loading) {
+      final reduced = ref.read(reduceAnimationsProvider);
       if (widget.loading) {
-        _pulseCtrl.repeat(reverse: true);
+        _overlayVisible = true;
+        if (!reduced) _pulseCtrl.repeat(reverse: true);
         _fadeCtrl.forward();
         _startQuoteTimer();
       } else {
         _pulseCtrl.stop();
         _pulseCtrl.reset();
-        _fadeCtrl.reverse();
+        _fadeCtrl.reverse().then((_) {
+          if (mounted) setState(() => _overlayVisible = false);
+        });
         _quoteTimer?.cancel();
         _quoteTimer = null;
       }
@@ -94,7 +108,7 @@ class _PremiumLoaderState extends ConsumerState<PremiumLoader>
       child: Stack(
         children: [
           widget.child,
-          if (widget.loading)
+          if (_overlayVisible)
             FadeTransition(
               opacity: _fadeCtrl,
               child: Container(

@@ -264,7 +264,11 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
             _streamFlushTimer?.cancel();
             _streamFlushTimer = null;
             final finalText = buffer.toString().trim();
-            _applyAssistantMessage(finalText);
+            if (finalText.isEmpty) {
+              _showConnectionWeak();
+            } else {
+              _applyAssistantMessage(finalText);
+            }
           },
           onError: (e) {
             AppLogger().error('SageAiProvider fallback stream error', e);

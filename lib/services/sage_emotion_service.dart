@@ -163,12 +163,18 @@ class SageEmotionService {
   };
 
   static const _negativeSet = {
-    SageEmotion.worried,
+    SageEmotion.sad,
     SageEmotion.sadSoft,
+    SageEmotion.worried,
     SageEmotion.crying,
     SageEmotion.depressed,
     SageEmotion.angry,
     SageEmotion.annoyed,
+    SageEmotion.scared,
+    SageEmotion.distressed,
+    SageEmotion.unmotivated,
+    SageEmotion.embarrassed,
+    SageEmotion.aggressive,
   };
 
   static const _intenseSet = {

@@ -184,6 +184,23 @@ class _LiveSageImageState extends ConsumerState<_LiveSageImage>
     final dpr = MediaQuery.devicePixelRatioOf(context);
     final decodeSize = (widget.size * dpr).round().clamp(0, 600);
 
+    final reduced = ref.watch(reduceAnimationsProvider);
+    final shouldBreathe =
+        !reduced &&
+        ref.read(sageEmotionServiceProvider).canIdleBreathe(_displayed);
+    if (shouldBreathe != _idleBreathe) {
+      _idleBreathe = shouldBreathe;
+      _breatheCtrl?.dispose();
+      _breatheCtrl = null;
+      if (_idleBreathe) {
+        _breatheCtrl = AnimationController(
+          vsync: this,
+          duration: const Duration(milliseconds: 3200),
+        );
+        _breatheCtrl!.repeat(reverse: true);
+      }
+    }
+
     final imageChild = AnimatedSwitcher(
       duration: _skipNextTransition
           ? Duration.zero

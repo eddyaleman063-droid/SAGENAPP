@@ -47,6 +47,9 @@ class _TapScaleState extends State<TapScale>
   @override
   void didUpdateWidget(TapScale oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if (widget.scale != oldWidget.scale) {
+      _anim = Tween<double>(begin: 1.0, end: widget.scale).animate(_curvedAnim);
+    }
     if (widget.reduceAnimations != oldWidget.reduceAnimations ||
         widget.duration != oldWidget.duration) {
       _ctrl.duration = AppMotion.resolve(
@@ -70,10 +73,12 @@ class _TapScaleState extends State<TapScale>
       button: true,
       enabled: widget.onTap != null,
       child: GestureDetector(
-        onTapDown: (_) {
-          ExperienceService.instance.lightHaptic();
-          _ctrl.forward();
-        },
+        onTapDown: widget.onTap != null
+            ? (_) {
+                ExperienceService.instance.lightHaptic();
+                _ctrl.forward();
+              }
+            : null,
         onTapUp: (_) => _ctrl.reverse(),
         onTapCancel: () => _ctrl.reverse(),
         onTap: widget.onTap,

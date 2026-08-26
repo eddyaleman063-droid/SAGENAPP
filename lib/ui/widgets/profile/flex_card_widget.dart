@@ -36,17 +36,20 @@ class FlexCardWidgetState extends ConsumerState<FlexCardWidget> {
   final _repaintKey = GlobalKey();
 
   Future<Uint8List?> capture() async {
+    ui.Image? image;
     try {
       final boundary =
           _repaintKey.currentContext?.findRenderObject()
               as RenderRepaintBoundary?;
       if (boundary == null) return null;
-      final image = await boundary.toImage(pixelRatio: 3.0);
+      image = await boundary.toImage(pixelRatio: 3.0);
       final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
       return byteData?.buffer.asUint8List();
     } catch (e) {
       AppLogger().error('FlexCardWidget: capture failed', e);
       return null;
+    } finally {
+      image?.dispose();
     }
   }
 
