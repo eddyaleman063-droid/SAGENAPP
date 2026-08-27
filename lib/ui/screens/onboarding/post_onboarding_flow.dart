@@ -190,14 +190,28 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
   ) async {
     final uid = ref.read(authServiceProvider).currentUser?.uid;
     if (uid == null) return false;
+
+    // For social sign-in (e.g. Google) the name step is skipped, so fall back
+    // to the display name supplied by the identity provider.
+    String firstName = funnel.name;
+    String lastName = funnel.surname;
+    if (firstName.isEmpty && lastName.isEmpty && auth.displayName.isNotEmpty) {
+      final parts = auth.displayName.trim().split(RegExp(r'\s+'));
+      firstName = parts.first;
+      lastName = parts.length > 1 ? parts.sublist(1).join(' ') : '';
+    }
+    // Ensure at least a non-empty name set to satisfy createUserProfile.
+    if (firstName.isEmpty) firstName = 'Estudiante';
+    if (lastName.isEmpty) lastName = '';
+
     for (int attempt = 0; attempt < 3; attempt++) {
       try {
         await ref
             .read(firestoreServiceProvider)
             .createUserProfile(
               uid: uid,
-              firstName: funnel.name,
-              lastName: funnel.surname,
+              firstName: firstName,
+              lastName: lastName,
               email: funnel.email.isNotEmpty ? funnel.email : auth.email,
               age: funnel.age,
             );

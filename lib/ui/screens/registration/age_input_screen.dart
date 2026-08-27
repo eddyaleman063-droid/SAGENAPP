@@ -21,111 +21,126 @@ class AgeInputScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: context.surfaceDeep,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(AppSpacing.xxl),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (onBack != null)
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: IconButton(
-                    onPressed: onBack,
-                    icon: const Icon(Icons.arrow_back_rounded),
-                    iconSize: 24,
-                    color: context.textSecondary,
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                child: IntrinsicHeight(
+                  child: Padding(
+                    padding: const EdgeInsets.all(AppSpacing.xxl),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (onBack != null)
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: IconButton(
+                              onPressed: onBack,
+                              icon: const Icon(Icons.arrow_back_rounded),
+                              iconSize: 24,
+                              color: context.textSecondary,
+                            ),
+                          ),
+                        const Spacer(flex: 2),
+                        Text(
+                          l.regAgeQuestion,
+                          style: AppTextStyle.headline.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: context.textPrimary,
+                          ),
+                        ),
+                        const SizedBox(height: AppSpacing.xxl),
+                        Semantics(
+                          label: l.regAgeQuestion,
+                          child: TextField(
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
+                            maxLength: 2,
+                            textInputAction: TextInputAction.next,
+                            style: AppTextStyle.display.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: context.textPrimary,
+                            ),
+                            textAlign: TextAlign.center,
+                            decoration: InputDecoration(
+                              counterText: '',
+                              hintText: '0',
+                              hintStyle: AppTextStyle.display.copyWith(
+                                color: context.subtle,
+                              ),
+                              filled: true,
+                              fillColor: context.surfaceTinted,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(
+                                  AppRadius.xl,
+                                ),
+                                borderSide: BorderSide.none,
+                              ),
+                              contentPadding: const EdgeInsets.symmetric(
+                                vertical: AppSpacing.lg,
+                              ),
+                            ),
+                            onChanged: (value) {
+                              final parsed = int.tryParse(value) ?? 0;
+                              ref
+                                  .read(registrationFunnelProvider.notifier)
+                                  .setAge(parsed);
+                            },
+                          ),
+                        ),
+                        if (hasAge > 0 && !ageValid)
+                          Padding(
+                            padding: const EdgeInsets.only(top: AppSpacing.sm),
+                            child: Text(
+                              l.regAgeValidation,
+                              style: AppTextStyle.subtitle.copyWith(
+                                color: PremiumColors.error,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        const Spacer(flex: 3),
+                        SizedBox(
+                          width: double.infinity,
+                          height: 54,
+                          child: Semantics(
+                            button: true,
+                            label: l.continueText,
+                            child: ElevatedButton(
+                              onPressed: ageValid ? onContinue : null,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: PremiumColors.primary,
+                                foregroundColor: Colors.white,
+                                disabledBackgroundColor: context.surfaceTinted,
+                                disabledForegroundColor: context.textDisabled,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                    AppRadius.lg,
+                                  ),
+                                ),
+                                elevation: ageValid ? 4 : 0,
+                              ),
+                              child: Text(
+                                l.continueText,
+                                style: AppTextStyle.titleSmall.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: AppSpacing.md),
+                      ],
+                    ),
                   ),
-                ),
-              const Spacer(flex: 2),
-              Text(
-                l.regAgeQuestion,
-                style: AppTextStyle.headline.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: context.textPrimary,
                 ),
               ),
-              const SizedBox(height: AppSpacing.xxl),
-              Semantics(
-                label: l.regAgeQuestion,
-                child: TextField(
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                    LengthLimitingTextInputFormatter(2),
-                  ],
-                  maxLength: 2,
-                  style: AppTextStyle.display.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: context.textPrimary,
-                  ),
-                  textAlign: TextAlign.center,
-                  decoration: InputDecoration(
-                    counterText: '',
-                    hintText: '0',
-                    hintStyle: AppTextStyle.display.copyWith(
-                      color: context.subtle,
-                    ),
-                    filled: true,
-                    fillColor: context.surfaceTinted,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(AppRadius.xl),
-                      borderSide: BorderSide.none,
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(
-                      vertical: AppSpacing.lg,
-                    ),
-                  ),
-                  onChanged: (value) {
-                    final parsed = int.tryParse(value) ?? 0;
-                    ref
-                        .read(registrationFunnelProvider.notifier)
-                        .setAge(parsed);
-                  },
-                ),
-              ),
-              if (hasAge > 0 && !ageValid)
-                Padding(
-                  padding: const EdgeInsets.only(top: AppSpacing.sm),
-                  child: Text(
-                    l.regAgeValidation,
-                    style: AppTextStyle.subtitle.copyWith(
-                      color: PremiumColors.error,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              const Spacer(flex: 3),
-              SizedBox(
-                width: double.infinity,
-                height: 54,
-                child: Semantics(
-                  button: true,
-                  label: l.continueText,
-                  child: ElevatedButton(
-                    onPressed: ageValid ? onContinue : null,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: PremiumColors.primary,
-                      foregroundColor: Colors.white,
-                      disabledBackgroundColor: context.surfaceTinted,
-                      disabledForegroundColor: context.textDisabled,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(AppRadius.lg),
-                      ),
-                      elevation: ageValid ? 4 : 0,
-                    ),
-                    child: Text(
-                      l.continueText,
-                      style: AppTextStyle.titleSmall.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: AppSpacing.md),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );

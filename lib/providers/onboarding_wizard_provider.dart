@@ -178,8 +178,11 @@ final onboardingCanContinueProvider = Provider.autoDispose<bool>((ref) {
 });
 
 /// Snapshot of wizard sectionData bridged to post-onboarding flow.
-/// Saved before navigating away from wizard; consumed once by bridge.
-class WizardBridge extends AutoDisposeNotifier<Map<int, dynamic>> {
+/// Saved before navigating away from wizard; consumed once by flow.
+/// Deliberately NOT autoDispose: the bridge is written with `ref.read` and
+/// read after the navigation frame, so an auto-disposing provider with zero
+/// listeners could be disposed (and lose the data) before the flow consumes it.
+class WizardBridge extends Notifier<Map<int, dynamic>> {
   @override
   Map<int, dynamic> build() => {};
 
@@ -192,7 +195,6 @@ class WizardBridge extends AutoDisposeNotifier<Map<int, dynamic>> {
   }
 }
 
-final wizardBridgeProvider =
-    NotifierProvider.autoDispose<WizardBridge, Map<int, dynamic>>(
-      WizardBridge.new,
-    );
+final wizardBridgeProvider = NotifierProvider<WizardBridge, Map<int, dynamic>>(
+  WizardBridge.new,
+);

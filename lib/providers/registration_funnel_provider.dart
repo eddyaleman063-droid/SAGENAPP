@@ -63,7 +63,7 @@ class RegistrationFunnelNotifier
   }
 
   void setEmail(String value) {
-    state = state.copyWith(email: value);
+    state = state.copyWith(email: value.trim());
   }
 
   void setPassword(String value) {
@@ -100,7 +100,7 @@ final funnelAgeValidProvider = Provider.autoDispose<bool>((ref) {
 
 final funnelEmailValidProvider = Provider.autoDispose<bool>((ref) {
   final state = ref.watch(registrationFunnelProvider);
-  return _emailRegex.hasMatch(state.email);
+  return _emailRegex.hasMatch(state.email.trim());
 });
 
 final funnelPasswordValidProvider = Provider.autoDispose<bool>((ref) {

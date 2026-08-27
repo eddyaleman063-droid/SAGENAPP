@@ -20,105 +20,127 @@ class EmailInputScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: context.surfaceDeep,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(AppSpacing.xxl),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (onBack != null)
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: IconButton(
-                    onPressed: onBack,
-                    icon: const Icon(Icons.arrow_back_rounded),
-                    iconSize: 24,
-                    color: context.textSecondary,
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                child: IntrinsicHeight(
+                  child: Padding(
+                    padding: const EdgeInsets.all(AppSpacing.xxl),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (onBack != null)
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: IconButton(
+                              onPressed: onBack,
+                              icon: const Icon(Icons.arrow_back_rounded),
+                              iconSize: 24,
+                              color: context.textSecondary,
+                            ),
+                          ),
+                        const Spacer(flex: 2),
+                        Text(
+                          l.regEmailTitle,
+                          style: AppTextStyle.headline.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: context.textPrimary,
+                          ),
+                        ),
+                        const SizedBox(height: AppSpacing.sm),
+                        Text(
+                          l.regEmailDesc,
+                          style: AppTextStyle.bodyMd.copyWith(
+                            color: context.textTertiary,
+                          ),
+                        ),
+                        const SizedBox(height: AppSpacing.xxl),
+                        Semantics(
+                          label: l.regEmailTitle,
+                          child: TextField(
+                            maxLength: 254,
+                            keyboardType: TextInputType.emailAddress,
+                            textInputAction: TextInputAction.done,
+                            autocorrect: false,
+                            enableSuggestions: false,
+                            autofillHints: const [AutofillHints.email],
+                            style: AppTextStyle.titleSmall.copyWith(
+                              color: context.textPrimary,
+                            ),
+                            decoration: InputDecoration(
+                              hintText: l.regEmailHint,
+                              hintStyle: AppTextStyle.titleSmall.copyWith(
+                                color: context.subtle,
+                              ),
+                              filled: true,
+                              fillColor: context.surfaceTinted,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(
+                                  AppRadius.xl,
+                                ),
+                                borderSide: BorderSide.none,
+                              ),
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: AppSpacing.lg,
+                                vertical: AppSpacing.lg,
+                              ),
+                              prefixIcon: const Icon(
+                                Icons.email_rounded,
+                                color: PremiumColors.primary,
+                                size: 20,
+                              ),
+                            ),
+                            onChanged: (value) {
+                              ref
+                                  .read(registrationFunnelProvider.notifier)
+                                  .setEmail(value);
+                            },
+                            onSubmitted: (_) {
+                              if (emailValid) onContinue();
+                            },
+                          ),
+                        ),
+                        const Spacer(flex: 3),
+                        SizedBox(
+                          width: double.infinity,
+                          height: 54,
+                          child: Semantics(
+                            button: true,
+                            label: l.continueText,
+                            child: ElevatedButton(
+                              onPressed: emailValid ? onContinue : null,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: PremiumColors.primary,
+                                foregroundColor: Colors.white,
+                                disabledBackgroundColor: context.surfaceTinted,
+                                disabledForegroundColor: context.textDisabled,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                    AppRadius.lg,
+                                  ),
+                                ),
+                                elevation: emailValid ? 4 : 0,
+                              ),
+                              child: Text(
+                                l.continueText,
+                                style: AppTextStyle.titleSmall.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: AppSpacing.md),
+                      ],
+                    ).animate().fadeIn().slideY(begin: 0.1),
                   ),
                 ),
-              const Spacer(flex: 2),
-              Text(
-                l.regEmailTitle,
-                style: AppTextStyle.headline.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: context.textPrimary,
-                ),
               ),
-              const SizedBox(height: AppSpacing.sm),
-              Text(
-                l.regEmailDesc,
-                style: AppTextStyle.bodyMd.copyWith(
-                  color: context.textTertiary,
-                ),
-              ),
-              const SizedBox(height: AppSpacing.xxl),
-              Semantics(
-                label: l.regEmailTitle,
-                child: TextField(
-                  maxLength: 254,
-                  keyboardType: TextInputType.emailAddress,
-                  style: AppTextStyle.titleSmall.copyWith(
-                    color: context.textPrimary,
-                  ),
-                  decoration: InputDecoration(
-                    hintText: l.regEmailHint,
-                    hintStyle: AppTextStyle.titleSmall.copyWith(
-                      color: context.subtle,
-                    ),
-                    filled: true,
-                    fillColor: context.surfaceTinted,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(AppRadius.xl),
-                      borderSide: BorderSide.none,
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: AppSpacing.lg,
-                      vertical: AppSpacing.lg,
-                    ),
-                    prefixIcon: const Icon(
-                      Icons.email_rounded,
-                      color: PremiumColors.primary,
-                      size: 20,
-                    ),
-                  ),
-                  onChanged: (value) {
-                    ref
-                        .read(registrationFunnelProvider.notifier)
-                        .setEmail(value);
-                  },
-                ),
-              ),
-              const Spacer(flex: 3),
-              SizedBox(
-                width: double.infinity,
-                height: 54,
-                child: Semantics(
-                  button: true,
-                  label: l.continueText,
-                  child: ElevatedButton(
-                    onPressed: emailValid ? onContinue : null,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: PremiumColors.primary,
-                      foregroundColor: Colors.white,
-                      disabledBackgroundColor: context.surfaceTinted,
-                      disabledForegroundColor: context.textDisabled,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(AppRadius.lg),
-                      ),
-                      elevation: emailValid ? 4 : 0,
-                    ),
-                    child: Text(
-                      l.continueText,
-                      style: AppTextStyle.titleSmall.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: AppSpacing.md),
-            ],
-          ).animate().fadeIn().slideY(begin: 0.1),
+            );
+          },
         ),
       ),
     );
