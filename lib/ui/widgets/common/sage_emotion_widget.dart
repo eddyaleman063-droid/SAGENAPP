@@ -158,14 +158,18 @@ class _LiveSageImageState extends ConsumerState<_LiveSageImage>
         ref.read(sageEmotionServiceProvider).canIdleBreathe(_displayed);
     if (shouldBreathe == _idleBreathe) return;
     _idleBreathe = shouldBreathe;
-    _breatheCtrl?.dispose();
-    _breatheCtrl = null;
-    if (_idleBreathe) {
-      _breatheCtrl = AnimationController(
-        vsync: this,
-        duration: const Duration(milliseconds: 3200),
-      );
+    if (shouldBreathe) {
+      // Reuse the controller and resume from its current position so the
+      // breathing phase doesn't "pop" back to zero on every transition.
+      if (_breatheCtrl == null) {
+        _breatheCtrl = AnimationController(
+          vsync: this,
+          duration: const Duration(milliseconds: 3200),
+        );
+      }
       _breatheCtrl!.repeat(reverse: true);
+    } else {
+      _breatheCtrl?.stop();
     }
   }
 
