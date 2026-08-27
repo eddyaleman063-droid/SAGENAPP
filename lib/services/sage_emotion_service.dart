@@ -136,15 +136,19 @@ class SageEmotionService {
   final Map<SageEmotion, Future<void>> _inFlight = {};
   bool _initialized = false;
 
+  // Highest-value emotions shown during cold-start moments: welcome/chat
+  // defaults plus the most common event reactions. Aliases (happy/happyWings,
+  // excited/excitedWave) share a sprite so only the canonical variant is kept.
   static const _coreEmotions = {
     SageEmotion.calm,
     SageEmotion.happy,
     SageEmotion.excited,
     SageEmotion.thinking,
-    SageEmotion.serious,
+    SageEmotion.curious,
     SageEmotion.worried,
-    SageEmotion.excitedWave,
-    SageEmotion.happyWings,
+    SageEmotion.sad,
+    SageEmotion.proud,
+    SageEmotion.celebrating,
   };
 
   static const _neutralSet = {

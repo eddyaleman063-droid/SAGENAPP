@@ -427,10 +427,6 @@ class StreakNotifier extends Notifier<StreakState> {
 
       final newStatus = _service.checkIn();
 
-      if (oldStreak > 0 && newStatus.currentStreak < oldStreak) {
-        ref.read(emotionEventBusProvider).fire(EmotionEventType.streakLost);
-      }
-
       // Phoenix Feather: revive streak if it would have been lost
       if (usePhoenixFeather &&
           newStatus.currentStreak < oldStreak &&
@@ -457,6 +453,11 @@ class StreakNotifier extends Notifier<StreakState> {
         _syncStreakToFirestore();
         _scheduleStreakReminder();
         return;
+      }
+
+      // Streak was genuinely lost (no phoenix revival) — react accordingly.
+      if (oldStreak > 0 && newStatus.currentStreak < oldStreak) {
+        ref.read(emotionEventBusProvider).fire(EmotionEventType.streakLost);
       }
 
       // Solo el primer check-in del día debe inflar las estadísticas.
