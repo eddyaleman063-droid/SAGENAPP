@@ -174,7 +174,16 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
       lastError: () => null,
     );
 
-    ref.read(emotionEventBusProvider).fire(EmotionEventType.chatSent);
+    final sentiment = ref
+        .read(sageEmotionServiceProvider)
+        .resolveUserSentiment(text);
+    if (sentiment != null) {
+      ref
+          .read(emotionEventBusProvider)
+          .fireEmotion(EmotionEventType.chatSent, sentiment);
+    } else {
+      ref.read(emotionEventBusProvider).fire(EmotionEventType.chatSent);
+    }
 
     final contextMessages = _buildContextMessages(text);
     final service = _primaryService.isAvailable

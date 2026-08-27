@@ -292,4 +292,32 @@ class SageEmotionService {
         return false;
     }
   }
+
+  // Frustration / struggle cues that should make Sage show empathy rather than
+  // defaulting to excitement. Kept intentionally conservative so normal,
+  // encouraging study messages are not misread as negative.
+  static final RegExp _strugglePattern = RegExp(
+    r'\b(no (entiendo|comprendo|puedo|se|funciona|me sale|lo entiendo|se hacerlo)|'
+    r'no entiendo|no comprendo|no puedo|no me sale|dif[ií]cil|confundid|perdid|'
+    r'frustrad|ay[uú]dame|me cuesta|odio|no me gusta|aburrid|triste|'
+    r'horrible|me siento mal)',
+    caseSensitive: false,
+    unicode: true,
+  );
+
+  static final RegExp _curiousPattern = RegExp(
+    r'\b(c[aá]lculo|m[aá]s|puedes explicar|expl[ií]came|dime|c[aó]mo|c[uú]al|'
+    r'por qu[eé]|curiosidad|quiero saber|aprender|pregunta)',
+    caseSensitive: false,
+    unicode: true,
+  );
+
+  /// Maps the user's inbound message to an empathetic Sage emotion, or null
+  /// when it's a normal/positive message (listener keeps its default mapping).
+  SageEmotion? resolveUserSentiment(String text) {
+    if (text.trim().isEmpty) return null;
+    if (_strugglePattern.hasMatch(text)) return SageEmotion.worried;
+    if (_curiousPattern.hasMatch(text)) return SageEmotion.curious;
+    return null;
+  }
 }

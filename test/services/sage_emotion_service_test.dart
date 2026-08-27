@@ -86,4 +86,39 @@ void main() {
       expect(SageEmotion.excited.assetPath, SageEmotion.excitedWave.assetPath);
     });
   });
+
+  group('user sentiment', () {
+    test('returns null for empty or normal positive messages', () {
+      expect(service.resolveUserSentiment(''), isNull);
+      expect(service.resolveUserSentiment('   '), isNull);
+      expect(service.resolveUserSentiment('hola buenos dias gracias'), isNull);
+      expect(service.resolveUserSentiment('genial, ya lo logre'), isNull);
+    });
+
+    test('detects struggle / frustration cues as worried', () {
+      expect(
+        service.resolveUserSentiment('no entiendo este tema'),
+        SageEmotion.worried,
+      );
+      expect(
+        service.resolveUserSentiment('estoy muy frustrado con la tarea'),
+        SageEmotion.worried,
+      );
+      expect(
+        service.resolveUserSentiment('no me sale ningun ejercicio'),
+        SageEmotion.worried,
+      );
+    });
+
+    test('detects curiosity cues as curious', () {
+      expect(
+        service.resolveUserSentiment('explicame las fracciones'),
+        SageEmotion.curious,
+      );
+      expect(
+        service.resolveUserSentiment('quiero conocer mas sobre eso'),
+        SageEmotion.curious,
+      );
+    });
+  });
 }

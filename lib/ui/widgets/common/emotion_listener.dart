@@ -15,7 +15,7 @@ class EmotionListener extends ConsumerStatefulWidget {
 }
 
 class _EmotionListenerState extends ConsumerState<EmotionListener> {
-  StreamSubscription<EmotionEventType>? _sub;
+  StreamSubscription<EmotionEvent>? _sub;
 
   @override
   void initState() {
@@ -29,12 +29,12 @@ class _EmotionListenerState extends ConsumerState<EmotionListener> {
     super.dispose();
   }
 
-  void _onEvent(EmotionEventType event) {
+  void _onEvent(EmotionEvent event) {
     if (!mounted) return;
     final notifier = ref.read(mascotReactionProvider.notifier);
-    final emotion = _mapEvent(event);
+    final emotion = event.emotion ?? _mapEvent(event.type);
     if (emotion != null) {
-      notifier.triggerReaction(emotion, duration: _durationFor(event));
+      notifier.triggerReaction(emotion, duration: _durationFor(event.type));
     }
   }
 
