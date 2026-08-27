@@ -7,6 +7,8 @@ import 'package:sagen/services/experience_service.dart';
 import 'package:sagen/core/theme/app_colors.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/l10n/app_localizations.dart';
+import 'package:sagen/services/sage_emotion_service.dart';
+import 'package:sagen/ui/widgets/common/sage_emotion_widget.dart';
 
 class MotivationScreen extends StatefulWidget {
   final VoidCallback? onContinue;
@@ -71,32 +73,26 @@ class _MotivationScreenState extends State<MotivationScreen> {
     }
   }
 
-  String get _mascotAsset {
+  SageEmotion get _mascotEmotion {
     final count = _selectedCount;
-    if (count == 0) {
-      return 'assets/mascot/emotions/sage_curious.png';
-    }
-    if (count > 1) {
-      return 'assets/mascot/emotions/sage_excited_wave.png';
-    }
+    if (count == 0) return SageEmotion.curious;
+    if (count > 1) return SageEmotion.excitedWave;
     final idx = _selections.indexOf(true);
     switch (idx) {
       case 0:
-        return 'assets/mascot/emotions/sage_thinking.png';
+        return SageEmotion.thinking;
       case 1:
-        return 'assets/mascot/emotions/sage_happy_wings.png';
+        return SageEmotion.happyWings;
       case 2:
-        return 'assets/mascot/emotions/sage_laughing.png';
+        return SageEmotion.laughing;
       case 3:
-        return 'assets/mascot/emotions/sage_thinking.png';
+        return SageEmotion.thinking;
       case 4:
-        return 'assets/mascot/emotions/sage_happy_wings.png';
+        return SageEmotion.happyWings;
       case 5:
-        return 'assets/mascot/emotions/sage_wink.png';
-      case 6:
-        return 'assets/mascot/emotions/sage_curious.png';
+        return SageEmotion.wink;
       default:
-        return 'assets/mascot/emotions/sage_curious.png';
+        return SageEmotion.curious;
     }
   }
 
@@ -203,14 +199,13 @@ class _MotivationScreenState extends State<MotivationScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     ExcludeSemantics(
-                      child: Image.asset(
-                        _mascotAsset,
+                      child: SizedBox(
                         width: 80,
                         height: 80,
-                        cacheWidth: 160,
-                        cacheHeight: 160,
-                        errorBuilder: (_, _, _) =>
-                            const Icon(Icons.pets, size: 48),
+                        child: SageEmotionWidget(
+                          emotion: _mascotEmotion,
+                          size: 80,
+                        ),
                       ),
                     ),
                     const SizedBox(width: AppSpacing.sm),

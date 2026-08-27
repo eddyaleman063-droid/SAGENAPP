@@ -191,7 +191,11 @@ class SageEmotionService {
   Future<void> initialize() async {
     if (_initialized) return;
     _initialized = true;
-    await precacheCore();
+    try {
+      await precacheCore();
+    } catch (_) {
+      _initialized = false;
+    }
   }
 
   Future<void> precacheCore() async {

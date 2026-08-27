@@ -7,6 +7,8 @@ import 'package:sagen/core/theme/app_colors.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:sagen/services/sage_emotion_service.dart';
+import 'package:sagen/ui/widgets/common/sage_emotion_widget.dart';
 
 class RouteSelectionScreen extends StatefulWidget {
   final VoidCallback? onContinue;
@@ -105,15 +107,14 @@ class _RouteSelectionScreenState extends State<RouteSelectionScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   // Mascot on the left
-                  ExcludeSemantics(
-                    child: Image.asset(
-                      'assets/mascot/emotions/sage_thinking.png',
+                  const ExcludeSemantics(
+                    child: SizedBox(
                       width: 80,
                       height: 80,
-                      cacheWidth: 160,
-                      cacheHeight: 160,
-                      errorBuilder: (_, _, _) =>
-                          const Icon(Icons.pets, size: 48),
+                      child: SageEmotionWidget(
+                        emotion: SageEmotion.thinking,
+                        size: 80,
+                      ),
                     ),
                   ),
                   const SizedBox(width: AppSpacing.sm),

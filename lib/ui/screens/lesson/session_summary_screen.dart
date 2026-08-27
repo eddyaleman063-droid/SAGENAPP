@@ -9,6 +9,8 @@ import '../../../core/theme/theme_constants.dart';
 import '../../../models/learning/quiz_score.dart';
 import '../../widgets/animations/particle_burst.dart';
 import '../../widgets/common/confetti_widget.dart';
+import '../../../services/sage_emotion_service.dart';
+import '../../widgets/common/sage_emotion_widget.dart';
 
 enum _FeedbackState { accuracy, speed, standard }
 
@@ -31,7 +33,7 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen>
   late AnimationController _glowCtrl;
   late _FeedbackState _state;
   String _dynamicText = '';
-  late String _sageAsset;
+  late SageEmotion _sageEmotion;
   final _random = Random();
 
   List<String> _accuracyTexts(AppLocalizations l) => [
@@ -64,22 +66,22 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen>
     l.sessionSummaryStandard7,
   ];
 
-  static const _accuracyAssets = [
-    'assets/mascot/emotions/sage_excited_wave.png',
-    'assets/mascot/emotions/sage_happy_wings.png',
-    'assets/mascot/emotions/sage_laughing.png',
+  static const _accuracyEmotions = <SageEmotion>[
+    SageEmotion.excitedWave,
+    SageEmotion.happyWings,
+    SageEmotion.laughing,
   ];
 
-  static const _speedAssets = [
-    'assets/mascot/emotions/sage_curious.png',
-    'assets/mascot/emotions/sage_shocked.png',
-    'assets/mascot/emotions/sage_surprised_wings.png',
+  static const _speedEmotions = <SageEmotion>[
+    SageEmotion.curious,
+    SageEmotion.shocked,
+    SageEmotion.surprisedWings,
   ];
 
-  static const _standardAssets = [
-    'assets/mascot/emotions/sage_calm.png',
-    'assets/mascot/emotions/sage_neutral.png',
-    'assets/mascot/emotions/sage_whistling.png',
+  static const _standardEmotions = <SageEmotion>[
+    SageEmotion.calm,
+    SageEmotion.neutral,
+    SageEmotion.whistling,
   ];
 
   _FeedbackState _determineState(double accuracy, double avgTime) {
@@ -90,7 +92,7 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen>
     return _FeedbackState.standard;
   }
 
-  String _pickRandom(List<String> list) => list[_random.nextInt(list.length)];
+  T _pickRandom<T>(List<T> list) => list[_random.nextInt(list.length)];
 
   int get _totalXp => widget.score.xp;
 
@@ -111,10 +113,10 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen>
         };
       });
     });
-    _sageAsset = switch (_state) {
-      _FeedbackState.accuracy => _pickRandom(_accuracyAssets),
-      _FeedbackState.speed => _pickRandom(_speedAssets),
-      _FeedbackState.standard => _pickRandom(_standardAssets),
+    _sageEmotion = switch (_state) {
+      _FeedbackState.accuracy => _pickRandom(_accuracyEmotions),
+      _FeedbackState.speed => _pickRandom(_speedEmotions),
+      _FeedbackState.standard => _pickRandom(_standardEmotions),
     };
     _glowCtrl = AnimationController(
       vsync: this,
@@ -235,13 +237,10 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen>
             ),
           ),
         ExcludeSemantics(
-          child: Image.asset(
-            _sageAsset,
+          child: SizedBox(
             height: 120,
-            cacheWidth: 240,
-            cacheHeight: 240,
-            fit: BoxFit.contain,
-            errorBuilder: (_, _, _) => const SizedBox(height: 120, width: 120),
+            width: 120,
+            child: SageEmotionWidget(emotion: _sageEmotion, size: 120),
           ),
         ),
       ],

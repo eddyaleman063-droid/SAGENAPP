@@ -122,11 +122,13 @@ class _LiveSageImageState extends ConsumerState<_LiveSageImage>
   late SageEmotion _displayed;
   bool _idleBreathe = false;
   bool _skipNextTransition = false;
+  bool _reduceAnimations = false;
 
   @override
   void initState() {
     super.initState();
     _displayed = widget.emotion;
+    _reduceAnimations = ref.read(reduceAnimationsProvider);
     ref.read(sageEmotionServiceProvider).ensurePrecached(widget.emotion);
     _updateBreathing();
   }
@@ -176,22 +178,26 @@ class _LiveSageImageState extends ConsumerState<_LiveSageImage>
   double _computeScale() {
     double s = 1.0;
     if (_idleBreathe && _breatheCtrl != null) {
-      s += 0.012 * _breatheCtrl!.value;
+      s += 0.025 * _breatheCtrl!.value;
     }
     return s;
   }
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<bool>(reduceAnimationsProvider, (_, _) => _updateBreathing());
+    ref.listen<bool>(reduceAnimationsProvider, (_, reduced) {
+      _reduceAnimations = reduced;
+      _updateBreathing();
+    });
     final dpr = MediaQuery.devicePixelRatioOf(context);
     final decodeSize = (widget.size * dpr).round().clamp(0, 600);
 
+    final skipTransition = _skipNextTransition || _reduceAnimations;
     final imageChild = AnimatedSwitcher(
-      duration: _skipNextTransition
+      duration: skipTransition
           ? Duration.zero
           : const Duration(milliseconds: 300),
-      transitionBuilder: _skipNextTransition
+      transitionBuilder: skipTransition
           ? (child, _) => child
           : (child, animation) {
               return ScaleTransition(

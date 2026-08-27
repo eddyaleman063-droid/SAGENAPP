@@ -250,6 +250,7 @@ class _SagenAppState extends ConsumerState<SagenApp> {
   void initState() {
     super.initState();
     ref.read(appLifecycleProvider.notifier);
+    Future.microtask(() => ref.read(sageEmotionServiceProvider).initialize());
     _deepLinkSub = ref
         .read(deepLinkServiceProvider)
         .actionStream
