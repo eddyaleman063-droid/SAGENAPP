@@ -117,19 +117,36 @@ class _LiveSageImage extends ConsumerStatefulWidget {
 }
 
 class _LiveSageImageState extends ConsumerState<_LiveSageImage>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   AnimationController? _breatheCtrl;
   late SageEmotion _displayed;
   bool _idleBreathe = false;
   bool _skipNextTransition = false;
   bool _reduceAnimations = false;
+  bool _appVisible = true;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _displayed = widget.emotion;
     _reduceAnimations = ref.read(reduceAnimationsProvider);
     ref.read(sageEmotionServiceProvider).ensurePrecached(widget.emotion);
+    _updateBreathing();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _breatheCtrl?.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    final visible = state == AppLifecycleState.resumed;
+    if (visible == _appVisible) return;
+    _appVisible = visible;
     _updateBreathing();
   }
 
@@ -155,6 +172,7 @@ class _LiveSageImageState extends ConsumerState<_LiveSageImage>
     final reduced = ref.read(reduceAnimationsProvider);
     final shouldBreathe =
         !reduced &&
+        _appVisible &&
         ref.read(sageEmotionServiceProvider).canIdleBreathe(_displayed);
     if (shouldBreathe == _idleBreathe) return;
     _idleBreathe = shouldBreathe;
@@ -169,12 +187,6 @@ class _LiveSageImageState extends ConsumerState<_LiveSageImage>
     } else {
       _breatheCtrl?.stop();
     }
-  }
-
-  @override
-  void dispose() {
-    _breatheCtrl?.dispose();
-    super.dispose();
   }
 
   double _computeScale() {
