@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -159,56 +160,62 @@ class WelcomeScreen extends ConsumerWidget {
                           ),
                         ),
                       ),
-                      // ── Demo mode button (offline, for live presentation) ──
-                      const SizedBox(height: AppSpacing.lg),
-                      Semantics(
-                        button: true,
-                        label: l.demoModeLabel,
-                        child: SagenTouchResponse(
-                          onTap: () {
-                            ref.read(authProvider.notifier).enterDemoMode();
-                            context.go('/main');
-                          },
-                          child: Container(
-                            width: double.infinity,
-                            height: 48,
-                            decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.08),
-                              borderRadius: BorderRadius.circular(AppRadius.xl),
-                              border: Border.all(
-                                color: Colors.white.withValues(alpha: 0.2),
-                                width: 1,
+                      // ── Demo mode button (debug only, for live presentation) ──
+                      if (!kReleaseMode) ...[
+                        const SizedBox(height: AppSpacing.lg),
+                        Semantics(
+                          button: true,
+                          label: l.demoModeLabel,
+                          child: SagenTouchResponse(
+                            onTap: () {
+                              ref.read(authProvider.notifier).enterDemoMode();
+                              context.go('/main');
+                            },
+                            child: Container(
+                              width: double.infinity,
+                              height: 48,
+                              decoration: BoxDecoration(
+                                color: Colors.white.withValues(alpha: 0.08),
+                                borderRadius: BorderRadius.circular(
+                                  AppRadius.xl,
+                                ),
+                                border: Border.all(
+                                  color: Colors.white.withValues(alpha: 0.2),
+                                  width: 1,
+                                ),
                               ),
-                            ),
-                            child: Center(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.wifi_off_rounded,
-                                    size: 18,
-                                    color: Colors.white.withValues(alpha: 0.6),
-                                  ),
-                                  const SizedBox(width: AppSpacing.sm),
-                                  Text(
-                                    AppLocalizations.of(
-                                          context,
-                                        )?.demoModeLabel ??
-                                        '',
-                                    style: AppTextStyle.label.copyWith(
-                                      fontWeight: FontWeight.w700,
+                              child: Center(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.wifi_off_rounded,
+                                      size: 18,
                                       color: Colors.white.withValues(
                                         alpha: 0.6,
                                       ),
-                                      letterSpacing: 2,
                                     ),
-                                  ),
-                                ],
+                                    const SizedBox(width: AppSpacing.sm),
+                                    Text(
+                                      AppLocalizations.of(
+                                            context,
+                                          )?.demoModeLabel ??
+                                          '',
+                                      style: AppTextStyle.label.copyWith(
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.white.withValues(
+                                          alpha: 0.6,
+                                        ),
+                                        letterSpacing: 2,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
+                      ],
                     ],
                   ),
                 ),

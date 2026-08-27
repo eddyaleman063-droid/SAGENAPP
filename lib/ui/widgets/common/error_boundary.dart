@@ -18,25 +18,42 @@ class ErrorBoundary extends StatefulWidget {
 
 class _ErrorBoundaryState extends State<ErrorBoundary> {
   String? _lastError;
-  late final void Function(FlutterErrorDetails)? _oldHandler;
+
+  static final _activeHandlers = <void Function(FlutterErrorDetails)>{};
+  static bool _globalInstalled = false;
+
+  static void _globalHandler(FlutterErrorDetails details) {
+    for (final h in _activeHandlers) {
+      h(details);
+    }
+  }
+
+  void _onError(FlutterErrorDetails details) {
+    final msg = details.exceptionAsString();
+    if (_lastError != msg) {
+      _lastError = msg;
+      if (mounted) setState(() {});
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    _oldHandler = FlutterError.onError;
-    FlutterError.onError = (details) {
-      final msg = details.exceptionAsString();
-      if (_lastError != msg) {
-        _lastError = msg;
-        if (mounted) setState(() {});
-      }
-      _oldHandler?.call(details);
-    };
+    _activeHandlers.add(_onError);
+    if (!_globalInstalled) {
+      _globalInstalled = true;
+      final prev = FlutterError.onError;
+      FlutterError.onError = (details) {
+        _globalHandler(details);
+        prev?.call(details);
+      };
+    }
   }
 
   @override
   void dispose() {
-    FlutterError.onError = _oldHandler;
+    _activeHandlers.remove(_onError);
+    if (_activeHandlers.isEmpty) _globalInstalled = false;
     super.dispose();
   }
 
@@ -85,8 +102,9 @@ class _ErrorFallback extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const ExcludeSemantics(
-                    child: SageEmotionWidget(emotion: SageEmotion.worried),
+                  SageEmotionWidget(
+                    emotion: SageEmotion.worried,
+                    semanticLabel: l?.errorSomethingWrong ?? '',
                   ),
                   Semantics(
                     label: l?.errorSomethingWrong ?? '',

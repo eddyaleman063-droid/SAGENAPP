@@ -21,12 +21,11 @@ class EmptyChat extends ConsumerWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          ExcludeSemantics(
-            child: SageEmotionWidget(
-              emotion: emotion,
-              size: 80,
-              animated: true,
-            ),
+          SageEmotionWidget(
+            emotion: emotion,
+            size: 80,
+            semanticLabel: l?.chatEmptyTitle ?? '',
+            animated: true,
           ),
           const SizedBox(height: AppSpacing.xl),
           Text(

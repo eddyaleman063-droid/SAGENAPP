@@ -104,7 +104,7 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
   void _reverseSkipConditionalSteps() {
     final funnel = ref.read(registrationFunnelProvider);
     if (_step == 13 && funnel.authMethod != 'email') {
-      _step = 10;
+      _step = 9;
     }
   }
 
@@ -337,6 +337,7 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
         onContinue: () => _onAuthMethodSelected(
           ref.read(registrationFunnelProvider).authMethod,
         ),
+        onBack: _goBack,
       );
     }
 
