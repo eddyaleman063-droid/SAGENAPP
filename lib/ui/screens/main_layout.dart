@@ -33,6 +33,7 @@ class MainLayout extends ConsumerStatefulWidget {
 class _MainLayoutState extends ConsumerState<MainLayout> {
   late PageController _pageCtrl;
   bool _animating = false;
+  final Set<int> _builtTabs = {};
   StreamSubscription<int>? _tabSub;
   StreamSubscription<int>? _levelUpSub;
   StreamSubscription<int>? _gemRewardSub;
@@ -52,6 +53,7 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
   @override
   void initState() {
     super.initState();
+    _builtTabs.add(widget.initialTab);
     _pageCtrl = PageController(initialPage: widget.initialTab);
     _tabSub = ref.read(deepLinkServiceProvider).tabSwitchStream.listen((tab) {
       if (mounted) _onTabTap(tab);
@@ -170,12 +172,32 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
     );
   }
 
+  Widget _buildTab(int index) {
+    switch (index) {
+      case 0:
+        return const DashboardHomeScreen();
+      case 1:
+        return const StoreScreen();
+      case 2:
+        return const SageChatScreen();
+      case 3:
+        return const RankingScreen();
+      case 4:
+        return const ProfileScreen();
+      default:
+        return const SizedBox.shrink();
+    }
+  }
+
   void _onTabTap(int index) {
     if (_animating || index == ref.read(dashboardProvider).activeTab) return;
     ref.read(experienceServiceProvider).lightHaptic();
     final tabNames = ['home', 'store', 'sage', 'ranking', 'profile'];
     AnalyticsService.instance.trackScreen(tabNames[index]);
-    setState(() => _animating = true);
+    setState(() {
+      _builtTabs.add(index);
+      _animating = true;
+    });
     ref.read(dashboardProvider.notifier).setActiveTab(index);
     _pageCtrl
         .animateToPage(
@@ -235,12 +257,11 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
                 child: PageView(
                   controller: _pageCtrl,
                   physics: const NeverScrollableScrollPhysics(),
-                  children: const [
-                    DashboardHomeScreen(),
-                    StoreScreen(),
-                    SageChatScreen(),
-                    RankingScreen(),
-                    ProfileScreen(),
+                  children: [
+                    for (var i = 0; i < 5; i++)
+                      _builtTabs.contains(i)
+                          ? _buildTab(i)
+                          : const SizedBox.shrink(),
                   ],
                 ),
               ),

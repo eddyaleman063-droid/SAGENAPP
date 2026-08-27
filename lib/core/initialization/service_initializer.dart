@@ -76,7 +76,6 @@ class ServiceInitializer {
 
   static Future<bool> _recoverFirebase(AppLogger logger) async {
     try {
-      await Future.delayed(const Duration(seconds: 2));
       const channel = MethodChannel('dev.sagen.app/firebase');
       await channel.invokeMethod('recoverFirebaseApp');
       final options = Platform.isIOS

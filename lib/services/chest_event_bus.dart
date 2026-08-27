@@ -67,6 +67,8 @@ class ChestEventBus {
   void reset() {
     _queue.clear();
     _disposed = false;
+    // Release the previous controller so its subscribers are detached.
+    if (!_controller.isClosed) _controller.close();
     // Recreate the broadcast controller since close() can't be undone
     _controller = StreamController<ChestRewardData>.broadcast();
   }
