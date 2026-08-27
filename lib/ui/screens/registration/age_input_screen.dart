@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/theme/theme_constants.dart';
 import 'package:sagen/providers/providers.dart';
@@ -7,8 +8,9 @@ import 'package:sagen/core/theme/app_colors.dart';
 
 class AgeInputScreen extends ConsumerWidget {
   final VoidCallback onContinue;
+  final VoidCallback? onBack;
 
-  const AgeInputScreen({super.key, required this.onContinue});
+  const AgeInputScreen({super.key, required this.onContinue, this.onBack});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,6 +27,16 @@ class AgeInputScreen extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              if (onBack != null)
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: IconButton(
+                    onPressed: onBack,
+                    icon: const Icon(Icons.arrow_back_rounded),
+                    iconSize: 24,
+                    color: context.textSecondary,
+                  ),
+                ),
               const Spacer(flex: 2),
               Text(
                 l.regAgeQuestion,
@@ -38,6 +50,10 @@ class AgeInputScreen extends ConsumerWidget {
                 label: l.regAgeQuestion,
                 child: TextField(
                   keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    LengthLimitingTextInputFormatter(2),
+                  ],
                   maxLength: 2,
                   style: AppTextStyle.display.copyWith(
                     fontWeight: FontWeight.bold,

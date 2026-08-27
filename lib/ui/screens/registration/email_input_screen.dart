@@ -8,8 +8,9 @@ import 'package:sagen/core/theme/app_colors.dart';
 
 class EmailInputScreen extends ConsumerWidget {
   final VoidCallback onContinue;
+  final VoidCallback? onBack;
 
-  const EmailInputScreen({super.key, required this.onContinue});
+  const EmailInputScreen({super.key, required this.onContinue, this.onBack});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,6 +26,16 @@ class EmailInputScreen extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              if (onBack != null)
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: IconButton(
+                    onPressed: onBack,
+                    icon: const Icon(Icons.arrow_back_rounded),
+                    iconSize: 24,
+                    color: context.textSecondary,
+                  ),
+                ),
               const Spacer(flex: 2),
               Text(
                 l.regEmailTitle,

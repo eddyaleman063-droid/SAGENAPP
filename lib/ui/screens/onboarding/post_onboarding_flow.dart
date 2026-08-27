@@ -20,7 +20,6 @@ import '../../screens/registration/email_input_screen.dart';
 import '../../screens/registration/password_input_screen.dart';
 import '../../screens/registration/name_input_screen.dart';
 import '../../screens/registration/profile_success_screen.dart';
-import '../../screens/auth/login_screen.dart';
 import 'post_onboarding_welcome_screen.dart';
 import 'route_selection_screen.dart';
 import 'motivation_screen.dart';
@@ -62,7 +61,7 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
   bool _isAuthenticating = false;
   int _authGeneration = 0;
 
-  static const int _totalSteps = 16;
+  static const int _totalSteps = 15;
 
   @override
   void initState() {
@@ -86,6 +85,7 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
         _step--;
         _reverseSkipConditionalSteps();
       });
+      ref.read(analyticsServiceProvider).trackOnboardingStep(_step);
     }
   }
 
@@ -282,7 +282,7 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
       },
     ),
     // 9: Age input
-    (ctx, a) => AgeInputScreen(onContinue: a.advance),
+    (ctx, a) => AgeInputScreen(onContinue: a.advance, onBack: a.goBack),
     // 10: Auth method (overridden inline at _step == 10)
     null,
     // 11: Email input (conditional)
@@ -290,11 +290,10 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
     // 12: Password input (conditional)
     null,
     // 13: Name input
-    (ctx, a) => NameInputScreen(onContinue: a.completeRegistration),
+    (ctx, a) =>
+        NameInputScreen(onContinue: a.completeRegistration, onBack: a.goBack),
     // 14: Profile success
     (ctx, a) => const ProfileSuccessScreen(),
-    // 15: Inline auth (login/register)
-    (ctx, a) => const LoginScreen(isOnboarding: true),
   ];
 
   @override
@@ -346,7 +345,7 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
         registrationFunnelProvider.select((s) => s.authMethod),
       );
       if (authMethod == 'email') {
-        return EmailInputScreen(onContinue: _advance);
+        return EmailInputScreen(onContinue: _advance, onBack: _goBack);
       }
       return const SizedBox.shrink();
     }
@@ -356,7 +355,7 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
         registrationFunnelProvider.select((s) => s.authMethod),
       );
       if (authMethod == 'email') {
-        return PasswordInputScreen(onContinue: _advance);
+        return PasswordInputScreen(onContinue: _advance, onBack: _goBack);
       }
       return const SizedBox.shrink();
     }

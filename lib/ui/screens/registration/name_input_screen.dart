@@ -8,8 +8,9 @@ import 'package:sagen/core/theme/app_colors.dart';
 
 class NameInputScreen extends ConsumerWidget {
   final VoidCallback onContinue;
+  final VoidCallback? onBack;
 
-  const NameInputScreen({super.key, required this.onContinue});
+  const NameInputScreen({super.key, required this.onContinue, this.onBack});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -26,6 +27,16 @@ class NameInputScreen extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              if (onBack != null)
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: IconButton(
+                    onPressed: onBack,
+                    icon: const Icon(Icons.arrow_back_rounded),
+                    iconSize: 24,
+                    color: context.textSecondary,
+                  ),
+                ),
               const Spacer(flex: 2),
               Text(
                 l.regNameQuestion,
