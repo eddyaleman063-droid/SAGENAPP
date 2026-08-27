@@ -161,12 +161,10 @@ class _LiveSageImageState extends ConsumerState<_LiveSageImage>
     if (shouldBreathe) {
       // Reuse the controller and resume from its current position so the
       // breathing phase doesn't "pop" back to zero on every transition.
-      if (_breatheCtrl == null) {
-        _breatheCtrl = AnimationController(
-          vsync: this,
-          duration: const Duration(milliseconds: 3200),
-        );
-      }
+      _breatheCtrl ??= AnimationController(
+        vsync: this,
+        duration: const Duration(milliseconds: 3200),
+      );
       _breatheCtrl!.repeat(reverse: true);
     } else {
       _breatheCtrl?.stop();
