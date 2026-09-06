@@ -27,6 +27,12 @@ abstract class IEconomicFunctionsService {
     bool freezeUsed = false,
     bool checkIn = true,
     String? itemUsed,
+    // NUEVO-fix (streak backfill): día UTC del último check-in local previo y
+    // racha consecutiva previa. El servidor los usa para recuperar días
+    // offline probados (ecuación de continuidad + ventana acotada) en vez de
+    // colapsar la racha a 1.
+    String? activityDay,
+    int? activityStreak,
   });
   Future<Map<String, dynamic>?> recordDonation({
     required double amount,

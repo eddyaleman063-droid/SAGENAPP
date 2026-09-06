@@ -23,6 +23,20 @@ function setUserDoc(uid, data) {
   admin._setDoc(`users/${uid}`, data);
 }
 
+// Día calendario UTC (YYYY-MM-DD) desplazado [offsetDays] desde hoy.
+function isoDay(offsetDays) {
+  const d = new Date();
+  d.setUTCDate(d.getUTCDate() + offsetDays);
+  return d.toISOString().split('T')[0];
+}
+
+// Última actividad del server como ISO YYYY-MM-DD desplazada [offsetDays].
+function lastActivityAt(offsetDays) {
+  const d = new Date();
+  d.setDate(d.getDate() + offsetDays);
+  return { toDate: () => d };
+}
+
 describe('computeCappedXp', () => {
   test('caps XP at MAX_DAILY_XP (500)', () => {
     const result = economic.computeCappedXp(480, 50);
@@ -401,6 +415,123 @@ describe('incrementStreak', () => {
     expect(result.currentStreak).toBe(1);
     expect(result.streakBroken).toBe(true);
     expect(result.previousStreak).toBe(10);
+  });
+
+  describe('NUEVO-fix: streak backfill de días offline', () => {
+    test('recupera 1 día offline probado por el cliente (no colapsa a 1)', async () => {
+      setUserDoc(AUTH_UID, {
+        currentStreak: 5,
+        longestStreak: 10,
+        streak_last_activity: lastActivityAt(-2),
+      });
+      const result = await economic.incrementStreak(
+        { activityDay: isoDay(-1), activityStreak: 6 },
+        makeContext()
+      );
+      // server(5) + 1 día offline + check-in de hoy = 7.
+      expect(result.currentStreak).toBe(7);
+      expect(result.backfilledDays).toBe(1);
+      expect(result.alreadyCheckedIn).toBe(false);
+      expect(admin._getDoc(`users/${AUTH_UID}`).currentStreak).toBe(7);
+    });
+
+    test('recupera hasta 3 días offline consecutivos', async () => {
+      setUserDoc(AUTH_UID, {
+        currentStreak: 5,
+        longestStreak: 10,
+        streak_last_activity: lastActivityAt(-4),
+      });
+      const result = await economic.incrementStreak(
+        { activityDay: isoDay(-1), activityStreak: 8 },
+        makeContext()
+      );
+      expect(result.currentStreak).toBe(9);
+      expect(result.backfilledDays).toBe(3);
+      expect(result.streakBroken).toBeUndefined();
+    });
+
+    test('rechaza una racha inflada (ecuación de continuidad rota) y rompe', async () => {
+      setUserDoc(AUTH_UID, {
+        currentStreak: 5,
+        longestStreak: 10,
+        streak_last_activity: lastActivityAt(-2),
+      });
+      const result = await economic.incrementStreak(
+        { activityDay: isoDay(-1), activityStreak: 99 },
+        makeContext()
+      );
+      expect(result.streakBroken).toBe(true);
+      expect(result.currentStreak).toBe(1);
+    });
+
+    test('rechaza un activityDay futuro (reloj adelantado)', async () => {
+      setUserDoc(AUTH_UID, {
+        currentStreak: 5,
+        longestStreak: 10,
+        streak_last_activity: lastActivityAt(-2),
+      });
+      const result = await economic.incrementStreak(
+        { activityDay: isoDay(1), activityStreak: 6 },
+        makeContext()
+      );
+      expect(result.streakBroken).toBe(true);
+      expect(result.currentStreak).toBe(1);
+    });
+
+    test('rechaza un activityDay anterior al historial del server (regresivo)', async () => {
+      setUserDoc(AUTH_UID, {
+        currentStreak: 5,
+        longestStreak: 10,
+        streak_last_activity: lastActivityAt(-2),
+      });
+      // El día declarado es más viejo que el último conocido: sin backfill.
+      const result = await economic.incrementStreak(
+        { activityDay: isoDay(-5), activityStreak: 6 },
+        makeContext()
+      );
+      expect(result.streakBroken).toBe(true);
+      expect(result.currentStreak).toBe(1);
+    });
+
+    test('no backfillea si el día declarado es el mismo del server (días saltados)', async () => {
+      setUserDoc(AUTH_UID, {
+        currentStreak: 5,
+        longestStreak: 10,
+        streak_last_activity: lastActivityAt(-2),
+      });
+      // El cliente no avanzó más allá del último día del server: el gap real
+      // (2 días) sigue el flujo freeze/romper, nunca se "repetall".
+      const result = await economic.incrementStreak(
+        { activityDay: isoDay(-2), activityStreak: 6 },
+        makeContext()
+      );
+      expect(result.currentStreak).toBe(1);
+      expect(result.streakBroken).toBe(true);
+    });
+
+    test('acepta el baseline local en el primer contacto (usuario fresco)', async () => {
+      setUserDoc(AUTH_UID, { currentStreak: 0, longestStreak: 0 });
+      const result = await economic.incrementStreak(
+        { activityDay: isoDay(0), activityStreak: 0 },
+        makeContext()
+      );
+      expect(result.currentStreak).toBe(1);
+      expect(result.backfilledDays).toBe(0);
+      expect(result.streakBroken).toBeUndefined();
+    });
+
+    test('compatibilidad: clientes viejos sin activityDay mantienen el comportamiento', async () => {
+      const threeDaysAgo = new Date();
+      threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+      setUserDoc(AUTH_UID, {
+        currentStreak: 10,
+        longestStreak: 15,
+        streak_last_activity: { toDate: () => threeDaysAgo },
+      });
+      const result = await economic.incrementStreak({}, makeContext());
+      expect(result.currentStreak).toBe(1);
+      expect(result.streakBroken).toBe(true);
+    });
   });
 
   test('keeps streak alive and debits a shield when freeze is honored', async () => {

@@ -107,12 +107,18 @@ class EconomicFunctionsService implements IEconomicFunctionsService {
     bool freezeUsed = false,
     bool checkIn = true,
     String? itemUsed,
+    String? activityDay,
+    int? activityStreak,
   }) async {
     final params = <String, dynamic>{
       'freezeUsed': freezeUsed,
       'checkIn': checkIn,
     };
     if (itemUsed != null) params['itemUsed'] = itemUsed;
+    // NUEVO-fix (streak backfill): se envían solo cuando el cliente tiene
+    // historial local (primer check-in: null, el server arranca en 1).
+    if (activityDay != null) params['activityDay'] = activityDay;
+    if (activityStreak != null) params['activityStreak'] = activityStreak;
     return _call<Map<String, dynamic>>('incrementStreak', params);
   }
 

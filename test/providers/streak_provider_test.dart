@@ -24,7 +24,11 @@ void main() {
     final mockChest = MockStreakChestService();
 
     when(
-      () => mockEconomic.incrementStreak(freezeUsed: any(named: 'freezeUsed')),
+      () => mockEconomic.incrementStreak(
+        freezeUsed: any(named: 'freezeUsed'),
+        activityDay: any(named: 'activityDay'),
+        activityStreak: any(named: 'activityStreak'),
+      ),
     ).thenAnswer((_) async => <String, dynamic>{});
     when(
       () => mockChest.checkAndReward(
@@ -104,7 +108,11 @@ void main() {
         // El servidor está por detrás (syncs previos fallaron): devuelve 3.
         final ec = container.read(economicFunctionsServiceProvider);
         when(
-          () => ec.incrementStreak(freezeUsed: any(named: 'freezeUsed')),
+          () => ec.incrementStreak(
+            freezeUsed: any(named: 'freezeUsed'),
+            activityDay: any(named: 'activityDay'),
+            activityStreak: any(named: 'activityStreak'),
+          ),
         ).thenAnswer((_) async => {'currentStreak': 3, 'longestStreak': 3});
 
         final notifier = container.read(streakProvider.notifier);
@@ -140,7 +148,11 @@ void main() {
         // aquí simulamos una divergencia donde el servidor rompió la racha.
         final ec = container.read(economicFunctionsServiceProvider);
         when(
-          () => ec.incrementStreak(freezeUsed: any(named: 'freezeUsed')),
+          () => ec.incrementStreak(
+            freezeUsed: any(named: 'freezeUsed'),
+            activityDay: any(named: 'activityDay'),
+            activityStreak: any(named: 'activityStreak'),
+          ),
         ).thenAnswer(
           (_) async => {
             'currentStreak': 1,
@@ -180,6 +192,8 @@ void main() {
           () => ec.incrementStreak(
             freezeUsed: any(named: 'freezeUsed'),
             checkIn: any(named: 'checkIn'),
+            activityDay: any(named: 'activityDay'),
+            activityStreak: any(named: 'activityStreak'),
           ),
         ).thenAnswer(
           (_) async => {
@@ -198,7 +212,13 @@ void main() {
         // checkIn:false (el servidor no avanza racha, no quema escudos). La racha
         // local se conserva tal cual.
         verify(
-          () => ec.incrementStreak(freezeUsed: false, checkIn: false),
+          () => ec.incrementStreak(
+            freezeUsed: false,
+            checkIn: false,
+            itemUsed: any(named: 'itemUsed'),
+            activityDay: any(named: 'activityDay'),
+            activityStreak: any(named: 'activityStreak'),
+          ),
         ).called(1);
         expect(notifier.currentStreak, 5);
       },
@@ -283,7 +303,11 @@ void main() {
         addTearDown(() => container.dispose());
         final ec = container.read(economicFunctionsServiceProvider);
         when(
-          () => ec.incrementStreak(freezeUsed: any(named: 'freezeUsed')),
+          () => ec.incrementStreak(
+            freezeUsed: any(named: 'freezeUsed'),
+            activityDay: any(named: 'activityDay'),
+            activityStreak: any(named: 'activityStreak'),
+          ),
         ).thenAnswer(
           (_) async => {
             'currentStreak': 4,
@@ -325,6 +349,8 @@ void main() {
             freezeUsed: any(named: 'freezeUsed'),
             checkIn: any(named: 'checkIn'),
             itemUsed: any(named: 'itemUsed'),
+            activityDay: any(named: 'activityDay'),
+            activityStreak: any(named: 'activityStreak'),
           ),
         ).thenAnswer(
           (_) async => {
@@ -351,6 +377,8 @@ void main() {
             freezeUsed: false,
             checkIn: true,
             itemUsed: 'titaniumShield',
+            activityDay: any(named: 'activityDay'),
+            activityStreak: any(named: 'activityStreak'),
           ),
         ).called(1);
         expect(
@@ -382,6 +410,8 @@ void main() {
             freezeUsed: any(named: 'freezeUsed'),
             checkIn: any(named: 'checkIn'),
             itemUsed: any(named: 'itemUsed'),
+            activityDay: any(named: 'activityDay'),
+            activityStreak: any(named: 'activityStreak'),
           ),
         ).thenAnswer(
           (_) async => {
@@ -407,6 +437,8 @@ void main() {
             freezeUsed: false,
             checkIn: true,
             itemUsed: 'phoenixFeather',
+            activityDay: any(named: 'activityDay'),
+            activityStreak: any(named: 'activityStreak'),
           ),
         ).called(1);
         expect(
@@ -438,6 +470,8 @@ void main() {
             freezeUsed: any(named: 'freezeUsed'),
             checkIn: any(named: 'checkIn'),
             itemUsed: any(named: 'itemUsed'),
+            activityDay: any(named: 'activityDay'),
+            activityStreak: any(named: 'activityStreak'),
           ),
         ).thenAnswer(
           (_) async => {
@@ -459,6 +493,60 @@ void main() {
         // NO se consume (la ilusión de consumo se elimina).
         expect(notifier.currentStreak, 1);
         expect(items.quantity(SpecialItemType.titaniumShield), 1);
+      },
+    );
+
+    test(
+      'NUEVO-fix: envía activityDay/activityStreak locales al hacer check-in',
+      () async {
+        final threeDaysAgoUtc = DateTime.now()
+            .subtract(const Duration(days: 3))
+            .toUtc();
+        final expectedDay =
+            '${threeDaysAgoUtc.year}-'
+            '${threeDaysAgoUtc.month.toString().padLeft(2, '0')}-'
+            '${threeDaysAgoUtc.day.toString().padLeft(2, '0')}';
+        SharedPreferences.setMockInitialValues({
+          'streak_current': 10,
+          'streak_longest': 10,
+          'streak_last_activity': threeDaysAgoUtc.toIso8601String(),
+        });
+        final prefs = await SharedPreferences.getInstance();
+        final container = createContainer(prefs);
+        addTearDown(() => container.dispose());
+        final ec = container.read(economicFunctionsServiceProvider);
+        when(
+          () => ec.incrementStreak(
+            freezeUsed: any(named: 'freezeUsed'),
+            checkIn: any(named: 'checkIn'),
+            itemUsed: any(named: 'itemUsed'),
+            activityDay: any(named: 'activityDay'),
+            activityStreak: any(named: 'activityStreak'),
+          ),
+        ).thenAnswer(
+          (_) async => {
+            'currentStreak': 10,
+            'longestStreak': 10,
+            'streakBroken': true,
+            'shieldsRemaining': 0,
+          },
+        );
+
+        final notifier = container.read(streakProvider.notifier);
+        notifier.checkIn();
+        await Future<void>.delayed(const Duration(milliseconds: 200));
+
+        // El sync lleva el día UTC del último check-in local previo y la racha
+        // previa; el server los usa para recuperar días offline probados.
+        verify(
+          () => ec.incrementStreak(
+            freezeUsed: false,
+            checkIn: true,
+            itemUsed: any(named: 'itemUsed'),
+            activityDay: expectedDay,
+            activityStreak: 10,
+          ),
+        ).called(1);
       },
     );
   });

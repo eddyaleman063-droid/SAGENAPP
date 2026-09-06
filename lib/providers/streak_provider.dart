@@ -194,6 +194,11 @@ class StreakNotifier extends Notifier<StreakState> {
     bool checkIn = true,
     String? itemUsed,
     int? fallbackStreak,
+    // NUEVO-fix (streak backfill): día UTC del último check-in local previo y
+    // la racha consecutiva previa a ESTE check-in. El server los usa para
+    // recuperar días offline probados en vez de colapsar la racha a 1.
+    String? activityDay,
+    int? activityStreak,
   }) {
     try {
       // Sync streak to server via Cloud Function (not just local cache).
@@ -208,6 +213,8 @@ class StreakNotifier extends Notifier<StreakState> {
                   freezeUsed: freezeUsed,
                   checkIn: checkIn,
                   itemUsed: itemUsed,
+                  activityDay: activityDay,
+                  activityStreak: activityStreak,
                 );
             if (result != null) {
               _reconcileServerStreak(result);
@@ -612,6 +619,8 @@ class StreakNotifier extends Notifier<StreakState> {
           itemUsed: itemUsed,
           persistDailyBonus: false,
           fallbackStreak: protectedStatus.currentStreak,
+          activityDay: _utcDayString(lastDate),
+          activityStreak: oldStreak,
         );
         _scheduleStreakReminder();
         return;
@@ -721,6 +730,8 @@ class StreakNotifier extends Notifier<StreakState> {
         oldStreak: oldStreak,
         milestone: milestone,
         persistDailyBonus: isFirstCheckInToday,
+        activityDay: _utcDayString(lastDate),
+        activityStreak: oldStreak,
       );
       _scheduleStreakReminder();
     } catch (e, stack) {
@@ -776,4 +787,13 @@ int _utcDayDiff(DateTime from, DateTime to) {
   final dayA = DateTime.utc(a.year, a.month, a.day);
   final dayB = DateTime.utc(b.year, b.month, b.day);
   return dayB.difference(dayA).inDays;
+}
+
+// NUEVO-fix (streak backfill): día calendario UTC como `YYYY-MM-DD`, el mismo
+// formato que usa el servidor (economic.incrementStreak). Null si no hay
+// historial local previo.
+String? _utcDayString(DateTime? t) {
+  if (t == null) return null;
+  final u = t.toUtc();
+  return '${u.year}-${u.month.toString().padLeft(2, '0')}-${u.day.toString().padLeft(2, '0')}';
 }

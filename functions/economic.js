@@ -77,6 +77,70 @@ function getDailyXpDocRef(userId) {
   return admin.firestore().doc(`daily_xp_sources/${userId}_${today}`);
 }
 
+// ---------------------------------------------------------------------------
+// Streak backfill (NUEVO-fix): recuperación de días offline acotada y
+// verificada. IncrementStreak no recibía el día de actividad del cliente:
+// un usuario que chequeó offline días de corrido colapsaba a 1 al volver
+// online (el server veía un gap y rompía), pese a haber hecho check-in cada
+// día. El cliente ahora envía `activityDay` (día UTC de su ÚLTIMO check-in
+// local previo) y `activityStreak` (su racha consecutiva ANTES de este
+// check-in). El server solo confía en la combinación cuando la ecuación de
+// continuidad se cumple EXACTAMENTE, el día es plausible (no futuro, no
+// anterior al día del server) y el gap no supera la ventana de confianza.
+// La ventana acota el vector de farmeo (un cliente deshonesto gana a lo sumo
+// MAX_STREAK_BACKFILL_DAYS por día; la prueba real de "hice cada día" solo
+// vive localmente y no es criptográficamente verificable). Fuera de la
+// ventana o ante contradicciones se cae al flujo histórico freeze/romper.
+const MAX_STREAK_BACKFILL_DAYS = 3;
+
+// Día calendario UTC (entero) de `YYYY-MM-DD`, o null si es inválido.
+function utcDayNumber(str) {
+  if (typeof str !== 'string') return null;
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(str);
+  if (!m) return null;
+  return Math.floor(Date.UTC(+m[1], +m[2] - 1, +m[3]) / 86400000);
+}
+
+// `serverLastStr` puede ser null (usuario sin historial en el server).
+// Devuelve { newStreak, backfilledDays } o null (no confiable / no aplica).
+function computeStreakBackfill({
+  serverStreak, serverLastStr, todayStr, activityDay, activityStreak,
+}) {
+  if (typeof activityDay !== 'string' || typeof activityStreak !== 'number') {
+    return null;
+  }
+  if (!Number.isInteger(activityStreak) || activityStreak < 0) return null;
+
+  const todayNum = utcDayNumber(todayStr);
+  const dayNum = utcDayNumber(activityDay);
+  if (dayNum === null || dayNum > todayNum) return null; // reloj adelantado/imposible
+
+  const startNum = serverLastStr ? utcDayNumber(serverLastStr) : null;
+
+  if (startNum === null) {
+    // Primera vez en el server: se acepta solo un baseline reciente y acotado.
+    const age = todayNum - dayNum;
+    if (age > 1) return null;
+    if (activityStreak > MAX_STREAK_BACKFILL_DAYS) return null;
+    const newStreak = activityStreak + (dayNum === todayNum ? 1 : 0);
+    return { newStreak, backfilledDays: activityStreak };
+  }
+
+  if (dayNum < startNum) return null; // regresivo: contradice el historial server
+
+  const daysElapsed = dayNum - startNum;
+  if (daysElapsed < 1) return null; // sin días nuevos: flujo normal (freeze/ítem/romper)
+  if (daysElapsed > MAX_STREAK_BACKFILL_DAYS) return null;
+
+  const expected = serverStreak + daysElapsed;
+  if (activityStreak !== expected) return null; // ecuación de continuidad rota
+
+  // El check-in que ocurre HOY avanza 1; si el último día local ya era hoy
+  // (el usuario chequeó antes hoy sin sync), la racha ya lo incluye.
+  const newStreak = activityStreak + (dayNum === todayNum ? 0 : 1);
+  return { newStreak, backfilledDays: daysElapsed };
+}
+
 function computeCappedXp(currentDailyTotal, requestedXp) {
   const remaining = Math.max(0, MAX_DAILY_XP - currentDailyTotal);
   const cappedXp = Math.min(requestedXp, remaining);
@@ -430,7 +494,7 @@ exports.addXp = functions.runWith({ maxInstances: 10 }).https.onCall(async (data
 exports.incrementStreak = functions.runWith({ maxInstances: 5 }).https.onCall(async (data, context) => {
   requireVerifiedUser(context);
 
-  const { freezeUsed, checkIn = true, itemUsed } = data;
+  const { freezeUsed, checkIn = true, itemUsed, activityDay, activityStreak } = data;
 
   const userId = context.auth.uid;
   const userRef = admin.firestore().doc(`users/${userId}`);
@@ -475,6 +539,33 @@ exports.incrementStreak = functions.runWith({ maxInstances: 5 }).https.onCall(as
         if (lastStr === todayStr) {
           return {
             success: true, currentStreak, longestStreak, alreadyCheckedIn: true,
+          };
+        }
+
+        // NUEVO-fix (streak backfill): si el cliente prueba (ecuación de
+        // continuidad exacta + día plausible + ventana acotada) que hizo
+        // check-in offline en los días intermedios, se recuperan en vez de
+        // colapsar la racha a 1 al volver online.
+        const backfill = computeStreakBackfill({
+          serverStreak: currentStreak,
+          serverLastStr: lastStr,
+          todayStr,
+          activityDay,
+          activityStreak,
+        });
+        if (backfill) {
+          const newLongest = Math.max(longestStreak, backfill.newStreak);
+          transaction.update(userRef, {
+            currentStreak: backfill.newStreak,
+            longestStreak: newLongest,
+            streak_last_activity: admin.firestore.FieldValue.serverTimestamp(),
+            _ts_currentStreak: admin.firestore.FieldValue.serverTimestamp(),
+            _ts_longestStreak: admin.firestore.FieldValue.serverTimestamp(),
+          });
+          return {
+            success: true, currentStreak: backfill.newStreak, longestStreak: newLongest,
+            alreadyCheckedIn: false, backfilledDays: backfill.backfilledDays,
+            shieldsRemaining: (userData.streak_shields || 0) + (userData.shop_streak_shields || 0),
           };
         }
 
@@ -577,6 +668,31 @@ exports.incrementStreak = functions.runWith({ maxInstances: 5 }).https.onCall(as
             shieldsRemaining: 0,
             freezeDenied: freezeUsed === true,
             itemDenied: itemUsed != null,
+          };
+        }
+      } else {
+        // NUEVO-fix (streak backfill): primer contacto con el server donde el
+        // usuario ya tiene un baseline local reciente y acotado.
+        const backfill = computeStreakBackfill({
+          serverStreak: currentStreak,
+          serverLastStr: null,
+          todayStr,
+          activityDay,
+          activityStreak,
+        });
+        if (backfill) {
+          const newLongest = Math.max(longestStreak, backfill.newStreak);
+          transaction.update(userRef, {
+            currentStreak: backfill.newStreak,
+            longestStreak: newLongest,
+            streak_last_activity: admin.firestore.FieldValue.serverTimestamp(),
+            _ts_currentStreak: admin.firestore.FieldValue.serverTimestamp(),
+            _ts_longestStreak: admin.firestore.FieldValue.serverTimestamp(),
+          });
+          return {
+            success: true, currentStreak: backfill.newStreak, longestStreak: newLongest,
+            alreadyCheckedIn: false, backfilledDays: backfill.backfilledDays,
+            shieldsRemaining: (userData.streak_shields || 0) + (userData.shop_streak_shields || 0),
           };
         }
       }
