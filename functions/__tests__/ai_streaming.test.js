@@ -24,6 +24,9 @@ const makeReq = (overrides = {}) => ({
   method: 'POST',
   headers: { origin: ORIGIN, authorization: 'Bearer test-token' },
   body: { contents: [{ role: 'user', parts: [{ text: 'hola' }] }] },
+  on() { return this; },
+  once() { return this; },
+  removeListener() { return this; },
   ...overrides,
 });
 
@@ -55,13 +58,20 @@ const makeRes = () => {
   return res;
 };
 
-const okResponse = () => ({
+const okResponse = (chunks = []) => ({
   ok: true,
   status: 200,
   body: {
-    getReader: () => ({ read: async () => ({ done: true }) }),
+    getReader: () => ({
+      read: async () => {
+        if (chunks.length === 0) return { done: true };
+        return { done: false, value: new TextEncoder().encode(chunks.shift()) };
+      },
+    }),
   },
 });
+
+const aChunk = (text) => `data: ${JSON.stringify({ candidates: [{ content: { parts: [{ text }] } }] })}\n\n`;
 
 beforeEach(() => {
   admin._resetFirestore();
@@ -85,17 +95,49 @@ describe('Sage daily usage limit', () => {
     expect(admin._getDoc(usageKey()).count).toBe(50);
   });
 
-  test('lets a 49/50 user through pre-check and consumes quota on real delivery', async () => {
+  test('lets a 49/50 user through pre-check and consumes quota on first real token', async () => {
     admin._setDoc(usageKey(), { count: 49 });
-    global.fetch.mockResolvedValue(okResponse());
+    global.fetch.mockResolvedValue(okResponse([aChunk('hola'), '\n']));
     const req = makeReq();
     const res = makeRes();
 
     await generateContentStream(req, res);
 
     expect(res.calls.status).toBeNull();
+    expect(res.calls.writes.join('')).toContain('"text":"hola"');
     expect(res.calls.writes.join('')).toContain('data: [DONE]');
+    // Primer token real entregado → contador 49 → 50.
     expect(admin._getDoc(usageKey()).count).toBe(50);
+  });
+
+  test('does NOT consume quota when stream ends before any real token (disconnect before first chunk)', async () => {
+    admin._setDoc(usageKey(), { count: 49 });
+    // Gemini acepta el request pero el stream termina sin un solo token
+    // (el cliente se desconectó / upstream devolvió vacío). No se quema cuota.
+    global.fetch.mockResolvedValue(okResponse([]));
+    const req = makeReq();
+    const res = makeRes();
+
+    await generateContentStream(req, res);
+
+    expect(res.calls.writes.join('')).toContain('data: [DONE]');
+    expect(admin._getDoc(usageKey()).count).toBe(49);
+  });
+
+  test('forwards streamed text and skips malformed lines', async () => {
+    global.fetch.mockResolvedValue(
+      okResponse(['data: {not-json}\n\n', aChunk('primero'), aChunk(' segundo'), '\n'])
+    );
+    const req = makeReq();
+    const res = makeRes();
+
+    await generateContentStream(req, res);
+
+    const stream = res.calls.writes.join('');
+    expect(stream).toContain('"text":"primero"');
+    expect(stream).toContain('"text":" segundo"');
+    expect(stream).toContain('data: [DONE]');
+    expect(admin._getDoc(usageKey()).count).toBe(1);
   });
 
   test('does NOT consume quota when Gemini upstream fails (ok=false)', async () => {
@@ -109,14 +151,16 @@ describe('Sage daily usage limit', () => {
 
     await generateContentStream(req, res);
 
-    expect(res.calls.writes.join('')).toContain('[DONE]');
+    // Fallo upstream: se cierra la conexión sin tocar el flujo de chunks.
+    expect(res.calls.ended).toBe(true);
+    expect(res.calls.writes).toEqual([]);
     // Entrega no real → sin consumo de la cuota del día.
     expect(admin._getDoc(usageKey())).toBeNull();
   });
 
   test('still rejects with 429 even when a previous day was used', async () => {
     admin._setDoc(`sage_usage/${UID}_1999-01-01`, { count: 50 });
-    global.fetch.mockResolvedValue(okResponse());
+    global.fetch.mockResolvedValue(okResponse([aChunk('hola')]));
     const req = makeReq();
     const res = makeRes();
 
@@ -124,5 +168,36 @@ describe('Sage daily usage limit', () => {
 
     expect(res.calls.status).toBeNull();
     expect(admin._getDoc(usageKey()).count).toBe(1);
+  });
+
+  test('aborts upstream and ends when the client disconnects mid-stream', async () => {
+    const abortSpy = jest.fn();
+    global.fetch.mockResolvedValue({
+      ok: true,
+      status: 200,
+      body: {
+        getReader: () => ({
+          read: async () => {
+            // Simula el corte del cliente: se dispara req.close → controller.abort().
+            await new Promise((resolve) => setTimeout(resolve, 5));
+            req.emit('close');
+            return Promise.reject(new Error('aborted'));
+          },
+        }),
+      },
+    });
+    const req = makeReq();
+    req.on = req.once = (event, cb) => {
+      if (event === 'close') req._onClose = cb;
+      return req;
+    };
+    req.emit = (event) => {
+      if (event === 'close' && req._onClose) return req._onClose();
+    };
+    const res = makeRes();
+
+    await generateContentStream(req, res);
+
+    expect(res.calls.ended).toBe(true);
   });
 });

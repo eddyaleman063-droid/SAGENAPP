@@ -168,6 +168,12 @@ exports.generateContentStream = functions.runWith({ maxInstances: 3 }).https.onR
     return res.status(400).json({ error: 'Máximo 20 partes de contents permitidas' });
   }
 
+  // Abort controller del stream: si el cliente corta la conexión, abortamos
+  // el fetch a Gemini en lugar de dejar el reader colgado hasta el timeout.
+  let controller = null;
+  const onClientClose = () => controller && controller.abort();
+  req.once('close', onClientClose);
+
   try {
     const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:streamGenerateContent?alt=sse`;
 
@@ -202,6 +208,8 @@ exports.generateContentStream = functions.runWith({ maxInstances: 3 }).https.onR
       'X-Accel-Buffering': 'no',
     });
 
+    controller = new AbortController();
+
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -209,26 +217,68 @@ exports.generateContentStream = functions.runWith({ maxInstances: 3 }).https.onR
         'x-goog-api-key': GEMINI_API_KEY,
       },
       body: JSON.stringify(body),
+      signal: controller.signal,
     });
 
     if (!response.ok) {
       const errText = await response.text();
       functions.logger.error('Gemini streaming error', { status: response.status, body: errText });
-      res.write(`data: ${JSON.stringify({ error: 'Error de la API de Gemini' })}\n\n`);
-      res.write('data: [DONE]\n\n');
+      req.removeListener('close', onClientClose);
       return res.end();
     }
 
-    // NUEVO-fix: la cuota diaria se consume SOLO sobre una entrega real
-    // (Gemini respondió OK). Los fallos previos NO queman mensajes.
-    await checkDailyUsage(uid, { consume: true });
+    // NUEVO-fix: la cuota diaria se consume SOLO sobre el primer chunk real.
+    // Si el cliente se desconecta antes del primer token (o Gemini falla
+    // tras el pre-check), NO se quema un mensaje. Antes se consumía en cuanto
+    // Gemini respondía OK, aunque nunca llegara un token.
+    let quotaConsumed = false;
+    const emitText = async (text) => {
+      if (!text) return;
+      if (!quotaConsumed) {
+        try {
+          await checkDailyUsage(uid, { consume: true });
+        } catch (q) {
+          // Fail-open: un blip de Firestore no debe tumbar un stream ya
+          // empezado (solo impacta el conteo del día).
+          functions.logger.warn('Sage daily quota consume failed mid-stream', { uid, error: q.message });
+        } finally {
+          quotaConsumed = true;
+        }
+      }
+      res.write(`data: ${JSON.stringify({ text })}\n\n`);
+    };
 
     const reader = response.body.getReader();
     const decoder = new TextDecoder();
     let buffer = '';
+    let ended = false;
+    const endStream = () => {
+      if (ended) return;
+      ended = true;
+      res.write('data: [DONE]\n\n');
+      res.end();
+    };
+
+    // Watchdog de inactividad por chunk: un stream que no entrega datos en
+    // 60s se aborta (aborta el fetch y cae al catch) en vez de dejar al
+    // cliente colgado indefinidamente. El timer se arma antes de cada read y
+    // se limpia al resolver/abortar, para no dejar timers vivos en runtime.
+    const CHUNK_TIMEOUT_MS = 60000;
+    let chunkTimer = null;
+    const clearChunkTimer = () => {
+      if (chunkTimer) {
+        clearTimeout(chunkTimer);
+        chunkTimer = null;
+      }
+    };
+    const withWatchdog = (promise) => {
+      clearChunkTimer();
+      chunkTimer = setTimeout(() => controller.abort(), CHUNK_TIMEOUT_MS);
+      return promise.finally(clearChunkTimer);
+    };
 
     while (true) {
-      const { done, value } = await reader.read();
+      const { done, value } = await withWatchdog(reader.read());
       if (done) break;
 
       buffer += decoder.decode(value, { stream: true });
@@ -236,44 +286,40 @@ exports.generateContentStream = functions.runWith({ maxInstances: 3 }).https.onR
       buffer = lines.pop() || '';
 
       for (const line of lines) {
-        if (line.startsWith('data: ')) {
-          const data = line.slice(6).trim();
-          if (data === '[DONE]') {
-            res.write('data: [DONE]\n\n');
-            continue;
-          }
-          try {
-            const parsed = JSON.parse(data);
-            const text = parsed.candidates?.[0]?.content?.parts?.[0]?.text || '';
-            if (text) {
-              res.write(`data: ${JSON.stringify({ text })}\n\n`);
-            }
-          } catch (e) {
-            // Skip malformed JSON chunks
-          }
+        if (!line.startsWith('data: ')) continue;
+        const data = line.slice(6).trim();
+        if (data === '[DONE]') continue;
+        try {
+          const parsed = JSON.parse(data);
+          const text = parsed.candidates?.[0]?.content?.parts?.[0]?.text || '';
+          await emitText(text);
+        } catch (e) {
+          // Skip malformed JSON chunks
         }
       }
     }
 
-    if (buffer.trim()) {
-      if (buffer.startsWith('data: ')) {
-        const data = buffer.slice(6).trim();
-        if (data && data !== '[DONE]') {
-          try {
-            const parsed = JSON.parse(data);
-            const text = parsed.candidates?.[0]?.content?.parts?.[0]?.text || '';
-            if (text) {
-              res.write(`data: ${JSON.stringify({ text })}\n\n`);
-            }
-          } catch (e) {}
-        }
+    if (buffer.trim() && buffer.startsWith('data: ')) {
+      const data = buffer.slice(6).trim();
+      if (data && data !== '[DONE]') {
+        try {
+          const parsed = JSON.parse(data);
+          const text = parsed.candidates?.[0]?.content?.parts?.[0]?.text || '';
+          await emitText(text);
+        } catch (e) {}
       }
     }
 
-    res.write('data: [DONE]\n\n');
-    res.end();
+    req.removeListener('close', onClientClose);
+    endStream();
   } catch (e) {
-    functions.logger.error('generateContentStream error', e);
+    functions.logger.error('generateContentStream error', { error: e.message });
+    req.removeListener('close', onClientClose);
+    if (controller && (controller.signal.aborted || req.aborted || res.destroyed)) {
+      // El cliente cortó la conexión (o el watchdog abortó): no hay a quién
+      // escribirle, solo limpiar con un end inofensivo.
+      return res.end();
+    }
     if (!res.headersSent) {
       res.status(500).json({ error: 'Error interno del servidor' });
     } else {
