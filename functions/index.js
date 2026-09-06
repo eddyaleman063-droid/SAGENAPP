@@ -3,35 +3,13 @@ const admin = require('firebase-admin');
 const crypto = require('crypto');
 const { MercadoPagoConfig, Preference } = require('mercadopago');
 const { requireVerifiedUser } = require('./auth_guard');
-const { defineSecret } = require('firebase-functions/params');
 
 admin.initializeApp();
 
-// NUEVO-fix (deprec): migración de functions.config() a Secret Manager/params.
-// Los defineSecret no se listan en runWith({ secrets }) para no exigir
-// secretos en el deploy; si la env (Secret Manager) no está disponible,
-// secretOrConfig cae al legacy functions.config(), que sigue siendo
-// compatible en runtime Node 22. Así un proyecto aún sin secretos migrados
-// mantiene su configuración actual sin prompts ni pasos manuales.
-const SECRET_MERCADOPAGO_ACCESS_TOKEN = defineSecret('MERCADOPAGO_ACCESS_TOKEN');
-const SECRET_PURCHASE = defineSecret('PURCHASE_SECRET');
-const SECRET_WEBHOOK = defineSecret('MERCADOPAGO_WEBHOOK_SECRET');
-const SECRET_GEMINI = defineSecret('GEMINI_API_KEY');
-
-function secretOrConfig(param, legacyValue) {
-  try {
-    const value = param.value();
-    if (value) return value;
-  } catch {
-    // env / Secret Manager no disponible para este parámetro
-  }
-  return legacyValue || '';
-}
-
-const MERCADOPAGO_ACCESS_TOKEN = secretOrConfig(
-  SECRET_MERCADOPAGO_ACCESS_TOKEN,
-  functions.config().mercadopago?.access_token,
-);
+// TODO(migrar-secretos): los valores siguen en functions.config() (siguen
+// soportados en runtime Node 22). Al habilitar Secret Manager en el proyecto:
+// migrar a defineSecret + attach en runWith({secrets}) y borrar estos reads.
+const MERCADOPAGO_ACCESS_TOKEN = functions.config().mercadopago?.access_token;
 if (!MERCADOPAGO_ACCESS_TOKEN) {
   console.warn('MERCADOPAGO_ACCESS_TOKEN not configured. Set via: firebase functions:config:set mercadopago.access_token="APP_USR-xxx"');
 }
@@ -286,7 +264,7 @@ exports.createPaymentPreference = functions.runWith({ maxInstances: 10 }).https.
     }
 
     const shortHash = (s) => {
-      const secret = secretOrConfig(SECRET_PURCHASE, functions.config().app?.purchase_secret);
+      const secret = functions.config().app?.purchase_secret;
       if (!secret) {
         functions.logger.error('purchase_secret not configured');
         throw new functions.https.HttpsError('internal', 'Error de configuración del servidor');
@@ -373,7 +351,7 @@ exports.handlePaymentWebhook = functions.runWith({ maxInstances: 5 }).https.onRe
     //     donde <data.id> es el QUERY PARAM (no el body), en minúsculas si es
     //     alfanumérico, omitiendo las secciones ausentes (id/request-id).
     //  3. digest hex comparado en tiempo constante + ventana de freshness.
-    const WEBHOOK_SECRET = secretOrConfig(SECRET_WEBHOOK, functions.config().mercadopago?.webhook_secret);
+    const WEBHOOK_SECRET = functions.config().mercadopago?.webhook_secret;
     if (!WEBHOOK_SECRET) {
       functions.logger.error('MERCADOPAGO_WEBHOOK_SECRET not configured — rejecting webhook');
       return res.status(500).send('Error de configuración del servidor');
@@ -954,7 +932,7 @@ const gacha = require('./gacha');
 exports.rollChestEvolution = gacha.rollChestEvolution;
 
 // ── Gemini AI Proxy (SEC-001: API key never exposed to client) ─────
-const GEMINI_API_KEY = secretOrConfig(SECRET_GEMINI, functions.config().gemini?.api_key);
+const GEMINI_API_KEY = functions.config().gemini?.api_key;
 const GEMINI_MODEL = 'gemini-2.5-flash';
 const GEMINI_MAX_OUTPUT_TOKENS = 8192;
 const GEMINI_TEMPERATURE = 0.85;

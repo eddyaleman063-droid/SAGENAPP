@@ -1,22 +1,9 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
-const { defineSecret } = require('firebase-functions/params');
 
-// NUEVO-fix (deprec): ver nota en index.js — Secret Manager con fallback a
-// functions.config() mientras el proyecto no migre los secretos.
-const SECRET_GEMINI = defineSecret('GEMINI_API_KEY');
-
-function secretOrConfig(param, legacyValue) {
-  try {
-    const value = param.value();
-    if (value) return value;
-  } catch {
-    // env / Secret Manager no disponible para este parámetro
-  }
-  return legacyValue || '';
-}
-
-const GEMINI_API_KEY = secretOrConfig(SECRET_GEMINI, functions.config().gemini?.api_key);
+// TODO(migrar-secretos): ver nota en index.js — sigue en functions.config()
+// hasta habilitar Secret Manager en el proyecto.
+const GEMINI_API_KEY = functions.config().gemini?.api_key;
 const GEMINI_MODEL = 'gemini-2.5-flash';
 const GEMINI_MAX_OUTPUT_TOKENS = 8192;
 const GEMINI_TEMPERATURE = 0.85;
