@@ -25,9 +25,6 @@ abstract class GamificationRepository {
 class GamificationRepositoryImpl implements GamificationRepository {
   final SharedPreferences _prefs;
 
-  /// Base reward for claiming the daily chest. Server may override.
-  static const int baseDailyChestReward = 2;
-
   GamificationRepositoryImpl(this._prefs);
 
   static const _keyLastClaim = 'gamification_last_claim_date';
@@ -79,9 +76,12 @@ class GamificationRepositoryImpl implements GamificationRepository {
       throw StateError('No chest available to claim today');
     }
 
-    const reward = baseDailyChestReward;
+    // NUEVO-fix (ronda 7): el XP de la recompensa lo acredita el servidor en
+    // claimDailyChest y se aplica localmente vía applyServerXp (gamification_
+    // provider). El valor local era solo un ledger del flag; devuelve 0 para
+    // no mostrar un XP/`gamification local` que el server nunca confirmó.
     _prefs.setBool(_keyUnclaimedChest, false);
-    return reward;
+    return 0;
   }
 
   @override

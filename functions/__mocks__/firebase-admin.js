@@ -129,7 +129,7 @@ class MockFirestore {
 const firestoreInstance = new MockFirestore();
 
 const FieldValue = {
-  serverTimestamp: () => 'SERVER_TIMESTAMP',
+  serverTimestamp: () => new Date(),
   increment: (value) => ({ __increment: value }),
   arrayUnion: (values) => ({ __arrayUnion: values }),
 };

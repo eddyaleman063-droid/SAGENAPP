@@ -1126,6 +1126,100 @@ describe('completeLesson', () => {
     expect(result.sagenPass.sp).toBe(10);
   });
 
+  test('NUEVO-fix ronda 7: perfect 30/30 awards perfect bonus + SP (clamp no rompe el perfect)', async () => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    setUserDoc(AUTH_UID, {
+      learning_total_xp: 0,
+      learning_level: 1,
+      currentStreak: 1,
+      longestStreak: 1,
+      streak_last_activity: { toDate: () => yesterday },
+      lessonsCompleted: 0,
+      sagen_pass_sp: 0,
+      sagen_pass_level: 1,
+    });
+    // Legítima: 30/30 (el clamp a 20 afecta SOLO las gemas, no el veredicto).
+    // <30/30 sigue siendo anti-farm aunque el total supere 20.
+    const result = await economic.completeLesson(
+      { lessonId: 'lesson-1', perfect: true, correctCount: 30, totalQuestions: 30 },
+      makeContext()
+    );
+    expect(result.gems.perfect).toBe(true);
+    expect(result.sagenPass.spAdded).toBe(25); // 10 lesson + 15 perfect_lesson
+  });
+
+  test('NUEVO-fix ronda 7: lesson with XP clipped by the daily cap is NOT sealed (recoverable)', async () => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    setUserDoc(AUTH_UID, {
+      learning_total_xp: 0,
+      learning_level: 1,
+      currentStreak: 1,
+      longestStreak: 1,
+      streak_last_activity: { toDate: () => yesterday },
+      lessonsCompleted: 0,
+    });
+    const today = new Date().toISOString().split('T')[0];
+    admin._setDoc(`daily_xp_sources/${AUTH_UID}_${today}`, { total: 495 });
+    const result = await economic.completeLesson({ lessonId: 'lesson-recover' }, makeContext());
+    expect(result.xp.added).toBe(5); // 15 clipping a 5
+    expect(result.duplicate).toBe(false);
+    // NO se selló: el replay no es duplicate y la lección queda abierta para
+    // cobrar el XP restante otro día.
+    expect(admin._getDoc(`transaction_logs/${AUTH_UID}_lesson-recover`)).toBeNull();
+    const r2 = await economic.completeLesson({ lessonId: 'lesson-recover' }, makeContext());
+    expect(r2.duplicate).toBe(false);
+    expect(r2.xp.added).toBe(0); // cap ya agotado hoy
+  });
+
+  test('NUEVO-fix ronda 7: seals the lesson only when XP is paid in full', async () => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    setUserDoc(AUTH_UID, {
+      learning_total_xp: 0,
+      learning_level: 1,
+      currentStreak: 1,
+      longestStreak: 1,
+      streak_last_activity: { toDate: () => yesterday },
+      lessonsCompleted: 0,
+    });
+    const result = await economic.completeLesson({ lessonId: 'lesson-seal' }, makeContext());
+    expect(result.xp.added).toBe(15); // pago completo
+    const log = admin._getDoc(`transaction_logs/${AUTH_UID}_lesson-seal`);
+    expect(log).toBeTruthy();
+    expect(log.xpAdded).toBe(15);
+    const r2 = await economic.completeLesson({ lessonId: 'lesson-seal' }, makeContext());
+    expect(r2.duplicate).toBe(true);
+  });
+
+  test('NUEVO-fix ronda 7: first_lesson_of_day bonus seal respects the daily gem cap', async () => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    setUserDoc(AUTH_UID, {
+      learning_total_xp: 0,
+      learning_level: 1,
+      currentStreak: 1,
+      longestStreak: 1,
+      streak_last_activity: { toDate: () => yesterday },
+      lessonsCompleted: 0,
+      learning_gems: 0,
+    });
+    const today = new Date().toISOString().split('T')[0];
+    // Cap de gems 'lesson' = 50 diario. 48 ya gastados hoy -> solo 2 disponibles.
+    admin._setDoc(`daily_gem_sources/${AUTH_UID}_${today}`, { total: 48 });
+    const result = await economic.completeLesson({ lessonId: 'lesson-gcap' }, makeContext());
+    expect(result.gems.dailyCapped).toBe(true);
+    // El bonus NO quedó sellado: sin sellar, recuperable mañana con cap nuevo.
+    expect(admin._getDoc(`daily_gem_sources/${AUTH_UID}_${today}`).first_lesson_of_day).toBeUndefined();
+
+    // Sin cap (día nuevo, total 0) el bonus se paga completo y se sella.
+    admin._setDoc(`daily_gem_sources/${AUTH_UID}_${today}`, { total: 0 });
+    const r2 = await economic.completeLesson({ lessonId: 'lesson-gcap-2' }, makeContext());
+    expect(r2.gems.dailyCapped).toBe(false);
+    expect(admin._getDoc(`daily_gem_sources/${AUTH_UID}_${today}`).first_lesson_of_day).toBe(true);
+  });
+
   test('completeLesson SP respects the daily cap', async () => {
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);

@@ -302,6 +302,17 @@ class ShopNotifier extends Notifier<ShopState> {
     return null;
   }
 
+  // NUEVO-fix (ronda 7): si Remote Config omite gemCost, usar el precio
+  // AUTORITATIVO local (espejo de SHOP_GEM_CATALOG del server, functions/gems.js).
+  // Antes el fallback fijo `100` mostraba un precio que no coincidía con el
+  // cobro real del server (p.ej. focus_elixir cuesta 30 -> se mostraban 100).
+  static int _fallbackGemCost(String id) {
+    for (final item in _defaultItems) {
+      if (item.id == id) return item.gemCost;
+    }
+    return 100;
+  }
+
   static SpecialItemType? _specialTypeFromValue(Object? raw) {
     if (raw is String && raw.isNotEmpty) {
       for (final v in SpecialItemType.values) {
@@ -329,7 +340,8 @@ class ShopNotifier extends Notifier<ShopState> {
                   isOwned: ownedSet.contains(id),
                   supporterLevelRequired:
                       (e['supporterLevelRequired'] as num?)?.toInt() ?? 1,
-                  gemCost: (e['gemCost'] as num?)?.toInt() ?? 100,
+                  gemCost:
+                      (e['gemCost'] as num?)?.toInt() ?? _fallbackGemCost(id),
                   category: _categoryFromString(e['category'] as String?),
                   specialItemType:
                       _specialTypeFromValue(e['specialItemType']) ??

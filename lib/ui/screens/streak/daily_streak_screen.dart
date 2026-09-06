@@ -64,7 +64,10 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
   @override
   void initState() {
     super.initState();
-    _todayIndex = (DateTime.now().weekday - 1) % 7;
+    // NUEVO-fix (ronda 7): el provider escribe el heatmap en UTC; construir el
+    // "hoy" con DateTime.now() local dejaba la celda sin resaltar entre
+    // 00:00-05:59 en husos UTC-6..-12 y resaltaba el día UTC anterior.
+    _todayIndex = (DateTime.now().toUtc().weekday - 1) % 7;
     _weekDays[_todayIndex] = true;
     _isWeeklyReset = _todayIndex == 6;
 
@@ -195,7 +198,8 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
       storage.setBool('streak_just_defrosted', false);
     }
     final heatmap = streak.heatmapData;
-    final now = DateTime.now();
+    // NUEVO-fix (ronda 7): día UTC, alineado con el heatmap del provider.
+    final now = DateTime.now().toUtc();
     final startOfWeek = now.subtract(Duration(days: _todayIndex));
     for (int i = 0; i < 7; i++) {
       if (i == _todayIndex) continue;
@@ -590,7 +594,8 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
 
   Widget _buildMonthlyHeatmap(Color accent, bool dark, AppLocalizations l) {
     final heatmap = ref.watch(streakProvider.select((s) => s.heatmapData));
-    final now = DateTime.now();
+    // NUEVO-fix (ronda 7): día UTC, alineado con el heatmap del provider.
+    final now = DateTime.now().toUtc();
     final grayColor = dark
         ? PremiumColors.streakInactiveDark
         : PremiumColors.streakInactiveLight;

@@ -61,7 +61,9 @@ class RemoteConfigService {
       await rc.setDefaults({
         _keyChestDropRates: jsonEncode(_defaultDropRates()),
         _keyPityThreshold: 20,
-        _keyMaxGemCap: 50000,
+        // NUEVO-fix (ronda 7): alinear con el server. El cliente mostraba un
+        // tope de 50k cuando MAX_GEM_BALANCE es 100000 (functions/gems.js).
+        _keyMaxGemCap: 100000,
         _keyShopCatalog: '[]',
         _keyMissionLegendaryRate: 0.01,
         _keyMissionGoldRate: 0.06,
@@ -71,7 +73,10 @@ class RemoteConfigService {
         _keyEvolutionGoldToLegendary: 0.03,
         _keyStreakMaxFreezes: 7,
         _keyDailyGemCapLesson: 50,
-        _keyDailyGemCapChest: 200,
+        // NUEVO-fix (ronda 7): claimDailyChest aplica reason 'daily_chest' con
+        // cap 20 en el server (GEM_DAILY_CAPS); aquí había 200 -> el cliente
+        // mostraría un tope 10x mayor al que el servidor realmente aplica.
+        _keyDailyGemCapChest: 20,
         _keyDailyGemCapAchievement: 200,
         _keyDailyGemCapMission: 50,
         _keyDailyGemCapStreak: 200,

@@ -177,7 +177,12 @@ class ApiClient implements ApiSender {
   Future<ApiResponse> send(ApiRequest request) async {
     _validateRequest(request);
 
-    return retry(
+    // NUEVO-fix (ronda 7): `_execute` devolvía la respuesta sin verificar el
+    // status HTTP, así que un 4xx/5xx se entregaba como éxito y el caller
+    // dependía de la forma del body. Ahora se lanza ApiException antes. Los
+    // únicos callers (MercadoPago) capturan ApiException, CheckHealth ya solo
+    // buscaba 2xx, y esto unifica el contrato con sendStreaming.
+    final response = await retry(
       () => _execute(request),
       config: RetryConfig(
         maxRetries: _defaultRetryConfig.maxRetries,
@@ -186,6 +191,8 @@ class ApiClient implements ApiSender {
         shouldRetry: (e) => e is ApiException && _shouldRetry(e),
       ),
     );
+    _checkHttpStatus(response.statusCode);
+    return response;
   }
 
   Stream<String> sendStreaming(ApiRequest request) async* {

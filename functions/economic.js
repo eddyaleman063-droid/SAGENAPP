@@ -967,13 +967,15 @@ exports.completeLesson = functions.runWith({ maxInstances: 10 }).https.onCall(as
       const reportedCorrect = Number.isFinite(rawCorrect)
         ? Math.min(Math.max(rawCorrect, 0), reportedTotal || 20)
         : 0;
-      // "perfect" requires a claim that is actually consistent: the raw
-      // correct count must equal the reported total (clamping would mask
-      // impossible claims like 15/10).
+      // "perfect" requires a claim that is actually consistent: the RAW correct
+      // count must equal the RAW total (clamping would mask impossible claims
+      // like 15/10). NUEVO-fix: el clamp anti-farm (a 20 preguntas) afecta
+      // SOLO al cálculo de gemas; antes una lección legítima de >20 preguntas
+      // (p.ej. 30/30) daba `30 !== 20` y perdía el bonus perfect + SP.
       const consistentPerfect = perfect === true &&
-        reportedTotal > 0 &&
+        Number.isFinite(rawTotal) &&
         Number.isFinite(rawCorrect) &&
-        rawCorrect === reportedTotal &&
+        rawCorrect === rawTotal &&
         rawCorrect > 0;
       const correct = reportedCorrect;
       const baseGems = correct * gems.GEM_REWARDS.lesson_correct;
@@ -989,7 +991,14 @@ exports.completeLesson = functions.runWith({ maxInstances: 10 }).https.onCall(as
         'lesson', requestedGems,
       );
       if (firstOfDayGems > 0) {
-        transaction.set(dailyGemsRef, { first_lesson_of_day: true }, { merge: true });
+        // NUEVO-fix: sellar el bonus "primera lección del día" SOLO si el cap
+        // diario de gemas NO recortó el pago completo (mismo patrón full-payment
+        // que los sellos de logros/gemas). Antes se sellaba incondicionalmente:
+        // con el cap agotado y requested=50 acreditando 5, el bonus de 10 gemas
+        // se perdía para siempre.
+        if (!gemCredit.dailyCapped && gemCredit.gemsAdded >= firstOfDayGems) {
+          transaction.set(dailyGemsRef, { first_lesson_of_day: true }, { merge: true });
+        }
       }
 
       // SAGEN PASS SP — awarded from a server-verified action only.
@@ -1035,13 +1044,21 @@ exports.completeLesson = functions.runWith({ maxInstances: 10 }).https.onCall(as
         updatedAt: admin.firestore.FieldValue.serverTimestamp(),
       }, { merge: true });
 
-      transaction.create(logRef, {
-        userId,
-        type: 'completeLesson',
-        lessonId,
-        xpAdded: cappedXp,
-        createdAt: admin.firestore.FieldValue.serverTimestamp(),
-      });
+      // NUEVO-fix: sellar la lección como completada SOLO si el XP esperado se
+      // acreditó COMPLETO (mismo patrón full-payment que logros/gemas). Antes se
+      // sellaba aunque el cap diario (500) recortara el XP a 0, con clave
+      // `userId_lessonId` sin día: el replay al día siguiente era `duplicate` y
+      // el XP de ESA lección se perdía permanentemente. Ahora, si el cap recorta,
+      // la lección queda abierta y el resto se paga otro día.
+      if (cappedXp === effectiveXp) {
+        transaction.create(logRef, {
+          userId,
+          type: 'completeLesson',
+          lessonId,
+          xpAdded: cappedXp,
+          createdAt: admin.firestore.FieldValue.serverTimestamp(),
+        });
+      }
 
       return {
         success: true,

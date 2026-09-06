@@ -29,6 +29,7 @@ const WEBHOOK_BASE = process.env.VERCEL_URL
   : 'https://sagen-app.vercel.app';
 
 const STREAK_SHIELD_MAX = 2;
+const SAGEN_PASS_GEMS = 500;
 
 const hardcodedCatalog = require('../functions/catalog');
 const catalogService = hardcodedCatalog.createCatalog(admin, { warn: (m, ctx) => console.warn(m, ctx && ctx.error) });
@@ -77,6 +78,99 @@ function shortHash(s) {
     return crypto.createHash('sha256').update(s).digest('hex').slice(0, 12);
   }
   return crypto.createHmac('sha256', secret).update(s).digest('hex').slice(0, 16);
+}
+
+/**
+ * Revierte un pago aprobado (refunded/charged_back). NUEVO-fix A2 (port desde
+ * Cloud Functions): un reembolso/chargeback deshace EXACTAMENTE lo concedido
+ * usando los deltas `granted` persistidos al acreditar (si el log es legacy,
+ * cae al valor de catálogo), con clamp a 0 para no tocar saldos ganados por
+ * otros medios. Concurrentes/replays se vuelven no-op por el status del log.
+ */
+async function revertApprovedPayment(paymentId, payment) {
+  const logRef = admin.firestore().doc(`payment_logs/${paymentId}`);
+  try {
+    return await admin.firestore().runTransaction(async (transaction) => {
+      const logDoc = await transaction.get(logRef);
+      if (!logDoc.exists) return 'no-log';
+      const logData = logDoc.data() || {};
+      if (logData.status !== 'approved') return 'already-reverted';
+
+      const userId = logData.userId;
+      if (!userId) return 'no-user-id';
+      const userRef = admin.firestore().doc(`users/${userId}`);
+      const userDoc = await transaction.get(userRef);
+      if (!userDoc.exists) return 'user-missing';
+      const userData = userDoc.data() || {};
+
+      const granted = logData.granted || {};
+      const revertedAmount =
+        granted.total_donated || logData.amount || payment.transaction_amount || 0;
+      const newTotalDonated = Math.max(
+        0,
+        (userData.total_donated || 0) - revertedAmount,
+      );
+
+      const updateData = {
+        total_donated: newTotalDonated,
+        is_supporter: newTotalDonated > 0,
+        _ts_total_donated: admin.firestore.FieldValue.serverTimestamp(),
+      };
+
+      const bonuses = Array.isArray(logData.bonuses) ? logData.bonuses : [];
+      for (const bonus of bonuses) {
+        if (bonus.type === 'streakProtector') {
+          updateData.shop_streak_shields = Math.max(
+            0,
+            (userData.shop_streak_shields || 0) -
+              (granted.shop_streak_shields || bonus.quantity || 0),
+          );
+        } else if (bonus.type === 'xpBoost') {
+          updateData.shop_purchased_xp_boosts = Math.max(
+            0,
+            (userData.shop_purchased_xp_boosts || 0) -
+              (granted.shop_purchased_xp_boosts || bonus.quantity || 0),
+          );
+        } else if (bonus.type === 'xpMultiplier') {
+          updateData.shop_purchased_xp_multipliers = Math.max(
+            0,
+            (userData.shop_purchased_xp_multipliers || 0) -
+              (granted.shop_purchased_xp_multipliers || bonus.quantity || 0),
+          );
+        } else if (bonus.type === 'luckBoost') {
+          updateData.shop_purchased_luck_boosts = Math.max(
+            0,
+            (userData.shop_purchased_luck_boosts || 0) -
+              (granted.shop_purchased_luck_boosts || bonus.quantity || 0),
+          );
+        } else if (bonus.type === 'sagenPass') {
+          const gemsGranted = granted.learning_gems || bonus.gems || SAGEN_PASS_GEMS;
+          updateData.learning_gems = Math.max(
+            0,
+            (userData.learning_gems || 0) - gemsGranted,
+          );
+          if (newTotalDonated <= 0) {
+            // Los flags de PASS solo se revocan si no quedan donaciones
+            // activas; un PASS con otro pago vigente se conserva.
+            updateData.sagen_pass_active = false;
+            updateData.premium_question_bank = false;
+          }
+        }
+      }
+
+      transaction.update(userRef, updateData);
+      transaction.update(logRef, {
+        status: payment.status,
+        revertReason: payment.status,
+        revertedAmount,
+        revertedAt: admin.firestore.FieldValue.serverTimestamp(),
+      });
+      return 'reverted';
+    });
+  } catch (error) {
+    console.error('revertApprovedPayment error', { paymentId, error: error.message });
+    return 'error';
+  }
 }
 
 // ── Auth middleware ─────────────────────────────────────────────
@@ -154,6 +248,28 @@ app.use(express.json({
 // POST /api/createPaymentPreference
 // ────────────────────────────────────────────────────────────────
 app.post('/api/createPaymentPreference', requireAuth, rateLimit, async (req, res) => {
+  // Origin check (mirror de Cloud Functions): rechazamos con 403 un request sin
+  // Origin o con Origin fuera de la allow-list. El único consumidor es la app
+  // web (checkout vía init_point), que siempre envía Origin.
+  const allowedOrigins = [
+    'https://sagen-bdd3f.web.app',
+    'https://sagen-bdd3f.firebaseapp.com',
+  ];
+  const origin = req.headers.origin || '';
+  if (!origin) {
+    return res.status(403).json({ error: 'permission-denied', message: 'Falta el encabezado de origen' });
+  }
+  if (!allowedOrigins.includes(origin)) {
+    return res.status(403).json({ error: 'permission-denied', message: 'Origen no permitido' });
+  }
+
+  // NUEVO-fix: regla de oro del proyecto — las mutaciones monetarias solo con
+  // email verificado. Era el endpoint de pago live (Vercel) sin el control que
+  // ya existía en Cloud Functions.
+  if (req.user.email_verified !== true) {
+    return res.status(403).json({ error: 'email-not-verified', message: 'Necesitas un correo verificado para realizar pagos' });
+  }
+
   try {
     const { amount, productId } = req.body;
     if (!amount || !productId) {
@@ -221,36 +337,63 @@ app.post('/api/handlePaymentWebhook', async (req, res) => {
       console.error('MERCADOPAGO_WEBHOOK_SECRET not configured — rejecting webhook for security');
       return res.status(500).send('Server misconfigured');
     }
-    {
-      const signature = req.headers['x-signature'] || '';
-      const parts = {};
-      for (const part of signature.split(';')) {
+    // NUEVO-fix A1 (port desde Cloud Functions): el algoritmo EXACTO de
+    // MercadoPago firma el manifest `id:<data.id>;request-id:<x-request-id>;ts:<ts>;`
+    // con ventana de frescura de 10 min. Antes se firmaba `ts<ts>req<body>`
+    // sin ventana: toda firma actual de MP daba 401 (pagos no acreditados) y
+    // una firma legacy podía reutilizarse indefinidamente (replay).
+    const dataIdRaw = String(req.query?.['data.id'] || '').trim();
+    const dataId = /^[a-zA-Z0-9]+$/.test(dataIdRaw) ? dataIdRaw.toLowerCase() : dataIdRaw;
+    const xRequestId = String(req.headers['x-request-id'] || '').trim();
+    const signature = req.headers['x-signature'] || '';
+    const sigParts = {};
+    // MercadoPago separa con comas; tolera también el separador ';' legacy.
+    for (const group of signature.split(',')) {
+      for (const part of group.split(';')) {
         const [k, v] = part.split('=');
-        if (k && v) parts[k.trim()] = v.trim();
+        if (k && v) sigParts[k.trim()] = v.trim();
       }
-      const ts = parts['ts'];
-      const v1 = parts['v1'];
-      if (!ts || !v1) {
-        console.warn('Webhook missing signature', { paymentId: data.id });
+    }
+    const ts = sigParts['ts'];
+    const v1 = sigParts['v1'];
+    if (!ts || !v1 || !dataId || !xRequestId) {
+      console.warn('Webhook missing signature parts', {
+        paymentId: dataId, hasTs: !!ts, hasV1: !!v1,
+        hasDataId: !!dataId, hasRequestId: !!xRequestId,
+      });
+      return res.status(401).send('Unauthorized');
+    }
+
+    // Freshness window: MP envía ts en segundos o milisegundos. Rechazar
+    // firmas con >10 min de antigüedad o futuras (mitiga replay/clock skew).
+    const tsNum = Number(ts);
+    if (Number.isFinite(tsNum) && tsNum > 0) {
+      const tsMs = tsNum > 1e12 ? tsNum : tsNum * 1000;
+      const driftMs = Math.abs(Date.now() - tsMs);
+      if (driftMs > 10 * 60 * 1000) {
+        console.warn('Webhook signature timestamp out of window', { paymentId: dataId });
         return res.status(401).send('Unauthorized');
       }
-      if (!/^[a-f0-9]{64}$/i.test(v1)) {
-        // Validate hex shape BEFORE timingSafeEqual: buffers of different
-        // lengths throw, turning a cheap malformed-signature probe into a
-        // 500 (and an MP retry). A malformed signature is a 401, drop it.
-        console.warn('Webhook malformed signature', { paymentId: data.id });
-        return res.status(401).send('Unauthorized');
-      }
-      const rawBody = req.rawBody
-        ? req.rawBody.toString('utf8')
-        : JSON.stringify(req.body);
-      const expected = crypto.createHmac('sha256', WEBHOOK_SECRET)
-        .update(`ts${ts}req${rawBody}`)
-        .digest('hex');
-      if (!crypto.timingSafeEqual(Buffer.from(v1, 'hex'), Buffer.from(expected, 'hex'))) {
-        console.warn('Webhook signature mismatch', { paymentId: data.id });
-        return res.status(401).send('Unauthorized');
-      }
+    }
+
+    let manifest = '';
+    if (dataId) manifest += `id:${dataId};`;
+    if (xRequestId) manifest += `request-id:${xRequestId};`;
+    manifest += `ts:${ts};`;
+
+    const expected = crypto.createHmac('sha256', WEBHOOK_SECRET)
+      .update(manifest)
+      .digest('hex');
+
+    // Validate hex shape BEFORE timingSafeEqual: buffers de distinta longitud
+    // lanzan, convirtiendo un probe malformado en 500 (y un retry de MP).
+    if (!/^[a-f0-9]{64}$/i.test(v1)) {
+      console.warn('Webhook malformed signature', { paymentId: dataId });
+      return res.status(401).send('Unauthorized');
+    }
+    if (!crypto.timingSafeEqual(Buffer.from(v1, 'hex'), Buffer.from(expected, 'hex'))) {
+      console.warn('Webhook signature mismatch', { paymentId: dataId });
+      return res.status(401).send('Unauthorized');
     }
 
     const paymentId = data.id.toString();
@@ -273,6 +416,22 @@ app.post('/api/handlePaymentWebhook', async (req, res) => {
     const productId = payment.metadata?.productId || extParts[2] || null;
 
     if (payment.status !== 'approved') {
+      // NUEVO-fix A2 (port desde Cloud Functions): un reembolso/chargeback
+      // revierte exactamente lo concedido. Antes caía en el 200 no-op y el
+      // usuario conservaba total_donated/is_supporter/bonos tras un reembolso.
+      if (payment.status === 'refunded' || payment.status === 'charged_back') {
+        const outcome = await revertApprovedPayment(paymentId, payment);
+        if (outcome === 'error') {
+          console.error('Payment reversal failed — returning 5xx for retry', {
+            paymentId, status: payment.status,
+          });
+          return res.status(500).send('Internal error');
+        }
+        console.log('Payment reversal processed', {
+          paymentId, status: payment.status, outcome,
+        });
+        return res.status(200).send('OK');
+      }
       if (payment.status === 'pending' || payment.status === 'in_process') {
         const pendingRef = admin.firestore().collection('pending_payments').doc(paymentId);
         const pendingDoc = await pendingRef.get();
@@ -301,6 +460,10 @@ app.post('/api/handlePaymentWebhook', async (req, res) => {
 
     const userRef = admin.firestore().doc(`users/${userId}`);
     const logRef = admin.firestore().doc(`payment_logs/${paymentId}`);
+    // NUEVO-fix: resolver el catálogo FUERA del callback de la transacción —
+    // loadCatalog hace una lectura Firestore no transaccional (caché 5 min).
+    // Dentro de un runTransaction rompería la invarianza de lecturas y alargaría
+    // la txn (riesgo de timeout/retry).
     const catalog = await loadCatalog();
     const pkg = catalog[productId];
     const bonuses = pkg ? pkg.bonuses : [];
@@ -326,20 +489,47 @@ app.post('/api/handlePaymentWebhook', async (req, res) => {
 
       applyProductBonuses(updateData, userData, bonuses);
 
+      // NUEVO-fix A2: persistir los deltas EFECTIVOS concedidos (tras el cap de
+      // escudos, etc.) para que un reembolso/chargeback revierta exactamente lo
+      // concedido sin tocar saldos ganados por otros medios.
+      const granted = {
+        total_donated: amount,
+        is_supporter: true,
+        shop_streak_shields: updateData.shop_streak_shields !== undefined
+          ? updateData.shop_streak_shields - (userData.shop_streak_shields || 0)
+          : 0,
+        shop_purchased_xp_boosts: updateData.shop_purchased_xp_boosts !== undefined
+          ? updateData.shop_purchased_xp_boosts - (userData.shop_purchased_xp_boosts || 0)
+          : 0,
+        shop_purchased_xp_multipliers: updateData.shop_purchased_xp_multipliers !== undefined
+          ? updateData.shop_purchased_xp_multipliers - (userData.shop_purchased_xp_multipliers || 0)
+          : 0,
+        shop_purchased_luck_boosts: updateData.shop_purchased_luck_boosts !== undefined
+          ? updateData.shop_purchased_luck_boosts - (userData.shop_purchased_luck_boosts || 0)
+          : 0,
+        learning_gems: updateData.learning_gems !== undefined
+          ? updateData.learning_gems - (userData.learning_gems || 0)
+          : 0,
+        sagen_pass_granted: updateData.sagen_pass_active === true,
+      };
+
       transaction.update(userRef, updateData);
       transaction.create(logRef, {
-        userId, amount, productId, bonuses,
+        userId, amount, productId, bonuses, granted,
         paymentAmount: payment.transaction_amount || 0,
         currency: payment.currency_id || 'PEN', paymentId, paymentMethod: payment.payment_method_id || 'unknown',
         status: payment.status, externalRef, createdAt: admin.firestore.FieldValue.serverTimestamp(),
       });
     });
 
-    // Flip any matching pending payment to completed so the app can poll it.
+    // Flip any matching pending payment (del MISMO usuario) to completed so the
+    // app can poll it. NUEVO-fix: filtrar por userId evita marcar como
+    // completed un pending de OTRO usuario con igual operationId.
     try {
       const pendSnap = await admin.firestore()
         .collection('pending_payments')
         .where('operationId', '==', paymentId)
+        .where('userId', '==', userId)
         .get();
       await Promise.all(pendSnap.docs.map((doc) =>
         admin.firestore().doc(`pending_payments/${doc.id}`).update({
@@ -366,6 +556,32 @@ app.post('/api/handlePaymentWebhook', async (req, res) => {
 // ────────────────────────────────────────────────────────────────
 app.post('/api/adminCreditDonation', requireAdmin, async (req, res) => {
   try {
+    // Rate limit para admins (30 req/min) — mirror de Cloud Functions.
+    if (req.user && req.user.uid) {
+      const rl = await admin.firestore().runTransaction(async (transaction) => {
+        const ref = admin.firestore().doc(`rate_limits/${req.user.uid}`);
+        const now = Date.now();
+        const windowStart = now - 60 * 1000;
+        const doc = await transaction.get(ref);
+        const data = doc.data() || {};
+        const timestamps = (data.timestamps || []).filter((t) => t > windowStart);
+        if (timestamps.length >= 30) throw new Error('ADMIN_RATE_LIMIT');
+        timestamps.push(now);
+        transaction.set(ref, { timestamps }, { merge: true });
+      }).catch((e) => {
+        if (e && e.message === 'ADMIN_RATE_LIMIT') return 'exceeded';
+        // Fail-closed on Firestore degradation (security first).
+        console.error('Admin rate limit check failed (fail-closed)', e && e.message);
+        return 'unavailable';
+      });
+      if (rl === 'exceeded' || rl === 'unavailable') {
+        if (rl === 'exceeded') {
+          return res.status(429).json({ error: 'resource-exhausted', message: 'Demasiadas solicitudes. Intenta de nuevo.' });
+        }
+        return res.status(503).json({ error: 'unavailable', message: 'Servicio temporalmente no disponible. Intenta de nuevo.' });
+      }
+    }
+
     const { userId, paymentMethod, productId, idempotencyKey } = req.body;
     // NUEVO-fix: coerce amount to a real number BEFORE any arithmetic so a
     // string payload cannot produce "105" from amount="10"+"5" concatenation.
@@ -390,6 +606,12 @@ app.post('/api/adminCreditDonation', requireAdmin, async (req, res) => {
     const userRef = admin.firestore().doc(`users/${userId}`);
     const method = paymentMethod || 'whatsapp';
 
+    // NUEVO-fix: resolver el catálogo FUERA del callback de la transacción
+    // (misma invariante que el webhook).
+    const catalog = await loadCatalog();
+    const pkg = catalog[productId];
+    const bonuses = pkg ? pkg.bonuses : [];
+
     const result = await admin.firestore().runTransaction(async (transaction) => {
       const [logDoc, userDoc] = await Promise.all([transaction.get(logRef), transaction.get(userRef)]);
       if (logDoc.exists) {
@@ -411,14 +633,34 @@ app.post('/api/adminCreditDonation', requireAdmin, async (req, res) => {
         _ts_total_donated: admin.firestore.FieldValue.serverTimestamp(),
       };
 
-      const catalog = await loadCatalog();
-      const pkg = catalog[productId];
-      const bonuses = pkg ? pkg.bonuses : [];
       applyProductBonuses(updateData, userData, bonuses);
+
+      // NUEVO-fix A2: persistir los deltas EFECTIVOS para que un reembolso o
+      // reversión manual aplique exactamente lo concedido.
+      const granted = {
+        total_donated: amount,
+        is_supporter: true,
+        shop_streak_shields: updateData.shop_streak_shields !== undefined
+          ? updateData.shop_streak_shields - (userData.shop_streak_shields || 0)
+          : 0,
+        shop_purchased_xp_boosts: updateData.shop_purchased_xp_boosts !== undefined
+          ? updateData.shop_purchased_xp_boosts - (userData.shop_purchased_xp_boosts || 0)
+          : 0,
+        shop_purchased_xp_multipliers: updateData.shop_purchased_xp_multipliers !== undefined
+          ? updateData.shop_purchased_xp_multipliers - (userData.shop_purchased_xp_multipliers || 0)
+          : 0,
+        shop_purchased_luck_boosts: updateData.shop_purchased_luck_boosts !== undefined
+          ? updateData.shop_purchased_luck_boosts - (userData.shop_purchased_luck_boosts || 0)
+          : 0,
+        learning_gems: updateData.learning_gems !== undefined
+          ? updateData.learning_gems - (userData.learning_gems || 0)
+          : 0,
+        sagen_pass_granted: updateData.sagen_pass_active === true,
+      };
 
       transaction.update(userRef, updateData);
       transaction.create(logRef, {
-        userId, amount, productId: productId || null, bonuses, method: 'manual_' + method,
+        userId, amount, productId: productId || null, bonuses, granted, method: 'manual_' + method,
         creditedBy: 'admin', postBalance: currentBalance + amount,
         createdAt: admin.firestore.FieldValue.serverTimestamp(),
       });
@@ -426,11 +668,12 @@ app.post('/api/adminCreditDonation', requireAdmin, async (req, res) => {
       return { success: true, duplicate: false, newBalance: currentBalance + amount, bonuses };
     });
 
-    // Flip any matching pending payment to completed so the app can poll it.
+    // Flip any matching pending payment (del MISMO usuario) to completed.
     try {
       const pendSnap = await admin.firestore()
         .collection('pending_payments')
         .where('operationId', '==', idempotencyKey)
+        .where('userId', '==', userId)
         .get();
       await Promise.all(pendSnap.docs.map((doc) =>
         admin.firestore().doc(`pending_payments/${doc.id}`).update({
