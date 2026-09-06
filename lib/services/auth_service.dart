@@ -43,7 +43,9 @@ class AuthService implements IAuthService {
 
   @override
   Future<void> init() async {
-    _authSub?.cancel();
+    // NUEVO-fix (ronda 10): se espera la cancelación de la suscripción previa
+    // antes de crear la nueva (evita un handler viejo en vuelo mezclando estados).
+    await _authSub?.cancel();
     _client.init();
 
     if (!_client.isAvailable) return;

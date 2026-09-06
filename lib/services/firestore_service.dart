@@ -138,10 +138,13 @@ class FirestoreService implements IFirestoreService {
           .timeout(const Duration(seconds: 10));
     } catch (e, stack) {
       _logger.error('FirestoreService: createUserProfile failed: $e');
-      FirebaseCrashlytics.instance.recordError(
-        e,
-        stack,
-        reason: 'createUserProfile failed',
+      // NUEVO-fix (ronda 10): el reporte a Crashlytics es fire-and-forget.
+      unawaited(
+        FirebaseCrashlytics.instance.recordError(
+          e,
+          stack,
+          reason: 'createUserProfile failed',
+        ),
       );
       rethrow;
     }
@@ -188,10 +191,13 @@ class FirestoreService implements IFirestoreService {
           .timeout(const Duration(seconds: 10));
     } catch (e, stack) {
       _logger.error('FirestoreService: updateField($field) failed: $e');
-      FirebaseCrashlytics.instance.recordError(
-        e,
-        stack,
-        reason: 'updateField($field) failed',
+      // NUEVO-fix (ronda 10): reporte a Crashlytics fire-and-forget.
+      unawaited(
+        FirebaseCrashlytics.instance.recordError(
+          e,
+          stack,
+          reason: 'updateField($field) failed',
+        ),
       );
       rethrow;
     }
@@ -230,10 +236,13 @@ class FirestoreService implements IFirestoreService {
           .timeout(const Duration(seconds: 10));
     } catch (e, stack) {
       _logger.error('FirestoreService: updateFields failed: $e');
-      FirebaseCrashlytics.instance.recordError(
-        e,
-        stack,
-        reason: 'updateFields failed',
+      // NUEVO-fix (ronda 10): reporte a Crashlytics fire-and-forget.
+      unawaited(
+        FirebaseCrashlytics.instance.recordError(
+          e,
+          stack,
+          reason: 'updateFields failed',
+        ),
       );
       rethrow;
     }

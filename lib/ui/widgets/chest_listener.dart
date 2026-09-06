@@ -54,18 +54,25 @@ class _ChestListenerState extends ConsumerState<ChestListener> {
       AppLogger().error('ChestListener: haptic failed: $e');
     }
 
+    // NUEVO-fix (ronda 9, P7): el whenComplete podía ejecutarse tras el
+    // dispose del widget (navegación/sign-out con el diálogo abierto) y
+    // _deliverRewards leía ref/estado ya liberado (StateError en un callback
+    // sin manejar). El guard mounted corta la entrega y libera la cola.
     ChestRewardDialog.show(context, data).whenComplete(() {
+      if (!mounted) {
+        _dialogOpen = false;
+        _pendingRewards.clear();
+        return;
+      }
       _deliverRewards(data);
       _bus.consume();
       _dialogOpen = false;
 
       if (_pendingRewards.isNotEmpty) {
         final next = _pendingRewards.removeAt(0);
-        if (mounted) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (mounted) _processEvent(next);
-          });
-        }
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) _processEvent(next);
+        });
       }
     });
   }

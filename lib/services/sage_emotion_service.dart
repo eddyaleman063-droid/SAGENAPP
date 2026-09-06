@@ -313,7 +313,9 @@ class SageEmotionService {
     try {
       await future;
     } finally {
-      _inFlight.remove(emotion);
+      // NUEVO-fix (ronda 10): remove() devuelve el Future completado que ya se
+      // esperó arriba; se descarta explícitamente.
+      unawaited(_inFlight.remove(emotion));
     }
   }
 

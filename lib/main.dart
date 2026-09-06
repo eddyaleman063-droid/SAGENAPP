@@ -26,7 +26,9 @@ import 'ui/widgets/common/sync_coordinator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  // NUEVO-fix (ronda 10): setPreferredOrientations es async; se espera para
+  // que la orientación fija quede aplicada antes de lanzar la UI.
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,

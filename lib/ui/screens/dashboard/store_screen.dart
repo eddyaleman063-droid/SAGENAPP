@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -185,7 +186,8 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
 
       if (!mounted) return;
       exp.successHaptic();
-      AudioService.instance.playPurchaseSuccess();
+      // NUEVO-fix (ronda 10): el sonido de compra es fuego-y-olvida.
+      unawaited(AudioService.instance.playPurchaseSuccess());
       if (context.mounted) {
         SagenNotification.show(
           context,

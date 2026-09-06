@@ -262,6 +262,52 @@ describe('recordDonation (NUEVO-fix idempotencia)', () => {
       )
     ).rejects.toThrow(expect.objectContaining({ code: 'already-exists' }));
   });
+
+  test('R10: reject a donation when the per-user rate limit window is exhausted', async () => {
+    const uid = 'rl-user-a';
+    setUserDoc(uid, { total_donated: 0, walletBalance: 100 });
+    const now = Date.now();
+    // Pre-cargar 5 ticks dentro de la ventana de 60s (donation_timestamps).
+    admin._setDoc(`rate_limits/${uid}`, {
+      donation_timestamps: [now, now, now, now, now],
+    });
+    await expect(
+      economic.recordDonation(
+        { amount: 5, method: 'wallet', idempotencyKey: 'rl-don-1' },
+        makeContext(uid)
+      )
+    ).rejects.toThrow(expect.objectContaining({ code: 'resource-exhausted' }));
+  });
+
+  test('R10: processDonation honors the same per-user donation rate limiter', async () => {
+    const uid = 'rl-user-b';
+    setUserDoc(uid, { total_donated: 0, walletBalance: 100 });
+    const now = Date.now();
+    admin._setDoc(`rate_limits/${uid}`, {
+      donation_timestamps: [now, now, now, now, now],
+    });
+    await expect(
+      economic.processDonation(
+        { amount: 5, method: 'mercadopago', idempotencyKey: 'rl-don-1' },
+        makeContext(uid)
+      )
+    ).rejects.toThrow(expect.objectContaining({ code: 'resource-exhausted' }));
+  });
+
+  test('R10: donations still pass when the limit window has not been reached', async () => {
+    const uid = 'rl-user-c';
+    setUserDoc(uid, { total_donated: 0, walletBalance: 100 });
+    const now = Date.now();
+    // Un solo tick en la ventana (por debajo del máximo de 5).
+    admin._setDoc(`rate_limits/${uid}`, {
+      donation_timestamps: [now],
+    });
+    const result = await economic.recordDonation(
+      { amount: 5, method: 'wallet', idempotencyKey: 'rl-don-ok' },
+      makeContext(uid)
+    );
+    expect(result.duplicate).toBe(false);
+  });
 });
 
 describe('addXp', () => {

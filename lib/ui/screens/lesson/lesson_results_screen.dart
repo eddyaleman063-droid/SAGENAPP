@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sagen/providers/providers.dart';
+import 'package:sagen/services/app_logger.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/theme_constants.dart';
 
@@ -20,27 +21,43 @@ class LessonResultsScreen extends ConsumerWidget {
     required this.lessonId,
   });
 
-  void _finishLesson(
+  Future<void> _finishLesson(
     BuildContext context,
     WidgetRef ref,
     SessionState session,
-  ) {
+  ) async {
+    final l = AppLocalizations.of(context)!;
     final exp = ref.read(experienceServiceProvider);
     exp.successHaptic();
-    // Acredita la lección ANTES del checkIn de racha: tanto el badge de XP como
-    // completeLesson leen xpForLesson del MISMO multiplicador de racha.
-    // Del orden contrario, en el borde racha 9->10 (mult 1.0->1.1) el badge
-    // mostraría +15 y el servidor/cliente acreditarían round(15*1.1)=+17.
-    ref
-        .read(learningProvider.notifier)
-        .completeLesson(
-          stageId,
-          lessonId,
-          perfectLesson: session.isPerfect,
-          correctAnswers: session.correctCount,
-          totalQuestions: session.totalQuestions,
-        );
-    ref.read(streakProvider.notifier).checkIn();
+    try {
+      // Acredita la lección ANTES del checkIn de racha: tanto el badge de XP como
+      // completeLesson leen xpForLesson del MISMO multiplicador de racha.
+      // Del orden contrario, en el borde racha 9->10 (mult 1.0->1.1) el badge
+      // mostraría +15 y el servidor/cliente acreditarían round(15*1.1)=+17.
+      // NUEVO-fix (ronda 9, P1): completeLesson es Future<void> y antes se
+      // descartaba por completo — un throw síncrono dentro del notifier se
+      // convertía en excepción async huérfana mientras la navegación ya había
+      // salido de la pantalla (lección posiblemente sin acreditar). Ahora se
+      // await y se navega SOLO si todo el bloque tuvo éxito.
+      await ref
+          .read(learningProvider.notifier)
+          .completeLesson(
+            stageId,
+            lessonId,
+            perfectLesson: session.isPerfect,
+            correctAnswers: session.correctCount,
+            totalQuestions: session.totalQuestions,
+          );
+      ref.read(streakProvider.notifier).checkIn();
+    } catch (e, stack) {
+      AppLogger().error('LessonResultsScreen._finishLesson failed', e, stack);
+      if (context.mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l.tryAgain)));
+      }
+      return;
+    }
     // Navegación determinista: se llega aquí tras `goNamed('lesson-results')`,
     // que deja la pila con una sola página (go_router construye las páginas solo
     // a partir de los matches). `context.pop()` en ese caso lanza

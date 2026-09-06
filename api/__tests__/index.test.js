@@ -211,6 +211,9 @@ describe('api handlePaymentWebhook', () => {
     admin._setDoc('pending_payments/owner_pay_6', {
       userId: AUTH_UID, operationId: 'pay_6', status: 'pending',
     });
+    // NUEVO-fix (ronda 9): el webhook ahora falla con 5xx si el usuario del pago
+    // aprobado no existe (nunca más 200 silencioso), así que el owner DEBE existir.
+    setUserDoc(AUTH_UID, { total_donated: 0 });
     const r = makeRes();
     await webhookHandler()(signedWebhookReq({ type: 'payment', data: { id: 'pay_6' } }), r);
     expect(r._status).toBe(200);
@@ -228,10 +231,31 @@ describe('api handlePaymentWebhook', () => {
     admin._setDoc('pending_payments/other_pay_6b', {
       userId: 'someone-else', operationId: 'pay_6b', status: 'pending',
     });
+    // NUEVO-fix (ronda 9): idem — el owner del pago debe existir para que el
+    // webhook acredite con 200 y solo voltee el pending del MISMO usuario.
+    setUserDoc(AUTH_UID, { total_donated: 0 });
     const r = makeRes();
     await webhookHandler()(signedWebhookReq({ type: 'payment', data: { id: 'pay_6b' } }), r);
     expect(r._status).toBe(200);
     expect(admin._getDoc('pending_payments/other_pay_6b').status).toBe('pending');
+  });
+
+  test('NUEVO-fix ronda 9: approved payment with a missing user is NOT swallowed with 200', async () => {
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: async () => ({
+        status: 'approved',
+        transaction_amount: 3,
+        external_reference: 'hash123|3|donation_basic',
+        metadata: { userId: 'ghost-user', amount: 3, productId: 'donation_basic' },
+      }),
+    });
+    const r = makeRes();
+    await webhookHandler()(signedWebhookReq({ type: 'payment', data: { id: 'pay_ghost_user' } }), r);
+    expect(r._status).toBeGreaterThanOrEqual(500);
+    expect(admin._getDoc('users/ghost-user')).toBeNull();
+    expect(admin._getDoc('payment_logs/pay_ghost_user')).toBeNull();
   });
 
   function refundedPayment(status) {

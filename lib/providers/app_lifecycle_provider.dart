@@ -36,7 +36,9 @@ class AppLifecycleNotifier extends StateNotifier<AppLifecycleState>
       _syncDebounce = Timer(const Duration(seconds: 2), _syncToCloud);
     } else if (state == AppLifecycleState.resumed) {
       _ref.read(connectivityServiceProvider).start();
-      _ref.read(authProvider.notifier).refreshCurrentUser();
+      // NUEVO-fix (ronda 10): refreshCurrentUser es fire-and-forget en un
+      // callback sync de ciclo de vida; maneja sus propios errores.
+      unawaited(_ref.read(authProvider.notifier).refreshCurrentUser());
     }
   }
 
@@ -49,8 +51,9 @@ class AppLifecycleNotifier extends StateNotifier<AppLifecycleState>
       if (uid != null) {
         await _cloudSync.saveAll(uid, prefs);
         // After a full cloud sync the local gem cache is reconciled with the
-        // authoritative server balance (NUEVO-03).
-        _ref.read(gemProvider.notifier).syncBalanceFromServer();
+        // authoritative server balance (NUEVO-03). NUEVO-fix (ronda 9, P5):
+        // fire-and-forget explícito.
+        unawaited(_ref.read(gemProvider.notifier).syncBalanceFromServer());
         // Server-authoritative inventory reconciliation (NUEVO-08).
         await _ref.read(itemProvider.notifier).syncFromServer();
       }

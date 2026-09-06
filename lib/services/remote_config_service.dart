@@ -71,7 +71,7 @@ class RemoteConfigService {
         _keyEvolutionBronzeToSilver: 0.45,
         _keyEvolutionSilverToGold: 0.20,
         _keyEvolutionGoldToLegendary: 0.03,
-        _keyStreakMaxFreezes: 7,
+        _keyStreakMaxFreezes: 5,
         _keyDailyGemCapLesson: 50,
         // NUEVO-fix (ronda 7): claimDailyChest aplica reason 'daily_chest' con
         // cap 20 en el server (GEM_DAILY_CAPS); aquí había 200 -> el cliente
@@ -209,7 +209,13 @@ class RemoteConfigService {
   double get evolutionGoldToLegendary =>
       (_rc?.getDouble(_keyEvolutionGoldToLegendary) ?? 0.03).clamp(0.0, 1.0);
 
-  int get streakMaxFreezes => _rc?.getInt(_keyStreakMaxFreezes) ?? 7;
+  // NUEVO-fix (ronda 9, C1): el tope ABSOLUTO de escudos en el servidor es 5
+  // (FREE_SHIELD_MAX=3 + STREAK_SHIELD_MAX=2). Remote Config no es fuente de
+  // seguridad (el flag se puede alterar), así que el valor real se aplana con
+  // clamp(0, 5): un cliente que reciba 7 no puede reclamar más escudos de los
+  // que el servidor concedería jamás.
+  int get streakMaxFreezes =>
+      (_rc?.getInt(_keyStreakMaxFreezes) ?? 5).clamp(0, 5);
 
   /// BUG-073: Shop catalog from RemoteConfig (empty list = use hardcoded defaults)
   List<Map<String, dynamic>> get shopCatalog {

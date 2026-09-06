@@ -26,7 +26,9 @@ class AppRatingService {
     await prefs.setInt(_keySessionCount, count);
 
     if (count >= 5) {
-      _showRatingPrompt();
+      // NUEVO-fix (ronda 10): _showRatingPrompt es async; se espera para no
+      // dejar el Future huérfano (el prompt maneja su propia UI nativa).
+      await _showRatingPrompt();
     }
   }
 

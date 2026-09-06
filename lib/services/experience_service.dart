@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui' as ui;
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -68,7 +69,9 @@ class ExperienceService {
   /// Initialize with shared SharedPreferences instance.
   /// Never call SharedPreferences.getInstance() internally.
   Future<void> init([SharedPreferences? prefs]) async {
-    _detector.init();
+    // NUEVO-fix (ronda 10): _detector.init() devuelve un Future; fire-and-forget
+    // explícito (el detector notifica por canal, sin errores que propagar).
+    unawaited(_detector.init());
     _prefs = prefs ?? await SharedPreferences.getInstance();
     final p = _prefs;
     if (p == null) return;

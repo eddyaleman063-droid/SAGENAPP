@@ -15,6 +15,39 @@ const MAX_XP_PER_LESSON = 100;
 const MAX_DAILY_XP = 500;
 const MAX_DONATION_AMOUNT = 100000;
 
+// ── Donation rate limiting (Firestore-based, distributed) ──────
+// Ronda 10: defensa en profundidad sobre las donaciones, que ya están
+// acotadas por idempotencia y caps. Un usuario normal no dispara muchas
+// donaciones al minuto; frenar los abusos de economia financiera importa
+// más que en otras mutaciones.
+const DONATION_RATE_WINDOW = 60 * 1000;
+const DONATION_RATE_MAX = 5;
+
+async function checkDonationRateLimit(uid) {
+  const now = Date.now();
+  const windowStart = now - DONATION_RATE_WINDOW;
+  const bucketRef = admin.firestore().doc(`rate_limits/${uid}`);
+  try {
+    await admin.firestore().runTransaction(async (transaction) => {
+      const doc = await transaction.get(bucketRef);
+      const data = doc.data() || {};
+      const timestamps = (data.donation_timestamps || []).filter((t) => t > windowStart);
+      if (timestamps.length >= DONATION_RATE_MAX) {
+        throw new functions.https.HttpsError(
+          'resource-exhausted',
+          'Demasiadas donaciones. Intenta de nuevo en un momento.'
+        );
+      }
+      timestamps.push(now);
+      transaction.set(bucketRef, { donation_timestamps: timestamps }, { merge: true });
+    });
+  } catch (e) {
+    if (e instanceof functions.https.HttpsError) throw e;
+    functions.logger.error('Donation rate limit check failed, rejecting', { uid, error: e.message });
+    throw new functions.https.HttpsError('resource-exhausted', 'Servicio temporalmente no disponible. Intenta de nuevo.');
+  }
+}
+
 // Server-authoritative XP rewards per reason.
 // Client cannot specify amount — server uses these predefined values.
 const REASON_REWARDS = {
@@ -193,6 +226,9 @@ exports.processDonation = functions.runWith({ maxInstances: 10 }).https.onCall(a
     throw new functions.https.HttpsError('invalid-argument', 'idempotencyKey invalido');
   }
 
+  // Ronda 10: rate limit por usuario sobre el envío de donaciones.
+  await checkDonationRateLimit(context.auth.uid);
+
   const userId = context.auth.uid;
   const userRef = admin.firestore().doc(`users/${userId}`);
   const logRef = admin.firestore().doc(`transaction_logs/${idempotencyKey}`);
@@ -314,7 +350,10 @@ exports.recordDonation = functions.runWith({ maxInstances: 10 }).https.onCall(as
     throw new functions.https.HttpsError('invalid-argument', 'idempotencyKey invalido');
   }
 
-const userId = context.auth.uid;
+  // Ronda 10: rate limit por usuario sobre el envío de donaciones.
+  await checkDonationRateLimit(context.auth.uid);
+
+  const userId = context.auth.uid;
   const userRef = admin.firestore().doc(`users/${userId}`);
   // NUEVO-fix idempotencia: sin clave del cliente se deriva una determinista
   // del día UTC + monto + método, así un retry de red de la MISMA donación no

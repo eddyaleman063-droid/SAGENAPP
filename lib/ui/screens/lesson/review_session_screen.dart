@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -35,8 +36,11 @@ class _ReviewSessionScreenState extends ConsumerState<ReviewSessionScreen> {
   @override
   void initState() {
     super.initState();
+    // NUEVO-fix (ronda 9, P3): _loadQuestions() se dispara fuego-y-olvida tras
+    // el primer frame; unawaited() lo deja explícito (el error ya se maneja
+    // dentro del método).
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _loadQuestions();
+      unawaited(_loadQuestions());
     });
   }
 

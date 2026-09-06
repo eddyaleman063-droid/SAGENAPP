@@ -313,7 +313,9 @@ class LearningNotifier extends Notifier<LearningState> {
       _initInProgress = false;
       if (_initQueued) {
         _initQueued = false;
-        _init();
+        // NUEVO-fix (ronda 10): _init() se relanza fire-and-forget tras un init
+        // encolado; unawaited() deja explícito que sus errores se manejan dentro.
+        unawaited(_init());
       }
     }
   }
@@ -547,18 +549,23 @@ class LearningNotifier extends Notifier<LearningState> {
 
     _save();
 
-    // Queue lesson for server-side sync (single entry point).
-    ref
-        .read(offlineQueueServiceProvider)
-        .queueLessonCompletion(
-          lessonId: lessonId,
-          stageId: stageId,
-          gemsEarned: gemsEarned,
-          xpEarned: multipliedXp,
-          correctAnswers: correctAnswers,
-          totalQuestions: totalQuestions,
-          completedAt: DateTime.now(),
-        );
+    // Queue lesson for server-side sync (single entry point). NUEVO-fix
+    // (ronda 9, P2): el Future se descartaba; unawaited() deja EXPLÍCITO que
+    // es fire-and-forget y concede el favor emitido a la cola (evita el ruido
+    // de discarded_futures si el lint se activa).
+    unawaited(
+      ref
+          .read(offlineQueueServiceProvider)
+          .queueLessonCompletion(
+            lessonId: lessonId,
+            stageId: stageId,
+            gemsEarned: gemsEarned,
+            xpEarned: multipliedXp,
+            correctAnswers: correctAnswers,
+            totalQuestions: totalQuestions,
+            completedAt: DateTime.now(),
+          ),
+    );
 
     // El cofre de lección se rueda tras la confirmación del servidor en
     // _reconcileWithServer (contador server-authoritative). No se rueda aquí.

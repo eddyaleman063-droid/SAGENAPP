@@ -310,7 +310,10 @@ class GemNotifier extends Notifier<GemState> {
           remaining.add(entry);
         }
       }
-      prefs.setStringList(_keyPendingEarns, remaining);
+      // NUEVO-fix (ronda 10): la persistencia del "remaining" debe terminar
+      // antes de que _retryingPendingEarns vuelva a false, o un retry
+      // concurrente podría releer la cola sin evictar lo ya procesado.
+      await prefs.setStringList(_keyPendingEarns, remaining);
     } catch (e, stack) {
       AppLogger().warning('GemNotifier: retry pending earns failed', e, stack);
     } finally {
@@ -396,6 +399,33 @@ class GemNotifier extends Notifier<GemState> {
       await _persistEarnToServer('daily_bonus', {'dayStreak': dayStreak});
     }
   }
+
+  /// Encola una acreditación ligada a la racha (daily_bonus / streak_milestone)
+  /// cuando el sync del check-in falló del todo (NUEVO-fix ronda 9). El
+  /// check-in ya acreditó las gemas LOCALMENTE y marcó last_daily_bonus_day,
+  /// pero sin confirmación del servidor esas gemas eran fantasma (se borraban
+  /// en el próximo syncBalance). El servidor ignora meta y usa SU propia racha
+  /// actual para el valor exacto, sellando claim-once por día/hito, así que
+  /// reintentar aquí reconcilia sin perder ni duplicar.
+  void enqueuePendingStreakEarn(
+    String reason, {
+    required int dayStreak,
+    int? milestone,
+  }) {
+    if (reason == 'streak_milestone') {
+      if (milestone == null) return;
+      _enqueuePendingEarn('streak_milestone', {
+        'streakDays': milestone,
+      }, _freshIdempotencyKey('streak_milestone'));
+    } else {
+      _enqueuePendingEarn('daily_bonus', {
+        'dayStreak': dayStreak,
+      }, _freshIdempotencyKey('daily_bonus'));
+    }
+  }
+
+  static String _freshIdempotencyKey(String reason) =>
+      '${reason}_${DateTime.now().microsecondsSinceEpoch}_${Random().nextInt(1 << 20)}';
 
   /// Award gems from achievement unlock.
   /// Scales with achievement XP: xpReward / 4, clamped 2-30.

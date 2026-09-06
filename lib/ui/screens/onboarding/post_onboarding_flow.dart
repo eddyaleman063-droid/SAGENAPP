@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
@@ -263,7 +264,10 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
 
   void _onAuthMethodSelected(String method) {
     if (method == 'google') {
-      _completeRegistration();
+      // NUEVO-fix (ronda 9, P6): el Future de _completeRegistration se
+      // descartaba; unawaited() lo deja explícito (los errores se manejan
+      // dentro del flujo con su propia UI de error/reintento).
+      unawaited(_completeRegistration());
     } else {
       _advance();
     }

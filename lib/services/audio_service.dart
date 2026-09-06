@@ -79,7 +79,9 @@ class AudioService {
     } catch (e) {
       _logger.warning('AudioService.dispose: failed to stop player: $e');
     }
-    _player?.dispose();
+    // NUEVO-fix (ronda 10): dispose() devuelve un Future; fire-and-forget
+    // explícito (release best-effort del player).
+    unawaited(_player?.dispose());
     _player = null;
     _prewarmed = false;
   }
@@ -87,7 +89,8 @@ class AudioService {
   void onDetach() => dispose();
 
   void onAppPaused() {
-    _player?.stop();
+    // NUEVO-fix (ronda 10): stop devuelve Future; fire-and-forget explícito.
+    unawaited(_player?.stop());
   }
 
   bool get _soundOn => _experienceService.soundEnabled;

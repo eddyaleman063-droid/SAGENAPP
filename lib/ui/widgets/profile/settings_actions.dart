@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -100,7 +101,9 @@ class SettingsActions extends ConsumerWidget {
                 onPressed: () async {
                   ref.read(experienceServiceProvider).lightHaptic();
                   context.pop();
-                  ref.read(notificationServiceProvider).cancelAll();
+                  // NUEVO-fix (ronda 10): cancelAll devuelve Future; fire-and-forget
+                  // explícito dentro del handler async.
+                  unawaited(ref.read(notificationServiceProvider).cancelAll());
                   try {
                     await ref.read(authProvider.notifier).signOut();
                   } catch (e) {

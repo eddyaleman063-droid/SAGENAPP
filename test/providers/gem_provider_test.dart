@@ -337,5 +337,57 @@ void main() {
       final remaining = prefs.getStringList('gems_pending_earn_queue');
       expect(remaining, isNull);
     });
+
+    test(
+      'enqueuePendingStreakEarn queues a streak_milestone earn with fresh idempotency key',
+      () async {
+        final notifier = container.read(gemProvider.notifier);
+        final prefs = await SharedPreferences.getInstance();
+
+        notifier.enqueuePendingStreakEarn(
+          'streak_milestone',
+          dayStreak: 7,
+          milestone: 7,
+        );
+
+        final raw = prefs.getStringList('gems_pending_earn_queue');
+        expect(raw, hasLength(1));
+        final parts = raw!.first.split('|');
+        expect(parts[0], 'streak_milestone');
+        expect(parts[2], contains('"streakDays":7'));
+        expect(parts[3], startsWith('streak_milestone_'));
+        expect(parts[3], isNotEmpty);
+      },
+    );
+
+    test(
+      'enqueuePendingStreakEarn queues a daily_bonus earn with dayStreak meta',
+      () async {
+        final notifier = container.read(gemProvider.notifier);
+        final prefs = await SharedPreferences.getInstance();
+
+        notifier.enqueuePendingStreakEarn('daily_bonus', dayStreak: 3);
+
+        final raw = prefs.getStringList('gems_pending_earn_queue');
+        expect(raw, hasLength(1));
+        final parts = raw!.first.split('|');
+        expect(parts[0], 'daily_bonus');
+        expect(parts[2], contains('"dayStreak":3'));
+        expect(parts[3], startsWith('daily_bonus_'));
+      },
+    );
+
+    test(
+      'enqueuePendingStreakEarn is a no-op for streak_milestone without milestone',
+      () async {
+        final notifier = container.read(gemProvider.notifier);
+        final prefs = await SharedPreferences.getInstance();
+
+        notifier.enqueuePendingStreakEarn('streak_milestone', dayStreak: 7);
+
+        final remaining = prefs.getStringList('gems_pending_earn_queue');
+        expect(remaining, isNull);
+      },
+    );
   });
 }

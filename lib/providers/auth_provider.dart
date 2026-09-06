@@ -105,14 +105,16 @@ class AuthNotifier extends Notifier<AuthState> {
       },
     );
     ref.onDispose(() {
-      _authSub?.cancel();
+      // NUEVO-fix (ronda 10): cancel devuelve Future; fire-and-forget explícito.
+      unawaited(_authSub?.cancel());
       _verificationManager.dispose();
     });
     return state;
   }
 
   void _cancelAuthSubscription() {
-    _authSub?.cancel();
+    // NUEVO-fix (ronda 10): cancel devuelve Future; fire-and-forget explícito.
+    unawaited(_authSub?.cancel());
     _authSub = null;
   }
 
@@ -152,12 +154,16 @@ class AuthNotifier extends Notifier<AuthState> {
         user != null) {
       final prefs = _prefs;
       if (prefs != null) {
-        _syncManager.syncAfterLogin(user.uid, prefs);
+        // NUEVO-fix (ronda 10): syncAfterLogin maneja sus propios errores;
+        // fire-and-forget explícito dentro del handler sync del stream.
+        unawaited(_syncManager.syncAfterLogin(user.uid, prefs));
         _syncManager.startListening(user.uid, prefs);
       }
       // Reconcile the local gem cache with the authoritative server balance
       // right after login so the UI shows the real balance (NUEVO-03).
-      ref.read(gemProvider.notifier).syncBalanceFromServer();
+      // NUEVO-fix (ronda 9, P5): el Future es fire-and-forget → unawaited()
+      // explícito (maneja sus propios errores internamente).
+      unawaited(ref.read(gemProvider.notifier).syncBalanceFromServer());
     } else if (state.status == AuthStatus.unauthenticated && wasAuthenticated) {
       _syncManager.stopListening();
     }
@@ -178,7 +184,9 @@ class AuthNotifier extends Notifier<AuthState> {
         errorMessage: () => null,
       );
       _syncManager.cancelInflightLoads();
-      _loadOnboardingStatus(user.uid);
+      // NUEVO-fix (ronda 10): _loadOnboardingStatus maneja sus propios errores;
+      // fire-and-forget explícito.
+      unawaited(_loadOnboardingStatus(user.uid));
       if (needsVerification) {
         _verificationManager.startAutoCheck(_onEmailVerified);
       } else {

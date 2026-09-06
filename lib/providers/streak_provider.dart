@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/map_utils.dart';
@@ -245,40 +246,48 @@ class StreakNotifier extends Notifier<StreakState> {
               // gemas fantasma locales sin acreditación real).
               if (serverStreak != null && serverStreak > (oldStreak ?? 0)) {
                 final gemNotifier = ref.read(gemProvider.notifier);
-                gemNotifier
-                    .persistDeferredStreakEarn(
-                      'streak_milestone',
-                      dayStreak: serverStreak,
-                      milestone: milestone,
-                    )
-                    .catchError((Object e) {
-                      AppLogger().warning(
-                        'StreakNotifier: deferred milestone gem persist failed: $e',
-                      );
-                    });
-                if (persistDailyBonus) {
+                // NUEVO-fix (ronda 10): persistencia fire-and-forget explícita
+                // (el .catchError ya maneja el fallo).
+                unawaited(
                   gemNotifier
                       .persistDeferredStreakEarn(
-                        'daily_bonus',
+                        'streak_milestone',
                         dayStreak: serverStreak,
+                        milestone: milestone,
                       )
                       .catchError((Object e) {
                         AppLogger().warning(
-                          'StreakNotifier: deferred daily bonus persist failed: $e',
+                          'StreakNotifier: deferred milestone gem persist failed: $e',
                         );
-                      });
+                      }),
+                );
+                if (persistDailyBonus) {
+                  unawaited(
+                    gemNotifier
+                        .persistDeferredStreakEarn(
+                          'daily_bonus',
+                          dayStreak: serverStreak,
+                        )
+                        .catchError((Object e) {
+                          AppLogger().warning(
+                            'StreakNotifier: deferred daily bonus persist failed: $e',
+                          );
+                        }),
+                  );
                 }
                 if (oldStreak != null) {
-                  ref
-                      .read(streakChestServiceProvider)
-                      .checkAndReward(
-                        oldStreak: oldStreak,
-                        newStreak: serverStreak,
-                        learning: ref.read(learningProvider.notifier),
-                      )
-                      .catchError((e) {
-                        AppLogger().error('streak chest reward failed: $e');
-                      });
+                  unawaited(
+                    ref
+                        .read(streakChestServiceProvider)
+                        .checkAndReward(
+                          oldStreak: oldStreak,
+                          newStreak: serverStreak,
+                          learning: ref.read(learningProvider.notifier),
+                        )
+                        .catchError((e) {
+                          AppLogger().error('streak chest reward failed: $e');
+                        }),
+                  );
                 }
               }
               // NUEVO-fix (H5): el servidor consumió el ítem declarado (lo
@@ -296,24 +305,54 @@ class StreakNotifier extends Notifier<StreakState> {
                 }
                 final gemNotifier = ref.read(gemProvider.notifier);
                 gemNotifier.awardDailyBonus(serverStreak);
-                gemNotifier
-                    .persistDeferredStreakEarn(
-                      'daily_bonus',
-                      dayStreak: serverStreak,
-                    )
-                    .catchError((Object e) {
-                      AppLogger().warning(
-                        'StreakNotifier: item-protected daily bonus persist failed: $e',
-                      );
-                    });
+                // NUEVO-fix (ronda 10): fire-and-forget explícito (el catchError
+                // maneja el fallo del .catchError).
+                unawaited(
+                  gemNotifier
+                      .persistDeferredStreakEarn(
+                        'daily_bonus',
+                        dayStreak: serverStreak,
+                      )
+                      .catchError((Object e) {
+                        AppLogger().warning(
+                          'StreakNotifier: item-protected daily bonus persist failed: $e',
+                        );
+                      }),
+                );
               }
             }
             return;
           } catch (e) {
             if (attempt == 2) {
+              if (_disposed) return;
               AppLogger().warning(
                 'StreakNotifier: server streak sync failed after retries: $e',
               );
+              // NUEVO-fix (ronda 9): gemas fantasma de racha. El check-in ya
+              // acreditó LOCALMENTE milestone/bono diario (awardStreakMilestone
+              // / awardDailyBonus) y marcó last_daily_bonus_day, pero el server
+              // nunca confirmó el incremento. Sin esto, esas gemas locales se
+              // borraban en el próximo syncBalance (fantasma). Encolarlas hace
+              // que el retry posterior las reconcilie: el servidor ignora meta
+              // y usa SU racha actual + sellos claim-once, así que nunca se
+              // pierden ni se duplican.
+              if (checkIn && (milestone != null || persistDailyBonus)) {
+                final gemNotifier = ref.read(gemProvider.notifier);
+                final dayStreak = state.status.currentStreak;
+                if (milestone != null) {
+                  gemNotifier.enqueuePendingStreakEarn(
+                    'streak_milestone',
+                    dayStreak: dayStreak,
+                    milestone: milestone,
+                  );
+                }
+                if (persistDailyBonus) {
+                  gemNotifier.enqueuePendingStreakEarn(
+                    'daily_bonus',
+                    dayStreak: dayStreak,
+                  );
+                }
+              }
               // NUEVO-fix (H5): si el sync del día protegido falla del todo
               // (offline), se conserva la protección optimista local para que
               // el ítem mantenga su efecto hasta el próximo reconcile con el

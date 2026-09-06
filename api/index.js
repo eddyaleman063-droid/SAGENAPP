@@ -76,8 +76,11 @@ function applyProductBonuses(updateData, userData, bonuses) {
 function shortHash(s) {
   const secret = process.env.PURCHASE_SECRET;
   if (!secret) {
-    console.error('PURCHASE_SECRET not configured for shortHash');
-    return crypto.createHash('sha256').update(s).digest('hex').slice(0, 12);
+    // NUEVO-fix (ronda 9, alineación con Cloud Functions): sin secret para el
+    // HMAC no se debe degradar a sha256 plano — el external_reference sería
+    // predecible conociendo el userId. Falla de forma explícita (throw) igual
+    // que functions/index.js en vez de emitir una referencia no cifrada.
+    throw new Error('PURCHASE_SECRET not configured for shortHash');
   }
   return crypto.createHmac('sha256', secret).update(s).digest('hex').slice(0, 16);
 }
@@ -473,8 +476,11 @@ app.post('/api/handlePaymentWebhook', async (req, res) => {
       if (logDoc.exists) return;
 
       if (!userDoc.exists) {
-        console.error('User not found', { userId });
-        return;
+        // NUEVO-fix (ronda 9): un pago APROBADO con usuario inexistente NO debe
+        // tragarse con 200 OK (dinero cobrado sin acreditar y sin reintento).
+        // Se lanza para que el catch del webhook responda 5xx y MercadoPago
+        // reintente / lo deje flaggeado para revisión manual.
+        throw new Error(`User not found for approved payment: ${userId}`);
       }
 
       const userData = userDoc.data() || {};
@@ -665,7 +671,24 @@ app.post('/api/adminCreditDonation', requireAdmin, async (req, res) => {
         createdAt: admin.firestore.FieldValue.serverTimestamp(),
       });
 
-      return { success: true, duplicate: false, newBalance: currentBalance + amount, bonuses };
+      return { success: true, duplicate: false, newBalance: currentBalance + amount, bonuses, granted };
+    });
+
+    // NUEVO-fix (ronda 9): reportar bonificaciones EFECTIVAS (tras el cap de
+    // escudos) derivadas del granted, espejo de Cloud Functions. Antes api
+    // devolvía el qty del catálogo aunque el tope STREAK_SHIELD_MAX=2 hubiera
+    // recortado el +2 en bundle_protector.
+    const resultBonuses = (result.bonuses || []).map((b) => {
+      const effective = result.granted && b.type === 'streakProtector'
+        ? result.granted.shop_streak_shields
+        : result.granted && b.type === 'xpBoost'
+          ? result.granted.shop_purchased_xp_boosts
+          : result.granted && b.type === 'xpMultiplier'
+            ? result.granted.shop_purchased_xp_multipliers
+            : result.granted && b.type === 'luckBoost'
+              ? result.granted.shop_purchased_luck_boosts
+              : null;
+      return effective !== null ? { ...b, quantity: effective } : b;
     });
 
     // Flip any matching pending payment (del MISMO usuario) to completed.
@@ -685,7 +708,7 @@ app.post('/api/adminCreditDonation', requireAdmin, async (req, res) => {
     }
 
     console.log('Manual donation credited', { userId, amount, method });
-    res.json({ result });
+    res.json({ result: { ...result, bonuses: resultBonuses } });
   } catch (error) {
     console.error('adminCreditDonation error', error);
     if (error.message === 'Usuario no encontrado') {
@@ -726,20 +749,24 @@ app.post('/api/registerPendingPayment', requireAuth, rateLimit, async (req, res)
     const userId = req.user.uid;
     // Deterministic doc ID prevents duplicate pending payments when the client
     // retries after a timeout (aligned with the Cloud Functions callable).
+    // NUEVO-fix (ronda 9, T1): get+set dentro de runTransaction para que dos
+    // concurrencias con el mismo operationId no creen duplicados transitorios.
     const pendingRef = admin.firestore().doc(`pending_payments/${userId}_${operationId}`);
-    const existing = await pendingRef.get();
-    if (existing.exists) {
-      console.log('Pending payment already registered', { userId, operationId });
-      return res.json({ result: { success: true, pendingPaymentId: pendingRef.id, duplicate: true } });
-    }
-    await pendingRef.set({
-      userId, paymentMethod, operationId, amount, productId: productId || null,
-      status: 'pending', createdAt: admin.firestore.FieldValue.serverTimestamp(),
-      expiresAt: admin.firestore.Timestamp.fromDate(new Date(Date.now() + 24 * 60 * 60 * 1000)),
+    const outcome = await admin.firestore().runTransaction(async (transaction) => {
+      const existingDoc = await transaction.get(pendingRef);
+      if (existingDoc.exists) {
+        return { duplicate: true };
+      }
+      transaction.set(pendingRef, {
+        userId, paymentMethod, operationId, amount, productId: productId || null,
+        status: 'pending', createdAt: admin.firestore.FieldValue.serverTimestamp(),
+        expiresAt: admin.firestore.Timestamp.fromDate(new Date(Date.now() + 24 * 60 * 60 * 1000)),
+      });
+      return { duplicate: false };
     });
 
     console.log('Pending payment registered', { userId, paymentMethod, operationId, pendingId: pendingRef.id });
-    res.json({ result: { success: true, pendingPaymentId: pendingRef.id, duplicate: false } });
+    res.json({ result: { success: true, pendingPaymentId: pendingRef.id, duplicate: outcome.duplicate } });
   } catch (error) {
     console.error('registerPendingPayment error', error);
     res.status(500).json({ error: 'internal', message: 'Error al registrar el pago' });

@@ -229,7 +229,8 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
     _navigating = true;
     ExperienceService.instance.lightHaptic();
     final prefs = ref.read(prefsProvider);
-    StreakVisibilityService(prefs).markShown();
+    // NUEVO-fix (ronda 10): markShown devuelve Future; fire-and-forget explícito.
+    unawaited(StreakVisibilityService(prefs).markShown());
     if (!mounted) return;
     context.goNamed('main');
   }

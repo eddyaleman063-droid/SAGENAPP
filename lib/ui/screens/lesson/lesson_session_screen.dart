@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
@@ -46,10 +47,16 @@ class _LessonSessionScreenState extends ConsumerState<LessonSessionScreen>
       begin: const Offset(0.3, 0),
       end: Offset.zero,
     ).animate(_slideCurve);
+    // NUEVO-fix (ronda 9, P3): startSession devuelve un future que se
+    // descarta a propósito tras el primer frame; unawaited() lo deja explícito
+    // (los errores se manejan dentro del método). _maybeOfferResume es async
+    // void (fire-and-forget por diseño, maneja sus propios errores).
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref
-          .read(sessionProvider.notifier)
-          .startSession(widget.stageId, widget.lessonId);
+      unawaited(
+        ref
+            .read(sessionProvider.notifier)
+            .startSession(widget.stageId, widget.lessonId),
+      );
       _maybeOfferResume();
     });
     ref.listenManual<SessionState>(sessionProvider, _onSessionChange);
@@ -64,8 +71,11 @@ class _LessonSessionScreenState extends ConsumerState<LessonSessionScreen>
         .read(sessionProvider.notifier)
         .hasResumableProgress(widget.stageId, widget.lessonId);
     if (!mounted || !canResume) return;
-    showDialog<bool>(
+    // NUEVO-fix (ronda 10): el flujo .then(await+) ahora es secuencial y los
+    // Futures de discardResume/startSession se esperan explícitamente.
+    final resume = await showDialog<bool>(
       context: context,
+      barrierDismissible: false,
       builder: (ctx) => AlertDialog(
         title: Text(l.resumeQuiz),
         content: Text(l.resumeLessonBody),
@@ -86,21 +96,20 @@ class _LessonSessionScreenState extends ConsumerState<LessonSessionScreen>
           ),
         ],
       ),
-    ).then((resume) async {
-      if (!mounted || resume == null) return;
-      if (resume) {
-        await ref
-            .read(sessionProvider.notifier)
-            .startSession(widget.stageId, widget.lessonId, resume: true);
-      } else {
-        ref
-            .read(sessionProvider.notifier)
-            .discardResume(widget.stageId, widget.lessonId);
-        await ref
-            .read(sessionProvider.notifier)
-            .startSession(widget.stageId, widget.lessonId);
-      }
-    });
+    );
+    if (!mounted || resume == null) return;
+    if (resume) {
+      await ref
+          .read(sessionProvider.notifier)
+          .startSession(widget.stageId, widget.lessonId, resume: true);
+    } else {
+      await ref
+          .read(sessionProvider.notifier)
+          .discardResume(widget.stageId, widget.lessonId);
+      await ref
+          .read(sessionProvider.notifier)
+          .startSession(widget.stageId, widget.lessonId);
+    }
   }
 
   void _onSessionChange(SessionState? prev, SessionState next) {

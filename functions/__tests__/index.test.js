@@ -588,6 +588,29 @@ describe('handlePaymentWebhook', () => {
     expect(r._status).toBe(502);
   });
 
+  test('NUEVO-fix ronda 9: approved payment with a missing user is NOT swallowed with 200', async () => {
+    // Un pago aprobado cuyo usuario no existe no debe responderse con 200 OK
+    // (dinero cobrado sin acreditar y sin reintentos de MP). Debe fallar con
+    // 5xx para que MercadoPago reintente / quede flaggeado para revisión.
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: async () => ({
+        status: 'approved',
+        transaction_amount: 3,
+        external_reference: 'hash123|3|donation_basic',
+        metadata: { userId: 'ghost-user', amount: 3, productId: 'donation_basic' },
+      }),
+    });
+    const r = res();
+    const req = signedReq({ type: 'payment', data: { id: 'pay_ghost_user' } });
+    await index.handlePaymentWebhook(req, r);
+    expect(r._status).toBeGreaterThanOrEqual(500);
+    // Nada se acredita ni se escribe log: el pago queda sin consumir.
+    expect(admin._getDoc('users/ghost-user')).toBeNull();
+    expect(admin._getDoc('payment_logs/pay_ghost_user')).toBeNull();
+  });
+
   function refundedPayment(status) {
     global.fetch = jest.fn().mockResolvedValue({
       ok: true,
@@ -708,5 +731,53 @@ describe('handlePaymentWebhook', () => {
     await index.handlePaymentWebhook(req, r);
     expect(r._status).toBe(200);
     expect(admin._getDoc('payment_logs/pay_ghost')).toBeNull();
+  });
+
+  test('NUEVO-fix ronda 9: approved payment flips the SAME-user pending to completed', async () => {
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: async () => ({
+        status: 'approved',
+        transaction_amount: 3,
+        external_reference: 'hash123|3|donation_basic',
+        metadata: { userId: AUTH_UID, amount: 3, productId: 'donation_basic' },
+      }),
+    });
+    setUserDoc(AUTH_UID, { total_donated: 0 });
+    admin._setDoc(`pending_payments/${AUTH_UID}_op_mp_1`, {
+      userId: AUTH_UID, operationId: 'pay_flip_1', status: 'pending',
+    });
+    const r = res();
+    await index.handlePaymentWebhook(
+      signedReq({ type: 'payment', data: { id: 'pay_flip_1' } }),
+      r,
+    );
+    expect(r._status).toBe(200);
+    expect(admin._getDoc(`pending_payments/${AUTH_UID}_op_mp_1`).status).toBe('completed');
+  });
+
+  test('NUEVO-fix ronda 9: does NOT flip a pending owned by ANOTHER user', async () => {
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: async () => ({
+        status: 'approved',
+        transaction_amount: 3,
+        external_reference: 'hash123|3|donation_basic',
+        metadata: { userId: AUTH_UID, amount: 3, productId: 'donation_basic' },
+      }),
+    });
+    setUserDoc(AUTH_UID, { total_donated: 0 });
+    admin._setDoc('pending_payments/other_user_1', {
+      userId: 'someone-else', operationId: 'pay_flip_2', status: 'pending',
+    });
+    const r = res();
+    await index.handlePaymentWebhook(
+      signedReq({ type: 'payment', data: { id: 'pay_flip_2' } }),
+      r,
+    );
+    expect(r._status).toBe(200);
+    expect(admin._getDoc('pending_payments/other_user_1').status).toBe('pending');
   });
 });

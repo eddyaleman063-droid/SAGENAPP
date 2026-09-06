@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:firebase_performance/firebase_performance.dart';
 import 'app_logger.dart';
 
@@ -39,7 +40,9 @@ class PerformanceService {
       trace.putAttribute('error', e.toString());
       rethrow;
     } finally {
-      trace.stop();
+      // NUEVO-fix (ronda 10): trace.stop() devuelve Future; fire-and-forget
+      // explícito (mejor-effort del muestreo de rendimiento).
+      unawaited(trace.stop());
     }
   }
 

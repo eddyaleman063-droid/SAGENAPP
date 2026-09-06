@@ -73,7 +73,15 @@ void main() {
     });
 
     test('streakMaxFreezes returns default', () {
-      expect(service.streakMaxFreezes, 7);
+      expect(service.streakMaxFreezes, 5);
+    });
+
+    test('NUEVO-fix ronda 9 C1: streakMaxFreezes is hard-capped at 5', () {
+      // Aunque `_rc` no esté inicializado (getter usa ?? 5) y no se suba por
+      // Remote Config, el tope absoluto del servidor es FREE_SHIELD_MAX(3) +
+      // STREAK_SHIELD_MAX(2) = 5. Un valor remoto de 7 debe quedar en 5 para
+      // no pedir escudos que el servidor jamás concedería.
+      expect(service.streakMaxFreezes > 5, false);
     });
 
     test('mission rates return defaults', () {

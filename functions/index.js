@@ -534,8 +534,11 @@ exports.handlePaymentWebhook = functions.runWith({ maxInstances: 5 }).https.onRe
       }
 
       if (!userDoc.exists) {
-        functions.logger.error('User not found in transaction', { userId });
-        return;
+        // NUEVO-fix (ronda 9): un pago APROBADO con usuario inexistente NO debe
+        // tragarse con 200 OK (dinero cobrado sin acreditar y sin reintento).
+        // Se lanza un error para que el catch del webhook responda 5xx y
+        // MercadoPago reintente/quede flaggeado para revisión manual.
+        throw new Error(`User not found for approved payment: ${userId}`);
       }
 
       const userData = userDoc.data() || {};
@@ -600,6 +603,28 @@ exports.handlePaymentWebhook = functions.runWith({ maxInstances: 5 }).https.onRe
     functions.logger.info('Payment processed atomically', {
       userId, amount, productId: productId || 'none', bonuses: bonuses.length,
     });
+
+    // NUEVO-fix (ronda 9, espejo de api): voltear el pending del MISMо usuario
+    // a completed para que el polling de la app lo detecte. En la versión api
+    // esto ocurre (a336-541) y la de functions NO, así que el mismo pago quedaba
+    // pending dependiendo de qué backend lo procesara. El filtro por userId
+    // evita marcar un pending de OTRO usuario con igual operationId.
+    try {
+      const pendingSnap = await admin.firestore()
+        .collection('pending_payments')
+        .where('operationId', '==', paymentId)
+        .where('userId', '==', userId)
+        .get();
+      await Promise.all(pendingSnap.docs.map((doc) =>
+        admin.firestore().doc(`pending_payments/${doc.id}`).update({
+          status: 'completed',
+          completedAt: admin.firestore.FieldValue.serverTimestamp(),
+        })));
+    } catch (flipError) {
+      functions.logger.warn('Failed to flip pending payment status', {
+        userId, paymentId, error: flipError.message,
+      });
+    }
 
     return res.status(200).send('OK');
   } catch (error) {
@@ -675,6 +700,15 @@ exports.adminCreditDonation = functions.runWith({ maxInstances: 3 }).https.onCal
   const userRef = admin.firestore().doc(`users/${userId}`);
   const method = paymentMethod || 'whatsapp';
 
+  // NUEVO-fix (ronda 9): resolver el catálogo FUERA del callback de la
+  // transacción. loadCatalog es una lectura Firestore no transaccional (caché
+  // 5 min) y hacerla dentro de runTransaction rompía la invarianza de snapshot
+  // (snapshot.read_time) y alargaba la txn (riesgo de timeout). Espejo del
+  // fix ya aplicado en la versión api (api/index.js:609-611).
+  const catalog = await loadCatalog();
+  const pkg = catalog[productId];
+  const bonuses = pkg ? pkg.bonuses : [];
+
   // ── ATOMIC TRANSACTION with idempotency ─────────────────────
   try {
     const result = await admin.firestore().runTransaction(async (transaction) => {
@@ -711,11 +745,33 @@ exports.adminCreditDonation = functions.runWith({ maxInstances: 3 }).https.onCal
         _ts_total_donated: admin.firestore.FieldValue.serverTimestamp(),
       };
 
-      const catalog = await loadCatalog();
-      const pkg = catalog[productId];
-      const bonuses = pkg ? pkg.bonuses : [];
-
       applyProductBonuses(updateData, userData, bonuses);
+
+      // NUEVO-fix (ronda 9, espejo de api): persistir los deltas EFECTIVOS
+      // concedidos (tras el cap de escudos, etc.) para que un reembolso o
+      // reversión manual pueda deshacer exactamente lo concedido. Hasta ahora
+      // la versión Cloud Functions no los guardaba y revertApprovedPayment
+      // caía al qty del catálogo (menos preciso).
+      const granted = {
+        total_donated: amount,
+        is_supporter: true,
+        shop_streak_shields: updateData.shop_streak_shields !== undefined
+          ? updateData.shop_streak_shields - (userData.shop_streak_shields || 0)
+          : 0,
+        shop_purchased_xp_boosts: updateData.shop_purchased_xp_boosts !== undefined
+          ? updateData.shop_purchased_xp_boosts - (userData.shop_purchased_xp_boosts || 0)
+          : 0,
+        shop_purchased_xp_multipliers: updateData.shop_purchased_xp_multipliers !== undefined
+          ? updateData.shop_purchased_xp_multipliers - (userData.shop_purchased_xp_multipliers || 0)
+          : 0,
+        shop_purchased_luck_boosts: updateData.shop_purchased_luck_boosts !== undefined
+          ? updateData.shop_purchased_luck_boosts - (userData.shop_purchased_luck_boosts || 0)
+          : 0,
+        learning_gems: updateData.learning_gems !== undefined
+          ? updateData.learning_gems - (userData.learning_gems || 0)
+          : 0,
+        sagen_pass_granted: updateData.sagen_pass_active === true,
+      };
 
       transaction.update(userRef, updateData);
       transaction.create(logRef, {
@@ -723,36 +779,71 @@ exports.adminCreditDonation = functions.runWith({ maxInstances: 3 }).https.onCal
         amount,
         productId: productId || null,
         bonuses: bonuses,
+        granted: granted,
         method: 'manual_' + method,
         creditedBy: 'admin',
         postBalance: currentDonated + amount,
         createdAt: admin.firestore.FieldValue.serverTimestamp(),
       });
 
-      let resultBonuses = bonuses.map(b => ({ ...b }));
-      if (productId === 'bundle_protector') {
-        const newShields = (userData.shop_streak_shields || 0) +
-          Math.min(bonuses.find(b => b.type === 'streakProtector')?.quantity || 0,
-            getStreakShieldSlots(userData.shop_streak_shields || 0));
-        resultBonuses = resultBonuses.map(b =>
-          b.type === 'streakProtector'
-            ? { ...b, quantity: newShields - (userData.shop_streak_shields || 0) }
-            : b
-        );
-      }
-
       return {
         success: true,
         duplicate: false,
         newBalance: currentDonated + amount,
-        bonuses: resultBonuses,
+        bonuses,
+        granted,
       };
     });
 
     functions.logger.info('Manual donation credited', { userId, amount, method, productId, duplicate: result.duplicate });
 
-    return result;
+    // NUEVO-fix (ronda 9): el payload de `bonuses` devuelto reporta las
+    // cantidades EFECTIVAS concedidas (tras el cap de escudos del servidor).
+    // Antes, functions corregía solo bundle_protector y api devolvía el qty del
+    // catálogo (mentira UX cuando el tope STREAK_SHIELD_MAX=2 recortaba el
+    // +2). Ahora ambos backends derivan el result del `granted` persistido.
+    const resultBonuses = (result.bonuses || []).map((b) => {
+      const effective = result.granted && b.type === 'streakProtector'
+        ? result.granted.shop_streak_shields
+        : result.granted && b.type === 'xpBoost'
+          ? result.granted.shop_purchased_xp_boosts
+          : result.granted && b.type === 'xpMultiplier'
+            ? result.granted.shop_purchased_xp_multipliers
+            : result.granted && b.type === 'luckBoost'
+              ? result.granted.shop_purchased_luck_boosts
+              : null;
+      return effective !== null
+        ? { ...b, quantity: effective }
+        : b;
+    });
+
+    // NUEVO-fix (ronda 9, espejo de api): voltear pendings del MISMO usuario
+    // cuyo operationId sea el idempotencyKey a completed (misma semántica que
+    // api/index.js:677). La versión api lo hace y esta no, así que el mismo
+    // pago quedaba pending según qué backend lo procesara.
+    try {
+      const pendingSnap = await admin.firestore()
+        .collection('pending_payments')
+        .where('operationId', '==', idempotencyKey)
+        .where('userId', '==', userId)
+        .get();
+      await Promise.all(pendingSnap.docs.map((doc) =>
+        admin.firestore().doc(`pending_payments/${doc.id}`).update({
+          status: 'completed',
+          completedAt: admin.firestore.FieldValue.serverTimestamp(),
+        })));
+    } catch (flipError) {
+      functions.logger.warn('Failed to flip pending payment status (admin)', {
+        userId, idempotencyKey, error: flipError.message,
+      });
+    }
+
+    return { ...result, bonuses: resultBonuses };
   } catch (error) {
+    // NUEVO-fix (ronda 9): el HttpsError('not-found') lanzado dentro de la
+    // transacción (usuario inexistente) se perdía envuelto en 'internal'.
+    // Rethrow para que el cliente reciba el código correcto.
+    if (error instanceof functions.https.HttpsError) throw error;
     functions.logger.error('Manual credit error', error);
     throw new functions.https.HttpsError('internal', 'Error al acreditar donación');
   }
@@ -793,32 +884,36 @@ exports.registerPendingPayment = functions.runWith({ maxInstances: 5 }).https.on
   const userId = context.auth.uid;
 
   try {
-    // Use operationId as doc ID to prevent duplicate pending payments
+    // NUEVO-fix (ronda 9, T1): registrar dentro de runTransaction. Antes era
+    // get() → set() y dos llamadas concurrentes con el mismo operationId podían
+    // escribir dos veces (duplicados transitorios). Un txn get+set del
+    // documento determinista es idempotente de forma atómica.
     const pendingRef = admin.firestore().doc(`pending_payments/${userId}_${operationId}`);
-    const pendingDoc = await pendingRef.get();
-
-    if (pendingDoc.exists) {
-      return { success: true, pendingPaymentId: pendingRef.id, duplicate: true };
-    }
-
-    await pendingRef.set({
-      userId,
-      paymentMethod,
-      operationId,
-      amount,
-      productId: productId || null,
-      status: 'pending',
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
-      expiresAt: admin.firestore.Timestamp.fromDate(
-        new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 horas
-      ),
+    const outcome = await admin.firestore().runTransaction(async (transaction) => {
+      const existingDoc = await transaction.get(pendingRef);
+      if (existingDoc.exists) {
+        return { duplicate: true };
+      }
+      transaction.set(pendingRef, {
+        userId,
+        paymentMethod,
+        operationId,
+        amount,
+        productId: productId || null,
+        status: 'pending',
+        createdAt: admin.firestore.FieldValue.serverTimestamp(),
+        expiresAt: admin.firestore.Timestamp.fromDate(
+          new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 horas
+        ),
+      });
+      return { duplicate: false };
     });
 
     functions.logger.info('Pending payment registered', {
-      userId, paymentMethod, operationId, pendingId: pendingRef.id,
+      userId, paymentMethod, operationId, pendingId: pendingRef.id, duplicate: outcome.duplicate,
     });
 
-    return { success: true, pendingPaymentId: pendingRef.id, duplicate: false };
+    return { success: true, pendingPaymentId: pendingRef.id, duplicate: outcome.duplicate };
   } catch (error) {
     if (error instanceof functions.https.HttpsError) throw error;
     functions.logger.error('registerPendingPayment error', error);
@@ -843,9 +938,24 @@ exports.health = functions.runWith({ maxInstances: 2 }).https.onRequest(async (r
 exports.checkPendingPaymentStatus = functions.runWith({ maxInstances: 5 }).https.onCall(async (data, context) => {
   requireVerifiedUser(context);
 
+  // NUEVO-fix (ronda 9): rate limit anti-DoS (espejo del endpoint api). Cada
+  // llamada hace 2 lecturas Firestore; sin límite un cliente modificado podía
+  // quemar reads indefinidamente, además de ser un drift con la versión Vercel
+  // que ya aplicaba rateLimit.
+  await checkRateLimit(context.auth.uid);
+
   const { pendingPaymentId } = data || {};
-  if (!pendingPaymentId || typeof pendingPaymentId !== 'string') {
-    throw new functions.https.HttpsError('invalid-argument', 'pendingPaymentId requerido');
+  // NUEVO-fix (ronda 9): validar con regex ANTES de interpolar en el doc path.
+  // Antes solo se exigía typeof string: un id con '/' leía paths anidados bajo
+  // pending_payments (lectura fuera de la autorización de Firestore rules) y el
+  // check de propiedad ocurría DESPUÉS de la lectura, permitiendo probar la
+  // existencia de pendings ajenos vía not_found vs permission-denied.
+  if (
+    !pendingPaymentId ||
+    typeof pendingPaymentId !== 'string' ||
+    !/^[A-Za-z0-9_-]{1,128}$/.test(pendingPaymentId)
+  ) {
+    throw new functions.https.HttpsError('invalid-argument', 'pendingPaymentId invalido');
   }
 
   const userId = context.auth.uid;

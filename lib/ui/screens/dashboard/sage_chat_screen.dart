@@ -129,7 +129,7 @@ class _SageChatScreenState extends ConsumerState<SageChatScreen>
                 isStreaming: ref.watch(
                   sageAiProvider.select((s) => s.isStreaming),
                 ),
-                onSend: () => _send(_textCtrl.text),
+                onSend: () => unawaited(_send(_textCtrl.text)),
                 onStop: () => ref.read(sageAiProvider.notifier).cancelStream(),
               ),
             ],
