@@ -375,13 +375,13 @@ describe('api createPaymentPreference', () => {
     expect(mpMock._mockPreferenceCreate).not.toHaveBeenCalled();
   });
 
-  test('NUEVO-fix ronda 7: rejects 403 when the request has no Origin header', async () => {
+  test('NUEVO-fix ronda 8: allows a request WITHOUT Origin header (native apps)', async () => {
     const r = makeRes();
     const req = authedReq({ amount: 3, productId: 'donation_basic' });
     delete req.headers.origin;
     await mpHandler()(req, r);
-    expect(r._status).toBe(403);
-    expect(mpMock._mockPreferenceCreate).not.toHaveBeenCalled();
+    expect(r._status).toBe(200);
+    expect(mpMock._mockPreferenceCreate).toHaveBeenCalled();
   });
 
   test('NUEVO-fix ronda 7: rejects 403 a browser Origin not in the allow-list', async () => {
@@ -400,7 +400,7 @@ describe('api registerPendingPayment', () => {
   const registerHandler = () => app._handlers.post['/api/registerPendingPayment'][2];
 
   function authedReq(body) {
-    return { method: 'POST', body, user: { uid: AUTH_UID } };
+    return { method: 'POST', body, user: { uid: AUTH_UID, email_verified: true } };
   }
 
   test('registers a pending payment and is idempotent on retry', async () => {
@@ -417,6 +417,17 @@ describe('api registerPendingPayment', () => {
     }), r2);
     expect(r2._status).toBe(200);
     expect(r2._body.result).toEqual(expect.objectContaining({ success: true, duplicate: true }));
+  });
+
+  test('NUEVO-fix ronda 8: rejects 403 when the email is not verified', async () => {
+    const r = makeRes();
+    await registerHandler()({
+      method: 'POST',
+      body: { paymentMethod: 'yape', operationId: 'op-email-1', amount: 25 },
+      user: { uid: AUTH_UID, email_verified: false },
+    }, r);
+    expect(r._status).toBe(403);
+    expect(r._body.error).toBe('email-not-verified');
   });
 
   test('rejects an unsupported payment method', async () => {
@@ -448,7 +459,7 @@ describe('api checkPendingPaymentStatus', () => {
   const registerHandler = () => app._handlers.post['/api/registerPendingPayment'][2];
 
   function authedReq(body) {
-    return { method: 'POST', body, user: { uid: AUTH_UID } };
+    return { method: 'POST', body, user: { uid: AUTH_UID, email_verified: true } };
   }
 
   test('returns not_found when nothing matches', async () => {

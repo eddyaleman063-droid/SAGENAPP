@@ -178,10 +178,17 @@ exports.generateContentStream = functions.runWith({ maxInstances: 3 }).https.onR
     const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:streamGenerateContent?alt=sse`;
 
     const body = {
+      // NUEVO-fix: las partes llegan tal cual del cliente — un modified client
+      // podía mandar hasta 20 partes largas por mensaje amplificando el costo
+      // (N partes × largo). Ahora se acota cantidad (20) y largo por parte (10k).
       contents: contents.map(c => ({
         role: ['user', 'model'].includes(c.role) ? c.role : 'user',
-        parts: c.parts || [{ text: (c.text || '').slice(0, 10000) }],
-      })),
+        parts: (c.parts && Array.isArray(c.parts) && c.parts.length > 0)
+          ? c.parts
+              .slice(0, 20)
+              .map(p => ({ text: String((p && p.text) || '').slice(0, 10000) }))
+          : [{ text: String((c.text || '')).slice(0, 10000) }],
+      })).slice(0, 20),
       generationConfig: {
         maxOutputTokens: GEMINI_MAX_OUTPUT_TOKENS,
         temperature: GEMINI_TEMPERATURE,
@@ -352,3 +359,9 @@ exports.generateContentStream = functions.runWith({ maxInstances: 3 }).https.onR
     }
   }
 });
+
+// Exports internos reutilizables por el callable no-streaming generateContent
+// (index.js): comparten la MISMA cuota diaria y política de pre-check/consume
+// para que ninguna ruta salte el límite diario de Sage.
+exports.checkDailyUsage = checkDailyUsage;
+exports.SAGE_DAILY_LIMIT = SAGE_DAILY_LIMIT;

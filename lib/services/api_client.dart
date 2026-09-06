@@ -191,7 +191,7 @@ class ApiClient implements ApiSender {
         shouldRetry: (e) => e is ApiException && _shouldRetry(e),
       ),
     );
-    _checkHttpStatus(response.statusCode);
+    _checkHttpStatus(response.statusCode, responseBody: response.body);
     return response;
   }
 
@@ -353,17 +353,28 @@ class ApiClient implements ApiSender {
     }
   }
 
-  static void _checkHttpStatus(int statusCode) {
+  static void _checkHttpStatus(int statusCode, {String? responseBody}) {
     if (statusCode == 401) {
       throw const ApiException(ApiErrorType.auth, 'Authentication error.');
     }
     if (statusCode == 403) {
-      throw const ApiException(ApiErrorType.auth, 'Access denied.');
+      // NUEVO-fix (ronda 8): el servidor devuelve códigos accionables en el
+      // body (email-not-verified, etc.) que antes se descartaban — el usuario
+      // veía un genérico 'Access denied.' sin saber qué corregir.
+      throw ApiException(
+        ApiErrorType.auth,
+        _serverCodeFromBody(responseBody) == 'email-not-verified'
+            ? 'Verify your email to continue.'
+            : 'Access denied.',
+        statusCode: statusCode,
+        serverCode: _serverCodeFromBody(responseBody),
+      );
     }
     if (statusCode == 429) {
-      throw const ApiException(
+      throw ApiException(
         ApiErrorType.rateLimit,
         'Too many requests. Wait a few seconds.',
+        statusCode: statusCode,
       );
     }
     if (statusCode >= 500) {
@@ -380,6 +391,22 @@ class ApiClient implements ApiSender {
         statusCode: statusCode,
       );
     }
+  }
+
+  static String? _serverCodeFromBody(String? body) {
+    if (body == null || body.isEmpty) return null;
+    try {
+      final decoded = jsonDecode(body);
+      if (decoded is Map && decoded['error'] is String) {
+        return decoded['error'] as String;
+      }
+      if (decoded is Map && decoded['code'] is String) {
+        return decoded['code'] as String;
+      }
+    } catch (_) {
+      // Body no JSON: sin código accionable.
+    }
+    return null;
   }
 
   void dispose() {

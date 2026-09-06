@@ -342,6 +342,10 @@ exports.earnGems = functions.runWith({ maxInstances: 10 }).https.onCall(async (d
       // Anti-forge: for streak-based reasons the day count MUST come from the
       // server-authoritative streak, never from client-supplied meta. A modified
       // client could otherwise claim a 365-day milestone with a 1-day streak.
+      // NUEVO-fix anti-farm: para 'achievement' las gemas salen de la TABLA
+      // server (economic.ACHIEVEMENT_REWARDS) — lazy require para evitar el ciclo
+      // economic↔gems en el top-level. meta.xp del cliente se IGNORA por completo.
+      const ACHIEVEMENT_REWARDS = require('./economic').ACHIEVEMENT_REWARDS;
       const meta = (data && data.meta) || {};
       let requestedGems;
       let reachedMilestone = null;
@@ -387,6 +391,18 @@ exports.earnGems = functions.runWith({ maxInstances: 10 }).https.onCall(async (d
             dailyTotal: dailyGemsData.total || 0,
           };
         }
+      } else if (reason === 'achievement') {
+        // NUEVO-fix (cierre del farm de logros): antes bastaba la regex para
+        // pasar con un id cualquiera y meta.xp inflado (hasta 30 gemas/día y
+        // rejugable con ids inventados que cumplían el patrón). Ahora el id debe
+        // existir en la tabla server y las gemas = clamp(floor(xp_tabla/4), 2, 30).
+        const achXp = rawAchievementId !== null
+          ? ACHIEVEMENT_REWARDS[rawAchievementId]
+          : undefined;
+        if (typeof achXp !== 'number') {
+          return { success: false, gemsAdded: 0, reason, invalidAchievement: true };
+        }
+        requestedGems = Math.min(Math.max(Math.floor(achXp / 4), 2), 30);
       } else {
         requestedGems = gemAmountForReason(reason, meta);
       }
@@ -511,6 +527,13 @@ exports.spendGems = functions.runWith({ maxInstances: 10 }).https.onCall(async (
       }
 
       if (logDoc.exists) {
+        // NUEVO-fix: la clave de idempotencia pertenece al usuario que la creó.
+        // Un log con otro userId = colisión/replay, no un duplicado legítimo:
+        // rechazar en vez de tragarse el estado en silencio.
+        const logData = logDoc.data() || {};
+        if (logData.userId && logData.userId !== userId) {
+          throw new functions.https.HttpsError('already-exists', 'idempotencyKey en uso por otro usuario');
+        }
         return { success: true, duplicate: true, balance: userDoc.data()?.learning_gems || 0 };
       }
 

@@ -79,12 +79,16 @@ describe('createPaymentPreference', () => {
     expect(res._body.result.externalRef).toBeDefined();
   });
 
-  test('rejects request without origin header', async () => {
-    const { req, res } = makeReqRes({ amount: 3, productId: 'donation_basic' });
+  test('NUEVO-fix ronda 8: allows a request WITHOUT origin header (native apps)', async () => {
+    const { req, res } = makeReqRes(
+      { amount: 3, productId: 'donation_basic' },
+      'Bearer fake-token-for-test'
+    );
     delete req.headers.origin;
     admin._setVerifyIdTokenResult({ uid: AUTH_UID });
     await index.createPaymentPreference(req, res);
-    expect(res._status).toBe(403);
+    expect(res._status).toBe(200);
+    expect(mpMock._mockPreferenceCreate).toHaveBeenCalled();
   });
 
   test('rejects disallowed origin', async () => {

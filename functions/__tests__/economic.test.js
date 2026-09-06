@@ -73,15 +73,43 @@ describe('checkDailyXpCap', () => {
 });
 
 describe('processDonation', () => {
-  test('credits donation to user balance', async () => {
-    setUserDoc(AUTH_UID, { total_donated: 100 });
+  test('credits donation to user balance (wallet insta-credit)', async () => {
+    setUserDoc(AUTH_UID, { total_donated: 100, walletBalance: 200 });
     const result = await economic.processDonation(
-      { amount: 25, method: 'mercadopago', idempotencyKey: 'donation-1' },
+      { amount: 25, method: 'wallet', idempotencyKey: 'donation-1' },
       makeContext()
     );
     expect(result.success).toBe(true);
     expect(result.duplicate).toBe(false);
     expect(result.total_donated).toBe(125);
+    const user = admin._getDoc(`users/${AUTH_UID}`);
+    expect(user.walletBalance).toBe(175);
+    expect(user.is_supporter).toBe(true);
+  });
+
+  test('NUEVO-fix (decisión de producto): método no-wallet registra pending payment sin acreditar supporter', async () => {
+    setUserDoc(AUTH_UID, { total_donated: 100 });
+    const result = await economic.processDonation(
+      { amount: 25, method: 'mercadopago', idempotencyKey: 'donation-nw-1' },
+      makeContext()
+    );
+    expect(result.success).toBe(true);
+    expect(result.duplicate).toBe(false);
+    expect(result.pending).toBe(true);
+    expect(result.pendingPaymentId).toBe(`test-user-123_donation-nw-1`);
+    expect(result.total_donated).toBe(100);
+    const user = admin._getDoc(`users/${AUTH_UID}`);
+    expect(user.total_donated).toBe(100);
+    expect(user.is_supporter).not.toBe(true);
+    const pending = admin._getDoc(`pending_payments/test-user-123_donation-nw-1`);
+    expect(pending.status).toBe('pending');
+    expect(pending.paymentMethod).toBe('mercadopago');
+    // El retry con la misma clave es duplicate, sin crear un segundo pending.
+    const replay = await economic.processDonation(
+      { amount: 25, method: 'mercadopago', idempotencyKey: 'donation-nw-1' },
+      makeContext()
+    );
+    expect(replay.duplicate).toBe(true);
   });
 
   test('rejects unauthenticated user', async () => {
@@ -119,13 +147,13 @@ describe('processDonation', () => {
   });
 
   test('is idempotent for same idempotencyKey', async () => {
-    setUserDoc(AUTH_UID, { total_donated: 100 });
+    setUserDoc(AUTH_UID, { total_donated: 100, walletBalance: 200 });
     await economic.processDonation(
-      { amount: 25, method: 'mercadopago', idempotencyKey: 'donation-dup' },
+      { amount: 25, method: 'wallet', idempotencyKey: 'donation-dup' },
       makeContext()
     );
     const result = await economic.processDonation(
-      { amount: 25, method: 'mercadopago', idempotencyKey: 'donation-dup' },
+      { amount: 25, method: 'wallet', idempotencyKey: 'donation-dup' },
       makeContext()
     );
     expect(result.duplicate).toBe(true);
@@ -157,16 +185,40 @@ describe('processDonation', () => {
 });
 
 describe('recordDonation (NUEVO-fix idempotencia)', () => {
-  test('credits donation and marks supporter', async () => {
-    setUserDoc(AUTH_UID, { total_donated: 0 });
+  test('NUEVO-fix: wallet debits real balance and credits supporter', async () => {
+    setUserDoc(AUTH_UID, { total_donated: 0, walletBalance: 100 });
     const result = await economic.recordDonation(
-      { amount: 25, method: 'whatsapp', idempotencyKey: 'don-1' },
+      { amount: 25, method: 'wallet', idempotencyKey: 'don-1' },
       makeContext()
     );
     expect(result.success).toBe(true);
     expect(result.duplicate).toBe(false);
     expect(result.total_donated).toBe(25);
-    expect(admin._getDoc(`users/${AUTH_UID}`).is_supporter).toBe(true);
+    const user = admin._getDoc(`users/${AUTH_UID}`);
+    expect(user.walletBalance).toBe(75);
+    expect(user.is_supporter).toBe(true);
+  });
+
+  test('NUEVO-fix (decisión de producto): manual methods register a pending payment without auto-supporting', async () => {
+    setUserDoc(AUTH_UID, { total_donated: 0 });
+    const result = await economic.recordDonation(
+      { amount: 25, method: 'whatsapp', idempotencyKey: 'don-manual-1' },
+      makeContext()
+    );
+    expect(result.success).toBe(true);
+    expect(result.duplicate).toBe(false);
+    expect(result.pending).toBe(true);
+    // Un método manual NO acredita al supporter al instante (aprobación admin).
+    expect(result.total_donated).toBe(0);
+    expect(admin._getDoc(`users/${AUTH_UID}`).is_supporter).not.toBe(true);
+    const pending = admin._getDoc(`pending_payments/${AUTH_UID}_don-manual-1`);
+    expect(pending.status).toBe('pending');
+    expect(pending.paymentMethod).toBe('whatsapp');
+    const replay = await economic.recordDonation(
+      { amount: 25, method: 'whatsapp', idempotencyKey: 'don-manual-1' },
+      makeContext()
+    );
+    expect(replay.duplicate).toBe(true);
   });
 
   test('NUEVO-fix: retry keyless de la misma donación no duplica (clave determinista)', async () => {
@@ -176,7 +228,8 @@ describe('recordDonation (NUEVO-fix idempotencia)', () => {
       makeContext()
     );
     expect(first.duplicate).toBe(false);
-    expect(first.total_donated).toBe(15);
+    expect(first.pending).toBe(true);
+    expect(first.total_donated).toBe(0);
     // Timeout de red re-enviado (mismo día, monto y método): la clave derivada
     // coincide y el retry es duplicate (antes, Date.now() = doble crédito).
     const second = await economic.recordDonation(
@@ -184,8 +237,7 @@ describe('recordDonation (NUEVO-fix idempotencia)', () => {
       makeContext()
     );
     expect(second.duplicate).toBe(true);
-    expect(second.total_donated).toBe(15);
-    expect(admin._getDoc(`users/${AUTH_UID}`).total_donated).toBe(15);
+    expect(admin._getDoc(`users/${AUTH_UID}`).total_donated).toBe(0);
   });
 
   test('NUEVO-fix: monto distinto el mismo día recibe su propia clave', async () => {
@@ -193,7 +245,7 @@ describe('recordDonation (NUEVO-fix idempotencia)', () => {
     await economic.recordDonation({ amount: 10, method: 'whatsapp' }, makeContext());
     const second = await economic.recordDonation({ amount: 20, method: 'whatsapp' }, makeContext());
     expect(second.duplicate).toBe(false);
-    expect(second.total_donated).toBe(30);
+    expect(second.pending).toBe(true);
   });
 
   test('NUEVO-fix: rechaza una clave creada por otro usuario', async () => {

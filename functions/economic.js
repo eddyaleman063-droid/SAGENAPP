@@ -49,6 +49,7 @@ const ACHIEVEMENT_REWARDS = {
   perfect_lesson: 30,
   sage_talk: 40,
 };
+exports.ACHIEVEMENT_REWARDS = ACHIEVEMENT_REWARDS;
 
 // Server-authoritative XP rewards per lesson.
 // If a lessonId is not listed here, the default reward applies.
@@ -231,23 +232,52 @@ exports.processDonation = functions.runWith({ maxInstances: 10 }).https.onCall(a
           is_supporter: true,
           _ts_total_donated: admin.firestore.FieldValue.serverTimestamp(),
         });
-      } else {
-        transaction.update(userRef, {
-          total_donated: (userData.total_donated || 0) + amount,
-          is_supporter: true,
-          _ts_total_donated: admin.firestore.FieldValue.serverTimestamp(),
+        transaction.create(logRef, {
+          userId,
+          type: 'donation',
+          method,
+          amount,
+          createdAt: admin.firestore.FieldValue.serverTimestamp(),
         });
+        return { success: true, duplicate: false, total_donated: (userData.total_donated || 0) + amount };
       }
 
+      // NUEVO-fix (decisión de producto): SOLO 'wallet' acredita el supporter al
+      // instante. Cualquier otro método (whatsapp/yape/plin/mercadopago) queda
+      // registrado en `pending_payments/{userId}_{idempotencyKey}` a la espera
+      // de verificación/admin (adminCreditDonation); el supporter se activa solo
+      // tras la aprobación real. Antes estos métodos auto-acreditaban hasta el
+      // límite de 100000 sin ningún pago verificado.
+      const pendingRef = admin.firestore().doc(
+        `pending_payments/${userId}_${idempotencyKey}`
+      );
+      transaction.set(pendingRef, {
+        userId,
+        paymentMethod: method,
+        operationId: idempotencyKey,
+        amount,
+        productId: null,
+        status: 'pending',
+        createdAt: admin.firestore.FieldValue.serverTimestamp(),
+        expiresAt: admin.firestore.Timestamp.fromDate(
+          new Date(Date.now() + 24 * 60 * 60 * 1000),
+        ),
+      });
       transaction.create(logRef, {
         userId,
         type: 'donation',
+        status: 'pending',
         method,
         amount,
         createdAt: admin.firestore.FieldValue.serverTimestamp(),
       });
-
-      return { success: true, duplicate: false, total_donated: (userData.total_donated || 0) + amount };
+      return {
+        success: true,
+        duplicate: false,
+        pending: true,
+        pendingPaymentId: pendingRef.id,
+        total_donated: userData.total_donated || 0,
+      };
     });
 
     functions.logger.info('processDonation', {
@@ -318,23 +348,61 @@ const userId = context.auth.uid;
       }
 
       const userData = userDoc.data() || {};
-      const newTotal = (userData.total_donated || 0) + amount;
+      const currentTotal = userData.total_donated || 0;
 
-      transaction.update(userRef, {
-        total_donated: newTotal,
-        is_supporter: true,
-        _ts_total_donated: admin.firestore.FieldValue.serverTimestamp(),
+      if (method === 'wallet') {
+        // NUEVO-fix: 'wallet' sí acredita al instante, pero debita el saldo
+        // del monedero como processDonation (antes acreditaba supporter gratis
+        // sin debitar nada: farm ilimitado con montos variables).
+        const walletBalance = userData.walletBalance || 0;
+        if (walletBalance < amount) {
+          throw new functions.https.HttpsError('failed-precondition', 'Saldo insuficiente');
+        }
+        transaction.update(userRef, {
+          walletBalance: walletBalance - amount,
+          total_donated: currentTotal + amount,
+          is_supporter: true,
+          _ts_total_donated: admin.firestore.FieldValue.serverTimestamp(),
+        });
+        transaction.create(logRef, {
+          userId, type: 'donation', method, amount,
+          createdAt: admin.firestore.FieldValue.serverTimestamp(),
+        });
+        return { success: true, duplicate: false, total_donated: currentTotal + amount };
+      }
+
+      // NUEVO-fix (decisión de producto): los métodos manuales NO auto-acreditan
+      // al supporter. Quedan como pending payment para verificación/admin, igual
+      // que processDonation y registerPendingPayment. Antes un monto inventado
+      // acreditaba total_donated/is_supporter al instante y sin pago real.
+      const pendingRef = admin.firestore().doc(`pending_payments/${userId}_${key}`);
+      transaction.set(pendingRef, {
+        userId,
+        paymentMethod: method,
+        operationId: key,
+        amount,
+        productId: null,
+        status: 'pending',
+        createdAt: admin.firestore.FieldValue.serverTimestamp(),
+        expiresAt: admin.firestore.Timestamp.fromDate(
+          new Date(Date.now() + 24 * 60 * 60 * 1000),
+        ),
       });
-
       transaction.create(logRef, {
         userId,
         type: 'donation',
+        status: 'pending',
         method,
         amount,
         createdAt: admin.firestore.FieldValue.serverTimestamp(),
       });
-
-      return { success: true, duplicate: false, total_donated: newTotal };
+      return {
+        success: true,
+        duplicate: false,
+        pending: true,
+        pendingPaymentId: pendingRef.id,
+        total_donated: currentTotal,
+      };
     });
 
     functions.logger.info('recordDonation', {

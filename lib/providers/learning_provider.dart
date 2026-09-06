@@ -662,9 +662,23 @@ class LearningNotifier extends Notifier<LearningState> {
     );
 
     try {
-      await ref
+      final result = await ref
           .read(economicFunctionsServiceProvider)
           .recordDonation(amount: amount, method: method);
+      // NUEVO-fix (ronda 8): para métodos manuales (whatsapp/yape/plin) el
+      // servidor ya NO acredita el supporter al instante — registra un pending
+      // payment a la espera de aprobación admin. Si la respuesta lo refleja,
+      // revertimos el optimista (el supporter llega solo tras la aprobación).
+      final serverPending = result?['pending'] == true;
+      if (serverPending) {
+        state = state.copyWith(
+          totalDonated: previousDonated,
+          isSupporter: previousDonated > 0,
+        );
+        AppLogger().warning(
+          'recordDonation registered as pending (admin approval)',
+        );
+      }
       _save();
     } catch (e) {
       state = state.copyWith(

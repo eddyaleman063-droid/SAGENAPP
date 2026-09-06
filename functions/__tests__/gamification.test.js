@@ -142,7 +142,7 @@ describe('Sagen Pass SP via verified actions', () => {
 
 describe('claimSagenPassReward', () => {
   test('claims unclaimed level reward', async () => {
-    setUserDoc(AUTH_UID, { sagen_pass_level: 3, sagen_pass_claimed: [1] });
+    setUserDoc(AUTH_UID, { sagen_pass_level: 3, sagen_pass_claimed: [1], sagen_pass_active: true });
     const result = await gamification.claimSagenPassReward({ level: 2 }, makeContext());
     expect(result.success).toBe(true);
     expect(result.claimed).toBe(2);
@@ -155,6 +155,7 @@ describe('claimSagenPassReward', () => {
       sagen_pass_claimed: [],
       learning_total_xp: 0,
       learning_level: 1,
+      sagen_pass_active: true,
     });
     const result = await gamification.claimSagenPassReward({ level: 1 }, makeContext());
     expect(result.success).toBe(true);
@@ -175,6 +176,7 @@ describe('claimSagenPassReward', () => {
       sagen_pass_claimed: [],
       learning_total_xp: 0,
       learning_level: 1,
+      sagen_pass_active: true,
     });
     const result = await gamification.claimSagenPassReward({ level: 5 }, makeContext());
     expect(result.reward.key).toBe('reward100Xp');
@@ -189,6 +191,7 @@ describe('claimSagenPassReward', () => {
       sagen_pass_claimed: [],
       learning_total_xp: 0,
       learning_level: 1,
+      sagen_pass_active: true,
     });
     admin._setDoc(`daily_xp_sources/${AUTH_UID}_${today()}`, { total: 400 });
     // Quedan 100 del límite diario para un reward de 200.
@@ -205,6 +208,7 @@ describe('claimSagenPassReward', () => {
       sagen_pass_level: 5,
       sagen_pass_claimed: [],
       streak_shields: 2,
+      sagen_pass_active: true,
     });
     const result = await gamification.claimSagenPassReward({ level: 3 }, makeContext());
     expect(result.reward.key).toBe('rewardTitaniumShield');
@@ -214,8 +218,52 @@ describe('claimSagenPassReward', () => {
     expect(user.streak_shields).toBe(3);
   });
 
+  test('NUEVO-fix (decisión de producto): rechaza el claim sin pass activo', async () => {
+    setUserDoc(AUTH_UID, {
+      sagen_pass_level: 3,
+      sagen_pass_claimed: [],
+      // Sin sagen_pass_active: free track — el no-comprador puede ganar SP y
+      // ver su nivel, pero NO reclamar recompensas.
+    });
+    await expect(
+      gamification.claimSagenPassReward({ level: 1 }, makeContext())
+    ).rejects.toThrow(expect.objectContaining({ code: 'failed-precondition' }));
+    const user = admin._getDoc(`users/${AUTH_UID}`);
+    expect(user.sagen_pass_claimed).toEqual([]);
+  });
+
+  test('NUEVO-fix (decisión de producto): cap de escudos en el claim (FREE_SHIELD_MAX=3)', async () => {
+    setUserDoc(AUTH_UID, {
+      sagen_pass_level: 5,
+      sagen_pass_claimed: [],
+      streak_shields: 3,
+      sagen_pass_active: true,
+    });
+    const result = await gamification.claimSagenPassReward({ level: 3 }, makeContext());
+    // El claim se marca (no bloquea el progreso) pero no acumula escudos extra.
+    expect(result.reward.type).toBe('item');
+    expect(result.reward.granted).toBe(0);
+    expect(result.reward.cappedAtMax).toBe(true);
+    const user = admin._getDoc(`users/${AUTH_UID}`);
+    expect(user.streak_shields).toBe(3);
+    expect(user.sagen_pass_claimed).toEqual([3]);
+  });
+
+  test('NUEVO-fix (type confusion): rechaza nivel no entero o fuera de rango', async () => {
+    setUserDoc(AUTH_UID, {
+      sagen_pass_level: 3,
+      sagen_pass_claimed: [],
+      sagen_pass_active: true,
+    });
+    for (const badLevel of ['7abc', 7.5, 0, -1, 51, null]) {
+      await expect(
+        gamification.claimSagenPassReward({ level: badLevel }, makeContext())
+      ).rejects.toThrow(expect.objectContaining({ code: 'invalid-argument' }));
+    }
+  });
+
   test('grants a Golden Chest into the bank for multiple-of-10 levels', async () => {
-    setUserDoc(AUTH_UID, { sagen_pass_level: 25, sagen_pass_claimed: [] });
+    setUserDoc(AUTH_UID, { sagen_pass_level: 25, sagen_pass_claimed: [], sagen_pass_active: true });
     const result = await gamification.claimSagenPassReward({ level: 20 }, makeContext());
     expect(result.reward.key).toBe('rewardGoldenChest');
     expect(result.reward.type).toBe('chest');
@@ -225,7 +273,7 @@ describe('claimSagenPassReward', () => {
   });
 
   test('grants an Epic Chest for level 25', async () => {
-    setUserDoc(AUTH_UID, { sagen_pass_level: 30, sagen_pass_claimed: [] });
+    setUserDoc(AUTH_UID, { sagen_pass_level: 30, sagen_pass_claimed: [], sagen_pass_active: true });
     const result = await gamification.claimSagenPassReward({ level: 25 }, makeContext());
     expect(result.reward.key).toBe('rewardEpicChest');
     expect(result.reward.chest).toBe('epic');
@@ -239,6 +287,7 @@ describe('claimSagenPassReward', () => {
       sagen_pass_claimed: [1],
       learning_total_xp: 0,
       learning_level: 1,
+      sagen_pass_active: true,
     });
     const result = await gamification.claimSagenPassReward({ level: 1 }, makeContext());
     expect(result.alreadyClaimed).toBe(true);
@@ -248,13 +297,13 @@ describe('claimSagenPassReward', () => {
   });
 
   test('returns alreadyClaimed for claimed level', async () => {
-    setUserDoc(AUTH_UID, { sagen_pass_level: 3, sagen_pass_claimed: [1, 2] });
+    setUserDoc(AUTH_UID, { sagen_pass_level: 3, sagen_pass_claimed: [1, 2], sagen_pass_active: true });
     const result = await gamification.claimSagenPassReward({ level: 2 }, makeContext());
     expect(result.alreadyClaimed).toBe(true);
   });
 
   test('rejects level above current level', async () => {
-    setUserDoc(AUTH_UID, { sagen_pass_level: 1, sagen_pass_claimed: [] });
+    setUserDoc(AUTH_UID, { sagen_pass_level: 1, sagen_pass_claimed: [], sagen_pass_active: true });
     await expect(
       gamification.claimSagenPassReward({ level: 5 }, makeContext())
     ).rejects.toThrow();
@@ -271,6 +320,7 @@ describe('claimSagenPassReward', () => {
       sagen_pass_sp: 12,
       sagen_pass_claimed: [1, 2, 3],
       sagen_pass_chests: ['golden'],
+      sagen_pass_active: true,
     });
     const result = await gamification.claimSagenPassReward({ level: 1 }, makeContext());
     expect(result.success).toBe(true);
@@ -525,6 +575,33 @@ describe('rollChestDrop', () => {
     expect(result.chestType).toBe(result.chestType);
   });
 
+  test('NUEVO-fix (anti-farm): daily cap 30 for mission chest rolls', async () => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    setUserDoc(AUTH_UID, {
+      learning_total_xp: 0,
+      learning_level: 1,
+      currentStreak: 1,
+      longestStreak: 1,
+      streak_last_activity: { toDate: () => yesterday },
+    });
+    const todayStr = new Date().toISOString().split('T')[0];
+    // Cap diario agotado → rechazo inequívoco (antes un cliente modificado
+    // podía inventar infinitos contextIds para tocar infinitas keys).
+    admin._setDoc(`daily_mission_rolls/${AUTH_UID}_${todayStr}`, { count: 30 });
+    await expect(
+      gamification.rollChestDrop({ source: 'mission', contextId: 'cap_m1' }, makeContext())
+    ).rejects.toThrow(expect.objectContaining({ code: 'failed-precondition' }));
+    // 29 rolls: el último pasa y deja el contador sellado en 30.
+    admin._setDoc(`daily_mission_rolls/${AUTH_UID}_${todayStr}`, { count: 29 });
+    const roll = await gamification.rollChestDrop(
+      { source: 'mission', contextId: 'cap_m2' },
+      makeContext(),
+    );
+    expect(roll.success).toBe(true);
+    expect(admin._getDoc(`daily_mission_rolls/${AUTH_UID}_${todayStr}`).count).toBe(30);
+  });
+
   test('credits gems from chest drop based on server formula', async () => {
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
@@ -628,8 +705,9 @@ describe('rollChestDrop', () => {
       learning_gems: 0,
     });
 
-    // source='mission' con random alto → rareza bronze (75%). Bronze nunca
-    // dropea ítems aunque el cliente forjee luckBoostActive.
+    // source='mission' con random alto → rareza bronze (73%, alineado con los
+    // defaults de Remote Config 1/6/20). Bronze nunca dropea ítems aunque el
+    // cliente forjee luckBoostActive.
     const spy = jest.spyOn(Math, 'random');
     try {
       spy.mockReturnValue(0.9);

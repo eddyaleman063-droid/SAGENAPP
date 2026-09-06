@@ -29,10 +29,12 @@ const WEBHOOK_BASE = process.env.VERCEL_URL
   : 'https://sagen-app.vercel.app';
 
 const STREAK_SHIELD_MAX = 2;
-const SAGEN_PASS_GEMS = 500;
 
 const hardcodedCatalog = require('../functions/catalog');
 const catalogService = hardcodedCatalog.createCatalog(admin, { warn: (m, ctx) => console.warn(m, ctx && ctx.error) });
+// NUEVO-fix (ronda 8): la fuente única de SAGEN_PASS_GEMS es catalog.js.
+// Antes estaba hardcodeada aquí (500) y se desincronizaba con Cloud Functions.
+const SAGEN_PASS_GEMS = hardcodedCatalog.SAGEN_PASS_GEMS;
 
 const loadCatalog = () => catalogService.loadCatalog();
 
@@ -65,7 +67,7 @@ function applyProductBonuses(updateData, userData, bonuses) {
       updateData.sagen_pass_active = true;
       updateData.sagen_pass_purchased_at = admin.firestore.FieldValue.serverTimestamp();
       updateData.premium_question_bank = true;
-      updateData.learning_gems = Math.min(100000, (userData.learning_gems || 0) + (bonus.gems || 500));
+      updateData.learning_gems = Math.min(100000, (userData.learning_gems || 0) + (bonus.gems || SAGEN_PASS_GEMS));
     }
   }
   return updateData;
@@ -248,18 +250,16 @@ app.use(express.json({
 // POST /api/createPaymentPreference
 // ────────────────────────────────────────────────────────────────
 app.post('/api/createPaymentPreference', requireAuth, rateLimit, async (req, res) => {
-  // Origin check (mirror de Cloud Functions): rechazamos con 403 un request sin
-  // Origin o con Origin fuera de la allow-list. El único consumidor es la app
-  // web (checkout vía init_point), que siempre envía Origin.
+  // NUEVO-fix (ronda 8): un Origin AUSENTE se permite. Las apps nativas Flutter
+  // nunca envían Origin (no hay cross-origin que proteger en client nativo);
+  // antes TODAS las donaciones móviles morían 403. Solo se rechazan orígenes
+  // EXPLÍCITOS fuera de la allow-list (el navegador siempre envía Origin).
   const allowedOrigins = [
     'https://sagen-bdd3f.web.app',
     'https://sagen-bdd3f.firebaseapp.com',
   ];
   const origin = req.headers.origin || '';
-  if (!origin) {
-    return res.status(403).json({ error: 'permission-denied', message: 'Falta el encabezado de origen' });
-  }
-  if (!allowedOrigins.includes(origin)) {
+  if (origin && !allowedOrigins.includes(origin)) {
     return res.status(403).json({ error: 'permission-denied', message: 'Origen no permitido' });
   }
 
@@ -700,6 +700,12 @@ app.post('/api/adminCreditDonation', requireAdmin, async (req, res) => {
 // ────────────────────────────────────────────────────────────────
 app.post('/api/registerPendingPayment', requireAuth, rateLimit, async (req, res) => {
   try {
+    // NUEVO-fix (ronda 8): es un mutador monetario — exige email verificado,
+    // igual que createPaymentPreference (Cloud Functions ya lo exige).
+    if (req.user.email_verified !== true) {
+      return res.status(403).json({ error: 'email-not-verified', message: 'Necesitas un correo verificado para registrar un pago' });
+    }
+
     const { paymentMethod, operationId, amount, productId } = req.body;
     if (!paymentMethod || typeof paymentMethod !== 'string' || !operationId) {
       return res.status(400).json({ error: 'invalid-argument', message: 'paymentMethod y operationId requeridos' });

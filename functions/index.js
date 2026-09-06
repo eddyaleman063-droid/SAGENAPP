@@ -211,12 +211,14 @@ exports.createPaymentPreference = functions.runWith({ maxInstances: 10 }).https.
   ];
   const origin = req.headers.origin || '';
 
-  // Reject requests with missing or non-allowed origin (except OPTIONS preflight)
+  // NUEVO-fix (ronda 8): un Origin AUSENTE se permite. Las apps nativas
+  // Flutter nunca envían Origin (no hay "cross-origin" que proteger en un
+  // client nativo: nada puede inyectar requests con cookies del usuario).
+  // Antes este check mataba con 403 TODAS las donaciones desde móvil. Solo se
+  // rechazan orígenes EXPLÍCITOS fuera de la allow-list (un navegador siempre
+  // envía Origin, así que el CSRF/CORS sigue protegido).
   if (req.method !== 'OPTIONS') {
-    if (!origin) {
-      return res.status(403).json({ error: 'Falta el encabezado de origen' });
-    }
-    if (!allowedOrigins.includes(origin)) {
+    if (origin && !allowedOrigins.includes(origin)) {
       return res.status(403).json({ error: 'Origen no permitido' });
     }
   }
@@ -957,7 +959,6 @@ const GEMINI_TOP_P = 0.95;
  */
 exports.generateContent = functions.runWith({ maxInstances: 3 }).https.onCall(async (data, context) => {
   requireVerifiedUser(context);
-  await checkRateLimit(context.auth.uid);
 
   if (!GEMINI_API_KEY) {
     throw new functions.https.HttpsError('failed-precondition', 'Clave API de Gemini no configurada');
@@ -967,18 +968,34 @@ exports.generateContent = functions.runWith({ maxInstances: 3 }).https.onCall(as
   if (!contents || !Array.isArray(contents) || contents.length === 0) {
     throw new functions.https.HttpsError('invalid-argument', 'Se requiere un arreglo contents');
   }
+  if (contents.length > 20) {
+    throw new functions.https.HttpsError('invalid-argument', 'Máximo 20 partes de contents permitidas');
+  }
 
-  // Rate limit: max 30 requests per user per minute (distributed via Firestore)
+  // Rate limit: max 30 requests per user per minute (distributed via Firestore).
+  // NUEVO-fix: se cuenta UNA sola vez — antes este check se llamaba dos veces
+  // (aquí y arriba) y un usuario con 15 req/min quedaba cortado en 15 reales.
   await checkRateLimit(context.auth.uid, 30, 60000);
+
+  // NUEVO-fix (ronda 8): la cuota diaria de Sage SÍ aplica a esta ruta.
+  // generateContent no-streming comparte sage_usage/{uid}_{dia} con el stream:
+  // pre-check sin consumir; el consume real ocurre solo tras una respuesta viva.
+  await aiStreaming.checkDailyUsage(context.auth.uid, { consume: false });
 
   try {
     const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
 
     const body = {
+      // NUEVO-fix: partes acotadas en cantidad (20/hilo) y largo (10k/parte);
+      // antes `c.parts || [...]` pasaba las partes tal cual del cliente.
       contents: contents.map(c => ({
         role: ['user', 'model'].includes(c.role) ? c.role : 'user',
-        parts: c.parts || [{ text: (c.text || '').slice(0, 10000) }],
-      })),
+        parts: (c.parts && Array.isArray(c.parts) && c.parts.length > 0)
+          ? c.parts
+              .slice(0, 20)
+              .map(p => ({ text: String((p && p.text) || '').slice(0, 10000) }))
+          : [{ text: String((c.text || '')).slice(0, 10000) }],
+      })).slice(0, 20),
       generationConfig: {
         maxOutputTokens: GEMINI_MAX_OUTPUT_TOKENS,
         temperature: GEMINI_TEMPERATURE,
@@ -993,8 +1010,8 @@ exports.generateContent = functions.runWith({ maxInstances: 3 }).https.onCall(as
       ],
     };
 
-    if (systemInstruction) {
-      body.systemInstruction = { parts: [{ text: systemInstruction }] };
+    if (systemInstruction && typeof systemInstruction === 'string') {
+      body.systemInstruction = { parts: [{ text: systemInstruction.slice(0, 5000) }] };
     }
 
     const response = await fetch(url, {
@@ -1018,6 +1035,10 @@ exports.generateContent = functions.runWith({ maxInstances: 3 }).https.onCall(as
     if (!text.trim()) {
       throw new functions.https.HttpsError('internal', 'Gemini devolvió respuesta vacía');
     }
+
+    // NUEVO-fix: la cuota diaria se consume SOLO ante una respuesta real
+    // (mismo patrón que el streaming); fallos/no entrega no queman mensajes.
+    await aiStreaming.checkDailyUsage(context.auth.uid, { consume: true });
 
     return { text };
   } catch (e) {

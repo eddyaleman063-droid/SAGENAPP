@@ -44,16 +44,44 @@ describe('earnGems', () => {
     expect(user.learning_gems).toBe(22);
   });
 
-  test('credits achievement gems based on server formula', async () => {
+  test('credits achievement gems from the server XP table (ignores forged meta.xp)', async () => {
     setUserDoc(AUTH_UID, { learning_gems: 0 });
-    const result = await gems.earnGems({ reason: 'achievement', meta: { xp: 100 } }, makeContext());
-    expect(result.gemsAdded).toBe(25);
+    // streak_7 = 50 XP server → clamp(floor(50/4),2,30)=12. El meta.xp del
+    // cliente (355) se IGNORA por completo.
+    const result = await gems.earnGems(
+      { reason: 'achievement', achievementId: 'streak_7', meta: { xp: 355 } },
+      makeContext()
+    );
+    expect(result.gemsAdded).toBe(12);
+  });
+
+  test('NUEVO-fix (anti-forge): rechaza un achievementId no whitelisted', async () => {
+    setUserDoc(AUTH_UID, { learning_gems: 0 });
+    const result = await gems.earnGems(
+      { reason: 'achievement', achievementId: '../injected-0', meta: { xp: 4000 } },
+      makeContext()
+    );
+    expect(result.success).toBe(false);
+    expect(result.invalidAchievement).toBe(true);
+    expect(result.gemsAdded).toBe(0);
+    const user = admin._getDoc(`users/${AUTH_UID}`);
+    expect(user.learning_gems).toBe(0);
+  });
+
+  test('NUEVO-fix (anti-forge): rechaza achievement sin id (ya no paga flat 20)', async () => {
+    setUserDoc(AUTH_UID, { learning_gems: 0 });
+    const result = await gems.earnGems({ reason: 'achievement', meta: { xp: 80 } }, makeContext());
+    expect(result.success).toBe(false);
+    expect(result.invalidAchievement).toBe(true);
+    expect(result.gemsAdded).toBe(0);
+    const user = admin._getDoc(`users/${AUTH_UID}`);
+    expect(user.learning_gems).toBe(0);
   });
 
   test('pays achievement gems once via the claim flag (NUEVO-fix)', async () => {
     setUserDoc(AUTH_UID, { learning_gems: 0 });
     const first = await gems.earnGems(
-      { reason: 'achievement', achievementId: 'streak_7', meta: { xp: 50 } },
+      { reason: 'achievement', achievementId: 'streak_7' },
       makeContext()
     );
     expect(first.gemsAdded).toBe(12);
@@ -62,7 +90,7 @@ describe('earnGems', () => {
 
     // Segunda reclamación (con otra meta/idempotencia): ya pagada, 0 gemas.
     const second = await gems.earnGems(
-      { reason: 'achievement', achievementId: 'streak_7', meta: { xp: 4000 } },
+      { reason: 'achievement', achievementId: 'streak_7' },
       makeContext()
     );
     expect(second.success).toBe(false);
@@ -76,22 +104,14 @@ describe('earnGems', () => {
     setUserDoc(AUTH_UID, { learning_gems: 0 });
     admin._setDoc(`daily_gem_sources/${AUTH_UID}_${today()}`, { total: 196 });
     const result = await gems.earnGems(
-      { reason: 'achievement', achievementId: 'all_stages', meta: { xp: 200 } },
+      { reason: 'achievement', achievementId: 'all_stages' },
       makeContext()
     );
+    // all_stages = 200 XP → clamp(floor(200/4),2,30)=30. Cap diario 200 → 4.
     expect(result.gemsAdded).toBe(4);
     expect(result.dailyCapped).toBe(true);
     expect(
       admin._getDoc(`users/${AUTH_UID}/achievements/all_stages`) || {}
-    ).not.toHaveProperty('gemsClaimed');
-  });
-
-  test('keeps legacy behavior when achievementId is missing (old clients)', async () => {
-    setUserDoc(AUTH_UID, { learning_gems: 0 });
-    const result = await gems.earnGems({ reason: 'achievement', meta: { xp: 80 } }, makeContext());
-    expect(result.gemsAdded).toBe(20);
-    expect(
-      admin._getDoc(`users/${AUTH_UID}/achievements/five_lessons`) || {}
     ).not.toHaveProperty('gemsClaimed');
   });
 
@@ -256,7 +276,7 @@ describe('earnGems idempotency & seals (NUEVO-fix)', () => {
     // Cap diario ya agotado -> gemsAdded 0 -> sin sello de log ni de bonos.
     admin._setDoc(`daily_gem_sources/${AUTH_UID}_${today()}`, { total: 200 });
     const result = await gems.earnGems(
-      { reason: 'achievement', achievementId: 'streak_7', meta: { xp: 100 }, idempotencyKey: 'earn-capped-1' },
+      { reason: 'achievement', achievementId: 'streak_7', idempotencyKey: 'earn-capped-1' },
       makeContext()
     );
     expect(result.gemsAdded).toBe(0);

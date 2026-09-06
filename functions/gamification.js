@@ -223,8 +223,11 @@ exports.claimSagenPassReward = functions.runWith({ maxInstances: 5 }).https.onCa
     throw new functions.https.HttpsError('resource-exhausted', 'Demasiadas solicitudes');
   }
 
-  const { level } = data;
-  if (!level || level <= 0 || level > 50) {
+  // NUEVO-fix (type confusion): el nivel se coerciona a número real y se exige
+  // entero en [1,50]. Antes `level <= 0` con strings/cadenas podía deslizar
+  // valores inválidos y claimedLevels mezclaba números con strings sin empates.
+  const levelNum = Number((data && data.level) ?? undefined);
+  if (!Number.isInteger(levelNum) || levelNum < 1 || levelNum > 50) {
     throw new functions.https.HttpsError('invalid-argument', 'Nivel inválido');
   }
 
@@ -243,25 +246,37 @@ exports.claimSagenPassReward = functions.runWith({ maxInstances: 5 }).https.onCa
 
       const userData = userDoc.data() || {};
 
+      // NUEVO-fix (decisión de producto): los premios del Sagen Pass SOLO se
+      // reclaman teniendo el pass activo. Quien no lo tiene puede seguir ganando
+      // SP y viendo su nivel (free track) pero no recibe recompensas. Antes un
+      // no-comprador podía reclamar todos los niveles gratis (SP tope 100/día).
+      if (userData.sagen_pass_active !== true) {
+        throw new functions.https.HttpsError('failed-precondition', 'Sagen Pass no activo');
+      }
+
       // Season rotation: a claim arriving after the window expired starts a
       // fresh season — previous claimed levels, SP and bank chests do NOT
       // carry over (the update below clears them atomically).
       const season = sagenpass.resolveSeason(userData, Date.now());
       const currentLevel = season.level;
-      const claimedLevels = season.claimed;
+      // NUEVO-fix: normaliza claimed a números (un claimed con strings previos
+      // rompía el includes() estricto y permitía reclamos dobles del nivel).
+      const claimedLevels = (season.claimed || [])
+        .map(n => (typeof n === 'number' ? n : Number.parseInt(n, 10)))
+        .filter(n => Number.isInteger(n));
 
-      if (level > currentLevel) {
+      if (levelNum > currentLevel) {
         throw new functions.https.HttpsError('failed-precondition', 'Nivel no alcanzado');
       }
-      if (claimedLevels.includes(level)) {
+      if (claimedLevels.includes(levelNum)) {
         return { success: false, alreadyClaimed: true };
       }
 
-      const reward = SAGEN_PASS_REWARD(level);
+      const reward = SAGEN_PASS_REWARD(levelNum);
 
       // Single atomic update: mark claimed + grant the reward server-side.
       const updates = {
-        sagen_pass_claimed: [...claimedLevels, level],
+        sagen_pass_claimed: [...claimedLevels, levelNum],
       };
       if (season.rotated) {
         updates.sagen_pass_level = 1;
@@ -296,11 +311,18 @@ exports.claimSagenPassReward = functions.runWith({ maxInstances: 5 }).https.onCa
           }, { merge: true });
         }
       } else if (reward.type === 'item') {
-        // Titanium Shield is granted server-side (used as streak freeze).
+        // Titanium Shield acreditado server-side (se usa como streak freeze).
+        // NUEVO-fix (decisión de producto): cap de escudos en el claim — nunca
+        // acumula por encima de FREE_SHIELD_MAX=3 (espejo de
+        // economic.claimFreeStreakShield). Si ya está al tope, el claim se
+        // marca (no bloquea el progreso de niveles) pero no sumariza escudos.
+        const CLAIM_SHIELD_MAX = 3;
         const currentShields = userData.streak_shields || 0;
-        updates.streak_shields = currentShields + 1;
-        rewardInfo.granted = 1;
+        const granted = Math.max(0, Math.min(1, CLAIM_SHIELD_MAX - currentShields));
+        updates.streak_shields = currentShields + granted;
+        rewardInfo.granted = granted;
         rewardInfo.totalShields = updates.streak_shields;
+        rewardInfo.cappedAtMax = granted === 0;
       } else if (reward.type === 'chest') {
         // The chest is "openable" only once per level via rollChestDrop
         // (source='sagen'), which consumes it from this bank. A modified
@@ -318,14 +340,14 @@ exports.claimSagenPassReward = functions.runWith({ maxInstances: 5 }).https.onCa
 
       return {
         success: true,
-        claimed: level,
+        claimed: levelNum,
         claimedLevels: updates.sagen_pass_claimed,
         seasonStart: seasonStartISO,
         reward: rewardInfo,
       };
     });
 
-    functions.logger.info('Sagen Pass reward claimed', { userId, level });
+    functions.logger.info('Sagen Pass reward claimed', { userId, level: levelNum });
     return result;
   } catch (error) {
     if (error instanceof functions.https.HttpsError) throw error;
@@ -469,10 +491,32 @@ exports.rollChestDrop = functions.runWith({ maxInstances: 5 }).https.onCall(asyn
       } else if (src === 'mission') {
         // Missions are client-tracked: roll the rarity server-side so a
         // modified client cannot force a legendary chest.
+        // NUEVO-fix (anti-farm): antes el idempotencyKey por missionId dejaba a
+        // un cliente modificado inventar infinitos contextId nuevos por día para
+        // forzar rolls. Ahora hay un tope DIARIO determinista por usuario.
+        const MISSION_ROLLS_PER_DAY = 30;
+        const missionRollsRef = admin.firestore().doc(
+          `daily_mission_rolls/${userId}_${today}`
+        );
+        const missionRollsDoc = await transaction.get(missionRollsRef);
+        const rolls = (missionRollsDoc.data() || {}).count || 0;
+        if (rolls >= MISSION_ROLLS_PER_DAY) {
+          throw new functions.https.HttpsError(
+            'failed-precondition',
+            'Límite diario de cofres de misión alcanzado',
+          );
+        }
+        transaction.set(missionRollsRef, {
+          count: admin.firestore.FieldValue.increment(1),
+          updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+        }, { merge: true });
+        // Drop rates alineados con los defaults de Remote Config del cliente
+        // (1% legendary / 6% gold / 20% silver) — antes el servidor usaba
+        // 2/6/17 y desincronizaba la percepción client vs server.
         const roll = Math.random() * 100;
-        if (roll < 2) chestType = 'legendary';
-        else if (roll < 8) chestType = 'gold';
-        else if (roll < 25) chestType = 'silver';
+        if (roll < 1) chestType = 'legendary';
+        else if (roll < 7) chestType = 'gold';
+        else if (roll < 27) chestType = 'silver';
         else chestType = 'bronze';
         const missionId = (contextId || 'mission').replace(/[^a-zA-Z0-9_-]/g, '_');
         idempotencyKey = `${userId}_chest_mission_${missionId}_${today}`;
