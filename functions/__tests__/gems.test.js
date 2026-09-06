@@ -262,6 +262,40 @@ describe('earnGems idempotency & seals (NUEVO-fix)', () => {
     expect(result.gemsAdded).toBe(0);
     expect(admin._getDoc(`transaction_logs/earn-capped-1`) || {}).not.toHaveProperty('createdAt');
   });
+
+  test('NUEVO-fix: keeps the daily bonus seal open when the daily cap cuts the gems', async () => {
+    admin._resetFirestore();
+    setUserDoc(AUTH_UID, { learning_gems: 0, currentStreak: 7 });
+    // Cap de daily_bonus = 30: casi agotado, quedan 3 de los 12 del bono.
+    admin._setDoc(`daily_gem_sources/${AUTH_UID}_${today()}`, { total: 27 });
+    const result = await gems.earnGems(
+      { reason: 'daily_bonus', meta: { dayStreak: 7 } },
+      makeContext()
+    );
+    expect(result.gemsAdded).toBe(3);
+    expect(result.dailyCapped).toBe(true);
+    // Pago parcial: NO se sella el día -> el resto se paga en otro día.
+    const user = admin._getDoc(`users/${AUTH_UID}`);
+    expect(user).not.toHaveProperty('_last_daily_bonus_day');
+    expect(user.learning_gems).toBe(3);
+  });
+
+  test('NUEVO-fix: keeps the streak milestone seal open when the daily cap cuts the gems', async () => {
+    admin._resetFirestore();
+    setUserDoc(AUTH_UID, { learning_gems: 0, currentStreak: 30 });
+    // Cap de streak_milestone = 200: casi agotado, quedan 8 de los 60 del hito.
+    admin._setDoc(`daily_gem_sources/${AUTH_UID}_${today()}`, { total: 192 });
+    const result = await gems.earnGems(
+      { reason: 'streak_milestone', meta: { streakDays: 30 } },
+      makeContext()
+    );
+    expect(result.gemsAdded).toBe(8);
+    expect(result.dailyCapped).toBe(true);
+    // Pago parcial: el hito NO queda sellado -> el resto se paga otro día.
+    const user = admin._getDoc(`users/${AUTH_UID}`);
+    expect(user._paid_streak_milestones || []).not.toContain(30);
+    expect(user.learning_gems).toBe(8);
+  });
 });
 
 describe('spendGems', () => {

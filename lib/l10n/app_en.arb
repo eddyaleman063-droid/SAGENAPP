@@ -2356,7 +2356,13 @@
   "sageChipCreateStrongPassword": "Create a strong password",
   "sageChipIdentifyScam": "Identify a scam",
   "sageDailyLimitReached": "You''ve reached your daily limit of Sage messages. Try again tomorrow.",
+  "@sageDailyLimitReached": {
+    "description": "Shown when the user reaches the daily limit of Sage messages."
+  },
   "sageConnectionWeak": "My mental connection is weak right now, but keep practicing and ask me again later.",
+  "@sageConnectionWeak": {
+    "description": "Friendly Sage reply when there are connectivity issues."
+  },
   "gemHistoryTitle": "Gem History",
   "gemHistoryEmpty": "No transactions yet",
   "gemHistoryJustNow": "Just now",

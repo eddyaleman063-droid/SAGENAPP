@@ -2313,7 +2313,13 @@
   "sageChipCreateStrongPassword": "Créer un mot de passe solide",
   "sageChipIdentifyScam": "Identifier une arnaque",
   "sageDailyLimitReached": "Vous avez atteint la limite quotidienne de messages pour Sage. Réessayez demain.",
+  "@sageDailyLimitReached": {
+    "description": "Affiché lorsque l'utilisateur atteint la limite quotidienne de messages de Sage."
+  },
   "sageConnectionWeak": "Ma connexion mentale est faible en ce moment, mais continue de t''entraîner et pose-moi la question plus tard.",
+  "@sageConnectionWeak": {
+    "description": "Réponse polie de Sage en cas de problème de connectivité."
+  },
   "gemHistoryTitle": "Historique des Gemmes",
   "gemHistoryEmpty": "Aucune transaction",
   "gemHistoryJustNow": "À l''instant",

@@ -31,21 +31,6 @@ class ChestRewardRoller {
   final ChestDropService _dropService;
   Completer<void>? _rollMutex;
 
-  static int _fallbackXp(ChestType type) {
-    // Midpoints of the documented XP ranges, used when the server is
-    // unreachable so the user still receives a fair reward instead of zero.
-    switch (type) {
-      case ChestType.bronze:
-        return 20;
-      case ChestType.silver:
-        return 30;
-      case ChestType.gold:
-        return 42;
-      case ChestType.legendary:
-        return 62;
-    }
-  }
-
   Future<ChestReward> roll(
     ChestType type, {
     bool luckBoostActive = false,
@@ -67,9 +52,15 @@ class ChestRewardRoller {
         );
       } catch (e) {
         AppLogger().warning(
-          'ChestRewardRoller: server roll failed, using minimal reward: $e',
+          'ChestRewardRoller: server roll failed, returning empty reward: $e',
         );
-        serverReward = ChestReward(xp: _fallbackXp(type), chestType: type);
+        // NUEVO-fix: NO fabricar XP local que el servidor nunca acreditó.
+        // El siguiente reconcile autoritativo sobreescribiría los totales y el
+        // usuario vería que la recompensa del cofre "se evapora". Recompensa
+        // vacía y honesta; el cofre permanece reclamable y se reintenta.
+        // Mismo principio que el chest del Pass (ChestDropService directo):
+        // sin respuesta real, no hay recompensa.
+        serverReward = ChestReward(xp: 0, gems: 0, chestType: type);
       }
 
       return ChestReward(

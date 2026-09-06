@@ -413,10 +413,12 @@ exports.earnGems = functions.runWith({ maxInstances: 10 }).https.onCall(async (d
       }
 
       // Sellos server-authoritative + idempotencia: el sello de "una vez por
-      // día/hito" se escribe SIEMPRE que se acredite (independiente de si el
-      // request trajo idempotencyKey); el log de idempotencia solo cuando hay
-      // clave que sellar (los retries la reenvían).
-      if (credit.gemsAdded > 0) {
+      // día/hito" se escribe SOLO cuando se acredita el monto COMPLETO (igual
+      // que los logros). Si el cap diario recorta el pago, queda ABIERTO y el
+      // resto se paga en otro día; sellar con pago parcial convertiría la
+      // pérdida en permanente. El log de idempotencia solo cuando hay clave
+      // que sellar (los retries la reenvían).
+      if (credit.gemsAdded > 0 && credit.gemsAdded === requestedGems) {
         if (reason === 'daily_bonus') {
           transaction.update(userRef, {
             _last_daily_bonus_day: todayStr,
@@ -426,16 +428,16 @@ exports.earnGems = functions.runWith({ maxInstances: 10 }).https.onCall(async (d
             _paid_streak_milestones: admin.firestore.FieldValue.arrayUnion([reachedMilestone]),
           });
         }
-        if (logRef) {
-          transaction.set(logRef, {
-            userId,
-            reason,
-            meta,
-            gemsAdded: credit.gemsAdded,
-            balance: credit.balance,
-            createdAt: admin.firestore.FieldValue.serverTimestamp(),
-          });
-        }
+      }
+      if (logRef && credit.gemsAdded > 0) {
+        transaction.set(logRef, {
+          userId,
+          reason,
+          meta,
+          gemsAdded: credit.gemsAdded,
+          balance: credit.balance,
+          createdAt: admin.firestore.FieldValue.serverTimestamp(),
+        });
       }
 
       return { success: true, reason, ...credit };

@@ -132,10 +132,83 @@ describe('processDonation', () => {
     expect(result.total_donated).toBe(125);
   });
 
+  test('NUEVO-fix: rejects a key created by another user (no silent swallow)', async () => {
+    setUserDoc(AUTH_UID, { walletBalance: 50, total_donated: 0 });
+    setUserDoc('other-user', { walletBalance: 50, total_donated: 0 });
+    await economic.processDonation(
+      { amount: 10, method: 'wallet', idempotencyKey: 'shared-key' },
+      makeContext(AUTH_UID)
+    );
+    // Usuario B reenvía la misma clave: colisión/replay, nunca un duplicado
+    // legítimo del propio usuario. La donación no se traga en silencio.
+    await expect(
+      economic.processDonation(
+        { amount: 10, method: 'wallet', idempotencyKey: 'shared-key' },
+        makeContext('other-user')
+      )
+    ).rejects.toThrow(expect.objectContaining({ code: 'already-exists' }));
+  });
+
   test('rejects non-existent user', async () => {
     await expect(
       economic.processDonation({ amount: 10, method: 'wallet', idempotencyKey: 'k' }, makeContext('ghost'))
     ).rejects.toThrow();
+  });
+});
+
+describe('recordDonation (NUEVO-fix idempotencia)', () => {
+  test('credits donation and marks supporter', async () => {
+    setUserDoc(AUTH_UID, { total_donated: 0 });
+    const result = await economic.recordDonation(
+      { amount: 25, method: 'whatsapp', idempotencyKey: 'don-1' },
+      makeContext()
+    );
+    expect(result.success).toBe(true);
+    expect(result.duplicate).toBe(false);
+    expect(result.total_donated).toBe(25);
+    expect(admin._getDoc(`users/${AUTH_UID}`).is_supporter).toBe(true);
+  });
+
+  test('NUEVO-fix: retry keyless de la misma donación no duplica (clave determinista)', async () => {
+    setUserDoc(AUTH_UID, { total_donated: 0 });
+    const first = await economic.recordDonation(
+      { amount: 15, method: 'yape' },
+      makeContext()
+    );
+    expect(first.duplicate).toBe(false);
+    expect(first.total_donated).toBe(15);
+    // Timeout de red re-enviado (mismo día, monto y método): la clave derivada
+    // coincide y el retry es duplicate (antes, Date.now() = doble crédito).
+    const second = await economic.recordDonation(
+      { amount: 15, method: 'yape' },
+      makeContext()
+    );
+    expect(second.duplicate).toBe(true);
+    expect(second.total_donated).toBe(15);
+    expect(admin._getDoc(`users/${AUTH_UID}`).total_donated).toBe(15);
+  });
+
+  test('NUEVO-fix: monto distinto el mismo día recibe su propia clave', async () => {
+    setUserDoc(AUTH_UID, { total_donated: 0 });
+    await economic.recordDonation({ amount: 10, method: 'whatsapp' }, makeContext());
+    const second = await economic.recordDonation({ amount: 20, method: 'whatsapp' }, makeContext());
+    expect(second.duplicate).toBe(false);
+    expect(second.total_donated).toBe(30);
+  });
+
+  test('NUEVO-fix: rechaza una clave creada por otro usuario', async () => {
+    setUserDoc(AUTH_UID, { total_donated: 0 });
+    setUserDoc('other-user-rd', { total_donated: 0 });
+    await economic.recordDonation(
+      { amount: 5, method: 'plin', idempotencyKey: 'rf-key' },
+      makeContext(AUTH_UID)
+    );
+    await expect(
+      economic.recordDonation(
+        { amount: 5, method: 'plin', idempotencyKey: 'rf-key' },
+        makeContext('other-user-rd')
+      )
+    ).rejects.toThrow(expect.objectContaining({ code: 'already-exists' }));
   });
 });
 
@@ -300,6 +373,39 @@ describe('addXp', () => {
     expect(second.totalXp).toBe(50);
     const user = admin._getDoc(`users/${AUTH_UID}`);
     expect(user.learning_total_xp).toBe(50);
+  });
+
+  test('NUEVO-fix: keeps the achievement claim open when the daily cap cuts the XP', async () => {
+    setUserDoc(AUTH_UID, { learning_total_xp: 0, learning_level: 1 });
+    // Cap diario casi agotado: solo quedan 50 de 500 para un logro de 200 XP.
+    admin._setDoc(`daily_xp_sources/${AUTH_UID}_${isoDay(0)}`, { total: 450 });
+    const first = await economic.addXp(
+      { reason: 'achievement', achievementId: 'all_stages', idempotencyKey: 'addXp-ach-partial-1' },
+      makeContext()
+    );
+    expect(first.totalXp).toBe(50);
+    // Sellar con pago parcial convertiría la pérdida en permanente: reclamación
+    // abierta (sin doc de claim o sin la marca xpClaimed).
+    const claimPartial = admin._getDoc(`users/${AUTH_UID}/achievements/all_stages`) || {};
+    expect(claimPartial).not.toHaveProperty('xpClaimed');
+
+    // Mismo día, cap agotado: el saldo restante no se puede reclamar hoy.
+    await expect(
+      economic.addXp(
+        { reason: 'achievement', achievementId: 'all_stages', idempotencyKey: 'addXp-ach-partial-2' },
+        makeContext()
+      )
+    ).rejects.toThrow(expect.objectContaining({ code: 'resource-exhausted' }));
+
+    // "Día siguiente": presupuesto fresco -> se paga el logro COMPLETO y se sella.
+    admin._setDoc(`daily_xp_sources/${AUTH_UID}_${isoDay(0)}`, { total: 0 });
+    const second = await economic.addXp(
+      { reason: 'achievement', achievementId: 'all_stages', idempotencyKey: 'addXp-ach-partial-3' },
+      makeContext()
+    );
+    expect(second.totalXp).toBe(250); // 50 (parcial) + 200 (completo)
+    const claimFinal = admin._getDoc(`users/${AUTH_UID}/achievements/all_stages`);
+    expect(claimFinal.xpClaimed).toBe(true);
   });
 
   test('NUEVO-fix: rejects a forged mislabeled achievementId (no claim doc)', async () => {

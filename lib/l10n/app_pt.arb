@@ -2356,7 +2356,13 @@
   "sageChipCreateStrongPassword": "Criar senha forte",
   "sageChipIdentifyScam": "Identificar um golpe",
   "sageDailyLimitReached": "Você atingiu o limite diário de mensagens do Sage. Tente novamente amanhã.",
+  "@sageDailyLimitReached": {
+    "description": "Exibido quando o usuário atinge o limite diário de mensagens do Sage."
+  },
   "sageConnectionWeak": "Minha conexão mental está fraca neste momento, mas continue praticando e pergunte novamente mais tarde.",
+  "@sageConnectionWeak": {
+    "description": "Resposta educada do Sage em caso de problemas de conectividade."
+  },
   "gemHistoryTitle": "Histórico de Gemas",
   "gemHistoryEmpty": "Nenhuma transação ainda",
   "gemHistoryJustNow": "Agora",

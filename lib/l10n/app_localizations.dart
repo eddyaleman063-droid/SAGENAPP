@@ -9947,13 +9947,13 @@ abstract class AppLocalizations {
   /// **'Identificar una estafa'**
   String get sageChipIdentifyScam;
 
-  /// No description provided for @sageDailyLimitReached.
+  /// Se muestra cuando el usuario alcanza el límite diario de mensajes de Sage.
   ///
   /// In es, this message translates to:
   /// **'Alcanzaste el límite diario de mensajes con Sage. Vuelve mañana.'**
   String get sageDailyLimitReached;
 
-  /// No description provided for @sageConnectionWeak.
+  /// Respuesta amable de Sage cuando hay problemas de conectividad.
   ///
   /// In es, this message translates to:
   /// **'Mi conexión mental está un poco débil ahora mismo, pero sigue practicando y pregúntame más tarde.'**

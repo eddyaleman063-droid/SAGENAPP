@@ -134,4 +134,35 @@ void main() {
       }
     });
   });
+
+  group('ChestRewardRoller.roll (NUEVO-fix fallback honesto)', () {
+    test(
+      'devuelve recompensa VACÍA cuando el servidor falla (sin fabricar XP)',
+      () async {
+        final roller = ChestRewardRoller(
+          dropService: _ThrowingChestDropService(),
+        );
+        final reward = await roller.roll(ChestType.gold);
+        expect(reward.xp, 0);
+        expect(reward.gems, 0);
+        expect(reward.chestType, ChestType.gold);
+        expect(reward.streakShields, isNull);
+        expect(reward.xpBoost, isFalse);
+      },
+    );
+  });
+}
+
+class _ThrowingChestDropService extends ChestDropService {
+  _ThrowingChestDropService() : super.private();
+
+  @override
+  Future<ChestReward> roll(
+    ChestType type, {
+    String? contextId,
+    String source = 'lesson',
+    bool luckBoostActive = false,
+  }) async {
+    throw Exception('server unreachable');
+  }
 }

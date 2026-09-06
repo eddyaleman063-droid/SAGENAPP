@@ -142,8 +142,8 @@ let _verifyIdTokenResult = null;
 
 const authInstance = {
   verifyIdToken: jest.fn(async (token) => {
-    if (_verifyIdTokenResult) return _verifyIdTokenResult;
-    return { uid: 'mock-user' };
+    if (_verifyIdTokenResult) return { email_verified: true, ..._verifyIdTokenResult };
+    return { uid: 'mock-user', email_verified: true };
   }),
 };
 

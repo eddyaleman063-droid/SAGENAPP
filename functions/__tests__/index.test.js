@@ -101,6 +101,19 @@ describe('createPaymentPreference', () => {
     expect(res._status).toBe(401);
   });
 
+  test('NUEVO-fix: rejects unverified email (regla de oro monetaria)', async () => {
+    setUserDoc(AUTH_UID, { total_donated: 0 });
+    const { req, res } = makeReqRes(
+      { amount: 3, productId: 'donation_basic' },
+      'Bearer fake-token-for-test'
+    );
+    admin._setVerifyIdTokenResult({ uid: AUTH_UID, email_verified: false });
+    await index.createPaymentPreference(req, res);
+    expect(res._status).toBe(403);
+    // No debe llegar a crear la preferencia de pago.
+    expect(mpMock._mockPreferenceCreate).not.toHaveBeenCalled();
+  });
+
   test('rejects unverified user (requiere email_verified)', async () => {
     await expect(index.registerPendingPayment({}, makeUnverifiedContext())).rejects.toThrow(
       expect.objectContaining({ code: 'failed-precondition' })

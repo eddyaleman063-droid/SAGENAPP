@@ -204,6 +204,13 @@ exports.processDonation = functions.runWith({ maxInstances: 10 }).https.onCall(a
       ]);
 
       if (logDoc.exists) {
+        // NUEVO-fix: la clave de idempotencia pertenece al usuario que la
+        // creó. Si otro uid la reenvía es una colisión/replay, no un duplicado
+        // legítimo: error explícito en vez de tragarse la donación en silencio.
+        const logData = logDoc.data() || {};
+        if (logData.userId && logData.userId !== userId) {
+          throw new functions.https.HttpsError('already-exists', 'Clave de donación en uso');
+        }
         return { success: true, duplicate: true, total_donated: userDoc.data()?.total_donated || 0 };
       }
 
@@ -277,9 +284,14 @@ exports.recordDonation = functions.runWith({ maxInstances: 10 }).https.onCall(as
     throw new functions.https.HttpsError('invalid-argument', 'idempotencyKey invalido');
   }
 
-  const userId = context.auth.uid;
+const userId = context.auth.uid;
   const userRef = admin.firestore().doc(`users/${userId}`);
-  const key = idempotencyKey || `donation_${userId}_${Date.now()}`;
+  // NUEVO-fix idempotencia: sin clave del cliente se deriva una determinista
+  // del día UTC + monto + método, así un retry de red de la MISMA donación no
+  // la acredita dos veces (el viejo fallback Date.now() generaba una clave
+  // distinta en cada intento y duplicaba total_donated/is_supporter).
+  const todayStr = new Date().toISOString().split('T')[0];
+  const key = idempotencyKey || `donation_${userId}_${todayStr}_${amount}_${String(method).slice(0, 32)}`;
   const logRef = admin.firestore().doc(`transaction_logs/${key}`);
 
   try {
@@ -290,6 +302,14 @@ exports.recordDonation = functions.runWith({ maxInstances: 10 }).https.onCall(as
       ]);
 
       if (logDoc.exists) {
+        // NUEVO-fix: la clave de idempotencia es del alcance del usuario que
+        // la creó. Si otro uid la reenvía, es una colisión (o intento de
+        // replay), no un duplicado legítimo: no tragarse la donación en
+        // silencio.
+        const logData = logDoc.data() || {};
+        if (logData.userId && logData.userId !== userId) {
+          throw new functions.https.HttpsError('already-exists', 'Clave de donación en uso');
+        }
         return { success: true, duplicate: true, total_donated: userDoc.data()?.total_donated || 0 };
       }
 
@@ -452,8 +472,11 @@ exports.addXp = functions.runWith({ maxInstances: 10 }).https.onCall(async (data
       }, { merge: true });
 
       // Claim-once del logro (merge: no pisa las gemas ya marcadas por
-      // earnGems en el mismo doc).
-      if (isAchievementClaim) {
+      // earnGems en el mismo doc). NUEVO-fix: sellar SOLO si el cap diario no
+      // recortó el pago. Si el XP esperado supera el remanente diario, la
+      // reclamación queda ABIERTA y el saldo restante se paga otro día (mismo
+      // patrón full-payment que sellos de gemas).
+      if (isAchievementClaim && cappedXp === xp) {
         transaction.set(achievementClaimRef, {
           userId,
           achievementId,

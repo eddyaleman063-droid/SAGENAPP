@@ -238,6 +238,13 @@ exports.generateContentStream = functions.runWith({ maxInstances: 3 }).https.onR
         try {
           await checkDailyUsage(uid, { consume: true });
         } catch (q) {
+          // NUEVO-fix: si el límite diario se alcanzó justo al consumir, NO se
+          // entrega el mensaje (antes el fail-open saltaba el cap de 50/día en
+          // ráfagas concurrentes ni dejando el contador clavado). El throw
+          // cae al catch externo, que cierra el stream con el error 429.
+          if (q instanceof functions.https.HttpsError && q.code === 'resource-exhausted') {
+            throw q;
+          }
           // Fail-open: un blip de Firestore no debe tumbar un stream ya
           // empezado (solo impacta el conteo del día).
           functions.logger.warn('Sage daily quota consume failed mid-stream', { uid, error: q.message });
@@ -294,7 +301,9 @@ exports.generateContentStream = functions.runWith({ maxInstances: 3 }).https.onR
           const text = parsed.candidates?.[0]?.content?.parts?.[0]?.text || '';
           await emitText(text);
         } catch (e) {
-          // Skip malformed JSON chunks
+          // Skip malformed JSON chunks, pero NUNCA tragar un límite de cuota
+          // (re-lanzar para que el catch externo cierre el stream con 429).
+          if (e instanceof functions.https.HttpsError) throw e;
         }
       }
     }
@@ -306,7 +315,9 @@ exports.generateContentStream = functions.runWith({ maxInstances: 3 }).https.onR
           const parsed = JSON.parse(data);
           const text = parsed.candidates?.[0]?.content?.parts?.[0]?.text || '';
           await emitText(text);
-        } catch (e) {}
+        } catch (e) {
+          if (e instanceof functions.https.HttpsError) throw e;
+        }
       }
     }
 
@@ -315,6 +326,18 @@ exports.generateContentStream = functions.runWith({ maxInstances: 3 }).https.onR
   } catch (e) {
     functions.logger.error('generateContentStream error', { error: e.message });
     req.removeListener('close', onClientClose);
+    // NUEVO-fix: un agotamiento de cuota detectado a mitad de stream se
+    // comunica como 429 (pre-check y mid-stream coherentes), no como 500.
+    if (e instanceof functions.https.HttpsError && e.code === 'resource-exhausted') {
+      if (!res.headersSent) {
+        res.status(429).json({ error: e.message });
+      } else {
+        res.write(`data: ${JSON.stringify({ error: e.message })}\n\n`);
+        res.write('data: [DONE]\n\n');
+        res.end();
+      }
+      return;
+    }
     if (controller && (controller.signal.aborted || req.aborted || res.destroyed)) {
       // El cliente cortó la conexión (o el watchdog abortó): no hay a quién
       // escribirle, solo limpiar con un end inofensivo.

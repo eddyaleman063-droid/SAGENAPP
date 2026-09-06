@@ -124,6 +124,28 @@ describe('Sage daily usage limit', () => {
     expect(admin._getDoc(usageKey()).count).toBe(49);
   });
 
+  test('NUEVO-fix: no entrega el mensaje si el consumo revela que la cuota se agotó (carrera)', async () => {
+    // Pre-check pasa con 49/50, pero DURANTE el upstream otro stream concurrente
+    // consume el último slot deja el contador en 50. El primer token real llega
+    // -> el consumo lanza el límite -> se corta con 429 y NO se entrega texto.
+    admin._setDoc(usageKey(), { count: 49 });
+    global.fetch.mockImplementation(async () => {
+      admin._setDoc(usageKey(), { count: 50 });
+      return okResponse([aChunk('hola')]);
+    });
+    const req = makeReq();
+    const res = makeRes();
+
+    await generateContentStream(req, res);
+
+    expect(res.calls.status).toBe(429);
+    expect(res.calls.json.error).toMatch(/Límite diario/);
+    // El mensaje no se entregó (antes el fail-open lo entregaba y saltaba el cap).
+    expect(res.calls.writes.join('')).not.toContain('"text":"hola"');
+    // El contador se quedó en 50 (el consumo falló antes de incrementar).
+    expect(admin._getDoc(usageKey()).count).toBe(50);
+  });
+
   test('forwards streamed text and skips malformed lines', async () => {
     global.fetch.mockResolvedValue(
       okResponse(['data: {not-json}\n\n', aChunk('primero'), aChunk(' segundo'), '\n'])

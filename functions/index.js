@@ -244,6 +244,13 @@ exports.createPaymentPreference = functions.runWith({ maxInstances: 10 }).https.
     const decoded = await admin.auth().verifyIdToken(idToken);
     const userId = decoded.uid;
 
+    // NUEVO-fix: regla de oro del proyecto — las mutaciones monetarias solo
+    // con email verificado (auth_guard.js). Era el único endpoint de pago real
+    // que no lo exigía.
+    if (decoded.email_verified !== true) {
+      return res.status(403).json({ error: 'Necesitas un correo verificado para realizar pagos' });
+    }
+
     try {
       await checkRateLimit(userId);
     } catch (e) {

@@ -84,6 +84,11 @@ class StreakState {
 
 class StreakNotifier extends Notifier<StreakState> {
   late StreakService _service;
+  // NUEVO-fix: guard de dispose para closures async (syncs fire-and-forget).
+  // Sin él, una escritura a state tras dispose lanza StateError en un future
+  // sin manejar (excepción async huérfana) al cerrar sesión/teardown durante
+  // un sync en vuelo.
+  bool _disposed = false;
 
   static const _missions = [
     'Learn what phishing is',
@@ -115,6 +120,9 @@ class StreakNotifier extends Notifier<StreakState> {
   @override
   StreakState build() {
     _service = ref.watch(streakServiceProvider);
+    ref.onDispose(() {
+      _disposed = true;
+    });
     final status = _service.load();
     return _loadState(status, ref.watch(storageServiceProvider));
   }
@@ -205,7 +213,11 @@ class StreakNotifier extends Notifier<StreakState> {
       // Fire-and-forget with bounded retry + backoff so a transient network
       // failure does not silently diverge the server streak (NUEVO-09).
       Future<void>.delayed(Duration.zero, () async {
+        // NUEVO-fix: salir antes de tocar state/ref si el notifier fue
+        // descartado mientras la conexión estaba en vuelo.
+        if (_disposed) return;
         for (int attempt = 0; attempt < 3; attempt++) {
+          if (_disposed) return;
           try {
             final result = await ref
                 .read(economicFunctionsServiceProvider)
@@ -216,6 +228,7 @@ class StreakNotifier extends Notifier<StreakState> {
                   activityDay: activityDay,
                   activityStreak: activityStreak,
                 );
+            if (_disposed) return;
             if (result != null) {
               _reconcileServerStreak(result);
               // NUEVO-fix (H1): only a real check-in may grant deferred
@@ -346,6 +359,7 @@ class StreakNotifier extends Notifier<StreakState> {
   /// breaks the streak, or reports a different streak (e.g. another device),
   /// the client no longer keeps a divergent optimistic streak.
   void _reconcileServerStreak(Map<String, dynamic> result) {
+    if (_disposed) return;
     try {
       final serverStreak = (result['currentStreak'] as num?)?.toInt();
       final serverLongest = (result['longestStreak'] as num?)?.toInt();
@@ -493,12 +507,21 @@ class StreakNotifier extends Notifier<StreakState> {
   List<String> get emotionalMessages =>
       List.unmodifiable(state.emotionalMessages);
 
-  String get currentMission => _missions[DateTime.now().day % _missions.length];
+  String get currentMission {
+    // NUEVO-fix: la misión del día se indexa con el día UTC (como el reset
+    // diario de misiones y el servidor). El día local desfasaba la misión
+    // mostrada varias horas cada día en zonas != UTC.
+    final nowUtc = DateTime.now().toUtc();
+    return _missions[nowUtc.day % _missions.length];
+  }
 
   Map<String, int> get monthlyStreakStats {
     final cached = state.cachedMonthlyStreakStats;
     if (cached != null) return cached;
-    final now = DateTime.now();
+    // NUEVO-fix: base UTC para que el mes "actual" coincida con el día de
+    // racha/servidor (los local days difieren hasta 1 día cerca de la
+    // medianoche UTC).
+    final now = DateTime.now().toUtc();
     final stats = <String, int>{};
     for (int i = 0; i < 6; i++) {
       final month = DateTime(now.year, now.month - i, 1);
@@ -631,8 +654,11 @@ class StreakNotifier extends Notifier<StreakState> {
         ref.read(emotionEventBusProvider).fire(EmotionEventType.streakLost);
       }
 
-      // Solo el primer check-in del día debe inflar las estadísticas.
-      final now = DateTime.now();
+      // Solo el primer check-in del día debe inflar las estadísticas. Las
+      // claves se derivan del día UTC (igual que streak y servidor): las
+      // medianoches locales desfasaban semana/mes/heatmap del calendario real
+      // de rachas en zonas != UTC.
+      final now = DateTime.now().toUtc();
       final isFirstCheckInToday =
           lastDate == null || _utcDayDiff(lastDate, now) != 0;
 
