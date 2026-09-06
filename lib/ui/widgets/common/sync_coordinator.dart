@@ -43,6 +43,16 @@ class _SyncCoordinatorState extends ConsumerState<SyncCoordinator> {
             'mission',
             () => ref.read(missionProvider.notifier).reload(),
           );
+          // NUEVO-fix: ReviewNotifier guarda su estado por usuario en claves
+          // globales de SharedPreferences (limpiadas por GameStateCleaner al
+          // sign-out), pero sin este reload el estado EN MEMORIA de la cola de
+          // repaso del usuario anterior quedaba vivo y se filtraba al siguiente
+          // login en el mismo dispositivo. Sin reload, el nuevo usuario veia
+          // la cola/intervalos SM-2 del anterior.
+          _safeReload(
+            'review',
+            () => ref.read(reviewProvider.notifier).reload(),
+          );
         });
       }
     });

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../config/onboarding_wizard_config.dart';
+import '../core/theme/theme_constants.dart';
 import '../services/app_logger.dart';
 import 'prefs_provider.dart';
 
@@ -81,7 +82,7 @@ class OnboardingWizardNotifier
 
   void _schedulePersist() {
     _persistTimer?.cancel();
-    _persistTimer = Timer(const Duration(milliseconds: 300), _persist);
+    _persistTimer = Timer(AppMotion.normal, _persist);
   }
 
   void _persist() {
@@ -106,14 +107,14 @@ class OnboardingWizardNotifier
         : 0;
     if (state.currentIndex < maxIndex) {
       state = state.copyWith(currentIndex: state.currentIndex + 1);
-      _persist();
+      _schedulePersist();
     }
   }
 
   void previousStep() {
     if (state.currentIndex > 0) {
       state = state.copyWith(currentIndex: state.currentIndex - 1);
-      _persist();
+      _schedulePersist();
     }
   }
 

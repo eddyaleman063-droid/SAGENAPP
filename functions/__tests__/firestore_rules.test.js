@@ -317,7 +317,9 @@ describe('firestore.rules — authentication checks', () => {
     const readRules = RULES.match(/allow\s+read[^;]*;/g) || [];
     for (const rule of readRules) {
       if (rule.includes('if false')) continue;
-      expect(rule).toMatch(/request\.auth\s*!=\s*null/);
+      // auth check: o bien request.auth != null, o bien isVerifiedUser()
+      // (que exige request.auth != null Y email_verified).
+      expect(rule).toMatch(/request\.auth\s*!=\s*null|isVerifiedUser\(\)/);
     }
   });
 
@@ -375,5 +377,53 @@ describe('firestore.rules — cross-cutting invariants', () => {
       if (char === '}') braceCount--;
     }
     expect(braceCount).toBe(0);
+  });
+});
+
+// ──────────────────────────────────────────────
+// Email verification gating (server-side enforcement)
+// ──────────────────────────────────────────────
+describe('firestore.rules — email verification gating', () => {
+  test('defines an isVerifiedUser() helper', () => {
+    expect(RULES).toMatch(/function\s+isVerifiedUser\(\)/);
+  });
+
+  test('isVerifiedUser requires request.auth.token.email_verified', () => {
+    const helper = RULES.match(/function\s+isVerifiedUser\(\)\s*\{[\s\S]*?\}/);
+    expect(helper).toBeTruthy();
+    if (helper) {
+      expect(helper[0]).toMatch(/email_verified\s*==\s*true/);
+    }
+  });
+
+  test('learning_stages read requires isVerifiedUser (verified email)', () => {
+    const section = RULES.substring(
+      RULES.indexOf('match /learning_stages/'),
+      RULES.indexOf('match /config/')
+    );
+    expect(section).toMatch(/allow\s+read:\s*if\s+isVerifiedUser\(\)/);
+    // No longer allows any authenticated (unverified) user to read curriculum.
+    expect(section).not.toMatch(/allow\s+read:\s*if\s+request\.auth\s*!=\s*null;/);
+  });
+
+  test('leaderboards read requires isVerifiedUser (verified email)', () => {
+    const section = RULES.substring(
+      RULES.indexOf('match /leaderboards/'),
+      RULES.indexOf('match /learning_stages/')
+    );
+    expect(section).toMatch(/allow\s+read:\s*if\s+isVerifiedUser\(\)/);
+  });
+
+  test('own profile read does NOT require email_verified (onboarding stays open)', () => {
+    // El perfil propio se puede leer mientras el email sigue sin verificar,
+    // para no romper el onboarding que crea/lee /users/{uid} tras el signup.
+    // La función isVerifiedUser() vive DENTRO del bloque users, así que se
+    // valida solo la regla de lectura owner (no toda la sección).
+    const ownerRead = RULES.match(/allow\s+read:\s*if\s+request\.auth\s*!=\s*null[\s\S]*?&&\s*request\.auth\.uid\s*==\s*userId;/);
+    expect(ownerRead).toBeTruthy();
+    if (ownerRead) {
+      expect(ownerRead[0]).not.toMatch(/email_verified/);
+      expect(ownerRead[0]).not.toMatch(/isVerifiedUser/);
+    }
   });
 });

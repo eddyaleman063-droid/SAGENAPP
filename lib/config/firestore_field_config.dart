@@ -23,6 +23,7 @@ class FirestoreFieldConfig {
     'routeType',
     'motivation',
     'updatedAt',
+    'updatedBy',
   };
 
   // ── Server-only fields (NEVER writable by client) ────────────
@@ -64,6 +65,7 @@ class FirestoreFieldConfig {
     'routeType': String,
     'motivation': String,
     'updatedAt': dynamic, // Server-managed: FieldValue.serverTimestamp()
+    'updatedBy': String,
   };
 
   // ── Field validation rules ───────────────────────────────────
@@ -123,9 +125,27 @@ class FirestoreFieldConfig {
 
   // ── Firestore → SharedPreferences mapping (read path) ────────
   // Maps server-side field names to their local SP keys when they differ.
+  // Solo se incluyen campos que el cliente puede "espejar" pasivamente sin
+  // romper ledgers con reconciliación propia:
+  //   - learning_gems / learning_total_gems (ledger de gemas, server-authoritative)
+  //   - lessonsCompleted (contador de lecciones)
+  // EXPRESAMENTE EXCLUIDOS aquí: streakCurrent/longestStreak/streak_shields/
+  // last_activity y sagen_pass_*, que tienen servicios dedicados con semántica
+  // de "max/merge" (ver _reconcileServerStreak): un espejo pasivo podría
+  // bajar el valor local de días ganados offline o reclamaciones legítimas.
   static const Map<String, String> firestoreToSpMapping = {
     'total_donated': 'learning_total_donated',
     'is_supporter': 'learning_is_supporter',
+    'learning_gems': 'gems_balance',
+    'learning_total_gems': 'gems_total_earned',
+    'lessonsCompleted': 'learning_lessons_completed',
+    // NUEVO-fix (chest desync): puente pasivo entre el ledger autoritativo
+    // del servidor (users/{uid}.last_daily_chest) y la clave local usada por
+    // GamificationRepository. Cuando el CloudSyncService recibe el snapshot del
+    // usuario, esta entrada persiste la fecha server en SharedPreferences para
+    // que canClaimDailyChest devuelva el valor correcto en el siguiente arranque
+    // incluso si la reconciliación explícita (getDailyChestStatus) está offline.
+    'last_daily_chest': 'gamification_last_claim_date',
   };
 
   /// Checks if a field is a server-only economic field.

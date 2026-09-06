@@ -2,7 +2,6 @@ import 'dart:math';
 import '../core/interfaces/i_streak_service.dart';
 import '../repositories/streak_repository.dart';
 import 'app_logger.dart';
-import 'remote_config_service.dart';
 
 /// Current streak state including freeze status and motivational message.
 class StreakStatus {
@@ -30,8 +29,8 @@ class StreakStatus {
   bool get isStreakFrozen => streakFreezes > 0 && isAtRisk && currentStreak > 0;
 
   Duration get timeUntilMidnight {
-    final now = DateTime.now();
-    final midnight = DateTime(now.year, now.month, now.day + 1);
+    final now = DateTime.now().toUtc();
+    final midnight = DateTime.utc(now.year, now.month, now.day + 1);
     return midnight.difference(now);
   }
 }
@@ -43,11 +42,26 @@ class StreakStatus {
 /// [StreakRepository] and reads thresholds from [RemoteConfigService].
 class StreakService implements IStreakService {
   final StreakRepository _repo;
-  final RemoteConfigService _remoteConfig;
   final AppLogger _logger = AppLogger();
 
-  StreakService(this._repo, {RemoteConfigService? remoteConfig})
-    : _remoteConfig = remoteConfig ?? RemoteConfigService.instance;
+  StreakService(this._repo);
+
+  // -- Día del streak alineado con el servidor (UTC) --------------------------
+  // El servidor (economic.incrementStreak) parte la "racha diaria" por el día
+  // UTC (`YYYY-MM-DD` del timestamp). El cliente debe usar el mismo límite:
+  // si usara la medianoche local, un check-in de noche (p.ej. 20:00 en UTC-6,
+  // que ya es la madrugada UTC del día siguiente) contaría como día nuevo en
+  // el servidor pero "mismo día" en local, desplazando la racha de forma
+  // permanente. Todo el historial se almacena como medianoche UTC.
+
+  /// Día calendario UTC al que pertenece el instante [t].
+  static DateTime _dayOf(DateTime t) {
+    final u = t.toUtc();
+    return DateTime.utc(u.year, u.month, u.day);
+  }
+
+  /// Día calendario UTC de hoy.
+  static DateTime _todayUtc() => _dayOf(DateTime.now());
 
   @override
   StreakStatus load() {
@@ -87,10 +101,9 @@ class StreakService implements IStreakService {
   }
 
   void _save(int current, int longest, DateTime? lastDate, int freezes) {
-    // Normalize to midnight for consistent date comparisons
-    final normalized = lastDate != null
-        ? DateTime(lastDate.year, lastDate.month, lastDate.day)
-        : null;
+    // Normalize to UTC midnight for consistent date comparisons (the server
+    // splits streak days by UTC calendar date).
+    final normalized = lastDate != null ? _dayOf(lastDate) : null;
     _repo.saveAll(
       currentStreak: current,
       longestStreak: longest,
@@ -106,18 +119,12 @@ class StreakService implements IStreakService {
     int freezes, {
     bool freezeConsumed = false,
   }) {
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
+    final today = _todayUtc();
 
     final atRisk =
         current > 0 &&
         lastDate != null &&
-        today
-                .difference(
-                  DateTime(lastDate.year, lastDate.month, lastDate.day),
-                )
-                .inDays >=
-            1;
+        today.difference(_dayOf(lastDate)).inDays >= 1;
 
     final message = _buildMessage(current, atRisk);
     final tier = _tierFor(current);
@@ -144,21 +151,29 @@ class StreakService implements IStreakService {
       final lastDate = lastStr.isNotEmpty ? DateTime.tryParse(lastStr) : null;
 
       final now = DateTime.now();
-      final today = DateTime(now.year, now.month, now.day);
+      final today = _todayUtc();
 
       int newCurrent;
       int newFreezes = freezes;
       bool freezeConsumed = false;
 
       if (lastDate != null) {
-        final last = DateTime(lastDate.year, lastDate.month, lastDate.day);
+        final last = _dayOf(lastDate);
         if (today == last) {
           return _evaluate(current, longest, lastDate, freezes);
         }
         final diff = today.difference(last).inDays;
         if (diff == 1) {
           newCurrent = (current + 1).clamp(0, 10000);
-        } else if (diff == 2 && freezes > 0) {
+        } else if (diff >= 2 && freezes > 0) {
+          // NUEVO-fix (H3): mirror del contrato server-side. El servidor
+          // (economic.incrementStreak) mantiene viva la racha para CUALQUIER
+          // gap >= 2 días consumiendo UN escudo si el usuario posee uno; solo
+          // rompe si no hay escudos. Antes el cliente rompía localmente a partir
+          // de diff >= 3 (sin quemar nada), lo que causaba un flash de "racha
+          // perdida" y luego el reconcile revivía la racha con el escudo ya
+          // quemado en servidor. Con esto local == servidor (quemando también
+          // offline), sin sorpresas ni doble contabilidad.
           newCurrent = (current + 1).clamp(0, 10000);
           newFreezes = freezes - 1;
           freezeConsumed = true;
@@ -170,11 +185,12 @@ class StreakService implements IStreakService {
         newCurrent = 1;
       }
 
-      if (newCurrent > 0 &&
-          newCurrent % 7 == 0 &&
-          newFreezes < _remoteConfig.streakMaxFreezes) {
-        newFreezes = newFreezes + 1;
-      }
+      // Nota: ya no se concede aquí un escudo "gratis" local cada 7 días. Ese
+      // contador local (streak_freezes) vivía solo en el cliente y el servidor
+      // (fuente de verdad de escudos) nunca lo honraba: al faltar un día el
+      // freeze se denegaba y la racha se rompía pese a "poseer" el escudo. Los
+      // escudos ahora los acredita el servidor (claimFreeStreakShield, shop,
+      // cofre) y el cliente los refleja vía shieldsRemaining durante el sync.
 
       final newLongest = max(newCurrent, longest);
       _save(newCurrent, newLongest, now, newFreezes);

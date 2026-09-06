@@ -185,7 +185,10 @@ class _SampleMessage extends StatelessWidget {
       children: [
         Flexible(
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppSpacing.md,
+              vertical: AppSpacing.sm,
+            ),
             decoration: BoxDecoration(
               color: isUser
                   ? PremiumColors.primaryAccent.withValues(alpha: 0.8)

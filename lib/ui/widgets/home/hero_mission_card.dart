@@ -70,7 +70,7 @@ class HeroMissionCard extends StatelessWidget {
                               backgroundColor: Colors.white,
                               foregroundColor: PremiumColors.teal,
                               padding: const EdgeInsets.symmetric(
-                                horizontal: 20,
+                                horizontal: AppSpacing.xl,
                               ),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(

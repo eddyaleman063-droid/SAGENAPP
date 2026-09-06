@@ -21,20 +21,28 @@ class ExitConfirmationWrapper extends StatelessWidget {
             title: Text(l.miniGameExitTitle),
             content: Text(l.miniGameExitContent),
             actions: [
-              TextButton(
-                onPressed: () {
-                  ExperienceService.instance.lightHaptic();
-                  Navigator.pop(ctx);
-                },
-                child: Text(l.cancel),
+              Semantics(
+                button: true,
+                label: l.cancel,
+                child: TextButton(
+                  onPressed: () {
+                    ExperienceService.instance.lightHaptic();
+                    Navigator.pop(ctx);
+                  },
+                  child: Text(l.cancel),
+                ),
               ),
-              TextButton(
-                onPressed: () {
-                  ExperienceService.instance.lightHaptic();
-                  Navigator.pop(ctx);
-                  context.pop();
-                },
-                child: Text(l.exitText),
+              Semantics(
+                button: true,
+                label: l.exitText,
+                child: TextButton(
+                  onPressed: () {
+                    ExperienceService.instance.lightHaptic();
+                    Navigator.pop(ctx);
+                    context.pop();
+                  },
+                  child: Text(l.exitText),
+                ),
               ),
             ],
           ),

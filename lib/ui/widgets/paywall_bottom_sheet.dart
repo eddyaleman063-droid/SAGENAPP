@@ -165,7 +165,7 @@ class PaywallBottomSheet extends ConsumerWidget {
                 height: 4,
                 decoration: BoxDecoration(
                   color: context.subtle,
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(AppRadius.xxs),
                 ),
               ),
             ),
@@ -221,7 +221,9 @@ class PaywallBottomSheet extends ConsumerWidget {
                         ),
                         style: TextButton.styleFrom(
                           foregroundColor: PremiumColors.accentCyan,
-                          padding: const EdgeInsets.symmetric(vertical: 4),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: AppSpacing.xxs,
+                          ),
                         ),
                       ),
                     ),
@@ -257,83 +259,87 @@ class _PackageCard extends StatelessWidget {
       button: true,
       label: l.paywallPackageSupporter(pkg.supporterLevel),
       hint: l.paywallPackageLabel(pkg.localizedLabel(l).toLowerCase()),
-      child: GestureDetector(
-        onTap: () {
-          ExperienceService.instance.lightHaptic();
-          onTap();
-        },
-        child: Container(
-          padding: const EdgeInsets.all(AppSpacing.lg),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(AppRadius.xl),
-            color: context.surfaceCard,
-            border: Border.all(
-              color: PremiumColors.primary.withValues(alpha: 0.2),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () {
+            ExperienceService.instance.lightHaptic();
+            onTap();
+          },
+          borderRadius: BorderRadius.circular(AppRadius.xl),
+          child: Container(
+            padding: const EdgeInsets.all(AppSpacing.lg),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(AppRadius.xl),
+              color: context.surfaceCard,
+              border: Border.all(
+                color: PremiumColors.primary.withValues(alpha: 0.2),
+              ),
             ),
-          ),
-          child: Row(
-            children: [
-              Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(AppRadius.md),
-                  gradient: const LinearGradient(
-                    colors: [
-                      PremiumColors.primary,
-                      PremiumColors.primaryAccent,
+            child: Row(
+              children: [
+                Container(
+                  width: 48,
+                  height: 48,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(AppRadius.md),
+                    gradient: const LinearGradient(
+                      colors: [
+                        PremiumColors.primary,
+                        PremiumColors.primaryAccent,
+                      ],
+                    ),
+                  ),
+                  child: const ExcludeSemantics(
+                    child: Icon(
+                      Icons.favorite_rounded,
+                      color: Colors.white,
+                      size: 24,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: AppSpacing.lg),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        l.paywallPackageSupporter(pkg.supporterLevel),
+                        style: AppTextStyle.titleSmall.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: context.textPrimary,
+                        ),
+                      ),
+                      Text(
+                        l.paywallPackageLabel(
+                          pkg.localizedLabel(l).toLowerCase(),
+                        ),
+                        style: AppTextStyle.caption.copyWith(
+                          color: context.textTertiary,
+                        ),
+                      ),
                     ],
                   ),
                 ),
-                child: const ExcludeSemantics(
-                  child: Icon(
-                    Icons.favorite_rounded,
-                    color: Colors.white,
-                    size: 24,
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.lg,
+                    vertical: AppSpacing.sm,
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(AppRadius.pill),
+                    color: PremiumColors.primary,
+                  ),
+                  child: Text(
+                    '${l.currencySymbol}${pkg.price.toStringAsFixed(2)}',
+                    style: AppTextStyle.bodyMd.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(width: AppSpacing.lg),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      l.paywallPackageSupporter(pkg.supporterLevel),
-                      style: AppTextStyle.titleSmall.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: context.textPrimary,
-                      ),
-                    ),
-                    Text(
-                      l.paywallPackageLabel(
-                        pkg.localizedLabel(l).toLowerCase(),
-                      ),
-                      style: AppTextStyle.caption.copyWith(
-                        color: context.textTertiary,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppSpacing.lg,
-                  vertical: AppSpacing.sm,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(AppRadius.pill),
-                  color: PremiumColors.primary,
-                ),
-                child: Text(
-                  '${l.currencySymbol}${pkg.price.toStringAsFixed(2)}',
-                  style: AppTextStyle.bodyMd.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

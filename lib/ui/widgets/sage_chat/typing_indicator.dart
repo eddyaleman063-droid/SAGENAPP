@@ -20,12 +20,9 @@ class _TypingIndicatorState extends State<TypingIndicator>
   @override
   void initState() {
     super.initState();
-    _ctrl = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 1200),
-    );
+    _ctrl = AnimationController(vsync: this, duration: AppMotion.celebration);
     // Debounce: show after 300ms to prevent flash
-    _debounce = Timer(const Duration(milliseconds: 300), () {
+    _debounce = Timer(AppMotion.normal, () {
       if (mounted) {
         setState(() => _visible = true);
         _ctrl.repeat();
@@ -63,7 +60,7 @@ class _TypingIndicatorState extends State<TypingIndicator>
                 return Transform.scale(
                   scale: scale,
                   child: Padding(
-                    padding: EdgeInsets.only(right: i < 2 ? 6 : 0),
+                    padding: EdgeInsets.only(right: i < 2 ? AppSpacing.xs : 0),
                     child: Container(
                       width: 8,
                       height: 8,

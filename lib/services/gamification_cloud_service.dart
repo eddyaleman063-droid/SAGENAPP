@@ -64,11 +64,18 @@ class GamificationCloudService {
       final data = _validateResponse(result.data);
       if (data == null) return AppResult.ok({'alreadyClaimed': true});
       if (_safeBool(data, 'alreadyClaimed')) {
-        return AppResult.ok({'alreadyClaimed': true});
+        return AppResult.ok({
+          'alreadyClaimed': true,
+          'lastClaimedDate': _safeString(data, 'lastClaimedDate', ''),
+        });
       }
       return AppResult.ok({
         'xp': _safeInt(data, 'xp', 10),
         'chestType': _safeString(data, 'chestType', 'bronze'),
+        'lastClaimedDate': _safeString(data, 'lastClaimedDate', ''),
+        'gems': data['gems'],
+        'leveledUp': _safeBool(data, 'leveledUp', false),
+        'newLevel': _safeInt(data, 'newLevel', 0),
         'alreadyClaimed': false,
       });
     } on FirebaseFunctionsException catch (e) {
@@ -79,6 +86,36 @@ class GamificationCloudService {
       return AppResult.error(NetworkError(message: e.code, originalError: e));
     } catch (e) {
       _logger.error('GamificationCloudService.claimDailyChest failed', e);
+      return AppResult.error(
+        NetworkError(message: 'unknown', originalError: e),
+      );
+    }
+  }
+
+  /// NUEVO-fix (chest desync): consulta el estado autoritativo del cofre diario
+  /// y reconcilia el ledger local en el arranque, eliminando el bucle
+  /// "cofre ya reclamado que reaparece" y los casos de prefs stale.
+  Future<AppResult<Map<String, dynamic>>> getDailyChestStatusResult() async {
+    try {
+      final result = await _functions
+          .httpsCallable('getDailyChestStatus')
+          .call();
+      final data = _validateResponse(result.data);
+      if (data == null) {
+        return AppResult.error(const SyncError('null response'));
+      }
+      return AppResult.ok({
+        'lastClaimedDate': _safeString(data, 'lastClaimedDate', ''),
+        'available': _safeBool(data, 'available', false),
+      });
+    } on FirebaseFunctionsException catch (e) {
+      _logger.error(
+        'GamificationCloudService.getDailyChestStatus failed: ${e.code}',
+        e,
+      );
+      return AppResult.error(NetworkError(message: e.code, originalError: e));
+    } catch (e) {
+      _logger.error('GamificationCloudService.getDailyChestStatus failed', e);
       return AppResult.error(
         NetworkError(message: 'unknown', originalError: e),
       );
@@ -195,6 +232,11 @@ class GamificationCloudService {
 
   Future<Map<String, dynamic>?> getSagenPassSeason() async {
     final result = await getSagenPassSeasonResult();
+    return result.value;
+  }
+
+  Future<Map<String, dynamic>?> getDailyChestStatus() async {
+    final result = await getDailyChestStatusResult();
     return result.value;
   }
 }

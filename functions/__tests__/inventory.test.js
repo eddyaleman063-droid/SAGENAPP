@@ -11,8 +11,9 @@ const admin = require('firebase-admin');
 const inventory = require('../inventory');
 
 const AUTH_UID = 'test-inventory-123';
-const makeContext = (uid = AUTH_UID) => ({ auth: { uid } });
+const makeContext = (uid = AUTH_UID) => ({ auth: { uid, token: { email_verified: true } } });
 const NO_AUTH = {};
+const makeUnverifiedContext = (uid = AUTH_UID) => ({ auth: { uid, token: { email_verified: false } } });
 
 beforeEach(() => {
   admin._resetFirestore();
@@ -151,6 +152,12 @@ describe('getInventory', () => {
 
   test('rejects unauthenticated user', async () => {
     await expect(inventory.getInventory({}, NO_AUTH)).rejects.toThrow();
+  });
+
+  test('rejects unverified user (requiere email_verified)', async () => {
+    await expect(inventory.getInventory({}, makeUnverifiedContext())).rejects.toThrow(
+      expect.objectContaining({ code: 'failed-precondition' })
+    );
   });
 });
 

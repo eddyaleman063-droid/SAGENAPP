@@ -27,7 +27,10 @@ class LessonResultsScreen extends ConsumerWidget {
   ) {
     final exp = ref.read(experienceServiceProvider);
     exp.successHaptic();
-    ref.read(streakProvider.notifier).checkIn();
+    // Acredita la lección ANTES del checkIn de racha: tanto el badge de XP como
+    // completeLesson leen xpForLesson del MISMO multiplicador de racha.
+    // Del orden contrario, en el borde racha 9->10 (mult 1.0->1.1) el badge
+    // mostraría +15 y el servidor/cliente acreditarían round(15*1.1)=+17.
     ref
         .read(learningProvider.notifier)
         .completeLesson(
@@ -37,8 +40,14 @@ class LessonResultsScreen extends ConsumerWidget {
           correctAnswers: session.correctCount,
           totalQuestions: session.totalQuestions,
         );
+    ref.read(streakProvider.notifier).checkIn();
+    // Navegación determinista: se llega aquí tras `goNamed('lesson-results')`,
+    // que deja la pila con una sola página (go_router construye las páginas solo
+    // a partir de los matches). `context.pop()` en ese caso lanza
+    // GoError('There is nothing to pop') y clavaba al usuario en la pantalla de
+    // resultados. Volvemos siempre al mapa de lecciones.
     if (context.mounted) {
-      context.pop();
+      context.goNamed('lessons');
     }
   }
 
@@ -158,30 +167,50 @@ class LessonResultsScreen extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       _ResultBadge(
-                        icon: Icons.auto_awesome_rounded,
-                        value: '+$awardedXp',
-                        label: l.profileXpLabel,
-                        color: PremiumColors.xpColor,
-                        semanticsLabel: l.resultXpGained('$awardedXp'),
-                      ),
+                            icon: Icons.auto_awesome_rounded,
+                            value: '+$awardedXp',
+                            label: l.profileXpLabel,
+                            color: PremiumColors.xpColor,
+                            semanticsLabel: l.resultXpGained('$awardedXp'),
+                          )
+                          .animate(delay: 300.ms)
+                          .fadeIn(duration: 300.ms)
+                          .scale(
+                            begin: const Offset(0.8, 0.8),
+                            duration: 300.ms,
+                          ),
                       const SizedBox(width: AppSpacing.lg),
                       _ResultBadge(
-                        icon: Icons.check_circle_rounded,
-                        value: '${(session.accuracy * 100).toInt()}%',
-                        label: l.resultAccuracy,
-                        color: PremiumColors.success,
-                        semanticsLabel: l.resultAccuracyLabel(
-                          '${(session.accuracy * 100).toInt()}',
-                        ),
-                      ),
+                            icon: Icons.check_circle_rounded,
+                            value: '${(session.accuracy * 100).toInt()}%',
+                            label: l.resultAccuracy,
+                            color: PremiumColors.success,
+                            semanticsLabel: l.resultAccuracyLabel(
+                              '${(session.accuracy * 100).toInt()}',
+                            ),
+                          )
+                          .animate(delay: 400.ms)
+                          .fadeIn(duration: 300.ms)
+                          .scale(
+                            begin: const Offset(0.8, 0.8),
+                            duration: 300.ms,
+                          ),
                       const SizedBox(width: AppSpacing.lg),
                       _ResultBadge(
-                        icon: Icons.favorite_rounded,
-                        value: '${session.lives}',
-                        label: l.resultLives,
-                        color: PremiumColors.error,
-                        semanticsLabel: l.resultLivesLabel('${session.lives}'),
-                      ),
+                            icon: Icons.favorite_rounded,
+                            value: '${session.lives}',
+                            label: l.resultLives,
+                            color: PremiumColors.error,
+                            semanticsLabel: l.resultLivesLabel(
+                              '${session.lives}',
+                            ),
+                          )
+                          .animate(delay: 500.ms)
+                          .fadeIn(duration: 300.ms)
+                          .scale(
+                            begin: const Offset(0.8, 0.8),
+                            duration: 300.ms,
+                          ),
                     ],
                   ),
                   const Spacer(flex: 3),

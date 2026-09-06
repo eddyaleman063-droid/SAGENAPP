@@ -86,7 +86,9 @@ class QuizOptionButton extends ConsumerWidget {
                     onTap?.call();
                   },
             borderRadius: BorderRadius.circular(AppRadius.lg),
-            child: Container(
+            child: AnimatedContainer(
+              duration: AppMotion.normal,
+              curve: Curves.easeOut,
               padding: const EdgeInsets.symmetric(
                 horizontal: AppSpacing.lg,
                 vertical: AppSpacing.md,

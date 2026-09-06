@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'app_logger.dart';
+import '../l10n/app_localizations.dart';
 
 enum SageEmotion {
   calm,
@@ -127,7 +128,93 @@ extension SageEmotionX on SageEmotion {
         return 'sage_panic';
     }
   }
+
+  /// Screen-reader label localized with [l]. Callers that always run under a
+  /// localized MaterialApp can rely on this; otherwise use [_friendlyName]
+  /// style fallbacks when l10n is unavailable.
+  String localizedLabel(AppLocalizations l) {
+    switch (this) {
+      case SageEmotion.calm:
+        return l.sageEmotionCalm;
+      case SageEmotion.happy:
+        return l.sageEmotionHappy;
+      case SageEmotion.curious:
+        return l.sageEmotionCurious;
+      case SageEmotion.thinking:
+        return l.sageEmotionThinking;
+      case SageEmotion.reading:
+        return l.sageEmotionReading;
+      case SageEmotion.serious:
+        return l.sageEmotionSerious;
+      case SageEmotion.neutral:
+        return l.sageEmotionNeutral;
+      case SageEmotion.excited:
+        return l.sageEmotionExcited;
+      case SageEmotion.confused:
+        return l.sageEmotionConfused;
+      case SageEmotion.worried:
+        return l.sageEmotionWorried;
+      case SageEmotion.sadSoft:
+        return l.sageEmotionSadSoft;
+      case SageEmotion.sad:
+        return l.sageEmotionSad;
+      case SageEmotion.crying:
+        return l.sageEmotionCrying;
+      case SageEmotion.depressed:
+        return l.sageEmotionDepressed;
+      case SageEmotion.angry:
+        return l.sageEmotionAngry;
+      case SageEmotion.furious:
+        return l.sageEmotionFurious;
+      case SageEmotion.shocked:
+        return l.sageEmotionShocked;
+      case SageEmotion.sleepy:
+        return l.sageEmotionSleepy;
+      case SageEmotion.whistling:
+        return l.sageEmotionWhistling;
+      case SageEmotion.pointLeft:
+        return l.sageEmotionPointLeft;
+      case SageEmotion.pointRight:
+        return l.sageEmotionPointRight;
+      case SageEmotion.wink:
+        return l.sageEmotionWink;
+      case SageEmotion.shy:
+        return l.sageEmotionShy;
+      case SageEmotion.laughing:
+        return l.sageEmotionLaughing;
+      case SageEmotion.singing:
+        return l.sageEmotionSinging;
+      case SageEmotion.scared:
+        return l.sageEmotionScared;
+      case SageEmotion.embarrassed:
+        return l.sageEmotionEmbarrassed;
+      case SageEmotion.annoyed:
+        return l.sageEmotionAnnoyed;
+      case SageEmotion.unmotivated:
+        return l.sageEmotionUnmotivated;
+      case SageEmotion.distressed:
+        return l.sageEmotionDistressed;
+      case SageEmotion.aggressive:
+        return l.sageEmotionAggressive;
+      case SageEmotion.lol:
+        return l.sageEmotionLol;
+      case SageEmotion.happyWings:
+        return l.sageEmotionHappyWings;
+      case SageEmotion.excitedWave:
+        return l.sageEmotionExcitedWave;
+      case SageEmotion.surprisedWings:
+        return l.sageEmotionSurprisedWings;
+      case SageEmotion.celebrating:
+        return l.sageEmotionCelebrating;
+      case SageEmotion.proud:
+        return l.sageEmotionProud;
+      case SageEmotion.panic:
+        return l.sageEmotionPanic;
+    }
+  }
 }
+
+const int sageEmotionDecodeSize = 360;
 
 class SageEmotionService {
   SageEmotionService();
@@ -232,7 +319,11 @@ class SageEmotionService {
 
   Future<void> _doPrecache(SageEmotion emotion) async {
     if (_precached.contains(emotion)) return;
-    final provider = AssetImage(emotion.assetPath);
+    final provider = ResizeImage.resizeIfNeeded(
+      sageEmotionDecodeSize,
+      sageEmotionDecodeSize,
+      AssetImage(emotion.assetPath),
+    );
     final stream = provider.resolve(ImageConfiguration.empty);
     final completer = Completer<void>();
     bool timedOut = false;

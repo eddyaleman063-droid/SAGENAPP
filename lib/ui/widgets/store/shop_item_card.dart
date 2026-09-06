@@ -100,6 +100,8 @@ class ShopItemCard extends StatelessWidget {
                     owned
                         ? '${shopItemLocalizedName(item.id, l)} ✓'
                         : shopItemLocalizedName(item.id, l),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: AppTextStyle.body.copyWith(
                       fontWeight: FontWeight.w600,
                       color: context.textPrimary,
@@ -108,6 +110,8 @@ class ShopItemCard extends StatelessWidget {
                   const SizedBox(height: AppSpacing.xxs),
                   Text(
                     shopItemLocalizedDescription(item.id, l),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                     style: AppTextStyle.caption.copyWith(
                       color: context.textTertiary,
                     ),

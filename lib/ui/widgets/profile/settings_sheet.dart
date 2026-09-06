@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/ui/widgets/profile/language_selector.dart';
@@ -56,6 +57,6 @@ class SettingsSheet extends StatelessWidget {
           const SizedBox(height: AppSpacing.md),
         ],
       ),
-    );
+    ).animate().fadeIn(duration: 300.ms).slideY(begin: 0.05);
   }
 }

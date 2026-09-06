@@ -64,7 +64,7 @@ Future<List<Stage>> loadStagesFromAssets() async {
         }
       }
 
-      return Stage(
+      final stage = Stage(
         id: (s['id'] as String?) ?? '',
         title: (s['title'] as String?) ?? '',
         subtitle: (s['subtitle'] as String?) ?? '',
@@ -73,6 +73,10 @@ Future<List<Stage>> loadStagesFromAssets() async {
         lessons: allLessons,
         sessions: sessions,
       );
+      // Invariante: lessons == sessions.expand().lessons. Se dispara en
+      // debug/tests si el curriculum vuelve a desincronizarse.
+      stage.assertConsistency();
+      return stage;
     }).toList();
     AppLogger().info(
       'Loaded ${_cachedStages.length} stages from assets '

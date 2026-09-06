@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
+
 /// Provides motivational quotes for streak and progress screens.
 class MotivationalQuotesService {
   MotivationalQuotesService._();
@@ -75,6 +77,12 @@ class MotivationalQuotesService {
 
   final Set<int> _recent = {};
   int _maxRecent = 8;
+  Random _random = Random();
+
+  /// Permite inyectar una fuente de aleatoriedad determinista (p. ej. con seed)
+  /// para tests sin aleatoriedad, eliminando tests flaky.
+  @visibleForTesting
+  void setRandom(Random random) => _random = random;
 
   void setMaxRecent(int n) => _maxRecent = n.clamp(2, 20);
 
@@ -84,10 +92,10 @@ class MotivationalQuotesService {
 
     if (available.isEmpty) {
       _recent.clear();
-      return _all[Random().nextInt(_all.length)];
+      return _all[_random.nextInt(_all.length)];
     }
 
-    final idx = available[Random().nextInt(available.length)];
+    final idx = available[_random.nextInt(available.length)];
     _recent.add(idx);
     if (_recent.length > _maxRecent) {
       _recent.remove(_recent.first);

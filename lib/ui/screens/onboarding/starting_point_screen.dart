@@ -248,7 +248,7 @@ class _StartingPointScreenState extends ConsumerState<StartingPointScreen> {
                   child: ValueListenableBuilder<bool>(
                     valueListenable: _isPressed,
                     builder: (context, pressed, _) => AnimatedContainer(
-                      duration: const Duration(milliseconds: 80),
+                      duration: AppMotion.fast,
                       transform: pressed
                           ? Matrix4.translationValues(0, 4, 0)
                           : Matrix4.identity(),
@@ -381,7 +381,7 @@ class _StartingPointScreenState extends ConsumerState<StartingPointScreen> {
                   child: Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 10,
-                      vertical: 4,
+                      vertical: AppSpacing.xxs,
                     ),
                     decoration: BoxDecoration(
                       color: PremiumColors.primaryAccent,

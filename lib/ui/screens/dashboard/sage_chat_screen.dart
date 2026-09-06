@@ -8,6 +8,7 @@ import 'package:sagen/models/chat_message.dart';
 import 'package:sagen/providers/providers.dart';
 import '../../../core/theme/theme_constants.dart';
 import '../../../services/analytics_service.dart';
+import '../../../services/experience_service.dart';
 
 import '../../widgets/sage_chat/locked_gatekeeper.dart';
 import '../../widgets/sage_chat/header.dart';
@@ -264,11 +265,15 @@ class _ErrorBanner extends StatelessWidget {
           if (onRetry != null)
             Semantics(
               button: true,
-              label: l?.retry ?? 'Retry',
-              child: GestureDetector(
-                onTap: onRetry,
+              label: l?.retry ?? 'Reintentar',
+              child: InkWell(
+                onTap: () {
+                  ExperienceService.instance.lightHaptic();
+                  onRetry?.call();
+                },
+                borderRadius: BorderRadius.circular(AppRadius.sm),
                 child: const Padding(
-                  padding: EdgeInsets.all(16),
+                  padding: EdgeInsets.all(AppSpacing.lg),
                   child: Icon(
                     Icons.refresh_rounded,
                     size: 16,
@@ -280,11 +285,15 @@ class _ErrorBanner extends StatelessWidget {
           const SizedBox(width: AppSpacing.sm),
           Semantics(
             button: true,
-            label: l?.close ?? 'Close',
-            child: GestureDetector(
-              onTap: onDismiss,
+            label: l?.close ?? 'Cerrar',
+            child: InkWell(
+              onTap: () {
+                ExperienceService.instance.lightHaptic();
+                onDismiss?.call();
+              },
+              borderRadius: BorderRadius.circular(AppRadius.sm),
               child: const Padding(
-                padding: EdgeInsets.all(16),
+                padding: EdgeInsets.all(AppSpacing.lg),
                 child: Icon(
                   Icons.close_rounded,
                   size: 14,

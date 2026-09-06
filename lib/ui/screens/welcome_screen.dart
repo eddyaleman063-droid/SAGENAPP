@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sagen/l10n/app_localizations.dart';
@@ -38,23 +39,33 @@ class WelcomeScreen extends ConsumerWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         const RepaintBoundary(
-                          child: SageEmotionWidget(
-                            emotion: SageEmotion.excitedWave,
-                            size: 160,
-                            animated: true,
-                          ),
-                        ),
+                              child: SageEmotionWidget(
+                                emotion: SageEmotion.excitedWave,
+                                size: 160,
+                                animated: true,
+                              ),
+                            )
+                            .animate()
+                            .fadeIn(delay: 200.ms, duration: 600.ms)
+                            .scale(
+                              begin: const Offset(0.8, 0.8),
+                              delay: 200.ms,
+                              duration: 600.ms,
+                            ),
                         const SizedBox(height: AppSpacing.lg),
                         Text(
-                          l.appName,
-                          style: AppTextStyle.display.copyWith(
-                            fontWeight: FontWeight.w900,
-                            color: PremiumColors.primaryAccent.withValues(
-                              alpha: 0.95,
-                            ),
-                            letterSpacing: 4,
-                          ),
-                        ),
+                              l.appName,
+                              style: AppTextStyle.display.copyWith(
+                                fontWeight: FontWeight.w900,
+                                color: PremiumColors.primaryAccent.withValues(
+                                  alpha: 0.95,
+                                ),
+                                letterSpacing: 4,
+                              ),
+                            )
+                            .animate()
+                            .fadeIn(delay: 400.ms, duration: 500.ms)
+                            .slideY(begin: 0.1, delay: 400.ms),
                       ],
                     ),
                   ),
@@ -74,7 +85,7 @@ class WelcomeScreen extends ConsumerWidget {
                       height: 1.5,
                     ),
                   ),
-                ),
+                ).animate().fadeIn(delay: 600.ms, duration: 500.ms),
                 // ── Buttons ──────────────────────────────────────
                 Padding(
                   padding: const EdgeInsets.symmetric(
@@ -83,52 +94,56 @@ class WelcomeScreen extends ConsumerWidget {
                   child: Column(
                     children: [
                       Semantics(
-                        button: true,
-                        label: l.welcomeStartButton,
-                        child: SagenTouchResponse(
-                          onTap: () {
-                            context.pushNamed('onboarding');
-                          },
-                          child: Container(
-                            width: double.infinity,
-                            height: 58,
-                            decoration: BoxDecoration(
-                              color: PremiumColors.primaryAccent,
-                              borderRadius: BorderRadius.circular(AppRadius.xl),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: PremiumColors.primaryAccent.withValues(
-                                    alpha: 0.35,
+                            button: true,
+                            label: l.welcomeStartButton,
+                            child: SagenTouchResponse(
+                              onTap: () {
+                                context.pushNamed('onboarding');
+                              },
+                              child: Container(
+                                width: double.infinity,
+                                height: 58,
+                                decoration: BoxDecoration(
+                                  color: PremiumColors.primaryAccent,
+                                  borderRadius: BorderRadius.circular(
+                                    AppRadius.xl,
                                   ),
-                                  blurRadius: 14,
-                                  offset: const Offset(0, 5),
-                                ),
-                              ],
-                            ),
-                            child: Center(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    l.welcomeStartButton,
-                                    style: AppTextStyle.bodyLg.copyWith(
-                                      fontWeight: FontWeight.w800,
-                                      color: Colors.white,
-                                      letterSpacing: 1,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: PremiumColors.primaryAccent
+                                          .withValues(alpha: 0.35),
+                                      blurRadius: 14,
+                                      offset: const Offset(0, 5),
                                     ),
+                                  ],
+                                ),
+                                child: Center(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        l.welcomeStartButton,
+                                        style: AppTextStyle.bodyLg.copyWith(
+                                          fontWeight: FontWeight.w800,
+                                          color: Colors.white,
+                                          letterSpacing: 1,
+                                        ),
+                                      ),
+                                      const SizedBox(width: AppSpacing.sm),
+                                      const Icon(
+                                        Icons.arrow_forward_rounded,
+                                        size: 20,
+                                        color: Colors.white,
+                                      ),
+                                    ],
                                   ),
-                                  const SizedBox(width: AppSpacing.sm),
-                                  const Icon(
-                                    Icons.arrow_forward_rounded,
-                                    size: 20,
-                                    color: Colors.white,
-                                  ),
-                                ],
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                      ),
+                          )
+                          .animate()
+                          .fadeIn(delay: 800.ms, duration: 400.ms)
+                          .slideY(begin: 0.15, delay: 800.ms),
                       const SizedBox(height: AppSpacing.md),
                       Semantics(
                         button: true,
@@ -159,7 +174,7 @@ class WelcomeScreen extends ConsumerWidget {
                             ),
                           ),
                         ),
-                      ),
+                      ).animate().fadeIn(delay: 950.ms, duration: 400.ms),
                       // ── Demo mode button (debug only, for live presentation) ──
                       if (!kReleaseMode) ...[
                         const SizedBox(height: AppSpacing.lg),
@@ -214,7 +229,7 @@ class WelcomeScreen extends ConsumerWidget {
                               ),
                             ),
                           ),
-                        ),
+                        ).animate().fadeIn(delay: 1100.ms, duration: 400.ms),
                       ],
                     ],
                   ),

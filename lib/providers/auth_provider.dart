@@ -6,6 +6,7 @@ import '../services/auth_service.dart';
 import '../services/auth/email_verification_manager.dart';
 import '../services/auth/auth_sync_manager.dart';
 import '../services/app_logger.dart';
+import '../services/game_state_cleaner.dart';
 import 'providers.dart';
 
 enum AuthStatus {
@@ -425,6 +426,10 @@ class AuthNotifier extends Notifier<AuthState> {
     try {
       final verified = await _authService.reloadUser();
       if (verified) {
+        // El token aun lleva claims antiguos (email_verified=false). Forzamos
+        // la reemision del ID token para que las callables con
+        // requireVerifiedUser no rechacen al usuario recien verificado.
+        await _authService.getIdToken(forceRefresh: true);
         state = state.copyWith(
           pendingVerification: false,
           status: AuthStatus.authenticated,
@@ -498,10 +503,62 @@ class AuthNotifier extends Notifier<AuthState> {
         await _syncManager.saveBeforeSignOut(uid, prefs);
       }
       _syncManager.stopListening();
-      await _authService.signOut();
     } catch (e) {
       AppLogger().error('Cloud sync during sign-out failed', e);
     }
+    // El sign-out real de Firebase NO debe pasarse por alto: si falla, el
+    // usuario sigue autenticado a nivel de Firebase. Reseteamos el estado solo
+    // si el sign-out tuvo exito; de lo contrario devolveríamos "deslogueado"
+    // mientras FirebaseAuth aún tiene sesión activa (desync que confunde la
+    // próxima sesión / re-atenticación en el siguiente arranque).
+    try {
+      await _authService.signOut();
+    } catch (e) {
+      AppLogger().error('Auth: Firebase sign-out failed', e);
+      return;
+    }
+    // Al cerrar sesión, se limpian los datos locales de lección a medias para
+    // que el siguiente usuario en este dispositivo no vea progreso ajeno.
+    try {
+      await ref.read(sessionProvider.notifier).clearAllProgress();
+    } catch (e) {
+      AppLogger().warning('signOut: failed to clear session progress', e);
+    }
+    // Se vacía la cola offline pendiente: al re-sincronizar, _syncItem usa el
+    // uid del usuario actual de FirebaseAuth. Si quedara trabajo de la sesión
+    // anterior en la cola, se acreditaría al siguiente usuario que inicie
+    // sesión en este dispositivo (crédito cruzado de XP/gemas).
+    try {
+      await ref.read(offlineQueueServiceProvider).clear();
+    } catch (e) {
+      AppLogger().warning('signOut: failed to clear offline queue', e);
+    }
+    // La cola de acreditaciones de gemas pendientes es una clave global de
+    // prefs: si no se vacía al cerrar sesión, el siguiente usuario del
+    // dispositivo reenviaría los earns offline del anterior a su cuenta
+    // (crédito cruzado de gemas), igual que la cola offline de items.
+    try {
+      await ref.read(gemProvider.notifier).clearPendingEarns();
+    } catch (e) {
+      AppLogger().warning('signOut: failed to clear pending gem earns', e);
+    }
+    // Limpieza completa del estado de juego por usuario (streak, energía,
+    // misiones, review SM-2, items del shop, memory de aprendizaje, progreso de
+    // aprendizaje, gemas, etc.): todas viven en claves globales de prefs y no
+    // se sincronizan a la nube. Sin esto, el siguiente usuario del dispositivo
+    // heredaría el progreso del anterior (fuga cruzada de estado/crédito).
+    try {
+      final prefs = _prefs;
+      if (prefs != null) {
+        await GameStateCleaner.clearGameState(prefs);
+      }
+    } catch (e) {
+      AppLogger().warning('signOut: failed to clear per-user game state', e);
+    }
+    // La cola diaria de Sage es estática a nivel de clase; se resetea al
+    // cerrar sesión para que el siguiente usuario no herede el conteo/límite
+    // de mensajes del anterior en el mismo dispositivo.
+    SageAiNotifier.resetRateLimits();
     state = const AuthState(status: AuthStatus.unauthenticated);
   }
 
@@ -584,6 +641,7 @@ class AuthNotifier extends Notifier<AuthState> {
       await FirebaseFirestore.instance.collection('users').doc(uid).set({
         'onboardingCompleted': true,
         'updatedAt': FieldValue.serverTimestamp(),
+        'updatedBy': uid,
       }, SetOptions(merge: true));
       state = state.copyWith(onboardingCompleted: true);
     } catch (e, stack) {
@@ -591,9 +649,9 @@ class AuthNotifier extends Notifier<AuthState> {
     }
   }
 
-  Future<String?> getIdToken() async {
+  Future<String?> getIdToken({bool forceRefresh = false}) async {
     try {
-      return await _authService.getIdToken();
+      return await _authService.getIdToken(forceRefresh: forceRefresh);
     } catch (e) {
       AppLogger().warning('Auth: getIdToken failed: $e');
       return null;

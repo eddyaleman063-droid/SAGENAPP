@@ -85,12 +85,17 @@ class QuizProgressHeader extends StatelessWidget {
             child: Semantics(
               label: l10n(context).quizProgress((progress * 100).round()),
               value: '${(progress * 100).round()}',
-              child: LinearProgressIndicator(
-                value: progress,
-                minHeight: 6,
-                backgroundColor: colorScheme.surfaceContainerHighest,
-                valueColor: const AlwaysStoppedAnimation<Color>(
-                  PremiumColors.primary,
+              child: TweenAnimationBuilder<double>(
+                tween: Tween(begin: 0.0, end: progress),
+                duration: const Duration(milliseconds: 400),
+                curve: Curves.easeInOut,
+                builder: (_, value, _) => LinearProgressIndicator(
+                  value: value,
+                  minHeight: 6,
+                  backgroundColor: colorScheme.surfaceContainerHighest,
+                  valueColor: const AlwaysStoppedAnimation<Color>(
+                    PremiumColors.primary,
+                  ),
                 ),
               ),
             ),

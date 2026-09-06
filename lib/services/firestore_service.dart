@@ -133,6 +133,7 @@ class FirestoreService implements IFirestoreService {
             'routeType': '',
             'motivation': '',
             'updatedAt': FieldValue.serverTimestamp(),
+            'updatedBy': uid,
           })
           .timeout(const Duration(seconds: 10));
     } catch (e, stack) {

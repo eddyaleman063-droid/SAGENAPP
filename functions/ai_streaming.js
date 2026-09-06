@@ -1,7 +1,22 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
+const { defineSecret } = require('firebase-functions/params');
 
-const GEMINI_API_KEY = functions.config().gemini?.api_key;
+// NUEVO-fix (deprec): ver nota en index.js — Secret Manager con fallback a
+// functions.config() mientras el proyecto no migre los secretos.
+const SECRET_GEMINI = defineSecret('GEMINI_API_KEY');
+
+function secretOrConfig(param, legacyValue) {
+  try {
+    const value = param.value();
+    if (value) return value;
+  } catch {
+    // env / Secret Manager no disponible para este parámetro
+  }
+  return legacyValue || '';
+}
+
+const GEMINI_API_KEY = secretOrConfig(SECRET_GEMINI, functions.config().gemini?.api_key);
 const GEMINI_MODEL = 'gemini-2.5-flash';
 const GEMINI_MAX_OUTPUT_TOKENS = 8192;
 const GEMINI_TEMPERATURE = 0.85;
@@ -15,6 +30,58 @@ const ALLOWED_ORIGINS = [
 
 const RATE_LIMIT_WINDOW = 60 * 1000;
 const RATE_LIMIT_MAX = 15;
+
+// NUEVO-fix: límite diario de mensajes de Sage, SERVER-AUTHORITATIVE.
+// Antes el cliente contaba con un static en memoria (reseteable reiniciando
+// la app o cerrando sesión) e incrementaba en cada INTENTO, no entrega.
+// Ahora el servidor lleva el contador por día en Firestore (doc por usuario
+// y día, mismo patrón que daily_xp_sources) y solo consume la cuota cuando
+// Gemini responde de verdad (response.ok), de modo que los fallos/no entrega
+// no queman mensajes del usuario.
+const SAGE_DAILY_LIMIT = 50;
+
+function getDailyUsageRef(uid) {
+  const today = new Date().toISOString().split('T')[0];
+  return admin.firestore().doc(`sage_usage/${uid}_${today}`);
+}
+
+/**
+ * Valida (y opcionalmente consume) la cuota diaria de Sage.
+ * - consume=false → pre-check: rechaza con HttpsError si se alcanzó el límite,
+ *   SIN consumir (así un rechazo no quema cuota).
+ * - consume=true  → incrementa 1 sobre la entrega real (tras response.ok).
+ * Si Firestore falla: fail-open para el límite diario (un blip no debe tumbar
+ * el chat); el límite por minuto sigue siendo fail-closed en checkStreamRateLimit.
+ */
+async function checkDailyUsage(uid, { consume }) {
+  const ref = getDailyUsageRef(uid);
+  try {
+    await admin.firestore().runTransaction(async (transaction) => {
+      const doc = await transaction.get(ref);
+      const data = doc.data() || {};
+      const count = data.count || 0;
+      if (count >= SAGE_DAILY_LIMIT) {
+        throw new Error('SAGE_DAILY_LIMIT');
+      }
+      if (consume) {
+        transaction.set(ref, {
+          count: count + 1,
+          updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+        }, { merge: true });
+      }
+    });
+    return true;
+  } catch (e) {
+    if (e.message === 'SAGE_DAILY_LIMIT') {
+      throw new functions.https.HttpsError(
+        'resource-exhausted',
+        `Límite diario de mensajes de Sage alcanzado (${SAGE_DAILY_LIMIT}/día)`,
+      );
+    }
+    functions.logger.error('Sage daily usage check failed', { uid, error: e.message });
+    return false;
+  }
+}
 
 async function checkStreamRateLimit(uid) {
   const now = Date.now();
@@ -75,6 +142,9 @@ exports.generateContentStream = functions.runWith({ maxInstances: 3 }).https.onR
   try {
     const token = authHeader.split('Bearer ')[1];
     const decoded = await admin.auth().verifyIdToken(token);
+    if (decoded.email_verified !== true) {
+      return res.status(403).json({ error: 'Debes verificar tu email' });
+    }
     uid = decoded.uid;
   } catch (e) {
     return res.status(401).json({ error: 'Token inválido' });
@@ -85,6 +155,17 @@ exports.generateContentStream = functions.runWith({ maxInstances: 3 }).https.onR
   } catch (e) {
     if (e instanceof functions.https.HttpsError) {
       return res.status(429).json({ error: e.message });
+    }
+  }
+
+  // NUEVO-fix: rechazo server-authoritative del límite diario (sin consumir).
+  // El cuerpo incluye un `code` para que el cliente distinga 'sage_daily_limit'
+  // del rate limit por minuto (ambos HTTP 429).
+  try {
+    await checkDailyUsage(uid, { consume: false });
+  } catch (e) {
+    if (e instanceof functions.https.HttpsError) {
+      return res.status(429).json({ error: e.message, code: 'sage_daily_limit' });
     }
   }
 
@@ -150,6 +231,10 @@ exports.generateContentStream = functions.runWith({ maxInstances: 3 }).https.onR
       res.write('data: [DONE]\n\n');
       return res.end();
     }
+
+    // NUEVO-fix: la cuota diaria se consume SOLO sobre una entrega real
+    // (Gemini respondió OK). Los fallos previos NO queman mensajes.
+    await checkDailyUsage(uid, { consume: true });
 
     const reader = response.body.getReader();
     const decoder = new TextDecoder();

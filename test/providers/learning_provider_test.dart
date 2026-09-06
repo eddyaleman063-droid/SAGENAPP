@@ -17,7 +17,12 @@ class TestLearningNotifier extends LearningNotifier {
   }
 
   @override
-  Future<void> addXp(int amount, {String? reason, String? lessonId}) async {
+  Future<void> addXp(
+    int amount, {
+    String? reason,
+    String? lessonId,
+    String? achievementId,
+  }) async {
     final newXp = state.xp + amount;
     final newTotalXp = state.totalXpEarned + amount;
     final newLevel = (newTotalXp / 100).floor() + 1;
@@ -78,6 +83,23 @@ void main() {
       await notifier.addXp(0);
       expect(notifier.state.xp, 0);
       expect(notifier.state.totalXpEarned, 0);
+    });
+
+    test('reconcile applies server-authoritative capped XP', () {
+      final notifier = container.read(learningProvider.notifier);
+      // Estado local optimista que quedó inflado por el cap diario del server:
+      // se acreditaron 15 localmente pero el servidor solo concedió 5.
+      notifier.reconcileForTest({
+        'type': 'completeLesson',
+        'totalXp': 105,
+        'level': 2,
+        'lessonsCompleted': 7,
+        'lessonId': 'ac_s1_ses1_l1',
+      });
+      expect(notifier.state.totalXpEarned, 105);
+      expect(notifier.state.currentLevel, 2);
+      expect(notifier.state.xp, 5);
+      expect(notifier.state.lessonsCompleted, 7);
     });
   });
 }

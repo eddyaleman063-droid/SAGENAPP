@@ -64,6 +64,12 @@ class ServiceInitializer {
       final options = Platform.isIOS
           ? DefaultFirebaseOptions.ios
           : DefaultFirebaseOptions.android;
+      if (options.apiKey.isEmpty) {
+        logger.error(
+          'Firebase API key is EMPTY — Firebase Auth, Firestore and Cloud '
+          'Functions will not work.',
+        );
+      }
       await Firebase.initializeApp(options: options);
       logger.markFirebaseReady();
       logger.info('Firebase initialized successfully');

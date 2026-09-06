@@ -22,7 +22,7 @@ abstract class IAuthService {
   Future<void> signOut();
   Future<void> deleteAccount();
   Future<firebase.User?> reauthenticate(String email, String password);
-  Future<String?> getIdToken();
+  Future<String?> getIdToken({bool forceRefresh = false});
   AppUser? get currentUser;
   bool get isLoggedIn;
   Stream<AppUser?> get authStateChanges;

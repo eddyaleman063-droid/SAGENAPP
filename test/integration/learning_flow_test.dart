@@ -20,7 +20,12 @@ class FakeLearningNotifier extends LearningNotifier {
   }
 
   @override
-  Future<void> addXp(int amount, {String? reason, String? lessonId}) async {
+  Future<void> addXp(
+    int amount, {
+    String? reason,
+    String? lessonId,
+    String? achievementId,
+  }) async {
     final newXp = state.xp + amount;
     final newTotalXp = state.totalXpEarned + amount;
     final newLevel = (newTotalXp / 100).floor() + 1;

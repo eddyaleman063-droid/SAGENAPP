@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:sagen/services/experience_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sagen/core/theme/app_colors.dart';
@@ -113,6 +114,8 @@ class _ErrorFallback extends StatelessWidget {
                   const SizedBox(height: AppSpacing.xxl),
                   Text(
                     title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                     style: AppTextStyle.headlineMedium.copyWith(
                       color: context.textPrimary,
                     ),
@@ -172,7 +175,7 @@ class _ErrorFallback extends StatelessWidget {
                     ),
                   ),
                 ],
-              ),
+              ).animate().fadeIn(duration: 400.ms).slideY(begin: 0.05),
             ),
           ),
         ),

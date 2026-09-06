@@ -1,6 +1,7 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const inventory = require('./inventory');
+const { requireVerifiedUser } = require('./auth_guard');
 
 // ══════════════════════════════════════════════════════════════════
 // GEM ECONOMY — Server-authoritative
@@ -153,7 +154,12 @@ function applyGemCredit(transaction, userRef, userData, dailyGemsRef, dailyGemsD
 
     transaction.update(userRef, {
       learning_gems: newBalance,
+      // Acumulador de por vida de gemas ganadas (solo crece; nunca decrece al
+      // gastar). Es la fuente de verdad server-authoritative del contador local
+      // totalEarned del cliente, que se reconcilia en getGemsBalance.
+      learning_total_gems: admin.firestore.FieldValue.increment(actualAdded),
       _ts_learning_gems: admin.firestore.FieldValue.serverTimestamp(),
+      _ts_learning_total_gems: admin.firestore.FieldValue.serverTimestamp(),
     });
 
     transaction.set(dailyGemsRef, {
@@ -235,9 +241,7 @@ exports.gemAmountForReason = gemAmountForReason;
  * authoritative path per source.
  */
 exports.earnGems = functions.runWith({ maxInstances: 10 }).https.onCall(async (data, context) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError('unauthenticated', 'Debes iniciar sesión');
-  }
+  requireVerifiedUser(context);
 
   const userId = context.auth.uid;
   const rateCheck = await checkGemsRateLimit(userId);
@@ -250,10 +254,21 @@ exports.earnGems = functions.runWith({ maxInstances: 10 }).https.onCall(async (d
     throw new functions.https.HttpsError('invalid-argument', 'Reason no permitido para earnGems');
   }
 
-  const requestedGems = gemAmountForReason(reason, data && data.meta);
-  if (requestedGems <= 0) {
-    return { success: false, gemsAdded: 0, reason };
-  }
+  // Claim-once de logros: la GEMA del logro se paga una sola vez (flag
+  // gemsClaimed en users/{uid}/achievements/{achievementId}). El mismo doc se
+  // comparte con addXp (xpClaimed) sin bloquearse entre sí. Si el id no llega
+  // (cliente antiguo) se conserva el comportamiento previo topado por el cap
+  // diario, para no romper la migración.
+  const rawAchievementId = data && typeof data.achievementId === 'string'
+    ? data.achievementId
+    : null;
+  const isAchievement =
+    reason === 'achievement' &&
+    rawAchievementId !== null &&
+    /^[A-Za-z0-9_-]{1,64}$/.test(rawAchievementId);
+  const achievementClaimRef = isAchievement
+    ? admin.firestore().doc(`users/${userId}/achievements/${rawAchievementId}`)
+    : null;
 
   const userRef = admin.firestore().doc(`users/${userId}`);
   const dailyGemsRef = getDailyGemsDocRef(userId);
@@ -270,11 +285,64 @@ exports.earnGems = functions.runWith({ maxInstances: 10 }).https.onCall(async (d
 
       const userData = userDoc.data() || {};
       const dailyGemsData = dailyGemsDoc.data() || {};
+
+      // NUEVO-fix anti-farm: la gema del logro paga una sola vez. Antes, un
+      // cliente modificado podía llamar earnGems con reason='achievement' y un
+      // meta.xp alto (hasta 30 gemas, cap diario 200) repetidamente cada día.
+      // Ahora, una vez pagada por completo, la reclamación queda cerrada.
+      if (isAchievement) {
+        const achievementClaimDoc = await transaction.get(achievementClaimRef);
+        if (
+          achievementClaimDoc.exists &&
+          achievementClaimDoc.data()?.gemsClaimed === true
+        ) {
+          return {
+            success: false,
+            alreadyClaimed: true,
+            gemsAdded: 0,
+            balance: userData.learning_gems || 0,
+            dailyTotal: dailyGemsData.total || 0,
+          };
+        }
+      }
+
+      // Anti-forge: for streak-based reasons the day count MUST come from the
+      // server-authoritative streak, never from client-supplied meta. A modified
+      // client could otherwise claim a 365-day milestone with a 1-day streak.
+      const meta = (data && data.meta) || {};
+      let requestedGems;
+      if (reason === 'streak_milestone') {
+        requestedGems = gemAmountForReason(reason, {
+          streakDays: userData.currentStreak || 0,
+        });
+      } else if (reason === 'daily_bonus') {
+        requestedGems = gemAmountForReason(reason, {
+          dayStreak: userData.currentStreak || 0,
+        });
+      } else {
+        requestedGems = gemAmountForReason(reason, meta);
+      }
+      if (requestedGems <= 0) {
+        return { success: false, gemsAdded: 0, reason };
+      }
+
       const credit = applyGemCredit(
         transaction, userRef, userData,
         dailyGemsRef, dailyGemsData,
         reason, requestedGems,
       );
+
+      // Claim-once: marca la gema del logro como pagada SOLO si se otorgó el
+      // monto completo (si el cap diario recortó, queda abierta para otro día).
+      // merge: preserva el xpClaimed que hubiera escrito addXp en el mismo doc.
+      if (isAchievement && requestedGems > 0 && credit.gemsAdded === requestedGems) {
+        transaction.set(achievementClaimRef, {
+          userId,
+          achievementId: rawAchievementId,
+          gemsClaimed: true,
+          gemsClaimedAt: admin.firestore.FieldValue.serverTimestamp(),
+        }, { merge: true });
+      }
 
       return { success: true, reason, ...credit };
     });
@@ -294,9 +362,7 @@ exports.earnGems = functions.runWith({ maxInstances: 10 }).https.onCall(async (d
  * records an idempotent log (no double-spend possible).
  */
 exports.spendGems = functions.runWith({ maxInstances: 10 }).https.onCall(async (data, context) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError('unauthenticated', 'Debes iniciar sesión');
-  }
+  requireVerifiedUser(context);
 
   const userId = context.auth.uid;
   const rateCheck = await checkGemsRateLimit(userId);
@@ -412,9 +478,7 @@ exports.spendGems = functions.runWith({ maxInstances: 10 }).https.onCall(async (
  * HTTPS Callable: Get the authoritative gem balance and daily caps.
  */
 exports.getGemsBalance = functions.runWith({ maxInstances: 5 }).https.onCall(async (data, context) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError('unauthenticated', 'Debes iniciar sesión');
-  }
+  requireVerifiedUser(context);
 
   const userId = context.auth.uid;
   const userRef = admin.firestore().doc(`users/${userId}`);
@@ -435,6 +499,7 @@ exports.getGemsBalance = functions.runWith({ maxInstances: 5 }).https.onCall(asy
 
     return {
       balance: userData.learning_gems || 0,
+      lifetimeEarned: userData.learning_total_gems || 0,
       dailyTotal: dailyGemsData.total || 0,
       dailyCaps: GEM_DAILY_CAPS,
       maxBalance: MAX_GEM_BALANCE,

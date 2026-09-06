@@ -109,6 +109,24 @@ class Stage with _$Stage {
 
   Lesson? get nextLesson => lessons.where((l) => !l.completed).firstOrNull;
 
+  /// Devuelve una copia con [newLessons] como lista plana y las sublistas de
+  /// cada sesion resincronizadas por id. Al cargar, `lessons` y
+  /// `sessions[].lessons` comparten las mismas instancias; si una leccion se
+  /// actualiza solo en la lista plana, las sesiones conservan instancias
+  /// obsoletas (completed=false) y los tiles de sesion nunca reflejan el
+  /// avance. Esta copia preserva la invariante lessons == sessions.expand().
+  Stage withLessons(List<Lesson> newLessons) {
+    final updatedSessions = sessions.map((session) {
+      final updated = session.lessons
+          .map(
+            (l) => newLessons.firstWhere((f) => f.id == l.id, orElse: () => l),
+          )
+          .toList();
+      return session.copyWith(lessons: updated);
+    }).toList();
+    return copyWith(lessons: newLessons, sessions: updatedSessions);
+  }
+
   /// Asserts the invariant that [lessons] is consistent with [sessions].
   /// In debug mode, throws if the flat list doesn't match the grouped structure.
   void assertConsistency() {

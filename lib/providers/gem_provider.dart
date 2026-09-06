@@ -172,6 +172,21 @@ class GemNotifier extends Notifier<GemState> {
       final data = result.data as Map<String, dynamic>;
       final serverBalance = (data['balance'] as num?)?.toInt();
       if (serverBalance != null) syncBalance(serverBalance);
+      // Reconciliación del contador de gemas ganadas de por vida (totalEarned)
+      // contra la fuente server-authoritative (learning_total_gems). Solo se
+      // sube si el servidor reporta un valor positivo y mayor, para no borrar
+      // el total local pre-existente durante la migración y mantener el
+      // contador sin decrecer (los milestones dependen de que sea monotónico).
+      final lifetimeEarned = (data['lifetimeEarned'] as num?)?.toInt();
+      if (lifetimeEarned != null && lifetimeEarned > 0) {
+        _repo.setTotalEarned(
+          _repo.totalEarned > lifetimeEarned
+              ? _repo.totalEarned
+              : lifetimeEarned,
+        );
+        _repo.save();
+        state = _load();
+      }
     } catch (e) {
       AppLogger().warning(
         'GemNotifier: failed to sync balance from server: $e',
@@ -188,26 +203,46 @@ class GemNotifier extends Notifier<GemState> {
   /// On failure, queues the earn for later retry so gems are never lost.
   Future<void> _persistEarnToServer(
     String reason,
-    Map<String, dynamic> meta,
-  ) async {
+    Map<String, dynamic> meta, {
+    String? achievementId,
+  }) async {
     final idempotencyKey =
         '${reason}_${DateTime.now().microsecondsSinceEpoch}_${Random().nextInt(1 << 20)}';
     try {
+      final payload = <String, dynamic>{
+        'reason': reason,
+        'meta': meta,
+        'idempotencyKey': idempotencyKey,
+      };
+      // Claim-once de logros: el achievementId viaja top-level para que
+      // earnGems pueda marcar users/{uid}/achievements/{id} y pagar UNA vez.
+      // También se mete en meta para que sobreviva el round-trip de la cola
+      // offline (jsonEncode) y el reintento lo reenvíe top-level.
+      if (achievementId != null) {
+        payload['achievementId'] = achievementId;
+        meta['achievementId'] = achievementId;
+      }
       final result = await FirebaseFunctions.instance
           .httpsCallable('earnGems')
-          .call({
-            'reason': reason,
-            'meta': meta,
-            'idempotencyKey': idempotencyKey,
-          })
+          .call(payload)
           .timeout(const Duration(seconds: 10));
       final data = result.data as Map<String, dynamic>;
       final serverBalance = (data['balance'] as num?)?.toInt();
       if (serverBalance != null) syncBalance(serverBalance);
     } catch (e) {
-      // Offline or server error: queue for retry so gems are never lost.
-      _enqueuePendingEarn(reason, meta, idempotencyKey);
-      AppLogger().warning('GemNotifier: earnGems($reason) queued for retry');
+      // A permanent "invalid-argument" rejection (unknown/forbidden reason)
+      // can never succeed on retry, so don't queue it forever. Everything else
+      // (offline/network/server timeout) is transient: queue so gems survive.
+      final permanent =
+          e is FirebaseFunctionsException &&
+          e.code.contains('invalid-argument');
+      if (!permanent) {
+        _enqueuePendingEarn(reason, meta, idempotencyKey);
+      } else {
+        AppLogger().warning(
+          'GemNotifier: earnGems($reason) permanently rejected, not retrying',
+        );
+      }
     }
   }
 
@@ -252,6 +287,11 @@ class GemNotifier extends Notifier<GemState> {
           if (idempotencyKey != null) {
             payload['idempotencyKey'] = idempotencyKey;
           }
+          // Reenvía el achievementId de los earns de logro encolados offline.
+          final queuedAchievementId = meta['achievementId'];
+          if (queuedAchievementId is String) {
+            payload['achievementId'] = queuedAchievementId;
+          }
           await FirebaseFunctions.instance
               .httpsCallable('earnGems')
               .call(payload)
@@ -264,6 +304,21 @@ class GemNotifier extends Notifier<GemState> {
       prefs.setStringList(_keyPendingEarns, remaining);
     } catch (e, stack) {
       AppLogger().warning('GemNotifier: retry pending earns failed', e, stack);
+    }
+  }
+
+  /// Vacía la cola de acreditaciones de gemas pendientes. La cola es una clave
+  /// global de prefs (`gems_pending_earn_queue`), no por usuario: si no se
+  /// limpia al cerrar sesión, el siguiente usuario que inicie sesión en el
+  /// mismo dispositivo reenviaría (vía `_retryPendingEarns`) los earns offline
+  /// del usuario anterior a SU cuenta del servidor (crédito cruzado). Se llama
+  /// desde el flujo de sign-out, igual que se vacía la cola offline de items.
+  Future<void> clearPendingEarns() async {
+    try {
+      final prefs = ref.read(prefsProvider);
+      await prefs.remove(_keyPendingEarns);
+    } catch (e, stack) {
+      AppLogger().warning('GemNotifier: clear pending earns failed', e, stack);
     }
   }
 
@@ -308,7 +363,27 @@ class GemNotifier extends Notifier<GemState> {
             .firstOrNull ??
         5;
     addGems(gems, reason: 'daily_bonus');
-    _persistEarnToServer('daily_bonus', {'dayStreak': dayStreak});
+    // NOTA: la persistencia a earnGems se difiere a _persistDeferredEarnToServer.
+    // La acreditación al servidor debe ocurrir DESPUÉS de que incrementStreak
+    // suba la racha (el servidor calcula el bono leyendo currentStreak actual).
+    // Si persistiéramos aquí, earnGems leería la racha vieja (0 o tier menor)
+    // y el bono local quedaría fantasma.
+  }
+
+  /// Persiste en el servidor una acreditación de gemas ligada a la racha
+  /// (daily_bonus / streak_milestone) que debe esperar a que el servidor
+  /// confirme el nuevo valor de la racha. Se invoca desde el sync de racha.
+  Future<void> persistDeferredStreakEarn(
+    String reason, {
+    required int dayStreak,
+    int? milestone,
+  }) async {
+    if (reason == 'streak_milestone') {
+      if (milestone == null) return;
+      await _persistEarnToServer('streak_milestone', {'streakDays': milestone});
+    } else {
+      await _persistEarnToServer('daily_bonus', {'dayStreak': dayStreak});
+    }
   }
 
   /// Award gems from achievement unlock.
@@ -316,10 +391,12 @@ class GemNotifier extends Notifier<GemState> {
   /// Uses floor() to match the server-authoritative formula (gems.js):
   /// floor(xp / 4) — a modified client cannot get more gems than the server
   /// will credit on reconciliation.
-  void awardAchievementGems(int xpReward) {
+  void awardAchievementGems(int xpReward, {String? achievementId}) {
     final gems = (xpReward / 4).floor().clamp(2, 30);
     addGems(gems, reason: 'achievement');
-    _persistEarnToServer('achievement', {'xp': xpReward});
+    _persistEarnToServer('achievement', {
+      'xp': xpReward,
+    }, achievementId: achievementId);
   }
 
   /// Award gems for completing a perfect lesson (all correct).
@@ -337,7 +414,10 @@ class GemNotifier extends Notifier<GemState> {
     if (prefs.getString(lastKey) == today) return;
     prefs.setString(lastKey, today);
     addGems(10, reason: 'first_lesson_of_day');
-    _persistEarnToServer('first_lesson_of_day', const {});
+    // No earnGems call: the server already credits this source atomically
+    // inside completeLesson (economic.js). Persisting it here would be
+    // permanently rejected by earnGems (it isn't an EARN_GEMS_REASON) and
+    // retried forever, poisoning the pending queue.
   }
 
   /// Whether the first-lesson-of-day bonus can still be awarded today.
@@ -365,7 +445,10 @@ class GemNotifier extends Notifier<GemState> {
         .firstOrNull;
     if (gems == null) return;
     addGems(gems, reason: 'streak_milestone');
-    _persistEarnToServer('streak_milestone', {'streakDays': streakDays});
+    // NOTA: la persistencia a earnGems se difiere (ver awardDailyBonus): debe
+    // ocurrir después de que incrementStreak confirme la racha en el servidor,
+    // de lo contrario el servidor leería la racha vieja y no acreditaría el
+    // hito (gemas fantasma locales).
   }
 
   /// Award gems for completing a daily mission.
@@ -374,4 +457,22 @@ class GemNotifier extends Notifier<GemState> {
     addGems(12, reason: 'mission');
     _persistEarnToServer('mission', const {});
   }
+
+  /// Award gems for completing a review session.
+  /// Fixed 6 gems per review (matches gems.js GEM_REWARDS.review).
+  void awardReviewGems() {
+    addGems(6, reason: 'review');
+    _persistEarnToServer('review', const {});
+  }
+
+  /// Award gems for completing a mini-game.
+  /// Fixed 5 gems per game (matches gems.js GEM_REWARDS.mini_game). The server
+  /// enforces the 30/day anti-farm cap, so the local credit stays optimistic
+  /// and is reconciled to the authoritative balance on the next sync.
+  void awardMiniGameGems() {
+    addGems(5, reason: 'mini_game');
+    _persistEarnToServer('mini_game', const {});
+  }
 }
+
+final gemProvider = NotifierProvider<GemNotifier, GemState>(GemNotifier.new);

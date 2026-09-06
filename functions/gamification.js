@@ -4,6 +4,7 @@ const { getDailyXpDocRef, computeCappedXp, MAX_DAILY_XP } = require('./economic'
 const gems = require('./gems');
 const sagenpass = require('./sagenpass');
 const inventory = require('./inventory');
+const { requireVerifiedUser } = require('./auth_guard');
 
 // ══════════════════════════════════════════════════════════════════
 // GAMIFICATION FUNCTIONS — Server-authoritative daily claims
@@ -17,6 +18,22 @@ const DAILY_CHEST_REWARDS = {
   silver: { xp: 15 },
   gold: { xp: 20 },
   legendary: { xp: 25 },
+};
+
+// Server-authoritative Sagen Pass reward catalog — mirrors the client
+// (lib/models/sagen_pass.dart allLevels) so rewards are actually delivered
+// server-side instead of being decorative. Cosmetics (10/50) stay cosmetic and
+// are merely recorded as claimed; XP, Titanium Shield and chest rewards are
+// granted here, atomically and idempotently (claims are one-time per level).
+const SAGEN_PASS_REWARD = (level) => {
+  if (level === 10 || level === 50) {
+    return { type: 'cosmetic', key: level === 10 ? 'rewardCopperFrame' : 'rewardIceFlame' };
+  }
+  if (level === 25) return { type: 'chest', key: 'rewardEpicChest', chest: 'epic' };
+  if (level % 10 === 0) return { type: 'chest', key: 'rewardGoldenChest', chest: 'golden' };
+  if (level % 5 === 0) return { type: 'xp', key: 'reward100Xp', xp: 100 };
+  if (level % 3 === 0) return { type: 'item', key: 'rewardTitaniumShield', item: 'titaniumShield' };
+  return { type: 'xp', key: 'reward200Exp', xp: 200 };
 };
 
 /**
@@ -54,9 +71,7 @@ async function checkDistributedRateLimit(uid, windowMs, maxRequests) {
  * Server validates: user hasn't claimed today, streak exists.
  */
 exports.claimDailyChest = functions.runWith({ maxInstances: 5 }).https.onCall(async (data, context) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError('unauthenticated', 'Debes iniciar sesión');
-  }
+  requireVerifiedUser(context);
 
   const userId = context.auth.uid;
   const rateCheck = await checkDistributedRateLimit(userId, 60 * 1000, 5);
@@ -93,7 +108,10 @@ exports.claimDailyChest = functions.runWith({ maxInstances: 5 }).https.onCall(as
       const lastDailyChest = userData.last_daily_chest || '';
 
       if (lastDailyChest === today) {
-        return { success: false, alreadyClaimed: true };
+        // NUEVO-fix (chest desync): el servidor devuelve la fecha autoritativa
+        // para que el cliente la persista y NO vuelva a mostrar el cofre en el
+        // siguiente arranque (antes quedaba en bucle "reclamado → reaparece").
+        return { success: false, alreadyClaimed: true, lastClaimedDate: today };
       }
 
       const dailyData = dailyXpDoc.data() || {};
@@ -164,6 +182,7 @@ exports.claimDailyChest = functions.runWith({ maxInstances: 5 }).https.onCall(as
         xp: cappedXp,
         leveledUp: newLevel > currentLevel,
         newLevel,
+        lastClaimedDate: today,
         gems: {
           added: gemCredit.gemsAdded,
           balance: gemCredit.balance,
@@ -196,9 +215,7 @@ exports.claimDailyChest = functions.runWith({ maxInstances: 5 }).https.onCall(as
  * Server verifies level is earned and not yet claimed.
  */
 exports.claimSagenPassReward = functions.runWith({ maxInstances: 5 }).https.onCall(async (data, context) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError('unauthenticated', 'Debes iniciar sesión');
-  }
+  requireVerifiedUser(context);
 
   const userId = context.auth.uid;
   const rateCheck = await checkDistributedRateLimit(userId, 60 * 1000, 10);
@@ -212,17 +229,26 @@ exports.claimSagenPassReward = functions.runWith({ maxInstances: 5 }).https.onCa
   }
 
   const userRef = admin.firestore().doc(`users/${userId}`);
+  const dailyXpRef = getDailyXpDocRef(userId);
 
   try {
     const result = await admin.firestore().runTransaction(async (transaction) => {
-      const userDoc = await transaction.get(userRef);
+      const [userDoc, dailyXpDoc] = await Promise.all([
+        transaction.get(userRef),
+        transaction.get(dailyXpRef),
+      ]);
       if (!userDoc.exists) {
         throw new functions.https.HttpsError('not-found', 'Usuario no encontrado');
       }
 
       const userData = userDoc.data() || {};
-      const currentLevel = userData.sagen_pass_level || 1;
-      const claimedLevels = userData.sagen_pass_claimed || [];
+
+      // Season rotation: a claim arriving after the window expired starts a
+      // fresh season — previous claimed levels, SP and bank chests do NOT
+      // carry over (the update below clears them atomically).
+      const season = sagenpass.resolveSeason(userData, Date.now());
+      const currentLevel = season.level;
+      const claimedLevels = season.claimed;
 
       if (level > currentLevel) {
         throw new functions.https.HttpsError('failed-precondition', 'Nivel no alcanzado');
@@ -231,32 +257,72 @@ exports.claimSagenPassReward = functions.runWith({ maxInstances: 5 }).https.onCa
         return { success: false, alreadyClaimed: true };
       }
 
-      // Server-side season validation: ensure seasonStart is stored server-side
-      let seasonStart = userData.sagen_pass_season_start;
-      if (!seasonStart) {
-        // First-time: initialize seasonStart server-side
-        seasonStart = admin.firestore.FieldValue.serverTimestamp();
-        transaction.update(userRef, {
-          sagen_pass_season_start: seasonStart,
-        });
+      const reward = SAGEN_PASS_REWARD(level);
+
+      // Single atomic update: mark claimed + grant the reward server-side.
+      const updates = {
+        sagen_pass_claimed: [...claimedLevels, level],
+      };
+      if (season.rotated) {
+        updates.sagen_pass_level = 1;
+        updates.sagen_pass_sp = 0;
+        updates.sagen_pass_chests = [];
+        updates.sagen_pass_season_start = admin.firestore.FieldValue.serverTimestamp();
       }
 
-      const newClaimed = [...claimedLevels, level];
-      transaction.update(userRef, {
-        sagen_pass_claimed: newClaimed,
-      });
+      const seasonStartISO = season.seasonStartISO;
 
-      // Convert Timestamp to ISO string for client consumption
-      let seasonStartISO = null;
-      if (seasonStart && seasonStart.toDate) {
-        seasonStartISO = seasonStart.toDate().toISOString();
-      } else if (seasonStart && seasonStart._seconds) {
-        seasonStartISO = new Date(seasonStart._seconds * 1000).toISOString();
-      } else if (typeof seasonStart === 'string') {
-        seasonStartISO = seasonStart;
+      const rewardInfo = { key: reward.key, type: reward.type, granted: 0 };
+
+      if (reward.type === 'xp') {
+        // XP is granted inside the same daily cap as every other source.
+        const dailyData = dailyXpDoc.data() || {};
+        const xpEarnedToday = dailyData.total || 0;
+        const { cappedXp } = computeCappedXp(xpEarnedToday, reward.xp);
+        rewardInfo.granted = cappedXp;
+        rewardInfo.requested = reward.xp;
+        if (cappedXp > 0) {
+          const currentTotalXp = userData.learning_total_xp || 0;
+          const newTotalXp = currentTotalXp + cappedXp;
+          updates.learning_total_xp = newTotalXp;
+          updates.learning_level = Math.floor(newTotalXp / 100) + 1;
+          updates._ts_learning_total_xp = admin.firestore.FieldValue.serverTimestamp();
+          rewardInfo.totalXp = newTotalXp;
+          rewardInfo.level = updates.learning_level;
+          transaction.set(dailyXpRef, {
+            total: admin.firestore.FieldValue.increment(cappedXp),
+            sagenPass: admin.firestore.FieldValue.increment(cappedXp),
+            updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+          }, { merge: true });
+        }
+      } else if (reward.type === 'item') {
+        // Titanium Shield is granted server-side (used as streak freeze).
+        const currentShields = userData.streak_shields || 0;
+        updates.streak_shields = currentShields + 1;
+        rewardInfo.granted = 1;
+        rewardInfo.totalShields = updates.streak_shields;
+      } else if (reward.type === 'chest') {
+        // The chest is "openable" only once per level via rollChestDrop
+        // (source='sagen'), which consumes it from this bank. A modified
+        // client cannot fabricate or duplicate it.
+        const bank = Array.isArray(userData.sagen_pass_chests)
+          ? userData.sagen_pass_chests
+          : [];
+        updates.sagen_pass_chests = [...bank, reward.chest];
+        rewardInfo.granted = 1;
+        rewardInfo.chest = reward.chest;
+        rewardInfo.sagenPassChests = updates.sagen_pass_chests;
       }
 
-      return { success: true, claimed: level, claimedLevels: newClaimed, seasonStart: seasonStartISO };
+      transaction.update(userRef, updates);
+
+      return {
+        success: true,
+        claimed: level,
+        claimedLevels: updates.sagen_pass_claimed,
+        seasonStart: seasonStartISO,
+        reward: rewardInfo,
+      };
     });
 
     functions.logger.info('Sagen Pass reward claimed', { userId, level });
@@ -273,9 +339,7 @@ exports.claimSagenPassReward = functions.runWith({ maxInstances: 5 }).https.onCa
  * Returns server-side seasonStart and level to reconcile with client.
  */
 exports.getSagenPassSeason = functions.runWith({ maxInstances: 5 }).https.onCall(async (data, context) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError('unauthenticated', 'Debes iniciar sesión');
-  }
+  requireVerifiedUser(context);
 
   const userId = context.auth.uid;
   const userRef = admin.firestore().doc(`users/${userId}`);
@@ -288,24 +352,19 @@ exports.getSagenPassSeason = functions.runWith({ maxInstances: 5 }).https.onCall
 
     const userData = userDoc.data() || {};
 
-    // Convert Timestamp to ISO string for client consumption
-    let seasonStartISO = null;
-    const raw = userData.sagen_pass_season_start;
-    if (raw && raw.toDate) {
-      seasonStartISO = raw.toDate().toISOString();
-    } else if (raw && raw._seconds) {
-      seasonStartISO = new Date(raw._seconds * 1000).toISOString();
-    } else if (typeof raw === 'string') {
-      seasonStartISO = raw;
-    }
+    // Effective season state: an expired window rotates the visible pass to a
+    // fresh season (level 1, no claims) so the client can never re-import a
+    // previous season's claimedLevels after its local reset.
+    const season = sagenpass.resolveSeason(userData, Date.now());
 
     return {
-      seasonStart: seasonStartISO,
-      level: userData.sagen_pass_level || 1,
-      sp: userData.sagen_pass_sp || 0,
-      claimed: userData.sagen_pass_claimed || [],
+      seasonStart: season.seasonStartISO,
+      level: season.level,
+      sp: season.sp,
+      claimed: season.claimed,
       premium: userData.sagen_pass_active === true,
       maxLevel: 50,
+      rotated: season.rotated,
     };
   } catch (error) {
     if (error instanceof functions.https.HttpsError) throw error;
@@ -315,14 +374,46 @@ exports.getSagenPassSeason = functions.runWith({ maxInstances: 5 }).https.onCall
 });
 
 /**
+ * HTTPS Callable: Get authoritative daily chest status.
+ * NUEVO-fix (chest desync): permite al cliente reconciliar el ledger local
+ * (SharedPreferences) con el autoritativo del servidor (users/{uid}.
+ * last_daily_chest) al arrancar, cerrando el bucle "cofre reclamado que
+ * reaparece" y el caso de recompensa "oculta por prefs stale".
+ */
+exports.getDailyChestStatus = functions.runWith({ maxInstances: 5 }).https.onCall(async (data, context) => {
+  requireVerifiedUser(context);
+
+  const userId = context.auth.uid;
+  const userRef = admin.firestore().doc(`users/${userId}`);
+
+  try {
+    const userDoc = await userRef.get();
+    if (!userDoc.exists) {
+      throw new functions.https.HttpsError('not-found', 'Usuario no encontrado');
+    }
+
+    const userData = userDoc.data() || {};
+    const today = new Date().toISOString().split('T')[0];
+    const lastClaimedDate = userData.last_daily_chest || null;
+
+    return {
+      lastClaimedDate,
+      available: lastClaimedDate !== today,
+    };
+  } catch (error) {
+    if (error instanceof functions.https.HttpsError) throw error;
+    functions.logger.error('getDailyChestStatus error', error);
+    throw new functions.https.HttpsError('internal', 'Error al obtener estado del cofre');
+  }
+});
+
+/**
  * HTTPS Callable: Roll chest drop after lesson completion.
  * Server rolls rewards based on chest type with weighted random categories.
  * Uses idempotency via transaction_logs to prevent double-claiming.
  */
 exports.rollChestDrop = functions.runWith({ maxInstances: 5 }).https.onCall(async (data, context) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError('unauthenticated', 'Debes iniciar sesión');
-  }
+  requireVerifiedUser(context);
 
   const userId = context.auth.uid;
   const rateCheck = await checkDistributedRateLimit(userId, 60 * 1000, 10);
@@ -333,7 +424,7 @@ exports.rollChestDrop = functions.runWith({ maxInstances: 5 }).https.onCall(asyn
   // NUEVO-02: the rarity is decided SERVER-SIDE from verifiable user state,
   // never from the client. The client chestType is ignored entirely.
   const { source, lessonId, contextId, luckBoostActive } = data;
-  const validSources = ['lesson', 'streak', 'mission'];
+  const validSources = ['lesson', 'streak', 'mission', 'sagen'];
   const src = validSources.includes(source) ? source : 'lesson';
 
   const userRef = admin.firestore().doc(`users/${userId}`);
@@ -360,15 +451,20 @@ exports.rollChestDrop = functions.runWith({ maxInstances: 5 }).https.onCall(asyn
       // Server-authoritative chest type derivation.
       let chestType;
       let idempotencyKey;
+      // Set for source 'sagen': which bank chest is consumed by this roll.
+      let sagenBankChest = null;
       if (src === 'streak') {
-        // Streak milestones must be verified against the server streak.
+        // Streak milestones must be verified against the server streak and only
+        // apply at the exact milestone (a re-request of an older milestone must
+        // not farm silver/gold chests, even on a later day).
         const m = /^streak_(\d+)$/.exec(contextId || '');
         const milestone = m ? parseInt(m[1], 10) : 0;
         const milestoneMap = { 7: 'silver', 14: 'gold', 30: 'gold', 100: 'legendary' };
         const serverStreak = userData.currentStreak || 0;
-        chestType = milestoneMap[milestone] && serverStreak >= milestone
-          ? milestoneMap[milestone]
-          : 'bronze';
+        if (!milestoneMap[milestone] || serverStreak !== milestone) {
+          throw new functions.https.HttpsError('failed-precondition', 'Hito de racha no verificado');
+        }
+        chestType = milestoneMap[milestone];
         idempotencyKey = `${userId}_chest_streak_${milestone}_${today}`;
       } else if (src === 'mission') {
         // Missions are client-tracked: roll the rarity server-side so a
@@ -380,15 +476,37 @@ exports.rollChestDrop = functions.runWith({ maxInstances: 5 }).https.onCall(asyn
         else chestType = 'bronze';
         const missionId = (contextId || 'mission').replace(/[^a-zA-Z0-9_-]/g, '_');
         idempotencyKey = `${userId}_chest_mission_${missionId}_${today}`;
+      } else if (src === 'sagen') {
+        // Sagen Pass chest bank: the chest was granted at claim time and can
+        // only be rolled ONCE (consumed from the bank), so a modified client
+        // cannot farm or duplicate it. The bank is scoped to the CURRENT
+        // season: chests banked in an expired season are not openable here.
+        const m = /^pass_(\d+)$/.exec(contextId || '');
+        const passLevel = m ? parseInt(m[1], 10) : 0;
+        const levelReward = SAGEN_PASS_REWARD(passLevel);
+        const season = sagenpass.resolveSeason(userData, Date.now());
+        const rawBank = Array.isArray(userData.sagen_pass_chests)
+          ? userData.sagen_pass_chests
+          : [];
+        const bank = season.rotated ? [] : rawBank;
+        if (!levelReward || levelReward.type !== 'chest' || !bank.includes(levelReward.chest)) {
+          throw new functions.https.HttpsError('failed-precondition', 'Cofre del pass no disponible');
+        }
+        chestType = 'gold';
+        sagenBankChest = levelReward.chest;
+        idempotencyKey = `${userId}_chest_sagen_${passLevel}`;
       } else {
-        // Lesson chest: derive the tier from the server-authoritative lesson
-        // counter (the same mapping the client uses), keyed by that counter so
-        // a modified client cannot farm chests between real lessons.
+        // Lesson chest: only at real milestones (3rd/5th lesson — the same
+        // gate the legit client uses), derived from the server-authoritative
+        // counter. Anything else is rejected so a modified client cannot farm
+        // chests between real lessons.
         const lessons = userData.lessonsCompleted || 0;
-        if (lessons > 0 && lessons % 15 === 0) chestType = 'legendary';
-        else if (lessons > 0 && lessons % 5 === 0) chestType = 'gold';
-        else if (lessons > 0 && lessons % 3 === 0) chestType = 'silver';
-        else chestType = 'bronze';
+        if (lessons <= 0 || (lessons % 3 !== 0 && lessons % 5 !== 0)) {
+          throw new functions.https.HttpsError('failed-precondition', 'No hay cofre disponible para esta lección');
+        }
+        if (lessons % 15 === 0) chestType = 'legendary';
+        else if (lessons % 5 === 0) chestType = 'gold';
+        else chestType = 'silver';
         idempotencyKey = `${userId}_chest_lesson_${lessons}_${today}`;
       }
 
@@ -414,7 +532,7 @@ exports.rollChestDrop = functions.runWith({ maxInstances: 5 }).https.onCall(asyn
         legendary: [50, 75],
       };
 
-      const xpRange = xpRanges[chestType];
+      const xpRange = xpRanges[chestType] || xpRanges.bronze;
       const xp = Math.floor(Math.random() * (xpRange[1] - xpRange[0] + 1)) + xpRange[0];
       const dailyData = dailyXpDoc.data() || {};
       const xpEarnedToday = dailyData.total || 0;
@@ -450,6 +568,16 @@ exports.rollChestDrop = functions.runWith({ maxInstances: 5 }).https.onCall(asyn
 
       if (streakShield > 0) {
         updates.streak_shields = currentShields + streakShield;
+      }
+
+      // Consume the Sagen Pass chest from the bank (one roll per bank entry).
+      if (sagenBankChest) {
+        const bank = Array.isArray(userData.sagen_pass_chests)
+          ? userData.sagen_pass_chests
+          : [];
+        const nextBank = [...bank];
+        nextBank.splice(nextBank.indexOf(sagenBankChest), 1);
+        updates.sagen_pass_chests = nextBank;
       }
 
       transaction.update(userRef, updates);
@@ -532,9 +660,7 @@ exports.rollChestDrop = functions.runWith({ maxInstances: 5 }).https.onCall(asyn
  * HTTPS Callable: Record ad reward (server-validated daily limit).
  */
 exports.claimAdReward = functions.runWith({ maxInstances: 3 }).https.onCall(async (data, context) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError('unauthenticated', 'Debes iniciar sesión');
-  }
+  requireVerifiedUser(context);
 
   const userId = context.auth.uid;
   const rateCheck = await checkDistributedRateLimit(userId, 60 * 1000, 10);

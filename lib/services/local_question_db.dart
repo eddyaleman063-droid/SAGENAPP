@@ -142,6 +142,24 @@ class LocalQuestionDB {
     return 'ac_s${stage}_ses${session}_l$lesson';
   }
 
+  /// Siembra perezosamente los stages propietarios de unos ids. La cola de
+  /// repaso persiste en prefs; si el DB de preguntas fue re-sembrado (cambio
+  /// de checksum en un update del bank) las filas viejas se borran. Sin este
+  /// guard el repaso serviría menos preguntas de las prometidas.
+  Future<void> _ensureOwnedStagesSeeded(Iterable<String> ids) async {
+    final needed = <String>{};
+    for (final id in ids) {
+      final match = _questionIdPattern.firstMatch(id);
+      if (match == null) continue;
+      final stage = int.tryParse(match.group(1) ?? '') ?? 0;
+      if (stage < 1) continue;
+      needed.add('ac_st$stage');
+    }
+    for (final stageId in needed) {
+      await _ensureStageSeeded(stageId);
+    }
+  }
+
   /// Validates a question for structural integrity.
   /// Returns true if the question is valid, false if it should be skipped.
   static bool _validateQuestion(Map<String, dynamic> q) {
@@ -532,7 +550,7 @@ class LocalQuestionDB {
   Future<List<Challenge>> getQuestionsForLesson(
     String stageId,
     String lessonId, {
-    int count = 5,
+    int count = 15,
   }) async {
     try {
       await _ensureStageSeeded(stageId);
@@ -543,6 +561,16 @@ class LocalQuestionDB {
         await _rebuildIdCache(db, lessonId: lessonId);
       }
       var ids = _idCacheByLesson[lessonId] ?? const [];
+
+      // Precisión milimétrica: si la lección tiene suficientes preguntas
+      // curadas del bank (ids `ac_s*_ses*_l*_q*`), servimos SOLO esas. Las
+      // preguntas sintéticas (pool_/topic_/type_/diversity_) quedan como
+      // respaldo y para getRandomByType, pero nunca sustituyen al contenido
+      // autoritativo cuando no hace falta.
+      final bankIds = ids.where(_questionIdPattern.hasMatch).toList();
+      if (bankIds.length >= count) {
+        ids = bankIds;
+      }
 
       // Fallback: the runtime curriculum lessonIds differ from the
       // generated question bank's lessonIds (98 lessons were empty).
@@ -567,7 +595,17 @@ class LocalQuestionDB {
         where: 'id IN ($placeholders)',
         whereArgs: selectedIds,
       );
-      return maps.map(_rowToChallenge).toList();
+      // SQLite devuelve filas en orden de rowid. Para que el orden devuelto
+      // coincida con la selección de _pickRandomIds (que en el caso pool<=count
+      // baraja el orden con seed temporal por intento), se reordena por
+      // `selectedIds`. Así repetir una lección no fija posiciones memorizables.
+      final byId = <String, Challenge>{
+        for (final c in maps.map(_rowToChallenge)) c.id: c,
+      };
+      return [
+        for (final id in selectedIds)
+          if (byId.containsKey(id)) byId[id]!,
+      ];
     } catch (e) {
       AppLogger().error('LocalQuestionDB.getQuestionsForLesson failed', e);
       return [];
@@ -614,6 +652,7 @@ class LocalQuestionDB {
 
   Future<Challenge?> getById(String id) async {
     try {
+      await _ensureOwnedStagesSeeded([id]);
       final db = await database;
       final maps = await db.query(
         'questions',
@@ -632,6 +671,7 @@ class LocalQuestionDB {
   Future<List<Challenge>> getByIds(List<String> ids) async {
     if (ids.isEmpty) return const [];
     try {
+      await _ensureOwnedStagesSeeded(ids);
       final db = await database;
       final placeholders = List.filled(ids.length, '?').join(',');
       final maps = await db.query(
@@ -639,7 +679,15 @@ class LocalQuestionDB {
         where: 'id IN ($placeholders)',
         whereArgs: ids,
       );
-      return maps.map(_rowToChallenge).toList();
+      // SQLite devuelve filas en orden de rowid; reordenar por `ids` para
+      // preservar la prioridad de la cola de repaso (SM-2: vencimiento primero).
+      final byId = <String, Challenge>{
+        for (final c in maps.map(_rowToChallenge)) c.id: c,
+      };
+      return [
+        for (final id in ids)
+          if (byId.containsKey(id)) byId[id]!,
+      ];
     } catch (e) {
       AppLogger().error('LocalQuestionDB.getByIds failed', e);
       return const [];
@@ -776,13 +824,28 @@ class LocalQuestionDB {
     required int seed,
   }) {
     if (pool.isEmpty) return [];
-    if (pool.length <= count) return List.from(pool);
+    // Precisión por intento: se conserva SIEMPRE la misma selección por
+    // lección (el set no depende del tiempo), pero cuando hay que servirlas
+    // todas se baraja el ORDEN con un seed temporal. Así repetir una lección
+    // no fija posiciones memorizables (q001 nunca cae siempre primero).
+    if (pool.length <= count) {
+      final list = List.of(pool);
+      final rng = _SecureRandom(seed + DateTime.now().microsecondsSinceEpoch);
+      for (var i = list.length - 1; i > 0; i--) {
+        final j = rng.nextInt(i + 1);
+        final tmp = list[i];
+        list[i] = list[j];
+        list[j] = tmp;
+      }
+      return list;
+    }
     // Deduplicate pool to avoid infinite loop with duplicate IDs
     final uniquePool = pool.toSet().toList();
     if (uniquePool.length <= count) return List.from(uniquePool);
-    final rng = seed >= 0
-        ? _SecureRandom(seed)
-        : _SecureRandom(DateTime.now().microsecondsSinceEpoch);
+    // El seed puede ser un hashCode negativo (int firmado de 32 bits); forzar
+    // la magnitud positiva mantiene la selección del set DETERMINISTA por
+    // lección, sin depender del reloj, sea cual sea el signo (NUEVO-fix).
+    final rng = _SecureRandom(seed & 0x7fffffff);
     final selected = <String>{};
     while (selected.length < count && selected.length < uniquePool.length) {
       selected.add(uniquePool[rng.nextInt(uniquePool.length)]);

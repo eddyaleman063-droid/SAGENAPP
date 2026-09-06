@@ -102,16 +102,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
         backgroundColor: context.surfaceBackground,
         body: Center(
           child: Padding(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.all(AppSpacing.xxl),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(
-                  Icons.error_outline_rounded,
-                  size: 48,
-                  color: context.textTertiary,
+                const ExcludeSemantics(
+                  child: SageEmotionWidget(emotion: SageEmotion.worried),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppSpacing.lg),
                 Text(
                   l.errorContentLoadFailed,
                   style: AppTextStyle.bodyLg.copyWith(
@@ -119,8 +117,18 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
                   ),
                   textAlign: TextAlign.center,
                 ),
+                const SizedBox(height: AppSpacing.xxl),
+                Semantics(
+                  button: true,
+                  label: l.retry,
+                  child: ElevatedButton.icon(
+                    onPressed: () => ref.invalidate(learningProvider),
+                    icon: const Icon(Icons.refresh_rounded),
+                    label: Text(l.retry),
+                  ),
+                ),
               ],
-            ),
+            ).animate().fadeIn(duration: 400.ms).slideY(begin: 0.05),
           ),
         ),
       );
@@ -142,7 +150,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
           onRefresh: () async {
             ref.invalidate(learningProvider);
             ref.invalidate(achievementProvider);
-            await Future<void>.delayed(const Duration(milliseconds: 500));
+            await Future<void>.delayed(AppMotion.medium);
           },
           child: CustomScrollView(
             slivers: [
@@ -338,10 +346,20 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
                           childAspectRatio: 0.85,
                         ),
                     delegate: SliverChildBuilderDelegate(
-                      (ctx, i) => AchievementCard(
-                        achievement: achievements.achievements[i],
-                        dark: dark,
-                      ),
+                      (ctx, i) =>
+                          AchievementCard(
+                                achievement: achievements.achievements[i],
+                                dark: dark,
+                              )
+                              .animate(
+                                delay: Duration(milliseconds: 100 + i * 60),
+                              )
+                              .fadeIn(duration: 300.ms)
+                              .scale(
+                                begin: const Offset(0.9, 0.9),
+                                duration: 300.ms,
+                                curve: Curves.easeOut,
+                              ),
                       childCount: achievements.achievements.length,
                     ),
                   ),

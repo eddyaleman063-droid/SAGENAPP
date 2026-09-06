@@ -7,6 +7,8 @@ import '../../../core/theme/theme_constants.dart';
 import '../../../models/learning/stage.dart';
 
 import '../../../ui/widgets/common/skip_to_content.dart';
+import '../../../ui/widgets/common/sage_emotion_widget.dart';
+import '../../../services/sage_emotion_service.dart';
 import '../../../ui/widgets/home/home_header.dart';
 import '../../../ui/widgets/home/hero_mission_card.dart';
 import '../../../ui/widgets/home/learning_track_tile.dart';
@@ -129,7 +131,7 @@ class _DashboardHomeScreenState extends ConsumerState<DashboardHomeScreen>
                     ),
                   ),
                 ],
-              ),
+              ).animate().fadeIn(duration: 400.ms).slideY(begin: 0.05),
             ),
           ),
         ),
@@ -217,9 +219,6 @@ class _DashboardHomeScreenState extends ConsumerState<DashboardHomeScreen>
                                     lesson.id,
                                   );
                                   if (stage != null) {
-                                    ref
-                                        .read(sessionProvider.notifier)
-                                        .startSession(stage.id, lesson.id);
                                     context.pushNamed(
                                       'lesson-session',
                                       pathParameters: {
@@ -269,11 +268,10 @@ class _DashboardHomeScreenState extends ConsumerState<DashboardHomeScreen>
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                ExcludeSemantics(
-                                  child: Icon(
-                                    Icons.school_rounded,
+                                const ExcludeSemantics(
+                                  child: SageEmotionWidget(
+                                    emotion: SageEmotion.curious,
                                     size: 48,
-                                    color: context.subtle,
                                   ),
                                 ),
                                 const SizedBox(height: AppSpacing.md),
@@ -303,21 +301,34 @@ class _DashboardHomeScreenState extends ConsumerState<DashboardHomeScreen>
                               final stage = learning.stages[index];
                               final status = _stageStatus(stage);
                               return Semantics(
-                                button: true,
-                                label: l.goToLesson(stage.title),
-                                child: LearningTrackTile(
-                                  stage: stage,
-                                  status: status,
-                                  index: index,
-                                  isLast: index == learning.stages.length - 1,
-                                  onTap: () {
-                                    ref
-                                        .read(experienceServiceProvider)
-                                        .lightHaptic();
-                                    context.pushNamed('lessons');
-                                  },
-                                ),
-                              );
+                                    button: true,
+                                    label: l.goToLesson(stage.title),
+                                    child: LearningTrackTile(
+                                      stage: stage,
+                                      status: status,
+                                      index: index,
+                                      isLast:
+                                          index == learning.stages.length - 1,
+                                      onTap: () {
+                                        context.pushNamed('lessons');
+                                      },
+                                    ),
+                                  )
+                                  .animate(
+                                    delay: Duration(
+                                      milliseconds: 300 + index * 80,
+                                    ),
+                                  )
+                                  .fadeIn(
+                                    duration: 300.ms,
+                                    curve: Curves.easeOut,
+                                  )
+                                  .slideY(
+                                    begin: 0.03,
+                                    end: 0,
+                                    duration: 300.ms,
+                                    curve: Curves.easeOut,
+                                  );
                             }, childCount: learning.stages.length),
                           ),
                         ),

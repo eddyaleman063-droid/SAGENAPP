@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sagen/config/firestore_field_config.dart';
 import 'package:sagen/services/firestore_service.dart';
 
 void main() {
@@ -134,6 +135,18 @@ void main() {
         FirestoreService.allowedUpdateFields,
         isNot(contains('learning_total_xp')),
       );
+    });
+
+    test('contains updatedBy metadata field required by Firestore rules', () {
+      // createUserProfile / markOnboardingCompleted / rules require `updatedBy`
+      // == auth.uid; it must be a client-writable profile field or the write
+      // is rejected ("Missing or insufficient permissions").
+      expect(FirestoreService.allowedUpdateFields, contains('updatedBy'));
+      expect(
+        FirestoreFieldConfig.validateFieldType('updatedBy', 'uid-123'),
+        isTrue,
+      );
+      expect(FirestoreFieldConfig.validateFieldType('updatedBy', 5), isFalse);
     });
   });
 }

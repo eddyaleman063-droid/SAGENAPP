@@ -7,9 +7,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sagen/core/theme/app_colors.dart';
 import '../../widgets/common/exit_confirmation_wrapper.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
+import 'package:sagen/core/reward_constants.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/models/mini_game.dart';
 import 'package:sagen/providers/learning_provider.dart';
+import 'package:sagen/providers/gem_provider.dart';
 import 'package:sagen/ui/widgets/mini_game/mini_game_shared_widgets.dart';
 import 'package:sagen/ui/widgets/common/confetti_widget.dart';
 
@@ -118,8 +120,9 @@ class _PatternTraceScreenState extends ConsumerState<PatternTraceScreen> {
       final currentStep = _userInput.length - 1;
 
       if (_userInput[currentStep] != _pattern[currentStep]) {
+        ExperienceService.instance.errorHaptic();
         _waitingForInput = false;
-        Future.delayed(const Duration(milliseconds: 500), () {
+        Future.delayed(AppMotion.medium, () {
           if (mounted) _completeGame();
         });
         return;
@@ -133,7 +136,7 @@ class _PatternTraceScreenState extends ConsumerState<PatternTraceScreen> {
           _timer?.cancel();
           _completeGame();
         } else {
-          Future.delayed(const Duration(milliseconds: 500), () {
+          Future.delayed(AppMotion.medium, () {
             if (mounted) _startRound();
           });
         }
@@ -150,7 +153,8 @@ class _PatternTraceScreenState extends ConsumerState<PatternTraceScreen> {
       _rewarded = true;
       await ref
           .read(learningProvider.notifier)
-          .addXp(_score, reason: 'mini_game');
+          .addXp(RewardConstants.miniGameXp, reason: 'mini_game');
+      ref.read(gemProvider.notifier).awardMiniGameGems();
       if (!mounted) return;
       setState(() {
         _completing = false;
@@ -311,7 +315,7 @@ class _PatternTraceScreenState extends ConsumerState<PatternTraceScreen> {
                         ? PremiumColors.accentYellow
                         : PremiumColors.primary,
                   ),
-                ),
+                ).animate().fadeIn().scale(begin: const Offset(0.8, 0.8)),
               ],
             ),
           ),
@@ -335,7 +339,7 @@ class _PatternTraceScreenState extends ConsumerState<PatternTraceScreen> {
             )
           else ...[
             TweenAnimationBuilder<int>(
-              tween: IntTween(begin: 0, end: _score),
+              tween: IntTween(begin: 0, end: RewardConstants.miniGameXp),
               duration: const Duration(milliseconds: 1500),
               curve: Curves.easeOut,
               builder: (context, value, _) => Container(

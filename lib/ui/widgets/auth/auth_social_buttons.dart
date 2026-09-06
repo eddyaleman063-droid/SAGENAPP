@@ -62,7 +62,7 @@ class AuthSocialButtons extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppSpacing.md),
           Expanded(
             child: SizedBox(
               height: 48,

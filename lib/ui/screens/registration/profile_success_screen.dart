@@ -30,10 +30,7 @@ class _ProfileSuccessScreenState extends ConsumerState<ProfileSuccessScreen>
   void initState() {
     super.initState();
     _confettiCtrl = ConfettiController(duration: const Duration(seconds: 3));
-    _enterCtrl = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 800),
-    );
+    _enterCtrl = AnimationController(vsync: this, duration: AppMotion.slow);
     _enterElastic = CurvedAnimation(
       parent: _enterCtrl,
       curve: Curves.elasticOut,
@@ -41,6 +38,7 @@ class _ProfileSuccessScreenState extends ConsumerState<ProfileSuccessScreen>
     _enterFade = CurvedAnimation(parent: _enterCtrl, curve: Curves.easeIn);
     _enterCtrl.forward();
     _confettiCtrl.play();
+    ExperienceService.instance.lightHaptic();
   }
 
   @override
@@ -86,63 +84,75 @@ class _ProfileSuccessScreenState extends ConsumerState<ProfileSuccessScreen>
                 children: [
                   const Spacer(flex: 2),
                   ScaleTransition(
-                    scale: _enterElastic,
-                    child: const SizedBox(
-                      width: 120,
-                      height: 120,
-                      child: ExcludeSemantics(
-                        child: SageEmotionWidget(
-                          emotion: SageEmotion.surprisedWings,
-                          size: 120,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: AppSpacing.xxl),
-                  FadeTransition(
-                    opacity: _enterFade,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: AppSpacing.xl,
-                        vertical: AppSpacing.sm,
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(AppRadius.pill),
-                        gradient: const LinearGradient(
-                          colors: PremiumColors.gradientAchievement,
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(
-                            Icons.check_circle_rounded,
-                            size: 16,
-                            color: Colors.white,
-                          ),
-                          const SizedBox(width: AppSpacing.sm),
-                          Text(
-                            l.regProfileCreated,
-                            style: AppTextStyle.caption.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              letterSpacing: 1.5,
+                        scale: _enterElastic,
+                        child: const SizedBox(
+                          width: 120,
+                          height: 120,
+                          child: ExcludeSemantics(
+                            child: SageEmotionWidget(
+                              emotion: SageEmotion.surprisedWings,
+                              size: 120,
                             ),
                           ),
-                        ],
+                        ),
+                      )
+                      .animate(delay: 100.ms)
+                      .scale(
+                        begin: const Offset(0.8, 0.8),
+                        duration: 400.ms,
+                        curve: Curves.elasticOut,
                       ),
-                    ),
-                  ),
+                  const SizedBox(height: AppSpacing.xxl),
+                  FadeTransition(
+                        opacity: _enterFade,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: AppSpacing.xl,
+                            vertical: AppSpacing.sm,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(AppRadius.pill),
+                            gradient: const LinearGradient(
+                              colors: PremiumColors.gradientAchievement,
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(
+                                Icons.check_circle_rounded,
+                                size: 16,
+                                color: Colors.white,
+                              ),
+                              const SizedBox(width: AppSpacing.sm),
+                              Text(
+                                l.regProfileCreated,
+                                style: AppTextStyle.caption.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  letterSpacing: 1.5,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                      .animate(delay: 300.ms)
+                      .fadeIn(duration: 300.ms)
+                      .slideX(begin: -0.05),
                   const SizedBox(height: AppSpacing.xl),
                   FadeTransition(
-                    opacity: _enterFade,
-                    child: Text(
-                      l.regWelcomeSagen,
-                      style: AppTextStyle.headlineLarge.copyWith(
-                        color: context.textPrimary,
-                      ),
-                    ),
-                  ),
+                        opacity: _enterFade,
+                        child: Text(
+                          l.regWelcomeSagen,
+                          style: AppTextStyle.headlineLarge.copyWith(
+                            color: context.textPrimary,
+                          ),
+                        ),
+                      )
+                      .animate(delay: 400.ms)
+                      .fadeIn(duration: 300.ms)
+                      .slideY(begin: 0.05),
                   const SizedBox(height: AppSpacing.md),
                   FadeTransition(
                     opacity: _enterFade,
@@ -153,7 +163,7 @@ class _ProfileSuccessScreenState extends ConsumerState<ProfileSuccessScreen>
                         color: context.textTertiary,
                       ),
                     ),
-                  ),
+                  ).animate(delay: 500.ms).fadeIn(duration: 300.ms),
                   const Spacer(flex: 2),
                   SizedBox(
                     width: double.infinity,

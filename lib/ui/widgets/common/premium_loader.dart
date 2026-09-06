@@ -45,10 +45,7 @@ class _PremiumLoaderState extends ConsumerState<PremiumLoader>
     );
     _fadeCtrl = AnimationController(
       vsync: this,
-      duration: AppMotion.resolve(
-        const Duration(milliseconds: 300),
-        reduceAnimations: reduced,
-      ),
+      duration: AppMotion.resolve(AppMotion.normal, reduceAnimations: reduced),
     );
     if (widget.loading) {
       _overlayVisible = true;
@@ -111,69 +108,74 @@ class _PremiumLoaderState extends ConsumerState<PremiumLoader>
           if (_overlayVisible)
             FadeTransition(
               opacity: _fadeCtrl,
-              child: Container(
-                color: (dark ? PremiumColors.darkBg : Colors.white).withValues(
-                  alpha: 0.92,
-                ),
-                child: Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      AnimatedBuilder(
-                        animation: _pulseCtrl,
-                        builder: (_, _) => Container(
-                          width: 96,
-                          height: 96,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: dark ? PremiumColors.darkCard : Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: PremiumColors.primary.withValues(
-                                  alpha: 0.1 + 0.15 * _pulseCtrl.value,
+              child: Semantics(
+                label: widget.message ?? 'Loading',
+                explicitChildNodes: true,
+                child: Container(
+                  color: (dark ? PremiumColors.darkBg : Colors.white)
+                      .withValues(alpha: 0.92),
+                  child: Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        AnimatedBuilder(
+                          animation: _pulseCtrl,
+                          builder: (_, _) => Container(
+                            width: 96,
+                            height: 96,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: dark
+                                  ? PremiumColors.darkCard
+                                  : Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: PremiumColors.primary.withValues(
+                                    alpha: 0.1 + 0.15 * _pulseCtrl.value,
+                                  ),
+                                  blurRadius: 20 + 15 * _pulseCtrl.value,
+                                  spreadRadius: 1,
                                 ),
-                                blurRadius: 20 + 15 * _pulseCtrl.value,
-                                spreadRadius: 1,
+                              ],
+                            ),
+                            child: Transform.scale(
+                              scale: 0.85 + 0.15 * _pulseCtrl.value,
+                              child: const SageEmotionWidget(
+                                emotion: SageEmotion.thinking,
+                                size: 76,
+                                animated: false,
                               ),
-                            ],
-                          ),
-                          child: Transform.scale(
-                            scale: 0.85 + 0.15 * _pulseCtrl.value,
-                            child: const SageEmotionWidget(
-                              emotion: SageEmotion.thinking,
-                              size: 76,
-                              animated: false,
                             ),
                           ),
                         ),
-                      ),
-                      if (widget.message != null) ...[
-                        const SizedBox(height: AppSpacing.xxl),
-                        Text(
-                          widget.message!,
-                          style: AppTextStyle.subtitle.copyWith(
-                            color: context.textTertiary,
+                        if (widget.message != null) ...[
+                          const SizedBox(height: AppSpacing.xxl),
+                          Text(
+                            widget.message!,
+                            style: AppTextStyle.subtitle.copyWith(
+                              color: context.textTertiary,
+                            ),
+                          ),
+                        ],
+                        const SizedBox(height: AppSpacing.huge),
+                        SizedBox(
+                          width: 260,
+                          child: AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 600),
+                            child: Text(
+                              _currentQuote,
+                              key: ValueKey(_currentQuote),
+                              textAlign: TextAlign.center,
+                              style: AppTextStyle.caption.copyWith(
+                                color: context.textTertiary,
+                                fontStyle: FontStyle.italic,
+                                height: 1.4,
+                              ),
+                            ),
                           ),
                         ),
                       ],
-                      const SizedBox(height: AppSpacing.huge),
-                      SizedBox(
-                        width: 260,
-                        child: AnimatedSwitcher(
-                          duration: const Duration(milliseconds: 600),
-                          child: Text(
-                            _currentQuote,
-                            key: ValueKey(_currentQuote),
-                            textAlign: TextAlign.center,
-                            style: AppTextStyle.caption.copyWith(
-                              color: context.textTertiary,
-                              fontStyle: FontStyle.italic,
-                              height: 1.4,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ),

@@ -92,6 +92,47 @@ void main() {
       expect(state.authMethod, '');
       expect(state.email, '');
     });
+
+    test(
+      'retiene el estado sin listeners activos (fix edad/algo perdidos entre pasos)',
+      () {
+        // El funnel es NO-autoDispose: aunque ninguna pantalla lo esté
+        // observando, el estado (p. ej. la edad del paso 9) NO se descarta
+        // antes del paso siguiente.
+        final notifier = container.read(registrationFunnelProvider.notifier);
+        notifier.setAge(25);
+        notifier.setEmail('test@example.com');
+        expect(container.read(registrationFunnelProvider).age, 25);
+        expect(
+          container.read(registrationFunnelProvider).email,
+          'test@example.com',
+        );
+      },
+    );
+
+    test('clearPassword limpia la contraseña y conserva email y nombre', () {
+      final notifier = container.read(registrationFunnelProvider.notifier);
+      notifier.setEmail('test@example.com');
+      notifier.setPassword('Abcdef12');
+      notifier.setName('Juan');
+      notifier.clearPassword();
+      final state = container.read(registrationFunnelProvider);
+      expect(state.password, '');
+      expect(state.email, 'test@example.com');
+      expect(state.name, 'Juan');
+    });
+
+    test('clearSensitiveData limpia contraseña y email', () {
+      final notifier = container.read(registrationFunnelProvider.notifier);
+      notifier.setEmail('test@example.com');
+      notifier.setPassword('Abcdef12');
+      notifier.setName('Juan');
+      notifier.clearSensitiveData();
+      final state = container.read(registrationFunnelProvider);
+      expect(state.password, '');
+      expect(state.email, '');
+      expect(state.name, 'Juan');
+    });
   });
 
   group('Funnel validation providers', () {

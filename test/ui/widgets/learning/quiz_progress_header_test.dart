@@ -49,13 +49,12 @@ void main() {
         QuizProgressHeader(current: 5, total: 10, progress: 0.5, title: 'Quiz'),
       ),
     );
-    await tester.pump();
+    await tester.pumpAndSettle();
 
     final progressIndicator = tester.widget<LinearProgressIndicator>(
       find.byType(LinearProgressIndicator),
     );
     expect(progressIndicator.value, 0.5);
-    await tester.pumpAndSettle();
   });
 
   testWidgets('renders close button', (tester) async {
@@ -117,13 +116,12 @@ void main() {
         QuizProgressHeader(current: 0, total: 10, progress: 0.0, title: 'Quiz'),
       ),
     );
-    await tester.pump();
+    await tester.pumpAndSettle();
 
     final progressIndicator = tester.widget<LinearProgressIndicator>(
       find.byType(LinearProgressIndicator),
     );
     expect(progressIndicator.value, 0.0);
-    await tester.pumpAndSettle();
   });
 
   testWidgets('renders progress at 100%', (tester) async {
@@ -137,13 +135,12 @@ void main() {
         ),
       ),
     );
-    await tester.pump();
+    await tester.pumpAndSettle();
 
     final progressIndicator = tester.widget<LinearProgressIndicator>(
       find.byType(LinearProgressIndicator),
     );
     expect(progressIndicator.value, 1.0);
-    await tester.pumpAndSettle();
   });
 
   testWidgets('renders with long title text', (tester) async {

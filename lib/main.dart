@@ -67,13 +67,15 @@ void main() async {
         ),
       );
 
-      Future.microtask(
-        () => ServiceInitializer.initialize(
+      unawaited(
+        ServiceInitializer.initialize(
           prefs: prefs,
           logger: logger,
           authService: authService,
           cloudSyncService: cloudSyncService,
-        ),
+        ).catchError((Object e) {
+          logger.error('ServiceInitializer failed', e);
+        }),
       );
     },
     (error, stack) {
@@ -159,8 +161,8 @@ class _ReleaseErrorFallback extends StatelessWidget {
                       onTap: _goHome,
                       child: Container(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 24,
-                          vertical: 16,
+                          horizontal: AppSpacing.xxl,
+                          vertical: AppSpacing.lg,
                         ),
                         decoration: BoxDecoration(
                           color: PremiumColors.primaryAccent,
@@ -174,13 +176,11 @@ class _ReleaseErrorFallback extends StatelessWidget {
                               color: Colors.white,
                               size: 24,
                             ),
-                            const SizedBox(width: 12),
+                            const SizedBox(width: AppSpacing.md),
                             Text(
                               l?.errorRestartApp ?? 'Back to home',
-                              style: const TextStyle(
+                              style: AppTextStyle.titleSmall.copyWith(
                                 color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
                               ),
                             ),
                           ],
@@ -297,22 +297,30 @@ class _SagenAppState extends ConsumerState<SagenApp> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = ref.watch(themeProvider);
-    final lang = ref.watch(languageProvider);
+    final themeMode = ref.watch(
+      themeProvider.select((t) => t.effectiveMode == ThemeMode.dark),
+    );
+    final langCode = ref.watch(
+      languageProvider.select((l) => l.locale.languageCode),
+    );
+    final hasUserChosenLang = ref.watch(
+      languageProvider.select((l) => l.hasUserChosen),
+    );
+    final langLocale = ref.watch(languageProvider.select((l) => l.locale));
     final router = ref.read(routerProvider);
+    final theme = ref.watch(themeProvider);
+    final isDark = themeMode;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: theme.currentTheme.brightness == Brightness.dark
-          ? SystemUiOverlayStyle.light
-          : SystemUiOverlayStyle.dark,
+      value: isDark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
       child: ErrorBoundary(
         child: SyncCoordinator(
           child: AmbientBackground(
             child: MaterialApp.router(
               builder: (context, child) {
-                final fontScale = ref
-                    .watch(experienceServiceProvider)
-                    .fontSizeScale;
+                final fontScale = ref.watch(
+                  experienceServiceProvider.select((s) => s.fontSizeScale),
+                );
                 final safeScale = fontScale.clamp(0.8, 1.5);
                 return MediaQuery(
                   data: MediaQuery.of(
@@ -328,11 +336,13 @@ class _SagenAppState extends ConsumerState<SagenApp> {
               title: 'SAGEN',
               debugShowCheckedModeBanner: false,
               routerConfig: router,
-              theme: theme.currentTheme,
+              theme: theme.lightTheme,
+              darkTheme: theme.darkTheme,
+              themeMode: theme.effectiveMode,
               highContrastTheme: AppTheme.highContrastLight,
               highContrastDarkTheme: AppTheme.highContrastDark,
-              key: ValueKey(lang.locale.languageCode),
-              locale: lang.hasUserChosen ? lang.locale : null,
+              key: ValueKey(langCode),
+              locale: hasUserChosenLang ? langLocale : null,
               supportedLocales: const [
                 Locale('es'),
                 Locale('en'),

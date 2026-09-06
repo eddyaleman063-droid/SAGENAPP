@@ -7,9 +7,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sagen/core/theme/app_colors.dart';
 import '../../widgets/common/exit_confirmation_wrapper.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
+import 'package:sagen/core/reward_constants.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/models/mini_game.dart';
 import 'package:sagen/providers/learning_provider.dart';
+import 'package:sagen/providers/gem_provider.dart';
 import 'package:sagen/ui/widgets/mini_game/mini_game_shared_widgets.dart';
 import 'package:sagen/ui/widgets/common/confetti_widget.dart';
 
@@ -111,6 +113,7 @@ class _WordMatchScreenState extends ConsumerState<WordMatchScreen> {
         final termItem = _items[_selectedTermIndex!];
         final isCorrect = _checkMatch(termItem.text, _items[index].text);
         if (isCorrect) {
+          ExperienceService.instance.lightHaptic();
           _items[_selectedTermIndex!].matched = true;
           _items[index].matched = true;
           _matches++;
@@ -122,7 +125,7 @@ class _WordMatchScreenState extends ConsumerState<WordMatchScreen> {
           _mistakes++;
           _wrongIndex = index;
           ExperienceService.instance.errorHaptic();
-          Future.delayed(const Duration(milliseconds: 500), () {
+          Future.delayed(AppMotion.medium, () {
             if (mounted) setState(() => _wrongIndex = null);
           });
         }
@@ -138,8 +141,9 @@ class _WordMatchScreenState extends ConsumerState<WordMatchScreen> {
     });
     if (!_rewarded) {
       _rewarded = true;
-      final xp = _matches * 15;
+      const xp = RewardConstants.miniGameXp;
       await ref.read(learningProvider.notifier).addXp(xp, reason: 'mini_game');
+      ref.read(gemProvider.notifier).awardMiniGameGems();
       if (!mounted) return;
       setState(() {
         _completing = false;
@@ -285,7 +289,7 @@ class _WordMatchScreenState extends ConsumerState<WordMatchScreen> {
   }
 
   Widget _buildResult(AppLocalizations l) {
-    final xp = _matches * 15;
+    const xp = RewardConstants.miniGameXp;
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -315,12 +319,12 @@ class _WordMatchScreenState extends ConsumerState<WordMatchScreen> {
           Text(
             _matches >= _totalPairs ? l.miniGameComplete : l.miniGameOver,
             style: AppTextStyle.headline,
-          ),
+          ).animate().fadeIn(delay: 200.ms, duration: 300.ms),
           const SizedBox(height: AppSpacing.sm),
           Text(
             '${l.miniGameMatches}: $_matches/$_totalPairs  |  ${l.miniGameMistakes}: $_mistakes',
             style: AppTextStyle.body.copyWith(color: context.textSecondary),
-          ),
+          ).animate().fadeIn(delay: 300.ms, duration: 300.ms),
           const SizedBox(height: AppSpacing.lg),
           if (_completing)
             const Padding(

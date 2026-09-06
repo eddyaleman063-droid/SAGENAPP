@@ -11,6 +11,7 @@ abstract class GamificationRepository {
   bool get canClaimDailyChest;
   int claimDailyChest();
   void setUnclaimedChest(bool value);
+  void setLastClaimDate(String date);
   void checkMidnightReset();
   int get secondsUntilMidnight;
   Map<String, int> getMissions();
@@ -86,6 +87,11 @@ class GamificationRepositoryImpl implements GamificationRepository {
   @override
   void setUnclaimedChest(bool value) {
     _prefs.setBool(_keyUnclaimedChest, value);
+  }
+
+  @override
+  void setLastClaimDate(String date) {
+    _prefs.setString(_keyLastClaim, date);
   }
 
   @override

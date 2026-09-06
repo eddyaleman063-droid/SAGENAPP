@@ -82,15 +82,17 @@ class _MessageListState extends ConsumerState<MessageList> {
         itemCount: messages.length + extraItem,
         itemBuilder: (_, i) {
           if (showStreaming && i == 0) {
-            return MessageBubble(
-              key: const ValueKey('streaming'),
-              message: ChatMessage(
-                role: ChatRole.assistant,
-                text: streamingText,
-                time: streamingTime,
+            return RepaintBoundary(
+              child: MessageBubble(
+                key: const ValueKey('streaming'),
+                message: ChatMessage(
+                  role: ChatRole.assistant,
+                  text: streamingText,
+                  time: streamingTime,
+                ),
+                isUser: false,
+                isStreaming: true,
               ),
-              isUser: false,
-              isStreaming: true,
             );
           }
           final idx = showStreaming ? i - 1 : i;
@@ -152,7 +154,7 @@ class _AnimatedMessageBubbleState extends State<_AnimatedMessageBubble>
         if (mounted) _ctrl?.forward();
       });
     } else {
-      _slideAnim = AlwaysStoppedAnimation(Offset.zero);
+      _slideAnim = const AlwaysStoppedAnimation(Offset.zero);
       _fadeAnim = const AlwaysStoppedAnimation(1.0);
     }
   }

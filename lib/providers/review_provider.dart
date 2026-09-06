@@ -66,6 +66,12 @@ class ReviewNotifier extends Notifier<ReviewState> {
   static const _defaultEaseFactor = 2.5;
   static const _minEaseFactor = 1.3;
 
+  /// Temas de metadatos (no son temas de curso) que nunca deben figurar en
+  /// las listas de temas débiles que alimentan a Sage o la personalidad:
+  /// 'review' se registra al fallar repasos y 'lesson' es el fallback cuando
+  /// no hay título de etapa disponible.
+  static const reservedTopics = {'review', 'lesson'};
+
   @override
   ReviewState build() {
     _storage = StorageService(ref.read(prefsProvider));
@@ -80,7 +86,7 @@ class ReviewNotifier extends Notifier<ReviewState> {
       state.questionFailures.isNotEmpty ||
       getQuestionsDueForReview().isNotEmpty;
   List<String> get weakTopics => state.topicScores.entries
-      .where((e) => e.value > weakThreshold)
+      .where((e) => e.value > weakThreshold && !reservedTopics.contains(e.key))
       .map((e) => e.key)
       .toList();
   int get totalReviews => state.totalReviews;
@@ -88,6 +94,18 @@ class ReviewNotifier extends Notifier<ReviewState> {
     final ids = <String>{...state.questionFailures.keys};
     ids.addAll(getQuestionsDueForReview().map((e) => e));
     return ids.toList();
+  }
+
+  /// Cola de repaso ordenada: primero las programadas (por fecha de vencimiento)
+  /// y luego las que aún arrastran fallos sin fecha de repaso. Máximo 10.
+  List<String> get reviewQueueIds {
+    final due = getQuestionsDueForReview();
+    final failing = failedQuestionIds;
+    final ordered = <String>[
+      ...due,
+      ...failing.where((id) => !due.contains(id)),
+    ];
+    return ordered.take(10).toList();
   }
 
   String? getTopicForQuestion(String questionId) =>
@@ -145,7 +163,10 @@ class ReviewNotifier extends Notifier<ReviewState> {
     ef[questionId] = newEf;
     rep[questionId] = newRep;
     iv[questionId] = newIv;
-    next[questionId] = DateTime.now().add(Duration(days: newIv));
+    // Programar al INICIO del día objetivo (medianoche), no dentro de 24h:
+    // respondiendo a las 23:59, la pregunta vence al amanecer siguiente y no
+    // a las 23:59 del día posterior. Cadencia diaria predecible (NUEVO-fix).
+    next[questionId] = _addDaysAtMidnight(DateTime.now(), newIv);
 
     state = state.copyWith(
       easeFactor: ef,
@@ -168,7 +189,7 @@ class ReviewNotifier extends Notifier<ReviewState> {
     ef[questionId] = newEf;
     rep[questionId] = 0;
     iv[questionId] = 1;
-    next[questionId] = DateTime.now().add(const Duration(days: 1));
+    next[questionId] = _addDaysAtMidnight(DateTime.now(), 1);
 
     state = state.copyWith(
       easeFactor: ef,
@@ -199,6 +220,13 @@ class ReviewNotifier extends Notifier<ReviewState> {
 
   void recordCorrect(String questionId) {
     final topic = state.questionTopics[questionId];
+    final hadFailure = state.questionFailures.containsKey(questionId);
+    final hadSchedule =
+        state.easeFactor.containsKey(questionId) ||
+        state.interval.containsKey(questionId) ||
+        state.repetition.containsKey(questionId) ||
+        state.nextReviewDate.containsKey(questionId);
+
     final failures = Map<String, int>.from(state.questionFailures);
     final topics = Map<String, String>.from(state.questionTopics);
     final scores = Map<String, int>.from(state.topicScores);
@@ -227,7 +255,14 @@ class ReviewNotifier extends Notifier<ReviewState> {
       questionTopics: topics,
       topicScores: scores,
     );
-    _applySm2Correct(questionId, 5);
+
+    // Solo falladas o con planificador SM-2 previo entran en la cola de repaso.
+    // Un acierto de una pregunta nueva no programa nada: la cola refuerza lo
+    // que cuesta y no se inunda con lo ya dominado (evita colas de miles de
+    // items en SharedPreferences y hambruna de preguntas realmente debiles).
+    if (hadFailure || hadSchedule) {
+      _applySm2Correct(questionId, 5);
+    }
     _save();
   }
 
@@ -238,6 +273,58 @@ class ReviewNotifier extends Notifier<ReviewState> {
 
   void reload() {
     _load();
+  }
+
+  /// Elimina de todas las estructuras SM-2 los IDs que se intentaron resolver
+  /// y no existen en el banco de preguntas (contenido curado o IDs obsoletos).
+  /// Solo se podan los IDs del conjunto [requestedIds] que no aparecen en
+  /// [resolvableIds]: los IDs debidos pero no servidos en este lote (el tope
+  /// de 10) JAMÁS se consideran stale y nunca se tocan. (NUEVO-fix)
+  void pruneMissingIds(
+    Iterable<String> requestedIds,
+    Iterable<String> resolvableIds,
+  ) {
+    try {
+      final stale = requestedIds.toSet().difference(resolvableIds.toSet());
+      if (stale.isEmpty) return;
+
+      final newFailures = <String, int>{
+        for (final e in state.questionFailures.entries)
+          if (!stale.contains(e.key)) e.key: e.value,
+      };
+      final newTopics = <String, String>{
+        for (final e in state.questionTopics.entries)
+          if (!stale.contains(e.key)) e.key: e.value,
+      };
+      final newEf = <String, double>{
+        for (final e in state.easeFactor.entries)
+          if (!stale.contains(e.key)) e.key: e.value,
+      };
+      final newIv = <String, int>{
+        for (final e in state.interval.entries)
+          if (!stale.contains(e.key)) e.key: e.value,
+      };
+      final newRep = <String, int>{
+        for (final e in state.repetition.entries)
+          if (!stale.contains(e.key)) e.key: e.value,
+      };
+      final newNext = <String, DateTime>{
+        for (final e in state.nextReviewDate.entries)
+          if (!stale.contains(e.key)) e.key: e.value,
+      };
+
+      state = state.copyWith(
+        questionFailures: newFailures,
+        questionTopics: newTopics,
+        easeFactor: newEf,
+        interval: newIv,
+        repetition: newRep,
+        nextReviewDate: newNext,
+      );
+      _save();
+    } catch (e) {
+      AppLogger().warning('ReviewProvider.pruneMissingIds failed: $e');
+    }
   }
 
   void _save() {
@@ -271,6 +358,12 @@ class ReviewNotifier extends Notifier<ReviewState> {
       ),
     );
   }
+
+  /// Devuelve la medianoche del día [days] después de [now] (calendario local).
+  /// Fecha exacta, sin la componente horaria: un intervalo de 1 día significa
+  /// "disponible desde el inicio del próximo día calendario".
+  static DateTime _addDaysAtMidnight(DateTime now, int days) =>
+      DateTime(now.year, now.month, now.day + days);
 
   void _load() {
     try {

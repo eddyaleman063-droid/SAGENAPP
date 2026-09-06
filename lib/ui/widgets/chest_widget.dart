@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/services/experience_service.dart';
 import '../../l10n/app_localizations.dart';
 import '../../models/chest_type.dart';
@@ -35,10 +36,7 @@ class _ChestWidgetState extends State<ChestWidget>
   @override
   void initState() {
     super.initState();
-    _ctrl = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 500),
-    );
+    _ctrl = AnimationController(vsync: this, duration: AppMotion.medium);
     _ctrl.addListener(_onAnimate);
     _ctrl.addStatusListener(_onStatus);
     if (widget.open && widget.animate) _open();

@@ -1,6 +1,7 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const crypto = require('crypto');
+const { requireVerifiedUser } = require('./auth_guard');
 
 const PROBABILITIES = {
   'bronze->silver': 0.45,
@@ -45,9 +46,7 @@ async function checkRateLimit(uid) {
  * unlucky user can retry the next day instead of being locked forever.
  */
 exports.rollChestEvolution = functions.runWith({ maxInstances: 5 }).https.onCall(async (data, context) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError('unauthenticated', 'Debes iniciar sesión');
-  }
+  requireVerifiedUser(context);
 
   await checkRateLimit(context.auth.uid);
 

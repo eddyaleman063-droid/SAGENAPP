@@ -63,7 +63,7 @@ class _SagenPassScreenState extends ConsumerState<SagenPassScreen> {
       body: RefreshIndicator(
         onRefresh: () async {
           ref.invalidate(sagenPassProvider);
-          await Future.delayed(const Duration(milliseconds: 500));
+          await Future.delayed(AppMotion.medium);
         },
         child: CustomScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
@@ -155,12 +155,17 @@ class _SagenPassScreenState extends ConsumerState<SagenPassScreen> {
                   final claimed = pass.isLevelClaimed(level.level);
                   final claimable = reached && !claimed;
                   return _PassLevelTile(
-                    level: level,
-                    reached: reached,
-                    claimed: claimed,
-                    isLoading: _claiming.contains(level.level),
-                    onTap: claimable ? () => _claimLevel(level.level) : null,
-                  );
+                        level: level,
+                        reached: reached,
+                        claimed: claimed,
+                        isLoading: _claiming.contains(level.level),
+                        onTap: claimable
+                            ? () => _claimLevel(level.level)
+                            : null,
+                      )
+                      .animate()
+                      .fadeIn(delay: (i * 40).ms, duration: 300.ms)
+                      .scale(begin: const Offset(0.92, 0.92));
                 }, childCount: levels.length),
               ),
             ),
@@ -268,7 +273,7 @@ class _PassHeader extends StatelessWidget {
                   ),
                   const SizedBox(width: AppSpacing.xs),
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 6),
+                    padding: const EdgeInsets.only(bottom: AppSpacing.xs),
                     child: Text(
                       isMax
                           ? l.passMaxLevel
@@ -281,7 +286,7 @@ class _PassHeader extends StatelessWidget {
                   const Spacer(),
                   if (!isMax)
                     Padding(
-                      padding: const EdgeInsets.only(bottom: 6),
+                      padding: const EdgeInsets.only(bottom: AppSpacing.xs),
                       child: Text(
                         l.passProgress(pass.currentSP, required),
                         style: AppTextStyle.bodyMd.copyWith(

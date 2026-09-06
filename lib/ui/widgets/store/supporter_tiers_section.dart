@@ -33,70 +33,74 @@ class _TierCard extends StatelessWidget {
     return Semantics(
       button: true,
       label: l.storeSupportTiers,
-      child: GestureDetector(
-        onTap: () {
-          ExperienceService.instance.lightHaptic();
-          PaywallBottomSheet.show(context);
-        },
-        child: Container(
-          padding: const EdgeInsets.all(AppSpacing.lg),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(AppRadius.xl),
-            color: context.surfaceCard,
-            boxShadow: AppShadows.card(),
-            border: Border.all(
-              color: PremiumColors.primary.withValues(alpha: 0.2),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () {
+            ExperienceService.instance.lightHaptic();
+            PaywallBottomSheet.show(context);
+          },
+          borderRadius: BorderRadius.circular(AppRadius.xl),
+          child: Container(
+            padding: const EdgeInsets.all(AppSpacing.lg),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(AppRadius.xl),
+              color: context.surfaceCard,
+              boxShadow: AppShadows.card(),
+              border: Border.all(
+                color: PremiumColors.primary.withValues(alpha: 0.2),
+              ),
             ),
-          ),
-          child: Row(
-            children: [
-              Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(AppRadius.md),
-                  gradient: const LinearGradient(
-                    colors: [
-                      PremiumColors.primary,
-                      PremiumColors.primaryAccent,
+            child: Row(
+              children: [
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(AppRadius.md),
+                    gradient: const LinearGradient(
+                      colors: [
+                        PremiumColors.primary,
+                        PremiumColors.primaryAccent,
+                      ],
+                    ),
+                  ),
+                  child: const Icon(
+                    Icons.favorite_rounded,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                ),
+                const SizedBox(width: AppSpacing.lg),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        pkg.localizedLabel(l),
+                        style: AppTextStyle.body.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: context.textPrimary,
+                        ),
+                      ),
+                      Text(
+                        '${l.currencySymbol}${pkg.price.toStringAsFixed(2)}',
+                        style: AppTextStyle.caption.copyWith(
+                          color: context.textTertiary,
+                        ),
+                      ),
                     ],
                   ),
                 ),
-                child: const Icon(
-                  Icons.favorite_rounded,
-                  color: Colors.white,
-                  size: 20,
+                ExcludeSemantics(
+                  child: Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    size: 16,
+                    color: context.subtle,
+                  ),
                 ),
-              ),
-              const SizedBox(width: AppSpacing.lg),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      pkg.localizedLabel(l),
-                      style: AppTextStyle.body.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: context.textPrimary,
-                      ),
-                    ),
-                    Text(
-                      '${l.currencySymbol}${pkg.price.toStringAsFixed(2)}',
-                      style: AppTextStyle.caption.copyWith(
-                        color: context.textTertiary,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              ExcludeSemantics(
-                child: Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  size: 16,
-                  color: context.subtle,
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

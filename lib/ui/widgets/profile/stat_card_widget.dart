@@ -49,45 +49,49 @@ class _StatCardWidgetState extends State<StatCardWidget>
     final accent = widget.accentColor ?? widget.iconColor;
     return ScaleTransition(
       scale: _scaleAnim,
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-          vertical: AppSpacing.lg,
-          horizontal: AppSpacing.md,
-        ),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(AppRadius.xl),
-          color: PremiumColors.darkCard,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 36,
-              height: 36,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: widget.iconColor.withValues(alpha: 0.15),
+      child: Semantics(
+        container: true,
+        label: '${widget.label}: ${widget.value}',
+        child: Container(
+          padding: const EdgeInsets.symmetric(
+            vertical: AppSpacing.lg,
+            horizontal: AppSpacing.md,
+          ),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(AppRadius.xl),
+            color: PremiumColors.darkCard,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 36,
+                height: 36,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: widget.iconColor.withValues(alpha: 0.15),
+                ),
+                child: ExcludeSemantics(
+                  child: Icon(widget.icon, size: 18, color: widget.iconColor),
+                ),
               ),
-              child: ExcludeSemantics(
-                child: Icon(widget.icon, size: 18, color: widget.iconColor),
+              const SizedBox(height: AppSpacing.sm),
+              Text(
+                widget.value,
+                style: AppTextStyle.titleLg.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: accent.withValues(alpha: 0.95),
+                ),
               ),
-            ),
-            const SizedBox(height: AppSpacing.sm),
-            Text(
-              widget.value,
-              style: AppTextStyle.titleLg.copyWith(
-                fontWeight: FontWeight.bold,
-                color: accent.withValues(alpha: 0.95),
+              const SizedBox(height: AppSpacing.xxs),
+              Text(
+                widget.label,
+                style: AppTextStyle.label.copyWith(
+                  color: Colors.white.withValues(alpha: 0.45),
+                ),
               ),
-            ),
-            const SizedBox(height: AppSpacing.xxs),
-            Text(
-              widget.label,
-              style: AppTextStyle.label.copyWith(
-                color: Colors.white.withValues(alpha: 0.45),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

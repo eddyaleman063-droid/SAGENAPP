@@ -1,8 +1,10 @@
 import 'dart:math';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/learning/challenge.dart';
 import '../models/learning/quiz_score.dart';
 import '../services/question_bank.dart';
+import 'providers.dart';
 
 enum DiagnosticPath { beginner, experienced }
 
@@ -94,12 +96,7 @@ class FirstLessonNotifier extends AutoDisposeNotifier<FirstLessonState> {
         ...await QuestionBank.instance.getQuestionsForLesson(
           'ac_st1',
           'default',
-          count: 20,
-        ),
-        ...await QuestionBank.instance.getQuestionsForLesson(
-          'ac_st1',
-          'ac_s1_ses1_l1',
-          count: 10,
+          count: questionCount + 10,
         ),
       ];
     } else {
@@ -107,45 +104,39 @@ class FirstLessonNotifier extends AutoDisposeNotifier<FirstLessonState> {
         ...await QuestionBank.instance.getQuestionsForLesson(
           'ac_st1',
           'default',
-          count: 15,
-        ),
-        ...await QuestionBank.instance.getQuestionsForLesson(
-          'ac_st1',
-          'ac_s1_ses1_l1',
-          count: 10,
+          count: 12,
         ),
         ...await QuestionBank.instance.getQuestionsForLesson(
           'ac_st2',
-          'ac_s2_ses1_l1',
-          count: 10,
+          'default',
+          count: 12,
         ),
         ...await QuestionBank.instance.getQuestionsForLesson(
           'ac_st3',
-          'ac_s3_ses1_l1',
-          count: 10,
+          'default',
+          count: 12,
         ),
         ...await QuestionBank.instance.getQuestionsForLesson(
           'ac_st4',
-          'ac_s4_ses1_l1',
-          count: 5,
+          'default',
+          count: 12,
         ),
         ...await QuestionBank.instance.getQuestionsForLesson(
           'ac_st5',
-          'ac_s5_ses1_l1',
-          count: 5,
+          'default',
+          count: 12,
         ),
         ...await QuestionBank.instance.getQuestionsForLesson(
           'ac_st6',
-          'ac_s6_ses1_l1',
-          count: 5,
+          'default',
+          count: 12,
         ),
       ];
     }
 
-    final unique = <String>{};
-    final deduped = allQuestions.where((q) => unique.add(q.id)).toList();
-    final shuffled = List<Challenge>.from(deduped)..shuffle(_random);
-    final selected = shuffled.take(questionCount).toList();
+    final selected = List<Challenge>.from(
+      selectDiagnosticQuestions(allQuestions, questionCount),
+    )..shuffle(_random);
 
     state = FirstLessonState(
       questions: selected,
@@ -154,11 +145,36 @@ class FirstLessonNotifier extends AutoDisposeNotifier<FirstLessonState> {
     );
   }
 
+  /// Selecciona las [questionCount] preguntas del diagnóstico a partir de las
+  /// [allQuestions] recolectadas por etapa, garantizando que NO haya duplicados
+  /// (ni por id ni por contenido: mismo enunciado más las mismas opciones).
+  /// Pura y determinista, por lo que es directamente testeable sin SQLite.
+  @visibleForTesting
+  static List<Challenge> selectDiagnosticQuestions(
+    List<Challenge> allQuestions,
+    int questionCount,
+  ) {
+    // Deduplicación por contenido completo primero: dos entradas con el mismo
+    // enunciado y las mismas opciones (aunque tengan ids distintos, p.ej. una
+    // variante sintética) cuentan como una, conservando la primera.
+    final byContent = <String, Challenge>{};
+    final byId = <String>{};
+    for (final q in allQuestions) {
+      final contentKey = '${q.question}\u0000${q.options.join('\u0001')}';
+      if (!byContent.containsKey(contentKey)) {
+        byContent[contentKey] = q;
+        byId.add(q.id);
+      }
+    }
+    final unique = byContent.values.toList();
+    return unique.take(questionCount).toList();
+  }
+
   void submitAnswer(int selectedIndex) {
     final question = state.currentChallenge;
     if (question == null || state.showFeedback) return;
 
-    final correct = selectedIndex == question.correctIndex;
+    final correct = selectedIndex == question.effectiveCorrectIndex;
     state = state.copyWith(
       correctCount: correct ? state.correctCount + 1 : state.correctCount,
       wrongCount: correct ? state.wrongCount : state.wrongCount + 1,
@@ -166,16 +182,59 @@ class FirstLessonNotifier extends AutoDisposeNotifier<FirstLessonState> {
       selectedAnswer: selectedIndex,
       answeredCorrectly: correct,
     );
+
+    // Alimenta el repaso inteligente (SM-2) igual que las lecciones normales:
+    // cada acierto/fallo del diagnóstico deja programada la repetición de ese
+    // tema, de modo que los puntos débiles detectados al empezar no se pierden.
+    try {
+      final topic = _topicForChallenge(question);
+      if (correct) {
+        ref.read(reviewProvider.notifier).recordCorrect(question.id);
+      } else {
+        ref.read(reviewProvider.notifier).recordMistake(question.id, topic);
+      }
+    } catch (e) {
+      // Nunca debe romper el flujo del diagnóstico.
+    }
+  }
+
+  /// Resuelve el título de etapa al que pertenece la pregunta del diagnóstico
+  /// (por su lessonId) para registrar el tema débil con el mismo criterio que
+  /// las lecciones normales. No debe nunca lanzar ni forzar la inicialización
+  /// de la red: si el curriculum aún no está cargado, usa un respaldo derivado
+  /// del número de etapa.
+  String _topicForChallenge(Challenge question) {
+    var stagePrefix = '';
+    final idMatch = RegExp(
+      r'^ac_s(\d+)_ses(\d+)_l(\d+)_q(\d+)$',
+    ).firstMatch(question.id);
+    if (idMatch != null) {
+      stagePrefix = 'ac_st${idMatch.group(1)}';
+    } else {
+      final lessonMatch = RegExp(
+        r'^ac_s(\d+)_ses\d+_l\d+$',
+      ).firstMatch(question.lessonId);
+      if (lessonMatch != null) {
+        stagePrefix = 'ac_st${lessonMatch.group(1)}';
+      }
+    }
+    if (stagePrefix.isEmpty) return 'lesson';
+    try {
+      final stage = ref
+          .read(learningProvider)
+          .stages
+          .where((s) => s.id == stagePrefix)
+          .firstOrNull;
+      if (stage != null && stage.title.isNotEmpty) return stage.title;
+    } catch (_) {
+      // Si learningProvider aún no está listo, se cae al respaldo.
+    }
+    // Respaldos estables (evita 'lesson' reservado para que el tema débil
+    // sí se muestre en las listas de Sage).
+    return stagePrefix;
   }
 
   void nextQuestion() {
-    if (state.currentIndex + 1 >= state.totalQuestions) {
-      state = state.copyWith(
-        currentIndex: state.currentIndex + 1,
-        showFeedback: false,
-      );
-      return;
-    }
     state = state.copyWith(
       currentIndex: state.currentIndex + 1,
       showFeedback: false,

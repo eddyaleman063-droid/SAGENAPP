@@ -245,16 +245,14 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
         backgroundColor: context.surfaceBackground,
         body: Center(
           child: Padding(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.all(AppSpacing.xxl),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(
-                  Icons.error_outline_rounded,
-                  size: 48,
-                  color: context.textTertiary,
+                const ExcludeSemantics(
+                  child: SageEmotionWidget(emotion: SageEmotion.worried),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppSpacing.lg),
                 Text(
                   l.errorContentLoadFailed,
                   style: AppTextStyle.bodyLg.copyWith(
@@ -273,7 +271,7 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
                   ),
                 ),
               ],
-            ),
+            ).animate().fadeIn(duration: 400.ms).slideY(begin: 0.05),
           ),
         ),
       );
@@ -297,7 +295,7 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
                 onRefresh: () async {
                   ref.invalidate(shopProvider);
                   ref.invalidate(learningProvider);
-                  await Future.delayed(const Duration(milliseconds: 500));
+                  await Future.delayed(AppMotion.medium);
                 },
                 child: CustomScrollView(
                   slivers: [
@@ -426,7 +424,7 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
                                 ),
                               ),
                             ],
-                          ),
+                          ).animate().fadeIn(duration: 400.ms),
                         ),
                       )
                     else
@@ -573,6 +571,6 @@ class _GemEarningTipsCard extends StatelessWidget {
           ),
         ],
       ),
-    );
+    ).animate().fadeIn(delay: 300.ms, duration: 400.ms);
   }
 }

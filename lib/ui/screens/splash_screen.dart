@@ -29,20 +29,14 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   void initState() {
     super.initState();
-    _bgCtrl = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 800),
-    );
+    _bgCtrl = AnimationController(vsync: this, duration: AppMotion.slow);
     _bgCurve = CurvedAnimation(parent: _bgCtrl, curve: Curves.easeInOut);
     _bgAnim = ColorTween(
       begin: PremiumColors.splashBlue,
       end: PremiumColors.deepBackground,
     ).animate(_bgCurve);
 
-    _textCtrl = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 800),
-    );
+    _textCtrl = AnimationController(vsync: this, duration: AppMotion.slow);
     _textFadeAnim = CurvedAnimation(parent: _textCtrl, curve: Curves.easeIn);
     _textSlideCurve = CurvedAnimation(parent: _textCtrl, curve: Curves.easeOut);
     _textSlideAnim = Tween<Offset>(
@@ -117,7 +111,7 @@ class _SplashScreenState extends State<SplashScreen>
                   ),
                   if (_phase2)
                     Padding(
-                      padding: const EdgeInsets.only(top: 32),
+                      padding: const EdgeInsets.only(top: AppSpacing.xxxl),
                       child: Semantics(
                         label: l.loading,
                         child: SizedBox(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sagen/core/theme/app_colors.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
@@ -100,7 +101,7 @@ class StreakFireCard extends ConsumerWidget {
                               color: _fireColor(context),
                             ),
                           ),
-                          const SizedBox(width: 4),
+                          const SizedBox(width: AppSpacing.xxs),
                           Text(
                             _fireStatusText(l),
                             style: AppTextStyle.label.copyWith(
@@ -140,7 +141,7 @@ class StreakFireCard extends ConsumerWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(width: 6),
+                    const SizedBox(width: AppSpacing.xs),
                     Expanded(
                       child: Text(
                         l.streakShieldOnboarding,
@@ -170,7 +171,7 @@ class StreakFireCard extends ConsumerWidget {
                         color: PremiumColors.premiumIce,
                       ),
                     ),
-                    const SizedBox(width: 6),
+                    const SizedBox(width: AppSpacing.xs),
                     Expanded(
                       child: Text(
                         l.streakShieldActive,
@@ -187,7 +188,7 @@ class StreakFireCard extends ConsumerWidget {
           ],
         ),
       ),
-    );
+    ).animate().fadeIn(duration: 300.ms).slideY(begin: 0.05);
   }
 
   Future<void> _buyFreeze(BuildContext context, WidgetRef ref) async {
@@ -217,14 +218,47 @@ class StreakFireCard extends ConsumerWidget {
       }
       return;
     }
-    ref.read(streakProvider.notifier).setFreezes(currentFreezes + 1);
-    exp.successHaptic();
-    if (context.mounted) {
-      SagenNotification.show(
-        context,
-        message: l.storePurchaseSuccess,
-        type: NotificationType.success,
-      );
+
+    // NUEVO-fix: el escudo se acredita server-side (claimFreeStreakShield, con
+    // tope diario anti-farm). Antes solo se incrementaba un contador local
+    // (streakFreezes en SP) que el servidor nunca registraba, por lo que al
+    // faltar un día incrementStreak denegaba el freeze y rompía la racha pese
+    // a que el usuario "poseía" un escudo. Ahora el bump local solo aplica
+    // tras confirmar la acreditación en el servidor.
+    try {
+      final result = await ref
+          .read(economicFunctionsServiceProvider)
+          .claimFreeStreakShield();
+      final claimed = result?['claimed'] == true;
+      if (claimed) {
+        ref.read(streakProvider.notifier).setFreezes(currentFreezes + 1);
+        exp.successHaptic();
+        if (context.mounted) {
+          SagenNotification.show(
+            context,
+            message: l.storePurchaseSuccess,
+            type: NotificationType.success,
+          );
+        }
+      } else {
+        exp.errorHaptic();
+        if (context.mounted) {
+          SagenNotification.show(
+            context,
+            message: l.storeShieldLimitReached,
+            type: NotificationType.error,
+          );
+        }
+      }
+    } catch (_) {
+      exp.errorHaptic();
+      if (context.mounted) {
+        SagenNotification.show(
+          context,
+          message: l.storeShieldLimitReached,
+          type: NotificationType.error,
+        );
+      }
     }
   }
 }

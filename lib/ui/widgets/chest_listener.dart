@@ -54,35 +54,20 @@ class _ChestListenerState extends ConsumerState<ChestListener> {
       AppLogger().error('ChestListener: haptic failed: $e');
     }
 
-    ChestRewardDialog.show(context, data)
-        .then((_) {
-          _deliverRewards(data);
-          _bus.consume();
-          _dialogOpen = false;
+    ChestRewardDialog.show(context, data).whenComplete(() {
+      _deliverRewards(data);
+      _bus.consume();
+      _dialogOpen = false;
 
-          if (_pendingRewards.isNotEmpty) {
-            final next = _pendingRewards.removeAt(0);
-            if (mounted) {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                if (mounted) _processEvent(next);
-              });
-            }
-          }
-        })
-        .catchError((e) {
-          AppLogger().error('ChestListener: dialog failed: $e');
-          _bus.consume();
-          _dialogOpen = false;
-
-          if (_pendingRewards.isNotEmpty) {
-            final next = _pendingRewards.removeAt(0);
-            if (mounted) {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                if (mounted) _processEvent(next);
-              });
-            }
-          }
-        });
+      if (_pendingRewards.isNotEmpty) {
+        final next = _pendingRewards.removeAt(0);
+        if (mounted) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (mounted) _processEvent(next);
+          });
+        }
+      }
+    });
   }
 
   void _deliverRewards(ChestRewardData data) {

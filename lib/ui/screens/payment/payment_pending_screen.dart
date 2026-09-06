@@ -178,9 +178,8 @@ class _PaymentPendingScreenState extends ConsumerState<PaymentPendingScreen> {
                   const SizedBox(height: AppSpacing.md),
                   Text(
                     '${pollAttempts * 5}s',
-                    style: AppTextStyle.body.copyWith(
+                    style: AppTextStyle.caption.copyWith(
                       color: context.textDisabled,
-                      fontSize: 12,
                     ),
                   ),
                 ],

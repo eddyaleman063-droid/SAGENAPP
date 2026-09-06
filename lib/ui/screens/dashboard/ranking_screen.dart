@@ -93,10 +93,9 @@ class _RankingScreenState extends ConsumerState<RankingScreen>
               mainAxisSize: MainAxisSize.min,
               children: [
                 const ExcludeSemantics(
-                  child: Icon(
-                    Icons.error_outline,
+                  child: SageEmotionWidget(
+                    emotion: SageEmotion.worried,
                     size: 48,
-                    color: PremiumColors.error,
                   ),
                 ),
                 const SizedBox(height: AppSpacing.xxl),
@@ -150,7 +149,7 @@ class _RankingContent extends ConsumerWidget {
               style: AppTextStyle.bodyMd.copyWith(color: context.textTertiary),
             ),
           ],
-        ),
+        ).animate().fadeIn(duration: 400.ms),
       );
     }
 
@@ -194,7 +193,7 @@ class _RankingContent extends ConsumerWidget {
                               color: context.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 4),
+                          const SizedBox(height: AppSpacing.xxs),
                           Text(
                             l.rankingSubtitle,
                             style: AppTextStyle.subtitle.copyWith(

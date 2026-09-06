@@ -31,7 +31,17 @@ class ApiException implements Exception {
   final int? statusCode;
   final String? host;
 
-  const ApiException(this.type, this.message, {this.statusCode, this.host});
+  /// Código estructurado devuelto por el servidor (p.ej. `sage_daily_limit`)
+  /// para distinguir un 429 por límite diario de uno por rate limit.
+  final String? serverCode;
+
+  const ApiException(
+    this.type,
+    this.message, {
+    this.statusCode,
+    this.host,
+    this.serverCode,
+  });
 
   @override
   String toString() => 'ApiException($type): $message';
@@ -202,6 +212,35 @@ class ApiClient implements ApiSender {
       throw const ApiException(ApiErrorType.network, 'No internet connection.');
     } on Exception catch (e) {
       throw ApiException(ApiErrorType.network, e.toString());
+    }
+
+    if (response.statusCode == 429) {
+      // NUEVO-fix: distingue el límite diario de Sage (server-authoritative)
+      // del rate limit por minuto; ambos llegan como HTTP 429 pero con
+      // `code` distinto en el cuerpo del error.
+      var body = '';
+      try {
+        body = await response.stream.transform(utf8.decoder).join();
+      } catch (_) {
+        // Sin body utilizable: se trata como rate limit genérico.
+      }
+      String? serverCode;
+      try {
+        final parsed = jsonDecode(body);
+        if (parsed is Map && parsed['code'] is String) {
+          serverCode = parsed['code'] as String;
+        }
+      } catch (_) {
+        // Body no JSON.
+      }
+      throw ApiException(
+        ApiErrorType.rateLimit,
+        serverCode == 'sage_daily_limit'
+            ? 'Daily limit reached.'
+            : 'Too many requests. Wait a few seconds.',
+        statusCode: 429,
+        serverCode: serverCode,
+      );
     }
 
     _checkHttpStatus(response.statusCode);

@@ -85,7 +85,7 @@ class WizardCommitmentTile extends StatelessWidget {
                         color: isSelected ? textPrimary : textSecondary,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: AppSpacing.xxs),
                     Row(
                       children: [
                         ExcludeSemantics(
@@ -97,7 +97,7 @@ class WizardCommitmentTile extends StatelessWidget {
                             ),
                           ),
                         ),
-                        const SizedBox(width: 4),
+                        const SizedBox(width: AppSpacing.xxs),
                         Text(
                           option.subtitle ?? '',
                           style: AppTextStyle.caption.copyWith(

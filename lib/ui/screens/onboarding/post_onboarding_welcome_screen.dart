@@ -45,7 +45,10 @@ class _PostOnboardingWelcomeScreenState
           children: [
             // ── Header: back arrow only ──
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.xxs,
+                vertical: AppSpacing.sm,
+              ),
               child: Row(
                 children: [
                   Semantics(
@@ -79,8 +82,8 @@ class _PostOnboardingWelcomeScreenState
                         horizontal: AppSpacing.xxl,
                       ),
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 16,
+                        horizontal: AppSpacing.xl,
+                        vertical: AppSpacing.lg,
                       ),
                       decoration: BoxDecoration(
                         color: dark
@@ -104,7 +107,7 @@ class _PostOnboardingWelcomeScreenState
                     ),
 
                     // Triangle arrow (rotated diamond)
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppSpacing.sm),
                     Transform.rotate(
                       angle: math.pi / 4,
                       child: Container(
@@ -123,7 +126,7 @@ class _PostOnboardingWelcomeScreenState
                       ),
                     ),
 
-                    const SizedBox(height: 12),
+                    const SizedBox(height: AppSpacing.md),
 
                     // Mascot
                     const ExcludeSemantics(
@@ -165,7 +168,7 @@ class _PostOnboardingWelcomeScreenState
                   child: ValueListenableBuilder<bool>(
                     valueListenable: _isPressed,
                     builder: (context, pressed, _) => AnimatedContainer(
-                      duration: const Duration(milliseconds: 80),
+                      duration: AppMotion.fast,
                       transform: pressed
                           ? Matrix4.translationValues(0, 4, 0)
                           : Matrix4.identity(),

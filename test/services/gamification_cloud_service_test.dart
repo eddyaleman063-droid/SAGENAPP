@@ -88,7 +88,11 @@ void main() {
         expect(result.value, {
           'xp': 25,
           'chestType': 'silver',
+          'gems': null,
+          'leveledUp': false,
+          'newLevel': 0,
           'alreadyClaimed': false,
+          'lastClaimedDate': '',
         });
       },
     );
@@ -99,7 +103,31 @@ void main() {
       expect(result.value, {
         'xp': 10,
         'chestType': 'bronze',
+        'gems': null,
+        'leveledUp': false,
+        'newLevel': 0,
         'alreadyClaimed': false,
+        'lastClaimedDate': '',
+      });
+    });
+
+    test('propagates server gems credit for local sync', () async {
+      mockFunctionsResult({
+        'xp': 25,
+        'chestType': 'silver',
+        'gems': {'added': 5, 'balance': 120, 'dailyCapped': false},
+        'leveledUp': true,
+        'newLevel': 5,
+      });
+      final result = await service.claimDailyChestResult();
+      expect(result.value, {
+        'xp': 25,
+        'chestType': 'silver',
+        'gems': {'added': 5, 'balance': 120, 'dailyCapped': false},
+        'leveledUp': true,
+        'newLevel': 5,
+        'alreadyClaimed': false,
+        'lastClaimedDate': '',
       });
     });
 
@@ -112,8 +140,26 @@ void main() {
     test('returns alreadyClaimed when flag is true', () async {
       mockFunctionsResult({'alreadyClaimed': true});
       final result = await service.claimDailyChestResult();
-      expect(result.value, {'alreadyClaimed': true});
+      // NUEVO-fix (chest desync): la fecha server viaja también en la rama
+      // alreadyClaimed para que el provider la persista y cierre el bucle
+      // "cofre reclamado que reaparece".
+      expect(result.value, {'alreadyClaimed': true, 'lastClaimedDate': ''});
     });
+
+    test(
+      'passes the server lastClaimedDate through on alreadyClaimed',
+      () async {
+        mockFunctionsResult({
+          'alreadyClaimed': true,
+          'lastClaimedDate': '2026-09-04',
+        });
+        final result = await service.claimDailyChestResult();
+        expect(result.value, {
+          'alreadyClaimed': true,
+          'lastClaimedDate': '2026-09-04',
+        });
+      },
+    );
 
     test('returns alreadyClaimed on null response', () async {
       mockFunctionsResult(null);
@@ -130,6 +176,33 @@ void main() {
         ),
       );
       final result = await service.claimDailyChestResult();
+      expect(result.isError, isTrue);
+      expect(result.error, isA<NetworkError>());
+    });
+  });
+
+  group('getDailyChestStatusResult', () {
+    test('returns server state (claimed + lastClaimedDate)', () async {
+      mockFunctionsResult({
+        'lastClaimedDate': '2026-09-04',
+        'available': false,
+      });
+      final result = await service.getDailyChestStatusResult();
+      expect(result.isOk, isTrue);
+      expect(result.value?['lastClaimedDate'], '2026-09-04');
+      expect(result.value?['available'], isFalse);
+    });
+
+    test('returns available when never claimed', () async {
+      mockFunctionsResult({'lastClaimedDate': null, 'available': true});
+      final result = await service.getDailyChestStatusResult();
+      expect(result.value?['available'], isTrue);
+      expect(result.value?['lastClaimedDate'], '');
+    });
+
+    test('returns error when function throws', () async {
+      mockFunctionsError(PlatformException(code: 'unavailable'));
+      final result = await service.getDailyChestStatusResult();
       expect(result.isError, isTrue);
       expect(result.error, isA<NetworkError>());
     });

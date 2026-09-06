@@ -3,8 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/theme/theme_constants.dart';
 import '../../../providers/hardware_tier_provider.dart';
 import '../../../providers/service_providers.dart';
+import '../../../services/app_logger.dart';
 import '../../../services/experience_service.dart';
 import '../../../services/sage_emotion_service.dart';
+import '../../../l10n/app_localizations.dart';
 
 class SageEmotionWidget extends StatelessWidget {
   final SageEmotion emotion;
@@ -40,10 +42,14 @@ class SageEmotionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final s = size.clamp(24.0, 200.0);
+    final appL = AppLocalizations.of(context);
+    final label =
+        semanticLabel ??
+        (appL != null ? emotion.localizedLabel(appL) : _friendlyName(emotion));
 
     return RepaintBoundary(
       child: Semantics(
-        label: semanticLabel ?? _friendlyName(emotion),
+        label: label,
         child: animated
             ? _LiveSageImage(emotion: emotion, size: s)
             : _StaticSageImage(emotion: emotion, size: s),
@@ -72,20 +78,20 @@ class _StaticSageImageState extends State<_StaticSageImage> {
           context,
           listen: false,
         ).read(sageEmotionServiceProvider).ensurePrecached(widget.emotion);
-      } catch (_) {}
+      } catch (e) {
+        AppLogger().error('SageEmotionWidget: precache failed', e);
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final dpr = MediaQuery.devicePixelRatioOf(context);
-    final decodeSize = (widget.size * dpr).round().clamp(0, 600);
     return Image.asset(
       widget.emotion.assetPath,
       width: widget.size,
       height: widget.size,
-      cacheWidth: decodeSize,
-      cacheHeight: decodeSize,
+      cacheWidth: sageEmotionDecodeSize,
+      cacheHeight: sageEmotionDecodeSize,
       gaplessPlayback: true,
       filterQuality: FilterQuality.high,
       fit: BoxFit.contain,
@@ -123,6 +129,7 @@ class _LiveSageImageState extends ConsumerState<_LiveSageImage>
   bool _idleBreathe = false;
   bool _skipNextTransition = false;
   bool _reduceAnimations = false;
+  bool _osReduceAnimations = false;
   bool _appVisible = true;
 
   @override
@@ -169,7 +176,7 @@ class _LiveSageImageState extends ConsumerState<_LiveSageImage>
   }
 
   void _updateBreathing() {
-    final reduced = ref.read(reduceAnimationsProvider);
+    final reduced = _reduceAnimations || _osReduceAnimations;
     final shouldBreathe =
         !reduced &&
         _appVisible &&
@@ -192,7 +199,7 @@ class _LiveSageImageState extends ConsumerState<_LiveSageImage>
   double _computeScale() {
     double s = 1.0;
     if (_idleBreathe && _breatheCtrl != null) {
-      s += 0.025 * _breatheCtrl!.value;
+      s += 0.04 * _breatheCtrl!.value;
     }
     return s;
   }
@@ -203,14 +210,16 @@ class _LiveSageImageState extends ConsumerState<_LiveSageImage>
       _reduceAnimations = reduced;
       _updateBreathing();
     });
-    final dpr = MediaQuery.devicePixelRatioOf(context);
-    final decodeSize = (widget.size * dpr).round().clamp(0, 600);
+    // Respect the OS-level "remove animations" accessibility setting too.
+    final osReduce = MediaQuery.disableAnimationsOf(context);
+    if (osReduce != _osReduceAnimations) {
+      _osReduceAnimations = osReduce;
+      _updateBreathing();
+    }
 
-    final skipTransition = _skipNextTransition || _reduceAnimations;
+    final skipTransition = _skipNextTransition || _reduceAnimations || osReduce;
     final imageChild = AnimatedSwitcher(
-      duration: skipTransition
-          ? Duration.zero
-          : const Duration(milliseconds: 300),
+      duration: skipTransition ? Duration.zero : AppMotion.normal,
       transitionBuilder: skipTransition
           ? (child, _) => child
           : (child, animation) {
@@ -224,8 +233,8 @@ class _LiveSageImageState extends ConsumerState<_LiveSageImage>
         key: ValueKey(_displayed.assetPath),
         width: widget.size,
         height: widget.size,
-        cacheWidth: decodeSize,
-        cacheHeight: decodeSize,
+        cacheWidth: sageEmotionDecodeSize,
+        cacheHeight: sageEmotionDecodeSize,
         gaplessPlayback: true,
         filterQuality: FilterQuality.high,
         fit: BoxFit.contain,

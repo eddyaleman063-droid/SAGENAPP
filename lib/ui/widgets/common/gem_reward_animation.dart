@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:sagen/services/experience_service.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
+import 'package:sagen/l10n/app_localizations.dart';
 
 /// Spectacular floating "+N gems" animation with particle burst.
 class GemRewardAnimation extends StatefulWidget {
@@ -102,10 +103,14 @@ class _GemRewardAnimationState extends State<GemRewardAnimation>
                     // Main badge
                     Semantics(
                       liveRegion: true,
-                      label: '+${widget.amount} gems earned',
+                      label:
+                          AppLocalizations.of(
+                            context,
+                          )?.gemRewardEarned(widget.amount) ??
+                          '+${widget.amount} gems',
                       child: Container(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 24,
+                          horizontal: AppSpacing.xxl,
                           vertical: 14,
                         ),
                         decoration: BoxDecoration(

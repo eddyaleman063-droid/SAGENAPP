@@ -35,5 +35,35 @@ void main() {
         throwsA(isA<AiException>()),
       );
     });
+
+    test(
+      'maps a 429 sage_daily_limit server rejection to AiErrorType.dailyLimit',
+      () {
+        const fromServer = ApiException(
+          ApiErrorType.rateLimit,
+          'Límite diario de mensajes de Sage alcanzado (50/día)',
+          statusCode: 429,
+          serverCode: 'sage_daily_limit',
+        );
+
+        final mapped = client.dailyLimitException(fromServer);
+
+        expect(mapped, isNotNull);
+        expect(mapped!.type, AiErrorType.dailyLimit);
+        expect(mapped.originalError, same(fromServer));
+      },
+    );
+
+    test(
+      'does NOT map a generic 429 (no sage_daily_limit code) to dailyLimit',
+      () {
+        const generic = ApiException(
+          ApiErrorType.rateLimit,
+          'Demasiadas solicitudes',
+          statusCode: 429,
+        );
+        expect(client.dailyLimitException(generic), isNull);
+      },
+    );
   });
 }

@@ -189,6 +189,8 @@ class ProfileHeaderWidget extends StatelessWidget {
   Widget _buildName(AppLocalizations l) {
     return Text(
       displayName.isNotEmpty ? displayName : l.profileDefaultName,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
       style: AppTextStyle.headlineMedium.copyWith(
         fontWeight: FontWeight.bold,
         color: Colors.white,

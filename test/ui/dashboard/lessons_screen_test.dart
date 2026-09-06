@@ -11,6 +11,7 @@ import 'package:sagen/models/learning/lesson_type.dart';
 import 'package:sagen/models/learning/stage.dart';
 import 'package:sagen/providers/providers.dart';
 import 'package:sagen/ui/screens/dashboard/lessons_screen.dart';
+import 'package:sagen/ui/screens/lesson/lesson_session_screen.dart';
 import 'package:sagen/ui/widgets/shimmer_loading.dart';
 
 class _MockSessionNotifier extends SessionNotifier {
@@ -27,6 +28,7 @@ class _MockSessionNotifier extends SessionNotifier {
     String stageId,
     String lessonId, {
     int count = 5,
+    bool resume = false,
   }) async {
     lastStageId = stageId;
     lastLessonId = lessonId;
@@ -40,6 +42,15 @@ class _MockLearningNotifier extends LearningNotifier {
 
   @override
   LearningState build() => _state;
+}
+
+class _MockReviewNotifier extends ReviewNotifier {
+  _MockReviewNotifier(this._state);
+
+  final ReviewState _state;
+
+  @override
+  ReviewState build() => _state;
 }
 
 List<Stage> _createTestStages() => [
@@ -99,6 +110,7 @@ Widget createTestApp({
   required SharedPreferences prefs,
   required LearningNotifier learning,
   SessionNotifier? session,
+  ReviewNotifier? review,
 }) {
   final router = GoRouter(
     initialLocation: '/',
@@ -111,7 +123,11 @@ Widget createTestApp({
       GoRoute(
         path: '/learning/:stageId/:lessonId',
         name: 'lesson-session',
-        builder: (context, state) => const SizedBox(),
+        builder: (context, state) => LessonSessionScreen(
+          stageId: state.pathParameters['stageId']!,
+          lessonId: state.pathParameters['lessonId']!,
+          lessonTitle: '',
+        ),
       ),
     ],
   );
@@ -121,6 +137,9 @@ Widget createTestApp({
       prefsProvider.overrideWithValue(prefs),
       learningProvider.overrideWith(() => learning),
       sessionProvider.overrideWith(() => session ?? _MockSessionNotifier()),
+      reviewProvider.overrideWith(
+        () => review ?? _MockReviewNotifier(const ReviewState()),
+      ),
     ],
     child: MaterialApp.router(
       routerConfig: router,
@@ -231,6 +250,46 @@ void main() {
 
       expect(session.lastStageId, 'ac_st1');
       expect(session.lastLessonId, 'lesson_1_1');
+      await tester.pumpAndSettle();
+    });
+
+    testWidgets('shows review card when reviewable questions exist', (
+      tester,
+    ) async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final learning = _MockLearningNotifier(
+        LearningState(isLoading: false, stages: _createTestStages()),
+      );
+      final review = _MockReviewNotifier(
+        const ReviewState(questionFailures: {'q1': 1}),
+      );
+
+      await tester.pumpWidget(
+        createTestApp(prefs: prefs, learning: learning, review: review),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('Repaso inteligente'), findsOneWidget);
+      await tester.pumpAndSettle();
+    });
+
+    testWidgets('hides review card when no reviewable questions exist', (
+      tester,
+    ) async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final learning = _MockLearningNotifier(
+        LearningState(isLoading: false, stages: _createTestStages()),
+      );
+      final review = _MockReviewNotifier(const ReviewState());
+
+      await tester.pumpWidget(
+        createTestApp(prefs: prefs, learning: learning, review: review),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('Repaso inteligente'), findsNothing);
       await tester.pumpAndSettle();
     });
   });

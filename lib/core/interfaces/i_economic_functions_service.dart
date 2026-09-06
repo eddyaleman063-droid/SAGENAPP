@@ -16,10 +16,25 @@ abstract class IEconomicFunctionsService {
   Future<Map<String, dynamic>?> addXp({
     required String reason,
     String? lessonId,
+    String? idempotencyKey,
+    String? achievementId,
   });
-  Future<Map<String, dynamic>?> incrementStreak({bool freezeUsed = false});
+
+  /// Genera una clave idempotente segura (prefijada con el uid) para
+  /// reutilizarla entre el intento online y su reintento offline.
+  String createIdempotencyKey([String? prefix]);
+  Future<Map<String, dynamic>?> incrementStreak({
+    bool freezeUsed = false,
+    bool checkIn = true,
+    String? itemUsed,
+  });
   Future<Map<String, dynamic>?> recordDonation({
     required double amount,
     required String method,
   });
+
+  /// Reclama un escudo gratis de racha vía servidor (con tope diario anti-farm).
+  /// El servidor acredita `streak_shields` de forma autoritativa; el cliente
+  /// solo aplica el bump local optimista tras confirmación.
+  Future<Map<String, dynamic>?> claimFreeStreakShield();
 }

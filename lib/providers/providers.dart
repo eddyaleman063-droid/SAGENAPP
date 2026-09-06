@@ -17,7 +17,6 @@ import 'streak_provider.dart';
 import 'theme_provider.dart';
 import 'achievement_provider.dart';
 import 'item_provider.dart';
-import 'gem_provider.dart';
 
 // ── Re-exports ─────────────────────────────────────────────────────
 // Each provider file is exported once, from its canonical location.
@@ -120,6 +119,4 @@ final itemProvider = NotifierProvider<ItemNotifier, ItemState>(
   ItemNotifier.new,
 );
 
-final gemProvider = NotifierProvider<GemNotifier, GemState>(GemNotifier.new);
-
-final assessmentLevelProvider = StateProvider.autoDispose<int?>((ref) => null);
+final assessmentLevelProvider = StateProvider<int?>((ref) => null);

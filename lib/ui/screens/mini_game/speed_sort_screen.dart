@@ -7,9 +7,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sagen/core/theme/app_colors.dart';
 import '../../widgets/common/exit_confirmation_wrapper.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
+import 'package:sagen/core/reward_constants.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/models/mini_game.dart';
 import 'package:sagen/providers/learning_provider.dart';
+import 'package:sagen/providers/gem_provider.dart';
 import 'package:sagen/ui/widgets/common/confetti_widget.dart';
 
 class SpeedSortScreen extends ConsumerStatefulWidget {
@@ -76,18 +78,8 @@ class _SpeedSortScreenState extends ConsumerState<SpeedSortScreen> {
         wrongCategory.value[random.nextInt(wrongCategory.value.length)];
 
     _items = [
-      ...correctItems.map(
-        (text) => _SortItem(
-          text: text,
-          category: selectedCategory.key,
-          isCorrect: true,
-        ),
-      ),
-      _SortItem(
-        text: wrongItem,
-        category: selectedCategory.key,
-        isCorrect: false,
-      ),
+      ...correctItems.map((text) => _SortItem(text: text, isCorrect: true)),
+      _SortItem(text: wrongItem, isCorrect: false),
     ]..shuffle(random);
 
     _correct = 0;
@@ -130,6 +122,7 @@ class _SpeedSortScreenState extends ConsumerState<SpeedSortScreen> {
           _completeGame();
         }
       } else {
+        ExperienceService.instance.errorHaptic();
         _mistakes++;
       }
     });
@@ -142,8 +135,9 @@ class _SpeedSortScreenState extends ConsumerState<SpeedSortScreen> {
     });
     if (!_rewarded) {
       _rewarded = true;
-      final xp = _correct * 20;
+      const xp = RewardConstants.miniGameXp;
       await ref.read(learningProvider.notifier).addXp(xp, reason: 'mini_game');
+      ref.read(gemProvider.notifier).awardMiniGameGems();
       if (!mounted) return;
       setState(() {
         _completing = false;
@@ -349,7 +343,7 @@ class _SpeedSortScreenState extends ConsumerState<SpeedSortScreen> {
   }
 
   Widget _buildResult(AppLocalizations l) {
-    final xp = _correct * 20;
+    const xp = RewardConstants.miniGameXp;
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -379,12 +373,12 @@ class _SpeedSortScreenState extends ConsumerState<SpeedSortScreen> {
           Text(
             _correct >= 3 ? l.miniGameComplete : l.miniGameOver,
             style: AppTextStyle.headline,
-          ),
+          ).animate().fadeIn(delay: 200.ms, duration: 300.ms),
           const SizedBox(height: AppSpacing.sm),
           Text(
             '${l.miniGameCorrect}: $_correct  |  ${l.miniGameMistakes}: $_mistakes',
             style: AppTextStyle.body.copyWith(color: context.textSecondary),
-          ),
+          ).animate().fadeIn(delay: 300.ms, duration: 300.ms),
           const SizedBox(height: AppSpacing.lg),
           if (_completing)
             const Padding(
@@ -455,15 +449,10 @@ class _SpeedSortScreenState extends ConsumerState<SpeedSortScreen> {
 
 class _SortItem {
   final String text;
-  final String category;
   final bool isCorrect;
   bool sorted = false;
   bool? accepted;
-  _SortItem({
-    required this.text,
-    required this.category,
-    required this.isCorrect,
-  });
+  _SortItem({required this.text, required this.isCorrect});
 }
 
 class _SortZone extends StatelessWidget {

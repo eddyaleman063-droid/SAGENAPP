@@ -64,6 +64,13 @@ void main() {
     });
   });
 
+  group('Server Reconciliation', () {
+    test('setLastClaimDate persists the server date for chest date checks', () {
+      repo.setLastClaimDate('2026-09-04');
+      expect(prefs.getString('gamification_last_claim_date'), '2026-09-04');
+    });
+  });
+
   group('Missions', () {
     test('incrementMission updates progress', () {
       repo.incrementMission('analyze_links');

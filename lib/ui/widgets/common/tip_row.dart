@@ -12,20 +12,25 @@ class TipRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: AppSpacing.xs),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ExcludeSemantics(
-            child: Icon(icon, size: 14, color: context.textTertiary),
-          ),
-          const SizedBox(width: AppSpacing.sm),
-          Expanded(
-            child: Text(
-              text,
-              style: AppTextStyle.caption.copyWith(color: context.textTertiary),
+      child: Semantics(
+        label: text,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ExcludeSemantics(
+              child: Icon(icon, size: 14, color: context.textTertiary),
             ),
-          ),
-        ],
+            const SizedBox(width: AppSpacing.sm),
+            Expanded(
+              child: Text(
+                text,
+                style: AppTextStyle.caption.copyWith(
+                  color: context.textTertiary,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

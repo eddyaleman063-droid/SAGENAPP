@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sagen/core/theme/app_colors.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
@@ -106,7 +107,7 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
     if (streak.justHitMilestone) {
       final milestone = streak.lastMilestone;
       ref.read(streakProvider.notifier).clearMilestone();
-      _milestoneTimer = Timer(const Duration(milliseconds: 1200), () {
+      _milestoneTimer = Timer(AppMotion.celebration, () {
         if (!mounted) return;
         _showMilestoneCelebration(milestone!);
       });
@@ -128,51 +129,57 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
         ),
         child: Padding(
           padding: const EdgeInsets.all(AppSpacing.xxl),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const SageEmotionWidget(
-                emotion: SageEmotion.celebrating,
-                size: 80,
-                animated: true,
-              ),
-              const SizedBox(height: AppSpacing.lg),
-              Text(
-                l.challenge_streak_milestone_title,
-                style: AppTextStyle.titleLg.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: PremiumColors.streakOrange,
-                ),
-              ),
-              const SizedBox(height: AppSpacing.sm),
-              Text(
-                l.challenge_streak_milestone_desc(milestone),
-                textAlign: TextAlign.center,
-                style: AppTextStyle.bodyMd.copyWith(
-                  color: context.textSecondary,
-                ),
-              ),
-              const SizedBox(height: AppSpacing.xl),
-              SizedBox(
-                width: double.infinity,
-                child: Semantics(
-                  button: true,
-                  label: l.closeButton,
-                  child: ElevatedButton(
-                    onPressed: () => context.pop(),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: PremiumColors.streakOrange,
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(AppRadius.md),
+          child:
+              Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const SageEmotionWidget(
+                        emotion: SageEmotion.celebrating,
+                        size: 80,
+                        animated: true,
                       ),
-                    ),
-                    child: Text(l.closeButton),
-                  ),
-                ),
-              ),
-            ],
-          ),
+                      const SizedBox(height: AppSpacing.lg),
+                      Text(
+                        l.challenge_streak_milestone_title,
+                        style: AppTextStyle.titleLg.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: PremiumColors.streakOrange,
+                        ),
+                      ),
+                      const SizedBox(height: AppSpacing.sm),
+                      Text(
+                        l.challenge_streak_milestone_desc(milestone),
+                        textAlign: TextAlign.center,
+                        style: AppTextStyle.bodyMd.copyWith(
+                          color: context.textSecondary,
+                        ),
+                      ),
+                      const SizedBox(height: AppSpacing.xl),
+                      SizedBox(
+                        width: double.infinity,
+                        child: Semantics(
+                          button: true,
+                          label: l.closeButton,
+                          child: ElevatedButton(
+                            onPressed: () => context.pop(),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: PremiumColors.streakOrange,
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                  AppRadius.md,
+                                ),
+                              ),
+                            ),
+                            child: Text(l.closeButton),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                  .animate()
+                  .fadeIn(duration: 350.ms)
+                  .scale(begin: const Offset(0.9, 0.9)),
         ),
       ),
     );
@@ -299,7 +306,10 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
           children: [
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.xl,
+                vertical: 18,
+              ),
               decoration: BoxDecoration(
                 color: bgColor,
                 borderRadius: BorderRadius.circular(AppRadius.xl),
@@ -367,7 +377,7 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
           children: [
             Positioned.fill(
               child: Padding(
-                padding: const EdgeInsets.only(bottom: 20),
+                padding: const EdgeInsets.only(bottom: AppSpacing.xl),
                 child: RiveFlameWidget(
                   phase: _showDefrosting
                       ? FlamePhase.defrosting
@@ -509,7 +519,7 @@ class _DailyStreakScreenState extends ConsumerState<DailyStreakScreen>
                   Transform.scale(
                     scale: scale,
                     child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 500),
+                      duration: AppMotion.medium,
                       curve: Curves.easeOutBack,
                       width: 30,
                       height: 30,

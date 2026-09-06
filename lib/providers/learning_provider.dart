@@ -90,7 +90,7 @@ class LearningNotifier extends Notifier<LearningState> {
   bool _initQueued = false;
   bool _disposed = false;
 
-  final _levelUpController = StreamController<int>.broadcast();
+  final _levelUpController = StreamController<int>();
   Stream<int> get onLevelUp => _levelUpController.stream;
 
   LearningRepository get _repo => ref.read(learningRepositoryProvider);
@@ -102,8 +102,14 @@ class LearningNotifier extends Notifier<LearningState> {
   /// server-authoritative. Fuente única usada tanto para acreditar como
   /// para mostrar en la pantalla de resultados.
   int xpForLesson(Lesson lesson) {
+    return xpForLessonId(lesson.id);
+  }
+
+  /// XP real que acredita el servidor para un lessonId (fuente única usada
+  /// tanto para acreditar como para mostrar en las pantallas de resumen).
+  int xpForLessonId(String lessonId) {
     final streakMult = ref.read(streakProvider).streakMultiplier;
-    final baseXp = lesson.id.endsWith('_l6') ? 20 : 15;
+    final baseXp = lessonId.endsWith('_l6') ? 20 : 15;
     return (baseXp * streakMult).round();
   }
 
@@ -141,8 +147,8 @@ class LearningNotifier extends Notifier<LearningState> {
       }
     });
 
-    ref.listen(cloudSyncServiceProvider, (prev, next) {
-      if (prev != next) _init();
+    ref.listen<AuthState>(authProvider, (prev, next) {
+      if (prev?.isAuthenticated != next.isAuthenticated) _init();
     });
 
     // Wire up queue reconciliation callbacks and initialize
@@ -161,16 +167,32 @@ class LearningNotifier extends Notifier<LearningState> {
   /// set to the server-reported total/level instead of keeping the inflated
   /// local value forever via max().
   void _reconcileWithServer(Map<String, dynamic> result) {
-    if (result['duplicate'] == true) return;
+    // Los duplicados de lesson sync ya se reflejaron localmente al completar.
+    // Para add_xp (repaso/logros/misiones offline), el servidor devuelve
+    // totales autoritativos también en el duplicado: aplicarlos no hace daño y
+    // evita que un reintento con respuesta perdida deje el estado desfasado.
+    final op = result['_op'] as String?;
+    if (result['duplicate'] == true && op != 'add_xp') return;
     try {
       final xpData = result['xp'];
       final levelData = result['level'];
-      final rawLessons = result['lessonsCompleted'];
+
+      // Shape addXp (server): {totalXp, level} en la raíz; shape completeLesson:
+      // {xp: {totalXp}, level: {current}} anidados.
+      final totalVal = result['totalXp'];
+      final levelVal = result['level'];
+      final directTotalXp = totalVal is int ? totalVal : null;
+      final directLevel = levelVal is int ? levelVal : null;
 
       final serverTotalXp = (xpData is Map) ? xpData['totalXp'] as int? : null;
       final serverLevel = (levelData is Map)
           ? levelData['current'] as int?
           : null;
+      final authoritativeTotalXp =
+          serverTotalXp ?? directTotalXp ?? state.totalXpEarned;
+      final authoritativeLevel =
+          serverLevel ?? directLevel ?? state.currentLevel;
+      final rawLessons = result['lessonsCompleted'];
       final serverLessonsCompleted = (rawLessons is int) ? rawLessons : null;
       final serverLessonId = result['lessonId'] as String?;
 
@@ -184,9 +206,10 @@ class LearningNotifier extends Notifier<LearningState> {
         ref.read(gemProvider.notifier).syncBalance(serverGemBalance);
       }
 
-      if (serverTotalXp != null || serverLevel != null) {
-        final authoritativeTotalXp = serverTotalXp ?? state.totalXpEarned;
-        final authoritativeLevel = serverLevel ?? state.currentLevel;
+      if (serverTotalXp != null ||
+          directTotalXp != null ||
+          serverLevel != null ||
+          directLevel != null) {
         // Recompute progress-within-level from the authoritative total so
         // the level bar matches the server.
         final progressInLevel =
@@ -217,6 +240,10 @@ class LearningNotifier extends Notifier<LearningState> {
       AppLogger().warning('_reconcileWithServer failed: $e', e, stack);
     }
   }
+
+  /// @visibleForTesting
+  void reconcileForTest(Map<String, dynamic> result) =>
+      _reconcileWithServer(result);
 
   /// Handle a queue item that was dropped after max retries.
   void _onQueueItemDropped(Map<String, dynamic> item) {
@@ -264,6 +291,15 @@ class LearningNotifier extends Notifier<LearningState> {
         currentStages = _unlockFirstStage(currentStages);
         state = state.copyWith(stages: () => currentStages);
       }
+
+      // Recomputar desbloqueos tras cargar/combinar progreso. _checkUnlocks
+      // solo se invocaba desde completeLesson: si el servidor despliega una
+      // etapa NUEVA mientras la anterior ya está 100% completa (usuario
+      // veterano), esa etapa quedaría bloqueada para siempre y overallProgress
+      // jamás llegaría a 1.0. Aquí se reengancha la cadena de desbloqueo y se
+      // persiste el resultado (NUEVO-fix).
+      _checkUnlocks();
+      repo.saveStages(state.stages);
 
       state = state.copyWith(isLoading: false, errorMessage: () => null);
     } catch (e, stack) {
@@ -431,6 +467,11 @@ class LearningNotifier extends Notifier<LearningState> {
     if (stageIndex == -1) return;
 
     final stage = state.stages[stageIndex];
+    // Defensa en profundidad: ni siquiera a nivel de datos se debe poder
+    // completar una lección de una etapa bloqueada (la UI ya la oculta). Sin
+    // este guard, cualquier ruta que llamara a completeLesson sin pasar por el
+    // gating visual podría desbloquear el avance por desbordamiento.
+    if (!stage.unlocked) return;
     final lessonIndex = stage.lessons.indexWhere((l) => l.id == lessonId);
     if (lessonIndex == -1) return;
 
@@ -447,7 +488,10 @@ class LearningNotifier extends Notifier<LearningState> {
     newLessons[lessonIndex] = newLesson;
 
     final newStages = List.of(state.stages);
-    newStages[stageIndex] = stage.copyWith(lessons: newLessons);
+    // Mantiene la invariante lessons == sessions.expand(lessons): al cargar la
+    // lista plana y las sublistas de sesion comparten instancias; sin
+    // resincronizar, los tiles de sesion leen instancias obsoletas.
+    newStages[stageIndex] = stage.withLessons(newLessons);
 
     final boostActive = ref.read(shopProvider).xpBoostActive;
     final multipliedXp = xpForLesson(lesson);
@@ -478,6 +522,13 @@ class LearningNotifier extends Notifier<LearningState> {
     ref.read(emotionEventBusProvider).fire(EmotionEventType.lessonCompleted);
     _checkUnlocks();
     _checkAchievements(perfectLesson);
+
+    // Alimenta la memoria de aprendizaje (H-03): temas débiles y conteo de
+    // lecciones aprobadas/fallidas. Se considera aprobada con >= 70% de aciertos.
+    final passed = totalQuestions > 0 && correctAnswers / totalQuestions >= 0.7;
+    ref
+        .read(learningMemoryProvider.notifier)
+        .recordLessonResult(passed: passed, topic: stage.title);
 
     // Calculate gems for offline queue sync (must match actual gem awards)
     final gemsBase = correctAnswers * 5;
@@ -536,9 +587,9 @@ class LearningNotifier extends Notifier<LearningState> {
         );
     if (data == null) return;
 
-    // El servidor ya acredita el XP del cofre en rollChestDrop de forma
-    // atómica; aquí solo se refleja en el estado local (sin re-llamar).
-    if (data.xp > 0) applyServerXp(data.xp);
+    // El servidor ya acredita el XP y las gemas del cofre en rollChestDrop de
+    // forma atómica; aquí solo se reflejan en el estado local (sin re-llamar).
+    applyServerChestReward(data.xp, data.gems);
 
     ref.read(learningRewardServiceProvider).emitRewardEffects(data);
   }
@@ -579,7 +630,7 @@ class LearningNotifier extends Notifier<LearningState> {
   }
 
   void _checkUnlocks() {
-    var stages = state.stages;
+    final stages = List<Stage>.from(state.stages);
     bool changed = false;
     for (int i = 1; i < stages.length; i++) {
       final prev = stages[i - 1];
@@ -624,11 +675,13 @@ class LearningNotifier extends Notifier<LearningState> {
     }
   }
 
-  Future<void> addXp(int amount, {String? reason, String? lessonId}) async {
+  Future<void> addXp(
+    int amount, {
+    String? reason,
+    String? lessonId,
+    String? achievementId,
+  }) async {
     if (amount <= 0) return;
-    final previousXp = state.xp;
-    final previousTotalXp = state.totalXpEarned;
-    final previousLevel = state.currentLevel;
     final newXp = state.xp + amount;
     final newTotalXp = (state.totalXpEarned + amount).clamp(0, 1000000);
     final newLevel = (newTotalXp / 100).floor() + 1;
@@ -643,13 +696,28 @@ class LearningNotifier extends Notifier<LearningState> {
       ref.read(emotionEventBusProvider).fire(EmotionEventType.levelledUp);
     }
 
+    // Clave idempotente ESTABLE: se reusa en el reintento offline para que
+    // nunca haya doble acreditación (transaction_logs por clave en el server).
+    final effectiveReason = reason ?? 'lesson_reward';
+    final keyPrefix = achievementId != null
+        ? 'xp_achievement_$achievementId'
+        : 'xp_$effectiveReason';
+    final idempotencyKey = ref
+        .read(economicFunctionsServiceProvider)
+        .createIdempotencyKey(keyPrefix);
+
     try {
       // Server-authoritative: amount is ignored server-side, reward based on reason.
       // Apply the server-reported totals/level so local state matches the
       // server exactly (NUEVO-10).
       final result = await ref
           .read(economicFunctionsServiceProvider)
-          .addXp(reason: reason ?? 'lesson_reward', lessonId: lessonId);
+          .addXp(
+            reason: effectiveReason,
+            lessonId: lessonId,
+            idempotencyKey: idempotencyKey,
+            achievementId: achievementId,
+          );
       final serverTotalXp = (result?['totalXp'] as num?)?.toInt();
       final serverLevel = (result?['level'] as num?)?.toInt();
       if (result?['duplicate'] != true &&
@@ -662,16 +730,35 @@ class LearningNotifier extends Notifier<LearningState> {
           xp: progressInLevel < 0 ? 0 : progressInLevel,
         );
       }
-      _repo.saveXp(state.xp);
-      _repo.saveTotalXp(state.totalXpEarned);
-      _repo.saveLevel(state.currentLevel);
+      _save();
     } catch (e) {
+      // Rollback SOLO del XP: restamos el monto al total actual (no restauramos
+      // un snapshot que perdería cambios intermedios de otros métodos ejecutados
+      // durante el await del server call) y re-derivamos xp/level.
+      final revertedTotal = (state.totalXpEarned - amount).clamp(0, 1000000);
+      final revertedLevel = (revertedTotal / 100).floor() + 1;
+      final progressInLevel = revertedTotal - (revertedLevel - 1) * 100;
       state = state.copyWith(
-        xp: previousXp,
-        totalXpEarned: previousTotalXp,
-        currentLevel: previousLevel,
+        totalXpEarned: revertedTotal,
+        currentLevel: revertedLevel,
+        xp: progressInLevel < 0 ? 0 : progressInLevel,
       );
+      _save();
       AppLogger().warning('addXp server call failed, reverted: $e');
+      // La recompensa no se pierde: se reencola offline con la misma clave
+      // idempotente. Al reconectar, el servidor acredita y el reconciler
+      // aplica los totales autoritativos al estado local.
+      // FIX-achievementId: se propaga el id del logro para que la cola lo
+      // conserve (históricamente se perdía y el servidor acreditaba solo el
+      // fallback de 10 XP en vez de la recompensa real del logro).
+      await ref
+          .read(offlineQueueServiceProvider)
+          .queueAddXp(
+            reason: effectiveReason,
+            lessonId: lessonId,
+            achievementId: achievementId,
+            idempotencyKey: idempotencyKey,
+          );
     }
   }
 
@@ -695,9 +782,19 @@ class LearningNotifier extends Notifier<LearningState> {
     if (didLevelUp && !_disposed) {
       ref.read(emotionEventBusProvider).fire(EmotionEventType.levelledUp);
     }
-    _repo.saveXp(state.xp);
-    _repo.saveTotalXp(state.totalXpEarned);
-    _repo.saveLevel(state.currentLevel);
+    _save();
+  }
+
+  /// Refleja localmente una recompensa de cofre que el servidor ya acreditó
+  /// de forma atómica en rollChestDrop (XP y gemas). Solo actualiza el estado
+  /// local; NO vuelve a llamar al servidor para evitar doble acreditación.
+  /// Incluye las gemas del cofre (antes solo se reflejaba el XP, dejando el
+  /// balance local por debajo del real hasta el siguiente sync).
+  void applyServerChestReward(int xp, int gems) {
+    if (xp > 0) applyServerXp(xp);
+    if (gems > 0) {
+      ref.read(gemProvider.notifier).addGems(gems, reason: 'chest_drop');
+    }
   }
 
   void unlockAchievement(String name) {

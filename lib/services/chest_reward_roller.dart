@@ -31,7 +31,20 @@ class ChestRewardRoller {
   final ChestDropService _dropService;
   Completer<void>? _rollMutex;
 
-  static int _fallbackXp(ChestType type) => 0;
+  static int _fallbackXp(ChestType type) {
+    // Midpoints of the documented XP ranges, used when the server is
+    // unreachable so the user still receives a fair reward instead of zero.
+    switch (type) {
+      case ChestType.bronze:
+        return 20;
+      case ChestType.silver:
+        return 30;
+      case ChestType.gold:
+        return 42;
+      case ChestType.legendary:
+        return 62;
+    }
+  }
 
   Future<ChestReward> roll(
     ChestType type, {
@@ -56,7 +69,7 @@ class ChestRewardRoller {
         AppLogger().warning(
           'ChestRewardRoller: server roll failed, using minimal reward: $e',
         );
-        serverReward = ChestReward(xp: _fallbackXp(type));
+        serverReward = ChestReward(xp: _fallbackXp(type), chestType: type);
       }
 
       return ChestReward(

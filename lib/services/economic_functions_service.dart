@@ -72,29 +72,48 @@ class EconomicFunctionsService implements IEconomicFunctionsService {
 
   /// Adds XP server-authoritative (reason-based predefined rewards).
   /// Client cannot specify amount — server uses REASON_REWARDS map.
+  /// [idempotencyKey] estable permite reintentar offline sin doble acreditación
+  /// (transaction_logs por clave): si se omite se genera una nueva por llamada.
   @override
   Future<Map<String, dynamic>?> addXp({
     required String reason,
     String? lessonId,
+    String? idempotencyKey,
+    String? achievementId,
   }) async {
     final params = <String, dynamic>{
       'reason': reason,
-      'idempotencyKey': _idempotencyKey(reason),
+      'idempotencyKey': idempotencyKey ?? _idempotencyKey(reason),
     };
     if (lessonId != null) params['lessonId'] = lessonId;
+    if (achievementId != null) params['achievementId'] = achievementId;
     return _call<Map<String, dynamic>>('addXp', params);
   }
+
+  @override
+  String createIdempotencyKey([String? prefix]) => _idempotencyKey(prefix);
 
   /// Increments the daily streak with server-side date validation.
   /// When [freezeUsed] is true and a day was missed, the server keeps the
   /// streak alive instead of resetting it (streak shield consumed).
+  /// When [checkIn] is false the call is a READ-ONLY sync (used by reload/login)
+  /// that reconciles the local ledgers without mutating the server streak:
+  /// merely opening the app never advances the streak, burns a shield or
+  /// breaks it. [itemUsed] declares a premium item (titaniumShield /
+  /// phoenixFeather) that the SERVER validates and consumes from the
+  /// authoritative inventory only when no real shields exist.
   @override
   Future<Map<String, dynamic>?> incrementStreak({
     bool freezeUsed = false,
+    bool checkIn = true,
+    String? itemUsed,
   }) async {
-    return _call<Map<String, dynamic>>('incrementStreak', {
+    final params = <String, dynamic>{
       'freezeUsed': freezeUsed,
-    });
+      'checkIn': checkIn,
+    };
+    if (itemUsed != null) params['itemUsed'] = itemUsed;
+    return _call<Map<String, dynamic>>('incrementStreak', params);
   }
 
   /// Atomic lesson completion: XP + streak + level in one transaction.
@@ -127,5 +146,10 @@ class EconomicFunctionsService implements IEconomicFunctionsService {
       'method': method,
       'idempotencyKey': _idempotencyKey('donation'),
     });
+  }
+
+  @override
+  Future<Map<String, dynamic>?> claimFreeStreakShield() {
+    return _call<Map<String, dynamic>>('claimFreeStreakShield', {});
   }
 }

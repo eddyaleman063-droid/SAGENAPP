@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:math' as math;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/chest_type.dart';
 import '../models/daily_mission.dart';
 import '../services/chest_event_bus.dart';
 import '../services/storage_service.dart';
 import '../services/app_logger.dart';
+import '../utils/map_utils.dart';
 import 'providers.dart';
 
 class MissionState {
@@ -97,14 +97,13 @@ class MissionNotifier extends Notifier<MissionState> {
   }
 
   void _checkReset() {
+    // Ancla de día en UTC, coherente con el resto de sistemas diarios
+    // (streak, cofre diario y topes del servidor): una sola frontera de día
+    // para todas las recompensas. Antes se comparaba la medianoche local, lo
+    // que desincronizaba las misiones del cofre/streak en zonas con offset.
     final now = DateTime.now();
-    final reset = DateTime(
-      state.lastReset.year,
-      state.lastReset.month,
-      state.lastReset.day,
-    );
-    final today = DateTime(now.year, now.month, now.day);
-    if (today.isAfter(reset)) {
+    final resetKey = utcDayKey(state.lastReset);
+    if (resetKey != utcDayKey(now)) {
       _generateMissions();
       state = state.copyWith(lastReset: now);
       _save();
@@ -112,7 +111,8 @@ class MissionNotifier extends Notifier<MissionState> {
   }
 
   void _generateMissions() {
-    final daySeed = DateTime.now().difference(DateTime(2024, 1, 1)).inDays;
+    final nowUtc = DateTime.now().toUtc();
+    final daySeed = nowUtc.difference(DateTime.utc(2024, 1, 1)).inDays;
     final uid = ref.read(authServiceProvider).currentUser?.uid ?? 'anonymous';
     final userSeed = uid.hashCode;
     final combinedSeed = daySeed ^ userSeed;
@@ -266,47 +266,39 @@ class MissionNotifier extends Notifier<MissionState> {
 
   Future<void> _rewardMission(DailyMission mission) async {
     if (_disposed) return;
-    final roll = math.Random().nextDouble();
-
-    ChestType? chestType;
-
-    if (roll < 0.02) {
-      chestType = ChestType.legendary;
-    } else if (roll < 0.08) {
-      chestType = ChestType.gold;
-    } else if (roll < 0.25) {
-      chestType = ChestType.silver;
-    } else if (roll < 0.70) {
-      chestType = ChestType.bronze;
-    }
-
-    if (chestType != null) {
-      final reward = await ref
-          .read(chestRewardRollerProvider)
-          .roll(
-            chestType,
-            contextId: 'mission_${mission.id}',
+    // La rareza real la deduce el servidor para source='mission'
+    // (2% legendaria / 6% oro / 17% plata / 75% bronce). El tipo que se pasa
+    // solo se usa como respaldo si el servidor no devuelve uno; por eso ya no
+    // hay un gate local que, al no llegar a ninguna banda, negaba el cofre en
+    // ~30% de las misiones pese a que el servidor siempre otorga uno.
+    const chestType = ChestType.bronze;
+    final reward = await ref
+        .read(chestRewardRollerProvider)
+        .roll(chestType, contextId: 'mission_${mission.id}', source: 'mission');
+    // Re-chequeamos _disposed tras el await: si el notifier se descartó durante
+    // el roll, usar ref aquí lanzaría StateError por acceder a un ref dispuesto.
+    if (_disposed) return;
+    // rollChestDrop ya acredita el XP y las gemas del cofre en el servidor;
+    // solo se reflejan en el estado local para no duplicar la recompensa.
+    ref
+        .read(learningProvider.notifier)
+        .applyServerChestReward(reward.xp, reward.gems);
+    // Gemas fijas de la MISIÓN (12), independientes del cofre.
+    ref.read(gemProvider.notifier).awardMissionGems();
+    ref
+        .read(chestEventBusProvider)
+        .fire(
+          ChestRewardData(
+            type: reward.chestType ?? chestType,
+            xp: reward.xp,
+            gems: reward.gems,
+            streakShields: reward.streakShields,
+            xpBoost: reward.xpBoost,
+            specialItems: reward.specialItems,
+            cosmeticUnlocks: reward.cosmeticUnlocks,
             source: 'mission',
-          );
-      // rollChestDrop ya acredita el XP en el servidor; solo se refleja
-      // en el estado local para no duplicar la recompensa.
-      ref.read(learningProvider.notifier).applyServerXp(reward.xp);
-      ref.read(gemProvider.notifier).awardMissionGems();
-      ref
-          .read(chestEventBusProvider)
-          .fire(
-            ChestRewardData(
-              type: reward.chestType ?? chestType,
-              xp: reward.xp,
-              gems: reward.gems,
-              streakShields: reward.streakShields,
-              xpBoost: reward.xpBoost,
-              specialItems: reward.specialItems,
-              cosmeticUnlocks: reward.cosmeticUnlocks,
-              source: 'mission',
-            ),
-          );
-    }
+          ),
+        );
   }
 
   void reload() {

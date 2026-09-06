@@ -196,6 +196,17 @@ class ChestPainter extends CustomPainter {
       ],
     ).createShader(rect.outerRect);
     canvas.drawRRect(rect, _p);
+
+    // Ambient-occlusion darkening at the base for depth.
+    _p.shader = LinearGradient(
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      colors: [
+        Colors.black.withValues(alpha: 0.0),
+        Colors.black.withValues(alpha: 0.22),
+      ],
+    ).createShader(rect.outerRect);
+    canvas.drawRRect(rect, _p);
   }
 
   void _drawBodySheen(Canvas canvas, RRect rect) {
@@ -233,19 +244,13 @@ class ChestPainter extends CustomPainter {
     for (var i = 0; i < _cfg.bandCount; i++) {
       final frac = (i + 1) / (_cfg.bandCount + 1);
       final by = bT + (bB - bT) * frac;
-      if (_cfg.bandCount <= 2) {
-        final path = Path()
-          ..moveTo(cL + s * 0.02, by)
-          ..quadraticBezierTo(cx, by + s * 0.01, cR - s * 0.02, by);
-        canvas.drawPath(path, _strokeP);
-      } else {
-        final off = (i - 1) * s * 0.01;
-        canvas.drawLine(
-          Offset(cL + s * 0.02, by + off),
-          Offset(cR - s * 0.02, by + off),
-          _strokeP,
-        );
-      }
+      final off = (_cfg.bandCount > 2)
+          ? (i - (_cfg.bandCount - 1) / 2) * s * 0.010
+          : 0.0;
+      final path = Path()
+        ..moveTo(cL + s * 0.02, by + off)
+        ..quadraticBezierTo(cx, by + off + s * 0.01, cR - s * 0.02, by + off);
+      canvas.drawPath(path, _strokeP);
     }
 
     _strokeP.strokeWidth = 1.5;
@@ -416,6 +421,25 @@ class ChestPainter extends CustomPainter {
       }
     }
 
+    // Hinge brackets anchoring the lid to the body
+    _p.style = PaintingStyle.fill;
+    _p.shader = null;
+    _p.color = _cfg.accentColor.withValues(alpha: 0.70);
+    canvas.drawCircle(Offset(cL + s * 0.10, bT), s * 0.012, _p);
+    canvas.drawCircle(Offset(cR - s * 0.10, bT), s * 0.012, _p);
+    _strokeP.color = _cfg.accentColor.withValues(alpha: 0.50);
+    _strokeP.strokeWidth = 1.2;
+    canvas.drawLine(
+      Offset(cL + s * 0.10, bT - s * 0.010),
+      Offset(cL + s * 0.10, bT + s * 0.010),
+      _strokeP,
+    );
+    canvas.drawLine(
+      Offset(cR - s * 0.10, bT - s * 0.010),
+      Offset(cR - s * 0.10, bT + s * 0.010),
+      _strokeP,
+    );
+
     canvas.restore();
   }
 
@@ -498,16 +522,28 @@ class ChestPainter extends CustomPainter {
         : (type == ChestType.gold ? 8 : 6);
     for (var i = 0; i < count; i++) {
       final seed = i * 1.618;
-      final angle = -math.pi / 2 + (seed - 0.5) * math.pi * 0.7;
-      final dist = rt * s * (0.2 + 0.15 * (seed % 1.0));
+      final angle = -math.pi / 2 + (seed - 0.5) * math.pi * 1.2;
+      final dist = rt * s * (0.20 + 0.18 * (seed % 1.0));
       final size = s * (0.008 + 0.006 * ((seed * 7) % 1.0));
       final alpha = ((1.0 - rt) * 0.9).clamp(0.0, 1.0);
 
       final px = c.dx + dist * math.cos(angle) + (seed - 0.5) * s * 0.05;
-      final py = c.dy - s * 0.05 + dist * math.sin(angle) - rt * rt * s * 0.10;
+      final py = c.dy - s * 0.05 + dist * math.sin(angle) - rt * rt * s * 0.14;
 
       _p.color = _cfg.particleColor.withValues(alpha: alpha);
       canvas.drawCircle(Offset(px, py), size, _p);
+
+      // Secondary outward ring for a fuller burst.
+      final ringDist = dist + rt * s * 0.06;
+      _p.color = _cfg.particleColor.withValues(alpha: alpha * 0.45);
+      canvas.drawCircle(
+        Offset(
+          c.dx + ringDist * math.cos(angle),
+          c.dy - s * 0.05 + ringDist * math.sin(angle),
+        ),
+        size * 0.55,
+        _p,
+      );
 
       if (i % 2 == 0) {
         _p.color = Colors.white.withValues(alpha: alpha * 0.40);
@@ -567,11 +603,11 @@ class ChestPainter extends CustomPainter {
     final rt = _openProgress(t);
     if (rt < 0.85 || rt >= 1.0) return;
     final fa = ((rt - 0.85) / 0.15);
-    final alpha = (1.0 - fa) * 0.12;
+    final alpha = (1.0 - fa) * 0.18;
     _p.shader = null;
     _p.style = PaintingStyle.fill;
     _p.color = Colors.white.withValues(alpha: alpha);
-    canvas.drawCircle(c, s * 0.50 * (1.0 + fa * 0.3), _p);
+    canvas.drawCircle(c, s * 0.50 * (1.0 + fa * 0.4), _p);
   }
 
   double _lidAngle(double t) {

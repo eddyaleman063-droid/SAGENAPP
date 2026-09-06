@@ -45,8 +45,7 @@ class RegistrationFunnelState {
   }
 }
 
-class RegistrationFunnelNotifier
-    extends AutoDisposeNotifier<RegistrationFunnelState> {
+class RegistrationFunnelNotifier extends Notifier<RegistrationFunnelState> {
   @override
   RegistrationFunnelState build() => const RegistrationFunnelState();
 
@@ -85,13 +84,20 @@ class RegistrationFunnelNotifier
   void clearSensitiveData() {
     state = state.copyWith(password: '', email: '');
   }
+
+  /// Limpia SOLO la contraseña (la credencial), manteniendo email/name/surname
+  /// para poder reintentar el registro sin volver a teclear los datos. Se usa
+  /// cuando ocurre un error inesperado, de modo que la credencial no quede
+  /// residiendo en el estado global más tiempo del necesario.
+  void clearPassword() {
+    state = state.copyWith(password: '');
+  }
 }
 
 final registrationFunnelProvider =
-    NotifierProvider.autoDispose<
-      RegistrationFunnelNotifier,
-      RegistrationFunnelState
-    >(RegistrationFunnelNotifier.new);
+    NotifierProvider<RegistrationFunnelNotifier, RegistrationFunnelState>(
+      RegistrationFunnelNotifier.new,
+    );
 
 final funnelAgeValidProvider = Provider.autoDispose<bool>((ref) {
   final state = ref.watch(registrationFunnelProvider);

@@ -44,5 +44,13 @@ class Challenge with _$Challenge {
   }
 
   bool get isCorrectIndexValid =>
-      correctIndex >= 0 && correctIndex < options.length;
+      options.isNotEmpty && correctIndex >= 0 && correctIndex < options.length;
+
+  /// Índice de respuesta correcta seguro frente a datos corruptos: si
+  /// `correctIndex` cae fuera de rango (o `options` está vacío) devuelve 0
+  /// en lugar de lanzar `RangeError` al hacer `0.clamp(0, length-1)`.
+  int get effectiveCorrectIndex {
+    if (options.isEmpty) return 0;
+    return isCorrectIndexValid ? correctIndex : 0.clamp(0, options.length - 1);
+  }
 }

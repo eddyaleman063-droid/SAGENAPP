@@ -3354,6 +3354,48 @@ abstract class AppLocalizations {
   /// **'{count} lecciones'**
   String lessonsCount(Object count);
 
+  /// No description provided for @reviewCardLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Repaso: {count} preguntas pendientes'**
+  String reviewCardLabel(Object count);
+
+  /// No description provided for @reviewCompleted.
+  ///
+  /// In es, this message translates to:
+  /// **'¡Repaso completado!'**
+  String get reviewCompleted;
+
+  /// No description provided for @reviewDuePrompt.
+  ///
+  /// In es, this message translates to:
+  /// **'Tienes {count} preguntas listas para repasar'**
+  String reviewDuePrompt(Object count);
+
+  /// No description provided for @reviewGemsLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Gemas de repaso'**
+  String get reviewGemsLabel;
+
+  /// No description provided for @reviewNoneDue.
+  ///
+  /// In es, this message translates to:
+  /// **'No tienes repasos pendientes ahora. ¡Bien hecho!'**
+  String get reviewNoneDue;
+
+  /// No description provided for @reviewScreenTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Repaso inteligente'**
+  String get reviewScreenTitle;
+
+  /// No description provided for @reviewXpLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'XP de repaso'**
+  String get reviewXpLabel;
+
   /// No description provided for @lessonsLevel.
   ///
   /// In es, this message translates to:
@@ -5615,6 +5657,30 @@ abstract class AppLocalizations {
   /// **'El Coliseo'**
   String get rankingTitle;
 
+  /// No description provided for @rankingPodiumLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Podio del ranking'**
+  String get rankingPodiumLabel;
+
+  /// No description provided for @rankingFirstPlace.
+  ///
+  /// In es, this message translates to:
+  /// **'{name} en primer lugar con {xp} XP'**
+  String rankingFirstPlace(Object name, Object xp);
+
+  /// No description provided for @rankingSecondPlace.
+  ///
+  /// In es, this message translates to:
+  /// **'{name} en segundo lugar con {xp} XP'**
+  String rankingSecondPlace(Object name, Object xp);
+
+  /// No description provided for @rankingThirdPlace.
+  ///
+  /// In es, this message translates to:
+  /// **'{name} en tercer lugar con {xp} XP'**
+  String rankingThirdPlace(Object name, Object xp);
+
   /// No description provided for @rankingXpToTop50.
   ///
   /// In es, this message translates to:
@@ -5822,7 +5888,7 @@ abstract class AppLocalizations {
   /// No description provided for @regPasswordDesc.
   ///
   /// In es, this message translates to:
-  /// **'Mínimo 6 caracteres para proteger tu cuenta.'**
+  /// **'Mínimo 8 caracteres con mayúscula, minúscula y un número.'**
   String get regPasswordDesc;
 
   /// No description provided for @regPasswordTitle.
@@ -5852,7 +5918,7 @@ abstract class AppLocalizations {
   /// No description provided for @regReadyForLesson.
   ///
   /// In es, this message translates to:
-  /// **'Prepara para tu primera lección'**
+  /// **'Prepárate para tu primera lección'**
   String get regReadyForLesson;
 
   /// No description provided for @regRewards.
@@ -5998,6 +6064,24 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'¿Reanudar cuestionario?'**
   String get resumeQuiz;
+
+  /// No description provided for @resumeLessonBody.
+  ///
+  /// In es, this message translates to:
+  /// **'Tienes una lección a medias de hace menos de 30 minutos. ¿Quieres retomarla donde la dejaste o empezar de nuevo?'**
+  String get resumeLessonBody;
+
+  /// No description provided for @resumeContinue.
+  ///
+  /// In es, this message translates to:
+  /// **'Continuar'**
+  String get resumeContinue;
+
+  /// No description provided for @retryStart.
+  ///
+  /// In es, this message translates to:
+  /// **'Empezar de nuevo'**
+  String get retryStart;
 
   /// No description provided for @retry.
   ///
@@ -9982,6 +10066,282 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Detener'**
   String get stop;
+
+  /// No description provided for @sageEmotionCalm.
+  ///
+  /// In es, this message translates to:
+  /// **'Calmado'**
+  String get sageEmotionCalm;
+
+  /// No description provided for @sageEmotionHappy.
+  ///
+  /// In es, this message translates to:
+  /// **'Feliz'**
+  String get sageEmotionHappy;
+
+  /// No description provided for @sageEmotionCurious.
+  ///
+  /// In es, this message translates to:
+  /// **'Curioso'**
+  String get sageEmotionCurious;
+
+  /// No description provided for @sageEmotionThinking.
+  ///
+  /// In es, this message translates to:
+  /// **'Pensando'**
+  String get sageEmotionThinking;
+
+  /// No description provided for @sageEmotionReading.
+  ///
+  /// In es, this message translates to:
+  /// **'Leyendo'**
+  String get sageEmotionReading;
+
+  /// No description provided for @sageEmotionSerious.
+  ///
+  /// In es, this message translates to:
+  /// **'Serio'**
+  String get sageEmotionSerious;
+
+  /// No description provided for @sageEmotionNeutral.
+  ///
+  /// In es, this message translates to:
+  /// **'Neutro'**
+  String get sageEmotionNeutral;
+
+  /// No description provided for @sageEmotionExcited.
+  ///
+  /// In es, this message translates to:
+  /// **'Emocionado'**
+  String get sageEmotionExcited;
+
+  /// No description provided for @sageEmotionConfused.
+  ///
+  /// In es, this message translates to:
+  /// **'Confundido'**
+  String get sageEmotionConfused;
+
+  /// No description provided for @sageEmotionWorried.
+  ///
+  /// In es, this message translates to:
+  /// **'Preocupado'**
+  String get sageEmotionWorried;
+
+  /// No description provided for @sageEmotionSadSoft.
+  ///
+  /// In es, this message translates to:
+  /// **'Un poco triste'**
+  String get sageEmotionSadSoft;
+
+  /// No description provided for @sageEmotionSad.
+  ///
+  /// In es, this message translates to:
+  /// **'Triste'**
+  String get sageEmotionSad;
+
+  /// No description provided for @sageEmotionCrying.
+  ///
+  /// In es, this message translates to:
+  /// **'Llorando'**
+  String get sageEmotionCrying;
+
+  /// No description provided for @sageEmotionDepressed.
+  ///
+  /// In es, this message translates to:
+  /// **'Deprimido'**
+  String get sageEmotionDepressed;
+
+  /// No description provided for @sageEmotionAngry.
+  ///
+  /// In es, this message translates to:
+  /// **'Enojado'**
+  String get sageEmotionAngry;
+
+  /// No description provided for @sageEmotionFurious.
+  ///
+  /// In es, this message translates to:
+  /// **'Furioso'**
+  String get sageEmotionFurious;
+
+  /// No description provided for @sageEmotionShocked.
+  ///
+  /// In es, this message translates to:
+  /// **'Sorprendido'**
+  String get sageEmotionShocked;
+
+  /// No description provided for @sageEmotionSleepy.
+  ///
+  /// In es, this message translates to:
+  /// **'Con sueño'**
+  String get sageEmotionSleepy;
+
+  /// No description provided for @sageEmotionWhistling.
+  ///
+  /// In es, this message translates to:
+  /// **'Silbando'**
+  String get sageEmotionWhistling;
+
+  /// No description provided for @sageEmotionPointLeft.
+  ///
+  /// In es, this message translates to:
+  /// **'Señalando a la izquierda'**
+  String get sageEmotionPointLeft;
+
+  /// No description provided for @sageEmotionPointRight.
+  ///
+  /// In es, this message translates to:
+  /// **'Señalando a la derecha'**
+  String get sageEmotionPointRight;
+
+  /// No description provided for @sageEmotionWink.
+  ///
+  /// In es, this message translates to:
+  /// **'Guiñando el ojo'**
+  String get sageEmotionWink;
+
+  /// No description provided for @sageEmotionShy.
+  ///
+  /// In es, this message translates to:
+  /// **'Tímido'**
+  String get sageEmotionShy;
+
+  /// No description provided for @sageEmotionLaughing.
+  ///
+  /// In es, this message translates to:
+  /// **'Riendo'**
+  String get sageEmotionLaughing;
+
+  /// No description provided for @sageEmotionSinging.
+  ///
+  /// In es, this message translates to:
+  /// **'Cantando'**
+  String get sageEmotionSinging;
+
+  /// No description provided for @sageEmotionScared.
+  ///
+  /// In es, this message translates to:
+  /// **'Asustado'**
+  String get sageEmotionScared;
+
+  /// No description provided for @sageEmotionEmbarrassed.
+  ///
+  /// In es, this message translates to:
+  /// **'Apenado'**
+  String get sageEmotionEmbarrassed;
+
+  /// No description provided for @sageEmotionAnnoyed.
+  ///
+  /// In es, this message translates to:
+  /// **'Molesto'**
+  String get sageEmotionAnnoyed;
+
+  /// No description provided for @sageEmotionUnmotivated.
+  ///
+  /// In es, this message translates to:
+  /// **'Desmotivado'**
+  String get sageEmotionUnmotivated;
+
+  /// No description provided for @sageEmotionDistressed.
+  ///
+  /// In es, this message translates to:
+  /// **'Angustiado'**
+  String get sageEmotionDistressed;
+
+  /// No description provided for @sageEmotionAggressive.
+  ///
+  /// In es, this message translates to:
+  /// **'Agresivo'**
+  String get sageEmotionAggressive;
+
+  /// No description provided for @sageEmotionLol.
+  ///
+  /// In es, this message translates to:
+  /// **'Jajaja'**
+  String get sageEmotionLol;
+
+  /// No description provided for @sageEmotionHappyWings.
+  ///
+  /// In es, this message translates to:
+  /// **'Feliz con alas'**
+  String get sageEmotionHappyWings;
+
+  /// No description provided for @sageEmotionExcitedWave.
+  ///
+  /// In es, this message translates to:
+  /// **'Emocionado saludando'**
+  String get sageEmotionExcitedWave;
+
+  /// No description provided for @sageEmotionSurprisedWings.
+  ///
+  /// In es, this message translates to:
+  /// **'Sorprendido con alas'**
+  String get sageEmotionSurprisedWings;
+
+  /// No description provided for @sageEmotionCelebrating.
+  ///
+  /// In es, this message translates to:
+  /// **'Celebrando'**
+  String get sageEmotionCelebrating;
+
+  /// No description provided for @sageEmotionProud.
+  ///
+  /// In es, this message translates to:
+  /// **'Orgulloso'**
+  String get sageEmotionProud;
+
+  /// No description provided for @sageEmotionPanic.
+  ///
+  /// In es, this message translates to:
+  /// **'En pánico'**
+  String get sageEmotionPanic;
+
+  /// No description provided for @chatSuggestionHelpLesson.
+  ///
+  /// In es, this message translates to:
+  /// **'Ayúdame con una lección'**
+  String get chatSuggestionHelpLesson;
+
+  /// No description provided for @chatSuggestionExplainConcept.
+  ///
+  /// In es, this message translates to:
+  /// **'Explícame un concepto'**
+  String get chatSuggestionExplainConcept;
+
+  /// No description provided for @chatSuggestionQuizMe.
+  ///
+  /// In es, this message translates to:
+  /// **'Ponme a prueba con vocabulario'**
+  String get chatSuggestionQuizMe;
+
+  /// No description provided for @copiedToClipboard.
+  ///
+  /// In es, this message translates to:
+  /// **'Copiado al portapapeles'**
+  String get copiedToClipboard;
+
+  /// No description provided for @messageFromYou.
+  ///
+  /// In es, this message translates to:
+  /// **'Tú'**
+  String get messageFromYou;
+
+  /// No description provided for @messageFromSage.
+  ///
+  /// In es, this message translates to:
+  /// **'Sage'**
+  String get messageFromSage;
+
+  /// No description provided for @gemRewardEarned.
+  ///
+  /// In es, this message translates to:
+  /// **'+{count} gemas obtenidas'**
+  String gemRewardEarned(Object count);
+
+  /// No description provided for @defaultStudentName.
+  ///
+  /// In es, this message translates to:
+  /// **'Estudiante'**
+  String get defaultStudentName;
 }
 
 class _AppLocalizationsDelegate

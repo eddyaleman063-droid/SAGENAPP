@@ -29,7 +29,6 @@ class LessonsScreen extends ConsumerWidget {
   ) {
     final exp = ref.read(experienceServiceProvider);
     exp.lightHaptic();
-    ref.read(sessionProvider.notifier).startSession(stageId, lessonId);
     context.pushNamed(
       'lesson-session',
       pathParameters: {'stageId': stageId, 'lessonId': lessonId},
@@ -53,6 +52,10 @@ class LessonsScreen extends ConsumerWidget {
       ),
     );
     final stages = learning.stages;
+
+    // Repaso pendiente: reactivo ante cambios del estado de repaso.
+    ref.watch(reviewProvider);
+    final reviewQueue = ref.read(reviewProvider.notifier).reviewQueueIds;
 
     if (learning.isLoading) {
       return Scaffold(
@@ -96,7 +99,7 @@ class LessonsScreen extends ConsumerWidget {
                           ),
                         ),
                       ],
-                    ),
+                    ).animate().fadeIn(duration: 400.ms).slideY(begin: 0.05),
                   ),
                 ),
               ],
@@ -175,7 +178,7 @@ class LessonsScreen extends ConsumerWidget {
                     ),
                   ),
                 ],
-              ),
+              ).animate().fadeIn(duration: 400.ms),
             ),
           ),
         ),
@@ -261,6 +264,16 @@ class LessonsScreen extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: AppSpacing.lg),
+            if (reviewQueue.isNotEmpty) ...[
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
+                child: _ReviewCard(
+                  pendingCount: reviewQueue.length,
+                  onTap: () => context.pushNamed('review-session'),
+                ),
+              ),
+              const SizedBox(height: AppSpacing.md),
+            ],
             Expanded(
               child: RefreshIndicator(
                 onRefresh: () async {
@@ -554,7 +567,6 @@ class _LessonRow extends ConsumerWidget {
       child: GestureDetector(
         onTap: onTap != null
             ? () {
-                ref.read(experienceServiceProvider).lightHaptic();
                 onTap?.call();
               }
             : null,
@@ -725,6 +737,92 @@ class _SessionGroupState extends State<_SessionGroup> {
             const SizedBox(height: AppSpacing.xs),
           ],
         ],
+      ),
+    );
+  }
+}
+
+class _ReviewCard extends StatelessWidget {
+  final int pendingCount;
+  final VoidCallback onTap;
+  const _ReviewCard({required this.pendingCount, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
+    return Semantics(
+      button: true,
+      label: l.reviewCardLabel(pendingCount),
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.lg,
+            vertical: AppSpacing.md,
+          ),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(AppRadius.xl),
+            gradient: LinearGradient(
+              colors: [
+                PremiumColors.primaryAccent.withValues(alpha: 0.18),
+                PremiumColors.premiumBlue.withValues(alpha: 0.14),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            border: Border.all(
+              color: PremiumColors.primaryAccent.withValues(alpha: 0.25),
+            ),
+          ),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(AppSpacing.sm),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: PremiumColors.primaryAccent.withValues(alpha: 0.2),
+                ),
+                child: const ExcludeSemantics(
+                  child: Icon(
+                    Icons.replay_rounded,
+                    size: 18,
+                    color: PremiumColors.primaryAccent,
+                  ),
+                ),
+              ),
+              const SizedBox(width: AppSpacing.md),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l.reviewScreenTitle,
+                      style: AppTextStyle.body.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: context.textPrimary,
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.xxs),
+                    Text(
+                      l.reviewDuePrompt(pendingCount),
+                      style: AppTextStyle.caption.copyWith(
+                        color: context.textTertiary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: AppSpacing.sm),
+              ExcludeSemantics(
+                child: Icon(
+                  Icons.arrow_forward_rounded,
+                  size: 18,
+                  color: context.textTertiary,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

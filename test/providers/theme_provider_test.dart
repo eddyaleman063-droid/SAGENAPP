@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/providers/providers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -33,6 +34,28 @@ void main() {
       const state = ThemeState(mode: ThemeMode.dark);
       final theme = state.currentTheme;
       expect(theme.brightness, Brightness.dark);
+    });
+
+    test('lightTheme is always light regardless of effective mode', () {
+      const state = ThemeState(mode: ThemeMode.dark);
+      expect(state.lightTheme.brightness, Brightness.light);
+    });
+
+    test('darkTheme is always dark regardless of effective mode', () {
+      const state = ThemeState(mode: ThemeMode.light);
+      expect(state.darkTheme.brightness, Brightness.dark);
+    });
+
+    test('lightTheme and darkTheme keep the variant scaffold background', () {
+      const state = ThemeState(mode: ThemeMode.system, themeVariant: 'purple');
+      expect(
+        state.lightTheme.scaffoldBackgroundColor,
+        PremiumColors.variantPurpleLight,
+      );
+      expect(
+        state.darkTheme.scaffoldBackgroundColor,
+        PremiumColors.variantPurpleDark,
+      );
     });
   });
 

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/providers/providers.dart';
+import 'package:sagen/services/experience_service.dart';
 
 class StoreHeader extends ConsumerStatefulWidget {
   const StoreHeader({super.key});
@@ -24,7 +25,7 @@ class _StoreHeaderState extends ConsumerState<StoreHeader>
     super.initState();
     _glowController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 800),
+      duration: AppMotion.slow,
     );
     _glowCurve = CurvedAnimation(
       parent: _glowController,
@@ -126,13 +127,15 @@ class _StoreHeaderState extends ConsumerState<StoreHeader>
                                     PremiumColors.deepPurple,
                                   ],
                                 ),
-                                borderRadius: BorderRadius.circular(2),
+                                borderRadius: BorderRadius.circular(
+                                  AppRadius.xxs,
+                                ),
                               ),
                             ),
                           ),
                           const SizedBox(width: AppSpacing.xs),
                           AnimatedSwitcher(
-                            duration: const Duration(milliseconds: 300),
+                            duration: AppMotion.normal,
                             transitionBuilder: (child, anim) =>
                                 ScaleTransition(scale: anim, child: child),
                             child: Text(
@@ -160,7 +163,10 @@ class _StoreHeaderState extends ConsumerState<StoreHeader>
                     size: 18,
                     color: Colors.white,
                   ),
-                  onPressed: () => context.pushNamed('gem-history'),
+                  onPressed: () {
+                    ExperienceService.instance.lightHaptic();
+                    context.pushNamed('gem-history');
+                  },
                   style: IconButton.styleFrom(
                     backgroundColor: Colors.white.withValues(alpha: 0.2),
                     shape: RoundedRectangleBorder(

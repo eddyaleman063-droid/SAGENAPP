@@ -18,7 +18,7 @@ class GemRainAnimation extends StatefulWidget {
       context: context,
       barrierDismissible: false,
       barrierLabel: AppLocalizations.of(context)?.gemRainAnimationLabel ?? '',
-      transitionDuration: const Duration(milliseconds: 300),
+      transitionDuration: AppMotion.normal,
       pageBuilder: (ctx, a, b) => GemRainAnimation(gemCount: gemCount),
     );
   }
@@ -61,21 +61,20 @@ class _GemRainAnimationState extends State<GemRainAnimation>
       duration: const Duration(milliseconds: 2500),
     );
 
-    _pileCtrl = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 800),
-    );
+    _pileCtrl = AnimationController(vsync: this, duration: AppMotion.slow);
 
     _glowCtrl = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1200),
+      duration: AppMotion.celebration,
     );
 
     _rainCtrl.addListener(() {
       if (!mounted) return;
       final landed = _gems.where((g) => g.hasLanded(_rainCtrl.value)).length;
       if (landed != _landedCount) {
-        ExperienceService.instance.lightHaptic();
+        if (landed % 5 == 0 || landed == _gems.length) {
+          ExperienceService.instance.lightHaptic();
+        }
         setState(() => _landedCount = landed);
       }
     });
@@ -90,12 +89,15 @@ class _GemRainAnimationState extends State<GemRainAnimation>
             _glowCtrl.forward();
           }
         });
-        _dismissTimer = Timer(const Duration(milliseconds: 2800), () {
-          if (mounted) {
-            Navigator.of(context).pop();
-            widget.onComplete?.call();
-          }
-        });
+        _dismissTimer = Timer(
+          Duration(milliseconds: 2000 + (widget.gemCount * 40).clamp(0, 2000)),
+          () {
+            if (mounted) {
+              Navigator.of(context).pop();
+              widget.onComplete?.call();
+            }
+          },
+        );
       }
     });
 
@@ -147,95 +149,86 @@ class _GemRainAnimationState extends State<GemRainAnimation>
             Center(
               child: AnimatedBuilder(
                 animation: _glowCtrl,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.xxxl,
+                    vertical: AppSpacing.xl,
+                  ),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [
+                        PremiumColors.accentCyan,
+                        PremiumColors.deepPurple,
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(AppRadius.round),
+                    boxShadow: [
+                      BoxShadow(
+                        color: PremiumColors.accentCyan.withValues(alpha: 0.6),
+                        blurRadius: 40,
+                        spreadRadius: 8,
+                      ),
+                      BoxShadow(
+                        color: PremiumColors.deepPurple.withValues(alpha: 0.4),
+                        blurRadius: 60,
+                        spreadRadius: 4,
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Transform.rotate(
+                        angle: 0.785,
+                        child: Container(
+                          width: 28,
+                          height: 28,
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              colors: [
+                                Colors.white,
+                                PremiumColors.surfaceTintLight,
+                              ],
+                            ),
+                            borderRadius: BorderRadius.circular(4),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: PremiumColors.accentCyan,
+                                blurRadius: 8,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: AppSpacing.lg),
+                      Semantics(
+                        label: AppLocalizations.of(
+                          context,
+                        )!.rewardAdEarnedGems(widget.gemCount),
+                        child: Text(
+                          '+${widget.gemCount}',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 40,
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: 2,
+                            shadows: [
+                              Shadow(color: Colors.black26, blurRadius: 8),
+                              Shadow(
+                                color: PremiumColors.accentCyan,
+                                blurRadius: 16,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 builder: (ctx, child) {
                   return Transform.scale(
                     scale: 0.5 + _glowCtrl.value * 0.5,
-                    child: Opacity(
-                      opacity: _glowCtrl.value,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: AppSpacing.xxxl,
-                          vertical: AppSpacing.xl,
-                        ),
-                        decoration: BoxDecoration(
-                          gradient: const LinearGradient(
-                            colors: [
-                              PremiumColors.accentCyan,
-                              PremiumColors.deepPurple,
-                            ],
-                          ),
-                          borderRadius: BorderRadius.circular(AppRadius.round),
-                          boxShadow: [
-                            BoxShadow(
-                              color: PremiumColors.accentCyan.withValues(
-                                alpha: 0.6,
-                              ),
-                              blurRadius: 40,
-                              spreadRadius: 8,
-                            ),
-                            BoxShadow(
-                              color: PremiumColors.deepPurple.withValues(
-                                alpha: 0.4,
-                              ),
-                              blurRadius: 60,
-                              spreadRadius: 4,
-                            ),
-                          ],
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Transform.rotate(
-                              angle: 0.785,
-                              child: Container(
-                                width: 28,
-                                height: 28,
-                                decoration: BoxDecoration(
-                                  gradient: const LinearGradient(
-                                    colors: [
-                                      Colors.white,
-                                      PremiumColors.surfaceTintLight,
-                                    ],
-                                  ),
-                                  borderRadius: BorderRadius.circular(4),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: PremiumColors.accentCyan,
-                                      blurRadius: 8,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 16),
-                            Semantics(
-                              label: AppLocalizations.of(
-                                context,
-                              )!.rewardAdEarnedGems(widget.gemCount),
-                              child: Text(
-                                '+${widget.gemCount}',
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 40,
-                                  fontWeight: FontWeight.w900,
-                                  letterSpacing: 2,
-                                  shadows: [
-                                    Shadow(
-                                      color: Colors.black26,
-                                      blurRadius: 8,
-                                    ),
-                                    Shadow(
-                                      color: PremiumColors.accentCyan,
-                                      blurRadius: 16,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                    child: Opacity(opacity: _glowCtrl.value, child: child),
                   );
                 },
               ),

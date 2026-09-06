@@ -1,9 +1,15 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:sagen/core/result.dart';
 import 'package:sagen/providers/providers.dart';
+import 'package:sagen/services/gamification_cloud_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../helpers/mock_learning_provider.dart';
+
+class _FakeGamificationCloudService extends Mock
+    implements GamificationCloudService {}
 
 void main() {
   group('GamificationState', () {
@@ -66,6 +72,65 @@ void main() {
       notifier.incrementMission('mission_1');
       notifier.incrementMission('mission_2');
       expect(container.read(gamificationProvider).dailyMissionsCompleted, 2);
+    });
+  });
+
+  group('GamificationNotifier chest reconcile (server-authoritative)', () {
+    late MockLearningNotifier mockLearning;
+
+    setUp(() async {
+      mockLearning = MockLearningNotifier();
+    });
+
+    test('hides a claimed chest and persists the server date', () async {
+      final prefs = await SharedPreferences.getInstance();
+      final fake = _FakeGamificationCloudService();
+      when(() => fake.getDailyChestStatusResult()).thenAnswer(
+        (_) async => AppResult.ok(<String, dynamic>{
+          'lastClaimedDate': '2026-09-04',
+          'available': false,
+        }),
+      );
+      final container = ProviderContainer(
+        overrides: [
+          prefsProvider.overrideWithValue(prefs),
+          learningProvider.overrideWith(() => mockLearning),
+          gamificationCloudServiceProvider.overrideWithValue(fake),
+        ],
+      );
+      addTearDown(container.dispose);
+
+      expect(container.read(gamificationProvider).hasUnclaimedChest, isTrue);
+
+      await pumpEventQueue();
+      final after = container.read(gamificationProvider);
+      expect(after.hasUnclaimedChest, isFalse);
+      expect(prefs.getString('gamification_last_claim_date'), '2026-09-04');
+      expect(prefs.getBool('gamification_unclaimed_chest'), isFalse);
+    });
+
+    test('keeps the chest available when the server says available', () async {
+      final prefs = await SharedPreferences.getInstance();
+      final fake = _FakeGamificationCloudService();
+      when(() => fake.getDailyChestStatusResult()).thenAnswer(
+        (_) async => AppResult.ok(<String, dynamic>{
+          'lastClaimedDate': '',
+          'available': true,
+        }),
+      );
+      final container = ProviderContainer(
+        overrides: [
+          prefsProvider.overrideWithValue(prefs),
+          learningProvider.overrideWith(() => mockLearning),
+          gamificationCloudServiceProvider.overrideWithValue(fake),
+        ],
+      );
+      addTearDown(container.dispose);
+
+      container.read(gamificationProvider);
+      await pumpEventQueue();
+      expect(container.read(gamificationProvider).hasUnclaimedChest, isTrue);
+      expect(prefs.getBool('gamification_unclaimed_chest'), isTrue);
     });
   });
 }

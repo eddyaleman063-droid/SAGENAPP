@@ -77,13 +77,31 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
   StreamSubscription<String>? _streamSub;
   Timer? _streamFlushTimer;
 
+  // Incremental streaming state to avoid O(n²) whole-buffer copies per flush.
+  String _streamText = '';
+  int _publishedLen = 0;
+
   static DateTime _lastSendTime = DateTime.now().subtract(
     const Duration(seconds: 5),
   );
   static const Duration _throttleDuration = Duration(seconds: 2);
-  static const int _maxMessagesPerDay = 50;
-  static int _messagesSentToday = 0;
-  static DateTime _dayStart = DateTime.now();
+
+  // NUEVO-fix: el límite diario (50/día) ahora es SERVER-AUTHORITATIVE
+  // (functions/sage_usage + functions/ai_streaming.js -> checkDailyUsage).
+  // Antes el cliente llevaba un static en memoria que se reseteaba reiniciando
+  // la app o cerrando sesión, y contaba INTENTOS en vez de entregas.
+  // Aquí solo se recuerda CUÁNDO el servidor confirmó el límite para evitar
+  // re-martillar el endpoint el mismo día; el autoritativo es siempre el server.
+  DateTime? _dailyLimitSetAt;
+
+  bool _isSameLocalDay(DateTime a, DateTime b) =>
+      a.day == b.day && a.month == b.month && a.year == b.year;
+
+  bool get _isDailyLimitReached {
+    final at = _dailyLimitSetAt;
+    if (at == null) return false;
+    return _isSameLocalDay(at, DateTime.now());
+  }
 
   // Se preserva a través de rebuilds para no perder la conversación.
   List<ChatMessage> _messages = const [];
@@ -96,11 +114,9 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
     // observan learning/review aquí para que completar una lección no
     // reinicie la conversación en curso.
     final learning = ref.read(learningProvider);
-    final reviewState = ref.read(reviewProvider);
-    final weakTopics = reviewState.topicScores.entries
-        .where((e) => e.value > 3)
-        .map((e) => e.key)
-        .toList();
+    // Temas débiles canónicos del repaso (excluye temas reservados como
+    // 'review'/'lesson' que no son temas de curso).
+    final weakTopics = ref.read(reviewProvider.notifier).weakTopics;
     ref.onDispose(() {
       _streamSub?.cancel();
       _streamFlushTimer?.cancel();
@@ -131,22 +147,16 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
         DateTime.now().difference(_lastSendTime) < _throttleDuration) {
       return false;
     }
-
-    // Daily rate limiting
-    final now = DateTime.now();
-    if (now.day != _dayStart.day ||
-        now.month != _dayStart.month ||
-        now.year != _dayStart.year) {
-      _messagesSentToday = 0;
-      _dayStart = now;
-    }
-    if (_messagesSentToday >= _maxMessagesPerDay) {
+    // NUEVO-fix: bloqueo local solo-espejo del mismo día. El server decide la
+    // verdad; este cortocircuito evita que un usuario en límite re-martille el
+    // endpoint HTTP (las respuestas 429 con code sage_daily_limit ya no
+    // queman cuota porque el consumo ocurre SOLO sobre entregas reales).
+    if (_isDailyLimitReached) {
       state = state.copyWith(lastError: () => 'daily_limit');
       return false;
     }
 
-    _lastSendTime = now;
-    _messagesSentToday++;
+    _lastSendTime = DateTime.now();
 
     final userMsg = ChatMessage(
       role: ChatRole.user,
@@ -159,7 +169,17 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
       time: DateTime.now(),
     );
 
-    final messages = [..._messages, userMsg, assistantMsg];
+    final messages = <ChatMessage>[..._messages];
+    if (isRetry && messages.isNotEmpty && messages.last.role == ChatRole.user) {
+      // NUEVO-fix: en retry el último mensaje de usuario ya existe y se
+      // reutiliza; antes se appendeaba uno nuevo y el transcript (y el
+      // contexto enviado) duplicaba el texto.
+      messages.add(assistantMsg);
+    } else {
+      messages
+        ..add(userMsg)
+        ..add(assistantMsg);
+    }
     const maxMessages = 100;
     if (messages.length > maxMessages) {
       messages.removeRange(0, messages.length - maxMessages);
@@ -192,6 +212,8 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
 
     await _streamSub?.cancel();
     _streamFlushTimer?.cancel();
+    _streamText = '';
+    _publishedLen = 0;
     final buffer = StringBuffer();
     _streamSub = service
         .generateStream(
@@ -207,7 +229,8 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
               state = state.copyWith(status: SageAiChatStatus.streaming);
             }
             buffer.write(chunk);
-            _scheduleStreamFlush(buffer);
+            _streamText += chunk;
+            _scheduleStreamFlush();
           },
           onDone: () {
             _streamFlushTimer?.cancel();
@@ -218,6 +241,13 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
           onError: (Object e) {
             _streamFlushTimer?.cancel();
             _streamFlushTimer = null;
+            if (e is AiException && e.type == AiErrorType.dailyLimit) {
+              // NUEVO-fix: el servidor negó la cuota diaria. Se informa el
+              // límite SIN ejecutar el fallback local (haría creer que Sage
+              // respondió) y SIN consumir cuota extra.
+              _handleDailyLimit();
+              return;
+            }
             AppLogger().error('SageAiProvider stream error', e);
             ref.read(emotionEventBusProvider).fire(EmotionEventType.chatError);
             _fallbackResponse(text);
@@ -226,12 +256,13 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
     return true;
   }
 
-  void _scheduleStreamFlush(StringBuffer buffer) {
+  void _scheduleStreamFlush() {
     if (_streamFlushTimer != null && _streamFlushTimer!.isActive) return;
     _streamFlushTimer = Timer(const Duration(milliseconds: 50), () {
-      final text = buffer.toString();
-      if (text != state.streamingText) {
-        state = state.copyWith(streamingText: text);
+      if (_streamText.length > _publishedLen) {
+        final delta = _streamText.substring(_publishedLen);
+        _publishedLen = _streamText.length;
+        state = state.copyWith(streamingText: state.streamingText + delta);
       }
     });
   }
@@ -243,6 +274,10 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
       return;
     }
     _applyAssistantMessage(finalText);
+    // NUEVO-fix: si existió el achievement 'sage_talk', nadie lo llamaba
+    // porque recordSageTalk() no tenía invocaciones en el flujo de chat.
+    // Aquí se cuenta una entrega real de Gemini (no fallback ni vacía).
+    ref.read(learningProvider.notifier).recordSageTalk();
   }
 
   void _fallbackResponse(String lastQuestion) {
@@ -250,7 +285,9 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
     _streamFlushTimer?.cancel();
     _streamSub = null;
 
-    state = state.copyWith(status: SageAiChatStatus.loading);
+    state = state.copyWith(status: SageAiChatStatus.loading, streamingText: '');
+    _streamText = '';
+    _publishedLen = 0;
 
     final buffer = StringBuffer();
     _streamSub = _fallbackService
@@ -267,7 +304,8 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
               state = state.copyWith(status: SageAiChatStatus.streaming);
             }
             buffer.write(chunk);
-            _scheduleStreamFlush(buffer);
+            _streamText += chunk;
+            _scheduleStreamFlush();
           },
           onDone: () {
             _streamFlushTimer?.cancel();
@@ -307,6 +345,30 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
     );
   }
 
+  // NUEVO-fix: respuesta al límite diario server-authoritative. El servidor
+  // rechazó el mensaje (429 + code sage_daily_limit) sin consumir cuota.
+  // El assistant vacío se elimina, el banner muestra el mensaje de límite, y
+  // el registro local evita reintentar el mismo día.
+  void _handleDailyLimit() {
+    _streamSub?.cancel();
+    _streamSub = null;
+    final messages = List<ChatMessage>.from(_messages);
+    final idx = messages.length - 1;
+    if (idx >= 0 &&
+        messages[idx].role == ChatRole.assistant &&
+        messages[idx].text.isEmpty) {
+      messages.removeAt(idx);
+    }
+    _messages = messages;
+    _dailyLimitSetAt = DateTime.now();
+    state = state.copyWith(
+      messages: () => messages,
+      streamingText: '',
+      lastError: () => 'daily_limit',
+      status: SageAiChatStatus.idle,
+    );
+  }
+
   void _applyAssistantMessage(String text, {bool skipEmotion = false}) {
     _streamSub?.cancel();
     _streamSub = null;
@@ -339,11 +401,16 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
       time: DateTime.now(),
     );
 
+    // NUEVO-fix: el servidor (ai_streaming.js) rechaza con 400 las peticiones
+    // con más de 20 partes de contents. Antes se usaba maxContextMessages*2
+    // (hasta 39 envíos), así que las conversaciones con >10 intercambios
+    // dejaban de funcionar. Ahora la ventana histórica es maxContextMessages-1
+    // y el total nunca supera el cap del servidor.
+    const historyCap = AppConfig.maxContextMessages - 1;
+    final end = state.messages.length - 2;
+    final start = end > historyCap ? end - historyCap : 0;
     final recent = <ChatMessage>[];
-    final start = state.messages.length > AppConfig.maxContextMessages * 2
-        ? state.messages.length - AppConfig.maxContextMessages * 2
-        : 0;
-    for (int i = start; i < state.messages.length - 2; i++) {
+    for (int i = start; i < end; i++) {
       recent.add(state.messages[i]);
     }
     recent.add(userMsg);
@@ -395,8 +462,6 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
   }
 
   static void resetRateLimits() {
-    _messagesSentToday = 0;
-    _dayStart = DateTime.now();
     _lastSendTime = DateTime.now().subtract(const Duration(seconds: 5));
   }
 }

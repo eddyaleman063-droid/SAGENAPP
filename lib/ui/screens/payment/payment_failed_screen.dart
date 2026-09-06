@@ -24,20 +24,23 @@ class PaymentFailedScreen extends ConsumerWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               ExcludeSemantics(
-                child: Container(
-                  width: 100,
-                  height: 100,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: PremiumColors.error.withValues(alpha: 0.1),
-                  ),
-                  child: const Icon(
-                    Icons.close_rounded,
-                    color: PremiumColors.error,
-                    size: 52,
-                  ),
-                ),
-              ),
+                    child: Container(
+                      width: 100,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: PremiumColors.error.withValues(alpha: 0.1),
+                      ),
+                      child: const Icon(
+                        Icons.close_rounded,
+                        color: PremiumColors.error,
+                        size: 52,
+                      ),
+                    ),
+                  )
+                  .animate()
+                  .fadeIn(delay: 100.ms, duration: 300.ms)
+                  .scale(begin: const Offset(0.8, 0.8)),
               const SizedBox(height: AppSpacing.xxl),
               Text(
                 l.paymentNotCompleted,
@@ -45,7 +48,7 @@ class PaymentFailedScreen extends ConsumerWidget {
                   fontWeight: FontWeight.bold,
                   color: context.textPrimary,
                 ),
-              ),
+              ).animate().fadeIn(delay: 200.ms, duration: 300.ms),
               const SizedBox(height: AppSpacing.md),
               if (error != null)
                 Padding(
@@ -61,70 +64,81 @@ class PaymentFailedScreen extends ConsumerWidget {
                       ).colorScheme.onSurface.withValues(alpha: 0.6),
                     ),
                   ),
-                ),
+                ).animate().fadeIn(delay: 300.ms, duration: 300.ms),
               const SizedBox(height: AppSpacing.xxl),
               Row(
-                children: [
-                  Expanded(
-                    child: SizedBox(
-                      height: 52,
-                      child: Semantics(
-                        button: true,
-                        label: l.paymentTryAgain,
-                        child: OutlinedButton(
-                          onPressed: () {
-                            ref.read(experienceServiceProvider).lightHaptic();
-                            ref.read(paymentProvider.notifier).reset();
-                            context.pop();
-                          },
-                          style: OutlinedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(AppRadius.xl),
-                            ),
-                          ),
-                          child: Text(
-                            l.paymentTryAgain,
-                            style: AppTextStyle.body.copyWith(
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: AppSpacing.md),
-                  Expanded(
-                    child: SizedBox(
-                      height: 52,
-                      child: Semantics(
-                        button: true,
-                        label: l.paymentGoHome,
-                        child: FilledButton(
-                          onPressed: () {
-                            ref.read(experienceServiceProvider).lightHaptic();
-                            ref.read(paymentProvider.notifier).reset();
-                            context.goNamed('main');
-                          },
-                          style: FilledButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(AppRadius.xl),
-                            ),
-                          ),
-                          child: Text(
-                            l.paymentGoHome,
-                            style: AppTextStyle.body.copyWith(
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white,
+                    children: [
+                      Expanded(
+                        child: SizedBox(
+                          height: 52,
+                          child: Semantics(
+                            button: true,
+                            label: l.paymentTryAgain,
+                            child: OutlinedButton(
+                              onPressed: () {
+                                ref
+                                    .read(experienceServiceProvider)
+                                    .lightHaptic();
+                                ref.read(paymentProvider.notifier).reset();
+                                context.pop();
+                              },
+                              style: OutlinedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                    AppRadius.xl,
+                                  ),
+                                ),
+                              ),
+                              child: Text(
+                                l.paymentTryAgain,
+                                style: AppTextStyle.body.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                ],
-              ),
+                      const SizedBox(width: AppSpacing.md),
+                      Expanded(
+                        child: SizedBox(
+                          height: 52,
+                          child: Semantics(
+                            button: true,
+                            label: l.paymentGoHome,
+                            child: FilledButton(
+                              onPressed: () {
+                                ref
+                                    .read(experienceServiceProvider)
+                                    .lightHaptic();
+                                ref.read(paymentProvider.notifier).reset();
+                                context.goNamed('main');
+                              },
+                              style: FilledButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                    AppRadius.xl,
+                                  ),
+                                ),
+                              ),
+                              child: Text(
+                                l.paymentGoHome,
+                                style: AppTextStyle.body.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                  .animate()
+                  .fadeIn(delay: 400.ms, duration: 300.ms)
+                  .slideY(begin: 0.05),
             ],
-          ).animate().fadeIn(duration: 400.ms).slideY(begin: 0.1),
+          ),
         ),
       ),
     );

@@ -71,7 +71,7 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
       if (!mounted) return;
       _pendingGemAmount += amount;
       _gemDebounce?.cancel();
-      _gemDebounce = Timer(const Duration(milliseconds: 500), () {
+      _gemDebounce = Timer(AppMotion.medium, () {
         if (!mounted || _pendingGemAmount < 5) {
           _pendingGemAmount = 0;
           return;
@@ -191,7 +191,6 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
 
   void _onTabTap(int index) {
     if (_animating || index == ref.read(dashboardProvider).activeTab) return;
-    ref.read(experienceServiceProvider).lightHaptic();
     final tabNames = ['home', 'store', 'sage', 'ranking', 'profile'];
     AnalyticsService.instance.trackScreen(tabNames[index]);
     setState(() {
@@ -336,8 +335,8 @@ class _PremiumNavBar extends StatelessWidget {
                 },
                 child: Container(
                   margin: const EdgeInsets.symmetric(
-                    vertical: 8,
-                    horizontal: 4,
+                    vertical: AppSpacing.sm,
+                    horizontal: AppSpacing.xxs,
                   ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(AppRadius.md),
@@ -364,11 +363,10 @@ class _PremiumNavBar extends StatelessWidget {
                               : context.iconSecondary,
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: AppSpacing.xxs),
                       Text(
                         item.label,
-                        style: AppTextStyle.bodyMd.copyWith(
-                          fontSize: 12,
+                        style: AppTextStyle.caption.copyWith(
                           fontWeight: selected
                               ? FontWeight.w600
                               : FontWeight.normal,

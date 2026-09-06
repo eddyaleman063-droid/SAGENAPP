@@ -60,7 +60,7 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
     try {
       await ref.read(authProvider.notifier).checkEmailVerified();
       if (!mounted) return;
-      await Future.delayed(const Duration(milliseconds: 300));
+      await Future.delayed(AppMotion.normal);
       if (!mounted) return;
       final auth = ref.read(authProvider);
       if (auth.isAuthenticated) {

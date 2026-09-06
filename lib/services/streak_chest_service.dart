@@ -46,9 +46,9 @@ class StreakChestService {
         source: 'streak',
       );
 
-      // rollChestDrop ya acredita el XP en el servidor; solo se refleja
-      // en el estado local para no duplicar la recompensa.
-      learning.applyServerXp(reward.xp);
+      // rollChestDrop ya acredita el XP y las gemas del cofre en el servidor;
+      // solo se reflejan en el estado local para no duplicar la recompensa.
+      learning.applyServerChestReward(reward.xp, reward.gems);
 
       _eventBus.fire(
         ChestRewardData(

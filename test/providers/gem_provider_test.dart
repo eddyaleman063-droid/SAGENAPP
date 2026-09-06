@@ -240,6 +240,13 @@ void main() {
       expect(container.read(gemProvider).balance, 20);
     });
 
+    test('awardMiniGameGems awards 5 gems locally', () {
+      final notifier = container.read(gemProvider.notifier);
+      notifier.awardMiniGameGems();
+      expect(container.read(gemProvider).balance, 5);
+      expect(container.read(gemProvider).transactions.last.reason, 'mini_game');
+    });
+
     test('awardDailyBonus awards based on streak', () {
       final notifier = container.read(gemProvider.notifier);
       notifier.awardDailyBonus(1);
@@ -303,6 +310,32 @@ void main() {
       notifier.addGems(10, reason: 'test');
       final state = container.read(gemProvider);
       expect(state.transactions, hasLength(1));
+    });
+
+    test(
+      'clearPendingEarns removes the pending earn queue from prefs',
+      () async {
+        final notifier = container.read(gemProvider.notifier);
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setStringList('gems_pending_earn_queue', [
+          'lesson|2026-09-03T00:00:00|{}|abc',
+        ]);
+
+        await notifier.clearPendingEarns();
+
+        final remaining = prefs.getStringList('gems_pending_earn_queue');
+        expect(remaining, isNull);
+      },
+    );
+
+    test('clearPendingEarns is a no-op when there is no queue', () async {
+      final notifier = container.read(gemProvider.notifier);
+      final prefs = await SharedPreferences.getInstance();
+
+      await notifier.clearPendingEarns();
+
+      final remaining = prefs.getStringList('gems_pending_earn_queue');
+      expect(remaining, isNull);
     });
   });
 }

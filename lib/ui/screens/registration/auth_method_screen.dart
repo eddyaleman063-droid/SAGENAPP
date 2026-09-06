@@ -27,11 +27,16 @@ class AuthMethodScreen extends ConsumerWidget {
               if (onBack != null)
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: IconButton(
-                    onPressed: onBack,
-                    icon: const Icon(Icons.arrow_back_rounded),
-                    iconSize: 24,
-                    color: context.textSecondary,
+                  child: Semantics(
+                    button: true,
+                    label: l.backButton,
+                    child: IconButton(
+                      onPressed: onBack,
+                      icon: const Icon(Icons.arrow_back_rounded),
+                      iconSize: 24,
+                      tooltip: l.backButton,
+                      color: context.textSecondary,
+                    ),
                   ),
                 ),
               const Spacer(flex: 2),

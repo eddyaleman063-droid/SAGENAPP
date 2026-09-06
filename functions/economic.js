@@ -3,6 +3,7 @@ const admin = require('firebase-admin');
 const crypto = require('crypto');
 const gems = require('./gems');
 const sagenpass = require('./sagenpass');
+const { requireVerifiedUser } = require('./auth_guard');
 
 // ══════════════════════════════════════════════════════════════════
 // ECONOMIC FUNCTIONS — Server-authoritative mutations
@@ -28,6 +29,26 @@ const REASON_REWARDS = {
   daily_chest: { xp: 10 },
 };
 const DEFAULT_REASON_REWARD = { xp: 5 };
+
+// NUEVO-fix: XP por logro según su id (espejo de los templates del cliente en
+// lib/services/achievement_service.dart). El cliente reporta SOLO el
+// achievementId; el servidor decide el XP. Antes todos los logros acreditaban
+// flat 10 y el cliente optimistamente sumaba el XP real (10-200), provocando un
+// rollback visible de XP/nivel al llegar la respuesta del servidor.
+const ACHIEVEMENT_REWARDS = {
+  first_lesson: 10,
+  five_lessons: 25,
+  ten_lessons: 40,
+  twenty_five_lessons: 60,
+  fifty_lessons: 100,
+  stage_complete: 30,
+  all_stages: 200,
+  streak_3: 20,
+  streak_7: 50,
+  streak_30: 100,
+  perfect_lesson: 30,
+  sage_talk: 40,
+};
 
 // Server-authoritative XP rewards per lesson.
 // If a lessonId is not listed here, the default reward applies.
@@ -88,9 +109,7 @@ function safeInt(value, min, max, fieldName) {
 }
 
 exports.processDonation = functions.runWith({ maxInstances: 10 }).https.onCall(async (data, context) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError('unauthenticated', 'Debes iniciar sesion');
-  }
+  requireVerifiedUser(context);
 
   const { amount, method, idempotencyKey } = data;
   if (typeof amount !== 'number' || !Number.isFinite(amount) || amount <= 0) {
@@ -178,9 +197,7 @@ exports.processDonation = functions.runWith({ maxInstances: 10 }).https.onCall(a
  * by an admin), but bounds are enforced and the write is idempotent.
  */
 exports.recordDonation = functions.runWith({ maxInstances: 10 }).https.onCall(async (data, context) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError('unauthenticated', 'Debes iniciar sesion');
-  }
+  requireVerifiedUser(context);
 
   const { amount, method, idempotencyKey } = data;
   if (typeof amount !== 'number' || !Number.isFinite(amount) || amount <= 0) {
@@ -249,9 +266,7 @@ exports.recordDonation = functions.runWith({ maxInstances: 10 }).https.onCall(as
 });
 
 exports.addXp = functions.runWith({ maxInstances: 10 }).https.onCall(async (data, context) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError('unauthenticated', 'Debes iniciar sesion');
-  }
+  requireVerifiedUser(context);
 
   const { reason, lessonId, idempotencyKey } = data;
 
@@ -271,7 +286,20 @@ exports.addXp = functions.runWith({ maxInstances: 10 }).https.onCall(async (data
     ? reason
     : 'unknown';
   const reward = REASON_REWARDS[reasonKey] || DEFAULT_REASON_REWARD;
-  const xp = reward.xp;
+  let xp = reward.xp;
+  // NUEVO-fix: los logros acreditan el XP real de cada uno (10-200), no un
+  // flat 10. El cliente reporta solo el achievementId; el servidor decide el
+  // XP. Se valida el id (regex) y se ignora si no está en el map (fallback al
+  // flat 10) para no aceptar ids arbitrarios/inyectados.
+  const achievementId = data.achievementId;
+  const isAchievementClaim =
+    reasonKey === 'achievement' &&
+    typeof achievementId === 'string' &&
+    /^[A-Za-z0-9_-]{1,64}$/.test(achievementId) &&
+    Object.prototype.hasOwnProperty.call(ACHIEVEMENT_REWARDS, achievementId);
+  if (isAchievementClaim) {
+    xp = ACHIEVEMENT_REWARDS[achievementId];
+  }
 
   const userId = context.auth.uid;
   const userRef = admin.firestore().doc(`users/${userId}`);
@@ -279,6 +307,12 @@ exports.addXp = functions.runWith({ maxInstances: 10 }).https.onCall(async (data
   const today = new Date().toISOString().split('T')[0];
   const dailyXpRef = admin.firestore().doc(`daily_xp_sources/${userId}_${today}`);
   const leaderboardRef = admin.firestore().doc(`leaderboards/${userId}`);
+  // Claim-once de logros: users/{uid}/achievements/{achievementId}. Un solo doc
+  // con flags separados para XP y gemas, así addXp y earnGems pagan UNA vez cada
+  // uno sin bloquearse entre sí (ver NUEVO-fix en el txn).
+  const achievementClaimRef = isAchievementClaim
+    ? admin.firestore().doc(`users/${userId}/achievements/${achievementId}`)
+    : null;
 
   try {
     const result = await admin.firestore().runTransaction(async (transaction) => {
@@ -290,6 +324,22 @@ exports.addXp = functions.runWith({ maxInstances: 10 }).https.onCall(async (data
 
       if (logDoc.exists) {
         return { success: true, duplicate: true, totalXp: userDoc.data()?.learning_total_xp || 0, level: userDoc.data()?.learning_level || 1, leveledUp: false };
+      }
+
+      // NUEVO-fix anti-farm: un logro PAGA una sola vez. Antes, un cliente
+      // modificado podía llamar addXp con reason='achievement' + achievementId
+      // (hasta 200 XP) infinitamente, topado solo por el cap diario (500 XP).
+      // Mismo patrón "no double-grant" que los niveles del Pass y los one-time
+      // items de la tienda. La segunda reclamación devuelve alreadyClaimed
+      // (shape idéntico al duplicate) para que el cliente no aplique totales.
+      if (isAchievementClaim) {
+        const achievementClaimDoc = await transaction.get(achievementClaimRef);
+        if (
+          achievementClaimDoc.exists &&
+          achievementClaimDoc.data()?.xpClaimed === true
+        ) {
+          return { success: true, duplicate: true, alreadyClaimed: true, totalXp: userDoc.data()?.learning_total_xp || 0, level: userDoc.data()?.learning_level || 1, leveledUp: false };
+        }
       }
 
       if (!userDoc.exists) {
@@ -322,7 +372,10 @@ exports.addXp = functions.runWith({ maxInstances: 10 }).https.onCall(async (data
 
       transaction.set(dailyXpRef, {
         total: admin.firestore.FieldValue.increment(cappedXp),
-        [reason || 'unknown']: admin.firestore.FieldValue.increment(cappedXp),
+        // NUEVO-fix: se usa reasonKey (whitelisteado) como field name, nunca el
+        // reason crudo del cliente. Antes un reason='a.b' creaba campos
+        // anidados o 'total'/'__name__' corrompía el doc diario.
+        [reasonKey]: admin.firestore.FieldValue.increment(cappedXp),
         updatedAt: admin.firestore.FieldValue.serverTimestamp(),
       }, { merge: true });
 
@@ -333,6 +386,17 @@ exports.addXp = functions.runWith({ maxInstances: 10 }).https.onCall(async (data
         learning_total_xp: newTotalXp,
         updatedAt: admin.firestore.FieldValue.serverTimestamp(),
       }, { merge: true });
+
+      // Claim-once del logro (merge: no pisa las gemas ya marcadas por
+      // earnGems en el mismo doc).
+      if (isAchievementClaim) {
+        transaction.set(achievementClaimRef, {
+          userId,
+          achievementId,
+          xpClaimed: true,
+          xpClaimedAt: admin.firestore.FieldValue.serverTimestamp(),
+        }, { merge: true });
+      }
 
       transaction.create(logRef, {
         userId,
@@ -364,11 +428,9 @@ exports.addXp = functions.runWith({ maxInstances: 10 }).https.onCall(async (data
 });
 
 exports.incrementStreak = functions.runWith({ maxInstances: 5 }).https.onCall(async (data, context) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError('unauthenticated', 'Debes iniciar sesion');
-  }
+  requireVerifiedUser(context);
 
-  const { freezeUsed } = data;
+  const { freezeUsed, checkIn = true, itemUsed } = data;
 
   const userId = context.auth.uid;
   const userRef = admin.firestore().doc(`users/${userId}`);
@@ -384,6 +446,25 @@ exports.incrementStreak = functions.runWith({ maxInstances: 5 }).https.onCall(as
       const currentStreak = userData.currentStreak || 0;
       const longestStreak = userData.longestStreak || 0;
       const lastActivity = userData.streak_last_activity;
+
+      // NUEVO-fix (H1): sync-only mode. reload/login only reconciles the local
+      // ledgers with the authoritative server state WITHOUT mutating anything:
+      // no streak advance for merely opening the app, no silent shield burn and
+      // no break. Only an explicit check-in (checkIn: true, the default) may
+      // write. The client keeps the read-only path (checkIn: false) for
+      // app-start reconciliation.
+      if (checkIn === false) {
+        const streakShieldsNow = userData.streak_shields || 0;
+        const shopShieldsNow = userData.shop_streak_shields || 0;
+        return {
+          success: true,
+          synced: true,
+          currentStreak,
+          longestStreak,
+          alreadyCheckedIn: false,
+          shieldsRemaining: streakShieldsNow + shopShieldsNow,
+        };
+      }
 
       const now = new Date();
       const todayStr = now.toISOString().split('T')[0];
@@ -402,51 +483,85 @@ exports.incrementStreak = functions.runWith({ maxInstances: 5 }).https.onCall(as
         const yesterdayStr = yesterday.toISOString().split('T')[0];
 
         if (lastStr !== yesterdayStr) {
-          // Server-side freeze decision (NUEVO-09): a freeze is only honored
-          // if the user actually owns streak shields. The server verifies and
-          // debits them; the client's freezeUsed is never trusted on its own.
-          if (freezeUsed === true) {
-            const streakShields = userData.streak_shields || 0;
-            const shopShields = userData.shop_streak_shields || 0;
-            const availableShields = streakShields + shopShields;
+          // NUEVO-fix: the freeze decision is SERVER-side and driven by the
+          // shields the user actually owns (streak_shields + shop_streak_shields),
+          // not by the client's `freezeUsed` flag. The client keeps its own
+          // local freeze counter that can diverge from the server (e.g. shields
+          // earned via chest/shop that the client has not yet mirrored, or
+          // "phantom" local freezes the server never granted). By deciding
+          // purely on real shields we guarantee that a shield the user owns
+          // ALWAYS protects the streak, and a shield they do NOT own never does.
+          const streakShields = userData.streak_shields || 0;
+          const shopShields = userData.shop_streak_shields || 0;
+          const availableShields = streakShields + shopShields;
 
-            if (availableShields > 0) {
-              const keptStreak = currentStreak + 1;
-              const newLongest = Math.max(longestStreak, keptStreak);
-              const shieldUpdates = streakShields > 0
-                ? { streak_shields: streakShields - 1 }
-                : { shop_streak_shields: shopShields - 1 };
+          if (availableShields > 0) {
+            const keptStreak = currentStreak + 1;
+            const newLongest = Math.max(longestStreak, keptStreak);
+            const shieldUpdates = streakShields > 0
+              ? { streak_shields: streakShields - 1 }
+              : { shop_streak_shields: shopShields - 1 };
+            transaction.update(userRef, {
+              currentStreak: keptStreak,
+              longestStreak: newLongest,
+              streak_last_activity: admin.firestore.FieldValue.serverTimestamp(),
+              _ts_currentStreak: admin.firestore.FieldValue.serverTimestamp(),
+              _ts_longestStreak: admin.firestore.FieldValue.serverTimestamp(),
+              ...shieldUpdates,
+            });
+            return {
+              success: true, currentStreak: keptStreak, longestStreak: newLongest,
+              freezeConsumed: true, previousStreak: currentStreak,
+              shieldsRemaining: availableShields - 1,
+            };
+          }
+          // No shields owned: premium items (H5) may protect the streak, decided
+          // SERVER-authoritatively. The client declares the intended item but
+          // the server validates ownership against the inventory doc and
+          // decrements it in the same transaction. Titanium Shield keeps the
+          // streak alive (like a shield, without burning one); Phoenix Feather
+          // revives it (keeps the previous value, it is a grace — not an
+          // advance). When the declared item is not owned, we fall through to
+          // the break and signal itemDenied so the client never consumes it.
+          if (itemUsed === 'titaniumShield' || itemUsed === 'phoenixFeather') {
+            const stateRef = admin.firestore().doc(`users/${userId}/inventory/state`);
+            const invDoc = await transaction.get(stateRef);
+            const invData = invDoc.data() || {};
+            const specialItems = invData.specialItems || {};
+            if ((specialItems[itemUsed] || 0) >= 1) {
+              const nextSpecialItems = {
+                ...specialItems,
+                [itemUsed]: specialItems[itemUsed] - 1,
+              };
+              transaction.set(stateRef, {
+                specialItems: nextSpecialItems,
+                cosmetics: invData.cosmetics || [],
+                updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+              }, { merge: true });
+
+              const newLongest = Math.max(longestStreak, currentStreak + 1);
+              const keptStreak = itemUsed === 'titaniumShield'
+                ? currentStreak + 1
+                : currentStreak;
               transaction.update(userRef, {
                 currentStreak: keptStreak,
                 longestStreak: newLongest,
                 streak_last_activity: admin.firestore.FieldValue.serverTimestamp(),
                 _ts_currentStreak: admin.firestore.FieldValue.serverTimestamp(),
                 _ts_longestStreak: admin.firestore.FieldValue.serverTimestamp(),
-                ...shieldUpdates,
               });
               return {
                 success: true, currentStreak: keptStreak, longestStreak: newLongest,
-                freezeConsumed: true, previousStreak: currentStreak,
-                shieldsRemaining: availableShields - 1,
+                itemConsumed: true, itemUsed, revived: itemUsed === 'phoenixFeather',
+                previousStreak: currentStreak, shieldsRemaining: 0,
               };
             }
-            // Client asked for a freeze but owns no shields: the freeze is
-            // denied and the streak breaks (server-authoritative).
-            const newStreak = 1;
-            const newLongest = Math.max(longestStreak, currentStreak);
-            transaction.update(userRef, {
-              currentStreak: newStreak,
-              longestStreak: newLongest,
-              streak_last_activity: admin.firestore.FieldValue.serverTimestamp(),
-              _ts_currentStreak: admin.firestore.FieldValue.serverTimestamp(),
-              _ts_longestStreak: admin.firestore.FieldValue.serverTimestamp(),
-            });
-            return {
-              success: true, currentStreak: newStreak, longestStreak: newLongest,
-              streakBroken: true, previousStreak: currentStreak,
-              freezeDenied: true,
-            };
           }
+          // No shields owned and no usable item: the streak breaks
+          // (server-authoritative). `freezeDenied` is kept for backward-compat
+          // signaling when the client asked for a freeze but none could be
+          // honored; `itemDenied` tells an item-requesting client not to
+          // consume the premium item locally.
           const newStreak = 1;
           const newLongest = Math.max(longestStreak, currentStreak);
           transaction.update(userRef, {
@@ -459,6 +574,9 @@ exports.incrementStreak = functions.runWith({ maxInstances: 5 }).https.onCall(as
           return {
             success: true, currentStreak: newStreak, longestStreak: newLongest,
             streakBroken: true, previousStreak: currentStreak,
+            shieldsRemaining: 0,
+            freezeDenied: freezeUsed === true,
+            itemDenied: itemUsed != null,
           };
         }
       }
@@ -474,7 +592,19 @@ exports.incrementStreak = functions.runWith({ maxInstances: 5 }).https.onCall(as
         _ts_longestStreak: admin.firestore.FieldValue.serverTimestamp(),
       });
 
-      return { success: true, currentStreak: newStreak, longestStreak: newLongest, alreadyCheckedIn: false };
+      // NUEVO-fix: include the authoritative shield count so the client can
+      // reconcile its local freeze counter with the real server balance on
+      // every valid check-in (not just on freeze/break events). This prevents
+      // the client from showing "phantom" freezes the server never granted, or
+      // failing to reflect shields earned server-side.
+      const streakShieldsNow = userData.streak_shields || 0;
+      const shopShieldsNow = userData.shop_streak_shields || 0;
+
+      return {
+        success: true, currentStreak: newStreak, longestStreak: newLongest,
+        alreadyCheckedIn: false,
+        shieldsRemaining: streakShieldsNow + shopShieldsNow,
+      };
     });
 
     functions.logger.info('incrementStreak', {
@@ -490,10 +620,62 @@ exports.incrementStreak = functions.runWith({ maxInstances: 5 }).https.onCall(as
   }
 });
 
-exports.completeLesson = functions.runWith({ maxInstances: 10 }).https.onCall(async (data, context) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError('unauthenticated', 'Debes iniciar sesion');
+// FREE STREAK SHIELD: claims a free streak shield server-side with a daily
+// anti-farm cap. The result is written to users/{uid}/streak_shields (server-only
+// via Firestore rules + the client profile whitelist), so incrementStreak's
+// server-side freeze check actually honors shields granted by the "Gratis"
+// button. Without this, the client bumped a local SP counter that the server
+// never saw, so the freeze was denied and the streak broke despite the user
+// "owning" a shield.
+const FREE_SHIELD_DAILY = 1;
+const FREE_SHIELD_MAX = 3;
+
+exports.claimFreeStreakShield = functions.runWith({ maxInstances: 5 }).https.onCall(async (data, context) => {
+  requireVerifiedUser(context);
+
+  const userId = context.auth.uid;
+  const userRef = admin.firestore().doc(`users/${userId}`);
+  const today = new Date().toISOString().split('T')[0];
+
+  try {
+    const result = await admin.firestore().runTransaction(async (transaction) => {
+      const userDoc = await transaction.get(userRef);
+      if (!userDoc.exists) {
+        throw new functions.https.HttpsError('not-found', 'Usuario no encontrado');
+      }
+      const userData = userDoc.data() || {};
+      const claimedToday = userData.last_free_shield_claim === today;
+      const currentShields = userData.streak_shields || 0;
+
+      if (claimedToday) {
+        return { claimed: false, alreadyClaimedToday: true, shields: currentShields };
+      }
+      if (currentShields >= FREE_SHIELD_MAX) {
+        return { claimed: false, atCap: true, shields: currentShields };
+      }
+
+      const newShields = currentShields + 1;
+      transaction.update(userRef, {
+        streak_shields: newShields,
+        last_free_shield_claim: today,
+        _ts_streak_shields: admin.firestore.FieldValue.serverTimestamp(),
+      });
+      return { claimed: true, shields: newShields };
+    });
+
+    functions.logger.info('claimFreeStreakShield', {
+      userId, claimed: result.claimed, shields: result.shields,
+    });
+    return result;
+  } catch (error) {
+    if (error instanceof functions.https.HttpsError) throw error;
+    functions.logger.error('claimFreeStreakShield error', error);
+    throw new functions.https.HttpsError('internal', 'Error al reclamar escudo gratis');
   }
+});
+
+exports.completeLesson = functions.runWith({ maxInstances: 10 }).https.onCall(async (data, context) => {
+  requireVerifiedUser(context);
 
   const { lessonId, correctCount, perfect, totalQuestions } = data;
 
@@ -575,8 +757,23 @@ exports.completeLesson = functions.runWith({ maxInstances: 10 }).https.onCall(as
       const newLevel = Math.floor(newTotalXp / 100) + 1;
       const leveledUp = newLevel > currentLevel;
       const lastActivity = userData.streak_last_activity;
+
+      // NUEVO-12 (race fix): a completed lesson is only ONE of the two daily
+      // activity events. The dedicated incrementStreak callable is the single
+      // owner of the freeze-vs-break decision for a missed day because it
+      // honors streak shields. So completeLesson must NOT break the streak on
+      // its own; if it did and incremented/exposed lastActivity first, the
+      // concurrent incrementStreak would see "already checked in today" and
+      // the user would lose their streak AND their shields.
+      //
+      // => For today (already active) or a consecutive day (yesterday) we
+      //    keep/increment as before. For a gap of 2+ days we do nothing to the
+      //    streak here and leave lastActivity stale, so incrementStreak (which
+      //    always runs in the same frame via checkIn) decides freeze-or-break
+      //    atomically. Both callables now commute regardless of commit order.
       let streakToSet = currentStreak;
       let longestToSet = longestStreak;
+      let updateStreakFields = true;
 
       const now = new Date();
       const today = now.toISOString().split('T')[0];
@@ -588,7 +785,10 @@ exports.completeLesson = functions.runWith({ maxInstances: 10 }).https.onCall(as
         const lastDate = lastActivity.toDate ? lastActivity.toDate() : new Date(lastActivity);
         const lastStr = lastDate.toISOString().split('T')[0];
 
-        if (lastStr !== today) {
+        if (lastStr === today) {
+          // Already active today — keep the current streak.
+          streakToSet = currentStreak;
+        } else {
           const yesterday = new Date(now);
           yesterday.setDate(yesterday.getDate() - 1);
           const yesterdayStr = yesterday.toISOString().split('T')[0];
@@ -597,8 +797,10 @@ exports.completeLesson = functions.runWith({ maxInstances: 10 }).https.onCall(as
             streakToSet = currentStreak + 1;
             longestToSet = Math.max(longestStreak, streakToSet);
           } else {
-            streakToSet = 1;
-            longestToSet = Math.max(longestStreak, currentStreak);
+            // Gap of 2+ days: hand the decision to incrementStreak. Do not
+            // break the streak and do not mark activity here, otherwise the
+            // shield freeze in incrementStreak becomes a coin flip.
+            updateStreakFields = false;
           }
         }
       }
@@ -664,18 +866,21 @@ exports.completeLesson = functions.runWith({ maxInstances: 10 }).https.onCall(as
         spToAdd: lessonSp + perfectSp,
       });
 
-      transaction.update(userRef, {
+      const updateFields = {
         learning_total_xp: newTotalXp,
         learning_level: newLevel,
-        currentStreak: streakToSet,
-        longestStreak: longestToSet,
-        streak_last_activity: admin.firestore.FieldValue.serverTimestamp(),
         lessonsCompleted,
         _ts_learning_total_xp: admin.firestore.FieldValue.serverTimestamp(),
         _ts_learning_level: admin.firestore.FieldValue.serverTimestamp(),
-        _ts_currentStreak: admin.firestore.FieldValue.serverTimestamp(),
-        _ts_longestStreak: admin.firestore.FieldValue.serverTimestamp(),
-      });
+      };
+      if (updateStreakFields) {
+        updateFields.currentStreak = streakToSet;
+        updateFields.longestStreak = longestToSet;
+        updateFields.streak_last_activity = admin.firestore.FieldValue.serverTimestamp();
+        updateFields._ts_currentStreak = admin.firestore.FieldValue.serverTimestamp();
+        updateFields._ts_longestStreak = admin.firestore.FieldValue.serverTimestamp();
+      }
+      transaction.update(userRef, updateFields);
 
       transaction.set(dailyXpRef, {
         total: admin.firestore.FieldValue.increment(cappedXp),

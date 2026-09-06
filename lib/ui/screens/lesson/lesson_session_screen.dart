@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sagen/providers/providers.dart';
@@ -49,23 +50,74 @@ class _LessonSessionScreenState extends ConsumerState<LessonSessionScreen>
       ref
           .read(sessionProvider.notifier)
           .startSession(widget.stageId, widget.lessonId);
+      _maybeOfferResume();
     });
-    ref.listen<SessionState>(sessionProvider, (prev, next) {
-      if (next.phase == SessionPhase.completed && !_navigatedToResults) {
-        _navigatedToResults = true;
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (context.mounted) {
-            context.goNamed(
-              'lesson-results',
-              pathParameters: {
-                'stageId': widget.stageId,
-                'lessonId': widget.lessonId,
-              },
-            );
-          }
-        });
+    ref.listenManual<SessionState>(sessionProvider, _onSessionChange);
+  }
+
+  /// Si hay una lección a medias para este stage/lección (menos de 30 min),
+  /// ofrece retomar donde quedó en vez de empezar de cero, con opción de
+  /// descartar y volver a empezar.
+  void _maybeOfferResume() async {
+    final l = AppLocalizations.of(context)!;
+    final canResume = await ref
+        .read(sessionProvider.notifier)
+        .hasResumableProgress(widget.stageId, widget.lessonId);
+    if (!mounted || !canResume) return;
+    showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(l.resumeQuiz),
+        content: Text(l.resumeLessonBody),
+        actions: [
+          TextButton(
+            onPressed: () {
+              ExperienceService.instance.lightHaptic();
+              Navigator.pop(ctx, false);
+            },
+            child: Text(l.retryStart),
+          ),
+          FilledButton(
+            onPressed: () {
+              ExperienceService.instance.lightHaptic();
+              Navigator.pop(ctx, true);
+            },
+            child: Text(l.resumeContinue),
+          ),
+        ],
+      ),
+    ).then((resume) async {
+      if (!mounted || resume == null) return;
+      if (resume) {
+        await ref
+            .read(sessionProvider.notifier)
+            .startSession(widget.stageId, widget.lessonId, resume: true);
+      } else {
+        ref
+            .read(sessionProvider.notifier)
+            .discardResume(widget.stageId, widget.lessonId);
+        await ref
+            .read(sessionProvider.notifier)
+            .startSession(widget.stageId, widget.lessonId);
       }
     });
+  }
+
+  void _onSessionChange(SessionState? prev, SessionState next) {
+    if (next.phase == SessionPhase.completed && !_navigatedToResults) {
+      _navigatedToResults = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (context.mounted) {
+          context.goNamed(
+            'lesson-results',
+            pathParameters: {
+              'stageId': widget.stageId,
+              'lessonId': widget.lessonId,
+            },
+          );
+        }
+      });
+    }
   }
 
   @override
@@ -80,6 +132,37 @@ class _LessonSessionScreenState extends ConsumerState<LessonSessionScreen>
     _slideCtrl.forward();
   }
 
+  void _confirmExit() {
+    final l = AppLocalizations.of(context)!;
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(l.exitText),
+        content: Text(l.exitQuizContent),
+        actions: [
+          TextButton(
+            onPressed: () {
+              ExperienceService.instance.lightHaptic();
+              Navigator.pop(ctx);
+            },
+            child: Text(l.cancel),
+          ),
+          TextButton(
+            onPressed: () {
+              ExperienceService.instance.lightHaptic();
+              Navigator.pop(ctx);
+              // Navegación determinista al mapa: la sesión pudo abrirse con
+              // pushNamed o goNamed; pop() lanzaría GoError si la pila quedó
+              // con una sola página.
+              context.goNamed('lessons');
+            },
+            child: Text(l.exitText),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final session = ref.watch(sessionProvider);
@@ -88,42 +171,22 @@ class _LessonSessionScreenState extends ConsumerState<LessonSessionScreen>
       return _GameOverOverlay(session: session);
     }
 
-    final l = AppLocalizations.of(context)!;
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, result) {
         if (didPop) return;
-        showDialog(
-          context: context,
-          builder: (ctx) => AlertDialog(
-            title: Text(l.exitText),
-            content: Text(l.exitQuizContent),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  ExperienceService.instance.lightHaptic();
-                  Navigator.pop(ctx);
-                },
-                child: Text(l.cancel),
-              ),
-              TextButton(
-                onPressed: () {
-                  ExperienceService.instance.lightHaptic();
-                  Navigator.pop(ctx);
-                  context.pop();
-                },
-                child: Text(l.exitText),
-              ),
-            ],
-          ),
-        );
+        _confirmExit();
       },
       child: Scaffold(
         backgroundColor: context.surfaceBackground,
         body: SafeArea(
           child: Column(
             children: [
-              _HudBar(session: session, title: widget.lessonTitle),
+              _HudBar(
+                session: session,
+                title: widget.lessonTitle,
+                onClose: _confirmExit,
+              ),
               if (session.phase == SessionPhase.feedback)
                 Expanded(
                   child: _FeedbackBody(
@@ -137,6 +200,7 @@ class _LessonSessionScreenState extends ConsumerState<LessonSessionScreen>
                     session: session,
                     animController: _slideCtrl,
                     slideAnim: _slideAnim,
+                    stageId: widget.stageId,
                   ),
                 ),
               _BottomBar(session: session),
@@ -151,7 +215,12 @@ class _LessonSessionScreenState extends ConsumerState<LessonSessionScreen>
 class _HudBar extends StatelessWidget {
   final SessionState session;
   final String title;
-  const _HudBar({required this.session, required this.title});
+  final VoidCallback onClose;
+  const _HudBar({
+    required this.session,
+    required this.title,
+    required this.onClose,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -179,7 +248,7 @@ class _HudBar extends StatelessWidget {
                   icon: Icon(Icons.close_rounded, color: context.textTertiary),
                   onPressed: () {
                     ExperienceService.instance.lightHaptic();
-                    context.pop();
+                    onClose();
                   },
                   padding: const EdgeInsets.all(AppSpacing.sm),
                   constraints: const BoxConstraints(
@@ -245,10 +314,12 @@ class _QuestionBody extends ConsumerStatefulWidget {
   final SessionState session;
   final AnimationController animController;
   final Animation<Offset> slideAnim;
+  final String stageId;
   const _QuestionBody({
     required this.session,
     required this.animController,
     required this.slideAnim,
+    required this.stageId,
   });
 
   @override
@@ -317,7 +388,14 @@ class _QuestionBodyState extends ConsumerState<_QuestionBody> {
                   selected: selected,
                   onTap: () {
                     ExperienceService.instance.lightHaptic();
-                    ref.read(sessionProvider.notifier).submitAnswer(i);
+                    final stage = ref
+                        .read(learningProvider)
+                        .stages
+                        .where((s) => s.id == widget.stageId)
+                        .firstOrNull;
+                    ref
+                        .read(sessionProvider.notifier)
+                        .submitAnswer(i, topicForReview: stage?.title);
                   },
                 ),
               );
@@ -352,7 +430,7 @@ class _OptionTile extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 150),
+          duration: AppMotion.fast,
           padding: const EdgeInsets.symmetric(
             horizontal: AppSpacing.lg,
             vertical: AppSpacing.md,
@@ -471,83 +549,93 @@ class _FeedbackBody extends StatelessWidget {
     final correct = session.feedbackCorrect;
     final challenge = session.currentChallenge;
     if (challenge == null) return const SizedBox.shrink();
-    final correctOption = challenge.isCorrectIndexValid
-        ? challenge.options[challenge.correctIndex]
+    final correctOption = challenge.options.isNotEmpty
+        ? challenge.options[challenge.effectiveCorrectIndex]
         : null;
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(AppSpacing.xxl),
-      child: Column(
-        children: [
-          const SizedBox(height: AppSpacing.lg),
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(AppSpacing.xl),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(AppRadius.xl),
-              color: (correct ? PremiumColors.success : PremiumColors.error)
-                  .withValues(alpha: 0.08),
-              border: Border.all(
-                color: (correct ? PremiumColors.success : PremiumColors.error)
-                    .withValues(alpha: 0.2),
-              ),
-            ),
-            child: Column(
-              children: [
-                ExcludeSemantics(
-                  child: Icon(
-                    correct ? Icons.check_circle_rounded : Icons.cancel_rounded,
-                    size: 48,
-                    color: correct
-                        ? PremiumColors.success
-                        : PremiumColors.error,
+          padding: const EdgeInsets.all(AppSpacing.xxl),
+          child: Column(
+            children: [
+              const SizedBox(height: AppSpacing.lg),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(AppSpacing.xl),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(AppRadius.xl),
+                  color: (correct ? PremiumColors.success : PremiumColors.error)
+                      .withValues(alpha: 0.08),
+                  border: Border.all(
+                    color:
+                        (correct ? PremiumColors.success : PremiumColors.error)
+                            .withValues(alpha: 0.2),
                   ),
                 ),
-                const SizedBox(height: AppSpacing.md),
-                Text(
-                  correct ? l.sessionCorrect : l.sessionIncorrect,
-                  style: AppTextStyle.titleLg.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: correct
-                        ? PremiumColors.success
-                        : PremiumColors.error,
-                  ),
-                ),
-                const SizedBox(height: AppSpacing.sm),
-                if (!correct) ...[
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppSpacing.md,
-                      vertical: AppSpacing.xs,
-                    ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(AppRadius.pill),
-                      color: PremiumColors.success.withValues(alpha: 0.1),
-                    ),
-                    child: Text(
-                      l.sessionCorrectAnswer(correctOption ?? '—'),
-                      style: AppTextStyle.subtitle.copyWith(
-                        fontWeight: FontWeight.w500,
-                        color: PremiumColors.success,
+                child: Column(
+                  children: [
+                    ExcludeSemantics(
+                      child: Icon(
+                        correct
+                            ? Icons.check_circle_rounded
+                            : Icons.cancel_rounded,
+                        size: 48,
+                        color: correct
+                            ? PremiumColors.success
+                            : PremiumColors.error,
                       ),
                     ),
-                  ),
-                  const SizedBox(height: AppSpacing.md),
-                ],
-                Text(
-                  challenge.explanation,
-                  textAlign: TextAlign.center,
-                  style: AppTextStyle.subtitle.copyWith(
-                    height: 1.4,
-                    color: context.textSecondary,
-                  ),
+                    const SizedBox(height: AppSpacing.md),
+                    Text(
+                      correct ? l.sessionCorrect : l.sessionIncorrect,
+                      style: AppTextStyle.titleLg.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: correct
+                            ? PremiumColors.success
+                            : PremiumColors.error,
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.sm),
+                    if (!correct) ...[
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppSpacing.md,
+                          vertical: AppSpacing.xs,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(AppRadius.pill),
+                          color: PremiumColors.success.withValues(alpha: 0.1),
+                        ),
+                        child: Text(
+                          l.sessionCorrectAnswer(correctOption ?? '—'),
+                          style: AppTextStyle.subtitle.copyWith(
+                            fontWeight: FontWeight.w500,
+                            color: PremiumColors.success,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: AppSpacing.md),
+                    ],
+                    Text(
+                      challenge.explanation,
+                      textAlign: TextAlign.center,
+                      style: AppTextStyle.subtitle.copyWith(
+                        height: 1.4,
+                        color: context.textSecondary,
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
-    );
+        )
+        .animate()
+        .fadeIn(duration: 300.ms)
+        .scale(
+          begin: const Offset(0.95, 0.95),
+          duration: 300.ms,
+          curve: Curves.easeOut,
+        );
   }
 }
 
@@ -567,20 +655,30 @@ class _GameOverOverlay extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ExcludeSemantics(
-                child: Icon(
-                  Icons.hourglass_empty_rounded,
-                  size: 64,
-                  color: PremiumColors.error.withValues(alpha: 0.6),
-                ),
-              ),
+                    child: Icon(
+                      Icons.hourglass_empty_rounded,
+                      size: 64,
+                      color: PremiumColors.error.withValues(alpha: 0.6),
+                    ),
+                  )
+                  .animate(delay: 100.ms)
+                  .scale(
+                    begin: const Offset(0.5, 0.5),
+                    duration: 500.ms,
+                    curve: Curves.elasticOut,
+                  )
+                  .fadeIn(duration: 300.ms),
               const SizedBox(height: AppSpacing.xxl),
               Text(
-                l.sessionLivesExhausted,
-                style: AppTextStyle.headlineMedium.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: context.textPrimary,
-                ),
-              ),
+                    l.sessionLivesExhausted,
+                    style: AppTextStyle.headlineMedium.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: context.textPrimary,
+                    ),
+                  )
+                  .animate(delay: 250.ms)
+                  .fadeIn(duration: 300.ms)
+                  .slideY(begin: 0.05),
               const SizedBox(height: AppSpacing.sm),
               Text(
                 l.sessionLivesExhaustedDesc,
@@ -588,7 +686,7 @@ class _GameOverOverlay extends ConsumerWidget {
                 style: AppTextStyle.bodyMd.copyWith(
                   color: context.textTertiary,
                 ),
-              ),
+              ).animate(delay: 350.ms).fadeIn(duration: 300.ms),
               const SizedBox(height: AppSpacing.xxl),
               Text(
                 l.sessionScore(session.correctCount, session.totalQuestions),
@@ -596,41 +694,48 @@ class _GameOverOverlay extends ConsumerWidget {
                   fontWeight: FontWeight.w600,
                   color: PremiumColors.primaryAccent,
                 ),
-              ),
+              ).animate(delay: 400.ms).fadeIn(duration: 300.ms),
               const SizedBox(height: AppSpacing.xxl),
 
               Semantics(
-                button: true,
-                label: l.sessionRetry,
-                child: SizedBox(
-                  width: double.infinity,
-                  height: 52,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      ref.read(sessionProvider.notifier).retry();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: PremiumColors.primary,
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(AppRadius.lg),
+                    button: true,
+                    label: l.sessionRetry,
+                    child: SizedBox(
+                      width: double.infinity,
+                      height: 52,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          ExperienceService.instance.lightHaptic();
+                          ref.read(sessionProvider.notifier).retry();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: PremiumColors.primary,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(AppRadius.lg),
+                          ),
+                        ),
+                        child: Text(
+                          l.sessionRetry,
+                          style: AppTextStyle.titleSmall.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ),
-                    child: Text(
-                      l.sessionRetry,
-                      style: AppTextStyle.titleSmall.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+                  )
+                  .animate(delay: 500.ms)
+                  .fadeIn(duration: 300.ms)
+                  .slideY(begin: 0.1),
               const SizedBox(height: AppSpacing.md),
               Semantics(
                 button: true,
                 label: l.sessionBackToMap,
                 child: TextButton(
-                  onPressed: () => context.pop(),
+                  onPressed: () {
+                    ExperienceService.instance.lightHaptic();
+                    context.pop();
+                  },
                   child: Text(
                     l.sessionBackToMap,
                     style: AppTextStyle.bodyMd.copyWith(
@@ -638,7 +743,7 @@ class _GameOverOverlay extends ConsumerWidget {
                     ),
                   ),
                 ),
-              ),
+              ).animate(delay: 600.ms).fadeIn(duration: 300.ms),
             ],
           ),
         ),

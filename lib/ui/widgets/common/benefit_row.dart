@@ -18,19 +18,22 @@ class BenefitRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Icon(icon, size: 20, color: iconColor),
-        const SizedBox(width: AppSpacing.md),
-        Expanded(
-          child: Text(
-            text,
-            style: AppTextStyle.subtitle.copyWith(
-              color: textColor ?? context.textSecondary,
+    return Semantics(
+      label: text,
+      child: Row(
+        children: [
+          ExcludeSemantics(child: Icon(icon, size: 20, color: iconColor)),
+          const SizedBox(width: AppSpacing.md),
+          Expanded(
+            child: Text(
+              text,
+              style: AppTextStyle.subtitle.copyWith(
+                color: textColor ?? context.textSecondary,
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

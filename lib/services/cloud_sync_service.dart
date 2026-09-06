@@ -156,6 +156,10 @@ class CloudSyncService implements ICloudSyncService {
         }
       }
       _persistPendingWrites();
+      // Reschedule the flush for the re-queued writes; otherwise they
+      // would be dropped silently until the next notifyFieldChanged.
+      _debounceTimer?.cancel();
+      _debounceTimer = Timer(_debounceDuration, _flushPendingWrites);
     });
   }
 
@@ -171,6 +175,11 @@ class CloudSyncService implements ICloudSyncService {
   @override
   void startListening(String uid, SharedPreferences prefs) {
     if (_listeningUid == uid) return;
+    // Cambio de usuario: descartar writes pendientes del usuario anterior.
+    // En un logout normal saveBeforeSignOut ya los flusheó; los que quedan
+    // pertenecen a un logout offline y no deben escribirse en el doc del
+    // usuario entrante (contaminación cruzada de datos).
+    _clearPendingWrites();
     _snapshotSub?.cancel();
     _listeningUid = uid;
     _snapshotSub = _firestore
@@ -442,7 +451,13 @@ class CloudSyncService implements ICloudSyncService {
       final removed = await prefs.remove(key);
       if (removed) count++;
     }
+    _clearPendingWrites();
     _logger.info('CloudSync: cleared $count local keys');
+  }
+
+  void _clearPendingWrites() {
+    _pendingWrites.clear();
+    _clearPersistedPendingWrites();
   }
 
   @override

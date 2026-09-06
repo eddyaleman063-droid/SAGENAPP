@@ -7,12 +7,12 @@ import 'package:sagen/ui/widgets/common/sage_emotion_widget.dart';
 
 void main() {
   Widget buildApp() {
-    return ProviderScope(
+    return const ProviderScope(
       child: MaterialApp(
-        locale: const Locale('es'),
+        locale: Locale('es'),
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
-        home: const Scaffold(body: EmptyChat()),
+        home: Scaffold(body: EmptyChat()),
       ),
     );
   }

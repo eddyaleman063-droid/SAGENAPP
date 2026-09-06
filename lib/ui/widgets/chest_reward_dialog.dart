@@ -62,10 +62,10 @@ class _ChestRewardDialogState extends State<ChestRewardDialog>
       _revealCtrl.forward();
 
       // Show gem rain if there are gems
-      if (widget.reward.xp > 0 && !_gemRainShown) {
+      if (widget.reward.gems > 0 && !_gemRainShown) {
         _gemRainShown = true;
-        final gemCount = (widget.reward.xp / 3).round().clamp(2, 75);
-        _gemRainTimer = Timer(const Duration(milliseconds: 300), () {
+        final gemCount = widget.reward.gems.clamp(2, 75);
+        _gemRainTimer = Timer(AppMotion.normal, () {
           if (mounted && !_dismissed) {
             GemRainAnimation.show(context, gemCount: gemCount);
           }
@@ -163,7 +163,7 @@ class _ChestRewardDialogState extends State<ChestRewardDialog>
                       ),
                       const SizedBox(height: AppSpacing.xxl),
                       AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 500),
+                        duration: AppMotion.medium,
                         child: _showRewards
                             ? _RewardsPanel(
                                 reward: r,
@@ -249,133 +249,138 @@ class _RewardsPanelState extends State<_RewardsPanel> {
     final l = AppLocalizations.of(context)!;
     final r = widget.reward;
 
-    return FadeTransition(
-      opacity: _fadeCurve,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            r.title ?? l.chestOpenedTitle(r.type.localizedLabel(l)),
-            style: AppTextStyle.headline.copyWith(
-              color: PremiumColors.primaryDark,
-            ),
-          ),
-          const SizedBox(height: AppSpacing.xxs),
-          if (r.message != null)
-            Padding(
-              padding: const EdgeInsets.only(bottom: AppSpacing.lg),
-              child: Text(
-                r.message!,
-                style: AppTextStyle.subtitle.copyWith(
-                  color: context.textSecondary,
-                ),
-                textAlign: TextAlign.center,
+    return ScaleTransition(
+      scale: _fadeCurve,
+      child: FadeTransition(
+        opacity: _fadeCurve,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              r.title ?? l.chestOpenedTitle(r.type.localizedLabel(l)),
+              style: AppTextStyle.headline.copyWith(
+                color: PremiumColors.primaryDark,
               ),
             ),
-          const SizedBox(height: AppSpacing.md),
-          Wrap(
-            spacing: 10,
-            runSpacing: 10,
-            alignment: WrapAlignment.center,
-            children: [
-              if (r.xp > 0)
-                _GemRewardChip(gemCount: (r.xp / 3).round().clamp(2, 75)),
-              if (r.xp > 0)
-                _RewardChip(
-                  icon: Icons.auto_awesome_rounded,
-                  label: '+${l.xpValue(r.xp)}',
-                  color: PremiumColors.xpColor,
+            const SizedBox(height: AppSpacing.xxs),
+            if (r.message != null)
+              Padding(
+                padding: const EdgeInsets.only(bottom: AppSpacing.lg),
+                child: Text(
+                  r.message!,
+                  style: AppTextStyle.subtitle.copyWith(
+                    color: context.textSecondary,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-              if (r.streakShields != null && r.streakShields! > 0)
-                _RewardChip(
-                  icon: Icons.ac_unit_rounded,
-                  label: '×${r.streakShields}',
-                  color: PremiumColors.premiumBlue,
-                ),
-              if (r.xpBoost)
-                _RewardChip(
-                  icon: Icons.bolt_rounded,
-                  label: '×2 ${l.profileXpLabel}',
-                  color: PremiumColors.streakOrange,
-                ),
-              for (final itemType in r.specialItems)
-                _SpecialItemChip(
-                  itemType: itemType,
-                  reduceAnimations: ProviderScope.containerOf(
-                    context,
-                  ).read(lowEndDeviceDetectorProvider).reduceAnimations,
-                ),
-              for (final cosmeticType in r.cosmeticUnlocks)
-                _SpecialItemChip(
-                  itemType: cosmeticType,
-                  reduceAnimations: ProviderScope.containerOf(
-                    context,
-                  ).read(lowEndDeviceDetectorProvider).reduceAnimations,
-                ),
-            ],
-          ),
-          const SizedBox(height: AppSpacing.xxl),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (r.specialItems.isNotEmpty || r.cosmeticUnlocks.isNotEmpty)
-                Semantics(
-                  button: true,
-                  label: l.shareProfile,
-                  child: OutlinedButton.icon(
-                    onPressed: () {
-                      ExperienceService.instance.lightHaptic();
-                      final items = [
-                        ...r.specialItems.map((e) => e.displayName),
-                        ...r.cosmeticUnlocks.map((e) => e.displayName),
-                      ];
-                      ShareService.instance.shareText(
-                        l.chestRewardShareText(items.join(', '), r.type.name),
-                        source: 'chest_reward',
-                      );
-                    },
-                    icon: const Icon(Icons.share_rounded, size: 18),
-                    label: Text(l.shareProfile),
-                    style: OutlinedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(AppRadius.lg),
+              ),
+            const SizedBox(height: AppSpacing.md),
+            Wrap(
+              spacing: 10,
+              runSpacing: 10,
+              alignment: WrapAlignment.center,
+              children: [
+                if (r.gems > 0) _GemRewardChip(gemCount: r.gems.clamp(2, 75)),
+                if (r.xp > 0)
+                  _RewardChip(
+                    icon: Icons.auto_awesome_rounded,
+                    label: '+${l.xpValue(r.xp)}',
+                    color: PremiumColors.xpColor,
+                  ),
+                if (r.streakShields != null && r.streakShields! > 0)
+                  _RewardChip(
+                    icon: Icons.ac_unit_rounded,
+                    label: '×${r.streakShields}',
+                    color: PremiumColors.premiumBlue,
+                  ),
+                if (r.xpBoost)
+                  _RewardChip(
+                    icon: Icons.bolt_rounded,
+                    label: '×2 ${l.profileXpLabel}',
+                    color: PremiumColors.streakOrange,
+                  ),
+                for (final itemType in r.specialItems)
+                  _SpecialItemChip(
+                    itemType: itemType,
+                    reduceAnimations: ProviderScope.containerOf(
+                      context,
+                    ).read(lowEndDeviceDetectorProvider).reduceAnimations,
+                  ),
+                for (final cosmeticType in r.cosmeticUnlocks)
+                  _SpecialItemChip(
+                    itemType: cosmeticType,
+                    reduceAnimations: ProviderScope.containerOf(
+                      context,
+                    ).read(lowEndDeviceDetectorProvider).reduceAnimations,
+                  ),
+              ],
+            ),
+            const SizedBox(height: AppSpacing.xxl),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (r.specialItems.isNotEmpty || r.cosmeticUnlocks.isNotEmpty)
+                  Semantics(
+                    button: true,
+                    label: l.shareProfile,
+                    child: OutlinedButton.icon(
+                      onPressed: () {
+                        ExperienceService.instance.lightHaptic();
+                        final items = [
+                          ...r.specialItems.map((e) => e.displayName),
+                          ...r.cosmeticUnlocks.map((e) => e.displayName),
+                        ];
+                        ShareService.instance.shareText(
+                          l.chestRewardShareText(items.join(', '), r.type.name),
+                          source: 'chest_reward',
+                        );
+                      },
+                      icon: const Icon(Icons.share_rounded, size: 18),
+                      label: Text(l.shareProfile),
+                      style: OutlinedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(AppRadius.lg),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppSpacing.lg,
+                          vertical: AppSpacing.md,
+                        ),
                       ),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: AppSpacing.lg,
-                        vertical: AppSpacing.md,
+                    ),
+                  ),
+                if (r.specialItems.isNotEmpty || r.cosmeticUnlocks.isNotEmpty)
+                  const SizedBox(width: AppSpacing.md),
+                SizedBox(
+                  width: 160,
+                  child: Semantics(
+                    button: true,
+                    label: l.chestCollect,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        ExperienceService.instance.mediumHaptic();
+                        widget.onDismiss();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: r.type.color,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(AppRadius.lg),
+                        ),
+                        elevation: 4,
+                        shadowColor: r.type.color.withValues(alpha: 0.4),
+                      ),
+                      child: Text(
+                        l.chestCollect,
+                        style: AppTextStyle.cardTitle,
                       ),
                     ),
                   ),
                 ),
-              if (r.specialItems.isNotEmpty || r.cosmeticUnlocks.isNotEmpty)
-                const SizedBox(width: AppSpacing.md),
-              SizedBox(
-                width: 160,
-                child: Semantics(
-                  button: true,
-                  label: l.chestCollect,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      ExperienceService.instance.mediumHaptic();
-                      widget.onDismiss();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: r.type.color,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(AppRadius.lg),
-                      ),
-                      elevation: 4,
-                      shadowColor: r.type.color.withValues(alpha: 0.4),
-                    ),
-                    child: Text(l.chestCollect, style: AppTextStyle.cardTitle),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -390,7 +395,10 @@ class _GemRewardChip extends StatelessWidget {
     return Semantics(
       label: '+$gemCount ${AppLocalizations.of(context)?.gems ?? ''}',
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 14,
+          vertical: AppSpacing.sm,
+        ),
         decoration: BoxDecoration(
           gradient: const LinearGradient(
             colors: [PremiumColors.accentCyan, PremiumColors.deepPurple],
@@ -416,16 +424,15 @@ class _GemRewardChip extends StatelessWidget {
                   gradient: const LinearGradient(
                     colors: [Colors.white, PremiumColors.surfaceTintLight],
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(AppRadius.xxs),
                 ),
               ),
             ),
             const SizedBox(width: AppSpacing.xs),
             Text(
               '+$gemCount',
-              style: const TextStyle(
+              style: AppTextStyle.titleSmall.copyWith(
                 color: Colors.white,
-                fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -498,6 +505,19 @@ class _SpecialItemChipState extends State<_SpecialItemChip>
     );
     if (!widget.reduceAnimations) {
       _shimmerCtrl.repeat();
+    }
+  }
+
+  @override
+  void didUpdateWidget(_SpecialItemChip old) {
+    super.didUpdateWidget(old);
+    if (old.reduceAnimations != widget.reduceAnimations) {
+      if (widget.reduceAnimations) {
+        _shimmerCtrl.stop();
+        _shimmerCtrl.value = 0;
+      } else {
+        _shimmerCtrl.repeat();
+      }
     }
   }
 
@@ -622,7 +642,7 @@ class _SpecialItemChipState extends State<_SpecialItemChip>
               mainAxisSize: MainAxisSize.min,
               children: [
                 ExcludeSemantics(child: Icon(_icon, size: 16, color: _color)),
-                const SizedBox(width: 4),
+                const SizedBox(width: AppSpacing.xxs),
                 Text(
                   name,
                   style: AppTextStyle.bodyBold.copyWith(color: _color),
@@ -631,9 +651,9 @@ class _SpecialItemChipState extends State<_SpecialItemChip>
                   const SizedBox(width: AppSpacing.xxs),
                   Text(
                     _rarityLabel,
-                    style: AppTextStyle.label.copyWith(
+                    style: AppTextStyle.micro.copyWith(
                       color: _color.withValues(alpha: 0.7),
-                      fontSize: 10,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ],

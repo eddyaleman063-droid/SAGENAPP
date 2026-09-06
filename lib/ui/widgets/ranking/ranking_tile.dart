@@ -71,6 +71,8 @@ class RankingTileWidget extends StatelessWidget {
           entry.displayName.isNotEmpty
               ? entry.displayName
               : AppLocalizations.of(context)!.unknownLabel,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
           style: AppTextStyle.bodyMd.copyWith(
             color: isCurrentUser
                 ? PremiumColors.splashBlue

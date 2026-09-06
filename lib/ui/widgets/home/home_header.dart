@@ -65,20 +65,31 @@ class HomeHeader extends StatelessWidget {
               ],
             ),
           ),
-          _Pill(
-            icon: Icons.local_fire_department_rounded,
-            value: '$streak',
-            label: l.daysLabel,
+          Semantics(
+            label: '$streak ${l.daysLabel}',
+            child: _Pill(
+              icon: Icons.local_fire_department_rounded,
+              value: '$streak',
+              label: l.daysLabel,
+            ),
           ),
           const SizedBox(width: AppSpacing.sm),
-          _GemPill(gems: gems),
+          Semantics(
+            container: true,
+            label: '$gems',
+            child: _GemPill(gems: gems),
+          ),
           const SizedBox(width: AppSpacing.sm),
-          _Pill(
-            icon: Icons.favorite_rounded,
-            value: totalDonated > 0
-                ? '\$${totalDonated.toStringAsFixed(0)}'
-                : '0',
-            label: l.profileDonations,
+          Semantics(
+            label:
+                '${totalDonated > 0 ? "\$${totalDonated.toStringAsFixed(0)}" : "0"} ${l.profileDonations}',
+            child: _Pill(
+              icon: Icons.favorite_rounded,
+              value: totalDonated > 0
+                  ? '\$${totalDonated.toStringAsFixed(0)}'
+                  : '0',
+              label: l.profileDonations,
+            ),
           ),
         ],
       ),
@@ -171,14 +182,14 @@ class _GemPill extends StatelessWidget {
                       PremiumColors.deepPurple,
                     ],
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(AppRadius.xxs),
                 ),
               ),
             ),
           ),
           const SizedBox(width: AppSpacing.xxs),
           AnimatedSwitcher(
-            duration: const Duration(milliseconds: 300),
+            duration: AppMotion.normal,
             transitionBuilder: (child, anim) =>
                 ScaleTransition(scale: anim, child: child),
             child: Text(

@@ -1783,12 +1783,37 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String reviewCardLabel(Object count) {
+    return 'Review: $count pending questions';
+  }
+
+  @override
+  String get reviewCompleted => 'Review complete!';
+
+  @override
+  String reviewDuePrompt(Object count) {
+    return 'You have $count questions ready to review';
+  }
+
+  @override
+  String get reviewGemsLabel => 'Review gems';
+
+  @override
+  String get reviewNoneDue => 'No reviews due right now. Nice work!';
+
+  @override
+  String get reviewScreenTitle => 'Smart Review';
+
+  @override
+  String get reviewXpLabel => 'Review XP';
+
+  @override
   String lessonsLevel(Object level) {
     return 'Level $level';
   }
 
   @override
-  String get lessonsNoAvailable => 'No lessons available. Check back soon.';
+  String get lessonsNoAvailable => 'No lessons available. Come back soon.';
 
   @override
   String get lessonsYourPath => 'Your learning path';
@@ -3010,6 +3035,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get rankingTitle => 'The Coliseum';
 
   @override
+  String get rankingPodiumLabel => 'Ranking podium';
+
+  @override
+  String rankingFirstPlace(Object name, Object xp) {
+    return '$name in first place with $xp XP';
+  }
+
+  @override
+  String rankingSecondPlace(Object name, Object xp) {
+    return '$name in second place with $xp XP';
+  }
+
+  @override
+  String rankingThirdPlace(Object name, Object xp) {
+    return '$name in third place with $xp XP';
+  }
+
+  @override
   String rankingXpToTop50(Object xp) {
     return 'You need $xp XP to enter the Top 50';
   }
@@ -3118,7 +3161,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get regNameQuestion => 'What\'s your name?';
 
   @override
-  String get regPasswordDesc => 'Minimum 6 characters to protect your account.';
+  String get regPasswordDesc =>
+      'Minimum 8 characters with uppercase, lowercase and a number.';
 
   @override
   String get regPasswordTitle => 'Create a password';
@@ -3210,6 +3254,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get resumeQuiz => 'Resume quiz?';
+
+  @override
+  String get resumeLessonBody =>
+      'You have an unfinished lesson from less than 30 minutes ago. Resume where you left off or start over?';
+
+  @override
+  String get resumeContinue => 'Continue';
+
+  @override
+  String get retryStart => 'Start over';
 
   @override
   String get retry => 'Retry';
@@ -5395,4 +5449,144 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get stop => 'Stop';
+
+  @override
+  String get sageEmotionCalm => 'Calm';
+
+  @override
+  String get sageEmotionHappy => 'Happy';
+
+  @override
+  String get sageEmotionCurious => 'Curious';
+
+  @override
+  String get sageEmotionThinking => 'Thinking';
+
+  @override
+  String get sageEmotionReading => 'Reading';
+
+  @override
+  String get sageEmotionSerious => 'Serious';
+
+  @override
+  String get sageEmotionNeutral => 'Neutral';
+
+  @override
+  String get sageEmotionExcited => 'Excited';
+
+  @override
+  String get sageEmotionConfused => 'Confused';
+
+  @override
+  String get sageEmotionWorried => 'Worried';
+
+  @override
+  String get sageEmotionSadSoft => 'A little sad';
+
+  @override
+  String get sageEmotionSad => 'Sad';
+
+  @override
+  String get sageEmotionCrying => 'Crying';
+
+  @override
+  String get sageEmotionDepressed => 'Depressed';
+
+  @override
+  String get sageEmotionAngry => 'Angry';
+
+  @override
+  String get sageEmotionFurious => 'Furious';
+
+  @override
+  String get sageEmotionShocked => 'Shocked';
+
+  @override
+  String get sageEmotionSleepy => 'Sleepy';
+
+  @override
+  String get sageEmotionWhistling => 'Whistling';
+
+  @override
+  String get sageEmotionPointLeft => 'Pointing left';
+
+  @override
+  String get sageEmotionPointRight => 'Pointing right';
+
+  @override
+  String get sageEmotionWink => 'Winking';
+
+  @override
+  String get sageEmotionShy => 'Shy';
+
+  @override
+  String get sageEmotionLaughing => 'Laughing';
+
+  @override
+  String get sageEmotionSinging => 'Singing';
+
+  @override
+  String get sageEmotionScared => 'Scared';
+
+  @override
+  String get sageEmotionEmbarrassed => 'Embarrassed';
+
+  @override
+  String get sageEmotionAnnoyed => 'Annoyed';
+
+  @override
+  String get sageEmotionUnmotivated => 'Unmotivated';
+
+  @override
+  String get sageEmotionDistressed => 'Distressed';
+
+  @override
+  String get sageEmotionAggressive => 'Aggressive';
+
+  @override
+  String get sageEmotionLol => 'Laughing out loud';
+
+  @override
+  String get sageEmotionHappyWings => 'Happy with wings';
+
+  @override
+  String get sageEmotionExcitedWave => 'Excited waving';
+
+  @override
+  String get sageEmotionSurprisedWings => 'Surprised with wings';
+
+  @override
+  String get sageEmotionCelebrating => 'Celebrating';
+
+  @override
+  String get sageEmotionProud => 'Proud';
+
+  @override
+  String get sageEmotionPanic => 'Panic';
+
+  @override
+  String get chatSuggestionHelpLesson => 'Help me with a lesson';
+
+  @override
+  String get chatSuggestionExplainConcept => 'Explain a concept to me';
+
+  @override
+  String get chatSuggestionQuizMe => 'Quiz me on vocabulary';
+
+  @override
+  String get copiedToClipboard => 'Copied to clipboard';
+
+  @override
+  String get messageFromYou => 'You';
+
+  @override
+  String get messageFromSage => 'Sage';
+
+  @override
+  String gemRewardEarned(Object count) {
+    return '+$count gems earned';
+  }
+
+  @override
+  String get defaultStudentName => 'Student';
 }

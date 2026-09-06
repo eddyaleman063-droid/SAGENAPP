@@ -46,97 +46,104 @@ class AchievementCard extends StatelessWidget {
     final l = AppLocalizations.of(context)!;
     final unlocked = achievement.unlocked;
 
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppRadius.xl),
-        color: unlocked ? PremiumColors.darkCard : context.subtle,
-        border: Border.all(
-          color: unlocked
-              ? _gradient.first.withValues(alpha: 0.2)
-              : context.subtleBorder,
+    return Semantics(
+      container: true,
+      label:
+          '${_localizedTitle(achievement.id, l)}, ${unlocked ? _localizedDescription(achievement.id, l) : l.achievementLocked}',
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(AppRadius.xl),
+          color: unlocked ? PremiumColors.darkCard : context.subtle,
+          border: Border.all(
+            color: unlocked
+                ? _gradient.first.withValues(alpha: 0.2)
+                : context.subtleBorder,
+          ),
         ),
-      ),
-      padding: const EdgeInsets.all(AppSpacing.md),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Stack(
-            children: [
-              Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(AppRadius.md),
-                  gradient: unlocked ? LinearGradient(colors: _gradient) : null,
-                  color: unlocked ? null : context.subtle,
-                ),
-                child: ExcludeSemantics(
-                  child: Icon(
-                    achievement.icon,
-                    size: 20,
-                    color: unlocked ? Colors.white : context.textTertiary,
+        padding: const EdgeInsets.all(AppSpacing.md),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Stack(
+              children: [
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(AppRadius.md),
+                    gradient: unlocked
+                        ? LinearGradient(colors: _gradient)
+                        : null,
+                    color: unlocked ? null : context.subtle,
                   ),
-                ),
-              ),
-              if (!unlocked)
-                Positioned(
-                  top: 2,
-                  right: 2,
                   child: ExcludeSemantics(
                     child: Icon(
-                      Icons.lock_rounded,
-                      size: 12,
-                      color: context.textTertiary,
+                      achievement.icon,
+                      size: 20,
+                      color: unlocked ? Colors.white : context.textTertiary,
                     ),
                   ),
                 ),
-            ],
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          Text(
-            _localizedTitle(achievement.id, l),
-            textAlign: TextAlign.center,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: AppTextStyle.caption.copyWith(
-              fontWeight: FontWeight.w600,
-              color: unlocked ? context.textPrimary : context.textTertiary,
+                if (!unlocked)
+                  Positioned(
+                    top: 2,
+                    right: 2,
+                    child: ExcludeSemantics(
+                      child: Icon(
+                        Icons.lock_rounded,
+                        size: 12,
+                        color: context.textTertiary,
+                      ),
+                    ),
+                  ),
+              ],
             ),
-          ),
-          const SizedBox(height: AppSpacing.xxs),
-          Text(
-            unlocked
-                ? _localizedDescription(achievement.id, l)
-                : l.achievementLocked,
-            textAlign: TextAlign.center,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: AppTextStyle.tiny.copyWith(
-              color: unlocked ? context.textTertiary : context.subtle,
+            const SizedBox(height: AppSpacing.sm),
+            Text(
+              _localizedTitle(achievement.id, l),
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: AppTextStyle.caption.copyWith(
+                fontWeight: FontWeight.w600,
+                color: unlocked ? context.textPrimary : context.textTertiary,
+              ),
             ),
-          ),
-          if (unlocked) ...[
-            const SizedBox(height: AppSpacing.xs),
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppSpacing.sm,
-                vertical: 2,
+            const SizedBox(height: AppSpacing.xxs),
+            Text(
+              unlocked
+                  ? _localizedDescription(achievement.id, l)
+                  : l.achievementLocked,
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: AppTextStyle.tiny.copyWith(
+                color: unlocked ? context.textTertiary : context.subtle,
               ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(AppRadius.pill),
-                gradient: LinearGradient(colors: _gradient),
-              ),
-              child: Text(
-                _rarityLabel(l),
-                style: AppTextStyle.micro.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                  letterSpacing: 0.5,
+            ),
+            if (unlocked) ...[
+              const SizedBox(height: AppSpacing.xs),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.sm,
+                  vertical: 2,
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(AppRadius.pill),
+                  gradient: LinearGradient(colors: _gradient),
+                ),
+                child: Text(
+                  _rarityLabel(l),
+                  style: AppTextStyle.micro.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    letterSpacing: 0.5,
+                  ),
                 ),
               ),
-            ),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }

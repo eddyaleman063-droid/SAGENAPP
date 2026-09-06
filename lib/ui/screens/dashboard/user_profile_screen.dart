@@ -63,42 +63,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           final l = AppLocalizations.of(context)!;
           if (snapshot.hasError) {
             return Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const ExcludeSemantics(
-                    child: SageEmotionWidget(emotion: SageEmotion.worried),
-                  ),
-                  const SizedBox(height: AppSpacing.lg),
-                  Text(
-                    l.profileError,
-                    textAlign: TextAlign.center,
-                    style: AppTextStyle.bodyMd.copyWith(
-                      color: context.textTertiary,
-                    ),
-                  ),
-                  const SizedBox(height: AppSpacing.xxl),
-                  Semantics(
-                    button: true,
-                    label: l.retry,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        ExperienceService.instance.lightHaptic();
-                        setState(() {
-                          _retryKey++;
-                          _userStream = _createStream();
-                        });
-                      },
-                      child: Text(l.retry),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          }
-          if (!snapshot.hasData || !snapshot.data!.exists) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              return Center(
+              child: Semantics(
+                container: true,
+                label: l.profileError,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -116,16 +83,57 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     const SizedBox(height: AppSpacing.xxl),
                     Semantics(
                       button: true,
-                      label: l.backButton,
+                      label: l.retry,
                       child: ElevatedButton(
                         onPressed: () {
                           ExperienceService.instance.lightHaptic();
-                          context.pop();
+                          setState(() {
+                            _retryKey++;
+                            _userStream = _createStream();
+                          });
                         },
-                        child: Text(l.backButton),
+                        child: Text(l.retry),
                       ),
                     ),
                   ],
+                ),
+              ),
+            );
+          }
+          if (!snapshot.hasData || !snapshot.data!.exists) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return Center(
+                child: Semantics(
+                  container: true,
+                  label: l.profileError,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const ExcludeSemantics(
+                        child: SageEmotionWidget(emotion: SageEmotion.worried),
+                      ),
+                      const SizedBox(height: AppSpacing.lg),
+                      Text(
+                        l.profileError,
+                        textAlign: TextAlign.center,
+                        style: AppTextStyle.bodyMd.copyWith(
+                          color: context.textTertiary,
+                        ),
+                      ),
+                      const SizedBox(height: AppSpacing.xxl),
+                      Semantics(
+                        button: true,
+                        label: l.backButton,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            ExperienceService.instance.lightHaptic();
+                            context.pop();
+                          },
+                          child: Text(l.backButton),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               );
             }
@@ -183,24 +191,36 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       ),
                     ),
                   ),
-                ),
+                ).animate().fadeIn(delay: 0.ms, duration: 300.ms),
                 const SizedBox(height: AppSpacing.lg),
                 Text(
-                  '$firstName $lastName',
-                  style: AppTextStyle.headlineMedium.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: context.textPrimary,
-                  ),
-                ),
+                      '$firstName $lastName',
+                      style: AppTextStyle.headlineMedium.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: context.textPrimary,
+                      ),
+                    )
+                    .animate()
+                    .fadeIn(delay: 80.ms, duration: 300.ms)
+                    .slideY(begin: 0.05),
                 const SizedBox(height: AppSpacing.xl),
-                _StatRow(label: l.profileLevel, value: '$level'),
-                _StatRow(label: l.profileTotalXp, value: '$totalXp'),
+                _StatRow(label: l.profileLevel, value: '$level')
+                    .animate()
+                    .fadeIn(delay: 160.ms, duration: 300.ms)
+                    .slideX(begin: 0.05),
+                _StatRow(label: l.profileTotalXp, value: '$totalXp')
+                    .animate()
+                    .fadeIn(delay: 220.ms, duration: 300.ms)
+                    .slideX(begin: 0.05),
                 _StatRow(
-                  label: l.profileStreak,
-                  value: l.streakDays(currentStreak),
-                ),
+                      label: l.profileStreak,
+                      value: l.streakDays(currentStreak),
+                    )
+                    .animate()
+                    .fadeIn(delay: 280.ms, duration: 300.ms)
+                    .slideX(begin: 0.05),
               ],
-            ).animate().fadeIn().slideY(begin: 0.05),
+            ),
           );
         },
       ),

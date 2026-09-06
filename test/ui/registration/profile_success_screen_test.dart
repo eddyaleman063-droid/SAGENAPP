@@ -83,7 +83,7 @@ void main() {
       await tester.pumpWidget(createTestApp());
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 1600));
-      expect(find.text('Prepara para tu primera lección'), findsOneWidget);
+      expect(find.text('Prepárate para tu primera lección'), findsOneWidget);
     });
 
     testWidgets('renders continue button', (tester) async {

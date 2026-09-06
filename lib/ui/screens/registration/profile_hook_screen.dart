@@ -31,23 +31,33 @@ class ProfileHookScreen extends StatelessWidget {
             children: [
               const Spacer(flex: 2),
               const SizedBox(
-                width: 110,
-                height: 110,
-                child: ExcludeSemantics(
-                  child: SageEmotionWidget(
-                    emotion: SageEmotion.happy,
-                    size: 110,
-                  ),
-                ),
-              ),
+                    width: 110,
+                    height: 110,
+                    child: ExcludeSemantics(
+                      child: SageEmotionWidget(
+                        emotion: SageEmotion.happy,
+                        size: 110,
+                      ),
+                    ),
+                  )
+                  .animate(delay: 100.ms)
+                  .scale(
+                    begin: const Offset(0.5, 0.5),
+                    duration: 500.ms,
+                    curve: Curves.elasticOut,
+                  )
+                  .fadeIn(duration: 300.ms),
               const SizedBox(height: AppSpacing.xxl),
               Text(
-                l.regProfileAlmostReady,
-                style: AppTextStyle.headlineLarge.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: context.textPrimary,
-                ),
-              ),
+                    l.regProfileAlmostReady,
+                    style: AppTextStyle.headlineLarge.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: context.textPrimary,
+                    ),
+                  )
+                  .animate(delay: 250.ms)
+                  .fadeIn(duration: 300.ms)
+                  .slideY(begin: 0.05),
               const SizedBox(height: AppSpacing.md),
               Text(
                 l.regProfileDesc,
@@ -56,66 +66,72 @@ class ProfileHookScreen extends StatelessWidget {
                   color: context.textTertiary,
                   height: 1.5,
                 ),
-              ),
+              ).animate(delay: 350.ms).fadeIn(duration: 300.ms),
               const SizedBox(height: AppSpacing.xxl),
               Container(
-                padding: const EdgeInsets.all(AppSpacing.lg),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(AppRadius.xl),
-                  color: context.surfaceTinted,
-                  border: Border.all(color: context.subtleBorder),
-                ),
-                child: Column(
-                  children: [
-                    BenefitRow(
-                      icon: Icons.cloud_done_rounded,
-                      text: l.regCloudSave,
-                      iconColor: PremiumColors.primary,
-                      textColor: context.textPrimary,
+                    padding: const EdgeInsets.all(AppSpacing.lg),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(AppRadius.xl),
+                      color: context.surfaceTinted,
+                      border: Border.all(color: context.subtleBorder),
                     ),
-                    const SizedBox(height: AppSpacing.md),
-                    BenefitRow(
-                      icon: Icons.local_fire_department_rounded,
-                      text: l.regStreakSync,
-                      iconColor: PremiumColors.primary,
-                      textColor: context.textPrimary,
+                    child: Column(
+                      children: [
+                        BenefitRow(
+                          icon: Icons.cloud_done_rounded,
+                          text: l.regCloudSave,
+                          iconColor: PremiumColors.primary,
+                          textColor: context.textPrimary,
+                        ),
+                        const SizedBox(height: AppSpacing.md),
+                        BenefitRow(
+                          icon: Icons.local_fire_department_rounded,
+                          text: l.regStreakSync,
+                          iconColor: PremiumColors.primary,
+                          textColor: context.textPrimary,
+                        ),
+                        const SizedBox(height: AppSpacing.md),
+                        BenefitRow(
+                          icon: Icons.auto_awesome_rounded,
+                          text: l.regRewards,
+                          iconColor: PremiumColors.primary,
+                          textColor: context.textPrimary,
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: AppSpacing.md),
-                    BenefitRow(
-                      icon: Icons.auto_awesome_rounded,
-                      text: l.regRewards,
-                      iconColor: PremiumColors.primary,
-                      textColor: context.textPrimary,
-                    ),
-                  ],
-                ),
-              ),
+                  )
+                  .animate(delay: 450.ms)
+                  .fadeIn(duration: 300.ms)
+                  .slideY(begin: 0.05),
               const Spacer(flex: 3),
               SizedBox(
-                width: double.infinity,
-                height: 54,
-                child: Semantics(
-                  button: true,
-                  label: l.regCreateProfile,
-                  child: ElevatedButton(
-                    onPressed: onCreateProfile,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: PremiumColors.primary,
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(AppRadius.lg),
+                    width: double.infinity,
+                    height: 54,
+                    child: Semantics(
+                      button: true,
+                      label: l.regCreateProfile,
+                      child: ElevatedButton(
+                        onPressed: onCreateProfile,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: PremiumColors.primary,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(AppRadius.lg),
+                          ),
+                          elevation: 4,
+                        ),
+                        child: Text(
+                          l.regCreateProfile,
+                          style: AppTextStyle.titleSmall.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
-                      elevation: 4,
                     ),
-                    child: Text(
-                      l.regCreateProfile,
-                      style: AppTextStyle.titleSmall.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+                  )
+                  .animate(delay: 600.ms)
+                  .fadeIn(duration: 300.ms)
+                  .slideY(begin: 0.1),
               const SizedBox(height: AppSpacing.md),
               Semantics(
                 button: true,
@@ -129,9 +145,9 @@ class ProfileHookScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-              ),
+              ).animate(delay: 700.ms).fadeIn(duration: 300.ms),
             ],
-          ).animate().fadeIn().slideY(begin: 0.1),
+          ),
         ),
       ),
     );

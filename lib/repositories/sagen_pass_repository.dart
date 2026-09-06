@@ -22,6 +22,12 @@ abstract class SagenPassRepository {
   void saveLevel(int level);
   void saveSP(int sp);
   void saveClaimedLevels(List<int> levels);
+
+  /// Niveles del pass cuyo cofre (golden/epic) quedó en el banco del servidor
+  /// pero aún no se abrió en el cliente (rollo fallido por red). Se reintentan
+  /// en el próximo arranque/recnciliación hasta que el servidor confirme.
+  List<int> get passChestsPending;
+  void savePassChestsPending(List<int> levels);
 }
 
 class SagenPassRepositoryImpl implements SagenPassRepository {
@@ -74,6 +80,21 @@ class SagenPassRepositoryImpl implements SagenPassRepository {
   bool get premium => (_loadRaw()['premium'] as bool?) ?? false;
 
   @override
+  List<int> get passChestsPending {
+    final raw = _loadRaw()['pendingChests'];
+    if (raw is List) return raw.whereType<int>().toList();
+    return [];
+  }
+
+  @override
+  void savePassChestsPending(List<int> levels) {
+    final data = _loadRaw();
+    data['pendingChests'] = levels;
+    _invalidateCache();
+    _prefs.setString(_keyPass, jsonEncode(data));
+  }
+
+  @override
   void save(
     int level,
     int sp,
@@ -81,6 +102,11 @@ class SagenPassRepositoryImpl implements SagenPassRepository {
     DateTime seasonStart,
     bool premium,
   ) {
+    // Capturar los valores ANTES de invalidar el caché: los getters que
+    // recargan _cachedRaw con el decode anterior dejarían datos viejos si se
+    // evalúan después del _invalidateCache().
+    final pending = passChestsPending;
+    final duration = seasonDurationDays;
     _invalidateCache();
     _prefs.setString(
       _keyPass,
@@ -89,8 +115,9 @@ class SagenPassRepositoryImpl implements SagenPassRepository {
         'sp': sp,
         'claimed': claimedLevels,
         'seasonStart': seasonStart.toIso8601String(),
-        'duration': seasonDurationDays,
+        'duration': duration,
         'premium': premium,
+        'pendingChests': pending,
       }),
     );
   }

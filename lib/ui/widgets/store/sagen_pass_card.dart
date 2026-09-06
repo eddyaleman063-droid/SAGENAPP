@@ -100,14 +100,14 @@ class SagenPassCard extends ConsumerWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: AppSpacing.xxs),
                       Text(
                         l.passLevel(pass.currentLevel),
                         style: AppTextStyle.bodyMd.copyWith(
                           color: Colors.white.withValues(alpha: 0.8),
                         ),
                       ),
-                      const SizedBox(height: 6),
+                      const SizedBox(height: AppSpacing.xs),
                       ExcludeSemantics(
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(AppRadius.pill),

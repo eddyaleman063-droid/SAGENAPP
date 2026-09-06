@@ -335,6 +335,38 @@ void main() {
         final state = container.read(authProvider);
         expect(state.status, AuthStatus.unauthenticated);
       });
+
+      test(
+        'clears pending gem earns so next user cannot replay previous earns',
+        () async {
+          when(() => mockAuth.signOut()).thenAnswer((_) async {});
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setStringList('gems_pending_earn_queue', [
+            'lesson|2026-09-03T00:00:00|{}|abc',
+          ]);
+
+          await container.read(authProvider.notifier).signOut();
+
+          final remaining = prefs.getStringList('gems_pending_earn_queue');
+          expect(remaining, isNull);
+        },
+      );
+
+      test('clears per-user game state on sign out', () async {
+        when(() => mockAuth.signOut()).thenAnswer((_) async {});
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setStringList('gems_pending_earn_queue', [
+          'lesson|2026-09-03T00:00:00|{}|abc',
+        ]);
+        await prefs.setInt('energy_current', 80);
+        await prefs.setString('streak_history', '2026-09-01');
+
+        await container.read(authProvider.notifier).signOut();
+
+        expect(prefs.getInt('energy_current'), isNull);
+        expect(prefs.getString('streak_history'), isNull);
+        expect(prefs.getStringList('gems_pending_earn_queue'), isNull);
+      });
     });
 
     group('sendPasswordResetEmail', () {
@@ -400,6 +432,13 @@ void main() {
     group('checkEmailVerified', () {
       test('sets authenticated when verified', () async {
         when(() => mockAuth.reloadUser()).thenAnswer((_) async => true);
+        // Tras verificar, el token se fuerza a reemitirse para refrescar el
+        // claim email_verified; el test verifica que se pide con forceRefresh.
+        when(
+          () => mockAuth.getIdToken(
+            forceRefresh: any(named: 'forceRefresh', that: isTrue),
+          ),
+        ).thenAnswer((_) async => 'fresh-token');
 
         final notifier = container.read(authProvider.notifier);
         await notifier.checkEmailVerified();
@@ -407,6 +446,7 @@ void main() {
         final state = container.read(authProvider);
         expect(state.status, AuthStatus.authenticated);
         expect(state.pendingVerification, false);
+        verify(() => mockAuth.getIdToken(forceRefresh: true)).called(1);
       });
 
       test('sets unauthenticated when not verified', () async {

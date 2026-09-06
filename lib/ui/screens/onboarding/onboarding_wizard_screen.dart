@@ -161,22 +161,31 @@ class _OnboardingWizardScreenState
     switch (index) {
       case 0:
         step = const WizardPresentationStep();
+        break;
       case 1:
         step = WizardSingleChoiceStep(stepIndex: 1, stepConfig: wizardSteps[1]);
+        break;
       case 2:
         step = WizardLevelStep(stepIndex: 2, stepConfig: wizardSteps[2]);
+        break;
       case 3:
         step = WizardMultiChoiceStep(stepIndex: 3, stepConfig: wizardSteps[3]);
+        break;
       case 4:
         step = WizardSingleChoiceStep(stepIndex: 4, stepConfig: wizardSteps[4]);
+        break;
       case 5:
         step = WizardMultiChoiceStep(stepIndex: 5, stepConfig: wizardSteps[5]);
+        break;
       case 6:
         step = WizardGoalStep(stepIndex: 6, stepConfig: wizardSteps[6]);
+        break;
       case 7:
         step = WizardCommitmentStep(stepIndex: 7, stepConfig: wizardSteps[7]);
+        break;
       case 8:
         step = WizardConfirmationStep(stepConfig: wizardSteps[8]);
+        break;
       default:
         step = const SizedBox.shrink();
     }

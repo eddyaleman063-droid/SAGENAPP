@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
 
-enum ConfettiType { level, streak, chest, achievement }
+enum ConfettiType { level, streak }
 
 class ConfettiWidget extends StatefulWidget {
   final Duration duration;
@@ -22,10 +22,6 @@ class ConfettiWidget extends StatefulWidget {
 
   static List<Color> get _streakColors => PremiumColors.confettiWarm;
 
-  static List<Color> get _chestColors => PremiumColors.confettiExtra;
-
-  static List<Color> get _achievementColors => PremiumColors.confettiSoft;
-
   static List<Color> get _defaultColors => PremiumColors.confettiMixed;
 
   List<Color> get _effectiveColors {
@@ -35,10 +31,6 @@ class ConfettiWidget extends StatefulWidget {
         return _levelColors;
       case ConfettiType.streak:
         return _streakColors;
-      case ConfettiType.chest:
-        return _chestColors;
-      case ConfettiType.achievement:
-        return _achievementColors;
       case null:
         return _defaultColors;
     }

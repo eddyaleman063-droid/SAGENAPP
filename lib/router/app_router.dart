@@ -18,10 +18,8 @@ import '../ui/screens/dashboard/gem_history_screen.dart';
 import '../ui/screens/dashboard/user_profile_screen.dart';
 import '../ui/screens/lesson/lesson_session_screen.dart';
 import '../ui/screens/lesson/lesson_results_screen.dart';
-import '../ui/screens/lesson/learning_session_screen.dart';
-import '../models/learning/quiz_score.dart';
-import '../ui/screens/lesson/session_summary_screen.dart';
-import '../ui/screens/lesson/habit_transition_screen.dart';
+import '../ui/screens/lesson/review_session_screen.dart';
+import '../models/learning/quiz_result.dart';
 import '../ui/screens/streak/daily_streak_screen.dart';
 import '../ui/screens/payment/payment_success_screen.dart';
 import '../ui/screens/payment/payment_failed_screen.dart';
@@ -59,6 +57,14 @@ const _preAuthRoutes = {
 };
 
 const _onboardingRoutes = {'/onboarding', '/onboarding/flow'};
+
+/// True for routes that only make sense once the authenticated user's profile
+/// has finished loading (i.e. app screens, not pre-auth/public/onboarding).
+bool _isGatedAppRoute(String location) {
+  if (_preAuthRoutes.contains(location)) return false;
+  if (location == '/') return false;
+  return true;
+}
 
 /// Helper: slide-from-right transition (most common).
 Widget _slideFromRight(
@@ -141,7 +147,11 @@ final routerProvider = Provider<GoRouter>((ref) {
               state.uri.queryParameters['onboarding'] == 'true';
           return _page(
             state,
-            LoginScreen(isOnboarding: isOnboarding),
+            LoginScreen(
+              isOnboarding: isOnboarding,
+              onSwitchToRegister: () =>
+                  context.goNamed(isOnboarding ? 'onboarding' : 'onboarding'),
+            ),
             _slideFromRight,
           );
         },
@@ -208,41 +218,64 @@ final routerProvider = Provider<GoRouter>((ref) {
         ),
       ),
       GoRoute(
-        path: '/learning/:stageId/:lessonId',
-        name: 'learning-session',
-        pageBuilder: (context, state) => _page(
-          state,
-          LearningSessionScreen(
-            stageId: state.pathParameters['stageId']!,
-            lessonId: state.pathParameters['lessonId']!,
-            lessonTitle: state.extra as String? ?? '',
-          ),
-          _slideFromRight,
-        ),
+        path: '/review',
+        name: 'review-session',
+        pageBuilder: (context, state) =>
+            _page(state, const ReviewSessionScreen(), _slideFromRight),
       ),
       GoRoute(
-        path: '/quiz-summary',
-        name: 'quiz-summary',
+        path: '/review-summary',
+        name: 'review-summary',
         pageBuilder: (context, state) {
-          final score = state.extra is QuizScoreCalculator
-              ? state.extra as QuizScoreCalculator
+          final result = state.extra is QuizResult
+              ? state.extra as QuizResult
               : null;
-          if (score == null) {
+          if (result == null) {
             final l = AppLocalizations.of(context);
             return _page(
               state,
-              Scaffold(body: Center(child: Text(l?.errorGeneric ?? ''))),
+              Scaffold(
+                body: SafeArea(
+                  child: Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.error_outline_rounded,
+                          size: 64,
+                          color: Theme.of(context).colorScheme.error,
+                        ),
+                        const SizedBox(height: 16),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 32),
+                          child: Text(
+                            l?.errorGeneric ?? '',
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                        FilledButton.icon(
+                          onPressed: () => context.goNamed('main'),
+                          icon: const Icon(Icons.home_rounded),
+                          label: Text(l?.back.toUpperCase() ?? 'BACK'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
               _fadeIn,
             );
           }
-          return _page(state, SessionSummaryScreen(score: score), _fadeIn);
+          return _page(
+            state,
+            ReviewSummaryScreen(
+              result: result,
+              onContinue: () => context.goNamed('main'),
+            ),
+            _fadeIn,
+          );
         },
-      ),
-      GoRoute(
-        path: '/habit-transition',
-        name: 'habit-transition',
-        pageBuilder: (context, state) =>
-            _page(state, const HabitTransitionScreen(), _fadeIn),
       ),
       GoRoute(
         path: '/streak',
@@ -312,8 +345,13 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/payment/success',
         name: 'payment-success',
         pageBuilder: (context, state) {
-          final donationParam = state.uri.queryParameters['donationAmount'];
-          final donationAmount = double.tryParse(donationParam ?? '') ?? 0.0;
+          // El server back_url (functions/index.js:188, api/index.js:188) y el
+          // deep-link handler (main.dart:285) envian 'amount'; se acepta ademas
+          // 'donationAmount' por compatibilidad con rutas mas antiguas.
+          final amountParam =
+              state.uri.queryParameters['amount'] ??
+              state.uri.queryParameters['donationAmount'];
+          final donationAmount = double.tryParse(amountParam ?? '') ?? 0.0;
           return _page(
             state,
             PaymentSuccessScreen(donationAmount: donationAmount),
@@ -351,7 +389,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       return Scaffold(
         body: Center(
           child: Padding(
-            padding: const EdgeInsets.all(32),
+            padding: const EdgeInsets.all(AppSpacing.xxxl),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -360,14 +398,14 @@ final routerProvider = Provider<GoRouter>((ref) {
                   size: 80,
                   color: Theme.of(context).colorScheme.error,
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppSpacing.xxl),
                 Text(
                   '404',
                   style: AppTextStyle.hero.copyWith(
                     color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppSpacing.md),
                 Text(
                   l.notFoundTitle,
                   style: AppTextStyle.title.copyWith(
@@ -376,7 +414,7 @@ final routerProvider = Provider<GoRouter>((ref) {
                     ).colorScheme.onSurface.withValues(alpha: 0.7),
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppSpacing.sm),
                 Text(
                   l.notFoundDescription,
                   textAlign: TextAlign.center,
@@ -386,7 +424,7 @@ final routerProvider = Provider<GoRouter>((ref) {
                     ).colorScheme.onSurface.withValues(alpha: 0.5),
                   ),
                 ),
-                const SizedBox(height: 32),
+                const SizedBox(height: AppSpacing.xxxl),
                 ElevatedButton(
                   onPressed: () => context.goNamed('main'),
                   child: Text(l.notFoundBackHome),
@@ -410,9 +448,15 @@ String? _redirect(BuildContext context, GoRouterState state) {
   final auth = ProviderScope.containerOf(context).read(authProvider);
   final location = state.matchedLocation;
 
-  // Phase 1: Still loading → force splash.
+  // Phase 1: Still loading → force splash (except anywhere the user is
+  // legitimately mid-registration). BUG-fix: sin esta exención, el redirect a
+  // '/' durante AuthStatus.loading desmontaba PostOnboardingFlow mientras
+  // signInWithGoogle( ) mostraba el diálogo nativo de Google, abortando el
+  // registro: el widget se desmontaba antes de _createProfile y el usuario
+  // quedaba en un bucle de registro sin perfil.
   if (auth.isUninitialized || auth.isLoading) {
-    return location == '/' ? null : '/';
+    if (location == '/' || _onboardingRoutes.contains(location)) return null;
+    return '/';
   }
 
   // Phase 2: Not authenticated.
@@ -428,7 +472,12 @@ String? _redirect(BuildContext context, GoRouterState state) {
   }
 
   // Phase 3: Authenticated.
-  if (!auth.profileLoaded) return null;
+  if (!auth.profileLoaded) {
+    // Profile not loaded yet — do not let the user reach gated app screens
+    // (e.g. /main) during the loading window.
+    if (_isGatedAppRoute(location)) return '/';
+    return null;
+  }
   if (_preAuthRoutes.contains(location)) {
     return auth.onboardingCompleted ? '/main' : '/onboarding/flow';
   }

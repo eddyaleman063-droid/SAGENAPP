@@ -15,8 +15,9 @@ const index = require('../index');
 
 const AUTH_UID = 'user-payment-test';
 const PURCHASE_SECRET = 'test-purchase-secret-key';
-const makeContext = (uid = AUTH_UID) => ({ auth: { uid } });
+const makeContext = (uid = AUTH_UID) => ({ auth: { uid, token: { email_verified: true } } });
 const NO_AUTH = {};
+const makeUnverifiedContext = (uid = AUTH_UID) => ({ auth: { uid, token: { email_verified: false } } });
 
 functions.config = jest.fn(() => ({
   app: { purchase_secret: PURCHASE_SECRET },
@@ -98,6 +99,12 @@ describe('createPaymentPreference', () => {
     const { req, res } = makeReqRes({ amount: 3, productId: 'donation_basic' });
     await index.createPaymentPreference(req, res);
     expect(res._status).toBe(401);
+  });
+
+  test('rejects unverified user (requiere email_verified)', async () => {
+    await expect(index.registerPendingPayment({}, makeUnverifiedContext())).rejects.toThrow(
+      expect.objectContaining({ code: 'failed-precondition' })
+    );
   });
 
   test('rejects missing amount', async () => {
@@ -428,18 +435,25 @@ describe('handlePaymentWebhook', () => {
   const origConfig = functions.config;
 
   function signedReq(body, { signature } = {}) {
-    const rawBody = JSON.stringify(body);
-    const ts = '1752660000';
+    // NUEVO-fix (A1): firma con el algoritmo OFICIAL de Mercado Pago:
+    // manifest `id:<data.id>;request-id:<x-request-id>;ts:<ts>;`, header
+    // x-signature separado por comas, data.id como query param.
+    const ts = String(Math.floor(Date.now() / 1000));
+    const reqId = 'test-request-id-123';
+    const dataId = String(body.data?.id || '');
+    const manifest = `id:${dataId};request-id:${reqId};ts:${ts};`;
     const expected = crypto
       .createHmac('sha256', WEBHOOK_SECRET)
-      .update(`ts${ts}req${rawBody}`)
+      .update(manifest)
       .digest('hex');
     return {
       method: 'POST',
       body,
+      query: { 'data.id': dataId },
       headers: {
         origin: 'https://sagen-bdd3f.web.app',
-        'x-signature': signature === undefined ? `ts=${ts};v1=${expected}` : signature,
+        'x-signature': signature === undefined ? `ts=${ts},v1=${expected}` : signature,
+        'x-request-id': reqId,
       },
     };
   }
@@ -471,7 +485,79 @@ describe('handlePaymentWebhook', () => {
 
   test('rejects webhook with mismatched signature', async () => {
     const r = res();
-    const req = signedReq({ type: 'payment', data: { id: 'pay_1' } }, { signature: 'ts=1;v1=deadbeef' });
+    const req = signedReq({ type: 'payment', data: { id: 'pay_1' } }, { signature: 'ts=1,v1=deadbeef' });
+    await index.handlePaymentWebhook(req, r);
+    expect(r._status).toBe(401);
+  });
+
+  test('NUEVO-fix A1: rejects signature computed for a different data.id', async () => {
+    const ts = String(Math.floor(Date.now() / 1000));
+    const reqId = 'test-request-id-123';
+    const wrongManifest = `id:forgeable-id;request-id:${reqId};ts:${ts};`;
+    const wrongSig = crypto
+      .createHmac('sha256', WEBHOOK_SECRET)
+      .update(wrongManifest)
+      .digest('hex');
+    const r = res();
+    const req = signedReq(
+      { type: 'payment', data: { id: 'pay_3' } },
+      { signature: `ts=${ts},v1=${wrongSig}` }
+    );
+    await index.handlePaymentWebhook(req, r);
+    expect(r._status).toBe(401);
+  });
+
+  test('NUEVO-fix A1: accepts an authentically signed webhook (reaches MP fetch)', async () => {
+    global.fetch = jest.fn().mockResolvedValue({ ok: false, status: 500 });
+    const r = res();
+    const req = signedReq({ type: 'payment', data: { id: 'pay_4' } });
+    await index.handlePaymentWebhook(req, r);
+    expect(global.fetch).toHaveBeenCalled();
+    expect(r._status).toBe(502);
+  });
+
+  test('NUEVO-fix A1: rejects webhook without x-request-id', async () => {
+    const ts = String(Math.floor(Date.now() / 1000));
+    const dataId = 'pay_5';
+    const manifest = `id:${dataId};ts:${ts};`;
+    const expected = crypto
+      .createHmac('sha256', WEBHOOK_SECRET)
+      .update(manifest)
+      .digest('hex');
+    const r = res();
+    const req = {
+      method: 'POST',
+      body: { type: 'payment', data: { id: dataId } },
+      query: { 'data.id': dataId },
+      headers: {
+        origin: 'https://sagen-bdd3f.web.app',
+        'x-signature': `ts=${ts},v1=${expected}`,
+      },
+    };
+    await index.handlePaymentWebhook(req, r);
+    expect(r._status).toBe(401);
+  });
+
+  test('NUEVO-fix A1: rejects stale timestamp (replay)', async () => {
+    const staleTs = '1704908010';
+    const reqId = 'test-request-id-123';
+    const dataId = 'pay_6';
+    const manifest = `id:${dataId};request-id:${reqId};ts:${staleTs};`;
+    const expected = crypto
+      .createHmac('sha256', WEBHOOK_SECRET)
+      .update(manifest)
+      .digest('hex');
+    const r = res();
+    const req = {
+      method: 'POST',
+      body: { type: 'payment', data: { id: dataId } },
+      query: { 'data.id': dataId },
+      headers: {
+        origin: 'https://sagen-bdd3f.web.app',
+        'x-signature': `ts=${staleTs},v1=${expected}`,
+        'x-request-id': reqId,
+      },
+    };
     await index.handlePaymentWebhook(req, r);
     expect(r._status).toBe(401);
   });
@@ -483,5 +569,127 @@ describe('handlePaymentWebhook', () => {
     await index.handlePaymentWebhook(req, r);
     expect(global.fetch).toHaveBeenCalled();
     expect(r._status).toBe(502);
+  });
+
+  function refundedPayment(status) {
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: async () => ({ status, transaction_amount: 10 }),
+    });
+  }
+
+  test('NUEVO-fix A2: refund reverts the granted benefits', async () => {
+    setUserDoc('refund-uid', {
+      total_donated: 10,
+      is_supporter: true,
+      shop_streak_shields: 1,
+    });
+    admin._setDoc('payment_logs/pay_refund_1', {
+      userId: 'refund-uid',
+      amount: 10,
+      status: 'approved',
+      bonuses: [{ type: 'streakProtector', quantity: 1 }],
+      granted: { total_donated: 10, shop_streak_shields: 1, is_supporter: true },
+    });
+    refundedPayment('refunded');
+    const r = res();
+    const req = signedReq({ type: 'payment', data: { id: 'pay_refund_1' } });
+    await index.handlePaymentWebhook(req, r);
+    expect(r._status).toBe(200);
+    const user = admin._getDoc('users/refund-uid');
+    expect(user.total_donated).toBe(0);
+    expect(user.is_supporter).toBe(false);
+    expect(user.shop_streak_shields).toBe(0);
+    expect(admin._getDoc('payment_logs/pay_refund_1').status).toBe('refunded');
+  });
+
+  test('NUEVO-fix A2: refund reversal is idempotent on replay', async () => {
+    setUserDoc('refund-uid2', { total_donated: 5, is_supporter: true });
+    admin._setDoc('payment_logs/pay_refund_2', {
+      userId: 'refund-uid2',
+      amount: 5,
+      status: 'approved',
+      bonuses: [],
+      granted: { total_donated: 5, is_supporter: true },
+    });
+    refundedPayment('refunded');
+    const r1 = res();
+    await index.handlePaymentWebhook(
+      signedReq({ type: 'payment', data: { id: 'pay_refund_2' } }),
+      r1,
+    );
+    const r2 = res();
+    await index.handlePaymentWebhook(
+      signedReq({ type: 'payment', data: { id: 'pay_refund_2' } }),
+      r2,
+    );
+    expect(r1._status).toBe(200);
+    expect(r2._status).toBe(200);
+    // Segundo proceso es no-op: total_donated no vuelve a bajar.
+    expect(admin._getDoc('users/refund-uid2').total_donated).toBe(0);
+  });
+
+  test('NUEVO-fix A2: chargeback with SAGEN PASS reverts gems and flags', async () => {
+    setUserDoc('pass-uid', {
+      total_donated: 9.9,
+      is_supporter: true,
+      learning_gems: 500,
+      sagen_pass_active: true,
+      premium_question_bank: true,
+    });
+    admin._setDoc('payment_logs/pay_chargeback_1', {
+      userId: 'pass-uid',
+      amount: 9.9,
+      status: 'approved',
+      bonuses: [{ type: 'sagenPass', quantity: 1, gems: 500 }],
+      granted: {
+        total_donated: 9.9,
+        learning_gems: 500,
+        is_supporter: true,
+        sagen_pass_granted: true,
+      },
+    });
+    refundedPayment('charged_back');
+    const r = res();
+    const req = signedReq({ type: 'payment', data: { id: 'pay_chargeback_1' } });
+    await index.handlePaymentWebhook(req, r);
+    expect(r._status).toBe(200);
+    const user = admin._getDoc('users/pass-uid');
+    expect(user.total_donated).toBe(0);
+    expect(user.is_supporter).toBe(false);
+    expect(user.learning_gems).toBe(0);
+    expect(user.sagen_pass_active).toBe(false);
+    expect(user.premium_question_bank).toBe(false);
+  });
+
+  test('NUEVO-fix A2: refund keeps supporter when other donations remain', async () => {
+    setUserDoc('multi-uid', { total_donated: 30, is_supporter: true });
+    admin._setDoc('payment_logs/pay_refund_3', {
+      userId: 'multi-uid',
+      amount: 10,
+      status: 'approved',
+      bonuses: [],
+      granted: { total_donated: 10, is_supporter: true },
+    });
+    refundedPayment('refunded');
+    const r = res();
+    await index.handlePaymentWebhook(
+      signedReq({ type: 'payment', data: { id: 'pay_refund_3' } }),
+      r,
+    );
+    expect(r._status).toBe(200);
+    const user = admin._getDoc('users/multi-uid');
+    expect(user.total_donated).toBe(20);
+    expect(user.is_supporter).toBe(true);
+  });
+
+  test('NUEVO-fix A2: refund of a never-credited payment is a no-op OK', async () => {
+    refundedPayment('refunded');
+    const r = res();
+    const req = signedReq({ type: 'payment', data: { id: 'pay_ghost' } });
+    await index.handlePaymentWebhook(req, r);
+    expect(r._status).toBe(200);
+    expect(admin._getDoc('payment_logs/pay_ghost')).toBeNull();
   });
 });

@@ -53,6 +53,45 @@ void main() {
     });
   });
 
+  group('SagenPassRepository — pending chests (pass chest bank roll)', () {
+    test('defaults to an empty pending list', () {
+      expect(repo.passChestsPending, isEmpty);
+    });
+
+    test('savePassChestsPending persists the pending list', () {
+      repo.savePassChestsPending([20, 30]);
+      expect(repo.passChestsPending, [20, 30]);
+    });
+
+    test('save preserves the pending list (does not drop it)', () {
+      repo.savePassChestsPending([25]);
+      repo.save(12, 340, [3, 5, 10], DateTime(2026, 3, 1), false);
+      expect(repo.passChestsPending, [25]);
+      expect(repo.currentLevel, 12);
+    });
+
+    test('saveLevel and saveSP preserve the pending list', () {
+      repo.savePassChestsPending([20]);
+      repo.saveSP(55);
+      repo.saveLevel(7);
+      expect(repo.passChestsPending, [20]);
+      expect(repo.currentLevel, 7);
+      expect(repo.currentSP, 55);
+    });
+
+    test('pending list survives repository recreation', () {
+      repo.savePassChestsPending([20, 40]);
+      final fresh = SagenPassRepositoryImpl(prefs);
+      expect(fresh.passChestsPending, [20, 40]);
+    });
+
+    test('non-list pendingChests field returns empty', () {
+      prefs.setString('sagen_pass_v1', '{"pendingChests":"bad"}');
+      repo = SagenPassRepositoryImpl(prefs);
+      expect(repo.passChestsPending, isEmpty);
+    });
+  });
+
   group('SagenPassRepository — data robustness', () {
     test('corrupt JSON falls back to defaults', () {
       prefs.setString('sagen_pass_v1', '{{{{');

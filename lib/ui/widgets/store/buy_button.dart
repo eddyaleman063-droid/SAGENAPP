@@ -92,7 +92,10 @@ class _BuyButtonState extends State<BuyButton> {
             borderRadius: BorderRadius.circular(AppRadius.md),
             gradient: _showSuccess
                 ? const LinearGradient(
-                    colors: [Color(0xFF2ECC71), Color(0xFF27AE60)],
+                    colors: [
+                      PremiumColors.successGradientStart,
+                      PremiumColors.successGradientEnd,
+                    ],
                   )
                 : canBuy
                 ? const LinearGradient(
@@ -144,7 +147,7 @@ class _BuyButtonState extends State<BuyButton> {
                                   ? [Colors.white, Colors.white70]
                                   : [Colors.white24, Colors.white10],
                             ),
-                            borderRadius: BorderRadius.circular(2),
+                            borderRadius: BorderRadius.circular(AppRadius.xxs),
                           ),
                         ),
                       ),

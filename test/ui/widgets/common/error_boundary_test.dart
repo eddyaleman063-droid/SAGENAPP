@@ -6,7 +6,7 @@ void main() {
   group('ErrorBoundary', () {
     testWidgets('renders child when no error', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(home: ErrorBoundary(child: const Text('Content'))),
+        const MaterialApp(home: ErrorBoundary(child: Text('Content'))),
       );
       await tester.pump(const Duration(seconds: 1));
       expect(find.text('Content'), findsOneWidget);

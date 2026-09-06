@@ -11,8 +11,9 @@ const admin = require('firebase-admin');
 const gamification = require('../gamification');
 
 const AUTH_UID = 'test-gamification-123';
-const makeContext = (uid = AUTH_UID) => ({ auth: { uid } });
+const makeContext = (uid = AUTH_UID) => ({ auth: { uid, token: { email_verified: true } } });
 const NO_AUTH = {};
+const makeUnverifiedContext = (uid = AUTH_UID) => ({ auth: { uid, token: { email_verified: false } } });
 
 beforeEach(() => {
   admin._resetFirestore();
@@ -33,6 +34,7 @@ describe('claimDailyChest', () => {
     expect(result.success).toBe(true);
     expect(result.xp).toBe(10);
     expect(result.newLevel).toBe(2);
+    expect(result.lastClaimedDate).toBe(today());
   });
 
   test('returns alreadyClaimed if claimed today', async () => {
@@ -43,6 +45,7 @@ describe('claimDailyChest', () => {
     });
     const result = await gamification.claimDailyChest({}, makeContext());
     expect(result.alreadyClaimed).toBe(true);
+    expect(result.lastClaimedDate).toBe(today());
   });
 
   test('credits server-authoritative gems when claiming the chest', async () => {
@@ -68,6 +71,12 @@ describe('claimDailyChest', () => {
 
   test('rejects unauthenticated user', async () => {
     await expect(gamification.claimDailyChest({}, NO_AUTH)).rejects.toThrow();
+  });
+
+  test('rejects unverified user (requiere email_verified)', async () => {
+    await expect(gamification.claimDailyChest({}, makeUnverifiedContext())).rejects.toThrow(
+      expect.objectContaining({ code: 'failed-precondition' })
+    );
   });
 });
 
@@ -140,6 +149,104 @@ describe('claimSagenPassReward', () => {
     expect(result.claimedLevels).toEqual([1, 2]);
   });
 
+  test('grants 200 XP server-side for a default-level reward (level 1)', async () => {
+    setUserDoc(AUTH_UID, {
+      sagen_pass_level: 3,
+      sagen_pass_claimed: [],
+      learning_total_xp: 0,
+      learning_level: 1,
+    });
+    const result = await gamification.claimSagenPassReward({ level: 1 }, makeContext());
+    expect(result.success).toBe(true);
+    expect(result.reward.key).toBe('reward200Exp');
+    expect(result.reward.type).toBe('xp');
+    expect(result.reward.granted).toBe(200);
+    const user = admin._getDoc(`users/${AUTH_UID}`);
+    expect(user.learning_total_xp).toBe(200);
+    expect(user.learning_level).toBe(3);
+    const daily = admin._getDoc(`daily_xp_sources/${AUTH_UID}_${today()}`);
+    expect(daily.total).toBe(200);
+    expect(daily.sagenPass).toBe(200);
+  });
+
+  test('grants 100 XP for multiple-of-5 levels (level 5)', async () => {
+    setUserDoc(AUTH_UID, {
+      sagen_pass_level: 6,
+      sagen_pass_claimed: [],
+      learning_total_xp: 0,
+      learning_level: 1,
+    });
+    const result = await gamification.claimSagenPassReward({ level: 5 }, makeContext());
+    expect(result.reward.key).toBe('reward100Xp');
+    expect(result.reward.granted).toBe(100);
+    const user = admin._getDoc(`users/${AUTH_UID}`);
+    expect(user.learning_total_xp).toBe(100);
+  });
+
+  test('caps the pass XP reward against the daily XP limit (MAX_DAILY_XP=500)', async () => {
+    setUserDoc(AUTH_UID, {
+      sagen_pass_level: 3,
+      sagen_pass_claimed: [],
+      learning_total_xp: 0,
+      learning_level: 1,
+    });
+    admin._setDoc(`daily_xp_sources/${AUTH_UID}_${today()}`, { total: 400 });
+    // Quedan 100 del límite diario para un reward de 200.
+    const result = await gamification.claimSagenPassReward({ level: 1 }, makeContext());
+    expect(result.reward.granted).toBe(100);
+    const user = admin._getDoc(`users/${AUTH_UID}`);
+    expect(user.learning_total_xp).toBe(100);
+    const daily = admin._getDoc(`daily_xp_sources/${AUTH_UID}_${today()}`);
+    expect(daily.total).toBe(500);
+  });
+
+  test('grants a Titanium Shield (streak_shields) for multiple-of-3 levels', async () => {
+    setUserDoc(AUTH_UID, {
+      sagen_pass_level: 5,
+      sagen_pass_claimed: [],
+      streak_shields: 2,
+    });
+    const result = await gamification.claimSagenPassReward({ level: 3 }, makeContext());
+    expect(result.reward.key).toBe('rewardTitaniumShield');
+    expect(result.reward.type).toBe('item');
+    expect(result.reward.totalShields).toBe(3);
+    const user = admin._getDoc(`users/${AUTH_UID}`);
+    expect(user.streak_shields).toBe(3);
+  });
+
+  test('grants a Golden Chest into the bank for multiple-of-10 levels', async () => {
+    setUserDoc(AUTH_UID, { sagen_pass_level: 25, sagen_pass_claimed: [] });
+    const result = await gamification.claimSagenPassReward({ level: 20 }, makeContext());
+    expect(result.reward.key).toBe('rewardGoldenChest');
+    expect(result.reward.type).toBe('chest');
+    expect(result.reward.chest).toBe('golden');
+    const user = admin._getDoc(`users/${AUTH_UID}`);
+    expect(user.sagen_pass_chests).toEqual(['golden']);
+  });
+
+  test('grants an Epic Chest for level 25', async () => {
+    setUserDoc(AUTH_UID, { sagen_pass_level: 30, sagen_pass_claimed: [] });
+    const result = await gamification.claimSagenPassReward({ level: 25 }, makeContext());
+    expect(result.reward.key).toBe('rewardEpicChest');
+    expect(result.reward.chest).toBe('epic');
+    const user = admin._getDoc(`users/${AUTH_UID}`);
+    expect(user.sagen_pass_chests).toEqual(['epic']);
+  });
+
+  test('does not double-grant an already claimed level', async () => {
+    setUserDoc(AUTH_UID, {
+      sagen_pass_level: 3,
+      sagen_pass_claimed: [1],
+      learning_total_xp: 0,
+      learning_level: 1,
+    });
+    const result = await gamification.claimSagenPassReward({ level: 1 }, makeContext());
+    expect(result.alreadyClaimed).toBe(true);
+    const user = admin._getDoc(`users/${AUTH_UID}`);
+    expect(user.learning_total_xp).toBe(0);
+    expect(user.sagen_pass_claimed).toEqual([1]);
+  });
+
   test('returns alreadyClaimed for claimed level', async () => {
     setUserDoc(AUTH_UID, { sagen_pass_level: 3, sagen_pass_claimed: [1, 2] });
     const result = await gamification.claimSagenPassReward({ level: 2 }, makeContext());
@@ -151,6 +258,35 @@ describe('claimSagenPassReward', () => {
     await expect(
       gamification.claimSagenPassReward({ level: 5 }, makeContext())
     ).rejects.toThrow();
+  });
+
+  test('rotates the season when claiming after the window expired', async () => {
+    const expiredStart = {
+      _seconds: Math.floor((Date.now() - 91 * 24 * 60 * 60 * 1000) / 1000),
+    };
+    // Temporada vieja: nivel 30, claims 1..3 y un cofre dorado en el banco.
+    setUserDoc(AUTH_UID, {
+      sagen_pass_season_start: expiredStart,
+      sagen_pass_level: 30,
+      sagen_pass_sp: 12,
+      sagen_pass_claimed: [1, 2, 3],
+      sagen_pass_chests: ['golden'],
+    });
+    const result = await gamification.claimSagenPassReward({ level: 1 }, makeContext());
+    expect(result.success).toBe(true);
+    expect(result.claimed).toBe(1);
+    // La temporada nueva parte limpia: reclamar 1 ya no cuenta como duplicado
+    // y las claims anteriores NO se arrastran.
+    expect(result.claimedLevels).toEqual([1]);
+    const user = admin._getDoc(`users/${AUTH_UID}`);
+    expect(user.sagen_pass_claimed).toEqual([1]);
+    expect(user.sagen_pass_level).toBe(1);
+    expect(user.sagen_pass_sp).toBe(0);
+    // El banco de cofres de la temporada anterior se vacía en la rotación.
+    expect(user.sagen_pass_chests).toEqual([]);
+    // El start de la nueva temporada se persiste (serverTimestamp sentinel vs
+    // null porque el doc anterior sí lo tenía).
+    expect(user.sagen_pass_season_start).toBeDefined();
   });
 
   test('rejects unauthenticated user', async () => {
@@ -171,8 +307,74 @@ describe('getSagenPassSeason', () => {
     expect(result.claimed).toEqual([1, 2]);
   });
 
+  test('rotates to a fresh season when the stored window expired', async () => {
+    const expiredStart = {
+      _seconds: Math.floor((Date.now() - 91 * 24 * 60 * 60 * 1000) / 1000),
+    };
+    setUserDoc(AUTH_UID, {
+      sagen_pass_season_start: expiredStart,
+      sagen_pass_level: 30,
+      sagen_pass_sp: 12,
+      sagen_pass_claimed: [1, 2, 5],
+    });
+    const result = await gamification.getSagenPassSeason({}, makeContext());
+    expect(result.rotated).toBe(true);
+    expect(result.level).toBe(1);
+    expect(result.sp).toBe(0);
+    expect(result.claimed).toEqual([]);
+    // La nueva temporada arranca en "ahora": aún no vence.
+    expect(Date.now() - Date.parse(result.seasonStart)).toBeLessThan(60000);
+  });
+
+  test('does not reset engaged users with progress but no stored start', async () => {
+    setUserDoc(AUTH_UID, {
+      sagen_pass_level: 7,
+      sagen_pass_sp: 42,
+      sagen_pass_claimed: [1, 3],
+    });
+    const result = await gamification.getSagenPassSeason({}, makeContext());
+    expect(result.rotated).toBe(false);
+    expect(result.level).toBe(7);
+    expect(result.sp).toBe(42);
+    expect(result.claimed).toEqual([1, 3]);
+    // Sin start almacenado la temporada ahora sí arranca (clock starts at now).
+    expect(Date.now() - Date.parse(result.seasonStart)).toBeLessThan(60000);
+  });
+
   test('rejects unauthenticated user', async () => {
     await expect(gamification.getSagenPassSeason({}, NO_AUTH)).rejects.toThrow();
+  });
+});
+
+// NUEVO-fix (chest desync): estado autoritativo del cofre para reconciliar el
+// ledger local en el arranque. lastClaimedDate debe viajar en TODAS las
+// respuestas para que el cliente pueda persistirla y no dejar el cofre en el
+// bucle "reclamado → reaparece".
+describe('getDailyChestStatus', () => {
+  test('returns claimed (unavailable) with lastClaimedDate when claimed today', async () => {
+    setUserDoc(AUTH_UID, { learning_total_xp: 100, last_daily_chest: today() });
+    const result = await gamification.getDailyChestStatus({}, makeContext());
+    expect(result.available).toBe(false);
+    expect(result.lastClaimedDate).toBe(today());
+  });
+
+  test('returns available with null lastClaimedDate when never claimed', async () => {
+    setUserDoc(AUTH_UID, { learning_total_xp: 0 });
+    const result = await gamification.getDailyChestStatus({}, makeContext());
+    expect(result.available).toBe(true);
+    expect(result.lastClaimedDate).toBeNull();
+  });
+
+  test('returns available when last claim was yesterday', async () => {
+    const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+    setUserDoc(AUTH_UID, { last_daily_chest: yesterday });
+    const result = await gamification.getDailyChestStatus({}, makeContext());
+    expect(result.available).toBe(true);
+    expect(result.lastClaimedDate).toBe(yesterday);
+  });
+
+  test('rejects unauthenticated user', async () => {
+    await expect(gamification.getDailyChestStatus({}, NO_AUTH)).rejects.toThrow();
   });
 });
 
@@ -239,15 +441,52 @@ describe('rollChestDrop', () => {
       currentStreak: 1,
       longestStreak: 1,
       streak_last_activity: { toDate: () => yesterday },
-      lessonsCompleted: 2,
+      lessonsCompleted: 5,
     });
+    // Milestone válido (5) pero el cliente pide legendary: el servidor otorga
+    // el tier deducido del contador (gold), nunca el del cliente.
     const result = await gamification.rollChestDrop(
       { source: 'lesson', chestType: 'legendary', contextId: 'spoofed' },
       makeContext(),
     );
-    expect(result.chestType).toBe('bronze');
-    expect(result.xp).toBeGreaterThanOrEqual(15);
-    expect(result.xp).toBeLessThanOrEqual(25);
+    expect(result.chestType).toBe('gold');
+    expect(result.xp).toBeGreaterThanOrEqual(35);
+    expect(result.xp).toBeLessThanOrEqual(50);
+  });
+
+  test('rejects a lesson chest outside real milestones (anti-farm)', async () => {
+    setUserDoc(AUTH_UID, {
+      lessonsCompleted: 2,
+      currentStreak: 1,
+      longestStreak: 1,
+      learning_total_xp: 0,
+      learning_level: 1,
+    });
+    await expect(
+      gamification.rollChestDrop({ source: 'lesson', contextId: 'farm_2' }, makeContext())
+    ).rejects.toThrow(
+      expect.objectContaining({ code: 'failed-precondition' })
+    );
+  });
+
+  test('rejects a streak chest at an unverified milestone (anti-farm)', async () => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    setUserDoc(AUTH_UID, {
+      learning_total_xp: 0,
+      learning_level: 1,
+      currentStreak: 5,
+      longestStreak: 5,
+      streak_last_activity: { toDate: () => yesterday },
+    });
+    await expect(
+      gamification.rollChestDrop(
+        { source: 'streak', contextId: 'streak_100' },
+        makeContext(),
+      )
+    ).rejects.toThrow(
+      expect.objectContaining({ code: 'failed-precondition' })
+    );
   });
 
   test('verifies streak milestone against server streak before awarding tier', async () => {
@@ -265,23 +504,6 @@ describe('rollChestDrop', () => {
       makeContext(),
     );
     expect(result.chestType).toBe('gold');
-  });
-
-  test('downgrades a streak milestone the server cannot verify', async () => {
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-    setUserDoc(AUTH_UID, {
-      learning_total_xp: 0,
-      learning_level: 1,
-      currentStreak: 5,
-      longestStreak: 5,
-      streak_last_activity: { toDate: () => yesterday },
-    });
-    const result = await gamification.rollChestDrop(
-      { source: 'streak', contextId: 'streak_100' },
-      makeContext(),
-    );
-    expect(result.chestType).toBe('bronze');
   });
 
   test('rolls mission chest rarity server-side', async () => {
@@ -313,13 +535,14 @@ describe('rollChestDrop', () => {
       currentStreak: 1,
       longestStreak: 1,
       streak_last_activity: { toDate: () => yesterday },
-      lessonsCompleted: 2,
+      lessonsCompleted: 3,
       learning_gems: 0,
     });
     const result = await gamification.rollChestDrop({ source: 'lesson' }, makeContext());
-    expect(result.chestType).toBe('bronze');
-    expect(result.gems.added).toBeGreaterThanOrEqual(5);
-    expect(result.gems.added).toBeLessThanOrEqual(8);
+    expect(result.chestType).toBe('silver');
+    // gems = clamp(2, 75, floor(xp / 3)); xp 25-35 → 8..11
+    expect(result.gems.added).toBeGreaterThanOrEqual(8);
+    expect(result.gems.added).toBeLessThanOrEqual(11);
     expect(result.gems.balance).toBe(result.gems.added);
   });
 
@@ -401,17 +624,120 @@ describe('rollChestDrop', () => {
       currentStreak: 1,
       longestStreak: 1,
       streak_last_activity: { toDate: () => yesterday },
-      lessonsCompleted: 2,
+      lessonsCompleted: 1,
       learning_gems: 0,
     });
 
-    const result = await gamification.rollChestDrop(
-      { source: 'lesson', luckBoostActive: true, contextId: 'forge_luck' },
+    // source='mission' con random alto → rareza bronze (75%). Bronze nunca
+    // dropea ítems aunque el cliente forjee luckBoostActive.
+    const spy = jest.spyOn(Math, 'random');
+    try {
+      spy.mockReturnValue(0.9);
+      const result = await gamification.rollChestDrop(
+        { source: 'mission', luckBoostActive: true, contextId: 'forge_luck' },
+        makeContext(),
+      );
+      expect(result.chestType).toBe('bronze');
+      expect(result.specialItems || []).toHaveLength(0);
+      expect(result.cosmeticUnlocks || []).toHaveLength(0);
+    } finally {
+      spy.mockRestore();
+    }
+  });
+
+  test('rolls a banked Sagen Pass chest once and consumes it', async () => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const seasonStarted = {
+      _seconds: Math.floor((Date.now() - 1 * 24 * 60 * 60 * 1000) / 1000),
+    };
+    setUserDoc(AUTH_UID, {
+      sagen_pass_season_start: seasonStarted,
+      sagen_pass_claimed: [20],
+      sagen_pass_chests: ['golden'],
+      learning_total_xp: 0,
+      learning_level: 1,
+      currentStreak: 1,
+      longestStreak: 1,
+      streak_last_activity: { toDate: () => yesterday },
+      learning_gems: 0,
+    });
+    const first = await gamification.rollChestDrop(
+      { source: 'sagen', contextId: 'pass_20' },
       makeContext(),
     );
-    // Bronze chests never drop special items even with a claimed boost.
-    expect(result.chestType).toBe('bronze');
-    expect(result.specialItems || []).toHaveLength(0);
-    expect(result.cosmeticUnlocks || []).toHaveLength(0);
+    expect(first.success).toBe(true);
+    expect(first.chestType).toBe('gold');
+    expect(first.xp).toBeGreaterThanOrEqual(35);
+    expect(first.xp).toBeLessThanOrEqual(50);
+    const user = admin._getDoc(`users/${AUTH_UID}`);
+    expect(user.sagen_pass_chests).toEqual([]);
+    // Second roll: bank consumed → no entitlement.
+    await expect(
+      gamification.rollChestDrop({ source: 'sagen', contextId: 'pass_20' }, makeContext())
+    ).rejects.toThrow(
+      expect.objectContaining({ code: 'failed-precondition' })
+    );
+  });
+
+  test('rejects a Sagen Pass chest roll with no banked chest', async () => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    setUserDoc(AUTH_UID, {
+      learning_total_xp: 0,
+      learning_level: 1,
+      currentStreak: 1,
+      longestStreak: 1,
+      streak_last_activity: { toDate: () => yesterday },
+    });
+    await expect(
+      gamification.rollChestDrop({ source: 'sagen', contextId: 'pass_20' }, makeContext())
+    ).rejects.toThrow(
+      expect.objectContaining({ code: 'failed-precondition' })
+    );
+  });
+
+  test('rejects rolling a banked chest from an EXPIRED season', async () => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const expiredStart = {
+      _seconds: Math.floor((Date.now() - 91 * 24 * 60 * 60 * 1000) / 1000),
+    };
+    setUserDoc(AUTH_UID, {
+      sagen_pass_season_start: expiredStart,
+      sagen_pass_chests: ['golden'],
+      learning_total_xp: 0,
+      learning_level: 1,
+      currentStreak: 1,
+      longestStreak: 1,
+      streak_last_activity: { toDate: () => yesterday },
+    });
+    // El cofre está en el banco pero pertenece a una temporada vencida: el
+    // rollo se rechaza (la rotación vacía el banco de forma efectiva) para no
+    // abrir recompensas de la temporada anterior.
+    await expect(
+      gamification.rollChestDrop({ source: 'sagen', contextId: 'pass_20' }, makeContext())
+    ).rejects.toThrow(
+      expect.objectContaining({ code: 'failed-precondition' })
+    );
+  });
+
+  test('rejects a Sagen Pass roll for a non-chest level', async () => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    setUserDoc(AUTH_UID, {
+      sagen_pass_chests: ['golden'],
+      learning_total_xp: 0,
+      learning_level: 1,
+      currentStreak: 1,
+      longestStreak: 1,
+      streak_last_activity: { toDate: () => yesterday },
+    });
+    // pass_5 es un nivel de 100 XP (no chest) → el banco golden no aplica.
+    await expect(
+      gamification.rollChestDrop({ source: 'sagen', contextId: 'pass_5' }, makeContext())
+    ).rejects.toThrow(
+      expect.objectContaining({ code: 'failed-precondition' })
+    );
   });
 });

@@ -11,8 +11,9 @@ const admin = require('firebase-admin');
 const gems = require('../gems');
 
 const AUTH_UID = 'test-gems-123';
-const makeContext = (uid = AUTH_UID) => ({ auth: { uid } });
+const makeContext = (uid = AUTH_UID) => ({ auth: { uid, token: { email_verified: true } } });
 const NO_AUTH = {};
+const makeUnverifiedContext = (uid = AUTH_UID) => ({ auth: { uid, token: { email_verified: false } } });
 
 beforeEach(() => {
   admin._resetFirestore();
@@ -35,30 +36,90 @@ describe('earnGems', () => {
     expect(result.balance).toBe(22);
   });
 
+  test('accumulates the lifetime learning_total_gems counter', async () => {
+    setUserDoc(AUTH_UID, { learning_gems: 10 });
+    await gems.earnGems({ reason: 'mission' }, makeContext());
+    const user = admin._getDoc(`users/${AUTH_UID}`);
+    expect(user.learning_total_gems).toBe(12);
+    expect(user.learning_gems).toBe(22);
+  });
+
   test('credits achievement gems based on server formula', async () => {
     setUserDoc(AUTH_UID, { learning_gems: 0 });
     const result = await gems.earnGems({ reason: 'achievement', meta: { xp: 100 } }, makeContext());
     expect(result.gemsAdded).toBe(25);
   });
 
-  test('uses streak milestone table', async () => {
+  test('pays achievement gems once via the claim flag (NUEVO-fix)', async () => {
     setUserDoc(AUTH_UID, { learning_gems: 0 });
+    const first = await gems.earnGems(
+      { reason: 'achievement', achievementId: 'streak_7', meta: { xp: 50 } },
+      makeContext()
+    );
+    expect(first.gemsAdded).toBe(12);
+    const claim = admin._getDoc(`users/${AUTH_UID}/achievements/streak_7`);
+    expect(claim.gemsClaimed).toBe(true);
+
+    // Segunda reclamación (con otra meta/idempotencia): ya pagada, 0 gemas.
+    const second = await gems.earnGems(
+      { reason: 'achievement', achievementId: 'streak_7', meta: { xp: 4000 } },
+      makeContext()
+    );
+    expect(second.success).toBe(false);
+    expect(second.alreadyClaimed).toBe(true);
+    expect(second.gemsAdded).toBe(0);
+    const user = admin._getDoc(`users/${AUTH_UID}`);
+    expect(user.learning_gems).toBe(12);
+  });
+
+  test('keeps the claim open when the daily cap cuts the gems (NUEVO-fix)', async () => {
+    setUserDoc(AUTH_UID, { learning_gems: 0 });
+    admin._setDoc(`daily_gem_sources/${AUTH_UID}_${today()}`, { total: 196 });
+    const result = await gems.earnGems(
+      { reason: 'achievement', achievementId: 'all_stages', meta: { xp: 200 } },
+      makeContext()
+    );
+    expect(result.gemsAdded).toBe(4);
+    expect(result.dailyCapped).toBe(true);
+    expect(
+      admin._getDoc(`users/${AUTH_UID}/achievements/all_stages`) || {}
+    ).not.toHaveProperty('gemsClaimed');
+  });
+
+  test('keeps legacy behavior when achievementId is missing (old clients)', async () => {
+    setUserDoc(AUTH_UID, { learning_gems: 0 });
+    const result = await gems.earnGems({ reason: 'achievement', meta: { xp: 80 } }, makeContext());
+    expect(result.gemsAdded).toBe(20);
+    expect(
+      admin._getDoc(`users/${AUTH_UID}/achievements/five_lessons`) || {}
+    ).not.toHaveProperty('gemsClaimed');
+  });
+
+  test('uses streak milestone table from server streak', async () => {
+    setUserDoc(AUTH_UID, { learning_gems: 0, currentStreak: 30 });
     const result = await gems.earnGems({ reason: 'streak_milestone', meta: { streakDays: 30 } }, makeContext());
     expect(result.gemsAdded).toBe(60);
   });
 
-  test('credits daily bonus escalating with the day streak', async () => {
-    setUserDoc(AUTH_UID, { learning_gems: 0 });
+  test('ignores forged streakDays in streak_milestone', async () => {
+    setUserDoc(AUTH_UID, { learning_gems: 0, currentStreak: 3 });
+    const result = await gems.earnGems({ reason: 'streak_milestone', meta: { streakDays: 365 } }, makeContext());
+    expect(result.gemsAdded).toBe(0);
+  });
+
+  test('credits daily bonus escalating with the server day streak', async () => {
+    admin._resetFirestore();
+    setUserDoc(AUTH_UID, { learning_gems: 0, currentStreak: 1 });
     const base = await gems.earnGems({ reason: 'daily_bonus', meta: { dayStreak: 1 } }, makeContext());
     expect(base.gemsAdded).toBe(5);
 
     admin._resetFirestore();
-    setUserDoc(AUTH_UID, { learning_gems: 0 });
+    setUserDoc(AUTH_UID, { learning_gems: 0, currentStreak: 7 });
     const mid = await gems.earnGems({ reason: 'daily_bonus', meta: { dayStreak: 7 } }, makeContext());
     expect(mid.gemsAdded).toBe(12);
 
     admin._resetFirestore();
-    setUserDoc(AUTH_UID, { learning_gems: 0 });
+    setUserDoc(AUTH_UID, { learning_gems: 0, currentStreak: 30 });
     const high = await gems.earnGems({ reason: 'daily_bonus', meta: { dayStreak: 30 } }, makeContext());
     expect(high.gemsAdded).toBe(30);
   });
@@ -92,6 +153,12 @@ describe('earnGems', () => {
 
   test('rejects unauthenticated user', async () => {
     await expect(gems.earnGems({ reason: 'mission' }, NO_AUTH)).rejects.toThrow();
+  });
+
+  test('rejects unverified user (requiere email_verified)', async () => {
+    await expect(gems.earnGems({ reason: 'mission' }, makeUnverifiedContext())).rejects.toThrow(
+      expect.objectContaining({ code: 'failed-precondition' })
+    );
   });
 
   test('rejects non-existent user', async () => {
@@ -250,6 +317,13 @@ describe('getGemsBalance', () => {
     expect(result.balance).toBe(42);
     expect(result.dailyCaps.lesson).toBe(50);
     expect(result.maxBalance).toBe(100000);
+  });
+
+  test('returns lifetimeEarned from the lifetime accumulator', async () => {
+    setUserDoc(AUTH_UID, { learning_gems: 42, learning_total_gems: 500 });
+    const result = await gems.getGemsBalance({}, makeContext());
+    expect(result.lifetimeEarned).toBe(500);
+    expect(result.balance).toBe(42);
   });
 
   test('rejects unauthenticated user', async () => {

@@ -9,6 +9,10 @@ rules_version = '2';
 // - Economic fields (donations, XP, streak, level) are SERVER-ONLY
 //   via Cloud Functions (admin SDK bypasses rules)
 // - Cloud Functions use admin.firestore which is not subject to these rules
+// - Email verification is enforced server-side: las Cloud Functions y las
+//   lecturas de contenido/feature público exigen request.auth.token.email_verified
+//   (ver functions/auth_guard.js). El perfil propio se mantiene accesible durante
+//   el onboarding, antes de completar la verificación.
 
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -40,6 +44,17 @@ service cloud.firestore {
                     && request.auth.uid == userId;
         allow write: if false; // Server-only via Cloud Functions
       }
+    }
+
+    // Un usuario "autenticado" puede tener un email sin verificar (un atacante
+    // puede crear una cuenta con cualquier inbox y saltarse el cliente). El
+    // claim `email_verified` del token es la fuente autoritativa: solo las
+    // cuentas verificadas pueden leer contenido/feature público. El perfil
+    // propio (/users/{uid}) sigue accesible para permitir el onboarding antes
+    // de completar la verificación.
+    function isVerifiedUser() {
+      return request.auth != null
+             && request.auth.token.email_verified == true;
     }
 
     // Profile-only field validation (client-writable)
@@ -90,10 +105,8 @@ service cloud.firestore {
         && data.routeType.size() <= 20
         && data.motivation is string
         && data.motivation.size() <= 200
-        && data.lastLoginDate is string
-        && data.lastLoginDate.size() <= 30
-        && data.updatedAt is string
-        && data.updatedAt.size() <= 30
+        && (data.lastLoginDate is string || data.lastLoginDate is timestamp)
+        && (data.updatedAt is string || data.updatedAt is timestamp)
         && data.updatedBy is string
         && data.updatedBy == request.auth.uid;
     }
@@ -141,9 +154,9 @@ service cloud.firestore {
         && (!diff.affectedKeys().hasAny(['motivation'])
               || data.motivation is string && data.motivation.size() <= 200)
         && (!diff.affectedKeys().hasAny(['lastLoginDate'])
-              || data.lastLoginDate is string && data.lastLoginDate.size() <= 30)
+              || data.lastLoginDate is string || data.lastLoginDate is timestamp)
         && (!diff.affectedKeys().hasAny(['updatedAt'])
-              || data.updatedAt is string && data.updatedAt.size() <= 30)
+              || data.updatedAt is string || data.updatedAt is timestamp)
         && (!diff.affectedKeys().hasAny(['updatedBy'])
               || data.updatedBy == request.auth.uid);
     }
@@ -191,9 +204,21 @@ service cloud.firestore {
       allow read, write: if false;
     }
 
-    // Leaderboards — readable by any authenticated user, server-only writes
+    // Sage daily usage — server-only (Cloud Functions admin SDK)
+    match /sage_usage/{docId} {
+      allow read, write: if false;
+    }
+
+    // Leaderboards — readable by any verified user, server-only writes
     match /leaderboards/{userId} {
-      allow read: if request.auth != null;
+      allow read: if isVerifiedUser();
+      allow create, update, delete: if false;
+    }
+
+    // Learning stages — curriculum content. Readable by any verified user;
+    // writes are server-only (admin SDK seeds the content).
+    match /learning_stages/{stageId} {
+      allow read: if isVerifiedUser();
       allow create, update, delete: if false;
     }
 

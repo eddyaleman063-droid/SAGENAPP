@@ -103,10 +103,7 @@ class _GameCard extends StatelessWidget {
       button: true,
       label: '$title - $description',
       child: GestureDetector(
-        onTap: () {
-          ExperienceService.instance.lightHaptic();
-          onTap();
-        },
+        onTap: onTap,
         child: Container(
           padding: const EdgeInsets.all(AppSpacing.lg),
           decoration: BoxDecoration(

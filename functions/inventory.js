@@ -1,5 +1,6 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
+const { requireVerifiedUser } = require('./auth_guard');
 
 // ══════════════════════════════════════════════════════════════════
 // INVENTORY — Server-authoritative items & cosmetics (NUEVO-08)
@@ -252,9 +253,7 @@ exports.applyShopPurchaseToState = applyShopPurchaseToState;
  * streak shields (webhook fields the client previously never read).
  */
 exports.getInventory = functions.runWith({ maxInstances: 5 }).https.onCall(async (data, context) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError('unauthenticated', 'Debes iniciar sesión');
-  }
+  requireVerifiedUser(context);
 
   const userId = context.auth.uid;
   const stateRef = getInventoryRef(userId);
@@ -285,9 +284,7 @@ exports.getInventory = functions.runWith({ maxInstances: 5 }).https.onCall(async
  * Validates ownership server-side (quantity >= requested) and decrements.
  */
 exports.useInventoryItem = functions.runWith({ maxInstances: 5 }).https.onCall(async (data, context) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError('unauthenticated', 'Debes iniciar sesión');
-  }
+  requireVerifiedUser(context);
 
   const userId = context.auth.uid;
   const itemName = data && typeof data.itemName === 'string' ? data.itemName : '';

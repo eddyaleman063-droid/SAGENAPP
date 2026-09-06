@@ -33,7 +33,11 @@ abstract class AuthClient {
   Future<void> sendPasswordResetEmail(String email);
 
   Future<firebase.User?> reauthenticate(String email, String password);
-  Future<String?> getIdToken();
+  // forceRefresh=true obliga a Firebase a reemitir el ID token con los claims
+  // actuales (p.ej. email_verified tras confirmar el correo). Sin esto, un
+  // token emitido antes de verificar sigue marcando email_verified=false hasta
+  // que expire, haciendo fallar las callables con requireVerifiedUser.
+  Future<String?> getIdToken({bool forceRefresh = false});
 
   Future<void> signOutFirebase();
   Future<void> deleteFirebaseUser();
@@ -279,13 +283,13 @@ class FirebaseAuthClient implements AuthClient {
   }
 
   @override
-  Future<String?> getIdToken() async {
+  Future<String?> getIdToken({bool forceRefresh = false}) async {
     final auth = _auth;
     if (auth == null) return null;
     final user = auth.currentUser;
     if (user == null) return null;
     try {
-      return await user.getIdToken();
+      return await user.getIdToken(forceRefresh);
     } catch (e) {
       _logger.warning('[FirebaseAuthClient] getIdToken error: $e');
       return null;

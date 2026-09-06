@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/providers/providers.dart';
+import 'package:sagen/services/app_logger.dart';
 import 'package:sagen/services/experience_service.dart';
 import 'package:sagen/ui/widgets/common/tap_scale.dart';
 import 'package:sagen/ui/widgets/profile/settings_sheet.dart';
@@ -62,7 +63,6 @@ class SettingsActions extends ConsumerWidget {
   }
 
   void _showSettings(BuildContext context, WidgetRef ref) {
-    ref.read(experienceServiceProvider).lightHaptic();
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -71,7 +71,6 @@ class SettingsActions extends ConsumerWidget {
   }
 
   void _confirmLogout(BuildContext context, WidgetRef ref) {
-    ref.read(experienceServiceProvider).lightHaptic();
     showDialog(
       context: context,
       builder: (ctx) {
@@ -104,7 +103,9 @@ class SettingsActions extends ConsumerWidget {
                   ref.read(notificationServiceProvider).cancelAll();
                   try {
                     await ref.read(authProvider.notifier).signOut();
-                  } catch (_) {}
+                  } catch (e) {
+                    AppLogger().error('Sign out failed', e);
+                  }
                 },
                 child: Text(
                   l.settingsLogout,

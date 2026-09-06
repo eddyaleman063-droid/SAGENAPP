@@ -199,7 +199,7 @@ class _FirstLessonScreenState extends ConsumerState<FirstLessonScreen> {
                     ),
                     const Spacer(),
                     Text(
-                      '${lesson.totalQuestions > 0 ? ((lesson.currentIndex / lesson.totalQuestions) * 100).toInt() : 0}%',
+                      '${lesson.totalQuestions > 0 ? ((lesson.currentIndex + (lesson.showFeedback ? 1 : 0)) / lesson.totalQuestions * 100).clamp(0, 100).toInt() : 0}%',
                       style: AppTextStyle.subtitle.copyWith(
                         fontWeight: FontWeight.bold,
                         color: PremiumColors.splashBlue,
@@ -217,7 +217,10 @@ class _FirstLessonScreenState extends ConsumerState<FirstLessonScreen> {
                     borderRadius: BorderRadius.circular(AppRadius.pill),
                     child: LinearProgressIndicator(
                       value: lesson.totalQuestions > 0
-                          ? lesson.currentIndex / lesson.totalQuestions
+                          ? ((lesson.currentIndex +
+                                        (lesson.showFeedback ? 1 : 0)) /
+                                    lesson.totalQuestions)
+                                .clamp(0.0, 1.0)
                           : 0.0,
                       backgroundColor: context.surfaceTinted,
                       valueColor: const AlwaysStoppedAnimation(
@@ -230,7 +233,7 @@ class _FirstLessonScreenState extends ConsumerState<FirstLessonScreen> {
                 const SizedBox(height: AppSpacing.xxl),
                 Expanded(
                   child: AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 300),
+                    duration: AppMotion.normal,
                     child: _QuestionBody(
                       key: ValueKey(lesson.currentIndex),
                       question: q,
@@ -327,7 +330,7 @@ class _QuestionBody extends StatelessWidget {
         ...List.generate(question.options.length, (i) {
           final opt = question.options[i];
           final isSelected = selectedAnswer == i;
-          final isCorrect = i == question.correctIndex;
+          final isCorrect = i == question.effectiveCorrectIndex;
 
           Color? tileColor;
           Color? borderColor;
@@ -440,7 +443,7 @@ class _QuestionBody extends StatelessWidget {
                 ),
               ],
             ),
-          ),
+          ).animate().fadeIn(duration: 300.ms).slideY(begin: 0.05),
           const SizedBox(height: AppSpacing.xl),
           Semantics(
             button: true,

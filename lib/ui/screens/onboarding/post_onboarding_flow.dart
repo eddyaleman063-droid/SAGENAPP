@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sagen/l10n/app_localizations.dart';
+import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/providers/providers.dart';
 import 'package:sagen/services/analytics_service.dart';
 import 'package:sagen/services/auth_models.dart';
@@ -60,12 +61,16 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
   int _step = 0;
   bool _isAuthenticating = false;
   int _authGeneration = 0;
+  bool _slidingForward = true;
 
   static const int _totalSteps = 15;
 
   @override
   void initState() {
     super.initState();
+    // Fresh flow: start with a clean funnel so no stale data from a previous
+    // partial attempt leaks into the profile (e.g. an old age/email).
+    ref.read(registrationFunnelProvider.notifier).reset();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) _bridgeWizardData();
     });
@@ -73,6 +78,7 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
 
   void _advance() {
     setState(() {
+      _slidingForward = true;
       _step++;
       _skipConditionalSteps();
     });
@@ -82,6 +88,7 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
   void _goBack() {
     if (_step > 0) {
       setState(() {
+        _slidingForward = false;
         _step--;
         _reverseSkipConditionalSteps();
       });
@@ -110,7 +117,15 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
 
   Future<void> _goToHome() async {
     ref.read(registrationFunnelProvider.notifier).skipToHome();
-    await ref.read(authProvider.notifier).markOnboardingCompleted();
+    final authNotifier = ref.read(authProvider.notifier);
+    if (ref.read(authProvider).uid == null) {
+      // Guest has no Firebase profile (no uid yet). Enter a fully functional
+      // LOCAL demo mode instead of bouncing back to /welcome, which previously
+      // created an infinite loop for users tapping "Más adelante".
+      authNotifier.enterDemoMode();
+    } else {
+      await authNotifier.markOnboardingCompleted();
+    }
     if (!mounted) return;
     ref.read(analyticsServiceProvider).track(AnalyticEvent.tutorialComplete);
     context.goNamed('main');
@@ -173,6 +188,10 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
       }
     } catch (e) {
       AppLogger().error('Registration failed', e);
+      // Limpia la credencial ante un error inesperado para que no quede
+      // residiendo en el estado global; el email/nombre se conservan por si
+      // el usuario reintenta.
+      ref.read(registrationFunnelProvider.notifier).clearPassword();
       if (mounted) {
         SagenNotification.show(
           context,
@@ -200,9 +219,17 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
       firstName = parts.first;
       lastName = parts.length > 1 ? parts.sublist(1).join(' ') : '';
     }
-    // Ensure at least a non-empty name set to satisfy createUserProfile.
-    if (firstName.isEmpty) firstName = 'Estudiante';
-    if (lastName.isEmpty) lastName = '';
+    // Ensure a non-empty name AND a non-empty surname to satisfy the profile
+    // schema (Firestore requires both; an empty last name would throw).
+    // Google accounts with a single-part display name (e.g. "Alex") had no
+    // fallback and left the user stuck — now the whole name is reused.
+    if (firstName.isEmpty) {
+      firstName =
+          AppLocalizations.of(context)?.defaultStudentName ?? 'Estudiante';
+    }
+    if (lastName.isEmpty) {
+      lastName = firstName;
+    }
 
     for (int attempt = 0; attempt < 3; attempt++) {
       try {
@@ -263,10 +290,46 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
           ref.read(dashboardProvider.notifier).setDailyGoalMinutes(minutes);
         }
       }
+
+      // Persist the remaining onboarding answers (source, motivations,
+      // interests, learning style, commitment) to analytics so the collected
+      // preferences aren't silently discarded after the wizard.
+      final source = wizardData[1];
+      final motivations = wizardData[3];
+      final interests = wizardData[4];
+      final learningStyle = wizardData[5];
+      final commitment = wizardData[7];
+      if (source != null ||
+          motivations != null ||
+          interests != null ||
+          learningStyle != null ||
+          commitment != null) {
+        ref
+            .read(analyticsServiceProvider)
+            .track(
+              AnalyticEvent.featureUsed,
+              properties: {
+                'feature': 'wizard_prefs',
+                if (source != null) 'wizard_source': source.toString(),
+                if (motivations != null)
+                  'wizard_motivations': _joinList(motivations),
+                if (interests != null) 'wizard_interests': _joinList(interests),
+                if (learningStyle != null)
+                  'wizard_learning_style': _joinList(learningStyle),
+                if (commitment != null)
+                  'wizard_commitment': _joinList(commitment),
+              },
+            );
+      }
     } catch (e) {
       AppLogger().warning('post_onboarding: _bridgeWizardData failed: $e');
     }
     ref.read(wizardBridgeProvider.notifier).reset();
+  }
+
+  static String _joinList(Object? value) {
+    if (value is List) return value.join(',');
+    return value.toString();
   }
 
   static final List<_StepBuilder?> _stepBuilders = [
@@ -310,30 +373,19 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
     (ctx, a) => const ProfileSuccessScreen(),
   ];
 
-  @override
-  Widget build(BuildContext context) {
-    final actions = _PostOnboardingActions(
-      advance: _advance,
-      goBack: _goBack,
-      goToHome: _goToHome,
-      completeRegistration: _completeRegistration,
-      onAuthMethodSelected: _onAuthMethodSelected,
-      jumpToStep: _jumpToStep,
-      ref: ref,
-    );
-
+  Widget _buildCurrentStep(_PostOnboardingActions actions) {
     if (_step >= _totalSteps) return const ProfileSuccessScreen();
 
     if (_step == 10) {
       if (_isAuthenticating) {
         return Center(
           child: Padding(
-            padding: const EdgeInsets.all(32),
+            padding: const EdgeInsets.all(AppSpacing.xxxl),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 const CircularProgressIndicator(),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppSpacing.xxl),
                 TextButton(
                   onPressed: () => setState(() {
                     _isAuthenticating = false;
@@ -376,7 +428,57 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
 
     final builder = _stepBuilders[_step];
     return builder != null
-        ? builder(context, actions).animate().fadeIn().slideY(begin: 0.05)
+        ? builder(context, actions)
         : const ProfileSuccessScreen();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final actions = _PostOnboardingActions(
+      advance: _advance,
+      goBack: _goBack,
+      goToHome: _goToHome,
+      completeRegistration: _completeRegistration,
+      onAuthMethodSelected: _onAuthMethodSelected,
+      jumpToStep: _jumpToStep,
+      ref: ref,
+    );
+
+    if (_step >= _totalSteps) return const ProfileSuccessScreen();
+
+    final progress = (_step / (_totalSteps - 1)).clamp(0.0, 1.0);
+
+    return Column(
+      children: [
+        if (_step > 0 && _step < _totalSteps - 1)
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppSpacing.lg,
+              vertical: AppSpacing.sm,
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(AppRadius.xs),
+              child: LinearProgressIndicator(
+                value: progress,
+                minHeight: 3,
+                backgroundColor: Colors.white.withValues(alpha: 0.1),
+                valueColor: const AlwaysStoppedAnimation(
+                  PremiumColors.primaryAccent,
+                ),
+              ),
+            ),
+          ),
+        Expanded(
+          child: _buildCurrentStep(actions)
+              .animate()
+              .fadeIn(duration: 300.ms)
+              .slideY(
+                begin: _slidingForward ? 0.08 : -0.08,
+                duration: 300.ms,
+                curve: Curves.easeOutCubic,
+              ),
+        ),
+      ],
+    );
   }
 }

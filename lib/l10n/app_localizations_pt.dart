@@ -1799,6 +1799,32 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
+  String reviewCardLabel(Object count) {
+    return 'Revisão: $count perguntas pendentes';
+  }
+
+  @override
+  String get reviewCompleted => 'Revisão concluída!';
+
+  @override
+  String reviewDuePrompt(Object count) {
+    return 'Você tem $count perguntas prontas para revisar';
+  }
+
+  @override
+  String get reviewGemsLabel => 'Gemas de revisão';
+
+  @override
+  String get reviewNoneDue =>
+      'Você não tem revisões pendentes agora. Bom trabalho!';
+
+  @override
+  String get reviewScreenTitle => 'Revisão inteligente';
+
+  @override
+  String get reviewXpLabel => 'XP de revisão';
+
+  @override
   String lessonsLevel(Object level) {
     return 'Nível $level';
   }
@@ -3032,6 +3058,24 @@ class AppLocalizationsPt extends AppLocalizations {
   String get rankingTitle => 'O Coliseu';
 
   @override
+  String get rankingPodiumLabel => 'Pódio do ranking';
+
+  @override
+  String rankingFirstPlace(Object name, Object xp) {
+    return '$name em primeiro lugar com $xp XP';
+  }
+
+  @override
+  String rankingSecondPlace(Object name, Object xp) {
+    return '$name em segundo lugar com $xp XP';
+  }
+
+  @override
+  String rankingThirdPlace(Object name, Object xp) {
+    return '$name em terceiro lugar com $xp XP';
+  }
+
+  @override
   String rankingXpToTop50(Object xp) {
     return 'Você precisa de $xp XP para entrar no Top 50';
   }
@@ -3140,7 +3184,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get regPasswordDesc =>
-      'Mínimo de 6 caracteres para proteger sua conta.';
+      'Mínimo de 8 caracteres com maiúscula, minúscula e um número.';
 
   @override
   String get regPasswordTitle => 'Crie uma senha';
@@ -3232,6 +3276,16 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get resumeQuiz => 'Retomar quiz?';
+
+  @override
+  String get resumeLessonBody =>
+      'Você tem uma lição pela metade de menos de 30 minutos. Retomar de onde parou ou começar de novo?';
+
+  @override
+  String get resumeContinue => 'Continuar';
+
+  @override
+  String get retryStart => 'Começar de novo';
 
   @override
   String get retry => 'Tentar novamente';
@@ -5434,4 +5488,144 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get stop => 'Parar';
+
+  @override
+  String get sageEmotionCalm => 'Calmo';
+
+  @override
+  String get sageEmotionHappy => 'Feliz';
+
+  @override
+  String get sageEmotionCurious => 'Curioso';
+
+  @override
+  String get sageEmotionThinking => 'Pensando';
+
+  @override
+  String get sageEmotionReading => 'Lendo';
+
+  @override
+  String get sageEmotionSerious => 'Sério';
+
+  @override
+  String get sageEmotionNeutral => 'Neutro';
+
+  @override
+  String get sageEmotionExcited => 'Animado';
+
+  @override
+  String get sageEmotionConfused => 'Confuso';
+
+  @override
+  String get sageEmotionWorried => 'Preocupado';
+
+  @override
+  String get sageEmotionSadSoft => 'Um pouco triste';
+
+  @override
+  String get sageEmotionSad => 'Triste';
+
+  @override
+  String get sageEmotionCrying => 'Chorando';
+
+  @override
+  String get sageEmotionDepressed => 'Deprimido';
+
+  @override
+  String get sageEmotionAngry => 'Bravo';
+
+  @override
+  String get sageEmotionFurious => 'Furioso';
+
+  @override
+  String get sageEmotionShocked => 'Chocado';
+
+  @override
+  String get sageEmotionSleepy => 'Com sono';
+
+  @override
+  String get sageEmotionWhistling => 'Assobiando';
+
+  @override
+  String get sageEmotionPointLeft => 'Apontando para a esquerda';
+
+  @override
+  String get sageEmotionPointRight => 'Apontando para a direita';
+
+  @override
+  String get sageEmotionWink => 'Piscando o olho';
+
+  @override
+  String get sageEmotionShy => 'Tímido';
+
+  @override
+  String get sageEmotionLaughing => 'Rindo';
+
+  @override
+  String get sageEmotionSinging => 'Cantando';
+
+  @override
+  String get sageEmotionScared => 'Assustado';
+
+  @override
+  String get sageEmotionEmbarrassed => 'Envergonhado';
+
+  @override
+  String get sageEmotionAnnoyed => 'Irritado';
+
+  @override
+  String get sageEmotionUnmotivated => 'Desmotivado';
+
+  @override
+  String get sageEmotionDistressed => 'Aflito';
+
+  @override
+  String get sageEmotionAggressive => 'Agressivo';
+
+  @override
+  String get sageEmotionLol => 'Rindo muito';
+
+  @override
+  String get sageEmotionHappyWings => 'Feliz com asas';
+
+  @override
+  String get sageEmotionExcitedWave => 'Animado acenando';
+
+  @override
+  String get sageEmotionSurprisedWings => 'Surpreso com asas';
+
+  @override
+  String get sageEmotionCelebrating => 'Comemorando';
+
+  @override
+  String get sageEmotionProud => 'Orgulhoso';
+
+  @override
+  String get sageEmotionPanic => 'Em pânico';
+
+  @override
+  String get chatSuggestionHelpLesson => 'Ajude-me com uma lição';
+
+  @override
+  String get chatSuggestionExplainConcept => 'Explique-me um conceito';
+
+  @override
+  String get chatSuggestionQuizMe => 'Me teste sobre vocabulário';
+
+  @override
+  String get copiedToClipboard => 'Copiado para a área de transferência';
+
+  @override
+  String get messageFromYou => 'Você';
+
+  @override
+  String get messageFromSage => 'Sage';
+
+  @override
+  String gemRewardEarned(Object count) {
+    return '+$count gemas obtidas';
+  }
+
+  @override
+  String get defaultStudentName => 'Estudante';
 }

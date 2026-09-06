@@ -38,7 +38,7 @@ class _LearningTrackTileState extends ConsumerState<LearningTrackTile>
     super.initState();
     _pressCtrl = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 100),
+      duration: AppMotion.fast,
       lowerBound: 0.97,
       upperBound: 1.0,
       value: 1.0,

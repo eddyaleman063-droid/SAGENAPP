@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:meta/meta.dart';
 import '../config/app_config.dart';
 import 'ai_service.dart';
 import 'api_client.dart';
@@ -215,6 +216,14 @@ class GeminiApiClient {
         rethrow;
       } catch (e) {
         if (yielded) rethrow;
+        // NUEVO-fix: el servidor rechaza con HTTP 429 + code
+        // 'sage_daily_limit' cuando el usuario agotó su cuota diaria de Sage.
+        // Se reenvía como AiErrorType.dailyLimit PARA EL CLIENTE (ÚNICO
+        // consumidor legítimo del flujo): el provider lo muestra como
+        // 'daily_limit' y NO ejecuta el fallback local (que haría creer que
+        // Sage respondió algo real). Sin reintento.
+        final dailyLimit = dailyLimitException(e);
+        if (dailyLimit != null) throw dailyLimit;
         if (attempt < _maxRetries) {
           final base = AppConfig.geminiRetryDelay * (attempt + 1);
           final jitter = Duration(milliseconds: _jitter.nextInt(1000));
@@ -232,6 +241,21 @@ class GeminiApiClient {
   }
 
   void dispose() {}
+
+  // NUEVO-fix: mapea el 429 server-authoritative de la cuota diaria de Sage
+  // (HTTP body code 'sage_daily_limit') a AiErrorType.dailyLimit. Extraído a
+  // función pura para poder testearlo sin firebase-mocking.
+  @visibleForTesting
+  AiException? dailyLimitException(Object error) {
+    if (error is ApiException && error.serverCode == 'sage_daily_limit') {
+      return AiException(
+        AiErrorType.dailyLimit,
+        'Has alcanzado el límite diario de mensajes de Sage.',
+        originalError: error,
+      );
+    }
+    return null;
+  }
 
   bool _shouldRetry(FirebaseFunctionsException e) {
     return e.code == 'internal' || e.code == 'unavailable';

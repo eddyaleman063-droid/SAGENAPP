@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/theme_constants.dart';
@@ -154,7 +155,7 @@ class _PaymentSuccessScreenState extends ConsumerState<PaymentSuccessScreen>
                   ),
                 ),
               ],
-            ),
+            ).animate().fadeIn(duration: 400.ms).slideY(begin: 0.1),
           ),
         ),
       ),

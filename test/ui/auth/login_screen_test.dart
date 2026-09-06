@@ -77,6 +77,7 @@ void main() {
     await tester.pumpWidget(_buildApp(onSwitchToRegister: () => called = true));
     await tester.pump(const Duration(seconds: 1));
     await tester.pump(const Duration(seconds: 1));
+    expect(called, isFalse);
     expect(
       find.byWidgetPredicate(
         (w) => w is RichText && w.text.toPlainText().contains('Crear cuenta'),

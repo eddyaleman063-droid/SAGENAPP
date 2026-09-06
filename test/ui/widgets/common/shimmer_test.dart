@@ -54,7 +54,7 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [prefsProvider.overrideWithValue(prefs)],
-          child: MaterialApp(
+          child: const MaterialApp(
             home: Scaffold(
               body: ShimmerLoading(width: 100, height: 20, borderRadius: 4),
             ),
@@ -71,7 +71,9 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [prefsProvider.overrideWithValue(prefs)],
-          child: MaterialApp(home: Scaffold(body: ShimmerBlock(lines: 3))),
+          child: const MaterialApp(
+            home: Scaffold(body: ShimmerBlock(lines: 3)),
+          ),
         ),
       );
       await tester.pump();

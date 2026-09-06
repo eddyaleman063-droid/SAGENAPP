@@ -81,6 +81,8 @@ class PremiumColors {
 
   static const teal = Color(0xFF0D9488);
   static const success = Color(0xFF2E7D32);
+  static const successGradientStart = Color(0xFF2ECC71);
+  static const successGradientEnd = Color(0xFF27AE60);
   static const warning = Color(0xFFE65100);
   static const error = Color(0xFFB71C1C);
   static const info = Color(0xFF1565C0);
@@ -293,20 +295,6 @@ class PremiumColors {
     Color(0xFFFFC312),
     Color(0xFFEE5A24),
   ];
-  static const confettiSoft = [
-    Color(0xFFAA96DA),
-    Color(0xFFFCBDAD),
-    Color(0xFFA29BFE),
-    Color(0xFF6C5CE7),
-    Color(0xFF9B59B6),
-  ];
-  static const confettiExtra = [
-    Color(0xFFFFE66D),
-    Color(0xFFFDCB6E),
-    Color(0xFFF8B500),
-    Color(0xFFFF9F43),
-    Color(0xFFE1B12C),
-  ];
   static const confettiMixed = [
     Color(0xFFFF6B6B),
     Color(0xFF4ECDC4),
@@ -384,6 +372,7 @@ class AppSpacing {
 // ─── Border Radius ─────────────────────────────────────────
 class AppRadius {
   AppRadius._();
+  static const double xxs = 2;
   static const double xs = 6;
   static const double sm = 8;
   static const double md = 12;

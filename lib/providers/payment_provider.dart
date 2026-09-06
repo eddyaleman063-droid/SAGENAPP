@@ -289,6 +289,11 @@ class PaymentNotifier extends AutoDisposeNotifier<PaymentState> {
   Future<void> refreshGems() async {
     try {
       await ref.read(learningProvider.notifier).reload();
+      // NUEVO-fix: tras confirmar un pago, el webhook acredita las gemas en el
+      // servidor, pero sin este sync el balance local quedaba desactualizado
+      // hasta el siguiente sync de ciclo de vida/tienda. El reconciliador es
+      // idempotente y server-authoritative (patron ya usado en login/tienda).
+      await ref.read(gemProvider.notifier).syncBalanceFromServer();
       final currentDonated = ref.read(learningProvider).totalDonated;
       state = state.copyWith(donatedAfter: currentDonated.toInt());
     } catch (e, stack) {

@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sagen/ui/widgets/common/sage_emotion_widget.dart';
+import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/services/sage_emotion_service.dart';
+import 'package:sagen/ui/widgets/common/sage_emotion_widget.dart';
 
 void main() {
   group('SageEmotionWidget', () {
     testWidgets('renders with animated=true', (tester) async {
       await tester.pumpWidget(
-        ProviderScope(
+        const ProviderScope(
           child: MaterialApp(
             home: Scaffold(
               body: SageEmotionWidget(
@@ -20,13 +21,13 @@ void main() {
           ),
         ),
       );
-      await tester.pump(Duration(seconds: 6));
+      await tester.pump(const Duration(seconds: 6));
       expect(find.byType(SageEmotionWidget), findsOneWidget);
     });
 
     testWidgets('renders with animated=false', (tester) async {
       await tester.pumpWidget(
-        ProviderScope(
+        const ProviderScope(
           child: MaterialApp(
             home: Scaffold(
               body: SageEmotionWidget(
@@ -38,13 +39,13 @@ void main() {
           ),
         ),
       );
-      await tester.pump(Duration(seconds: 6));
+      await tester.pump(const Duration(seconds: 6));
       expect(find.byType(SageEmotionWidget), findsOneWidget);
     });
 
     testWidgets('applies custom semantic label', (tester) async {
       await tester.pumpWidget(
-        ProviderScope(
+        const ProviderScope(
           child: MaterialApp(
             home: Scaffold(
               body: SageEmotionWidget(
@@ -57,13 +58,36 @@ void main() {
           ),
         ),
       );
-      await tester.pump(Duration(seconds: 6));
+      await tester.pump(const Duration(seconds: 6));
       expect(find.bySemanticsLabel('Mi mascota'), findsOneWidget);
+    });
+
+    testWidgets('applies localized fallback label when l10n is available', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        const ProviderScope(
+          child: MaterialApp(
+            locale: Locale('es'),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: Scaffold(
+              body: SageEmotionWidget(
+                emotion: SageEmotion.happy,
+                size: 48,
+                animated: false,
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pump(const Duration(seconds: 6));
+      expect(find.bySemanticsLabel('Feliz'), findsOneWidget);
     });
 
     testWidgets('clamps size between 24 and 200', (tester) async {
       await tester.pumpWidget(
-        ProviderScope(
+        const ProviderScope(
           child: MaterialApp(
             home: Scaffold(
               body: SageEmotionWidget(
@@ -75,13 +99,13 @@ void main() {
           ),
         ),
       );
-      await tester.pump(Duration(seconds: 6));
+      await tester.pump(const Duration(seconds: 6));
       expect(find.byType(SageEmotionWidget), findsOneWidget);
     });
 
     testWidgets('wraps in RepaintBoundary', (tester) async {
       await tester.pumpWidget(
-        ProviderScope(
+        const ProviderScope(
           child: MaterialApp(
             home: Scaffold(
               body: SageEmotionWidget(
@@ -92,7 +116,7 @@ void main() {
           ),
         ),
       );
-      await tester.pump(Duration(seconds: 6));
+      await tester.pump(const Duration(seconds: 6));
       expect(find.byType(RepaintBoundary), findsWidgets);
     });
   });

@@ -63,6 +63,42 @@ class ThemeState {
     }
   }
 
+  /// Tema claro (siempre, independientemente del modo efectivo), aplicando la
+  /// variante elegida. Se usa como [ThemeData] del slot claro de MaterialApp.
+  ThemeData get lightTheme {
+    final base = AppTheme.light;
+    switch (themeVariant) {
+      case 'purple':
+        return base.copyWith(
+          colorScheme: base.colorScheme.copyWith(
+            primary: PremiumColors.variantPurplePrimary,
+            secondary: PremiumColors.variantPurpleSecondary,
+          ),
+          scaffoldBackgroundColor: PremiumColors.variantPurpleLight,
+        );
+      default:
+        return base;
+    }
+  }
+
+  /// Tema oscuro (siempre, independientemente del modo efectivo), aplicando la
+  /// variante elegida. Se usa como [ThemeData] del slot oscuro de MaterialApp.
+  ThemeData get darkTheme {
+    final base = AppTheme.dark;
+    switch (themeVariant) {
+      case 'purple':
+        return base.copyWith(
+          colorScheme: base.colorScheme.copyWith(
+            primary: PremiumColors.variantPurplePrimary,
+            secondary: PremiumColors.variantPurpleSecondary,
+          ),
+          scaffoldBackgroundColor: PremiumColors.variantPurpleDark,
+        );
+      default:
+        return base;
+    }
+  }
+
   ThemeMode get effectiveMode {
     if (scheduleEnabled) {
       final hour = DateTime.now().hour;

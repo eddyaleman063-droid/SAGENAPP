@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'connectivity_service.dart';
 import 'database_helper.dart';
 import 'economic_functions_service.dart';
@@ -34,6 +35,11 @@ class OfflineQueueService {
   Timer? _retryTimer;
   Timer? _rescheduleTimer;
   bool _initialized = false;
+
+  /// Token de generación: lo incrementa [clear] para invalidar un
+  /// `_processQueue` en curso (sign-out mientras se sincroniza). Evita que el
+  /// loop siga mutando/removiendo items de una cola ya vaciada/reemplazada.
+  int _generation = 0;
 
   /// Callback fired after a queue item is synced successfully.
   /// The Map contains the server response (gems, xp, level, etc.).
@@ -151,6 +157,58 @@ class OfflineQueueService {
     }
   }
 
+  /// Encola una acreditación de XP offline (repaso, logros, misiones,
+  /// mini-juegos). Reusa la MISMA [idempotencyKey] del intento online para que
+  /// el reintento nunca duplique (transaction_logs por clave en el servidor).
+  /// Al sincronizarse, onItemSynced notifica al reconciler con el shape addXp.
+  /// FIX-achievementId: se persiste [achievementId] para que el servidor
+  /// acredite la recompensa REAL del logro (tabla de logros) y no el fallback
+  /// plano de 10 XP que aplica addXp cuando reason='achievement' llega sin id.
+  Future<void> queueAddXp({
+    required String reason,
+    String? lessonId,
+    String? achievementId,
+    required String idempotencyKey,
+  }) async {
+    final item = {
+      'id':
+          'xp_${reason}_${DateTime.now().microsecondsSinceEpoch}_${_queue.length}',
+      'op': 'add_xp',
+      'reason': reason,
+      'lessonId': lessonId,
+      'achievementId': achievementId,
+      'idempotencyKey': idempotencyKey,
+      'retries': 0,
+      'queuedAt': DateTime.now().toUtc().toIso8601String(),
+    };
+
+    try {
+      final db = await DatabaseHelper.instance.database;
+      final dbId = await db.insert('sync_queue', {
+        'operation': 'add_xp',
+        'payload': jsonEncode(item),
+        'created_at': DateTime.now().toUtc().toIso8601String(),
+        'retry_count': 0,
+      });
+      item['_dbId'] = dbId;
+    } catch (e) {
+      _logger.error(
+        'OfflineQueue: failed to persist add_xp to SQLite — XP won\'t be queued',
+        e,
+      );
+      return;
+    }
+
+    _queue.add(item);
+    _logger.info(
+      'OfflineQueue: queued add_xp($reason) (${_queue.length} pending)',
+    );
+
+    if (_connectivity.online.value) {
+      unawaited(flush());
+    }
+  }
+
   /// Procesa la cola inmediatamente si hay conexión.
   Future<void> flush() async {
     if (_connectivity.online.value && _queue.isNotEmpty && !_syncing) {
@@ -177,18 +235,28 @@ class OfflineQueueService {
   /// outage) where keeping the item in the queue is safe because completeLesson
   /// is idempotent per lessonId (transaction_logs guard against double credit).
   /// Transient errors are retried indefinitely so XP/gems are never lost.
-  static bool _isPermanentError(Object error) {
+  /// Exposed for tests. Returns true only for errors that are a genuine
+  /// server-side rejection that would never succeed on retry (validation,
+  /// permission, not-found...). Transient conditions (`internal` server errors,
+  /// `aborted` Firestore contention) are NOT permanent: they can succeed on a
+  /// retry, so the item must stay queued to avoid losing XP/gems.
+  ///
+  /// M2-fix: `failed-precondition` es REINTENTABLE en SAGENAPP, no permanente.
+  /// En las callables económicas ese código significa "correo sin verificar"
+  /// (requireVerifiedUser) o un guard de día/hito no alineado todavia: ambas
+  /// condiciones se resuelven con el tiempo (el usuario verifica su correo).
+  /// Marcar esto como permanente descartaba la cola de XP/recompensas de
+  /// lecciones completadas antes de verificar, perdiendo la acreditacion.
+  @visibleForTesting
+  static bool isPermanentError(Object error) {
     if (error is FirebaseFunctionsException) {
       const permanent = {
         'invalid-argument',
-        'failed-precondition',
         'permission-denied',
         'not-found',
         'unauthenticated',
         'out-of-range',
-        'aborted',
         'already-exists',
-        'internal',
       };
       return permanent.contains(error.code);
     }
@@ -199,6 +267,7 @@ class OfflineQueueService {
     if (_syncing || _queue.isEmpty) return;
     _syncing = true;
 
+    final gen = _generation;
     final toRemove = <int>[];
 
     for (int i = 0; i < _queue.length; i++) {
@@ -207,11 +276,34 @@ class OfflineQueueService {
 
       try {
         final result = await _syncItem(item);
-        toRemove.add(i);
-        _logger.info('OfflineQueue: synced ${item['lessonId']}');
-        if (result != null) onItemSynced?.call(result);
+        // Si clear() se ejecutó durante el await (sign-out), aborta la
+        // iteración: la cola ya no es propiedad de este ciclo y remover
+        // items aquí podría descartar datos de otra sesión.
+        if (gen != _generation) return;
+        if (result != null) {
+          toRemove.add(i);
+          _logger.info('OfflineQueue: synced ${item['lessonId']}');
+          onItemSynced?.call(result);
+        } else {
+          // El servidor no devolvio resultado: tipicamente no hay sesion
+          // autenticada (EconomicFunctionsService._call devuelve null cuando
+          // currentUser es null). El item NO se acredito, asi que se mantiene
+          // en cola para reintentar cuando haya sesion; eliminarlo aqui
+          // perderia XP/gemas sin acreditarlos.
+          _queue[i]['retries'] = retries + 1;
+          final dbId = item['_dbId'];
+          if (dbId is int) {
+            await _persistRetryCount(dbId, retries + 1);
+          }
+          _logger.warning(
+            'OfflineQueue: no server result for ${item['lessonId']} '
+            '(attempt ${retries + 1}), keeping item for retry',
+          );
+        }
       } catch (e) {
-        if (_isPermanentError(e)) {
+        // clear() pudo ejecutarse mientras el server call estaba en vuelo.
+        if (gen != _generation) return;
+        if (isPermanentError(e)) {
           toRemove.add(i);
           _logger.warning(
             'OfflineQueue: permanent failure for ${item['lessonId']}, '
@@ -235,7 +327,7 @@ class OfflineQueueService {
     }
 
     // Remove synced/max-retried items from SQLite and memory
-    if (toRemove.isNotEmpty) {
+    if (gen == _generation && toRemove.isNotEmpty) {
       final db = await DatabaseHelper.instance.database;
       final dbIds = <dynamic>[];
       for (int i = toRemove.length - 1; i >= 0; i--) {
@@ -272,6 +364,19 @@ class OfflineQueueService {
 
     final economicService = _economic;
 
+    final op = item['op'] as String?;
+
+    if (op == 'add_xp') {
+      final result = await economicService.addXp(
+        reason: item['reason'] as String? ?? 'unknown',
+        lessonId: item['lessonId'] as String?,
+        achievementId: item['achievementId'] as String?,
+        idempotencyKey: item['idempotencyKey'] as String?,
+      );
+      if (result != null) result['_op'] = 'add_xp';
+      return result;
+    }
+
     // Sync lesson completion through Cloud Function (atomic: gems + XP + streak)
     final correctCount = item['correctAnswers'] as int? ?? 0;
     final totalQuestions = item['totalQuestions'] as int? ?? 0;
@@ -296,6 +401,11 @@ class OfflineQueueService {
   }
 
   Future<void> clear() async {
+    // Invalida cualquier _processQueue en curso para que no siga removiendo
+    // items de una cola que vamos a vaciar (evita crédito cruzado entre
+    // cuentas al hacer sign-out mientras hay una sincronización activa).
+    _rescheduleTimer?.cancel();
+    _generation++;
     try {
       final db = await DatabaseHelper.instance.database;
       await db.delete('sync_queue');
@@ -303,6 +413,7 @@ class OfflineQueueService {
       _logger.error('OfflineQueue: failed to clear SQLite', e);
     }
     _queue.clear();
+    _syncing = false;
   }
 
   void dispose() {

@@ -69,7 +69,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   void _validateFields() {
     _validateDebounce?.cancel();
-    _validateDebounce = Timer(const Duration(milliseconds: 150), () {
+    _validateDebounce = Timer(AppMotion.fast, () {
       final email = _emailCtrl.text.trim();
       final emailValid = email.isNotEmpty && _emailRegex.hasMatch(email);
       final valid = emailValid && _passwordCtrl.text.isNotEmpty;
@@ -263,6 +263,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               maxLength: 254,
                               keyboardType: TextInputType.emailAddress,
                               textInputAction: TextInputAction.next,
+                              autofillHints: const [AutofillHints.email],
                               onFieldSubmitted: (_) =>
                                   _passwordFocus.requestFocus(),
                               style: AppTextStyle.body.copyWith(
@@ -313,6 +314,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               maxLength: 128,
                               obscureText: _obscurePassword,
                               textInputAction: TextInputAction.done,
+                              autofillHints: const [AutofillHints.password],
                               onFieldSubmitted: (_) => _handleLogin(),
                               style: AppTextStyle.body.copyWith(
                                 color: context.textPrimary,

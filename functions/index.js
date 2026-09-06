@@ -2,10 +2,36 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const crypto = require('crypto');
 const { MercadoPagoConfig, Preference } = require('mercadopago');
+const { requireVerifiedUser } = require('./auth_guard');
+const { defineSecret } = require('firebase-functions/params');
 
 admin.initializeApp();
 
-const MERCADOPAGO_ACCESS_TOKEN = functions.config().mercadopago?.access_token;
+// NUEVO-fix (deprec): migración de functions.config() a Secret Manager/params.
+// Los defineSecret no se listan en runWith({ secrets }) para no exigir
+// secretos en el deploy; si la env (Secret Manager) no está disponible,
+// secretOrConfig cae al legacy functions.config(), que sigue siendo
+// compatible en runtime Node 22. Así un proyecto aún sin secretos migrados
+// mantiene su configuración actual sin prompts ni pasos manuales.
+const SECRET_MERCADOPAGO_ACCESS_TOKEN = defineSecret('MERCADOPAGO_ACCESS_TOKEN');
+const SECRET_PURCHASE = defineSecret('PURCHASE_SECRET');
+const SECRET_WEBHOOK = defineSecret('MERCADOPAGO_WEBHOOK_SECRET');
+const SECRET_GEMINI = defineSecret('GEMINI_API_KEY');
+
+function secretOrConfig(param, legacyValue) {
+  try {
+    const value = param.value();
+    if (value) return value;
+  } catch {
+    // env / Secret Manager no disponible para este parámetro
+  }
+  return legacyValue || '';
+}
+
+const MERCADOPAGO_ACCESS_TOKEN = secretOrConfig(
+  SECRET_MERCADOPAGO_ACCESS_TOKEN,
+  functions.config().mercadopago?.access_token,
+);
 if (!MERCADOPAGO_ACCESS_TOKEN) {
   console.warn('MERCADOPAGO_ACCESS_TOKEN not configured. Set via: firebase functions:config:set mercadopago.access_token="APP_USR-xxx"');
 }
@@ -65,6 +91,106 @@ function applyProductBonuses(updateData, userData, bonuses) {
     }
   }
   return updateData;
+}
+
+/**
+ * Reverts the benefits granted by an approved payment when Mercado Pago
+ * reports a refund or chargeback (status `refunded`/`charged_back`).
+ *
+ * Idempotency: payment_logs/{id} carries the CURRENT status. Only logs still
+ * in status 'approved' get reverted; after the first reversal the log moves to
+ * `refunded`/`charged_back`, so concurrent or replayed webhooks become no-ops.
+ *
+ * The reversal uses the `granted` deltas persisted at credit time (the
+ * effective increments after cap clamping). Legacy logs created before that
+ * field fall back to the catalog bonuses, always clamped at zero so balances
+ * woned through other means are never corrupted.
+ */
+async function revertApprovedPayment(paymentId, payment) {
+  const logRef = admin.firestore().doc(`payment_logs/${paymentId}`);
+  try {
+    return await admin.firestore().runTransaction(async (transaction) => {
+      const logDoc = await transaction.get(logRef);
+      if (!logDoc.exists) return 'no-log';
+      const logData = logDoc.data() || {};
+      if (logData.status !== 'approved') return 'already-reverted';
+
+      const userId = logData.userId;
+      if (!userId) return 'no-user-id';
+      const userRef = admin.firestore().doc(`users/${userId}`);
+      const userDoc = await transaction.get(userRef);
+      if (!userDoc.exists) return 'user-missing';
+      const userData = userDoc.data() || {};
+
+      const granted = logData.granted || {};
+      const revertedAmount =
+        granted.total_donated || logData.amount || payment.transaction_amount || 0;
+      const newTotalDonated = Math.max(
+        0,
+        (userData.total_donated || 0) - revertedAmount,
+      );
+
+      const updateData = {
+        total_donated: newTotalDonated,
+        is_supporter: newTotalDonated > 0,
+        _ts_total_donated: admin.firestore.FieldValue.serverTimestamp(),
+      };
+
+      const bonuses = Array.isArray(logData.bonuses) ? logData.bonuses : [];
+      for (const bonus of bonuses) {
+        if (bonus.type === 'streakProtector') {
+          updateData.shop_streak_shields = Math.max(
+            0,
+            (userData.shop_streak_shields || 0) -
+              (granted.shop_streak_shields || bonus.quantity || 0),
+          );
+        } else if (bonus.type === 'xpBoost') {
+          updateData.shop_purchased_xp_boosts = Math.max(
+            0,
+            (userData.shop_purchased_xp_boosts || 0) -
+              (granted.shop_purchased_xp_boosts || bonus.quantity || 0),
+          );
+        } else if (bonus.type === 'xpMultiplier') {
+          updateData.shop_purchased_xp_multipliers = Math.max(
+            0,
+            (userData.shop_purchased_xp_multipliers || 0) -
+              (granted.shop_purchased_xp_multipliers || bonus.quantity || 0),
+          );
+        } else if (bonus.type === 'luckBoost') {
+          updateData.shop_purchased_luck_boosts = Math.max(
+            0,
+            (userData.shop_purchased_luck_boosts || 0) -
+              (granted.shop_purchased_luck_boosts || bonus.quantity || 0),
+          );
+        } else if (bonus.type === 'sagenPass') {
+          const gemsGranted = granted.learning_gems || bonus.gems || SAGEN_PASS_GEMS;
+          updateData.learning_gems = Math.max(
+            0,
+            (userData.learning_gems || 0) - gemsGranted,
+          );
+          if (newTotalDonated <= 0) {
+            // Los flags de PASS solo se revocan si no quedan donaciones
+            // activas; un PASS con otro pago vigente se conserva (no revocar
+            // acceso legítimo).
+            updateData.sagen_pass_active = false;
+            updateData.premium_question_bank = false;
+          }
+        }
+      }
+
+      transaction.update(userRef, updateData);
+      transaction.update(logRef, {
+        status: payment.status,
+        revertReason: payment.status,
+        revertedAmount,
+        revertedAt: admin.firestore.FieldValue.serverTimestamp(),
+      });
+      return 'reverted';
+    });
+  } catch (error) {
+    functions.logger.error('revertApprovedPayment error', { paymentId, error });
+    return 'error';
+  }
 }
 
 // ── Rate limiting (Firestore-based, distributed) ─────────────────
@@ -160,7 +286,7 @@ exports.createPaymentPreference = functions.runWith({ maxInstances: 10 }).https.
     }
 
     const shortHash = (s) => {
-      const secret = functions.config().app?.purchase_secret;
+      const secret = secretOrConfig(SECRET_PURCHASE, functions.config().app?.purchase_secret);
       if (!secret) {
         functions.logger.error('purchase_secret not configured');
         throw new functions.https.HttpsError('internal', 'Error de configuración del servidor');
@@ -241,36 +367,71 @@ exports.handlePaymentWebhook = functions.runWith({ maxInstances: 5 }).https.onRe
     }
 
     // ── VERIFY WEBHOOK SIGNATURE ───────────────────────────────
-    const WEBHOOK_SECRET = functions.config().mercadopago?.webhook_secret;
+    // Algoritmo oficial de Mercado Pago (HMAC-SHA256 WEBHOOK_SECRET):
+    //  1. x-signature llega como `ts=<ts>,v1=<hmac>` (separador: coma).
+    //  2. Se firma el manifest `id:<data.id>;request-id:<x-request-id>;ts:<ts>;`
+    //     donde <data.id> es el QUERY PARAM (no el body), en minúsculas si es
+    //     alfanumérico, omitiendo las secciones ausentes (id/request-id).
+    //  3. digest hex comparado en tiempo constante + ventana de freshness.
+    const WEBHOOK_SECRET = secretOrConfig(SECRET_WEBHOOK, functions.config().mercadopago?.webhook_secret);
     if (!WEBHOOK_SECRET) {
       functions.logger.error('MERCADOPAGO_WEBHOOK_SECRET not configured — rejecting webhook');
       return res.status(500).send('Error de configuración del servidor');
     }
-    const signature = req.headers['x-signature'] || '';
+    const dataIdRaw = String(req.query?.['data.id'] || '').trim();
+    const dataId = /^[a-zA-Z0-9]+$/.test(dataIdRaw) ? dataIdRaw.toLowerCase() : dataIdRaw;
+    const xRequestId = String(req.headers['x-request-id'] || '').trim();
+    const signature = String(req.headers['x-signature'] || '');
     const parts = {};
-    for (const part of signature.split(';')) {
+    for (const part of signature.split(',')) {
       const [k, v] = part.split('=');
       if (k && v) parts[k.trim()] = v.trim();
     }
     const ts = parts['ts'];
     const v1 = parts['v1'];
-    if (!ts || !v1) {
-      functions.logger.warn('Webhook missing signature', { paymentId: data.id });
+    if (!ts || !v1 || !dataId || !xRequestId) {
+      functions.logger.warn('Webhook missing signature parts', {
+        paymentId: dataId,
+        hasTs: !!ts,
+        hasV1: !!v1,
+        hasDataId: !!dataId,
+        hasRequestId: !!xRequestId,
+      });
       return res.status(401).send('No autorizado');
     }
-    const rawBody = req.rawBody ? req.rawBody.toString('utf8') : JSON.stringify(req.body);
+
+    // Freshness window: MP envía ts en segundos o milisegundos. Se rechazan
+    // firmas con >10 min de antigüedad o futuras para mitigar replay/clock skew.
+    const tsNum = Number(ts);
+    if (Number.isFinite(tsNum) && tsNum > 0) {
+      const tsMs = tsNum > 1e12 ? tsNum : tsNum * 1000;
+      const driftMs = Math.abs(Date.now() - tsMs);
+      if (driftMs > 10 * 60 * 1000) {
+        functions.logger.warn('Webhook signature timestamp out of window', { paymentId: dataId });
+        return res.status(401).send('No autorizado');
+      }
+    }
+
+    let manifest = '';
+    if (dataId) manifest += `id:${dataId};`;
+    if (xRequestId) manifest += `request-id:${xRequestId};`;
+    manifest += `ts:${ts};`;
+
     const expected = crypto.createHmac('sha256', WEBHOOK_SECRET)
-      .update(`ts${ts}req${rawBody}`)
+      .update(manifest)
       .digest('hex');
 
     // Validate hex before comparing to prevent timingSafeEqual crash
     const isValidHex = /^[0-9a-f]{64}$/i.test(v1);
     if (!isValidHex) {
-      functions.logger.warn('Webhook invalid hex signature', { paymentId: data.id });
+      functions.logger.warn('Webhook invalid hex signature', { paymentId: dataId });
       return res.status(401).send('No autorizado');
     }
-    if (!crypto.timingSafeEqual(Buffer.from(v1, 'hex'), Buffer.from(expected, 'hex'))) {
-      functions.logger.warn('Webhook signature mismatch', { paymentId: data.id });
+    const provided = Buffer.from(v1, 'hex');
+    const computed = Buffer.from(expected, 'hex');
+    if (provided.length !== computed.length ||
+        !crypto.timingSafeEqual(provided, computed)) {
+      functions.logger.warn('Webhook signature mismatch', { paymentId: dataId });
       return res.status(401).send('No autorizado');
     }
 
@@ -309,6 +470,22 @@ exports.handlePaymentWebhook = functions.runWith({ maxInstances: 5 }).https.onRe
     const productId = payment.metadata?.productId || extParts[2] || null;
 
     if (payment.status !== 'approved') {
+      // NUEVO-fix (A2): un reembolso/chargeback revierte exactamente lo
+      // concedido por el pago aprobado (payment_logs/{id} en status approved).
+      // Si la reversión falla se responde 5xx para que MercadoPago reintente.
+      if (payment.status === 'refunded' || payment.status === 'charged_back') {
+        const outcome = await revertApprovedPayment(paymentId, payment);
+        if (outcome === 'error') {
+          functions.logger.error('Payment reversal failed — returning 5xx for retry', {
+            paymentId, status: payment.status,
+          });
+          return res.status(500).send('Internal error');
+        }
+        functions.logger.info('Payment reversal processed', {
+          paymentId, status: payment.status, outcome,
+        });
+        return res.status(200).send('OK');
+      }
       // Si está pending, registrar en pending_payments para seguimiento
       if (payment.status === 'pending' || payment.status === 'in_process') {
         const pendingRef = admin.firestore().collection('pending_payments').doc(paymentId);
@@ -388,6 +565,30 @@ exports.handlePaymentWebhook = functions.runWith({ maxInstances: 5 }).https.onRe
 
       applyProductBonuses(updateData, userData, bonuses);
 
+      // NUEVO-fix (A2): se persisten los deltas EFECTIVOS concedidos (tras el
+      // cap de escudos, etc.) para que un reembolso/chargeback pueda revertir
+      // exactamente lo concedido sin tocar saldos ganados por otros medios.
+      const granted = {
+        total_donated: amount,
+        is_supporter: true,
+        shop_streak_shields: updateData.shop_streak_shields !== undefined
+          ? updateData.shop_streak_shields - (userData.shop_streak_shields || 0)
+          : 0,
+        shop_purchased_xp_boosts: updateData.shop_purchased_xp_boosts !== undefined
+          ? updateData.shop_purchased_xp_boosts - (userData.shop_purchased_xp_boosts || 0)
+          : 0,
+        shop_purchased_xp_multipliers: updateData.shop_purchased_xp_multipliers !== undefined
+          ? updateData.shop_purchased_xp_multipliers - (userData.shop_purchased_xp_multipliers || 0)
+          : 0,
+        shop_purchased_luck_boosts: updateData.shop_purchased_luck_boosts !== undefined
+          ? updateData.shop_purchased_luck_boosts - (userData.shop_purchased_luck_boosts || 0)
+          : 0,
+        learning_gems: updateData.learning_gems !== undefined
+          ? updateData.learning_gems - (userData.learning_gems || 0)
+          : 0,
+        sagen_pass_granted: updateData.sagen_pass_active === true,
+      };
+
       transaction.update(userRef, updateData);
 
       // Create log with paymentId as doc ID — `transaction.create`
@@ -398,6 +599,7 @@ exports.handlePaymentWebhook = functions.runWith({ maxInstances: 5 }).https.onRe
         amount,
         productId: productId || null,
         bonuses: bonuses,
+        granted: granted,
         paymentAmount: payment.transaction_amount || 0,
         currency: payment.currency_id || 'PEN',
         paymentId,
@@ -439,11 +641,7 @@ exports.adminCreditDonation = functions.runWith({ maxInstances: 3 }).https.onCal
   const { userId, paymentMethod, productId, idempotencyKey } = data || {};
 
   // Uso context.auth en vez de adminSecret
-  if (!context.auth) {
-    throw new functions.https.HttpsError(
-      'unauthenticated', 'Debes iniciar sesión para usar esta función'
-    );
-  }
+  requireVerifiedUser(context);
   const callerUid = context.auth.uid;
 
   // Solo admins pueden llamar esta función
@@ -583,9 +781,7 @@ exports.adminCreditDonation = functions.runWith({ maxInstances: 3 }).https.onCal
  * Saves to pending_payments collection for admin review.
  */
 exports.registerPendingPayment = functions.runWith({ maxInstances: 5 }).https.onCall(async (data, context) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError('unauthenticated', 'Debes iniciar sesión');
-  }
+  requireVerifiedUser(context);
   await checkRateLimit(context.auth.uid);
 
   const { paymentMethod, operationId, amount, productId } = data || {};
@@ -658,9 +854,7 @@ exports.health = functions.runWith({ maxInstances: 2 }).https.onRequest(async (r
  * Returns the current status of a pending payment for client polling.
  */
 exports.checkPendingPaymentStatus = functions.runWith({ maxInstances: 5 }).https.onCall(async (data, context) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError('unauthenticated', 'Debes iniciar sesión');
-  }
+  requireVerifiedUser(context);
 
   const { pendingPaymentId } = data || {};
   if (!pendingPaymentId || typeof pendingPaymentId !== 'string') {
@@ -729,6 +923,7 @@ exports.incrementStreak = economic.incrementStreak;
 exports.completeLesson = economic.completeLesson;
 exports.processDonation = economic.processDonation;
 exports.recordDonation = economic.recordDonation;
+exports.claimFreeStreakShield = economic.claimFreeStreakShield;
 
 // ── Gamification Functions (server-authoritative daily claims) ──
 const gamification = require('./gamification');
@@ -737,6 +932,7 @@ const gamification = require('./gamification');
 exports.claimAdReward = gamification.claimAdReward;
 exports.rollChestDrop = gamification.rollChestDrop;
 exports.getSagenPassSeason = gamification.getSagenPassSeason;
+exports.getDailyChestStatus = gamification.getDailyChestStatus;
 
 // ── Gem Economy (server-authoritative, anti-farm) ────────────────
 const gems = require('./gems');
@@ -758,7 +954,7 @@ const gacha = require('./gacha');
 exports.rollChestEvolution = gacha.rollChestEvolution;
 
 // ── Gemini AI Proxy (SEC-001: API key never exposed to client) ─────
-const GEMINI_API_KEY = functions.config().gemini?.api_key;
+const GEMINI_API_KEY = secretOrConfig(SECRET_GEMINI, functions.config().gemini?.api_key);
 const GEMINI_MODEL = 'gemini-2.5-flash';
 const GEMINI_MAX_OUTPUT_TOKENS = 8192;
 const GEMINI_TEMPERATURE = 0.85;
@@ -775,9 +971,7 @@ const GEMINI_TOP_P = 0.95;
  * code. Do not add new features here — extend ai_streaming.js instead.
  */
 exports.generateContent = functions.runWith({ maxInstances: 3 }).https.onCall(async (data, context) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError('unauthenticated', 'Debes iniciar sesión');
-  }
+  requireVerifiedUser(context);
   await checkRateLimit(context.auth.uid);
 
   if (!GEMINI_API_KEY) {

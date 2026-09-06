@@ -1,15 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sagen/services/experience_service.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/theme_constants.dart';
 import 'package:sagen/providers/providers.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 
-class LessonStatsScreen extends ConsumerWidget {
+class LessonStatsScreen extends ConsumerStatefulWidget {
   final VoidCallback onRecibirXp;
 
+  /// Recompensa real y única del diagnóstico: el servidor acredita +15 plano
+  /// (economic.js REASON_REWARDS.lesson_reward). El importe mostrado debe ser
+  /// exactamente el que credita el servidor; la antigua fórmula de
+  /// QuizScoreCalculator (hasta +480/+930) no coincidía con nada.
+  static const int onboardingXpReward = 15;
+
   const LessonStatsScreen({super.key, required this.onRecibirXp});
+
+  @override
+  ConsumerState<LessonStatsScreen> createState() => _LessonStatsScreenState();
+}
+
+class _LessonStatsScreenState extends ConsumerState<LessonStatsScreen> {
+  /// Guard anti doble-award: un doble tap en "Recibir XP" (durante la
+  /// transición de página del onboarding) dispararía addXp dos veces, y como
+  /// la clave idempotente es nueva en cada llamada el servidor NO deduparía:
+  /// quedarían +30 en vez de +15. Solo se acredita una vez.
+  bool _rewardAwarded = false;
 
   String _title(double accuracy, AppLocalizations l) {
     if (accuracy >= 1.0) return l.statsNoErrors;
@@ -43,7 +61,7 @@ class LessonStatsScreen extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final dark = context.isDark;
     final l = AppLocalizations.of(context)!;
     final lesson = ref.watch(firstLessonProvider);
@@ -96,25 +114,34 @@ class LessonStatsScreen extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   _StatBadge(
-                    icon: Icons.auto_awesome_rounded,
-                    value: '+${lesson.earnedXp}',
-                    label: l.profileXpLabel,
-                    color: PremiumColors.xpColor,
-                  ),
+                        icon: Icons.auto_awesome_rounded,
+                        value: '+${LessonStatsScreen.onboardingXpReward}',
+                        label: l.profileXpLabel,
+                        color: PremiumColors.xpColor,
+                      )
+                      .animate(delay: 300.ms)
+                      .fadeIn(duration: 300.ms)
+                      .scale(begin: const Offset(0.8, 0.8), duration: 300.ms),
                   const SizedBox(width: AppSpacing.lg),
                   _StatBadge(
-                    icon: Icons.check_circle_rounded,
-                    value: '${(acc * 100).toInt()}%',
-                    label: l.resultAccuracy,
-                    color: PremiumColors.success,
-                  ),
+                        icon: Icons.check_circle_rounded,
+                        value: '${(acc * 100).toInt()}%',
+                        label: l.resultAccuracy,
+                        color: PremiumColors.success,
+                      )
+                      .animate(delay: 400.ms)
+                      .fadeIn(duration: 300.ms)
+                      .scale(begin: const Offset(0.8, 0.8), duration: 300.ms),
                   const SizedBox(width: AppSpacing.lg),
                   _StatBadge(
-                    icon: Icons.timer_rounded,
-                    value: _formatDuration(lesson.elapsedTime),
-                    label: l.statsSpeed,
-                    color: PremiumColors.splashBlue,
-                  ),
+                        icon: Icons.timer_rounded,
+                        value: _formatDuration(lesson.elapsedTime),
+                        label: l.statsSpeed,
+                        color: PremiumColors.splashBlue,
+                      )
+                      .animate(delay: 500.ms)
+                      .fadeIn(duration: 300.ms)
+                      .scale(begin: const Offset(0.8, 0.8), duration: 300.ms),
                 ],
               ),
               const Spacer(flex: 3),
@@ -163,7 +190,18 @@ class LessonStatsScreen extends ConsumerWidget {
                   width: double.infinity,
                   height: 54,
                   child: ElevatedButton(
-                    onPressed: onRecibirXp,
+                    onPressed: () {
+                      if (_rewardAwarded) return;
+                      _rewardAwarded = true;
+                      ExperienceService.instance.lightHaptic();
+                      ref
+                          .read(learningProvider.notifier)
+                          .addXp(
+                            LessonStatsScreen.onboardingXpReward,
+                            reason: 'lesson_reward',
+                          );
+                      widget.onRecibirXp();
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: PremiumColors.primary,
                       foregroundColor: Colors.white,

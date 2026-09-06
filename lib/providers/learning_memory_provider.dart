@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../services/app_logger.dart';
 import '../services/storage_service.dart';
 import '../models/quick_challenge.dart';
 import 'prefs_provider.dart';
+import 'review_provider.dart' show ReviewNotifier;
 
 class WeakTopic {
   final String id;
@@ -221,6 +223,11 @@ class LearningMemoryNotifier extends Notifier<LearningMemoryState> {
       totalLessonsFailed++;
     }
 
+    // Los temas reservados ('review'/'lesson') son metadatos del flujo, no
+    // temas de curso: no deben alimentar la lista de temas débiles que se
+    // muestra a Sage, aunque sí cuentan en los totales de sesiones.
+    final isReservedTopic = ReviewNotifier.reservedTopics.contains(topic);
+
     final existing = weakTopics.where((t) => t.id == topic).toList();
     if (existing.isNotEmpty) {
       final idx = weakTopics.indexOf(existing.first);
@@ -232,7 +239,7 @@ class LearningMemoryNotifier extends Notifier<LearningMemoryState> {
             ? existing.first.failCount
             : existing.first.failCount + 1,
       );
-    } else {
+    } else if (!isReservedTopic) {
       weakTopics.add(
         WeakTopic(
           id: topic,
@@ -310,11 +317,15 @@ class LearningMemoryNotifier extends Notifier<LearningMemoryState> {
     DateTime? lastSessionDate = state.lastSessionDate;
 
     if (lastDate == null || !_isSameDay(lastDate, now)) {
-      if (lastDate != null && now.difference(lastDate).inDays <= 7) {
-        sessionsThisWeek++;
-      } else {
-        sessionsThisWeek = 1;
-      }
+      // "Sesiones esta semana" con semántica de semana CALENDARIO: se
+      // incrementa solo si la sesión anterior cayó en la misma semana ISO y
+      // se reinicia al empezar una semana nueva. La ventana deslizante de 7
+      // días inflaba el conteo al cruzar el límite de semana (p.ej. sesión el
+      // sábado de la semana anterior + sesión el lunes = 2 aunque sean 2
+      // semanas distintas).
+      final sameCalendarWeek =
+          lastDate != null && isSameCalendarWeek(lastDate, now);
+      sessionsThisWeek = sameCalendarWeek ? sessionsThisWeek + 1 : 1;
       lastSessionDate = now;
     }
 
@@ -322,6 +333,22 @@ class LearningMemoryNotifier extends Notifier<LearningMemoryState> {
       sessionsThisWeek: sessionsThisWeek,
       lastSessionDate: () => lastSessionDate,
     );
+  }
+
+  /// Número de semana ISO-8601 para una fecha (mismas reglas que
+  /// streak_provider, de modo que la semana del usuario coincide en ambos).
+  static int _isoWeekNumber(DateTime date) {
+    final startOfYear = DateTime(date.year, 1, 1);
+    final dayOfYear = date.difference(startOfYear).inDays + 1;
+    return ((dayOfYear - date.weekday + 10) / 7).floor();
+  }
+
+  /// Indica si [a] y [b] pertenecen a la misma semana calendario ISO-8601.
+  /// Exposición pública bajo test para verificar el corte de semana sin
+  /// inyectar reloj (semántica usada por `sessionsThisWeek`).
+  @visibleForTesting
+  static bool isSameCalendarWeek(DateTime a, DateTime b) {
+    return _isoWeekNumber(a) == _isoWeekNumber(b);
   }
 
   bool _isSameDay(DateTime a, DateTime b) {

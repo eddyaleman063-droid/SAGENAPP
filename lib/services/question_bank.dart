@@ -13,7 +13,7 @@ class QuestionBank {
   Future<List<Challenge>> getQuestionsForLesson(
     String stageId,
     String lessonId, {
-    int count = 5,
+    int count = 15,
   }) async {
     try {
       final dbQuestions = await LocalQuestionDB.instance.getQuestionsForLesson(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/theme/theme_constants.dart';
 import '../../../l10n/app_localizations.dart';
 
 /// Provides a hidden skip-to-content button for screen readers.
@@ -21,7 +22,7 @@ class SkipToContent extends StatelessWidget {
           if (ctx != null) {
             Scrollable.ensureVisible(
               ctx,
-              duration: const Duration(milliseconds: 300),
+              duration: AppMotion.normal,
               curve: Curves.easeInOut,
             );
           }

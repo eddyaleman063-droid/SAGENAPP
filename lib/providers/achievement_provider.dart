@@ -72,8 +72,10 @@ class AchievementNotifier extends Notifier<AchievementState> {
       );
       ref
           .read(learningProvider.notifier)
-          .addXp(xpReward, reason: 'achievement');
-      ref.read(gemProvider.notifier).awardAchievementGems(xpReward);
+          .addXp(xpReward, reason: 'achievement', achievementId: id);
+      ref
+          .read(gemProvider.notifier)
+          .awardAchievementGems(xpReward, achievementId: id);
       ref
           .read(emotionEventBusProvider)
           .fire(EmotionEventType.achievementUnlocked);

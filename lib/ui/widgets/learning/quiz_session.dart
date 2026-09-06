@@ -23,6 +23,7 @@ class QuizSession extends ConsumerStatefulWidget {
   final String lessonId;
   final String lessonTitle;
   final ValueChanged<QuizResult> onComplete;
+  final String? topicForReview;
 
   const QuizSession({
     super.key,
@@ -31,6 +32,7 @@ class QuizSession extends ConsumerStatefulWidget {
     required this.lessonId,
     required this.lessonTitle,
     required this.onComplete,
+    this.topicForReview,
   });
 
   @override
@@ -38,12 +40,14 @@ class QuizSession extends ConsumerStatefulWidget {
 }
 
 class _QuizSessionState extends ConsumerState<QuizSession>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   int _currentIndex = 0;
   int _correctCount = 0;
   int? _selectedIndex;
   bool _answered = false;
   bool _monocleUsed = false;
+  bool _transitioning = false;
+  bool _finished = false;
   List<int>? _monocleVisibleIndices;
   late final DateTime _startTime;
   late AnimationController _feedbackCtrl;
@@ -57,9 +61,7 @@ class _QuizSessionState extends ConsumerState<QuizSession>
   static const _prefix = 'quiz_progress_';
 
   Challenge get _current => widget.challenges[_currentIndex];
-  int get _effectiveCorrectIndex => _current.isCorrectIndexValid
-      ? _current.correctIndex
-      : 0.clamp(0, _current.options.length - 1);
+  int get _effectiveCorrectIndex => _current.effectiveCorrectIndex;
   bool get _isLast => _currentIndex >= widget.challenges.length - 1;
 
   @override
@@ -99,12 +101,23 @@ class _QuizSessionState extends ConsumerState<QuizSession>
     try {
       final prefs = ref.read(prefsProvider);
       final ids = widget.challenges.map((c) => c.id).toList();
+      // [5] guarda SIEMPRE la id de la PRIMERA pregunta SIN responder (cursor
+      // de reanudación), nunca la de la última respondida. Tanto _selectAnswer
+      // (_answered=true) como _next (cursor ya avanzado) convergen a este mismo
+      // índice, eliminando la ambigüedad que en el pasado hacía saltar una
+      // pregunta al reanudar. Si no queda ninguna por responder (''), al cargar
+      // se descarta el progreso e inicia limpio.
+      final firstUnansweredIndex = _currentIndex + (_answered ? 1 : 0);
+      final firstUnansweredId = firstUnansweredIndex < widget.challenges.length
+          ? widget.challenges[firstUnansweredIndex].id
+          : '';
       await prefs.setStringList(_progressKey, [
         widget.stageId,
-        _currentIndex.toString(),
+        firstUnansweredIndex.toString(),
         _correctCount.toString(),
         ids.join(','),
         DateTime.now().toIso8601String(),
+        firstUnansweredId,
       ]);
     } catch (e) {
       AppLogger().warning('QuizSession._saveProgress failed: $e');
@@ -115,27 +128,52 @@ class _QuizSessionState extends ConsumerState<QuizSession>
     try {
       final prefs = ref.read(prefsProvider);
       final data = prefs.getStringList(_progressKey);
-      if (data == null || data.length < 5) return;
+      if (data == null || data.length < 6) return;
       final savedStageId = data[0];
-      final savedIndex = int.tryParse(data[1]) ?? 0;
       final savedCorrect = int.tryParse(data[2]) ?? 0;
       final savedIds = data[3].split(',');
       final savedTime = DateTime.tryParse(data[4]);
-      if (savedStageId != widget.stageId) return;
+
+      // Los caminos de "no reanudable" limpian la clave para que un intento
+      // antiguo no resucite dentro de la ventana de 30 min con un stage,
+      // orden o marcador que ya no corresponde a este cuestionario.
+      if (savedStageId != widget.stageId) {
+        await _clearProgress();
+        return;
+      }
       if (savedTime != null &&
           DateTime.now().difference(savedTime).inMinutes > 30) {
         await _clearProgress();
         return;
       }
       final currentIds = widget.challenges.map((c) => c.id).toList();
-      if (savedIds.length != currentIds.length) return;
-      for (int i = 0; i < savedIds.length; i++) {
-        if (savedIds[i] != currentIds[i]) return;
+      final savedSet = savedIds.toSet();
+      if (savedIds.length != currentIds.length ||
+          savedSet.length != currentIds.length ||
+          !savedSet.containsAll(currentIds)) {
+        await _clearProgress();
+        return;
       }
-      if (savedIndex > 0 && savedIndex < widget.challenges.length) {
+
+      // data[5] es la id de la PRIMERA pregunta sin responder. El orden puede
+      // variar por intento, así que se localiza por id dentro del orden actual
+      // y se continúa AHÍ MISMO (no después): así ninguna pregunta se salta.
+      // Si la id no existe en el set actual (mezcla nueva), se descarta y se
+      // inicia limpio en vez de reanudar con un cursor inválido.
+      final savedFirstUnansweredId = data[5].trim();
+      if (savedFirstUnansweredId.isEmpty) {
+        await _clearProgress();
+        return;
+      }
+      final resumeAt = currentIds.indexOf(savedFirstUnansweredId);
+      if (resumeAt < 0) {
+        await _clearProgress();
+        return;
+      }
+      if (resumeAt > 0 && resumeAt < widget.challenges.length) {
         if (!mounted) return;
         setState(() {
-          _currentIndex = savedIndex;
+          _currentIndex = resumeAt;
           _correctCount = savedCorrect;
         });
       }
@@ -180,16 +218,32 @@ class _QuizSessionState extends ConsumerState<QuizSession>
     if (!correct) {
       ExperienceService.instance.errorHaptic();
       try {
-        final learning = ref.read(learningProvider);
-        final stage = learning.stages
-            .where((s) => s.id == widget.stageId)
-            .firstOrNull;
-        if (stage == null) return;
-        ref
-            .read(reviewProvider.notifier)
-            .recordMistake(_current.id, stage.title);
+        final topicForReview = widget.topicForReview;
+        if (topicForReview != null) {
+          ref
+              .read(reviewProvider.notifier)
+              .recordMistake(_current.id, topicForReview);
+        } else {
+          final learning = ref.read(learningProvider);
+          final stage = learning.stages
+              .where((s) => s.id == widget.stageId)
+              .firstOrNull;
+          // Si el stage no está resuelto (p. ej. stageId 'review' u otro id no
+          // de curriculum) no se debe descartar el fallo: se registra con un
+          // tema reservado de respaldo en lugar de perder el feedback SM-2.
+          final topic = stage?.title ?? 'lesson';
+          ref.read(reviewProvider.notifier).recordMistake(_current.id, topic);
+        }
       } catch (e) {
         AppLogger().error('QuizSession: failed to record mistake', e);
+      }
+    } else {
+      // Alimenta SM-2 de repaso con los aciertos (H-04/H-10): decrementa
+      // fallos y programa la siguiente repetición.
+      try {
+        ref.read(reviewProvider.notifier).recordCorrect(_current.id);
+      } catch (e) {
+        AppLogger().error('QuizSession: failed to record correct', e);
       }
     }
   }
@@ -222,10 +276,12 @@ class _QuizSessionState extends ConsumerState<QuizSession>
   }
 
   void _next() {
+    if (_transitioning) return;
     if (_isLast) {
       _finish();
       return;
     }
+    _transitioning = true;
     _feedbackCtrl.reverse().then((_) {
       if (!mounted) return;
       setState(() {
@@ -234,6 +290,7 @@ class _QuizSessionState extends ConsumerState<QuizSession>
         _answered = false;
         _monocleUsed = false;
         _monocleVisibleIndices = null;
+        _transitioning = false;
       });
       _saveProgress();
       _optionCtrl.reset();
@@ -244,6 +301,11 @@ class _QuizSessionState extends ConsumerState<QuizSession>
   }
 
   void _finish() {
+    // Guard anti doble-award: un doble tap en "Ver resultados" (o en Next sobre
+    // la última pregunta) disparaba _finish() dos veces y onComplete duplicaba
+    // XP, gemas y repasos en ReviewSessionScreen.
+    if (_finished) return;
+    _finished = true;
     _clearProgress();
     final timeTaken = DateTime.now().difference(_startTime);
     final total = widget.challenges.length;
@@ -273,7 +335,8 @@ class _QuizSessionState extends ConsumerState<QuizSession>
     final l = AppLocalizations.of(context)!;
     final progress = widget.challenges.isEmpty
         ? 1.0
-        : (_currentIndex / widget.challenges.length).clamp(0.0, 1.0);
+        : ((_currentIndex + (_answered ? 1 : 0)) / widget.challenges.length)
+              .clamp(0.0, 1.0);
 
     return Column(
       children: [
@@ -351,8 +414,8 @@ class _QuizSessionState extends ConsumerState<QuizSession>
                     child: Center(
                       child: Container(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 6,
+                          horizontal: AppSpacing.md,
+                          vertical: AppSpacing.xs,
                         ),
                         decoration: BoxDecoration(
                           color: PremiumColors.premiumBlue.withValues(
@@ -368,7 +431,7 @@ class _QuizSessionState extends ConsumerState<QuizSession>
                               size: 16,
                               color: PremiumColors.premiumBlue,
                             ),
-                            const SizedBox(width: 6),
+                            const SizedBox(width: AppSpacing.xs),
                             Text(
                               l.sageMonocleActive,
                               style: AppTextStyle.label.copyWith(

@@ -1,4 +1,4 @@
-﻿{
+{
   "@@locale": "fr",
   "@sageAchievementUnlocked": {
     "placeholders": {
@@ -545,7 +545,9 @@
   "levelUpCelebrationLabel": "Niveau supérieur ! Nouveau niveau : {level}",
   "@levelUpCelebrationLabel": {
     "placeholders": {
-      "level": { "type": "int" }
+      "level": {
+        "type": "int"
+      }
     }
   },
   "homeLearningPath": "Parcours d''apprentissage",
@@ -664,22 +666,22 @@
   "miniGameYourTurn": "Votre tour",
   "minutes": "{min} min",
   "minutesPerDay": "{count} minutes par jour",
-  "missionActiveLearnerDesc": "Complétez 1 leçon de sécurité.",
-  "missionActiveLearnerTitle": "Apprenant actif",
+  "missionActiveLearnerDesc": "Terminez 1 leçon de sécurité.",
+  "missionActiveLearnerTitle": "Apprenant Actif",
   "missionActiveStreakDesc": "Maintenez votre série d''apprentissage aujourd''hui.",
-  "missionActiveStreakTitle": "Série active",
+  "missionActiveStreakTitle": "Série Active",
   "missionChatWithSageDesc": "Parlez à Sage de la sécurité numérique.",
   "missionChatWithSageTitle": "Discutez avec Sage",
   "missionConsistentProtectorDesc": "Complétez 3 leçons aujourd''hui.",
   "missionConsistentProtectorTitle": "Protecteur constant",
   "missionDigitalDetectiveDesc": "Analysez un lien suspect.",
-  "missionDigitalDetectiveTitle": "Détective digital",
-  "missionExpressChallengeDesc": "Complétez un défi rapide de 30 secondes.",
-  "missionExpressChallengeTitle": "Défi express",
-  "missionPerfectLessonDesc": "Complétez une leçon sans erreur.",
-  "missionPerfectLessonTitle": "Leçon parfaite",
+  "missionDigitalDetectiveTitle": "Détective Numérique",
+  "missionExpressChallengeDesc": "Terminez un défi rapide de 30 secondes.",
+  "missionExpressChallengeTitle": "Défi Express",
+  "missionPerfectLessonDesc": "Terminez une leçon sans erreur.",
+  "missionPerfectLessonTitle": "Leçon Parfaite",
   "missionPhishingHunterDesc": "Détectez correctement une tentative de phishing.",
-  "missionPhishingHunterTitle": "Chasseur de phishing",
+  "missionPhishingHunterTitle": "Chasseur de Phishing",
   "missionProgress": "Progrès de la mission: {percent} pour cent",
   "missionThreeQueriesDesc": "Discutez avec Sage 3 fois sur des sujets différents.",
   "missionThreeQueriesTitle": "3 requêtes",
@@ -880,7 +882,7 @@
   "privacyPolicyTitle": "Politique de confidentialité de SAGEN",
   "privacyPolicyLastUpdate": "Dernière mise à jour : Juillet 2026",
   "privacyPolicySection1Title": "1. Informations que nous collectons",
-  "privacyPolicySection1Body": "Nous collectons les informations que vous fournissez directement, comme votre nom, email et âge, ainsi que les données d'utilisation de l'app comme les leçons terminées, les séries et les scores.",
+  "privacyPolicySection1Body": "Nous collectons les informations que vous fournissez directement, comme votre nom, email et âge, ainsi que les données d''utilisation de l''app comme les leçons terminées, les séries et les scores.",
   "privacyPolicySection2Title": "2. Utilisation des informations",
   "privacyPolicySection2Body": "Nous utilisons vos informations pour personnaliser votre expérience d''apprentissage, améliorer nos services et vous envoyer des notifications pertinentes sur vos progrès.",
   "privacyPolicySection3Title": "3. Stockage des données",
@@ -943,7 +945,9 @@
   "xpValue": "{count} XP",
   "@xpValue": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "progressRestored": "Progression restaurée depuis le cloud",
@@ -1331,7 +1335,6 @@
   "storeDonateSubtitle": "À partir de {price}",
   "storeDonationsLabel": "dons",
   "storeGemTipAchievement": "Succès : gemmes selon la difficulté",
-
   "storeGemTipChest": "Ouvrez les coffres : gemmes selon le type de coffre",
   "storeGemTipFirstLesson": "Première leçon du jour : +10 gemmes",
   "storeGemTipLesson": "Complétez des leçons : 5 gemmes par bonne réponse",
@@ -2247,7 +2250,7 @@
       "step": {}
     }
   },
-  "chestRewardShareText": "J'ai obtenu {items} d'un coffre {type} sur SAGEN !",
+  "chestRewardShareText": "J''ai obtenu {items} d''un coffre {type} sur SAGEN !",
   "@chestRewardShareText": {
     "placeholders": {
       "items": {},
@@ -2302,20 +2305,6 @@
   "shopItemThemeDarkFireDesc": "Thème d''effets de feu sombre",
   "shopItemThemeCyberNeonName": "Thème Néon Cyber",
   "shopItemThemeCyberNeonDesc": "Thème néon futuriste",
-  "missionPerfectLessonTitle": "Leçon Parfaite",
-  "missionPerfectLessonDesc": "Terminez une leçon sans erreur.",
-  "missionActiveLearnerTitle": "Apprenant Actif",
-  "missionActiveLearnerDesc": "Terminez 1 leçon de sécurité.",
-  "missionDigitalDetectiveTitle": "Détective Numérique",
-  "missionDigitalDetectiveDesc": "Analysez un lien suspect.",
-  "missionChatWithSageTitle": "Discutez avec Sage",
-  "missionChatWithSageDesc": "Parlez à Sage de la sécurité numérique.",
-  "missionActiveStreakTitle": "Série Active",
-  "missionActiveStreakDesc": "Maintenez votre série d''apprentissage aujourd''hui.",
-  "missionExpressChallengeTitle": "Défi Express",
-  "missionExpressChallengeDesc": "Terminez un défi rapide de 30 secondes.",
-  "missionPhishingHunterTitle": "Chasseur de Phishing",
-  "missionPhishingHunterDesc": "Détectez correctement une tentative de phishing.",
   "mission3QueriesTitle": "3 Requêtes",
   "mission3QueriesDesc": "Parlez à Sage 3 fois sur des sujets différents.",
   "missionConstantProtectorTitle": "Protecteur Constant",
@@ -2342,5 +2331,65 @@
   "gemReasonShop": "Achat en Boutique",
   "gemCapWarning": "Solde de gemmes proche de la limite de 100 000!",
   "close": "Fermer",
-  "stop": "Arrêter"
+  "stop": "Arrêter",
+  "chatSuggestionExplainConcept": "Explique-moi un concept",
+  "chatSuggestionHelpLesson": "Aide-moi avec une leçon",
+  "chatSuggestionQuizMe": "Teste-moi en vocabulaire",
+  "copiedToClipboard": "Copié dans le presse-papiers",
+  "defaultStudentName": "Étudiant",
+  "gemRewardEarned": "+{count} gemmes obtenues",
+  "messageFromSage": "Sage",
+  "messageFromYou": "Toi",
+  "rankingFirstPlace": "{name} en première place avec {xp} XP",
+  "rankingPodiumLabel": "Podium du classement",
+  "rankingSecondPlace": "{name} en deuxième place avec {xp} XP",
+  "rankingThirdPlace": "{name} en troisième place avec {xp} XP",
+  "resumeContinue": "Continuer",
+  "resumeLessonBody": "Vous avez une leçon inachevée de moins de 30 minutes. Reprendre où vous vous êtes arrêté ou recommencer ?",
+  "retryStart": "Recommencer",
+  "reviewCardLabel": "Révision : {count} questions en attente",
+  "reviewCompleted": "Révision terminée !",
+  "reviewDuePrompt": "Vous avez {count} questions prêtes à réviser",
+  "reviewGemsLabel": "Gemmes de révision",
+  "reviewNoneDue": "Aucune révision en attente. Bravo !",
+  "reviewScreenTitle": "Révision intelligente",
+  "reviewXpLabel": "XP de révision",
+  "sageEmotionAggressive": "Agressif",
+  "sageEmotionAngry": "En colère",
+  "sageEmotionAnnoyed": "Agacé",
+  "sageEmotionCalm": "Calme",
+  "sageEmotionCelebrating": "Célébrant",
+  "sageEmotionConfused": "Confus",
+  "sageEmotionCrying": "Pleure",
+  "sageEmotionCurious": "Curieux",
+  "sageEmotionDepressed": "Déprimé",
+  "sageEmotionDistressed": "En détresse",
+  "sageEmotionEmbarrassed": "Gêné",
+  "sageEmotionExcited": "Excité",
+  "sageEmotionExcitedWave": "Excité en saluant",
+  "sageEmotionFurious": "Furieux",
+  "sageEmotionHappy": "Heureux",
+  "sageEmotionHappyWings": "Heureux avec des ailes",
+  "sageEmotionLaughing": "Rigole",
+  "sageEmotionLol": "MDR",
+  "sageEmotionNeutral": "Neutre",
+  "sageEmotionPanic": "En panique",
+  "sageEmotionPointLeft": "Pointe vers la gauche",
+  "sageEmotionPointRight": "Pointe vers la droite",
+  "sageEmotionProud": "Fier",
+  "sageEmotionReading": "Lit",
+  "sageEmotionSad": "Triste",
+  "sageEmotionSadSoft": "Un peu triste",
+  "sageEmotionScared": "Effrayé",
+  "sageEmotionSerious": "Sérieux",
+  "sageEmotionShocked": "Choqué",
+  "sageEmotionShy": "Timide",
+  "sageEmotionSinging": "Chante",
+  "sageEmotionSleepy": "Somnolent",
+  "sageEmotionSurprisedWings": "Surpris avec des ailes",
+  "sageEmotionThinking": "Pense",
+  "sageEmotionUnmotivated": "Démotivé",
+  "sageEmotionWhistling": "Siffle",
+  "sageEmotionWink": "Fait un clin d''œil",
+  "sageEmotionWorried": "Inquiet"
 }

@@ -7,6 +7,7 @@ enum AiErrorType {
   apiKey,
   auth,
   rateLimit,
+  dailyLimit,
   timeout,
   server,
   network,

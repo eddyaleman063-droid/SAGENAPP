@@ -77,7 +77,7 @@ class FlexCardWidgetState extends ConsumerState<FlexCardWidget> {
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32),
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxxl),
           child: Column(
             children: [
               const Spacer(flex: 2),
@@ -100,6 +100,8 @@ class FlexCardWidgetState extends ConsumerState<FlexCardWidget> {
               const SizedBox(height: AppSpacing.lg),
               Text(
                 widget.displayName,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: AppTextStyle.headlineLarge.copyWith(
                   fontWeight: FontWeight.bold,
                   color: Colors.white,

@@ -68,6 +68,23 @@ void main() {
       expect(notifier.weakTopics.length, 1);
       expect(notifier.weakTopics.first.isWeak, isFalse);
     });
+    test('reserved topics count totals but do not become weak topics', () {
+      final container = ProviderContainer(
+        overrides: [prefsProvider.overrideWithValue(prefs)],
+      );
+      addTearDown(() => container.dispose());
+      final notifier = container.read(learningMemoryProvider.notifier);
+
+      for (var i = 0; i < 3; i++) {
+        notifier.recordLessonResult(passed: false, topic: 'review');
+      }
+      expect(notifier.totalLessonsFailed, 3);
+      expect(notifier.weakTopics, isEmpty);
+
+      notifier.recordLessonResult(passed: true, topic: 'lesson');
+      expect(notifier.totalLessonsPassed, 1);
+      expect(notifier.weakTopics, isEmpty);
+    });
     test('recommends challenge types for weak phishing topic', () {
       final container = ProviderContainer(
         overrides: [prefsProvider.overrideWithValue(prefs)],
@@ -128,6 +145,36 @@ void main() {
       notifier.recordLessonResult(passed: true, topic: 'a');
       notifier.recordLessonResult(passed: false, topic: 'b');
       expect(notifier.overallPassRate, 0.5);
+    });
+    test('calendar week: same ISO week is the same calendar week', () {
+      // Semana ISO del lunes 2026-01-05 al domingo 2026-01-11.
+      expect(
+        LearningMemoryNotifier.isSameCalendarWeek(
+          DateTime(2026, 1, 5), // lunes
+          DateTime(2026, 1, 11), // domingo
+        ),
+        isTrue,
+      );
+    });
+    test('calendar week: crossing a week boundary resets (not sliding 7d)', () {
+      // Sábado 2026-01-03 (semana ISO 2025-W53) vs lunes 2026-01-05
+      // (semana ISO 2026-W01): semanas distintas pese a distar <7 días.
+      expect(
+        LearningMemoryNotifier.isSameCalendarWeek(
+          DateTime(2026, 1, 3),
+          DateTime(2026, 1, 5),
+        ),
+        isFalse,
+      );
+    });
+    test('calendar week: far apart dates are different weeks', () {
+      expect(
+        LearningMemoryNotifier.isSameCalendarWeek(
+          DateTime(2026, 1, 1),
+          DateTime(2026, 1, 22),
+        ),
+        isFalse,
+      );
     });
   });
 }

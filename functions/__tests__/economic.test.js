@@ -11,8 +11,9 @@ const admin = require('firebase-admin');
 const economic = require('../economic');
 
 const AUTH_UID = 'test-user-123';
-const makeContext = (uid = AUTH_UID) => ({ auth: { uid } });
+const makeContext = (uid = AUTH_UID) => ({ auth: { uid, token: { email_verified: true } } });
 const NO_AUTH = {};
+const makeUnverifiedContext = (uid = AUTH_UID) => ({ auth: { uid, token: { email_verified: false } } });
 
 beforeEach(() => {
   admin._resetFirestore();
@@ -73,6 +74,13 @@ describe('processDonation', () => {
     await expect(
       economic.processDonation({ amount: 10, method: 'wallet', idempotencyKey: 'k' }, NO_AUTH)
     ).rejects.toThrow();
+  });
+
+  test('rejects unverified user (requiere email_verified)', async () => {
+    setUserDoc(AUTH_UID, {});
+    await expect(
+      economic.processDonation({ amount: 10, method: 'wallet', idempotencyKey: 'k' }, makeUnverifiedContext())
+    ).rejects.toThrow(expect.objectContaining({ code: 'failed-precondition' }));
   });
 
   test('rejects amount <= 0', async () => {
@@ -179,6 +187,123 @@ describe('addXp', () => {
     expect(result.totalXp).toBe(5);
   });
 
+  test('NUEVO-fix: a dot-path reason cannot inject nested fields (field-path injection)', async () => {
+    const uid = 'test-inject-reason';
+    setUserDoc(uid, { learning_total_xp: 0, learning_level: 1 });
+    const result = await economic.addXp(
+      { reason: 'a.b.c', idempotencyKey: 'addXp-inject-1' },
+      makeContext(uid)
+    );
+    expect(result.success).toBe(true);
+    expect(result.totalXp).toBe(5);
+    const daily = admin._getDoc(
+      `daily_xp_sources/${uid}_${new Date().toISOString().split('T')[0]}`
+    );
+    // El reason se whitelistea a 'unknown' y se escribe como campo plano; un
+    // reason con puntos no puede crear campos anidados en daily_xp_sources.
+    expect(daily.unknown).toBe(5);
+    expect(daily).not.toHaveProperty('a');
+  });
+
+  test('NUEVO-fix: awards the real per-achievement XP when achievementId is provided', async () => {
+    setUserDoc(AUTH_UID, { learning_total_xp: 0, learning_level: 1 });
+    const result = await economic.addXp(
+      {
+        reason: 'achievement',
+        achievementId: 'all_stages',
+        idempotencyKey: 'addXp-ach-allstages',
+      },
+      makeContext()
+    );
+    expect(result.success).toBe(true);
+    expect(result.totalXp).toBe(200);
+  });
+
+  test('NUEVO-fix: awards mid-tier achievement XP (five_lessons = 25)', async () => {
+    setUserDoc(AUTH_UID, { learning_total_xp: 0, learning_level: 1 });
+    const result = await economic.addXp(
+      {
+        reason: 'achievement',
+        achievementId: 'five_lessons',
+        idempotencyKey: 'addXp-ach-five',
+      },
+      makeContext()
+    );
+    expect(result.totalXp).toBe(25);
+  });
+
+  test('falls back to flat 10 XP for achievement with unknown/invalid achievementId', async () => {
+    setUserDoc(AUTH_UID, { learning_total_xp: 0, learning_level: 1 });
+    const result = await economic.addXp(
+      {
+        reason: 'achievement',
+        achievementId: '../not_valid',
+        idempotencyKey: 'addXp-ach-invalid',
+      },
+      makeContext()
+    );
+    expect(result.success).toBe(true);
+    expect(result.totalXp).toBe(10);
+  });
+
+  test('falls back to flat 10 XP for achievement without achievementId', async () => {
+    setUserDoc(AUTH_UID, { learning_total_xp: 0, learning_level: 1 });
+    const result = await economic.addXp(
+      { reason: 'achievement', idempotencyKey: 'addXp-ach-empty' },
+      makeContext()
+    );
+    expect(result.success).toBe(true);
+    expect(result.totalXp).toBe(10);
+  });
+
+  test('NUEVO-fix: pays achievement XP only once (claim-once doc)', async () => {
+    setUserDoc(AUTH_UID, { learning_total_xp: 0, learning_level: 1 });
+    const first = await economic.addXp(
+      {
+        reason: 'achievement',
+        achievementId: 'streak_7',
+        idempotencyKey: 'addXp-ach-claim1',
+      },
+      makeContext()
+    );
+    expect(first.success).toBe(true);
+    expect(first.totalXp).toBe(50);
+    const claim = admin._getDoc(`users/${AUTH_UID}/achievements/streak_7`);
+    expect(claim.xpClaimed).toBe(true);
+
+    // Segunda reclamación, idempotencyKey DISTINTA (ofertón/timer del cliente):
+    // no debe otorgar XP extra. Shape igual al duplicate (no-op en el cliente).
+    const second = await economic.addXp(
+      {
+        reason: 'achievement',
+        achievementId: 'streak_7',
+        idempotencyKey: 'addXp-ach-claim2',
+      },
+      makeContext()
+    );
+    expect(second.success).toBe(true);
+    expect(second.alreadyClaimed).toBe(true);
+    expect(second.totalXp).toBe(50);
+    const user = admin._getDoc(`users/${AUTH_UID}`);
+    expect(user.learning_total_xp).toBe(50);
+  });
+
+  test('NUEVO-fix: rejects a forged mislabeled achievementId (no claim doc)', async () => {
+    setUserDoc(AUTH_UID, { learning_total_xp: 0, learning_level: 1 });
+    const result = await economic.addXp(
+      {
+        reason: 'achievement',
+        achievementId: 'injected-0', // no está en ACHIEVEMENT_REWARDS
+        idempotencyKey: 'addXp-ach-forged',
+      },
+      makeContext()
+    );
+    expect(result.totalXp).toBe(10); // flat fallback, no acredita el real
+    expect(
+      admin._getDoc(`users/${AUTH_UID}/achievements/injected-0`)
+    ).toBeNull();
+  });
+
   test('throws resource-exhausted when daily XP cap reached', async () => {
     setUserDoc(AUTH_UID, { learning_total_xp: 490, learning_level: 1 });
     const today = new Date().toISOString().split('T')[0];
@@ -220,6 +345,48 @@ describe('incrementStreak', () => {
     const result = await economic.incrementStreak({}, makeContext());
     expect(result.alreadyCheckedIn).toBe(true);
     expect(result.currentStreak).toBe(5);
+  });
+
+  test('NUEVO-fix H1: sync mode (checkIn:false) never advances the streak', async () => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    setUserDoc(AUTH_UID, {
+      currentStreak: 5,
+      longestStreak: 10,
+      streak_last_activity: { toDate: () => yesterday },
+    });
+    const result = await economic.incrementStreak(
+      { checkIn: false },
+      makeContext()
+    );
+    expect(result.success).toBe(true);
+    expect(result.synced).toBe(true);
+    expect(result.currentStreak).toBe(5);
+    expect(result.longestStreak).toBe(10);
+    expect(result.alreadyCheckedIn).toBe(false);
+    expect(admin._getDoc(`users/${AUTH_UID}`).currentStreak).toBe(5);
+  });
+
+  test('NUEVO-fix H1: sync mode never burns a shield nor breaks a gapped streak', async () => {
+    const threeDaysAgo = new Date();
+    threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+    setUserDoc(AUTH_UID, {
+      currentStreak: 10,
+      longestStreak: 15,
+      streak_last_activity: { toDate: () => threeDaysAgo },
+      streak_shields: 2,
+    });
+    const result = await economic.incrementStreak(
+      { checkIn: false },
+      makeContext()
+    );
+    expect(result.currentStreak).toBe(10);
+    expect(result.freezeConsumed).toBeUndefined();
+    expect(result.streakBroken).toBeUndefined();
+    expect(result.shieldsRemaining).toBe(2);
+    const doc = admin._getDoc(`users/${AUTH_UID}`);
+    expect(doc.currentStreak).toBe(10);
+    expect(doc.streak_shields).toBe(2);
   });
 
   test('resets streak if gap > 1 day', async () => {
@@ -305,6 +472,189 @@ describe('incrementStreak', () => {
   test('rejects unauthenticated user', async () => {
     await expect(
       economic.incrementStreak({}, NO_AUTH)
+    ).rejects.toThrow();
+  });
+
+  test('NUEVO-fix: honors the freeze from server shields even without the client freezeUsed flag', async () => {
+    const threeDaysAgo = new Date();
+    threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+    setUserDoc(AUTH_UID, {
+      currentStreak: 10,
+      longestStreak: 15,
+      streak_last_activity: { toDate: () => threeDaysAgo },
+      streak_shields: 1,
+    });
+    // El servidor decide por los escudos que posee, no por el flag del cliente.
+    const result = await economic.incrementStreak({}, makeContext());
+    expect(result.currentStreak).toBe(11);
+    expect(result.freezeConsumed).toBe(true);
+    expect(result.streakBroken).toBeUndefined();
+    expect(result.shieldsRemaining).toBe(0);
+    expect(admin._getDoc(`users/${AUTH_UID}`).streak_shields).toBe(0);
+  });
+
+  test('returns authoritative shieldsRemaining on a normal consecutive check-in', async () => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    setUserDoc(AUTH_UID, {
+      currentStreak: 4,
+      longestStreak: 10,
+      streak_last_activity: { toDate: () => yesterday },
+      streak_shields: 2,
+    });
+    const result = await economic.incrementStreak({}, makeContext());
+    expect(result.currentStreak).toBe(5);
+    expect(result.alreadyCheckedIn).toBe(false);
+    expect(result.shieldsRemaining).toBe(2);
+    expect(admin._getDoc(`users/${AUTH_UID}`).streak_shields).toBe(2);
+  });
+
+  test('NUEVO-fix H5: titanium shield keeps the streak alive and is consumed server-side', async () => {
+    const threeDaysAgo = new Date();
+    threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+    setUserDoc(AUTH_UID, {
+      currentStreak: 10,
+      longestStreak: 15,
+      streak_last_activity: { toDate: () => threeDaysAgo },
+    });
+    admin._setDoc(`users/${AUTH_UID}/inventory/state`, {
+      specialItems: { titaniumShield: 1 },
+      cosmetics: [],
+    });
+    const result = await economic.incrementStreak(
+      { itemUsed: 'titaniumShield' },
+      makeContext()
+    );
+    expect(result.currentStreak).toBe(11);
+    expect(result.itemConsumed).toBe(true);
+    expect(result.itemUsed).toBe('titaniumShield');
+    expect(result.streakBroken).toBeUndefined();
+    expect(result.freezeConsumed).toBeUndefined();
+    expect(
+      admin._getDoc(`users/${AUTH_UID}/inventory/state`).specialItems.titaniumShield
+    ).toBe(0);
+    const user = admin._getDoc(`users/${AUTH_UID}`);
+    expect(user.currentStreak).toBe(11);
+    expect(user.streak_shields || 0).toBe(0);
+  });
+
+  test('NUEVO-fix H5: phoenix feather revives the streak (keeps previous value)', async () => {
+    const threeDaysAgo = new Date();
+    threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+    setUserDoc(AUTH_UID, {
+      currentStreak: 10,
+      longestStreak: 15,
+      streak_last_activity: { toDate: () => threeDaysAgo },
+    });
+    admin._setDoc(`users/${AUTH_UID}/inventory/state`, {
+      specialItems: { phoenixFeather: 1 },
+      cosmetics: [],
+    });
+    const result = await economic.incrementStreak(
+      { itemUsed: 'phoenixFeather' },
+      makeContext()
+    );
+    expect(result.currentStreak).toBe(10);
+    expect(result.revived).toBe(true);
+    expect(result.itemConsumed).toBe(true);
+    expect(
+      admin._getDoc(`users/${AUTH_UID}/inventory/state`).specialItems.phoenixFeather
+    ).toBe(0);
+  });
+
+  test('NUEVO-fix H5: denies the item and breaks when inventory is empty', async () => {
+    const threeDaysAgo = new Date();
+    threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+    setUserDoc(AUTH_UID, {
+      currentStreak: 10,
+      longestStreak: 15,
+      streak_last_activity: { toDate: () => threeDaysAgo },
+    });
+    const result = await economic.incrementStreak(
+      { itemUsed: 'titaniumShield' },
+      makeContext()
+    );
+    expect(result.currentStreak).toBe(1);
+    expect(result.streakBroken).toBe(true);
+    expect(result.itemDenied).toBe(true);
+    expect(result.itemConsumed).toBeUndefined();
+  });
+
+  test('NUEVO-fix H5: real shields protect first and the item is NOT consumed', async () => {
+    const threeDaysAgo = new Date();
+    threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+    setUserDoc(AUTH_UID, {
+      currentStreak: 10,
+      longestStreak: 15,
+      streak_last_activity: { toDate: () => threeDaysAgo },
+      streak_shields: 1,
+    });
+    admin._setDoc(`users/${AUTH_UID}/inventory/state`, {
+      specialItems: { titaniumShield: 1 },
+      cosmetics: [],
+    });
+    const result = await economic.incrementStreak(
+      { itemUsed: 'titaniumShield' },
+      makeContext()
+    );
+    expect(result.currentStreak).toBe(11);
+    expect(result.freezeConsumed).toBe(true);
+    expect(result.itemConsumed).toBeUndefined();
+    expect(
+      admin._getDoc(`users/${AUTH_UID}/inventory/state`).specialItems.titaniumShield
+    ).toBe(1);
+    expect(admin._getDoc(`users/${AUTH_UID}`).streak_shields).toBe(0);
+  });
+});
+
+describe('claimFreeStreakShield', () => {
+  const today = () => new Date().toISOString().split('T')[0];
+
+  test('claims a free streak shield server-side', async () => {
+    setUserDoc(AUTH_UID, { streak_shields: 0 });
+    const result = await economic.claimFreeStreakShield({}, makeContext());
+    expect(result.claimed).toBe(true);
+    expect(result.shields).toBe(1);
+    const doc = admin._getDoc(`users/${AUTH_UID}`);
+    expect(doc.streak_shields).toBe(1);
+    expect(doc.last_free_shield_claim).toBe(today());
+  });
+
+  test('increments shields from an existing balance', async () => {
+    setUserDoc(AUTH_UID, { streak_shields: 1 });
+    const result = await economic.claimFreeStreakShield({}, makeContext());
+    expect(result.claimed).toBe(true);
+    expect(result.shields).toBe(2);
+    expect(admin._getDoc(`users/${AUTH_UID}`).streak_shields).toBe(2);
+  });
+
+  test('rejects a second claim on the same day (anti-farm)', async () => {
+    setUserDoc(AUTH_UID, { streak_shields: 1, last_free_shield_claim: today() });
+    const result = await economic.claimFreeStreakShield({}, makeContext());
+    expect(result.claimed).toBe(false);
+    expect(result.alreadyClaimedToday).toBe(true);
+    expect(result.shields).toBe(1);
+    expect(admin._getDoc(`users/${AUTH_UID}`).streak_shields).toBe(1);
+  });
+
+  test('rejects when the shield cap is reached', async () => {
+    setUserDoc(AUTH_UID, { streak_shields: 3 });
+    const result = await economic.claimFreeStreakShield({}, makeContext());
+    expect(result.claimed).toBe(false);
+    expect(result.atCap).toBe(true);
+    expect(result.shields).toBe(3);
+    expect(admin._getDoc(`users/${AUTH_UID}`).streak_shields).toBe(3);
+  });
+
+  test('rejects unauthenticated user', async () => {
+    await expect(
+      economic.claimFreeStreakShield({}, NO_AUTH)
+    ).rejects.toThrow();
+  });
+
+  test('rejects missing user document', async () => {
+    await expect(
+      economic.claimFreeStreakShield({}, makeContext())
     ).rejects.toThrow();
   });
 });

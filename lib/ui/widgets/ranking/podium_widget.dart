@@ -18,51 +18,82 @@ class PodiumWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     if (top3.isEmpty) return const SizedBox.shrink();
 
+    final l = AppLocalizations.of(context)!;
     final first = top3.isNotEmpty ? top3[0] : null;
     final second = top3.length > 1 ? top3[1] : null;
     final third = top3.length > 2 ? top3[2] : null;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
-      child: Column(
-        children: [
-          SizedBox(
-            height: 200,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                if (second != null)
-                  Expanded(
-                    child: _PodiumAvatar(
-                      entry: second,
-                      rank: 2,
-                      color: podiumSilver,
-                      height: 140,
+    String fmtXp(int xp) {
+      if (xp >= 1000) return '${(xp / 1000).toStringAsFixed(1)}k';
+      return xp.toString();
+    }
+
+    return Semantics(
+      container: true,
+      label: l.rankingPodiumLabel,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 200,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  if (second != null)
+                    Expanded(
+                      child: Semantics(
+                        button: true,
+                        label: l.rankingSecondPlace(
+                          second.displayName,
+                          fmtXp(second.totalXp),
+                        ),
+                        child: _PodiumAvatar(
+                          entry: second,
+                          rank: 2,
+                          color: podiumSilver,
+                          height: 140,
+                        ),
+                      ),
                     ),
-                  ),
-                if (first != null)
-                  Expanded(
-                    child: _PodiumAvatar(
-                      entry: first,
-                      rank: 1,
-                      color: podiumGold,
-                      height: 180,
-                      crown: true,
+                  if (first != null)
+                    Expanded(
+                      child: Semantics(
+                        button: true,
+                        label: l.rankingFirstPlace(
+                          first.displayName,
+                          fmtXp(first.totalXp),
+                        ),
+                        child: _PodiumAvatar(
+                          entry: first,
+                          rank: 1,
+                          color: podiumGold,
+                          height: 180,
+                          crown: true,
+                        ),
+                      ),
                     ),
-                  ),
-                if (third != null)
-                  Expanded(
-                    child: _PodiumAvatar(
-                      entry: third,
-                      rank: 3,
-                      color: podiumBronze,
-                      height: 110,
+                  if (third != null)
+                    Expanded(
+                      child: Semantics(
+                        button: true,
+                        label: l.rankingThirdPlace(
+                          third.displayName,
+                          fmtXp(third.totalXp),
+                        ),
+                        child: _PodiumAvatar(
+                          entry: third,
+                          rank: 3,
+                          color: podiumBronze,
+                          height: 110,
+                        ),
+                      ),
                     ),
-                  ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -149,7 +180,7 @@ class _PodiumAvatar extends StatelessWidget {
           height: 4,
           decoration: BoxDecoration(
             color: color,
-            borderRadius: BorderRadius.circular(2),
+            borderRadius: BorderRadius.circular(AppRadius.xxs),
           ),
         ),
         const SizedBox(height: AppSpacing.xxs),

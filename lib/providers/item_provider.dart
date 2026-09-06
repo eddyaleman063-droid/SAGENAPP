@@ -65,16 +65,18 @@ class ItemNotifier extends Notifier<ItemState> {
   /// (NUEVO-08). Consumables and cosmetics granted server-side (chest drops
   /// and gem-shop purchases) are reflected here; the local value is only a
   /// cache. Consumable uses are reported back via the server callable.
+  ///
+  /// The server is the source of truth: the local cache is overwritten with
+  /// the authoritative value for every item type (a type absent from the
+  /// server payload is treated as 0), so consumed or revoked items are also
+  /// reflected locally instead of leaving phantom stock behind.
   Future<void> syncFromServer() async {
     final inventory = ref.read(inventoryServiceProvider);
     final quantities = await inventory.fetchQuantities();
     if (quantities == null) return;
     for (final type in SpecialItemType.values) {
       final serverQty = quantities[type] ?? 0;
-      final localQty = _repo.getQuantity(type);
-      if (serverQty > localQty || (type.isCosmetic && serverQty > 0)) {
-        _repo.setQuantity(type, serverQty);
-      }
+      _repo.setQuantity(type, serverQty);
     }
     _save();
   }

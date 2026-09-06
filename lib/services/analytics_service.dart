@@ -270,6 +270,8 @@ class AnalyticsService {
         return 'login';
       case AnalyticEvent.chestOpened:
         return 'chest_opened';
+      case AnalyticEvent.featureUsed:
+        return 'feature_used';
       case AnalyticEvent.appOpen:
         return 'app_open';
       case AnalyticEvent.appClose:

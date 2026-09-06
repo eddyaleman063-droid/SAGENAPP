@@ -381,7 +381,7 @@ class _MotivationScreenState extends State<MotivationScreen> {
                   child: ValueListenableBuilder<bool>(
                     valueListenable: _isPressed,
                     builder: (context, pressed, _) => AnimatedContainer(
-                      duration: const Duration(milliseconds: 80),
+                      duration: AppMotion.fast,
                       transform: pressed
                           ? Matrix4.translationValues(0, 4, 0)
                           : Matrix4.identity(),

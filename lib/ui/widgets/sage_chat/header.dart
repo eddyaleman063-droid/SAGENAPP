@@ -64,70 +64,76 @@ class SageChatHeader extends ConsumerWidget {
             ],
           ),
           const Spacer(),
-          if (hasMessages && !isBusy)
-            Semantics(
-              button: true,
-              label: l.chatClearAction,
-              child: GestureDetector(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (ctx) => AlertDialog(
-                      title: Text(l.chatClearTitle),
-                      content: Text(l.chatClearMessage),
-                      actions: [
-                        Semantics(
-                          button: true,
-                          label: l.chatCancel,
-                          child: TextButton(
-                            onPressed: () => context.pop(),
-                            child: Text(l.chatCancel),
+          AnimatedOpacity(
+            opacity: (hasMessages && !isBusy) ? 1.0 : 0.0,
+            duration: const Duration(milliseconds: 200),
+            child: IgnorePointer(
+              ignoring: !(hasMessages && !isBusy),
+              child: Semantics(
+                button: true,
+                label: l.chatClearAction,
+                child: GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (ctx) => AlertDialog(
+                        title: Text(l.chatClearTitle),
+                        content: Text(l.chatClearMessage),
+                        actions: [
+                          Semantics(
+                            button: true,
+                            label: l.chatCancel,
+                            child: TextButton(
+                              onPressed: () => context.pop(),
+                              child: Text(l.chatCancel),
+                            ),
                           ),
+                          Semantics(
+                            button: true,
+                            label: l.chatClearAction,
+                            child: TextButton(
+                              onPressed: () {
+                                context.pop();
+                                onClear?.call();
+                              },
+                              child: Text(l.chatClearAction),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.md,
+                      vertical: AppSpacing.md,
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(AppRadius.pill),
+                      color: Colors.white.withValues(alpha: 0.15),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.delete_outline_rounded,
+                          size: 14,
+                          color: Colors.white,
                         ),
-                        Semantics(
-                          button: true,
-                          label: l.chatClearAction,
-                          child: TextButton(
-                            onPressed: () {
-                              context.pop();
-                              onClear?.call();
-                            },
-                            child: Text(l.chatClearAction),
+                        const SizedBox(width: AppSpacing.xxs),
+                        Text(
+                          l.chatClearAction,
+                          style: AppTextStyle.caption.copyWith(
+                            color: Colors.white,
                           ),
                         ),
                       ],
                     ),
-                  );
-                },
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.md,
-                    vertical: AppSpacing.md,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(AppRadius.pill),
-                    color: Colors.white.withValues(alpha: 0.15),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Icon(
-                        Icons.delete_outline_rounded,
-                        size: 14,
-                        color: Colors.white,
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        l.chatClearAction,
-                        style: AppTextStyle.caption.copyWith(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
                   ),
                 ),
               ),
             ),
+          ),
         ],
       ),
     );

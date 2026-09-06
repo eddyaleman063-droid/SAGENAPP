@@ -255,9 +255,9 @@ class AuthService implements IAuthService {
   }
 
   @override
-  Future<String?> getIdToken() async {
+  Future<String?> getIdToken({bool forceRefresh = false}) async {
     try {
-      return await _client.getIdToken();
+      return await _client.getIdToken(forceRefresh: forceRefresh);
     } catch (e) {
       _logger.error('AuthService: getIdToken failed', e);
       return null;

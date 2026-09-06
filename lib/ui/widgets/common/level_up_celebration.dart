@@ -39,12 +39,9 @@ class _LevelUpCelebrationState extends State<LevelUpCelebration>
     );
     _ringCtrl = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1200),
+      duration: AppMotion.celebration,
     );
-    _textCtrl = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 500),
-    );
+    _textCtrl = AnimationController(vsync: this, duration: AppMotion.medium);
     _particleCtrl = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 2800),
@@ -204,7 +201,8 @@ class _LevelUpCelebrationState extends State<LevelUpCelebration>
         final t = _particleCtrl.value;
         final angle = (index / 24) * 2 * pi + t * pi * 0.3;
         final radius = 80.0 + t * 120.0 + rng.nextDouble() * 40;
-        final opacity = max(0.0, 1.0 - t * 1.2);
+        final ttl = 0.5 + rng.nextDouble() * 0.3;
+        final opacity = max(0.0, 1.0 - (t / ttl));
         return Positioned(
           left: MediaQuery.sizeOf(context).width / 2 + cos(angle) * radius - 3,
           top: MediaQuery.sizeOf(context).height / 2 + sin(angle) * radius - 3,

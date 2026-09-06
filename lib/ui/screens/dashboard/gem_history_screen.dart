@@ -95,23 +95,27 @@ class GemHistoryScreen extends ConsumerWidget {
           if (transactions.isEmpty)
             SliverFillRemaining(
               child: Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.diamond_rounded,
-                      size: 48,
-                      color: context.textTertiary,
-                    ),
-                    const SizedBox(height: AppSpacing.md),
-                    Text(
-                      l.gemHistoryEmpty,
-                      style: AppTextStyle.bodyLg.copyWith(
-                        color: context.textSecondary,
-                      ),
-                    ),
-                  ],
-                ),
+                child:
+                    Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.diamond_rounded,
+                              size: 48,
+                              color: context.textTertiary,
+                            ),
+                            const SizedBox(height: AppSpacing.md),
+                            Text(
+                              l.gemHistoryEmpty,
+                              style: AppTextStyle.bodyLg.copyWith(
+                                color: context.textSecondary,
+                              ),
+                            ),
+                          ],
+                        )
+                        .animate()
+                        .fadeIn(duration: 400.ms)
+                        .scale(begin: const Offset(0.9, 0.9)),
               ),
             )
           else
@@ -233,7 +237,7 @@ class _TransactionTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: AppSpacing.xxl,
-        vertical: 4,
+        vertical: AppSpacing.xxs,
       ),
       child: Container(
         padding: const EdgeInsets.symmetric(

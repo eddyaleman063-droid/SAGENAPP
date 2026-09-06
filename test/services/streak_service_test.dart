@@ -5,6 +5,15 @@ import 'package:sagen/services/streak_service.dart';
 
 class MockStreakRepository extends Mock implements StreakRepository {}
 
+/// Día calendario UTC de hoy como medianoche UTC (la misma base que el
+/// servicio usa tras el fix NUEVO: racha alineada al día UTC del servidor).
+DateTime _utcToday() {
+  final now = DateTime.now().toUtc();
+  return DateTime.utc(now.year, now.month, now.day);
+}
+
+DateTime _utcDaysAgo(int days) => _utcToday().subtract(Duration(days: days));
+
 void main() {
   group('StreakService', () {
     late MockStreakRepository repo;
@@ -35,7 +44,7 @@ void main() {
       });
 
       test('loads saved streak values', () {
-        final yesterday = DateTime.now().subtract(const Duration(days: 1));
+        final yesterday = _utcDaysAgo(1);
         when(() => repo.currentStreak).thenReturn(5);
         when(() => repo.longestStreak).thenReturn(10);
         when(() => repo.streakFreezes).thenReturn(2);
@@ -53,7 +62,7 @@ void main() {
       });
 
       test('does not reset streak on load; flags at-risk instead', () {
-        final threeDaysAgo = DateTime.now().subtract(const Duration(days: 3));
+        final threeDaysAgo = _utcDaysAgo(3);
         when(() => repo.currentStreak).thenReturn(5);
         when(() => repo.longestStreak).thenReturn(10);
         when(() => repo.streakFreezes).thenReturn(0);
@@ -70,7 +79,7 @@ void main() {
       });
 
       test('load with a gap does not persist the reset (freeze-friendly)', () {
-        final threeDaysAgo = DateTime.now().subtract(const Duration(days: 3));
+        final threeDaysAgo = _utcDaysAgo(3);
         when(() => repo.currentStreak).thenReturn(5);
         when(() => repo.longestStreak).thenReturn(10);
         when(() => repo.streakFreezes).thenReturn(1);
@@ -91,7 +100,7 @@ void main() {
       });
 
       test('uses freeze for 2-day gap via checkIn', () {
-        final twoDaysAgo = DateTime.now().subtract(const Duration(days: 2));
+        final twoDaysAgo = _utcDaysAgo(2);
         when(() => repo.currentStreak).thenReturn(5);
         when(() => repo.longestStreak).thenReturn(10);
         when(() => repo.streakFreezes).thenReturn(1);
@@ -104,6 +113,28 @@ void main() {
         expect(status.currentStreak, 6);
         expect(status.streakFreezes, 0);
       });
+
+      test(
+        'NUEVO-fix H3: 3-day gap with freezes keeps alive and burns one (server contract)',
+        () {
+          final threeDaysAgo = _utcDaysAgo(3);
+          when(() => repo.currentStreak).thenReturn(5);
+          when(() => repo.longestStreak).thenReturn(10);
+          when(() => repo.streakFreezes).thenReturn(2);
+          when(
+            () => repo.lastActivityDate,
+          ).thenReturn(threeDaysAgo.toIso8601String());
+
+          final status = service.checkIn();
+
+          // El servidor (economic.incrementStreak) mantiene viva la racha para
+          // CUALQUIER gap >= 2 consumiendo UN escudo: el check-in local debe
+          // espejarlo (sin flash de "racha perdida" ni doble contabilidad).
+          expect(status.currentStreak, 6);
+          expect(status.streakFreezes, 1);
+          expect(status.freezeConsumed, isTrue);
+        },
+      );
     });
 
     group('checkIn', () {
@@ -122,7 +153,7 @@ void main() {
       });
 
       test('increments streak for consecutive day check-in', () {
-        final yesterday = DateTime.now().subtract(const Duration(days: 1));
+        final yesterday = _utcDaysAgo(1);
         when(() => repo.currentStreak).thenReturn(3);
         when(() => repo.longestStreak).thenReturn(5);
         when(() => repo.streakFreezes).thenReturn(0);
@@ -137,7 +168,7 @@ void main() {
       });
 
       test('returns same streak for same-day check-in', () {
-        final today = DateTime.now();
+        final today = _utcToday();
         when(() => repo.currentStreak).thenReturn(3);
         when(() => repo.longestStreak).thenReturn(5);
         when(() => repo.streakFreezes).thenReturn(0);
@@ -149,7 +180,7 @@ void main() {
       });
 
       test('resets streak after gap without freezes', () {
-        final threeDaysAgo = DateTime.now().subtract(const Duration(days: 3));
+        final threeDaysAgo = _utcDaysAgo(3);
         when(() => repo.currentStreak).thenReturn(5);
         when(() => repo.longestStreak).thenReturn(10);
         when(() => repo.streakFreezes).thenReturn(0);
@@ -164,7 +195,7 @@ void main() {
       });
 
       test('limits freezes to 7', () {
-        final yesterday = DateTime.now().subtract(const Duration(days: 1));
+        final yesterday = _utcDaysAgo(1);
         when(() => repo.currentStreak).thenReturn(5);
         when(() => repo.longestStreak).thenReturn(10);
         when(() => repo.streakFreezes).thenReturn(7);
@@ -228,7 +259,7 @@ void main() {
         return StreakStatus(
           currentStreak: streak,
           longestStreak: streak,
-          lastActivityDate: DateTime.now().subtract(const Duration(days: 1)),
+          lastActivityDate: _utcDaysAgo(1),
           streakFreezes: 0,
           isAtRisk: atRisk,
           message: '',
@@ -247,8 +278,8 @@ void main() {
       });
 
       test('returns true within 4 hours of midnight', () {
-        final now = DateTime.now();
-        final midnight = DateTime(now.year, now.month, now.day + 1);
+        final now = DateTime.now().toUtc();
+        final midnight = DateTime.utc(now.year, now.month, now.day + 1);
         final hoursUntilMidnight = midnight.difference(now).inHours;
         final expected = hoursUntilMidnight <= 4 && hoursUntilMidnight > 0;
 
