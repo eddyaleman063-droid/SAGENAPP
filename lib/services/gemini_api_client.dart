@@ -212,6 +212,13 @@ class GeminiApiClient {
           AiErrorType.timeout,
           'Gemini took too long to respond.',
         );
+      } on ApiException catch (e) {
+        // NUEVO-fix: el 429 (rate limit por minuto) llega como ApiException;
+        // antes caía al catch genérico y se REINTENTABA con backoff, lo que
+        // martillaba el endpoint ya limitado. Ahora se reenvía sin reintento.
+        final mapped = streamRetryableError(e);
+        if (mapped != null) throw mapped;
+        rethrow;
       } on AiException {
         rethrow;
       } catch (e) {
@@ -251,6 +258,31 @@ class GeminiApiClient {
       return AiException(
         AiErrorType.dailyLimit,
         'Has alcanzado el límite diario de mensajes de Sage.',
+        originalError: error,
+      );
+    }
+    return null;
+  }
+
+  // NUEVO-fix: decide si un error del stream debe abortar SIN reintentar.
+  // Retorna el AiException final que el provider debe mostrar, o null para
+  // que el llamador lo maneje/reintente. Un 429 genérico (rate limit por
+  // minuto) NO se reintenta: reintentar tras un throttle solo martilla.
+  @visibleForTesting
+  static AiException? streamRetryableError(Object error) {
+    final mapped =
+        error is ApiException && error.serverCode == 'sage_daily_limit'
+        ? AiException(
+            AiErrorType.dailyLimit,
+            'Has alcanzado el límite diario de mensajes de Sage.',
+            originalError: error,
+          )
+        : null;
+    if (mapped != null) return mapped;
+    if (error is ApiException && error.type == ApiErrorType.rateLimit) {
+      return AiException(
+        AiErrorType.rateLimit,
+        'Too many requests. Wait a moment.',
         originalError: error,
       );
     }

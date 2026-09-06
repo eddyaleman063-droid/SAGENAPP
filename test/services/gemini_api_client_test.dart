@@ -65,5 +65,49 @@ void main() {
         expect(client.dailyLimitException(generic), isNull);
       },
     );
+
+    group('streamRetryableError (NUEVO-fix)', () {
+      test(
+        'maps a generic 429 rate limit to AiErrorType.rateLimit (no retry)',
+        () {
+          const server = ApiException(
+            ApiErrorType.rateLimit,
+            'Demasiadas solicitudes',
+            statusCode: 429,
+          );
+          final mapped = GeminiApiClient.streamRetryableError(server);
+          expect(mapped, isNotNull);
+          expect(mapped!.type, AiErrorType.rateLimit);
+          expect(mapped.originalError, same(server));
+        },
+      );
+
+      test('maps sage_daily_limit 429 to AiErrorType.dailyLimit', () {
+        const server = ApiException(
+          ApiErrorType.rateLimit,
+          'Límite diario',
+          statusCode: 429,
+          serverCode: 'sage_daily_limit',
+        );
+        final mapped = GeminiApiClient.streamRetryableError(server);
+        expect(mapped, isNotNull);
+        expect(mapped!.type, AiErrorType.dailyLimit);
+      });
+
+      test('returns null for retryable errors (server/network/timeout)', () {
+        const server = ApiException(
+          ApiErrorType.server,
+          'boom',
+          statusCode: 500,
+        );
+        const network = ApiException(ApiErrorType.network, 'offline');
+        expect(GeminiApiClient.streamRetryableError(server), isNull);
+        expect(GeminiApiClient.streamRetryableError(network), isNull);
+      });
+
+      test('returns null for unrelated errors', () {
+        expect(GeminiApiClient.streamRetryableError('random error'), isNull);
+      });
+    });
   });
 }

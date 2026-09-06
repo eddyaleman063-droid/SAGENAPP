@@ -197,6 +197,13 @@ class GemNotifier extends Notifier<GemState> {
   static const _keyPendingEarns = 'gems_pending_earn_queue';
   static const _maxPendingEarns = 50;
 
+  // NUEVO-fix: `_retryPendingEarns` se dispara desde varios puntos
+  // (firma de sesión, app lifecycle, pantalla de tienda, cobro MP). Sin
+  // mutex, dos invocaciones concurrentes leían la MISMA cola, reenviaban los
+  // mismos earns y ambas escribían `remaining`, lo que podía duplicar créditos
+  // o borrar entradas que otra pasada aún estaba procesando.
+  bool _retryingPendingEarns = false;
+
   /// Persists a local-only gem award to the authoritative server ledger via
   /// earnGems, then reconciles the cache with the server's balance. The local
   /// credit stays optimistic; the server decides the real amount (caps apply).
@@ -271,6 +278,8 @@ class GemNotifier extends Notifier<GemState> {
   }
 
   Future<void> _retryPendingEarns() async {
+    if (_retryingPendingEarns) return;
+    _retryingPendingEarns = true;
     try {
       final prefs = ref.read(prefsProvider);
       final raw = prefs.getStringList(_keyPendingEarns);
@@ -304,6 +313,8 @@ class GemNotifier extends Notifier<GemState> {
       prefs.setStringList(_keyPendingEarns, remaining);
     } catch (e, stack) {
       AppLogger().warning('GemNotifier: retry pending earns failed', e, stack);
+    } finally {
+      _retryingPendingEarns = false;
     }
   }
 

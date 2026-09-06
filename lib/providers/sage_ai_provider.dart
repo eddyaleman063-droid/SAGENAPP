@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:meta/meta.dart';
 import '../config/app_config.dart';
 import '../models/chat_message.dart';
 import '../services/ai_service.dart';
@@ -94,13 +95,23 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
   // re-martillar el endpoint el mismo día; el autoritativo es siempre el server.
   DateTime? _dailyLimitSetAt;
 
-  bool _isSameLocalDay(DateTime a, DateTime b) =>
-      a.day == b.day && a.month == b.month && a.year == b.year;
+  // NUEVO-fix: el server mide la cuota en DÍAS UTC (ai_streaming.js usa
+  // toISOString().split('T')[0]). Extraído a helper puro para testear el
+  // cruce de medianoche sin depender del timezone del runner.
+  @visibleForTesting
+  static bool isSameUtcDay(DateTime a, DateTime b) {
+    final au = a.toUtc();
+    final bu = b.toUtc();
+    return au.day == bu.day && au.month == bu.month && au.year == bu.year;
+  }
 
   bool get _isDailyLimitReached {
     final at = _dailyLimitSetAt;
     if (at == null) return false;
-    return _isSameLocalDay(at, DateTime.now());
+    // NUEVO-fix: el server mide la cuota en DÍAS UTC. Antes se comparaba el
+    // día LOCAL, por lo que en franjas nocturnas el espejo local y el límite
+    // del servidor divergían (el cliente podía bloquear de más o de menos).
+    return isSameUtcDay(at, DateTime.now());
   }
 
   // Se preserva a través de rebuilds para no perder la conversación.

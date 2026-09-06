@@ -246,9 +246,21 @@ class ApiClient implements ApiSender {
     _checkHttpStatus(response.statusCode);
 
     try {
-      await for (final chunk in response.stream.transform(utf8.decoder)) {
+      // NUEVO-fix: el stream no tenía watchdog por chunk: una conexión que
+      // recibiera headers y luego se quedara muda colgaba al usuario en
+      // "escribiendo" para siempre. Ahora el SSTREAM muere si no llegan datos
+      // en `geminiStreamTimeout` (45s). El servidor también aborta tras 60s.
+      await for (final chunk
+          in response.stream
+              .transform(utf8.decoder)
+              .timeout(AppConfig.geminiStreamTimeout)) {
         yield chunk;
       }
+    } on TimeoutException {
+      throw const ApiException(
+        ApiErrorType.timeout,
+        'Stream timed out (no data).',
+      );
     } on Exception catch (e) {
       throw ApiException(ApiErrorType.network, 'Stream error: $e');
     }

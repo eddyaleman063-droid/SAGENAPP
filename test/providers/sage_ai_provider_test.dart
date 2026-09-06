@@ -173,6 +173,31 @@ void main() {
       expect(state.streamingText, '');
     });
 
+    group('isSameUtcDay (NUEVO-fix: espejo del límite diario en días UTC)', () {
+      test('same instant expressed in local and UTC is the same UTC day', () {
+        final instant = DateTime.utc(2026, 1, 15, 12, 0);
+        final local = instant.toLocal();
+        expect(SageAiNotifier.isSameUtcDay(instant, local), isTrue);
+      });
+
+      test(
+        'a day later in UTC (even under the same local date) is NOT the same day',
+        () {
+          // 23:30 UTC del día 1 vs 00:30 UTC del día 2: el reloj local puede
+          // mostrar "día 1" y "día 2" cercanos, pero el servidor decide con UTC.
+          final lateUtc = DateTime.utc(2026, 1, 15, 23, 30);
+          final nextUtc = DateTime.utc(2026, 1, 16, 0, 30);
+          expect(SageAiNotifier.isSameUtcDay(lateUtc, nextUtc), isFalse);
+        },
+      );
+
+      test('two UTC days apart are not the same day', () {
+        final a = DateTime.utc(2026, 3, 1, 5, 0);
+        final b = DateTime.utc(2026, 3, 2, 5, 0);
+        expect(SageAiNotifier.isSameUtcDay(a, b), isFalse);
+      });
+    });
+
     test(
       'enters the daily-limit state WITHOUT local fallback when the server caps the quota',
       () async {
