@@ -83,6 +83,9 @@ class MockFirestore {
       for (const [key, value] of Object.entries(data)) {
         if (value && typeof value === 'object' && value.__increment !== undefined) {
           next[key] = (existing[key] || 0) + value.__increment;
+        } else if (value && typeof value === 'object' && value.__arrayUnion !== undefined) {
+          const current = Array.isArray(existing[key]) ? existing[key] : [];
+          next[key] = [...new Set([...current, ...value.__arrayUnion])];
         } else {
           next[key] = value;
         }
@@ -128,6 +131,7 @@ const firestoreInstance = new MockFirestore();
 const FieldValue = {
   serverTimestamp: () => 'SERVER_TIMESTAMP',
   increment: (value) => ({ __increment: value }),
+  arrayUnion: (values) => ({ __arrayUnion: values }),
 };
 
 const Timestamp = {

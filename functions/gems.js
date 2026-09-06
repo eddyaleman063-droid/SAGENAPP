@@ -254,6 +254,21 @@ exports.earnGems = functions.runWith({ maxInstances: 10 }).https.onCall(async (d
     throw new functions.https.HttpsError('invalid-argument', 'Reason no permitido para earnGems');
   }
 
+  // NUEVO-fix (idempotencia): el cliente genera/reusa una idempotencyKey por
+  // earn (misma clave en el retry). El servidor registra la acreditación en
+  // transaction_logs para que reintentos por timeout/red NO dupliquen el
+  // crédito. Clientes viejos sin clave siguen funcionando (sin dedup, igual
+  // que antes) para no romper la migración.
+  const idempotencyKey = data && typeof data.idempotencyKey === 'string'
+    ? data.idempotencyKey
+    : null;
+  if (idempotencyKey !== null && !/^[A-Za-z0-9_-]{1,128}$/.test(idempotencyKey)) {
+    throw new functions.https.HttpsError('invalid-argument', 'idempotencyKey invalido');
+  }
+  const logRef = idempotencyKey !== null
+    ? admin.firestore().doc(`transaction_logs/${idempotencyKey}`)
+    : null;
+
   // Claim-once de logros: la GEMA del logro se paga una sola vez (flag
   // gemsClaimed en users/{uid}/achievements/{achievementId}). El mismo doc se
   // comparte con addXp (xpClaimed) sin bloquearse entre sí. Si el id no llega
@@ -270,14 +285,22 @@ exports.earnGems = functions.runWith({ maxInstances: 10 }).https.onCall(async (d
     ? admin.firestore().doc(`users/${userId}/achievements/${rawAchievementId}`)
     : null;
 
+  // Sellos server-authoritative (estado del usuario, día UTC del servidor):
+  // - daily_bonus se paga UNA vez por día UTC (hasta ahora solo había un cap
+  //   diario 30, que permitía doble pago en el cruce de día UTC/local).
+  // - streak_milestone se paga UNA vez por hito alcanzado (anti-farm: antes
+  //   un replay podía reclamar el mismo hito en días posteriores).
+  const todayStr = new Date().toISOString().split('T')[0];
+
   const userRef = admin.firestore().doc(`users/${userId}`);
   const dailyGemsRef = getDailyGemsDocRef(userId);
 
   try {
     const result = await admin.firestore().runTransaction(async (transaction) => {
-      const [userDoc, dailyGemsDoc] = await Promise.all([
+      const [userDoc, dailyGemsDoc, logDoc] = await Promise.all([
         transaction.get(userRef),
         transaction.get(dailyGemsRef),
+        logRef ? transaction.get(logRef) : Promise.resolve(null),
       ]);
       if (!userDoc.exists) {
         throw new functions.https.HttpsError('not-found', 'Usuario no encontrado');
@@ -285,6 +308,16 @@ exports.earnGems = functions.runWith({ maxInstances: 10 }).https.onCall(async (d
 
       const userData = userDoc.data() || {};
       const dailyGemsData = dailyGemsDoc.data() || {};
+
+      if (logDoc && logDoc.exists) {
+        return {
+          success: true,
+          duplicate: true,
+          gemsAdded: 0,
+          balance: userData.learning_gems || 0,
+          dailyTotal: dailyGemsData.total || 0,
+        };
+      }
 
       // NUEVO-fix anti-farm: la gema del logro paga una sola vez. Antes, un
       // cliente modificado podía llamar earnGems con reason='achievement' y un
@@ -311,14 +344,49 @@ exports.earnGems = functions.runWith({ maxInstances: 10 }).https.onCall(async (d
       // client could otherwise claim a 365-day milestone with a 1-day streak.
       const meta = (data && data.meta) || {};
       let requestedGems;
+      let reachedMilestone = null;
       if (reason === 'streak_milestone') {
-        requestedGems = gemAmountForReason(reason, {
-          streakDays: userData.currentStreak || 0,
-        });
+        const days = userData.currentStreak || 0;
+        const table = GEM_REWARDS.streak_milestones;
+        const keys = Object.keys(table).map(Number).sort((a, b) => a - b);
+        for (const k of keys) {
+          if (days >= k) reachedMilestone = k;
+        }
+        requestedGems = reachedMilestone !== null ? table[reachedMilestone] : 0;
+        // Claim-once por hito: un replay del mismo hito en días posteriores ya
+        // no paga (antes solo lo topaba el cap diario).
+        if (
+          reachedMilestone !== null &&
+          Array.isArray(userData._paid_streak_milestones) &&
+          userData._paid_streak_milestones.includes(reachedMilestone)
+        ) {
+          return {
+            success: true,
+            duplicate: true,
+            alreadyClaimed: true,
+            gemsAdded: 0,
+            balance: userData.learning_gems || 0,
+            dailyTotal: dailyGemsData.total || 0,
+          };
+        }
       } else if (reason === 'daily_bonus') {
+        // Claim-once por día UTC del servidor. El bono diario es UNO por día
+        // calendario, no por "local day" del cliente: sellar aquí evita que un
+        // segundo persistDeferredStreakEarn (p.ej. check-in del mismo día local
+        // cayendo en otro día UTC) acredite dos veces.
         requestedGems = gemAmountForReason(reason, {
           dayStreak: userData.currentStreak || 0,
         });
+        if (userData._last_daily_bonus_day === todayStr) {
+          return {
+            success: true,
+            duplicate: true,
+            alreadyClaimed: true,
+            gemsAdded: 0,
+            balance: userData.learning_gems || 0,
+            dailyTotal: dailyGemsData.total || 0,
+          };
+        }
       } else {
         requestedGems = gemAmountForReason(reason, meta);
       }
@@ -342,6 +410,32 @@ exports.earnGems = functions.runWith({ maxInstances: 10 }).https.onCall(async (d
           gemsClaimed: true,
           gemsClaimedAt: admin.firestore.FieldValue.serverTimestamp(),
         }, { merge: true });
+      }
+
+      // Sellos server-authoritative + idempotencia: el sello de "una vez por
+      // día/hito" se escribe SIEMPRE que se acredite (independiente de si el
+      // request trajo idempotencyKey); el log de idempotencia solo cuando hay
+      // clave que sellar (los retries la reenvían).
+      if (credit.gemsAdded > 0) {
+        if (reason === 'daily_bonus') {
+          transaction.update(userRef, {
+            _last_daily_bonus_day: todayStr,
+          });
+        } else if (reason === 'streak_milestone' && reachedMilestone !== null) {
+          transaction.update(userRef, {
+            _paid_streak_milestones: admin.firestore.FieldValue.arrayUnion([reachedMilestone]),
+          });
+        }
+        if (logRef) {
+          transaction.set(logRef, {
+            userId,
+            reason,
+            meta,
+            gemsAdded: credit.gemsAdded,
+            balance: credit.balance,
+            createdAt: admin.firestore.FieldValue.serverTimestamp(),
+          });
+        }
       }
 
       return { success: true, reason, ...credit };

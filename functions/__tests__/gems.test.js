@@ -166,6 +166,104 @@ describe('earnGems', () => {
   });
 });
 
+describe('earnGems idempotency & seals (NUEVO-fix)', () => {
+  test('retry with the same idempotencyKey does not duplicate the credit', async () => {
+    admin._resetFirestore();
+    setUserDoc(AUTH_UID, { learning_gems: 10 });
+    const first = await gems.earnGems(
+      { reason: 'mission', idempotencyKey: 'earn-k-1' },
+      makeContext()
+    );
+    expect(first.success).toBe(true);
+    expect(first.gemsAdded).toBe(12);
+
+    // Replay del MISMO idempotencyKey (retry por timeout): no vuelve a pagar.
+    const replay = await gems.earnGems(
+      { reason: 'mission', idempotencyKey: 'earn-k-1' },
+      makeContext()
+    );
+    expect(replay.duplicate).toBe(true);
+    expect(replay.gemsAdded).toBe(0);
+    const user = admin._getDoc(`users/${AUTH_UID}`);
+    expect(user.learning_gems).toBe(22);
+
+    // El log de transacción quedó sellado con el idempotencyKey.
+    const log = admin._getDoc(`transaction_logs/earn-k-1`);
+    expect(log).toBeTruthy();
+    expect(log.gemsAdded).toBe(12);
+  });
+
+  test('unkeys with a different idempotencyKey still credit (independent earns)', async () => {
+    admin._resetFirestore();
+    setUserDoc(AUTH_UID, { learning_gems: 0 });
+    await gems.earnGems({ reason: 'review', idempotencyKey: 'earn-r-1' }, makeContext());
+    const second = await gems.earnGems({ reason: 'review', idempotencyKey: 'earn-r-2' }, makeContext());
+    expect(second.gemsAdded).toBe(6);
+  });
+
+  test('legacy earn without idempotencyKey still works (no dedup, old clients)', async () => {
+    admin._resetFirestore();
+    setUserDoc(AUTH_UID, { learning_gems: 0 });
+    const result = await gems.earnGems({ reason: 'mission' }, makeContext());
+    expect(result.success).toBe(true);
+    expect(result.gemsAdded).toBe(12);
+    expect(admin._getDoc(`transaction_logs/earn-k-1`) || {}).not.toHaveProperty('createdAt');
+  });
+
+  test('daily bonus pays once per UTC day (server seal)', async () => {
+    admin._resetFirestore();
+    setUserDoc(AUTH_UID, { learning_gems: 0, currentStreak: 7 });
+    const first = await gems.earnGems({ reason: 'daily_bonus', meta: { dayStreak: 7 } }, makeContext());
+    expect(first.gemsAdded).toBe(12);
+
+    // Segundo persist del mismo día UTC: sellado -> no paga de nuevo.
+    const second = await gems.earnGems(
+      { reason: 'daily_bonus', meta: { dayStreak: 7 }, idempotencyKey: 'earn-db-2' },
+      makeContext()
+    );
+    expect(second.alreadyClaimed).toBe(true);
+    expect(second.gemsAdded).toBe(0);
+    const user = admin._getDoc(`users/${AUTH_UID}`);
+    expect(user.learning_gems).toBe(12);
+    expect(user._last_daily_bonus_day).toBe(today());
+  });
+
+  test('streak milestone pays once per reached milestone (anti-farm)', async () => {
+    admin._resetFirestore();
+    setUserDoc(AUTH_UID, { learning_gems: 0, currentStreak: 30 });
+    const first = await gems.earnGems(
+      { reason: 'streak_milestone', meta: { streakDays: 30 }, idempotencyKey: 'earn-sm-1' },
+      makeContext()
+    );
+    expect(first.gemsAdded).toBe(60);
+
+    // Replay del Mismo hito en "otro día": sellado -> 0 gemas (antes pagaba
+    // de nuevo hasta el cap diario).
+    const replay = await gems.earnGems(
+      { reason: 'streak_milestone', meta: { streakDays: 30 }, idempotencyKey: 'earn-sm-2' },
+      makeContext()
+    );
+    expect(replay.alreadyClaimed).toBe(true);
+    expect(replay.gemsAdded).toBe(0);
+    const user = admin._getDoc(`users/${AUTH_UID}`);
+    expect(user.learning_gems).toBe(60);
+    expect(user._paid_streak_milestones).toContain(30);
+  });
+
+  test('idempotency log is only sealed when gems were actually added', async () => {
+    admin._resetFirestore();
+    setUserDoc(AUTH_UID, { learning_gems: 0 });
+    // Cap diario ya agotado -> gemsAdded 0 -> sin sello de log ni de bonos.
+    admin._setDoc(`daily_gem_sources/${AUTH_UID}_${today()}`, { total: 200 });
+    const result = await gems.earnGems(
+      { reason: 'achievement', achievementId: 'streak_7', meta: { xp: 100 }, idempotencyKey: 'earn-capped-1' },
+      makeContext()
+    );
+    expect(result.gemsAdded).toBe(0);
+    expect(admin._getDoc(`transaction_logs/earn-capped-1`) || {}).not.toHaveProperty('createdAt');
+  });
+});
+
 describe('spendGems', () => {
   test('spends gems when balance is sufficient', async () => {
     setUserDoc(AUTH_UID, { learning_gems: 100 });
