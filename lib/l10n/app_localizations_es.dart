@@ -9,12 +9,6 @@ class AppLocalizationsEs extends AppLocalizations {
   AppLocalizationsEs([String locale = 'es']) : super(locale);
 
   @override
-  String get aboutSage => 'Sobre Sage';
-
-  @override
-  String get aboutSection => 'Acerca de';
-
-  @override
   String get achievementConqueror => 'Conquistador';
 
   @override
@@ -93,79 +87,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get acquired => 'Obtenido';
 
   @override
-  String get adminCreditDonationA11y => 'Acreditar Donaciones';
-
-  @override
-  String get adminCreditDonationButton => 'Acreditar Donaciones';
-
-  @override
-  String adminCreditDonationSuccess(Object gems, Object userId) {
-    return '$gems donaciones acreditadas a $userId';
-  }
-
-  @override
-  String get adminCreditDonationTitle => 'Admin — Acreditar Donaciones';
-
-  @override
-  String get adminCreditError =>
-      'Error al acreditar. Verifica que tu usuario esté en la colección \"admins\" de Firestore.';
-
-  @override
-  String adminCreditSuccessNotification(Object gems, Object userId) {
-    return '$gems donaciones acreditadas a $userId';
-  }
-
-  @override
-  String get adminDonations => 'Donaciones';
-
-  @override
-  String get adminFieldAmount => 'Monto';
-
-  @override
-  String get adminFieldDonationAmount => 'Monto de donación';
-
-  @override
-  String get adminFieldUserId => 'User ID';
-
-  @override
-  String get adminInvalidInput => 'Ingresa un User ID válido y monto';
-
-  @override
-  String get adminMercadoPago => 'Mercado Pago';
-
-  @override
-  String get adminPaymentMethod => 'Método de pago';
-
-  @override
-  String get adminTitle => 'Admin — Donaciones de Crédito';
-
-  @override
-  String get adminUserId => 'ID de usuario';
-
-  @override
-  String get adminVerifyingPermissions =>
-      'Verificando permisos de administrador…';
-
-  @override
-  String get adminWhatsapp => 'WhatsApp / Yape / Plin';
-
-  @override
-  String get analyzeFile => 'Analizar archivo';
-
-  @override
   String get analyzeLink => 'Analizar enlace';
 
   @override
-  String get analyzing => 'Analizando...';
-
-  @override
   String get appName => 'SAGEN';
-
-  @override
-  String get appSlogan => 'Tu escudo digital';
-
-  @override
-  String get authAge => 'Edad';
 
   @override
   String get authBack => 'Volver';
@@ -174,17 +99,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get authCanceled => 'Inicio de sesión cancelado';
 
   @override
-  String get authConfirmPassword => 'Confirmar contraseña';
-
-  @override
   String get authCreateAccount => 'Crear cuenta';
-
-  @override
-  String get authCreateAccountError => 'Error al crear cuenta';
-
-  @override
-  String get authCredentialExpired =>
-      'La sesión ha expirado. Por favor, inicia sesión de nuevo.';
 
   @override
   String get authDefault => 'Error de autenticación';
@@ -204,10 +119,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get authEmailLabel => 'Correo electrónico';
-
-  @override
-  String get authEmailVerificationSent =>
-      'Revisa tu correo para verificar tu cuenta';
 
   @override
   String get authEnterEmailError => 'Ingresa tu correo electrónico';
@@ -232,16 +143,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get authForgotPasswordTitle => 'Restablecer contraseña';
 
   @override
-  String get authFullName => 'Nombre completo';
-
-  @override
   String get authGoogleButton => 'Continuar con Google';
 
   @override
   String get authGoogleError => 'Error al iniciar sesión con Google';
-
-  @override
-  String get authHaveAccount => '¿Ya tienes cuenta? ';
 
   @override
   String get authInvalidCredential => 'Correo o contraseña incorrectos';
@@ -256,13 +161,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get authLoginError => 'Error al iniciar sesión';
 
   @override
-  String get authLoginLink => 'Iniciar sesión';
-
-  @override
   String get authLoginTitle => 'Ingresa tus datos';
-
-  @override
-  String get authNameError => 'Ingresa tu nombre';
 
   @override
   String get authNetworkError => 'Sin conexión a internet';
@@ -277,20 +176,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get authNotFound => 'No hay cuenta registrada con este correo';
 
   @override
-  String get authNotFoundCancel => 'Cancelar';
-
-  @override
-  String get authNotFoundCreate => 'Crear cuenta';
-
-  @override
-  String authNotFoundMessage(Object email) {
-    return 'No hay una cuenta registrada con $email. ¿Desea crear una nueva cuenta y empezar a aprender?';
-  }
-
-  @override
-  String get authNotFoundTitle => 'Cuenta no encontrada';
-
-  @override
   String get authNotVerified =>
       'Aún no has verificado tu correo. Revisa tu bandeja de entrada.';
 
@@ -301,9 +186,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get authNullUser => 'No se pudo obtener el usuario';
 
   @override
-  String get authOrRegisterWith => 'o regístrate con';
-
-  @override
   String get authPasswordError => 'Ingresa tu contraseña';
 
   @override
@@ -312,15 +194,6 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get authPasswordMinError =>
       'La contraseña debe tener 8+ caracteres con mayúscula, minúscula y un número';
-
-  @override
-  String get authPasswordMinHint => 'Contraseña (8+ chars, A-Z, a-z, 0-9)';
-
-  @override
-  String get authPasswordsDoNotMatch => 'Las contraseñas no coinciden';
-
-  @override
-  String get authPrivacy => 'Tu información está protegida.';
 
   @override
   String get authRateLimited => 'Demasiados intentos. Espera unos segundos.';
@@ -347,15 +220,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get authRecoveryError => 'No se pudo enviar el correo de recuperación';
 
   @override
-  String get authRegisterFacebookError => 'Error al registrarse con Facebook';
-
-  @override
-  String get authRegisterGoogleError => 'Error al registrarse con Google';
-
-  @override
-  String get authRegisterTitle => 'Crea tu cuenta';
-
-  @override
   String get authResendEmailError =>
       'No se pudo reenviar el correo de verificación';
 
@@ -364,17 +228,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get authSendLink => 'Enviar enlace';
-
-  @override
-  String get authSubtitle =>
-      'Aprende, protégete y navega internet de forma más segura.';
-
-  @override
-  String get authTitle => 'Tu protección digital comienza aquí';
-
-  @override
-  String get authTokenExpired =>
-      'Sesión expirada. Por favor, inicia sesión de nuevo.';
 
   @override
   String get authTooManyRequests => 'Demasiados intentos. Espera un momento.';
@@ -399,9 +252,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get backButton => 'Atrás';
 
   @override
-  String get biometricPrompt => 'Desbloquea SAGEN para continuar';
-
-  @override
   String get biometricReason => 'Desbloquea SAGEN para continuar';
 
   @override
@@ -409,58 +259,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get cancelButton => 'Cancelar';
-
-  @override
-  String get careerCertifications => 'Certificaciones';
-
-  @override
-  String get careerDescription =>
-      'Obtén certificaciones y desarrolla habilidades que te hacen valioso en la economía digital.';
-
-  @override
-  String get careerOpp1 => 'Consultor de Seguridad Digital';
-
-  @override
-  String get careerOpp1Desc => 'Ayuda a las empresas a proteger sus datos';
-
-  @override
-  String get careerOpp2 => 'Capacitador de Concienciación';
-
-  @override
-  String get careerOpp2Desc => 'Enseña a otros a estar seguros en línea';
-
-  @override
-  String get careerOpp3 => 'Auditor de seguridad freelance';
-
-  @override
-  String get careerOpp3Desc => 'Ofrece auditorías de seguridad a clientes';
-
-  @override
-  String get careerOpportunities => 'Oportunidades económicas';
-
-  @override
-  String get careerSkill1 => 'Seguridad de contraseñas';
-
-  @override
-  String get careerSkill2 => 'Detección de Phishing';
-
-  @override
-  String get careerSkill3 => 'Protección de Privacidad';
-
-  @override
-  String get careerSkill4 => 'Seguridad de Red';
-
-  @override
-  String get careerSkill5 => 'Respuesta a Incidentes';
-
-  @override
-  String get careerSkills => 'Habilidades que desarrollarás';
-
-  @override
-  String get careerSubtitle => 'Tu trayectoria profesional en ciberseguridad';
-
-  @override
-  String get careerTitle => 'Carrera y Certificaciones';
 
   @override
   String get challengeComplete => 'Completa la frase';
@@ -478,157 +276,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get challengeMultiple => 'Opción múltiple';
 
   @override
-  String get challengeSafe => 'Seguro';
-
-  @override
-  String get challengeSuspicious => 'Sospechoso';
-
-  @override
   String get challengeTrueFalse => 'Verdadero / Falso';
 
   @override
   String get challengeWhatWouldYouDo => '¿Qué harías aquí?';
-
-  @override
-  String challenge_analyze_link_desc(Object count) {
-    return 'Analiza $count enlace(s)';
-  }
-
-  @override
-  String get challenge_analyze_link_title => 'Analizar Enlaces';
-
-  @override
-  String challenge_answer_questions_desc(Object count) {
-    return 'Responde $count pregunta(s)';
-  }
-
-  @override
-  String get challenge_answer_questions_title => 'Responder Preguntas';
-
-  @override
-  String challenge_check_in_desc(Object count) {
-    return 'Regístrate $count vez(veces)';
-  }
-
-  @override
-  String get challenge_check_in_title => 'Registro Diario';
-
-  @override
-  String challenge_complete_lesson_desc(Object count) {
-    return 'Completa $count lección(es)';
-  }
-
-  @override
-  String get challenge_complete_lesson_title => 'Completar Lecciones';
-
-  @override
-  String challenge_complete_session_desc(Object count) {
-    return 'Completa $count sesión(es)';
-  }
-
-  @override
-  String get challenge_complete_session_title => 'Sesiones de Aprendizaje';
-
-  @override
-  String get challenge_complete_stage_desc => 'Completa 1 etapa';
-
-  @override
-  String get challenge_complete_stage_title => 'Completar Etapa';
-
-  @override
-  String challenge_correct_streak_desc(Object count) {
-    return 'Obtén $count respuestas correctas seguidas';
-  }
-
-  @override
-  String get challenge_correct_streak_title => 'Racha Correcta';
-
-  @override
-  String challenge_detect_phishing_desc(Object count) {
-    return 'Detecta $count intento(s) de phishing';
-  }
-
-  @override
-  String get challenge_detect_phishing_title => 'Detectar Phishing';
-
-  @override
-  String challenge_earn_xp_desc(Object xp) {
-    return 'Gana $xp XP';
-  }
-
-  @override
-  String get challenge_earn_xp_title => 'Ganar XP';
-
-  @override
-  String challenge_learn_minutes_desc(Object count) {
-    return 'Aprende durante $count minutos';
-  }
-
-  @override
-  String get challenge_learn_minutes_title => 'Tiempo de Aprendizaje';
-
-  @override
-  String challenge_learn_topic_desc(Object count) {
-    return 'Aprende $count tema(s)';
-  }
-
-  @override
-  String get challenge_learn_topic_title => 'Aprender un Tema';
-
-  @override
-  String get challenge_perfect_lesson_desc =>
-      'Completa una lección sin errores';
-
-  @override
-  String get challenge_perfect_lesson_title => 'Lección Perfecta';
-
-  @override
-  String challenge_privacy_check_desc(Object count) {
-    return 'Revisa ajustes de privacidad $count vez(veces)';
-  }
-
-  @override
-  String get challenge_privacy_check_title => 'Verificación de Privacidad';
-
-  @override
-  String challenge_quiz_night_desc(Object count) {
-    return 'Completa $count mini quiz';
-  }
-
-  @override
-  String get challenge_quiz_night_title => 'Mini Quiz';
-
-  @override
-  String challenge_review_tips_desc(Object count) {
-    return 'Revisa $count consejo(s) de seguridad';
-  }
-
-  @override
-  String get challenge_review_tips_title => 'Revisar Consejos';
-
-  @override
-  String challenge_security_audit_desc(Object count) {
-    return 'Completa $count auditoría(s)';
-  }
-
-  @override
-  String get challenge_security_audit_title => 'Auditoría de Seguridad';
-
-  @override
-  String challenge_share_knowledge_desc(Object count) {
-    return 'Comparte $count consejo(s)';
-  }
-
-  @override
-  String get challenge_share_knowledge_title => 'Compartir Conocimiento';
-
-  @override
-  String challenge_social_awareness_desc(Object count) {
-    return 'Completa $count desafío(s) de conciencia social';
-  }
-
-  @override
-  String get challenge_social_awareness_title => 'Conciencia Social';
 
   @override
   String challenge_streak_milestone_desc(Object count) {
@@ -647,82 +298,10 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String challenge_talk_sage_desc(Object count) {
-    return 'Charla con Sage $count vez(veces)';
-  }
-
-  @override
-  String get challenge_talk_sage_title => 'Charla con Sage';
-
-  @override
-  String challenge_test_password_desc(Object count) {
-    return 'Prueba $count contraseña(s)';
-  }
-
-  @override
-  String get challenge_test_password_title => 'Probar Contraseñas';
-
-  @override
-  String get challenge_use_dark_mode_desc => 'Usar modo oscuro';
-
-  @override
-  String get challenge_use_dark_mode_title => 'Modo Oscuro';
-
-  @override
-  String get changelogV4 => 'Fundamentos';
-
-  @override
-  String get changelogV4_1 => '8 etapas de aprendizaje con 1,099 lecciones';
-
-  @override
-  String get changelogV4_2 => 'Rachas diarias y desafíos';
-
-  @override
-  String get changelogV4_3 => 'Sistema de logros';
-
-  @override
-  String get changelogV5 => 'IA y Personalización';
-
-  @override
-  String get changelogV5Old => 'Sistema de Cofres y Gacha';
-
-  @override
-  String get changelogV5Old_1 =>
-      'Sistema de evolución de cofres (Bronce → Legendaria)';
-
-  @override
-  String get changelogV5Old_2 => 'Botones 3D interactivos';
-
-  @override
-  String get changelogV5Old_3 => 'Rediseño de interfaz con Glassmorphism';
-
-  @override
-  String get changelogV5_1 => 'Chat de SAGE con IA para ayuda personalizada';
-
-  @override
-  String get changelogV5_2 => 'Máscaras dinámicas de emociones';
-
-  @override
-  String get changelogV5_3 => '17,157 preguntas de ciberseguridad';
-
-  @override
-  String get changelogV5_4 => 'Sociedad VIP para rachas de 30+ días';
-
-  @override
-  String get chatAskSage => 'Pregúntale a Sage';
-
-  @override
-  String get chatAskSageDesc =>
-      'Haz una pregunta de ciberseguridad o elige una sugerencia rápida.';
-
-  @override
   String get chatBlocked => 'Chat bloqueado';
 
   @override
   String get chatCancel => 'Cancelar';
-
-  @override
-  String get chatClear => 'Limpiar';
 
   @override
   String get chatClearAction => 'Borrar';
@@ -738,17 +317,11 @@ class AppLocalizationsEs extends AppLocalizations {
   String get chatEmptyTitle => 'Inicia una conversación';
 
   @override
-  String get chatFallback => 'Ahora mismo no pude responder. Intenta de nuevo.';
-
-  @override
   String get chatFallbackSubtitle =>
       'Escribe cualquier duda sobre ciberseguridad o elige una sugerencia rápida.';
 
   @override
   String get chatFallbackTitle => 'Pregunta a Sage';
-
-  @override
-  String get chatGuideDesc => 'Tu guía de ciberseguridad';
 
   @override
   String get chatGuideSubtitle => 'Tu guía de ciberseguridad';
@@ -760,30 +333,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get chatInputHint => 'Pregunta a Sage...';
 
   @override
-  String get chatNewConversation => 'Nueva conversación';
-
-  @override
-  String get chatSageTutor => 'Tutor Sage';
-
-  @override
   String get chatSageTutorLabel => 'Tutor Sage';
 
   @override
-  String get checkInDesc => 'Check-in diario para mantener tu racha activa';
-
-  @override
-  String get checkInTitle => 'Registro diario';
-
-  @override
   String get chestCollect => 'Recoger';
-
-  @override
-  String chestEvolvedTo(Object type) {
-    return 'Evolucionó a $type';
-  }
-
-  @override
-  String get chestNoChange => 'Sin cambios';
 
   @override
   String chestOpenedTitle(Object type) {
@@ -791,47 +344,14 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get chestPityProgress => 'Legendario en';
-
-  @override
-  String get chestReminder => 'Recordatorios de cofres';
-
-  @override
-  String get chestReminderSubtitle =>
-      'Recibe recordatorios para abrir tu cofre diario';
-
-  @override
-  String get chestRewardBronze => '¡Bronce!';
-
-  @override
-  String get chestRewardDefault => 'Recompensa';
-
-  @override
   String get chestRewardDialog => 'Diálogo de recompensa del cofre';
-
-  @override
-  String get chestRewardGold => '¡Oro!';
-
-  @override
-  String get chestRewardLegendary => '¡Legendario!';
-
-  @override
-  String get chestRewardSilver => '¡Plata!';
 
   @override
   String get chestTapToOpen => 'Toca para abrir';
 
   @override
-  String get chestTapToUpgrade => 'Toca para mejorar';
-
-  @override
   String chestTitle(Object type) {
     return 'Cofre $type';
-  }
-
-  @override
-  String chestTreasure(Object type) {
-    return 'Cofre del tesoro $type';
   }
 
   @override
@@ -852,59 +372,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get chestTypeSilver => 'Plata';
 
   @override
-  String get chestXpBoost => 'x2 EXP';
-
-  @override
   String get closeButton => 'Cerrar';
-
-  @override
-  String get cloudDataDeleted => 'Datos cloud eliminados';
-
-  @override
-  String get cloudSync => 'Cloud y sincronización';
-
-  @override
-  String get commit1Month => '1 mes';
-
-  @override
-  String get commit1Week => '1 semana';
-
-  @override
-  String get commit2Weeks => '2 semanas';
-
-  @override
-  String get commitButton => 'COMPROMETERME CON MI META';
-
-  @override
-  String get commitChooseGoal => 'Elige tu meta';
-
-  @override
-  String get commitChooseGoalDesc =>
-      'Selecciona cuántos días seguirás tu plan de aprendizaje.';
-
-  @override
-  String commitDays(Object days) {
-    return '$days días';
-  }
-
-  @override
-  String commitGoalLabel(Object days) {
-    return 'Tu meta: $days días';
-  }
-
-  @override
-  String get commitSelected => 'SELECCIONADO';
-
-  @override
-  String commitYourGoal(Object days) {
-    return 'Tu meta: $days días';
-  }
-
-  @override
-  String get completePrevious => 'Completa la etapa anterior';
-
-  @override
-  String get connectionErrorRetry => 'Error de conexión. Intenta de nuevo.';
 
   @override
   String continueLesson(Object title) {
@@ -929,52 +397,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get currencySymbol => '\$';
 
   @override
-  String cyberQuizProgress(Object current, Object total) {
-    return 'Pregunta $current de $total';
-  }
-
-  @override
-  String get dailyGoalIntense => 'Intenso';
-
-  @override
-  String dailyGoalMinutesPerDay(Object minutes) {
-    return '$minutes min/día';
-  }
-
-  @override
-  String get dailyGoalNormal => 'Normal';
-
-  @override
-  String get dailyGoalQuestion => '¿Cuál es tu meta de aprendizaje diario?';
-
-  @override
-  String get dailyGoalRelaxed => 'Relajado';
-
-  @override
-  String get dailyGoalSerious => 'Serio';
-
-  @override
-  String get dailyMissions => 'Misiones diarias';
-
-  @override
-  String get dailyMissionsAllCompleted => 'Todos los desafíos completados hoy';
-
-  @override
-  String get dailyMissionsDesc =>
-      'Completa tus misiones para obtener recompensas';
-
-  @override
-  String get darkModeEnd => 'Termina modo oscuro';
-
-  @override
-  String darkModeScheduleInfo(Object end, Object start) {
-    return 'El modo oscuro estará activo de $start:00 a $end:00';
-  }
-
-  @override
-  String get darkModeStart => 'Inicia modo oscuro';
-
-  @override
   String get dayAbbrFri => 'Vie';
 
   @override
@@ -996,37 +418,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get dayAbbrWed => 'Mié';
 
   @override
-  String get dayShortFri => 'V';
-
-  @override
-  String get dayShortMon => 'L';
-
-  @override
-  String weekDayCompleted(Object day) {
-    return '$day, completado';
-  }
-
-  @override
-  String weekDayToday(Object day) {
-    return 'Hoy, $day';
-  }
-
-  @override
-  String get dayShortSat => 'S';
-
-  @override
-  String get dayShortSun => 'D';
-
-  @override
-  String get dayShortThu => 'J';
-
-  @override
-  String get dayShortTue => 'M';
-
-  @override
-  String get dayShortWed => 'X';
-
-  @override
   String get streakStatusCompleted => 'completado';
 
   @override
@@ -1042,41 +433,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get delete => 'Eliminar';
 
   @override
-  String get deleteAccountConfirm => 'Eliminar mi cuenta';
-
-  @override
-  String get deleteAccountDesc =>
-      'Esto eliminará permanentemente todos tus datos. Esta acción no se puede deshacer.';
-
-  @override
-  String get deleteAccountReauthRequired =>
-      'Autenticación reciente requerida para eliminar la cuenta';
-
-  @override
-  String get deleteAccountTitle => 'Eliminar cuenta';
-
-  @override
-  String get deleteAction => 'Eliminar';
-
-  @override
   String get deleteCloudData => 'Eliminar datos cloud';
-
-  @override
-  String get deleteCloudDesc =>
-      '¿Estás seguro? Esta acción eliminará permanentemente tu progreso guardado en la nube. Los datos locales no se verán afectados.';
-
-  @override
-  String get deleteCloudTitle => 'Eliminar datos cloud';
-
-  @override
-  String get deleteHistory => 'Borrar historial de análisis';
-
-  @override
-  String get deleteHistoryDesc =>
-      'Se eliminarán todos los análisis de enlaces guardados. Esta acción no se puede deshacer.';
-
-  @override
-  String get deleteHistoryTitle => 'Borrar historial';
 
   @override
   String get demoModeLabel => 'DEMO MODE';
@@ -1085,94 +442,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get demoStudentName => 'Demo Student';
 
   @override
-  String get developedWith => 'Desarrollado con Flutter';
-
-  @override
-  String get donateToSupport => 'Donar para apoyar';
-
-  @override
-  String get donationBasic => 'Supporter';
-
-  @override
-  String get donationBasicDesc => 'Ayúdanos a mantener SAGEN gratis';
-
-  @override
-  String get donationLabel => 'Donación';
-
-  @override
-  String get donationPopular => 'Super Supporter';
-
-  @override
-  String get donationPopularDesc => 'Badge exclusivo + agradecimiento especial';
-
-  @override
-  String get donationPremium => 'Campeón';
-
-  @override
-  String get donationPremiumDesc =>
-      'Todos los beneficios + tu nombre en créditos';
-
-  @override
-  String get donationValueLabel => 'Monto';
-
-  @override
   String dot(Object number) {
     return 'Punto $number';
   }
-
-  @override
-  String get ecoCo2Saved => 'Emisiones de CO₂ evitadas';
-
-  @override
-  String get ecoComparison =>
-      'SAGEN usa 99% menos recursos que la educación tradicional';
-
-  @override
-  String get ecoDescription =>
-      'Cada lección que completas ahorra agua, reduce las emisiones de CO₂ y elimina el uso de papel.';
-
-  @override
-  String get ecoDigital => '📱 Digital: solo tu teléfono';
-
-  @override
-  String get ecoDigitalLearning => 'Aprendizaje 100% Digital';
-
-  @override
-  String get ecoDigitalLearningDesc =>
-      'Sin papel, sin impresión, sin transporte necesario';
-
-  @override
-  String get ecoHowItWorks => 'Digital vs Tradicional';
-
-  @override
-  String get ecoLiters => 'litros';
-
-  @override
-  String get ecoPages => 'páginas';
-
-  @override
-  String get ecoPaperSaved => 'Papel ahorrado';
-
-  @override
-  String get ecoSubtitle => 'Aprende mientras cuidas el planeta';
-
-  @override
-  String get ecoTitle => 'Impacto Ambiental';
-
-  @override
-  String get ecoTraditional => '📚 Tradicional: papel, tinta, transporte';
-
-  @override
-  String get ecoTrees => 'árboles';
-
-  @override
-  String get ecoTreesEquivalent => 'Equivalente en árboles';
-
-  @override
-  String get ecoWaterSaved => 'Agua ahorrada';
-
-  @override
-  String get ecoYourImpact => 'Tu impacto ambiental';
 
   @override
   String get emotionPhrase1 => 'Ya detectas riesgos más rápido.';
@@ -1199,30 +471,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get emotionPhraseStart => 'Tu viaje digital comienza hoy.';
 
   @override
-  String get emotionalPhrase1 => 'Detectas riesgos más rápido ahora.';
-
-  @override
-  String get emotionalPhrase2 => 'Tu hábito digital está mejorando.';
-
-  @override
-  String get emotionalPhrase3 => 'Cada día entiendes mejor cómo protegerte.';
-
-  @override
-  String get emotionalPhrase4 => 'Estás construyendo un instinto de seguridad.';
-
-  @override
-  String get emotionalPhrase5 => 'Tu juicio digital se está afilando.';
-
-  @override
-  String get emotionalPhrase6 => 'Estás aprendiendo a ver lo que otros no ven.';
-
-  @override
-  String get emotionalPhrase7 => 'Tu mundo digital es más seguro por ti.';
-
-  @override
-  String get emotionalPhraseStart => 'Tu viaje digital comienza hoy.';
-
-  @override
   String get emptyChatSubtitle => 'Sage está listo para ayudarte';
 
   @override
@@ -1232,55 +480,15 @@ class AppLocalizationsEs extends AppLocalizations {
   String get emptyStore => 'La tienda está vacía';
 
   @override
-  String get emptyUpdates => 'No hay actualizaciones disponibles';
-
-  @override
-  String get english => 'English';
-
-  @override
   String get errorContentLoadFailed =>
       'No pudimos cargar el contenido. Verifica tu conexión e intenta de nuevo.';
-
-  @override
-  String get errorFeedback => 'Error al guardar comentario. Intenta de nuevo.';
 
   @override
   String get errorGeneric => 'Algo salió mal. Por favor, intenta de nuevo.';
 
   @override
-  String get errorIntegrityCheck =>
-      'Se detectó un problema de integridad. Tu progreso se ha guardado, pero por favor verifica que sea correcto.';
-
-  @override
-  String get errorLoadContent =>
-      'No pudimos cargar el contenido. Verifica tu conexión e intenta de nuevo.';
-
-  @override
-  String get errorLoadProgress =>
-      'No pudimos cargar tu progreso. Revisa tu conexión e intenta de nuevo.';
-
-  @override
   String get errorLoadQuestions =>
       'Error al cargar preguntas. Intenta de nuevo.';
-
-  @override
-  String get errorNetwork => 'Sin conexión a internet. Revisa tu red.';
-
-  @override
-  String get errorPayment =>
-      'Error al registrar el pago. Por favor, intenta de nuevo.';
-
-  @override
-  String get errorProgressLoadFailed =>
-      'No pudimos cargar tu progreso. Verifica tu conexión e intenta de nuevo.';
-
-  @override
-  String get errorProgressReloadFailed =>
-      'No pudimos recargar tu progreso. Intenta de nuevo.';
-
-  @override
-  String get errorReloadProgress =>
-      'No pudimos recargar tu progreso. Intenta de nuevo.';
 
   @override
   String get errorRestartApp => 'Reiniciar app';
@@ -1289,13 +497,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get errorRetry => 'Intentar de nuevo';
 
   @override
-  String get errorShare => 'Error al compartir. Por favor, intenta de nuevo.';
-
-  @override
   String get errorSomethingWrong => 'Algo salió mal';
-
-  @override
-  String get errorStreak => 'No se pudo guardar la racha.';
 
   @override
   String get errorUnexpected =>
@@ -1303,115 +505,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get exitText => 'Salir';
-
-  @override
-  String get experience => 'Experiencia';
-
-  @override
-  String get exportData => 'Exportar mis datos';
-
-  @override
-  String get exportDataCopied => '¡Datos copiados al portapapeles!';
-
-  @override
-  String get exportDataCopy => 'Copiar al portapapeles';
-
-  @override
-  String get exportDataDesc => 'Descarga una copia de tus datos personales';
-
-  @override
-  String get exportDataLoading => 'Recopilando tus datos...';
-
-  @override
-  String get feedbackCatBug => 'Reportar un error';
-
-  @override
-  String get feedbackCatContent => 'Contenido';
-
-  @override
-  String get feedbackCatDesign => 'Diseño';
-
-  @override
-  String get feedbackCatFeature => 'Sugerir una función';
-
-  @override
-  String get feedbackCatGeneral => 'General';
-
-  @override
-  String get feedbackCategory => 'Categoría';
-
-  @override
-  String get feedbackChangelog => 'Novedades';
-
-  @override
-  String get feedbackComments => 'Comentarios';
-
-  @override
-  String get feedbackConfusing => 'Confundido';
-
-  @override
-  String get feedbackContinue => 'Continuar';
-
-  @override
-  String get feedbackExcellent => '¡Eres increíble!';
-
-  @override
-  String get feedbackGood => 'Bueno';
-
-  @override
-  String get feedbackHard => 'Difícil';
-
-  @override
-  String get feedbackHint => 'Cuéntanos qué piensas...';
-
-  @override
-  String get feedbackHowDidYouFeel => '¿Cómo te sentiste?';
-
-  @override
-  String get feedbackPerfect => 'Perfecto';
-
-  @override
-  String get feedbackPoor => 'Mejoraremos';
-
-  @override
-  String get feedbackRateExperience => 'Califica tu experiencia';
-
-  @override
-  String get feedbackSubmit => 'Enviar comentarios';
-
-  @override
-  String get feedbackTapStars => 'Toca una estrella para calificar';
-
-  @override
-  String get feedbackThanks => '¡Gracias!';
-
-  @override
-  String get feedbackThanksDesc =>
-      'Tus comentarios nos ayudan a mejorar SAGEN para todos.';
-
-  @override
-  String get feedbackTitle => 'Comentarios y Historial de Cambios';
-
-  @override
-  String get fileAnalyzer => 'Analizar archivo';
-
-  @override
-  String get fileDangerous => 'Peligroso';
-
-  @override
-  String get fileHighRisk => 'Alto riesgo';
-
-  @override
-  String get fileLowRisk => 'Bajo riesgo';
-
-  @override
-  String get fileMediumRisk => 'Riesgo medio';
-
-  @override
-  String get fileSafe => 'Seguro';
-
-  @override
-  String get finishText => 'Finalizar';
 
   @override
   String firstLessonProgress(Object current, Object total) {
@@ -1440,22 +533,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get fontSizeXLarge => 'Extra grande';
 
   @override
-  String get forceSync => 'Forzar sincronización';
-
-  @override
   String get free => 'Gratis';
-
-  @override
-  String get french => 'Francés';
-
-  @override
-  String get gachaChestTap => 'Cofre de gacha. Toca para mejorar.';
-
-  @override
-  String get gachaOrbFail => 'Sin cambios';
-
-  @override
-  String get gachaOrbSuccess => 'Mejora exitosa';
 
   @override
   String get gems => 'gemas';
@@ -1475,68 +553,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get greetingMorning => 'Buenos días';
 
   @override
-  String get habitMsg1 =>
-      '¡Gran trabajo! Ahora vamos a fortalecer tu disciplina diaria.';
-
-  @override
-  String get habitMsg2 =>
-      'Primer paso listo. Vamos a construir el hábito que te llevará a tu meta.';
-
-  @override
-  String get habitMsg3 =>
-      'Excelente rendimiento. El secreto ahora es la constancia.';
-
-  @override
-  String get habitMsg4 =>
-      '¡Bien hecho! Ahora configuremos el ritmo de tu progreso diario.';
-
-  @override
-  String get habitMsg5 =>
-      'Un comienzo perfecto. Aseguremos tu éxito construyendo un hábito inquebrantable.';
-
-  @override
-  String get habitTransition1 => 'Construyendo tu hábito diario...';
-
-  @override
-  String get habitTransition2 => 'La constancia es la clave';
-
-  @override
-  String get habitTransition3 => 'Estás progresando';
-
-  @override
-  String get habitTransition4 => '¡Sigue así!';
-
-  @override
-  String get habitTransition5 => '¡Ya casi!';
-
-  @override
   String get hapticFeedback => 'Vibración háptica';
 
   @override
   String get hapticSubtitle => 'Respuesta háptica en interacciones';
 
   @override
-  String get heatmapLess => 'Menos';
-
-  @override
-  String heatmapLessons(Object count) {
-    return '$count lecciones';
-  }
-
-  @override
-  String get heatmapMore => 'Más';
-
-  @override
-  String get heatmapTitle => 'Actividad reciente';
-
-  @override
   String get hidePassword => 'Ocultar contraseña';
-
-  @override
-  String get historyDeleted => 'Historial eliminado';
-
-  @override
-  String get historyTitle => 'Historial';
 
   @override
   String get homeAllComplete => '¡Todo completo!';
@@ -1559,162 +582,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get homeLearningPath => 'Ruta de aprendizaje';
 
   @override
-  String get homeTitle => 'Tu escudo digital está activo';
-
-  @override
   String get homeViewAchievements => 'Ver logros';
-
-  @override
-  String get howItWorks => 'Cómo funciona SAGEN';
-
-  @override
-  String get impactAch => 'Logros';
-
-  @override
-  String get impactActiveUsers => 'Usuarios activos';
-
-  @override
-  String get impactCommunity => 'Impacto Comunitario';
-
-  @override
-  String get impactCountriesReached => 'Países alcanzados';
-
-  @override
-  String get impactDonations => 'Total Donado';
-
-  @override
-  String get impactHoursLearned => 'Horas aprendidas';
-
-  @override
-  String get impactKnowledgeLevel => 'Conocimiento en ciberseguridad';
-
-  @override
-  String get impactLearningJourney => 'Tu Viaje de Aprendizaje';
-
-  @override
-  String get impactLessons => 'Lecciones completadas';
-
-  @override
-  String get impactLevelActiveLearner => 'Aprendiz activo';
-
-  @override
-  String get impactLevelAwareUser => 'Usuario consciente';
-
-  @override
-  String get impactLevelBeginner => 'Principiante';
-
-  @override
-  String get impactLevelCybersecurityExpert => 'Experto en Ciberseguridad';
-
-  @override
-  String get impactLevelDigitalGuardian => 'Guardián Digital';
-
-  @override
-  String impactProgressToNext(Object count) {
-    return '$count lecciones para el siguiente nivel';
-  }
-
-  @override
-  String get impactProtectedUsers => 'Usuarios protegidos';
-
-  @override
-  String get impactQuestionsAnswered => 'Preguntas respondidas';
-
-  @override
-  String get impactStreak => 'Racha actual';
-
-  @override
-  String get impactTestimonial => 'Lo que dicen los usuarios';
-
-  @override
-  String get impactTestimonial1 =>
-      'SAGEN me ayudó a proteger a mi familia del phishing. ¡Las lecciones interactivas son increíbles!';
-
-  @override
-  String get impactTestimonial2 =>
-      'Pasé de no saber nada de ciberseguridad a ayudar a mis colegas a mantenerse seguros en línea.';
-
-  @override
-  String get impactTestimonial3 =>
-      'La gamificación hace que aprender sea divertido. ¡Completé 30 lecciones en solo 2 semanas!';
-
-  @override
-  String get impactTitle => 'Mi Impacto';
-
-  @override
-  String get impactTotalLessons => 'Lecciones completadas';
-
-  @override
-  String get impactXp => 'XP obtenidos';
-
-  @override
-  String get impactYourLevel => 'TU NIVEL';
-
-  @override
-  String get impactYourStats => 'Tus estadísticas';
 
   @override
   String get incorrect => 'Incorrecto';
 
   @override
   String get incorrectAnswer => 'Respuesta incorrecta';
-
-  @override
-  String get infoSection => 'Información';
-
-  @override
-  String get initialAction => 'Comienza aquí';
-
-  @override
-  String get inventoryFocusElixir => 'Elixir de Foco';
-
-  @override
-  String get inventoryFocusElixirActivated =>
-      'Elixir de enfoque activado — x2 por 15 min';
-
-  @override
-  String get inventoryFocusElixirDesc => 'Multiplica EXP x2 durante 15 min';
-
-  @override
-  String get inventoryMonocleAvailable =>
-      'Monocle de Sage disponible para el siguiente desafío';
-
-  @override
-  String get inventoryPhoenixFeather => 'Pluma de Fénix';
-
-  @override
-  String get inventoryPhoenixFeatherDesc =>
-      'Revive tu racha si la perdiste hace menos de 24h';
-
-  @override
-  String get inventoryPhoenixFeatherRestored =>
-      'Pluma de Fénix: racha restaurada';
-
-  @override
-  String get inventorySagesMonocle => 'Monóculo del Sabio';
-
-  @override
-  String get inventorySagesMonocleDesc =>
-      'Elimina 2 respuestas incorrectas en un reto';
-
-  @override
-  String get inventoryShieldProtected => 'Escudo de Titanio: racha protegida';
-
-  @override
-  String get inventoryTitaniumShield => 'Escudo de Titanio';
-
-  @override
-  String get inventoryTitaniumShieldDesc =>
-      'Protege tu racha automáticamente si faltas un día';
-
-  @override
-  String get inventoryTitle => 'Inventario';
-
-  @override
-  String get inventoryUse => 'Usar';
-
-  @override
-  String get languageTitle => 'Idioma';
 
   @override
   String get languageSpanish => 'Español';
@@ -1732,19 +606,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get lastSync => 'Última sincronización';
 
   @override
-  String get learnSubtitle => 'Lecciones interactivas de seguridad digital';
-
-  @override
-  String get learnTitle => 'Aprender';
-
-  @override
-  String get learningPath => 'Tu camino de aprendizaje';
-
-  @override
   String get legalAnd => ' y ';
-
-  @override
-  String get legalPrivacy => 'Acepto la política de privacidad';
 
   @override
   String get legalRegisterAgree => 'Al registrarte aceptas nuestros ';
@@ -1754,14 +616,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get lessonComplete => 'Lección completada';
-
-  @override
-  String get lessonNoQuestions =>
-      'No hay preguntas disponibles para esta lección';
-
-  @override
-  String get lessonNoQuestionsHint =>
-      '¡Sage también tiene curiosidad! Vuelve pronto.';
 
   @override
   String get lessonPreparing => 'Preparando tus preguntas...';
@@ -1777,22 +631,6 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String lessonsCompleted(Object count) {
     return '$count lecciones completadas';
-  }
-
-  @override
-  String lessonsCompletedPlural(num count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '# lecciones completadas',
-      one: '# lección completada',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String lessonsCount(Object count) {
-    return '$count lecciones';
   }
 
   @override
@@ -1827,30 +665,7 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get lessonsNoAvailable =>
-      'No hay lecciones disponibles. Vuelve pronto.';
-
-  @override
   String get lessonsYourPath => 'Tu ruta de aprendizaje';
-
-  @override
-  String get levelAssessment0 => 'Principiante absoluto';
-
-  @override
-  String get levelAssessment1 => 'Principiante';
-
-  @override
-  String get levelAssessment2 => 'Intermedio';
-
-  @override
-  String get levelAssessment3 => 'Avanzado';
-
-  @override
-  String get levelAssessment4 => 'Experto';
-
-  @override
-  String get levelAssessmentQuestion =>
-      '¿Cuál es tu nivel actual en ciberseguridad?';
 
   @override
   String levelProgress(Object percent) {
@@ -1859,9 +674,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get loading => 'Cargando';
-
-  @override
-  String get madeWithLove => 'Hecho con ♥ para estudiantes';
 
   @override
   String get miniGameBackupDef => 'Copia de seguridad';
@@ -1978,11 +790,6 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String minutesPerDay(Object count) {
-    return '$count minutos por día';
-  }
-
-  @override
   String get missionActiveLearnerDesc => 'Completa 1 lección de seguridad.';
 
   @override
@@ -2000,12 +807,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get missionChatWithSageTitle => 'Chatea con Sage';
-
-  @override
-  String get missionConsistentProtectorDesc => 'Completa 3 lecciones hoy.';
-
-  @override
-  String get missionConsistentProtectorTitle => 'Protector constante';
 
   @override
   String get missionDigitalDetectiveDesc => 'Analiza un enlace sospechoso.';
@@ -2032,87 +833,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get missionPhishingHunterTitle => 'Cazador de Phishing';
-
-  @override
-  String missionProgress(Object percent) {
-    return 'Progreso de misión: $percent por ciento';
-  }
-
-  @override
-  String get missionThreeQueriesDesc =>
-      'Habla con Sage 3 veces sobre diferentes temas.';
-
-  @override
-  String get missionThreeQueriesTitle => '3 consultas';
-
-  @override
-  String get monthApr => 'Abr';
-
-  @override
-  String get monthApril => 'Abril';
-
-  @override
-  String get monthAug => 'Ago';
-
-  @override
-  String get monthAugust => 'Agosto';
-
-  @override
-  String get monthDec => 'Dic';
-
-  @override
-  String get monthDecember => 'Diciembre';
-
-  @override
-  String get monthFeb => 'Feb';
-
-  @override
-  String get monthFebruary => 'Febrero';
-
-  @override
-  String get monthJan => 'Ene';
-
-  @override
-  String get monthJanuary => 'Enero';
-
-  @override
-  String get monthJul => 'Jul';
-
-  @override
-  String get monthJuly => 'Julio';
-
-  @override
-  String get monthJun => 'Jun';
-
-  @override
-  String get monthJune => 'Junio';
-
-  @override
-  String get monthMar => 'Mar';
-
-  @override
-  String get monthMarch => 'Marzo';
-
-  @override
-  String get monthMay => 'Mayo';
-
-  @override
-  String get monthNov => 'Nov';
-
-  @override
-  String get monthNovember => 'Noviembre';
-
-  @override
-  String get monthOct => 'Oct';
-
-  @override
-  String get monthOctober => 'Octubre';
-
-  @override
-  String get monthSep => 'Sep';
-
-  @override
-  String get monthSeptember => 'Septiembre';
 
   @override
   String get motivationCareer => 'Carrera profesional';
@@ -2142,9 +862,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get motivationTravel => 'Viajar';
 
   @override
-  String get myAccount => 'Mi cuenta';
-
-  @override
   String get navChest => 'Cofre';
 
   @override
@@ -2160,19 +877,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get navSage => 'Sage';
 
   @override
-  String get never => 'Nunca';
-
-  @override
-  String get newBadge => 'NUEVO';
-
-  @override
-  String get newsUpdates => 'Novedades y actualizaciones';
-
-  @override
   String get nextText => 'Siguiente';
-
-  @override
-  String get noConnection => 'Sin conexión a internet.';
 
   @override
   String get noLessonsAvailable => 'No hay lecciones disponibles';
@@ -2187,121 +892,24 @@ class AppLocalizationsEs extends AppLocalizations {
   String get notFoundTitle => 'Página no encontrada';
 
   @override
-  String get notificationReminder =>
-      'Cinco minutos hoy pueden ayudarte mañana.';
-
-  @override
-  String get notificationStreakAlive => 'Tu racha sigue viva';
-
-  @override
-  String get notificationStreakLoss => 'Nunca es tarde para empezar otra vez.';
-
-  @override
-  String get notificationTip => 'Tu escudo digital te espera.';
-
-  @override
-  String get notificationsTitle => 'Notificaciones';
-
-  @override
-  String get offlineAction => 'Conéctate e inténtalo nuevamente.';
-
-  @override
-  String get offlineMessage => 'Sin conexión a internet.';
-
-  @override
-  String get offlineNoConnection => 'Sin conexión a internet';
-
-  @override
   String get offlineSavedForLater =>
       'Guardado sin conexión. Sincronizaremos pronto.';
-
-  @override
-  String get offlineSyncComplete => '¡Sincronización completada!';
-
-  @override
-  String get onbDiagnosisMsg =>
-      '¡Genial! Ajustaremos tu plan de entrenamiento para proteger tu conocimiento desde el primer día.';
-
-  @override
-  String get onbGoalCommit => 'MANTENTE COMPROMETIDO';
-
-  @override
-  String get onbGoalIntense => 'Intenso';
-
-  @override
-  String onbGoalMinPerDay(Object minutes) {
-    return '$minutes min/día';
-  }
-
-  @override
-  String get onbGoalNormal => 'Normal';
-
-  @override
-  String get onbGoalRelaxed => 'Relajado';
-
-  @override
-  String get onbGoalSerious => 'Serio';
-
-  @override
-  String get onbGoalTitle => '¿Cuál es tu meta de aprendizaje diario?';
-
-  @override
-  String get onbLevel0 => 'Cero absoluto (no sé qué es el phishing...)';
-
-  @override
-  String get onbLevel1 => 'Sé lo básico...';
-
-  @override
-  String get onbLevel2 => 'Nivel intermedio...';
-
-  @override
-  String get onbLevel3 => 'Nivel avanzado...';
-
-  @override
-  String get onbLevel4 => 'Experto en ciberseguridad...';
-
-  @override
-  String get onbLevelContinue => 'CONTINUAR';
-
-  @override
-  String get onbLevelQuestion => '¿Cuál es tu nivel actual en ciberseguridad?';
-
-  @override
-  String get onbLevelTitle => '¿Cuál es tu nivel actual en ciberseguridad?';
-
-  @override
-  String get onbMotivationCareer => 'Carrera profesional';
 
   @override
   String get onbMotivationCareerMsg => '¡Grandes razones para aprender!';
 
   @override
-  String get onbMotivationConnect => 'Conecta con personas';
-
-  @override
   String get onbMotivationConnectMsg => '¡Vamos a conectarte!';
-
-  @override
-  String get onbMotivationFun => 'Diviértete';
 
   @override
   String get onbMotivationFunMsg =>
       '¡Me encanta! Divertirme es mi especialidad.';
 
   @override
-  String get onbMotivationMind => 'Entrenar mi mente';
-
-  @override
   String get onbMotivationMindMsg => 'Es una decisión sabia.';
 
   @override
-  String get onbMotivationOther => 'Otro';
-
-  @override
   String get onbMotivationOtherMsg => '¡Entendido! Cuéntame más por el camino.';
-
-  @override
-  String get onbMotivationStudies => 'Estudios';
 
   @override
   String get onbMotivationStudiesMsg =>
@@ -2311,83 +919,11 @@ class AppLocalizationsEs extends AppLocalizations {
   String get onbMotivationTitle => '¿Por qué quieres dominar el mundo digital?';
 
   @override
-  String get onbMotivationTravel => 'Viajar';
-
-  @override
   String get onbMotivationTravelMsg =>
       '¡Nada supera viajar con tus dispositivos 100% protegidos!';
 
   @override
-  String get onbNotifActivate => 'ACTIVAR NOTIFICACIONES';
-
-  @override
-  String get onbNotifDesc =>
-      'Activa las notificaciones para no perderte tu racha, los recordatorios diarios y los desafíos importantes.';
-
-  @override
-  String get onbNotifSkip => 'Ahora no';
-
-  @override
-  String get onbNotifTitle => '¿Recibir notificaciones?';
-
-  @override
-  String get onbProjHackerMind => 'Forja una mentalidad de hacker';
-
-  @override
-  String get onbProjHackerMindDesc =>
-      'Recordatorios estratégicos, desafíos diarios y tácticas de defensa digital.';
-
-  @override
-  String get onbProjLockAccounts => 'Asegura tus cuentas';
-
-  @override
-  String get onbProjLockAccountsDesc =>
-      'Protege tus cuentas de redes sociales y videojuegos contra hackeos y robos.';
-
-  @override
-  String get onbProjNavImmunity => 'Navega con inmunidad';
-
-  @override
-  String get onbProjNavImmunityDesc =>
-      'Detecta estafas, enlaces maliciosos y phishing antes de hacer clic.';
-
-  @override
   String get onbProjectionTitle => '¡Esto es lo que dominarás en 3 meses!';
-
-  @override
-  String onbQuizIntro(Object count) {
-    return 'Responda $count preguntas rápidas antes de su primer entrenamiento digital';
-  }
-
-  @override
-  String get onbRecommended => 'RECOMENDADO';
-
-  @override
-  String get onbReferralFriends => 'Referir amigos';
-
-  @override
-  String get onbReferralGoogle => 'Búsqueda de Google';
-
-  @override
-  String get onbReferralOther => 'Otro';
-
-  @override
-  String get onbReferralPlayStore => 'Play Store';
-
-  @override
-  String get onbReferralQuestion => '¿Cómo descubriste la existencia de SAGEN?';
-
-  @override
-  String get onbReferralSocial => 'Instagram / Facebook';
-
-  @override
-  String get onbReferralTiktok => 'TikTok';
-
-  @override
-  String get onbReferralTitle => '¿Cómo descubriste SAGEN?';
-
-  @override
-  String get onbReferralYoutube => 'YouTube';
 
   @override
   String get onbRouteAvailable => 'Rutas de entrenamiento disponibles:';
@@ -2395,14 +931,6 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get onbRouteQuestion =>
       '¿Qué área del entorno digital te gustaría dominar primero?';
-
-  @override
-  String get onbRoutineMessage =>
-      '¡Elige tu rutina de entrenamiento y blindaje!';
-
-  @override
-  String get onbRoutineTitle =>
-      '¡Elige tu rutina de capacitación y protección!';
 
   @override
   String get onbStartingExperienced => '¿Ya tienes experiencia como hacker?';
@@ -2422,10 +950,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get onbStartingTitle => '¿Es tu primera vez en ciberdefensa?';
 
   @override
-  String get onbWelcomeMessage =>
-      '¡Hola! Soy Sagen. Estoy aquí para entrenarte, blindar tu entorno digital y convertirte en un experto.';
-
-  @override
   String get onbWelcomeMsg =>
       '¡Hola! Soy Sagen. Estoy aquí para entrenarte, proteger tu entorno digital y hacerte un experto.';
 
@@ -2433,15 +957,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get onboardingCommitButton => 'MANTENER MI COMPROMISO';
 
   @override
-  String get onboardingComplete => '¡Listo! Ya sabes detectar phishing básico.';
-
-  @override
   String get onboardingDesc =>
       'Tu asistente personal de seguridad digital.\nAprende, analiza y protégete gratis.';
-
-  @override
-  String get onboardingError =>
-      'Así actúan. Siempre verifican antes de confiar.';
 
   @override
   String get onboardingHaveAccount => 'Ya tengo una cuenta';
@@ -2463,16 +980,6 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get onboardingSageTwoWeeks =>
       'Dos semanas de constancia. ¡Eres imparable!';
-
-  @override
-  String get onboardingWelcome => 'Aprende a protegerte';
-
-  @override
-  String get onboardingWelcomeDesc =>
-      'SAGEN te enseña a navegar, detectar riesgos y proteger tu información en internet.';
-
-  @override
-  String get ourMission => 'Nuestra misión';
 
   @override
   String get owned => 'Obtenido';
@@ -2541,9 +1048,6 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get paymentCredited => '¡Acreditado!';
-
-  @override
   String get paymentGoHome => 'Ir al inicio';
 
   @override
@@ -2559,9 +1063,6 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get paymentPendingDescription =>
       'Tu pago está siendo procesado. Las donaciones se acreditarán una vez que el proveedor confirme el pago.';
-
-  @override
-  String get paymentReturnToSagen => 'Volver a SAGEN';
 
   @override
   String get paymentTryAgain => 'Intentar de nuevo';
@@ -2599,11 +1100,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get paywallMercadoPago => 'Mercado Pago';
-
-  @override
-  String paywallPackageAmount(Object gems) {
-    return '$gems donaciones';
-  }
 
   @override
   String paywallPackageLabel(Object label) {
@@ -2647,18 +1143,6 @@ class AppLocalizationsEs extends AppLocalizations {
   ) {
     return 'Hola, quiero donar $currencySymbol$price a SAGEN (Supporter $supporterLevel). Mi ID de usuario es: $userId';
   }
-
-  @override
-  String get portuguese => 'Portugués';
-
-  @override
-  String get preferencesTitle => 'Preferencias';
-
-  @override
-  String get preparingResults => 'Preparando resultados...';
-
-  @override
-  String get privacyLegal => 'Privacidad y legal';
 
   @override
   String get privacyPolicy => 'Política de privacidad';
@@ -2757,21 +1241,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get productDonationStandard => 'Super Supporter';
 
   @override
-  String get productDonations => 'Donaciones';
-
-  @override
-  String get productDonationsDesc => 'Donaciones para potenciar tu aprendizaje';
-
-  @override
-  String get productFortune => 'Fortuna';
-
-  @override
-  String get productFortunePack => 'Pack Fortuna';
-
-  @override
-  String get productFortunePackDesc => '300 donaciones + 1 Multiplicador de XP';
-
-  @override
   String get productLuck => 'Suerte';
 
   @override
@@ -2783,9 +1252,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get productLuckPackDesc => '250 donaciones + 1 Boost de Suerte';
-
-  @override
-  String get productOffer => 'Oferta';
 
   @override
   String get productPopular => 'Popular';
@@ -2807,13 +1273,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get productSupporter => 'Supporter';
 
   @override
-  String get productUltra => 'Ultra';
-
-  @override
   String get productXpBoostDesc => '1 Boost de XP (2x en tu próxima lección)';
-
-  @override
-  String get productXpMultiplierDesc => '1 Multiplicador de XP (2x en cofres)';
 
   @override
   String get profileAchievements => 'Logros';
@@ -2857,9 +1317,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get profileGemsSpent => 'Gastadas';
 
   @override
-  String get profileTitle => 'Mi Perfil';
-
-  @override
   String get profileTotalXp => 'XP Total';
 
   @override
@@ -2869,9 +1326,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String xpValue(int count) {
     return '$count XP';
   }
-
-  @override
-  String get progressRestored => 'Progreso restaurado desde la nube';
 
   @override
   String get projectionBenefit1Subtitle =>
@@ -2892,13 +1346,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get projectionBenefit3Title => 'Navega con seguridad';
-
-  @override
-  String get promoPostLessonSubtitle =>
-      'Con SAGEN Pass obtienes beneficios exclusivos';
-
-  @override
-  String get promoPostLessonTitle => '¡Sigue así! Desbloquea más';
 
   @override
   String get protectionBasic => 'Básico';
@@ -2937,17 +1384,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get protectionSecureMindDesc => 'La seguridad es parte de ti';
 
   @override
-  String questionProgress(Object current, Object total) {
-    return 'Pregunta $current de $total';
-  }
-
-  @override
   String questions(Object count) {
     return '$count preguntas';
   }
-
-  @override
-  String get quickActions => 'Acciones rápidas';
 
   @override
   String get quickChallengeDetectPhishing => 'Detecta phishing';
@@ -2965,67 +1404,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get quickChallengeWhatWouldYouDo => '¿Qué harías?';
 
   @override
-  String get quizAbandonContent => 'Perderás tu progreso actual.';
-
-  @override
-  String get quizAbandonExit => 'SALIR';
-
-  @override
-  String get quizAbandonMessage => 'Perderás tu progreso actual.';
-
-  @override
-  String get quizAbandonStay => 'CONTINUAR';
-
-  @override
-  String get quizAbandonTitle => '¿Salir?';
-
-  @override
-  String get quizBack => 'Atrás';
-
-  @override
-  String get quizCheck => 'VERIFICAR';
-
-  @override
-  String get quizCheckAnswer => 'VERIFICAR';
-
-  @override
-  String get quizContinue => 'CONTINUAR';
-
-  @override
-  String get quizContinueButton => 'CONTINUAR';
-
-  @override
-  String get quizDefaultTitle => 'Cuestionario';
-
-  @override
-  String get quizExit => 'SALIR';
-
-  @override
-  String get quizIntroAnswer => 'Responde';
-
-  @override
-  String get quizIntroBeforeTraining => 'Antes de tu entrenamiento';
-
-  @override
-  String get quizIntroFastQuestions => 'Preguntas rápidas';
-
-  @override
   String quizProgress(Object percent) {
     return 'Progreso del cuestionario: $percent por ciento';
   }
-
-  @override
-  String get quizProgressExpired =>
-      'El progreso del cuestionario ha expirado (más de 24 horas).';
-
-  @override
-  String get quizResumeButton => 'Reanudar';
-
-  @override
-  String get quizStartOver => 'Empezar de nuevo';
-
-  @override
-  String get quizTitleDefault => 'Cuestionario';
 
   @override
   String get rankActiveLearner => 'Aprendiz Activo';
@@ -3106,23 +1487,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get raritySilver => 'Plata';
 
   @override
-  String get reauthConfirm => 'Confirmar';
-
-  @override
-  String get reauthDesc =>
-      'Por razones de seguridad, por favor ingresa tu contraseña nuevamente';
-
-  @override
-  String get reauthOAuthInfo =>
-      'Iniciaste sesión con Google o Facebook. Confirma la eliminación de tu cuenta.';
-
-  @override
-  String get reauthTitle => 'Confirma tu contraseña';
-
-  @override
-  String get reauthWrongPassword => 'Contraseña incorrecta. Intenta de nuevo.';
-
-  @override
   String get recommended => 'RECOMENDADO';
 
   @override
@@ -3130,27 +1494,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get reduceAnimationsSubtitle => 'Reduce la intensidad de animaciones';
-
-  @override
-  String get referralSource1 => 'Recomendación de amigos';
-
-  @override
-  String get referralSource2 => 'Redes sociales';
-
-  @override
-  String get referralSource3 => 'Búsqueda de Google';
-
-  @override
-  String get referralSource4 => 'App Store';
-
-  @override
-  String get referralSource5 => 'YouTube';
-
-  @override
-  String get referralSource6 => 'TikTok';
-
-  @override
-  String get referralSource7 => 'Otro';
 
   @override
   String get regAgeQuestion => '¿Cuántos años tienes?';
@@ -3184,9 +1527,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get regLater => 'Más adelante';
-
-  @override
-  String get regMethodTitle => 'Elige tu método de registro';
 
   @override
   String get regNameHint => 'Nombre';
@@ -3225,43 +1565,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get regWelcomeSagen => '¡Bienvenido a SAGEN!';
-
-  @override
-  String get registerAgeEmpty => 'Por favor ingresa tu edad';
-
-  @override
-  String get registerAgeHint => 'Tu edad (mínimo 13)';
-
-  @override
-  String get registerAgeInvalid => 'Edad no válida';
-
-  @override
-  String get registerAgeMin => 'Debes tener al menos 13 años';
-
-  @override
-  String get registerWithApple => 'Regístrate con Apple';
-
-  @override
-  String get registerWithFacebook => 'Regístrate con Facebook';
-
-  @override
-  String get registerWithGoogle => 'Regístrate con Google';
-
-  @override
-  String get restartApp => 'Reiniciar app';
-
-  @override
-  String get restoreAction => 'Restaurar';
-
-  @override
-  String get restoreCloud => 'Restaurar desde la nube';
-
-  @override
-  String get restoreDesc =>
-      '¿Quieres restaurar tu progreso desde la nube? Esto reemplazará los datos locales con los datos guardados en tu cuenta.';
-
-  @override
-  String get restoreTitle => 'Restaurar progreso';
 
   @override
   String get resultAccuracy => 'Precisión';
@@ -3303,80 +1606,15 @@ class AppLocalizationsEs extends AppLocalizations {
   String get retry => 'Reintentar';
 
   @override
-  String get reviewComplete => '¡Repaso completo!';
-
-  @override
-  String get reviewCorrect => 'correctas';
-
-  @override
-  String get reviewFinish => 'Finalizar repaso';
-
-  @override
-  String get reviewGoodProgress => 'Buen avance';
-
-  @override
-  String get reviewKeepGoing => '¡Sigue así!';
-
-  @override
-  String get reviewKeepPracticing => 'Sigue practicando';
-
-  @override
-  String get reviewNoErrors => 'No hay errores que repasar';
-
-  @override
-  String get reviewSageGood =>
-      'Cada repaso fortalece tu escudo. ¿Listo para más?';
-
-  @override
-  String get reviewSageKeep =>
-      'Repasar es parte del aprendizaje. Puedes volver a intentarlo cuando quieras.';
-
-  @override
-  String get reviewSagePerfect =>
-      'Tus áreas débiles están mejorando. Noto tu esfuerzo.';
-
-  @override
-  String get reviewTitle => 'Repaso';
-
-  @override
   String get reward100Xp => '100 XP';
 
   @override
   String get reward200Exp => '200 EXP';
 
   @override
-  String rewardAdCooldown(Object seconds) {
-    return 'Disponible en $seconds segundos';
-  }
-
-  @override
-  String rewardAdEarned(Object count) {
-    return '¡Ganaste $count donaciones!';
-  }
-
-  @override
   String rewardAdEarnedGems(Object gems) {
     return '+$gems gemas';
   }
-
-  @override
-  String rewardAdEarnedXp(Object xp) {
-    return '¡+$xp XP ganados!';
-  }
-
-  @override
-  String get rewardAdNotAvailable =>
-      'El anuncio no está disponible ahora. Intenta más tarde.';
-
-  @override
-  String get rewardAdSubtitle =>
-      'Mira un anuncio y recibe donaciones al instante';
-
-  @override
-  String get rewardAdTitle => 'Gana donaciones extra';
-
-  @override
-  String get rewardAdWatch => 'Ver';
 
   @override
   String get rewardCopperFrame => 'Marco de Cobre';
@@ -3403,155 +1641,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get routeSelection3 => 'Ruta avanzada';
 
   @override
-  String sageAchievementUnlocked(Object name) {
-    return '$name¡Logro desbloqueado!';
-  }
-
-  @override
-  String sageAdvancing(Object levelHint, Object name) {
-    return '${name}Sigues avanzando.$levelHint';
-  }
-
-  @override
-  String get sageChatDescription =>
-      'Escribe cualquier duda sobre ciberseguridad o elige una sugerencia rápida.';
-
-  @override
-  String get sageChatHint => 'Pregunta a Sage...';
-
-  @override
-  String get sageChatTitle => 'Pregunta a Sage';
-
-  @override
-  String sageCongratulations(Object name) {
-    return '$name¡Felicidades!';
-  }
-
-  @override
-  String get sageCriticalError => 'Error crítico';
-
-  @override
-  String get sageEasterEgg => '¿Viste eso?';
-
-  @override
-  String sageEmptyState(Object name) {
-    return '${name}No hay nada aquí todavía';
-  }
-
-  @override
-  String sageGreatJob(Object name, Object extra) {
-    return '$name¡Excelente trabajo!$extra';
-  }
-
-  @override
-  String sageHighStreakDays(Object streak) {
-    return ' $streak días seguidos.';
-  }
-
-  @override
-  String get sageImportant => 'Esto es muy importante';
-
-  @override
-  String sageImpressiveStreak(Object name, Object days) {
-    return '$name¡Racha impresionante!$days';
-  }
-
-  @override
-  String sageLevelHint(Object level) {
-    return ' El nivel $level ya está cerca.';
-  }
-
-  @override
-  String get sageLoading => 'Dame un segundo...';
-
-  @override
-  String get sageMascot => 'Mascota Sage';
-
-  @override
   String get sageMonocleActive => 'Monóculo Sabio activo';
 
   @override
   String get sageMonocleButton => 'Usar Monóculo Sabio (elimina 2 incorrectas)';
-
-  @override
-  String get sageMotivational1 => '¡Eres increíble!';
-
-  @override
-  String get sageMotivational2 => '¡Sigue adelante, eres increíble!';
-
-  @override
-  String get sageMotivational3 => '¡Cada día más cerca de tu objetivo!';
-
-  @override
-  String get sageMotivational4 => '¡Yo creo en ti!';
-
-  @override
-  String get sageMotivational5 => 'No te rindas, ¡tú puedes!';
-
-  @override
-  String get sageMotivational6 => '¡Vamos a esta aventura juntos!';
-
-  @override
-  String get sageMotivational7 => '¡El esfuerzo rinde frutos!';
-
-  @override
-  String get sageMotivational8 => '¡Nunca dejes de aprender!';
-
-  @override
-  String get sagePerfect => '¡Perfecto!';
-
-  @override
-  String get sagePreparing => 'Preparando todo para ti';
-
-  @override
-  String get sageReadCarefully => 'Lee con atención';
-
-  @override
-  String get sageSomethingWrong => 'Algo salió mal';
-
-  @override
-  String sageStreakAmazing(Object streak) {
-    return '¡Tu racha de $streak días es increíble!';
-  }
-
-  @override
-  String sageStreakAtRisk(Object streak) {
-    return ' ¡No pierdas $streak días de esfuerzo!';
-  }
-
-  @override
-  String sageStreakAtRiskMessage(Object urgency, Object name) {
-    return '$name¡No pierdas tu racha!$urgency';
-  }
-
-  @override
-  String get sageStreakLost => ' Tienes el conocimiento para empezar de nuevo.';
-
-  @override
-  String sageStreakLostMessage(Object name, Object encouragement) {
-    return '${name}La racha se ha perdido.$encouragement';
-  }
-
-  @override
-  String sageTellMeMore(Object name) {
-    return '${name}Cuéntame más de ti';
-  }
-
-  @override
-  String get sageTryAgain => '¿Intentamos de nuevo?';
-
-  @override
-  String sageWelcomeBack(Object name) {
-    return '$name¡Bienvenido de vuelta!';
-  }
-
-  @override
-  String sageWhatDoYouThink(Object name) {
-    return '$name¿Qué crees que es correcto?';
-  }
-
-  @override
-  String get sagenPassClaim => 'Reclamar';
 
   @override
   String get sagenPassSupportSubtitle =>
@@ -3564,53 +1657,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get sagenPassTitle => 'Pase SAGEN';
 
   @override
-  String get savedQuizProgress =>
-      'Tienes un progreso guardado. ¿Te gustaría continuar?';
-
-  @override
-  String get scheduledDarkMode => 'Modo oscuro programado';
-
-  @override
-  String get scheduledDarkModeSubtitle => 'Activo/desactivo según horario';
-
-  @override
-  String get searchPlaceholder => 'Buscar...';
-
-  @override
-  String get selectFile => 'Seleccionar archivo';
-
-  @override
   String get selectedAnswer => 'Seleccionada';
 
   @override
   String get sendMessage => 'Enviar';
 
   @override
-  String get sessionAccuracyText1 => '¡Muy buena puntería!';
-
-  @override
-  String get sessionAccuracyText2 => 'Precisión quirúrgica.';
-
-  @override
-  String get sessionAccuracyText3 => 'Nivel experto alcanzado.';
-
-  @override
-  String get sessionAccuracyText4 => '¡Tirador certero de conocimiento!';
-
-  @override
-  String get sessionAccuracyText5 => 'Precisión casi perfecta.';
-
-  @override
-  String get sessionAccuracyText6 => 'Sin margen de error.';
-
-  @override
-  String get sessionAccuracyText7 => 'Impecable.';
-
-  @override
   String get sessionBackToMap => 'Volver al mapa';
-
-  @override
-  String get sessionClaimReward => 'RECLAMAR RECOMPENSA';
 
   @override
   String get sessionCorrect => '¡Correcto!';
@@ -3619,9 +1672,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String sessionCorrectAnswer(Object answer) {
     return 'Respuesta correcta: $answer';
   }
-
-  @override
-  String get sessionExp => 'EXP';
 
   @override
   String get sessionIncorrect => 'Incorrecto';
@@ -3637,15 +1687,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get sessionLoading => 'Cargando...';
 
   @override
-  String get sessionPrecision => 'PRECISIÓN';
-
-  @override
-  String get sessionQuestionsToAnswer => 'preguntas por responder';
-
-  @override
-  String get sessionReadyToLearn => '¿Listo para aprender?';
-
-  @override
   String get sessionRetry => 'Reintentar';
 
   @override
@@ -3655,162 +1696,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get sessionSelectAnswer => 'Selecciona una respuesta';
-
-  @override
-  String get sessionSpeedText1 => '¡Qué velocidad!';
-
-  @override
-  String get sessionSpeedText2 => 'Superaste el tiempo.';
-
-  @override
-  String get sessionSpeedText3 => 'A la velocidad de la luz.';
-
-  @override
-  String get sessionSpeedText4 => 'Reflejos de acero.';
-
-  @override
-  String get sessionSpeedText5 => 'Nadie puede alcanzarte hoy.';
-
-  @override
-  String get sessionSpeedText6 => '¡Tiempo récord!';
-
-  @override
-  String get sessionSpeedText7 => 'Velocidad supersónica.';
-
-  @override
-  String get sessionStandardText1 => '¡Lección completada!';
-
-  @override
-  String get sessionStandardText2 => 'Un paso más hacia tu meta.';
-
-  @override
-  String get sessionStandardText3 => 'El progreso es el camino.';
-
-  @override
-  String get sessionStandardText4 => 'Buen trabajo constante.';
-
-  @override
-  String get sessionStandardText5 => 'Sigue adelante, suma más días.';
-
-  @override
-  String get sessionStandardText6 => 'La constancia sobre todo.';
-
-  @override
-  String get sessionStandardText7 => 'La disciplina da resultados.';
-
-  @override
-  String get sessionStartQuiz => 'INICIAR CUESTIONARIO';
-
-  @override
-  String get sessionSummaryAccuracy => 'PRECISIÓN';
-
-  @override
-  String get sessionSummaryAccuracy1 => '¡Tu precisión es extraordinaria!';
-
-  @override
-  String get sessionSummaryAccuracy2 => '¡Excelente puntería!';
-
-  @override
-  String get sessionSummaryAccuracy3 => '¡Buen progreso!';
-
-  @override
-  String get sessionSummaryAccuracy4 => '¡Estás mejorando!';
-
-  @override
-  String get sessionSummaryAccuracy5 => '¡Gran esfuerzo!';
-
-  @override
-  String get sessionSummaryAccuracy6 => '¡Sigue aprendiendo!';
-
-  @override
-  String get sessionSummaryAccuracy7 => '¡Cada pregunta cuenta!';
-
-  @override
-  String get sessionSummaryExp => 'EXP';
-
-  @override
-  String get sessionSummaryGems => 'GEMAS';
-
-  @override
-  String get sessionSummaryReceiveReward => 'RECLAMAR RECOMPENSA';
-
-  @override
-  String get sessionSummaryReceiveRewardLabel => 'Recolectar recompensa';
-
-  @override
-  String get sessionSummarySpeed1 => '¡Velocidad relámpago!';
-
-  @override
-  String get sessionSummarySpeed2 => '¡Pensamiento rápido!';
-
-  @override
-  String get sessionSummarySpeed3 => '¡Aprendiz rápido!';
-
-  @override
-  String get sessionSummarySpeed4 => '¡Buen ritmo!';
-
-  @override
-  String get sessionSummarySpeed5 => '¡En el camino correcto!';
-
-  @override
-  String get sessionSummarySpeed6 => '¡Construyendo impulso!';
-
-  @override
-  String get sessionSummarySpeed7 => '¡Progreso constante!';
-
-  @override
-  String get sessionSummaryStandard1 => '¡Lección completada!';
-
-  @override
-  String get sessionSummaryStandard2 => '¡Bien hecho!';
-
-  @override
-  String get sessionSummaryStandard3 => '¡Buen trabajo!';
-
-  @override
-  String get sessionSummaryStandard4 => '¡Buen trabajo!';
-
-  @override
-  String get sessionSummaryStandard5 => '¡Lo lograste!';
-
-  @override
-  String get sessionSummaryStandard6 => '¡Otro paso adelante!';
-
-  @override
-  String get sessionSummaryStandard7 => '¡Sigue adelante!';
-
-  @override
-  String get sessionSummaryTime => 'TIEMPO';
-
-  @override
-  String get sessionTime => 'TIEMPO';
-
-  @override
-  String get settingsAmoledDark => 'AMOLED Oscuro';
-
-  @override
-  String get settingsAmoledDarkSubtitle =>
-      'Fondo #000000 puro para ahorrar batería';
-
-  @override
-  String get settingsAnalytics => 'Análisis anónimo';
-
-  @override
-  String get settingsAnalyticsDesc =>
-      'Ayuda a mejorar Sagen con datos de uso anónimos';
-
-  @override
-  String get settingsDeleteAccount => 'Eliminar cuenta';
-
-  @override
-  String get settingsDeleteAccountConfirm =>
-      '¿Estás seguro? Esta acción no se puede deshacer.';
-
-  @override
-  String get settingsExportData => 'Exportar datos';
-
-  @override
-  String get settingsFontSize => 'Tamaño de fuente';
 
   @override
   String get settingsLanguage => 'Idioma';
@@ -3830,22 +1715,7 @@ class AppLocalizationsEs extends AppLocalizations {
       'Recordatorios de racha y cofre diario';
 
   @override
-  String get settingsPrivacy => 'Privacidad';
-
-  @override
-  String get settingsReduceAnimations => 'Reducir animaciones';
-
-  @override
-  String get settingsSound => 'Sonido';
-
-  @override
-  String get settingsTheme => 'Tema';
-
-  @override
   String get settingsTitle => 'Ajustes';
-
-  @override
-  String get settingsVibration => 'Vibración';
 
   @override
   String get shareProfile => 'Compartir tarjeta de perfil';
@@ -3855,69 +1725,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get sharing => 'Compartiendo...';
-
-  @override
-  String get shopBgCyber => 'Fondo Cyberpunk';
-
-  @override
-  String get shopBgCyberDesc => 'Fondo de perfil futurista';
-
-  @override
-  String get shopBgMatrix => 'Fondo Matrix';
-
-  @override
-  String get shopBgMatrixDesc => 'Fondo de matriz verde';
-
-  @override
-  String get shopFrameDiamond => 'Marco de Diamante';
-
-  @override
-  String get shopFrameDiamondDesc => 'Marco de diamante exclusivo';
-
-  @override
-  String get shopFrameNeon => 'Marco Neón';
-
-  @override
-  String get shopFrameNeonDesc => 'Marco de perfil neón';
-
-  @override
-  String get shopItemAcquired => 'Obtenido';
-
-  @override
-  String get shopItemOwned => 'Obtenido';
-
-  @override
-  String get shopOwned => 'Obtenido';
-
-  @override
-  String get shopSageGolden => 'Sage Dorado';
-
-  @override
-  String get shopSageGoldenDesc => 'Skin dorada exclusiva';
-
-  @override
-  String get shopSageNeon => 'Sage Neón';
-
-  @override
-  String get shopSageNeonDesc => 'Skin neón cyan para Sage';
-
-  @override
-  String get shopSageShadow => 'Sage Sombra';
-
-  @override
-  String get shopSageShadowDesc => 'Piel oscura para Sage';
-
-  @override
-  String get shopTitleGuardian => 'Título de Guardián Digital';
-
-  @override
-  String get shopTitleGuardianDesc => 'Título de guardián';
-
-  @override
-  String get shopTitleHacker => 'Título de Hacker Ético';
-
-  @override
-  String get shopTitleHackerDesc => 'Título especial en el perfil';
 
   @override
   String get showPassword => 'Mostrar contraseña';
@@ -3933,9 +1740,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get soundsSubtitle => 'Efectos de sonido de la app';
-
-  @override
-  String get spanish => 'Español';
 
   @override
   String get speedSort2fa => 'Autenticación en dos pasos';
@@ -3975,54 +1779,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get splashTitle => 'SAGEN';
-
-  @override
-  String get stage1Subtitle => 'Fundamentos de seguridad digital';
-
-  @override
-  String get stage1Title => 'Fundamentos';
-
-  @override
-  String get stage2Subtitle => 'Identificar intentos de trampa';
-
-  @override
-  String get stage2Title => 'Phishing';
-
-  @override
-  String get stage3Subtitle => 'Crea claves seguras y protégete';
-
-  @override
-  String get stage3Title => 'Contraseñas';
-
-  @override
-  String get stage4Subtitle => 'Protege tu privacidad en plataformas';
-
-  @override
-  String get stage4Title => 'Redes Sociales';
-
-  @override
-  String get stage5Subtitle => 'Desinformación y sitios confiables';
-
-  @override
-  String get stage5Title => 'Navegación segura';
-
-  @override
-  String get stage6Subtitle => 'Controla tus datos personales';
-
-  @override
-  String get stage6Title => 'Privacidad Digital';
-
-  @override
-  String get stage7Subtitle => 'Protección completa para expertos';
-
-  @override
-  String get stage7Title => 'Ciberseguridad Avanzada';
-
-  @override
-  String get stage8Subtitle => 'Conviértete en un guardián digital';
-
-  @override
-  String get stage8Title => 'Experto Digital';
 
   @override
   String stageProgress(Object percent) {
@@ -4066,15 +1822,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get statusCompleted => 'completada';
 
   @override
-  String get storeAdEarnXp => 'Gana XP mirando';
-
-  @override
-  String get storeAdRewardMessage => '+1 Donación por ver el anuncio';
-
-  @override
-  String get storeAdWatchVideo => 'Ve un video de 30 segundos';
-
-  @override
   String storeBuyItem(Object cost, Object item) {
     return 'Comprar $item por $cost donaciones';
   }
@@ -4089,41 +1836,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get storeCategoryThemes => 'Temas';
 
   @override
-  String get storeChestAvailable => '¡Cofre Diario Disponible!';
-
-  @override
-  String get storeChestComeBack => 'Vuelve mañana';
-
-  @override
-  String storeChestExpiresIn(Object gems) {
-    return '$gems donados — expira a medianoche';
-  }
-
-  @override
-  String get storeChestRenews => 'Tu cofre se renueva cada día';
-
-  @override
-  String get storeClaimError =>
-      'No se pudo reclamar la recompensa. Por favor, inténtalo de nuevo.';
-
-  @override
   String storeConfirmMessage(Object cost, Object item) {
     return '¿Deseas comprar $item por $cost donaciones?';
   }
 
   @override
   String get storeConfirmTitle => 'Confirmar compra';
-
-  @override
-  String get storeDonate => 'Donar';
-
-  @override
-  String storeDonateSubtitle(Object price) {
-    return 'Desde $price';
-  }
-
-  @override
-  String get storeDonationsLabel => 'donaciones';
 
   @override
   String get storeGemTipAchievement => 'Logros: gemas según dificultad';
@@ -4149,12 +1867,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get storeHowToEarnGems => '¿Cómo conseguir gemas?';
-
-  @override
-  String get storeNoItems => 'No hay artículos disponibles en este momento.';
-
-  @override
-  String get storeOpen => 'Abrir';
 
   @override
   String get storePersonalization => 'Personalización';
@@ -4195,24 +1907,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get storeShieldLimitReached => 'Límite de protectores alcanzado';
 
   @override
-  String get storeSupport => 'Apóyanos';
-
-  @override
   String get storeSupportTiers => 'Niveles de apoyo';
 
   @override
-  String get storeThankYou => '¡Gracias por tu apoyo!';
-
-  @override
   String get storeTitle => 'Tienda';
-
-  @override
-  String get storeWatch => 'Ver';
-
-  @override
-  String storeWhatsappPackages(Object price) {
-    return 'Paquetes desde $price — Pago por WhatsApp';
-  }
 
   @override
   String get streakAchievements => 'Logros y medallas por constancia';
@@ -4221,67 +1919,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get streakBadge => 'RACHA';
 
   @override
-  String get streakChest100Message => '100 días. Leyenda.';
-
-  @override
-  String get streakChest100Title => '¡Racha de 100 días!';
-
-  @override
-  String get streakChest14Message => 'Dos semanas de constancia. ¡Sigue así!';
-
-  @override
-  String get streakChest14Title => '¡Racha de 14 días!';
-
-  @override
-  String get streakChest30Message => 'Un mes. Eres un Guardián Digital.';
-
-  @override
-  String get streakChest30Title => '¡Racha de 30 días!';
-
-  @override
-  String get streakChest7Message =>
-      'Una semana protegiendo tu identidad digital.';
-
-  @override
-  String get streakChest7Title => '¡Racha de 7 días!';
-
-  @override
-  String get streakCommitButton => 'MANTENER MI COMPROMISO';
-
-  @override
-  String get streakCurrent => 'Racha actual';
-
-  @override
-  String streakCurrentProgress(Object goal, Object current) {
-    return 'Racha actual: $current / $goal días';
-  }
-
-  @override
-  String get streakDayFri => 'Vie';
-
-  @override
   String get streakDayLabel => 'días de racha';
-
-  @override
-  String get streakDayMon => 'Lu';
-
-  @override
-  String get streakDayOfStreak => 'días de racha';
-
-  @override
-  String get streakDaySat => 'Sá';
-
-  @override
-  String get streakDaySun => 'Dom';
-
-  @override
-  String get streakDayThu => 'Jue';
-
-  @override
-  String get streakDayTue => 'T';
-
-  @override
-  String get streakDayWed => 'X';
 
   @override
   String streakDays(Object count) {
@@ -4294,45 +1932,6 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String streakDaysCountPlural(num count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '# días de racha',
-      one: '# día de racha',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String get streakEmotional100 => '100 días de protección constante. Leyenda.';
-
-  @override
-  String get streakEmotional14 =>
-      'Dos semanas de constancia. Tu escudo brilla.';
-
-  @override
-  String get streakEmotional3 =>
-      '3 días seguidos. Estás construyendo un hábito sólido.';
-
-  @override
-  String get streakEmotional30 =>
-      'Un mes de aprendizaje. Tu dedicación te hace un Guardián Digital.';
-
-  @override
-  String get streakEmotional50 => '50 días de protección digital constante.';
-
-  @override
-  String get streakEmotional7 =>
-      'Una semana protegiendo tu identidad digital. ¡Sigue así!';
-
-  @override
-  String get streakFireCard => 'Tarjeta de racha de fuego';
-
-  @override
-  String get streakFireCardA11y => 'Tarjeta de racha de fuego';
-
-  @override
   String get streakFireCardLabel => 'Racha de Fuego';
 
   @override
@@ -4340,9 +1939,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get streakFreezeDescription => 'Mantén tu racha al fallar un día';
-
-  @override
-  String get streakFreezeUsed => 'Un escudo de hielo protegió tu racha.';
 
   @override
   String get streakFrozen => 'Racha congelada';
@@ -4356,59 +1952,6 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get streakKeepAliveDesc =>
       'Completa una lección cada día para mantener tu racha.\nCada día cuenta para fortalecer tu escudo digital.';
-
-  @override
-  String get streakKeepCommitment => 'MANTENER MI COMPROMISO';
-
-  @override
-  String get streakLongest => 'Mejor racha';
-
-  @override
-  String get streakMessage100Days => '100 días. Leyenda.';
-
-  @override
-  String get streakMessage14Days => 'Dos semanas. Tu escudo brilla.';
-
-  @override
-  String get streakMessage30Days => 'Un mes. Eres un Guardián Digital.';
-
-  @override
-  String get streakMessage3Days => '3 días. Buen comienzo.';
-
-  @override
-  String get streakMessage50Days => '50 días de protección constante.';
-
-  @override
-  String get streakMessage7Days => '¡Una semana! Sigue así.';
-
-  @override
-  String get streakMessageActive =>
-      '¡Racha activa! La constancia es tu mejor arma hoy.';
-
-  @override
-  String get streakMessageAtRisk => '¡Tu racha está en riesgo!';
-
-  @override
-  String get streakMessageCloser => 'Un día más, un paso más hacia tu meta.';
-
-  @override
-  String get streakMessageEachDay =>
-      'Cada día cuenta. Tu compromiso te hace más fuerte.';
-
-  @override
-  String get streakMessageKeepGoing =>
-      '¡Sigue así! La disciplina de hoy es la victoria de mañana.';
-
-  @override
-  String get streakMessageKeepProtecting => '¡Sigue protegiéndote!';
-
-  @override
-  String get streakMessageNew =>
-      '¡Una nueva racha! Practica todos los días y ayuda a que crezca.';
-
-  @override
-  String get streakMessageStartActivities =>
-      'Completa actividades para iniciar tu racha.';
 
   @override
   String get streakMsg1 =>
@@ -4431,13 +1974,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get streakNoActiveStreak => 'Sin racha activa';
 
   @override
-  String get streakReminder => 'Recordatorios de racha';
-
-  @override
-  String get streakReminderSubtitle =>
-      'Recibe recordatorios para mantener tu racha';
-
-  @override
   String get streakRewards => 'Recompensas exclusivas al alcanzar metas';
 
   @override
@@ -4452,28 +1988,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get streakStrongerShield => 'Escudo más fuerte cada día';
 
   @override
-  String get streakTitle => 'Mi Racha';
-
-  @override
-  String get streakTitleShort => 'Racha';
-
-  @override
-  String get summarizeButton => 'Resumen rápido';
-
-  @override
   String get summaryCommitment => 'Compromiso';
 
   @override
   String get summaryDailyGoal => 'Meta diaria';
-
-  @override
-  String get summaryGoodWork => '¡Buen trabajo!';
-
-  @override
-  String get summaryInterest => 'Interés';
-
-  @override
-  String get summaryKeepPracticing => 'Sigue practicando';
 
   @override
   String get summaryKnowledge => 'Conocimiento';
@@ -4491,43 +2009,11 @@ class AppLocalizationsEs extends AppLocalizations {
   String get summaryOrigin => 'Origen';
 
   @override
-  String get summaryPerfect => '¡Perfecto!';
-
-  @override
   String get summaryReady =>
       'Todo listo para empezar tu viaje en seguridad digital.';
 
   @override
-  String summaryStreakDays(Object days) {
-    return '+$days día(s)';
-  }
-
-  @override
-  String get summaryXpBonus => 'Bonus XP';
-
-  @override
-  String get summaryXpEarned => 'XP ganado';
-
-  @override
-  String get supporterBadge => 'Supporter';
-
-  @override
-  String get syncSnackbar => 'Progreso sincronizado';
-
-  @override
-  String get syncStatus => 'Estado de sincronización';
-
-  @override
-  String get syncing => 'Sincronizando...';
-
-  @override
-  String get termsConditions => 'Términos y condiciones';
-
-  @override
   String get thankYouForSupport => '¡Gracias por tu apoyo!';
-
-  @override
-  String get themeDark => 'Oscuro';
 
   @override
   String get themeDarkLabel => 'Oscuro';
@@ -4536,40 +2022,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get themeLabel => 'Tema';
 
   @override
-  String get themeLight => 'Claro';
-
-  @override
   String get themeLightLabel => 'Claro';
 
   @override
-  String get themeSystem => 'Según el sistema';
-
-  @override
   String get themeSystemLabel => 'Sistema';
-
-  @override
-  String get themeTitle => 'Apariencia';
-
-  @override
-  String get tierBasic => 'Básico';
-
-  @override
-  String get tierCrystal => 'Cristal';
-
-  @override
-  String get tierGlow => 'Brillo';
-
-  @override
-  String get tierInactive => 'Inactivo';
-
-  @override
-  String get tierLegendary => 'Legendario';
-
-  @override
-  String get tierParticles => 'Partículas';
-
-  @override
-  String get totalProgress => 'Progreso total';
 
   @override
   String get tryAgain => 'Conéctate e inténtalo nuevamente.';
@@ -4613,33 +2069,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get tutorSampleTitle => 'Conversación de ejemplo';
-
-  @override
-  String get tutorTitle => 'Tutor IA';
-
-  @override
-  String get tutorialNext => 'Siguiente';
-
-  @override
-  String get tutorialSkip => 'Omitir';
-
-  @override
-  String get tutorialStart => '¡Vamos!';
-
-  @override
-  String get tutorialStep1 => '¡Hola! Soy Sage, tu guía de ciberseguridad.';
-
-  @override
-  String get tutorialStep2 =>
-      'Completa lecciones para ganar donaciones y subir de nivel.';
-
-  @override
-  String get tutorialStep3 =>
-      'Mantén tu racha diaria para desbloquear cofres especiales.';
-
-  @override
-  String get tutorialStep4 =>
-      'Tu misión: protege tu identidad digital. ¡Aprendamos juntos!';
 
   @override
   String get unknownLabel => 'Desconocido';
@@ -4708,9 +2137,6 @@ class AppLocalizationsEs extends AppLocalizations {
       'Pagos directos con Mercado Pago para paquetes de donaciones y bundles. También disponible el pago por WhatsApp.';
 
   @override
-  String get updateNew => 'NUEVO';
-
-  @override
   String get updateProgrammaticMascot => 'Mascota programática';
 
   @override
@@ -4732,26 +2158,11 @@ class AppLocalizationsEs extends AppLocalizations {
       'Se corrigieron 7 pruebas fallidas. Ahora todas las pruebas pasan correctamente (419 tests). 0 issues de análisis.';
 
   @override
-  String get updateTypeFeature => 'NUEVA FUNCIÓN';
-
-  @override
-  String get updateTypeFix => 'CORRECCIÓN';
-
-  @override
-  String get updateTypeImprovement => 'MEJORA';
-
-  @override
   String get updateTypedRoutes => 'Rutas tipadas con GoRouter Builder';
 
   @override
   String get updateTypedRoutesDesc =>
       'Las rutas de splash y welcome ahora son tipadas, detectando errores en tiempo de compilación.';
-
-  @override
-  String get updates => 'Actualizaciones';
-
-  @override
-  String get updatesTitle => 'Noticias y actualizaciones';
 
   @override
   String get verifyEmailCheckButton => 'Ya verifiqué';
@@ -4787,24 +2198,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get viewAchievements => 'Ver logros';
-
-  @override
-  String get viewAll => 'Ver todo';
-
-  @override
-  String get weeklyChestComplete => '¡Cofre semanal obtenido!';
-
-  @override
-  String get weeklyChestDesc =>
-      'Completa 5 misiones diarias para un cofre épico';
-
-  @override
-  String get weeklyChestProgress => 'Progreso del cofre semanal';
-
-  @override
-  String weeklyChestProgressCount(Object done, Object total) {
-    return '$done/$total';
-  }
 
   @override
   String get welcomeLoginButton => 'YA TENGO UNA CUENTA';
@@ -4910,12 +2303,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get wizardHaveFun => 'Divertirme';
 
   @override
-  String get wizardHowDidYouFind => '¿Cómo te enteraste de SAGEN?';
-
-  @override
-  String get wizardHowDidYouFindSage => 'Dime, ¿cómo nos encontraste?';
-
-  @override
   String get wizardHowFound => '¿Cómo conociste SAGEN?';
 
   @override
@@ -4926,12 +2313,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get wizardHowMuchKnowSage => '¿Qué tanto sabes del tema?';
-
-  @override
-  String get wizardHowMuchSage => '¿Cuánto sabes sobre el tema?';
-
-  @override
-  String get wizardHowMuchYouKnow => '¿Cuánto sabes sobre seguridad digital?';
 
   @override
   String get wizardHowPrefer => '¿Cómo prefieres aprender?';
@@ -5018,9 +2399,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get wizardVideos => 'Ver videos educativos';
 
   @override
-  String get wizardWelcome => '¡Bienvenido a SAGEN!';
-
-  @override
   String get wizardWelcomeSage =>
       '¡Hola! Soy Sage, tu guía de seguridad digital. ¿Empezamos?';
 
@@ -5044,9 +2422,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get wizardYouTube => 'YouTube';
 
   @override
-  String get xpBoostLabel => 'x2 Boost de XP';
-
-  @override
   String get xpLevelUp => 'Level Up!';
 
   @override
@@ -5055,85 +2430,16 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String xpRewardLabel(Object gems) {
-    return '+$gems XP';
-  }
-
-  @override
-  String get yourActivity => 'Tu actividad';
-
-  @override
-  String get yourLearning => 'Tu aprendizaje';
-
-  @override
-  String get xpLabel => 'XP';
-
-  @override
-  String get xpMultiplier => 'x2 XP';
-
-  @override
   String get chatTypingIndicator => 'Sage está escribiendo...';
 
   @override
   String get demoModeOffline => 'MODO DEMO — Sin conexión';
 
   @override
-  String get errorSync => 'Error de sincronización';
-
-  @override
-  String shareChestText(Object items, Object type) {
-    return '¡Obtuve $items de un cofre $type en SAGEN!';
-  }
-
-  @override
-  String get paymentMethodsLocal => 'WhatsApp / Yape / Plin';
-
-  @override
-  String get paymentMethodsMercadoPago => 'Mercado Pago';
-
-  @override
   String get streakFlame => 'Llama de racha';
 
   @override
-  String treasureChest(Object type) {
-    return 'Cofre del tesoro $type';
-  }
-
-  @override
-  String get errorRestart => 'Reiniciar';
-
-  @override
-  String get chatEmptyDesc =>
-      'Pregunta sobre ciberseguridad o elige una sugerencia rápida.';
-
-  @override
-  String get continueButton => 'Continuar';
-
-  @override
-  String get shareButton => 'Compartir';
-
-  @override
   String get tapToContinue => 'Toca para continuar';
-
-  @override
-  String get paymentSuccessful => 'Pago exitoso';
-
-  @override
-  String get errorLoadingQuestions => 'Error al cargar preguntas.';
-
-  @override
-  String get errorGenericShort => 'Error';
-
-  @override
-  String quizTimeRemaining(Object time) {
-    return 'Tiempo restante: $time';
-  }
-
-  @override
-  String get quizVerdictCorrect => 'Respuesta correcta';
-
-  @override
-  String get quizVerdictIncorrect => 'Respuesta incorrecta';
 
   @override
   String get exitQuizTitle => '¿Seguro que quieres salir de la lección?';
@@ -5167,21 +2473,6 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String expandSession(Object title) {
     return 'Expandir sesión: $title';
-  }
-
-  @override
-  String xpGainedLabel(Object xp) {
-    return '+$xp experiencia ganada';
-  }
-
-  @override
-  String accuracyPercentLabel(Object percent) {
-    return 'Precisión: $percent%';
-  }
-
-  @override
-  String timeLabel(Object time) {
-    return 'Tiempo: $time';
   }
 
   @override
@@ -5398,15 +2689,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get missionConstantProtectorDesc => 'Completa 3 lecciones hoy.';
-
-  @override
-  String get sageChipWhatIsPhishing => '¿Qué es el phishing?';
-
-  @override
-  String get sageChipCreateStrongPassword => 'Crear contraseña segura';
-
-  @override
-  String get sageChipIdentifyScam => 'Identificar una estafa';
 
   @override
   String get sageDailyLimitReached =>
