@@ -311,7 +311,10 @@ class LearningMemoryNotifier extends Notifier<LearningMemoryState> {
   }
 
   void _updateSession() {
-    final now = DateTime.now();
+    // NUEVO-fix (ronda 23): día y semana en UTC, la misma frontera que usa
+    // streak_provider para el calendario semanal. La medianoche local
+    // desfasaba `sessionsThisWeek` respecto a la racha en zonas != UTC.
+    final now = DateTime.now().toUtc();
     final lastDate = state.lastSessionDate;
     int sessionsThisWeek = state.sessionsThisWeek;
     DateTime? lastSessionDate = state.lastSessionDate;
