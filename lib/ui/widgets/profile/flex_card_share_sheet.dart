@@ -126,7 +126,7 @@ class _FlexCardShareSheetState extends ConsumerState<FlexCardShareSheet> {
           .read(shareServiceProvider)
           .shareImage(
             bytes,
-            text: AppLocalizations.of(context)?.flexCardJoinAlliance,
+            text: AppLocalizations.of(context)?.flexCardJoinAlliance ?? '',
             source: 'profile',
           );
     }

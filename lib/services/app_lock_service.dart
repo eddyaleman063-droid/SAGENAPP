@@ -1,5 +1,7 @@
+import 'package:flutter/widgets.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../l10n/app_localizations.dart';
 import 'app_logger.dart';
 
 /// Manages biometric app lock via local_auth.
@@ -44,8 +46,9 @@ class AppLockService {
 
     try {
       _isLocked = true;
+      final reason = localizedReason ?? await _biometricReason();
       final result = await _auth.authenticate(
-        localizedReason: localizedReason ?? 'Unlock SAGEN to continue',
+        localizedReason: reason,
         biometricOnly: false,
         sensitiveTransaction: true,
         persistAcrossBackgrounding: true,
@@ -66,5 +69,21 @@ class AppLockService {
   Future<bool> handleAppStart({String? localizedReason}) async {
     if (!await isEnabled) return true;
     return authenticate(localizedReason: localizedReason);
+  }
+
+  // NUEVO-fix: el prompt biométrico se localiza con la preferencia de idioma
+  // persistida (mismo patrón que _resolveErrorLocale en main.dart). Antes se
+  // mostraba 'Unlock SAGEN to continue' en inglés sin importar el idioma.
+  Future<String> _biometricReason() async {
+    const supported = ['es', 'en', 'fr', 'pt'];
+    final prefs = await _getPrefs();
+    final saved = prefs.getString('app_language');
+    if (saved != null && supported.contains(saved)) {
+      return lookupAppLocalizations(Locale(saved)).biometricReason;
+    }
+    final system =
+        WidgetsBinding.instance.platformDispatcher.locale.languageCode;
+    final locale = supported.contains(system) ? system : 'es';
+    return lookupAppLocalizations(Locale(locale)).biometricReason;
   }
 }

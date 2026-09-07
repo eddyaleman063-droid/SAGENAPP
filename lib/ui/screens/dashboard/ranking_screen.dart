@@ -408,7 +408,7 @@ class _RankingFlexCardShareSheetState
             .read(shareServiceProvider)
             .shareImage(
               bytes,
-              text: AppLocalizations.of(context)?.flexCardJoinAlliance,
+              text: AppLocalizations.of(context)?.flexCardJoinAlliance ?? '',
               source: 'ranking',
             );
       }

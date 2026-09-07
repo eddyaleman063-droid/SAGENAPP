@@ -12,7 +12,7 @@ void main() {
 
     test('shareImage returns false when platform unavailable', () async {
       final service = ShareService.instance;
-      final result = await service.shareImage(Uint8List(0));
+      final result = await service.shareImage(Uint8List(0), text: 'test');
       expect(result, false);
     });
   });

@@ -17,7 +17,7 @@ class ShareService {
 
   Future<bool> shareImage(
     Uint8List imageBytes, {
-    String? text,
+    required String text,
     String? source,
   }) async {
     File? file;
@@ -29,10 +29,7 @@ class ShareService {
       await file.writeAsBytes(imageBytes);
 
       await SharePlus.instance.share(
-        ShareParams(
-          files: [XFile(file.path)],
-          text: text ?? 'Join my alliance on SAGEN',
-        ),
+        ShareParams(files: [XFile(file.path)], text: text),
       );
       if (source != null) {
         _analytics.trackFlexCardShared(source);
