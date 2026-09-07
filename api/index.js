@@ -296,7 +296,7 @@ app.post('/api/createPaymentPreference', requireAuth, rateLimit, async (req, res
         items: [{
           id: productId,
           title: pkg.title,
-          description: `Donación de $${amount} para SAGEN`,
+          description: `S/ ${Number(pkg.price).toFixed(2)} donation`,
           quantity: 1,
           unit_price: pkg.price,
           currency_id: 'PEN',
@@ -415,7 +415,11 @@ app.post('/api/handlePaymentWebhook', async (req, res) => {
     const externalRef = payment.external_reference || '';
     const extParts = externalRef.split('|');
     const userId = payment.metadata?.userId || extParts[0] || '';
-    const amount = parseInt(payment.metadata?.amount || extParts[1], 10);
+    // NUEVO-fix (ronda 27): parseFloat en lugar de parseInt. 'sagen_pass'
+    // tiene amount 9.90; parseInt('9.9') truncaba la acreditacion a 9.00.
+    const amount = parseFloat(
+      String(payment.metadata?.amount || extParts[1] || '').replace(',', '.'),
+    );
     const productId = payment.metadata?.productId || extParts[2] || null;
 
     if (payment.status !== 'approved') {

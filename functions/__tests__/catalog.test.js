@@ -85,6 +85,15 @@ describe('shared catalog module', () => {
     expect(indexSrc).toContain("require('./catalog')");
     expect(apiSrc).toContain("require('../functions/catalog')");
   });
+
+  test('ronda 27: ningun backend trunca montos decimales con parseInt', () => {
+    const indexSrc = require('fs').readFileSync(require('path').join(__dirname, '..', 'index.js'), 'utf8');
+    const apiSrc = require('fs').readFileSync(require('path').join(__dirname, '..', '..', 'api', 'index.js'), 'utf8');
+    expect(indexSrc).not.toMatch(/parseInt\(payment\.metadata\.\?\.amount/);
+    expect(apiSrc).not.toMatch(/parseInt\(payment\.metadata\.\?\.amount/);
+    expect(indexSrc).toContain('parseFloat(');
+    expect(apiSrc).toContain('parseFloat(');
+  });
 });
 
 describe('catalog contract (Cloud Functions)', () => {
