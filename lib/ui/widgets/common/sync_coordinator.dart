@@ -21,8 +21,7 @@ class SyncCoordinator extends ConsumerStatefulWidget {
 
 class _SyncCoordinatorState extends ConsumerState<SyncCoordinator> {
   @override
-  void initState() {
-    super.initState();
+  Widget build(BuildContext context) {
     ref.listen(authProvider, (prev, next) {
       if (next.isAuthenticated) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -56,6 +55,7 @@ class _SyncCoordinatorState extends ConsumerState<SyncCoordinator> {
         });
       }
     });
+    return widget.child;
   }
 
   void _safeReload(String name, VoidCallback reload) {
@@ -72,7 +72,4 @@ class _SyncCoordinatorState extends ConsumerState<SyncCoordinator> {
       }
     }
   }
-
-  @override
-  Widget build(BuildContext context) => widget.child;
 }
