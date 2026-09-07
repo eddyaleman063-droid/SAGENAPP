@@ -320,9 +320,13 @@ class _SagenAppState extends ConsumerState<SagenApp> {
           child: AmbientBackground(
             child: MaterialApp.router(
               builder: (context, child) {
-                final fontScale = ref.watch(
-                  experienceServiceProvider.select((s) => s.fontSizeScale),
-                );
+                // NUEVO-fix (ronda 17): escucha el puente de ExperienceService
+                // para que fontSizeScale se recompute en caliente cuando cambie
+                // la preferencia (no se estanca con el valor cacheado).
+                ref.watch(experienceChangeCounterProvider);
+                final fontScale = ref
+                    .watch(experienceServiceProvider)
+                    .fontSizeScale;
                 final safeScale = fontScale.clamp(0.8, 1.5);
                 return MediaQuery(
                   data: MediaQuery.of(

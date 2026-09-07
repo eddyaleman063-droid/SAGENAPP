@@ -147,8 +147,34 @@ final analyticsServiceProvider = Provider<AnalyticsService>((ref) {
   return AnalyticsService.instance;
 });
 
+// NUEVO-fix (ronda 17): se mantiene como Provider (no ChangeNotifierProvider)
+// a propósito: el ChangeNotifierProvider legacy hace dispose del notifier al
+// desmontarse el container, y como ExperienceService es un singleton compartido
+// por ~100 call sites, el siguiente test/uso posterior recibia "used after
+// being disposed". La reactividad se propaga vía el puente de abajo
+// (experienceServiceBridgeProvider + experienceChangeCounterProvider).
 final experienceServiceProvider = Provider<ExperienceService>((ref) {
   return ExperienceService.instance;
+});
+
+// NUEVO-fix (ronda 17): contador que se incrementa cada vez que el singleton
+// ExperienceService (ChangeNotifier) notifica. Los consumidores reactivos lo
+// watch-ean para recomputarse con la preferencia vigente sin poseer el objeto.
+final experienceChangeCounterProvider = StateProvider<int>((ref) => 0);
+
+// NUEVO-fix (ronda 17): puente ChangeNotifier→Riverpod. Vive en el container
+// raíz (no-autoDispose) y engancha notifyListeners del singleton compartido
+// incrementando [experienceChangeCounterProvider]. No es un ChangeNotifierProvider
+// para no hacer dispose del singleton. En los tests el bridge se instancia en el
+// PROVIDER (container) de turno y se limpia en teardown con ref.onDispose.
+final experienceServiceBridgeProvider = Provider<void>((ref) {
+  void onChange() {
+    ref.read(experienceChangeCounterProvider.notifier).state++;
+  }
+
+  final exp = ref.read(experienceServiceProvider);
+  exp.addListener(onChange);
+  ref.onDispose(() => exp.removeListener(onChange));
 });
 
 final connectivityServiceProvider = Provider<ConnectivityService>((ref) {

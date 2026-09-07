@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:ui' as ui;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'app_logger.dart';
@@ -11,7 +12,13 @@ import 'feedback_coordinator.dart';
 /// Detects low-end devices via [LowEndDeviceDetector], adapts animation
 /// durations and quality settings accordingly, and provides haptic
 /// and visual feedback coordination.
-class ExperienceService {
+///
+/// Extiende [ChangeNotifier] para que los widgets reaccionen a cambios de
+/// sonido/hápticos/animaciones/fuente sin reiniciar la app. `experienceServiceProvider`
+/// lo expone como lectura; el puente `experienceServiceBridgeProvider` + contador
+/// propaga cada notificación a los dependientes de Riverpod sin poseer/dispensar
+/// el singleton.
+class ExperienceService extends ChangeNotifier {
   final LowEndDeviceDetector _detector;
 
   ExperienceService({LowEndDeviceDetector? detector})
@@ -93,15 +100,28 @@ class ExperienceService {
   Future<void> setSoundEnabled(bool v) async {
     _soundEnabled = v;
     final p = _prefs;
-    if (p == null) return;
-    await p.setBool('sound_enabled', v);
+    if (p != null) {
+      await p.setBool('sound_enabled', v);
+    }
+    notifyListeners();
   }
 
   Future<void> setHapticEnabled(bool v) async {
     _hapticEnabled = v;
     final p = _prefs;
-    if (p == null) return;
-    await p.setBool('haptic_enabled', v);
+    if (p != null) {
+      await p.setBool('haptic_enabled', v);
+    }
+    notifyListeners();
+  }
+
+  Future<void> setReduceAnimations(bool v) async {
+    _reduceAnimations = v;
+    final p = _prefs;
+    if (p != null) {
+      await p.setBool('reduce_animations', v);
+    }
+    notifyListeners();
   }
 
   void lightHaptic() {

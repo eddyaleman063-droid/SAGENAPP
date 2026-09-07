@@ -13,7 +13,15 @@ final isLowEndDeviceProvider = Provider<bool>((ref) {
 });
 
 final reduceAnimationsProvider = Provider<bool>((ref) {
-  return ref.read(lowEndDeviceDetectorProvider).reduceAnimations;
+  // NUEVO-fix (ronda 17): el flag del usuario (Ajustes → Reducir animaciones)
+  // se combina con la reducción automática por tier del hardware. Antes solo
+  // se respetaba la del dispositivo y la preferencia persistida era inerte.
+  // El watch del puente + contador hace que al alternar el toggle el valor
+  // se recalcule en vivo (los demás dependientes se invalidan).
+  ref.watch(experienceServiceBridgeProvider);
+  ref.watch(experienceChangeCounterProvider);
+  final userReduced = ref.watch(experienceServiceProvider).reduceAnimations;
+  return userReduced || ref.read(lowEndDeviceDetectorProvider).reduceAnimations;
 });
 
 final reduceBlurProvider = Provider<bool>((ref) {

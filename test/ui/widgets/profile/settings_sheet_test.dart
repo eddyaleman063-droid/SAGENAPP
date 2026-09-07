@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/providers/providers.dart';
+import 'package:sagen/services/experience_service.dart';
 import 'package:sagen/ui/widgets/profile/settings_sheet.dart';
 import 'package:sagen/ui/widgets/profile/theme_selector.dart';
 
@@ -35,12 +36,18 @@ class _MockLanguageNotifier extends LanguageNotifier {
   LanguageState build() => const LanguageState(language: AppLanguage.es);
 }
 
-Widget createTestApp(SharedPreferences prefs) => ProviderScope(
+Widget createTestApp(
+  SharedPreferences prefs, {
+  ExperienceService? experience,
+}) => ProviderScope(
   overrides: [
     prefsProvider.overrideWithValue(prefs),
     authProvider.overrideWith(_MockAuthNotifier.new),
     themeProvider.overrideWith(_MockThemeNotifier.new),
     languageProvider.overrideWith(_MockLanguageNotifier.new),
+    experienceServiceProvider.overrideWith(
+      (ref) => experience ?? ExperienceService(),
+    ),
   ],
   child: MaterialApp(
     theme: ThemeData(),
@@ -142,6 +149,86 @@ void main() {
             w.constraints!.maxHeight == 4,
       );
       expect(dragHandle, findsOneWidget);
+    });
+  });
+
+  group('SettingsSheet — experience toggles', () {
+    Future<ExperienceService> pumpSheet(
+      WidgetTester tester,
+      SharedPreferences prefs,
+    ) async {
+      final exp = ExperienceService();
+      await exp.init(prefs);
+      tester.view.physicalSize = const Size(1080, 1920);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      await tester.pumpWidget(createTestApp(prefs, experience: exp));
+      await tester.pumpAndSettle();
+      return exp;
+    }
+
+    testWidgets('renders sound, haptics and reduce animations switches', (
+      tester,
+    ) async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      await pumpSheet(tester, prefs);
+
+      expect(find.text('Sonidos'), findsOneWidget);
+      expect(find.text('Vibración háptica'), findsOneWidget);
+      expect(find.text('Reducir animaciones'), findsOneWidget);
+      expect(find.byType(SwitchListTile), findsNWidgets(3));
+    });
+
+    testWidgets('toggling sound off persists and updates the switch', (
+      tester,
+    ) async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final exp = await pumpSheet(tester, prefs);
+
+      expect(exp.soundEnabled, isTrue);
+      await tester.tap(find.text('Sonidos'));
+      await tester.pumpAndSettle();
+
+      expect(exp.soundEnabled, isFalse);
+      expect(prefs.getBool('sound_enabled'), isFalse);
+    });
+
+    testWidgets('toggling haptics off persists and updates the switch', (
+      tester,
+    ) async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final exp = await pumpSheet(tester, prefs);
+
+      expect(exp.hapticEnabled, isTrue);
+      await tester.tap(find.text('Vibración háptica'));
+      await tester.pumpAndSettle();
+
+      expect(exp.hapticEnabled, isFalse);
+      expect(prefs.getBool('haptic_enabled'), isFalse);
+    });
+
+    testWidgets('reduceAnimationsProvider reflects the toggled preference', (
+      tester,
+    ) async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final exp = await pumpSheet(tester, prefs);
+
+      expect(exp.reduceAnimations, isFalse);
+      final container = ProviderScope.containerOf(
+        tester.element(find.byType(SettingsSheet)),
+      );
+      expect(container.read(reduceAnimationsProvider), isFalse);
+
+      await tester.tap(find.text('Reducir animaciones'));
+      await tester.pumpAndSettle();
+
+      expect(exp.reduceAnimations, isTrue);
+      expect(prefs.getBool('reduce_animations'), isTrue);
+      expect(container.read(reduceAnimationsProvider), isTrue);
     });
   });
 }
