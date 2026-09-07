@@ -134,11 +134,6 @@ class DeepLinkService {
     }
   }
 
-  Uri buildProfileDeepLink(String uid) => Uri.parse('sagen://profile?uid=$uid');
-  Uri buildRankingDeepLink() => Uri.parse('sagen://ranking');
-  Uri buildLessonDeepLink(String stageId) =>
-      Uri.parse('sagen://lesson?stageId=$stageId');
-
   void requestTabSwitch(int index) => _tabSwitchController.add(index);
 
   Future<void> dispose() async {

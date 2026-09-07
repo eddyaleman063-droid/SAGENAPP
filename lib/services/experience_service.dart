@@ -104,27 +104,6 @@ class ExperienceService {
     await p.setBool('haptic_enabled', v);
   }
 
-  Future<void> setReduceAnimations(bool v) async {
-    _reduceAnimations = v;
-    final p = _prefs;
-    if (p == null) return;
-    await p.setBool('reduce_animations', v);
-  }
-
-  Future<void> setFontSizeScale(double value) async {
-    _fontSizeScale = value.clamp(0.8, 1.5);
-    final p = _prefs;
-    if (p == null) return;
-    await p.setDouble('font_scale', _fontSizeScale);
-  }
-
-  Future<void> setNotificationsEnabled(bool value) async {
-    _notificationsEnabled = value;
-    final p = _prefs;
-    if (p == null) return;
-    await p.setBool('notifications_enabled', value);
-  }
-
   void lightHaptic() {
     if (!_hapticEnabled) return;
     HapticFeedback.lightImpact();

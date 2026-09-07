@@ -39,7 +39,7 @@ const SAGEN_PASS_REWARD = (level) => {
 /**
  * Firestore-based distributed rate limiting.
  */
-async function checkDistributedRateLimit(uid, windowMs, maxRequests) {
+async function checkDistributedRateLimit(uid, windowMs, maxRequests, field = 'timestamps') {
   const now = Date.now();
   const windowStart = now - windowMs;
   const bucketRef = admin.firestore().doc(`rate_limits/${uid}`);
@@ -48,20 +48,20 @@ async function checkDistributedRateLimit(uid, windowMs, maxRequests) {
     const result = await admin.firestore().runTransaction(async (transaction) => {
       const doc = await transaction.get(bucketRef);
       const data = doc.data() || {};
-      const timestamps = (data.timestamps || []).filter(t => t > windowStart);
+      const timestamps = (data[field] || []).filter(t => t > windowStart);
 
       if (timestamps.length >= maxRequests) {
         return { allowed: false, remaining: 0 };
       }
 
       timestamps.push(now);
-      transaction.set(bucketRef, { timestamps }, { merge: true });
+      transaction.set(bucketRef, { [field]: timestamps }, { merge: true });
       return { allowed: true, remaining: maxRequests - timestamps.length };
     });
     return result;
   } catch (e) {
     // If Firestore is unavailable, reject the request (fail-closed for security)
-    functions.logger.error('Rate limit check failed, rejecting request', { uid, error: e.message });
+    functions.logger.error('Rate limit check failed, rejecting request', { uid, field, error: e.message });
     return { allowed: false, remaining: 0 };
   }
 }
@@ -74,7 +74,7 @@ exports.claimDailyChest = functions.runWith({ maxInstances: 5 }).https.onCall(as
   requireVerifiedUser(context);
 
   const userId = context.auth.uid;
-  const rateCheck = await checkDistributedRateLimit(userId, 60 * 1000, 5);
+  const rateCheck = await checkDistributedRateLimit(userId, 60 * 1000, 5, 'chest_claim_timestamps');
   if (!rateCheck.allowed) {
     throw new functions.https.HttpsError('resource-exhausted', 'Demasiadas solicitudes');
   }
@@ -218,7 +218,7 @@ exports.claimSagenPassReward = functions.runWith({ maxInstances: 5 }).https.onCa
   requireVerifiedUser(context);
 
   const userId = context.auth.uid;
-  const rateCheck = await checkDistributedRateLimit(userId, 60 * 1000, 10);
+  const rateCheck = await checkDistributedRateLimit(userId, 60 * 1000, 10, 'sagenpass_claim_timestamps');
   if (!rateCheck.allowed) {
     throw new functions.https.HttpsError('resource-exhausted', 'Demasiadas solicitudes');
   }
@@ -406,6 +406,10 @@ exports.getDailyChestStatus = functions.runWith({ maxInstances: 5 }).https.onCal
   requireVerifiedUser(context);
 
   const userId = context.auth.uid;
+  const rateCheck = await checkDistributedRateLimit(userId, 60 * 1000, 30, 'chest_status_timestamps');
+  if (!rateCheck.allowed) {
+    throw new functions.https.HttpsError('resource-exhausted', 'Demasiadas solicitudes');
+  }
   const userRef = admin.firestore().doc(`users/${userId}`);
 
   try {
@@ -438,7 +442,7 @@ exports.rollChestDrop = functions.runWith({ maxInstances: 5 }).https.onCall(asyn
   requireVerifiedUser(context);
 
   const userId = context.auth.uid;
-  const rateCheck = await checkDistributedRateLimit(userId, 60 * 1000, 10);
+  const rateCheck = await checkDistributedRateLimit(userId, 60 * 1000, 10, 'chest_roll_timestamps');
   if (!rateCheck.allowed) {
     throw new functions.https.HttpsError('resource-exhausted', 'Demasiadas solicitudes');
   }
@@ -707,7 +711,7 @@ exports.claimAdReward = functions.runWith({ maxInstances: 3 }).https.onCall(asyn
   requireVerifiedUser(context);
 
   const userId = context.auth.uid;
-  const rateCheck = await checkDistributedRateLimit(userId, 60 * 1000, 10);
+  const rateCheck = await checkDistributedRateLimit(userId, 60 * 1000, 10, 'ad_claim_timestamps');
   if (!rateCheck.allowed) {
     throw new functions.https.HttpsError('resource-exhausted', 'Demasiadas solicitudes');
   }

@@ -1867,6 +1867,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get miniGameBackupDef => 'Copia de seguridad';
 
   @override
+  String get miniGameBackupTerm => 'Backup';
+
+  @override
   String get miniGameComplete => '¡Completado!';
 
   @override
@@ -1882,10 +1885,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get miniGameFirewallDef => 'Barrera de seguridad de red';
 
   @override
+  String get miniGameFirewallTerm => 'Firewall';
+
+  @override
   String get miniGameHiddenCard => 'Carta oculta';
 
   @override
   String get miniGameMalwareDef => 'Software malicioso';
+
+  @override
+  String get miniGameMalwareTerm => 'Malware';
 
   @override
   String get miniGameMatches => 'Aciertos';
@@ -1915,6 +1924,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get miniGamePhishingDef => 'Correo falso que roba datos';
 
   @override
+  String get miniGamePhishingTerm => 'Phishing';
+
+  @override
   String get miniGamePlayAgain => 'Jugar de nuevo';
 
   @override
@@ -1941,6 +1953,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get miniGameVpnDef => 'Red privada virtual';
+
+  @override
+  String get miniGameVpnTerm => 'VPN';
 
   @override
   String get miniGameWatch => 'Ver';

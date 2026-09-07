@@ -271,8 +271,8 @@ class SessionNotifier extends AutoDisposeNotifier<SessionState> {
         DateTime.now().toIso8601String(),
         firstUnansweredId,
       ]);
-    } catch (e) {
-      AppLogger().warning('SessionNotifier._saveProgress failed: $e');
+    } catch (e, stack) {
+      AppLogger().warning('SessionNotifier._saveProgress failed', e, stack);
     }
   }
 
@@ -280,8 +280,8 @@ class SessionNotifier extends AutoDisposeNotifier<SessionState> {
     try {
       final prefs = ref.read(prefsProvider);
       await prefs.remove(_progressKey);
-    } catch (e) {
-      AppLogger().warning('SessionNotifier._clearProgress failed: $e');
+    } catch (e, stack) {
+      AppLogger().warning('SessionNotifier._clearProgress failed', e, stack);
     }
   }
 
@@ -300,8 +300,8 @@ class SessionNotifier extends AutoDisposeNotifier<SessionState> {
       _lastStageId = '';
       _lastLessonId = '';
       state = const SessionState();
-    } catch (e) {
-      AppLogger().warning('SessionNotifier.clearAllProgress failed: $e');
+    } catch (e, stack) {
+      AppLogger().warning('SessionNotifier.clearAllProgress failed', e, stack);
     }
   }
 
@@ -407,8 +407,8 @@ class SessionNotifier extends AutoDisposeNotifier<SessionState> {
     try {
       final prefs = ref.read(prefsProvider);
       await prefs.remove('lesson_progress_$stageId/$lessonId');
-    } catch (e) {
-      AppLogger().warning('SessionNotifier.discardResume failed: $e');
+    } catch (e, stack) {
+      AppLogger().warning('SessionNotifier.discardResume failed', e, stack);
     }
   }
 

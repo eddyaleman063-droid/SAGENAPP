@@ -183,7 +183,11 @@ class WelcomeScreen extends ConsumerWidget {
                           label: l.demoModeLabel,
                           child: SagenTouchResponse(
                             onTap: () {
-                              ref.read(authProvider.notifier).enterDemoMode();
+                              ref
+                                  .read(authProvider.notifier)
+                                  .enterDemoMode(
+                                    displayName: l.demoStudentName,
+                                  );
                               context.go('/main');
                             },
                             child: Container(

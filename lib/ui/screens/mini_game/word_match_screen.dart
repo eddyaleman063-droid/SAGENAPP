@@ -39,12 +39,12 @@ class _WordMatchScreenState extends ConsumerState<WordMatchScreen> {
   late final ValueNotifier<int> _timeRemaining;
 
   static List<(String, String)> _buildPairs(AppLocalizations l) => [
-    ('Phishing', l.miniGamePhishingDef),
-    ('Malware', l.miniGameMalwareDef),
-    ('Firewall', l.miniGameFirewallDef),
+    (l.miniGamePhishingTerm, l.miniGamePhishingDef),
+    (l.miniGameMalwareTerm, l.miniGameMalwareDef),
+    (l.miniGameFirewallTerm, l.miniGameFirewallDef),
     (l.miniGameEncryptionTerm, l.miniGameEncryptionDef),
-    ('VPN', l.miniGameVpnDef),
-    ('Backup', l.miniGameBackupDef),
+    (l.miniGameVpnTerm, l.miniGameVpnDef),
+    (l.miniGameBackupTerm, l.miniGameBackupDef),
   ];
 
   @override

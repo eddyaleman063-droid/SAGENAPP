@@ -175,7 +175,7 @@ async function revertApprovedPayment(paymentId, payment) {
 const RATE_LIMIT_WINDOW = 60 * 1000;
 const RATE_LIMIT_MAX = 10;
 
-async function checkRateLimit(uid, maxRequests = RATE_LIMIT_MAX, windowMs = RATE_LIMIT_WINDOW) {
+async function checkRateLimit(uid, maxRequests = RATE_LIMIT_MAX, windowMs = RATE_LIMIT_WINDOW, field = 'timestamps') {
   const now = Date.now();
   const windowStart = now - windowMs;
   const bucketRef = admin.firestore().doc(`rate_limits/${uid}`);
@@ -184,19 +184,19 @@ async function checkRateLimit(uid, maxRequests = RATE_LIMIT_MAX, windowMs = RATE
     await admin.firestore().runTransaction(async (transaction) => {
       const doc = await transaction.get(bucketRef);
       const data = doc.data() || {};
-      const timestamps = (data.timestamps || []).filter(t => t > windowStart);
+      const timestamps = (data[field] || []).filter(t => t > windowStart);
 
       if (timestamps.length >= maxRequests) {
         throw new functions.https.HttpsError('resource-exhausted', 'Demasiadas solicitudes. Intenta de nuevo.');
       }
 
       timestamps.push(now);
-      transaction.set(bucketRef, { timestamps }, { merge: true });
+      transaction.set(bucketRef, { [field]: timestamps }, { merge: true });
     });
   } catch (e) {
     if (e instanceof functions.https.HttpsError) throw e;
     // Fail-closed if Firestore is unavailable (security first)
-    functions.logger.error('Rate limit check failed, rejecting request', { uid, error: e.message });
+    functions.logger.error('Rate limit check failed, rejecting request', { uid, field, error: e.message });
     throw new functions.https.HttpsError('resource-exhausted', 'Servicio temporalmente no disponible. Intenta de nuevo.');
   }
 }
@@ -254,7 +254,7 @@ exports.createPaymentPreference = functions.runWith({ maxInstances: 10 }).https.
     }
 
     try {
-      await checkRateLimit(userId);
+      await checkRateLimit(userId, RATE_LIMIT_MAX, RATE_LIMIT_WINDOW, 'checkout_timestamps');
     } catch (e) {
       if (e instanceof functions.https.HttpsError) {
         return res.status(429).json({ error: 'Demasiadas solicitudes. Intenta de nuevo.' });
@@ -423,6 +423,21 @@ exports.handlePaymentWebhook = functions.runWith({ maxInstances: 5 }).https.onRe
     }
 
     const paymentId = data.id.toString();
+
+    // NUEVO-fix: el id del body debe coincidir con el data.id firmado en el
+    // manifest (query param data.id). Sin el secreto no se puede forjar la
+    // firma, pero este guard descarta cuerpos cuyo id difiera del firmado
+    // (consistencia paymentId↔dataId).
+    const normalizedPaymentId = /^[a-zA-Z0-9]+$/.test(paymentId)
+      ? paymentId.toLowerCase()
+      : paymentId;
+    if (normalizedPaymentId !== dataId) {
+      functions.logger.warn('Webhook paymentId does not match signed dataId', {
+        paymentId,
+        dataId,
+      });
+      return res.status(401).send('No autorizado');
+    }
 
     // ── FETCH PAYMENT FROM MP API ─────────────────────────────
     const response = await fetch(
@@ -860,7 +875,7 @@ exports.adminCreditDonation = functions.runWith({ maxInstances: 3 }).https.onCal
  */
 exports.registerPendingPayment = functions.runWith({ maxInstances: 5 }).https.onCall(async (data, context) => {
   requireVerifiedUser(context);
-  await checkRateLimit(context.auth.uid);
+  await checkRateLimit(context.auth.uid, RATE_LIMIT_MAX, RATE_LIMIT_WINDOW, 'pending_register_timestamps');
 
   const { paymentMethod, operationId, amount, productId } = data || {};
   if (!paymentMethod || typeof paymentMethod !== 'string' || !operationId) {
@@ -942,7 +957,7 @@ exports.checkPendingPaymentStatus = functions.runWith({ maxInstances: 5 }).https
   // llamada hace 2 lecturas Firestore; sin límite un cliente modificado podía
   // quemar reads indefinidamente, además de ser un drift con la versión Vercel
   // que ya aplicaba rateLimit.
-  await checkRateLimit(context.auth.uid);
+  await checkRateLimit(context.auth.uid, RATE_LIMIT_MAX, RATE_LIMIT_WINDOW, 'pending_status_timestamps');
 
   const { pendingPaymentId } = data || {};
   // NUEVO-fix (ronda 9): validar con regex ANTES de interpolar en el doc path.
@@ -1085,7 +1100,7 @@ exports.generateContent = functions.runWith({ maxInstances: 3 }).https.onCall(as
   // Rate limit: max 30 requests per user per minute (distributed via Firestore).
   // NUEVO-fix: se cuenta UNA sola vez — antes este check se llamaba dos veces
   // (aquí y arriba) y un usuario con 15 req/min quedaba cortado en 15 reales.
-  await checkRateLimit(context.auth.uid, 30, 60000);
+  await checkRateLimit(context.auth.uid, 30, 60000, 'sage_content_timestamps');
 
   // NUEVO-fix (ronda 8): la cuota diaria de Sage SÍ aplica a esta ruta.
   // generateContent no-streming comparte sage_usage/{uid}_{dia} con el stream:

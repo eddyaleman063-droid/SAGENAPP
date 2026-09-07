@@ -11,16 +11,16 @@ class ScreenshotProtectionService {
   Future<void> enableSecure() async {
     try {
       await _channel.invokeMethod('setSecure', {'secure': true});
-    } catch (e) {
-      AppLogger().error('Failed to enable screenshot protection', e);
+    } catch (e, stack) {
+      AppLogger().error('Failed to enable screenshot protection', e, stack);
     }
   }
 
   Future<void> disableSecure() async {
     try {
       await _channel.invokeMethod('setSecure', {'secure': false});
-    } catch (e) {
-      AppLogger().error('Failed to disable screenshot protection', e);
+    } catch (e, stack) {
+      AppLogger().error('Failed to disable screenshot protection', e, stack);
     }
   }
 }

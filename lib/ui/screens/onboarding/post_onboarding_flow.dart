@@ -123,7 +123,9 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
       // Guest has no Firebase profile (no uid yet). Enter a fully functional
       // LOCAL demo mode instead of bouncing back to /welcome, which previously
       // created an infinite loop for users tapping "Más adelante".
-      authNotifier.enterDemoMode();
+      authNotifier.enterDemoMode(
+        displayName: AppLocalizations.of(context)?.demoStudentName,
+      );
     } else {
       await authNotifier.markOnboardingCompleted();
     }

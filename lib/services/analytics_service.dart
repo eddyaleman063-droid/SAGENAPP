@@ -304,10 +304,6 @@ class AnalyticsService {
     track(AnalyticEvent.onboardingStep, properties: {'step': step.toString()});
   }
 
-  void trackOnboardingComplete() {
-    track(AnalyticEvent.onboardingStep, properties: {'step': 'complete'});
-  }
-
   void trackFeatureUsed(String feature) {
     track(AnalyticEvent.featureUsed, properties: {'feature': feature});
   }

@@ -147,8 +147,8 @@ class CloudSyncService implements ICloudSyncService {
 
     if (validUpdates.isEmpty) return;
 
-    _firestoreService.updateFields(uid, validUpdates).catchError((e) {
-      _logger.warning('CloudSync: _flushPendingWrites failed: $e');
+    _firestoreService.updateFields(uid, validUpdates).catchError((e, st) {
+      _logger.warning('CloudSync: _flushPendingWrites failed', e, st);
       // Re-queue only fields that haven't been superseded by a newer write
       for (final entry in validUpdates.entries) {
         if (!_pendingWrites.containsKey(entry.key)) {

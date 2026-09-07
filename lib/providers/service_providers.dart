@@ -2,15 +2,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../repositories/streak_repository.dart';
 import '../repositories/inventory_repository.dart';
 import '../repositories/sagen_pass_repository.dart';
-import '../repositories/payment_repository.dart';
 import '../repositories/chest_repository.dart';
 import '../repositories/gamification_repository.dart';
 import '../repositories/learning_repository.dart';
 import '../repositories/item_repository.dart';
 import '../repositories/gem_repository.dart';
 import '../services/analytics_service.dart';
-import '../services/app_rating_service.dart';
-import '../services/audio_service.dart';
 import '../services/auth_service.dart';
 import '../services/cloud_sync_service.dart';
 import '../services/connectivity_service.dart';
@@ -19,14 +16,11 @@ import '../services/experience_service.dart';
 import '../services/firestore_service.dart';
 import '../services/ai_service.dart';
 import '../services/gemini_api_client.dart';
-import '../services/icon_manager.dart';
 import '../services/sage_emotion_service.dart';
-import '../services/screenshot_protection_service.dart';
 import '../services/share_service.dart';
 import '../services/storage_service.dart';
 import '../services/streak_chest_service.dart';
 import '../services/streak_service.dart';
-import '../services/whats_new_service.dart';
 import '../services/app_logger.dart';
 import '../services/deep_link_service.dart';
 import '../services/notification_service.dart';
@@ -37,7 +31,6 @@ import '../services/offline_queue_service.dart';
 import '../services/device_tier.dart';
 import '../services/chest_event_bus.dart';
 import '../services/emotion_event_bus.dart';
-import '../services/chest_evolution_service.dart';
 import '../services/motivational_quotes_service.dart';
 import '../services/chest_reward_roller.dart';
 import '../services/learning_reward_service.dart';
@@ -103,11 +96,6 @@ final sagenPassRepositoryProvider = Provider<SagenPassRepository>((ref) {
   return SagenPassRepositoryImpl(prefs);
 });
 
-final paymentRepositoryProvider = Provider<PaymentRepository>((ref) {
-  final prefs = ref.read(prefsProvider);
-  return PaymentRepositoryImpl(prefs);
-});
-
 final chestRepositoryProvider = Provider<ChestRepository>((ref) {
   final prefs = ref.read(prefsProvider);
   return ChestRepositoryImpl(prefs);
@@ -150,19 +138,6 @@ final streakChestServiceProvider = Provider<StreakChestService>((ref) {
   return StreakChestService();
 });
 
-final appRatingServiceProvider = Provider<AppRatingService>((ref) {
-  return AppRatingService();
-});
-
-final screenshotProtectionServiceProvider =
-    Provider<ScreenshotProtectionService>((ref) {
-      return ScreenshotProtectionService();
-    });
-
-final whatsNewServiceProvider = Provider<WhatsNewService>((ref) {
-  return WhatsNewService(ref.read(prefsProvider));
-});
-
 // ── Singleton service providers ─────────────────────────────────────
 // These wrap existing singleton instances so they can be overridden in
 // tests via ProviderScope.overrideWithValue. New code should prefer
@@ -170,10 +145,6 @@ final whatsNewServiceProvider = Provider<WhatsNewService>((ref) {
 
 final analyticsServiceProvider = Provider<AnalyticsService>((ref) {
   return AnalyticsService.instance;
-});
-
-final audioServiceProvider = Provider<AudioService>((ref) {
-  return AudioService.instance;
 });
 
 final experienceServiceProvider = Provider<ExperienceService>((ref) {
@@ -186,10 +157,6 @@ final connectivityServiceProvider = Provider<ConnectivityService>((ref) {
 
 final shareServiceProvider = Provider<ShareService>((ref) {
   return ShareService.instance;
-});
-
-final iconManagerProvider = Provider<IconManager>((ref) {
-  return IconManager.instance;
 });
 
 final deepLinkServiceProvider = Provider<DeepLinkService>((ref) {
@@ -228,10 +195,6 @@ final chestEventBusProvider = Provider<ChestEventBus>((ref) {
 
 final emotionEventBusProvider = Provider<EmotionEventBus>((ref) {
   return EmotionEventBus.instance;
-});
-
-final chestEvolutionServiceProvider = Provider<ChestEvolutionService>((ref) {
-  return ChestEvolutionService.instance;
 });
 
 final motivationalQuotesServiceProvider = Provider<MotivationalQuotesService>((

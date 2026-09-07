@@ -112,7 +112,12 @@ exports.generateContentStream = functions.runWith({ maxInstances: 3 }).https.onR
     return res.status(204).send('');
   }
 
-  if (!ALLOWED_ORIGINS.includes(origin)) {
+  // NUEVO-fix: alinear con createPaymentPreference (ronda 8): un Origin
+  // AUSENTE se permite — las apps nativas Flutter nunca envían Origin (no hay
+  // cookies cross-origin que un tercero pueda inyectar en un cliente nativo).
+  // Solo se rechazan orígenes EXPLÍCITOS fuera de la allow-list, así el CORS
+  // de navegador sigue protegido.
+  if (origin && !ALLOWED_ORIGINS.includes(origin)) {
     return res.status(403).json({ error: 'Origen no permitido' });
   }
 

@@ -244,7 +244,7 @@ exports.earnGems = functions.runWith({ maxInstances: 10 }).https.onCall(async (d
   requireVerifiedUser(context);
 
   const userId = context.auth.uid;
-  const rateCheck = await checkGemsRateLimit(userId);
+  const rateCheck = await checkGemsRateLimit(userId, 'earn_timestamps');
   if (!rateCheck.allowed) {
     throw new functions.https.HttpsError('resource-exhausted', 'Demasiadas solicitudes');
   }
@@ -477,7 +477,7 @@ exports.spendGems = functions.runWith({ maxInstances: 10 }).https.onCall(async (
   requireVerifiedUser(context);
 
   const userId = context.auth.uid;
-  const rateCheck = await checkGemsRateLimit(userId);
+  const rateCheck = await checkGemsRateLimit(userId, 'spend_timestamps');
   if (!rateCheck.allowed) {
     throw new functions.https.HttpsError('resource-exhausted', 'Demasiadas solicitudes');
   }
@@ -600,6 +600,10 @@ exports.getGemsBalance = functions.runWith({ maxInstances: 5 }).https.onCall(asy
   requireVerifiedUser(context);
 
   const userId = context.auth.uid;
+  const rateCheck = await checkGemsRateLimit(userId, 'read_timestamps');
+  if (!rateCheck.allowed) {
+    throw new functions.https.HttpsError('resource-exhausted', 'Demasiadas solicitudes');
+  }
   const userRef = admin.firestore().doc(`users/${userId}`);
   const dailyGemsRef = getDailyGemsDocRef(userId);
 
@@ -630,7 +634,7 @@ exports.getGemsBalance = functions.runWith({ maxInstances: 5 }).https.onCall(asy
   }
 });
 
-async function checkGemsRateLimit(uid) {
+async function checkGemsRateLimit(uid, field = 'timestamps') {
   const now = Date.now();
   const windowStart = now - 60 * 1000;
   const bucketRef = admin.firestore().doc(`rate_limits/${uid}`);
@@ -639,19 +643,19 @@ async function checkGemsRateLimit(uid) {
     const result = await admin.firestore().runTransaction(async (transaction) => {
       const doc = await transaction.get(bucketRef);
       const data = doc.data() || {};
-      const timestamps = (data.timestamps || []).filter(t => t > windowStart);
+      const timestamps = (data[field] || []).filter(t => t > windowStart);
 
       if (timestamps.length >= 20) {
         return { allowed: false };
       }
 
       timestamps.push(now);
-      transaction.set(bucketRef, { timestamps }, { merge: true });
+      transaction.set(bucketRef, { [field]: timestamps }, { merge: true });
       return { allowed: true };
     });
     return result;
   } catch (e) {
-    functions.logger.error('Gems rate limit check failed, rejecting request', { uid, error: e.message });
+    functions.logger.error('Gems rate limit check failed, rejecting request', { uid, field, error: e.message });
     return { allowed: false };
   }
 }

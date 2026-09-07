@@ -665,6 +665,7 @@ exports.incrementStreak = functions.runWith({ maxInstances: 5 }).https.onCall(as
   const { freezeUsed, checkIn = true, itemUsed, activityDay, activityStreak } = data;
 
   const userId = context.auth.uid;
+  await checkProgressionRateLimit(userId, 'streak_inc_timestamps');
   const userRef = admin.firestore().doc(`users/${userId}`);
 
   try {
@@ -918,6 +919,7 @@ exports.claimFreeStreakShield = functions.runWith({ maxInstances: 5 }).https.onC
   requireVerifiedUser(context);
 
   const userId = context.auth.uid;
+  await checkProgressionRateLimit(userId, 'claim_free_shield_timestamps');
   const userRef = admin.firestore().doc(`users/${userId}`);
   const today = new Date().toISOString().split('T')[0];
 

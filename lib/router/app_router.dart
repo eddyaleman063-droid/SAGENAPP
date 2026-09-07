@@ -149,8 +149,7 @@ final routerProvider = Provider<GoRouter>((ref) {
             state,
             LoginScreen(
               isOnboarding: isOnboarding,
-              onSwitchToRegister: () =>
-                  context.goNamed(isOnboarding ? 'onboarding' : 'onboarding'),
+              onSwitchToRegister: () => context.goNamed('onboarding'),
             ),
             _slideFromRight,
           );
@@ -345,9 +344,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/payment/success',
         name: 'payment-success',
         pageBuilder: (context, state) {
-          // El server back_url (functions/index.js:188, api/index.js:188) y el
-          // deep-link handler (main.dart:285) envian 'amount'; se acepta ademas
-          // 'donationAmount' por compatibilidad con rutas mas antiguas.
+          // El server back_url envía 'amount' (functions/index.js:300) y el
+          // deep-link handler normaliza donationAmount→amount (main.dart:284);
+          // se acepta además 'donationAmount' por compatibilidad con rutas
+          // más antiguas.
           final amountParam =
               state.uri.queryParameters['amount'] ??
               state.uri.queryParameters['donationAmount'];

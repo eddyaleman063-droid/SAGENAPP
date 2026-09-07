@@ -294,9 +294,11 @@ class StreakNotifier extends Notifier<StreakState> {
                           dayStreak: serverStreak,
                           milestone: milestone,
                         )
-                        .catchError((Object e) {
+                        .catchError((Object e, StackTrace st) {
                           AppLogger().warning(
-                            'StreakNotifier: deferred milestone gem persist failed: $e',
+                            'StreakNotifier: deferred milestone gem persist failed',
+                            e,
+                            st,
                           );
                         }),
                   );
@@ -307,9 +309,11 @@ class StreakNotifier extends Notifier<StreakState> {
                             'daily_bonus',
                             dayStreak: serverStreak,
                           )
-                          .catchError((Object e) {
+                          .catchError((Object e, StackTrace st) {
                             AppLogger().warning(
-                              'StreakNotifier: deferred daily bonus persist failed: $e',
+                              'StreakNotifier: deferred daily bonus persist failed',
+                              e,
+                              st,
                             );
                           }),
                     );
@@ -356,20 +360,24 @@ class StreakNotifier extends Notifier<StreakState> {
                           'daily_bonus',
                           dayStreak: serverStreak,
                         )
-                        .catchError((Object e) {
+                        .catchError((Object e, StackTrace st) {
                           AppLogger().warning(
-                            'StreakNotifier: item-protected daily bonus persist failed: $e',
+                            'StreakNotifier: item-protected daily bonus persist failed',
+                            e,
+                            st,
                           );
                         }),
                   );
                 }
               }
               return;
-            } catch (e) {
+            } catch (e, stack) {
               if (attempt == 2) {
                 if (_disposed) return;
                 AppLogger().warning(
-                  'StreakNotifier: server streak sync failed after retries: $e',
+                  'StreakNotifier: server streak sync failed after retries',
+                  e,
+                  stack,
                 );
                 // NUEVO-fix (ronda 9): gemas fantasma de racha. El check-in ya
                 // acreditó LOCALMENTE milestone/bono diario (awardStreakMilestone
@@ -451,8 +459,12 @@ class StreakNotifier extends Notifier<StreakState> {
           }
         }
       });
-    } catch (e) {
-      AppLogger().warning('StreakNotifier._syncStreakToFirestore failed: $e');
+    } catch (e, stack) {
+      AppLogger().warning(
+        'StreakNotifier._syncStreakToFirestore failed',
+        e,
+        stack,
+      );
     }
   }
 
@@ -541,8 +553,12 @@ class StreakNotifier extends Notifier<StreakState> {
       // logros (p.ej. 25 -> 30): se evalúan aquí igual que en checkIn para no
       // perder la celebración de hitos como streak30/shieldCrystal.
       _checkAchievements(oldStreak, newStatus);
-    } catch (e) {
-      AppLogger().warning('StreakNotifier._reconcileServerStreak failed: $e');
+    } catch (e, stack) {
+      AppLogger().warning(
+        'StreakNotifier._reconcileServerStreak failed',
+        e,
+        stack,
+      );
     }
   }
 

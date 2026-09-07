@@ -529,8 +529,12 @@ class AuthNotifier extends Notifier<AuthState> {
     // que el siguiente usuario en este dispositivo no vea progreso ajeno.
     try {
       await ref.read(sessionProvider.notifier).clearAllProgress();
-    } catch (e) {
-      AppLogger().warning('signOut: failed to clear session progress', e);
+    } catch (e, stack) {
+      AppLogger().warning(
+        'signOut: failed to clear session progress',
+        e,
+        stack,
+      );
     }
     // Se vacía la cola offline pendiente: al re-sincronizar, _syncItem usa el
     // uid del usuario actual de FirebaseAuth. Si quedara trabajo de la sesión
@@ -538,8 +542,8 @@ class AuthNotifier extends Notifier<AuthState> {
     // sesión en este dispositivo (crédito cruzado de XP/gemas).
     try {
       await ref.read(offlineQueueServiceProvider).clear();
-    } catch (e) {
-      AppLogger().warning('signOut: failed to clear offline queue', e);
+    } catch (e, stack) {
+      AppLogger().warning('signOut: failed to clear offline queue', e, stack);
     }
     // La cola de acreditaciones de gemas pendientes es una clave global de
     // prefs: si no se vacía al cerrar sesión, el siguiente usuario del
@@ -547,8 +551,12 @@ class AuthNotifier extends Notifier<AuthState> {
     // (crédito cruzado de gemas), igual que la cola offline de items.
     try {
       await ref.read(gemProvider.notifier).clearPendingEarns();
-    } catch (e) {
-      AppLogger().warning('signOut: failed to clear pending gem earns', e);
+    } catch (e, stack) {
+      AppLogger().warning(
+        'signOut: failed to clear pending gem earns',
+        e,
+        stack,
+      );
     }
     // Limpieza completa del estado de juego por usuario (streak, energía,
     // misiones, review SM-2, items del shop, memory de aprendizaje, progreso de
@@ -560,8 +568,12 @@ class AuthNotifier extends Notifier<AuthState> {
       if (prefs != null) {
         await GameStateCleaner.clearGameState(prefs);
       }
-    } catch (e) {
-      AppLogger().warning('signOut: failed to clear per-user game state', e);
+    } catch (e, stack) {
+      AppLogger().warning(
+        'signOut: failed to clear per-user game state',
+        e,
+        stack,
+      );
     }
     // La cola diaria de Sage es estática a nivel de clase; se resetea al
     // cerrar sesión para que el siguiente usuario no herede el conteo/límite
@@ -631,10 +643,10 @@ class AuthNotifier extends Notifier<AuthState> {
 
   /// Enters offline demo mode with a local-only user.
   /// No Firebase connection required — safe for live presentation without network.
-  void enterDemoMode() {
-    state = const AuthState(
+  void enterDemoMode({String? displayName}) {
+    state = AuthState(
       status: AuthStatus.demo,
-      displayName: 'Demo Student',
+      displayName: displayName ?? 'Demo Student',
       email: 'demo@sagen.local',
       uid: 'demo_user_001',
       onboardingCompleted: true,
@@ -660,8 +672,8 @@ class AuthNotifier extends Notifier<AuthState> {
   Future<String?> getIdToken({bool forceRefresh = false}) async {
     try {
       return await _authService.getIdToken(forceRefresh: forceRefresh);
-    } catch (e) {
-      AppLogger().warning('Auth: getIdToken failed: $e');
+    } catch (e, stack) {
+      AppLogger().error('Auth: getIdToken failed', e, stack);
       return null;
     }
   }

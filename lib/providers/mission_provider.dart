@@ -258,8 +258,8 @@ class MissionNotifier extends Notifier<MissionState> {
     _save();
 
     if (newCompleted) {
-      _rewardMission(mission).catchError((e) {
-        AppLogger().warning('Mission reward failed: $e');
+      _rewardMission(mission).catchError((e, st) {
+        AppLogger().warning('Mission reward failed', e, st);
       });
     }
   }

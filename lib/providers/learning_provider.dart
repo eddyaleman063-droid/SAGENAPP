@@ -237,7 +237,7 @@ class LearningNotifier extends Notifier<LearningState> {
         );
       }
     } catch (e, stack) {
-      AppLogger().warning('_reconcileWithServer failed: $e', e, stack);
+      AppLogger().warning('_reconcileWithServer failed', e, stack);
     }
   }
 
@@ -687,12 +687,16 @@ class LearningNotifier extends Notifier<LearningState> {
         );
       }
       _save();
-    } catch (e) {
+    } catch (e, stack) {
       state = state.copyWith(
         totalDonated: previousDonated,
         isSupporter: previousDonated > 0,
       );
-      AppLogger().warning('recordDonation server call failed, reverted: $e');
+      AppLogger().error(
+        'recordDonation server call failed, reverted',
+        e,
+        stack,
+      );
     }
   }
 
@@ -752,7 +756,7 @@ class LearningNotifier extends Notifier<LearningState> {
         );
       }
       _save();
-    } catch (e) {
+    } catch (e, stack) {
       // Rollback SOLO del XP: restamos el monto al total actual (no restauramos
       // un snapshot que perdería cambios intermedios de otros métodos ejecutados
       // durante el await del server call) y re-derivamos xp/level.
@@ -765,7 +769,7 @@ class LearningNotifier extends Notifier<LearningState> {
         xp: progressInLevel < 0 ? 0 : progressInLevel,
       );
       _save();
-      AppLogger().warning('addXp server call failed, reverted: $e');
+      AppLogger().error('addXp server call failed, reverted', e, stack);
       // La recompensa no se pierde: se reencola offline con la misma clave
       // idempotente. Al reconectar, el servidor acredita y el reconciler
       // aplica los totales autoritativos al estado local.

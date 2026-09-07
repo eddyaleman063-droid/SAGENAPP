@@ -3474,6 +3474,12 @@ abstract class AppLocalizations {
   /// **'Copia de seguridad'**
   String get miniGameBackupDef;
 
+  /// No description provided for @miniGameBackupTerm.
+  ///
+  /// In es, this message translates to:
+  /// **'Backup'**
+  String get miniGameBackupTerm;
+
   /// No description provided for @miniGameComplete.
   ///
   /// In es, this message translates to:
@@ -3504,6 +3510,12 @@ abstract class AppLocalizations {
   /// **'Barrera de seguridad de red'**
   String get miniGameFirewallDef;
 
+  /// No description provided for @miniGameFirewallTerm.
+  ///
+  /// In es, this message translates to:
+  /// **'Firewall'**
+  String get miniGameFirewallTerm;
+
   /// No description provided for @miniGameHiddenCard.
   ///
   /// In es, this message translates to:
@@ -3515,6 +3527,12 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Software malicioso'**
   String get miniGameMalwareDef;
+
+  /// No description provided for @miniGameMalwareTerm.
+  ///
+  /// In es, this message translates to:
+  /// **'Malware'**
+  String get miniGameMalwareTerm;
 
   /// No description provided for @miniGameMatches.
   ///
@@ -3570,6 +3588,12 @@ abstract class AppLocalizations {
   /// **'Correo falso que roba datos'**
   String get miniGamePhishingDef;
 
+  /// No description provided for @miniGamePhishingTerm.
+  ///
+  /// In es, this message translates to:
+  /// **'Phishing'**
+  String get miniGamePhishingTerm;
+
   /// No description provided for @miniGamePlayAgain.
   ///
   /// In es, this message translates to:
@@ -3623,6 +3647,12 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Red privada virtual'**
   String get miniGameVpnDef;
+
+  /// No description provided for @miniGameVpnTerm.
+  ///
+  /// In es, this message translates to:
+  /// **'VPN'**
+  String get miniGameVpnTerm;
 
   /// No description provided for @miniGameWatch.
   ///
