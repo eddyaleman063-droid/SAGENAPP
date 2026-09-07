@@ -54,6 +54,24 @@ class _SettingsSheetState extends ConsumerState<SettingsSheet> {
     );
   }
 
+  // NUEVO-fix (ronda 20): apagar notificaciones cancela los recordatorios
+  // pendientes (cofre + racha + escudo); encenderlas reprograma el cofre diario
+  // y la racha vuelve a programarse en el siguiente flujo natural.
+  void _toggleNotifications(bool v) {
+    _exp.mediumHaptic();
+    unawaited(_exp.setNotificationsEnabled(v));
+    final ns = ref.read(notificationServiceProvider);
+    if (v) {
+      unawaited(ns.scheduleChestReminder());
+    } else {
+      unawaited(ns.cancelAll());
+    }
+    AnalyticsService.instance.track(
+      AnalyticEvent.settingsChange,
+      properties: {'setting': 'notifications', 'value': v.toString()},
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final dark = context.isDark;
@@ -128,6 +146,13 @@ class _SettingsSheetState extends ConsumerState<SettingsSheet> {
             subtitle: l.reduceAnimationsSubtitle,
             onChanged: (v) =>
                 _toggle(_exp.setReduceAnimations, v, 'reduce_animations'),
+          ),
+          _ExperienceSwitch(
+            value: _exp.notificationsEnabled,
+            icon: Icons.notifications_rounded,
+            label: l.settingsNotifications,
+            subtitle: l.settingsNotificationsSubtitle,
+            onChanged: _toggleNotifications,
           ),
         ],
       ),

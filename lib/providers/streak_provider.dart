@@ -847,6 +847,8 @@ class StreakNotifier extends Notifier<StreakState> {
   }
 
   void _scheduleStreakReminder() {
+    // NUEVO-fix (ronda 20): respetar la preferencia de notificaciones.
+    if (!ref.read(experienceServiceProvider).notificationsEnabled) return;
     ref
         .read(notificationServiceProvider)
         .scheduleStreakReminder(state.status.currentStreak);

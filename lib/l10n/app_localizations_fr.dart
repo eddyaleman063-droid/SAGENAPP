@@ -3854,6 +3854,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get settingsNotifications => 'Notifications';
 
   @override
+  String get settingsNotificationsSubtitle =>
+      'Rappels du coffre quotidien et de la série';
+
+  @override
   String get settingsPrivacy => 'Confidentialité';
 
   @override

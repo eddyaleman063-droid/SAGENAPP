@@ -3826,6 +3826,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get settingsNotifications => 'Notificaciones';
 
   @override
+  String get settingsNotificationsSubtitle =>
+      'Recordatorios de racha y cofre diario';
+
+  @override
   String get settingsPrivacy => 'Privacidad';
 
   @override

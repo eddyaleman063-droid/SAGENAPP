@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -7,11 +8,18 @@ import '../services/app_logger.dart';
 /// Manages local and push notification scheduling.
 class NotificationService {
   static final NotificationService instance = NotificationService._();
-  NotificationService._() : _logger = AppLogger();
+  NotificationService._()
+    : _logger = AppLogger(),
+      _plugin = FlutterLocalNotificationsPlugin();
+  @visibleForTesting
+  NotificationService.test()
+    : _logger = AppLogger(),
+      _plugin = FlutterLocalNotificationsPlugin();
   final AppLogger _logger;
 
-  final FlutterLocalNotificationsPlugin _plugin =
-      FlutterLocalNotificationsPlugin();
+  /// NUEVO-fix (ronda 20): el plugin ya no se instancia inline; se asigna en
+  /// cada constructor para que las subclases de test puedan inyectar uno fake.
+  final FlutterLocalNotificationsPlugin _plugin;
   bool _initialized = false;
 
   static const String _channelId = 'chest_reminder';

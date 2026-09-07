@@ -1266,6 +1266,7 @@
   "settingsLogout": "Log out",
   "settingsLogoutConfirm": "Are you sure you want to log out?",
   "settingsNotifications": "Notifications",
+  "settingsNotificationsSubtitle": "Daily chest and streak reminders",
   "settingsPrivacy": "Privacy",
   "settingsReduceAnimations": "Reduce animations",
   "settingsSound": "Sound",

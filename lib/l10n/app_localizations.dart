@@ -7055,6 +7055,12 @@ abstract class AppLocalizations {
   /// **'Notificaciones'**
   String get settingsNotifications;
 
+  /// No description provided for @settingsNotificationsSubtitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Recordatorios de racha y cofre diario'**
+  String get settingsNotificationsSubtitle;
+
   /// No description provided for @settingsPrivacy.
   ///
   /// In es, this message translates to:

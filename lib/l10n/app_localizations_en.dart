@@ -3804,6 +3804,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsNotifications => 'Notifications';
 
   @override
+  String get settingsNotificationsSubtitle =>
+      'Daily chest and streak reminders';
+
+  @override
   String get settingsPrivacy => 'Privacy';
 
   @override

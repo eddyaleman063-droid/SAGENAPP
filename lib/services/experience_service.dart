@@ -133,6 +133,18 @@ class ExperienceService extends ChangeNotifier {
     notifyListeners();
   }
 
+  // NUEVO-fix (ronda 20): la preferencia `notifications_enabled` ya se leía en
+  // init pero NADIE la consumía (preferencia muerta). El setter permite que el
+  // toggle de Ajustes la persista y notifique.
+  Future<void> setNotificationsEnabled(bool v) async {
+    _notificationsEnabled = v;
+    final p = _prefs;
+    if (p != null) {
+      await p.setBool('notifications_enabled', v);
+    }
+    notifyListeners();
+  }
+
   void lightHaptic() {
     if (!_hapticEnabled) return;
     HapticFeedback.lightImpact();

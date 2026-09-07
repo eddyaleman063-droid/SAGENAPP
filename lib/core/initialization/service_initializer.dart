@@ -195,8 +195,11 @@ class ServiceInitializer {
       ),
       _initSafe('SmartCache', () => SmartCache.init(prefs), logger),
       _initSafe('Notifications', () async {
+        // NUEVO-fix (ronda 20): aquí solo se inicializa el canal de notificaciones.
+        // La programación del cofre se decide tras el Future.wait, cuando la
+        // preferencia notifications_enabled ya está cargada (ExperienceService.init
+        // corre en paralelo y no debemos programar en base a su default).
         await NotificationService.instance.init();
-        await NotificationService.instance.scheduleChestReminder();
       }, logger),
       _initSafe('Audio', () async {
         await AudioService.instance.init();
@@ -215,6 +218,13 @@ class ServiceInitializer {
       ),
       _initSafe('SmartPromo', () => SmartPromoService.instance.init(), logger),
     ]);
+
+    // NUEVO-fix (ronda 20): el cofre diario se programa aquí — después de que
+    // ExperienceService.init haya cargado notifications_enabled —, evitando
+    // programar cuando el usuario lo tiene desactivado.
+    if (ExperienceService.instance.notificationsEnabled) {
+      await NotificationService.instance.scheduleChestReminder();
+    }
   }
 
   /// Initializes a service safely. If it fails, logs the error

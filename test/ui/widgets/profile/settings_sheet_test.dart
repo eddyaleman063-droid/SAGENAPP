@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/providers/providers.dart';
 import 'package:sagen/services/experience_service.dart';
+import 'package:sagen/services/notification_service.dart';
 import 'package:sagen/ui/widgets/profile/settings_sheet.dart';
 import 'package:sagen/ui/widgets/profile/theme_selector.dart';
 
@@ -36,9 +37,29 @@ class _MockLanguageNotifier extends LanguageNotifier {
   LanguageState build() => const LanguageState(language: AppLanguage.es);
 }
 
+// NUEVO-fix (ronda 20): fake de NotificationService que registra si se pide
+// cancelar o reprogramar recordatorios (sin tocar el plugin nativo).
+class _RecordingNotificationService extends NotificationService {
+  _RecordingNotificationService() : super.test();
+
+  int cancelAllCalls = 0;
+  int chestSchedules = 0;
+
+  @override
+  Future<void> cancelAll() async {
+    cancelAllCalls++;
+  }
+
+  @override
+  Future<void> scheduleChestReminder() async {
+    chestSchedules++;
+  }
+}
+
 Widget createTestApp(
   SharedPreferences prefs, {
   ExperienceService? experience,
+  NotificationService? notifications,
 }) => ProviderScope(
   overrides: [
     prefsProvider.overrideWithValue(prefs),
@@ -47,6 +68,9 @@ Widget createTestApp(
     languageProvider.overrideWith(_MockLanguageNotifier.new),
     experienceServiceProvider.overrideWith(
       (ref) => experience ?? ExperienceService(),
+    ),
+    notificationServiceProvider.overrideWithValue(
+      notifications ?? _RecordingNotificationService(),
     ),
   ],
   child: MaterialApp(
@@ -155,21 +179,23 @@ void main() {
   group('SettingsSheet — experience toggles', () {
     Future<ExperienceService> pumpSheet(
       WidgetTester tester,
-      SharedPreferences prefs,
-    ) async {
+      SharedPreferences prefs, {
+      NotificationService? notifications,
+    }) async {
       final exp = ExperienceService();
       await exp.init(prefs);
       tester.view.physicalSize = const Size(1080, 1920);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);
-      await tester.pumpWidget(createTestApp(prefs, experience: exp));
+      await tester.pumpWidget(
+        createTestApp(prefs, experience: exp, notifications: notifications),
+      );
       await tester.pumpAndSettle();
       return exp;
     }
 
-    testWidgets('renders sound, haptics and reduce animations switches', (
-      tester,
-    ) async {
+    testWidgets('renders sound, haptics, reduce animations and notifications '
+        'switches', (tester) async {
       SharedPreferences.setMockInitialValues({});
       final prefs = await SharedPreferences.getInstance();
       await pumpSheet(tester, prefs);
@@ -177,7 +203,44 @@ void main() {
       expect(find.text('Sonidos'), findsOneWidget);
       expect(find.text('Vibración háptica'), findsOneWidget);
       expect(find.text('Reducir animaciones'), findsOneWidget);
-      expect(find.byType(SwitchListTile), findsNWidgets(3));
+      expect(find.text('Notificaciones'), findsOneWidget);
+      expect(find.byType(SwitchListTile), findsNWidgets(4));
+    });
+
+    testWidgets('toggling notifications off cancels reminders and persists', (
+      tester,
+    ) async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final notifications = _RecordingNotificationService();
+      final exp = await pumpSheet(tester, prefs, notifications: notifications);
+
+      expect(exp.notificationsEnabled, isTrue);
+      await tester.tap(find.text('Notificaciones'));
+      await tester.pumpAndSettle();
+
+      expect(exp.notificationsEnabled, isFalse);
+      expect(prefs.getBool('notifications_enabled'), isFalse);
+      expect(notifications.cancelAllCalls, 1);
+      expect(notifications.chestSchedules, 0);
+    });
+
+    testWidgets('toggling notifications on reschedules the daily chest', (
+      tester,
+    ) async {
+      SharedPreferences.setMockInitialValues({'notifications_enabled': false});
+      final prefs = await SharedPreferences.getInstance();
+      final notifications = _RecordingNotificationService();
+      final exp = await pumpSheet(tester, prefs, notifications: notifications);
+
+      expect(exp.notificationsEnabled, isFalse);
+      await tester.tap(find.text('Notificaciones'));
+      await tester.pumpAndSettle();
+
+      expect(exp.notificationsEnabled, isTrue);
+      expect(prefs.getBool('notifications_enabled'), isTrue);
+      expect(notifications.chestSchedules, 1);
+      expect(notifications.cancelAllCalls, 0);
     });
 
     testWidgets('toggling sound off persists and updates the switch', (

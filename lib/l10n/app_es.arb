@@ -1228,6 +1228,7 @@
   "settingsLogout": "Cerrar sesión",
   "settingsLogoutConfirm": "¿Estás seguro de que quieres cerrar sesión?",
   "settingsNotifications": "Notificaciones",
+  "settingsNotificationsSubtitle": "Recordatorios de racha y cofre diario",
   "settingsPrivacy": "Privacidad",
   "settingsReduceAnimations": "Reducir animaciones",
   "settingsSound": "Sonido",

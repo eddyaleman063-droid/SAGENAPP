@@ -574,6 +574,8 @@ class LearningNotifier extends Notifier<LearningState> {
 
   void _scheduleStreakReminder() {
     if (_disposed) return;
+    // NUEVO-fix (ronda 20): respetar la preferencia de notificaciones.
+    if (!ref.read(experienceServiceProvider).notificationsEnabled) return;
     final streak = ref.read(streakProvider).status.currentStreak;
     ref.read(notificationServiceProvider).scheduleStreakReminder(streak);
   }

@@ -3829,6 +3829,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get settingsNotifications => 'Notificações';
 
   @override
+  String get settingsNotificationsSubtitle =>
+      'Lembretes de sequência e do baú diário';
+
+  @override
   String get settingsPrivacy => 'Privacidade';
 
   @override

@@ -1238,6 +1238,7 @@
   "settingsLogout": "Se déconnecter",
   "settingsLogoutConfirm": "Êtes-vous sûr de vouloir vous déconnecter?",
   "settingsNotifications": "Notifications",
+  "settingsNotificationsSubtitle": "Rappels du coffre quotidien et de la série",
   "settingsPrivacy": "Confidentialité",
   "settingsReduceAnimations": "Réduire les animations",
   "settingsSound": "Son",
