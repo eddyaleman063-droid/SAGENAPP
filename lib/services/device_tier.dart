@@ -62,12 +62,19 @@ DeviceTier _detectTierFromSystem(_) {
 }
 
 /// Detects device hardware tier to adapt UI animations and quality.
-class LowEndDeviceDetector {
+///
+/// NUEVO-fix (ronda 19): extiende [ChangeNotifier] y notifica al terminar la
+/// detección. Antes el tier quedaba en el valor por defecto (highEnd) hasta que
+/// el compute resolvía, pero los Providers de hardware que lo leían NO se
+/// invalidaban: en devices low-end la app se quedaba "para siempre" con
+/// animaciones/partículas de gama alta. Ahora `init()` cachea su Future y
+/// `notifyListeners()` dispara la invalidación en `lowEndDeviceDetectorProvider`.
+class LowEndDeviceDetector extends ChangeNotifier {
   static final LowEndDeviceDetector instance = LowEndDeviceDetector._();
   LowEndDeviceDetector._();
 
   DeviceTier _tier = DeviceTier.highEnd;
-  bool _initialized = false;
+  Future<void>? _initFuture;
 
   DeviceTier get tier => _tier;
   bool get isLowEnd => _tier == DeviceTier.lowEnd;
@@ -82,10 +89,11 @@ class LowEndDeviceDetector {
   bool get useSimpleAnimations => _tier != DeviceTier.highEnd;
   bool get disableParallax => _tier == DeviceTier.lowEnd;
 
-  Future<void> init() async {
-    if (_initialized) return;
-    _initialized = true;
+  /// Starts (or joins) async detection. Concurrent callers share the same
+  /// future so a fire-and-forget call no longer blocks later awaits.
+  Future<void> init() => _initFuture ??= _detect();
 
+  Future<void> _detect() async {
     if (kIsWeb) {
       _tier = DeviceTier.highEnd;
       return;
@@ -99,5 +107,13 @@ class LowEndDeviceDetector {
       );
       _tier = DeviceTier.midRange;
     }
+    notifyListeners();
+  }
+
+  /// Test-only override to deterministically exercise tier changes.
+  @visibleForTesting
+  void debugOverrideTier(DeviceTier tier) {
+    _tier = tier;
+    notifyListeners();
   }
 }
