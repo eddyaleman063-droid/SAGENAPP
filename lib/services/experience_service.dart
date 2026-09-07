@@ -124,6 +124,15 @@ class ExperienceService extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> setFontSizeScale(double v) async {
+    _fontSizeScale = v.clamp(0.8, 1.5).toDouble();
+    final p = _prefs;
+    if (p != null) {
+      await p.setDouble('font_scale', _fontSizeScale);
+    }
+    notifyListeners();
+  }
+
   void lightHaptic() {
     if (!_hapticEnabled) return;
     HapticFeedback.lightImpact();

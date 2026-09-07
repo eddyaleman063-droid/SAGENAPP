@@ -6,6 +6,7 @@ import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/providers/providers.dart';
 import 'package:sagen/ui/widgets/profile/language_selector.dart';
+import 'package:sagen/ui/widgets/profile/font_size_selector.dart';
 import 'package:sagen/ui/widgets/profile/theme_selector.dart';
 import 'package:sagen/core/theme/app_colors.dart';
 import 'package:sagen/services/analytics_service.dart';
@@ -100,8 +101,11 @@ class _SettingsSheetState extends ConsumerState<SettingsSheet> {
           ),
           const SizedBox(height: AppSpacing.xl),
           ThemeSelector(dark: dark),
-          const SizedBox(height: AppSpacing.xl),
+          const SizedBox(height: AppSpacing.lg),
           const LanguageSelector(),
+          const SizedBox(height: AppSpacing.lg),
+          // NUEVO-fix (ronda 18): selector de tamaño de fuente reactivo en vivo.
+          FontSizeSelector(dark: dark),
           const SizedBox(height: AppSpacing.lg),
           _ExperienceSwitch(
             value: _exp.soundEnabled,
