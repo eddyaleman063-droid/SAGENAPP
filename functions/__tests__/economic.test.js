@@ -310,6 +310,66 @@ describe('recordDonation (NUEVO-fix idempotencia)', () => {
   });
 });
 
+describe('R12: progression rate limits (completeLesson/addXp)', () => {
+  test('completeLesson: rejects when the per-user window is exhausted', async () => {
+    const uid = 'rl-prog-user-a';
+    const now = Date.now();
+    setUserDoc(uid, { learning_total_xp: 100, learning_level: 2 });
+    admin._setDoc(`rate_limits/${uid}`, {
+      complete_lesson_timestamps: Array(60).fill(now),
+    });
+    await expect(
+      economic.completeLesson({ lessonId: 'rl-lesson-1' }, makeContext(uid))
+    ).rejects.toThrow(expect.objectContaining({ code: 'resource-exhausted' }));
+  });
+
+  test('addXp: rejects when the per-user window is exhausted', async () => {
+    const uid = 'rl-prog-user-b';
+    const now = Date.now();
+    setUserDoc(uid, { learning_total_xp: 0, learning_level: 1 });
+    admin._setDoc(`rate_limits/${uid}`, {
+      add_xp_timestamps: Array(60).fill(now),
+    });
+    await expect(
+      economic.addXp(
+        { reason: 'lesson_reward', lessonId: 'l1', idempotencyKey: 'rl-xp-1' },
+        makeContext(uid)
+      )
+    ).rejects.toThrow(expect.objectContaining({ code: 'resource-exhausted' }));
+  });
+
+  test('progression still passes when ticks are below the max', async () => {
+    const uid = 'rl-prog-user-c';
+    const now = Date.now();
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    setUserDoc(uid, {
+      learning_total_xp: 100,
+      learning_level: 2,
+      currentStreak: 3,
+      longestStreak: 7,
+      streak_last_activity: { toDate: () => yesterday },
+      lessonsCompleted: 5,
+    });
+    admin._setDoc(`rate_limits/${uid}`, {
+      complete_lesson_timestamps: [now],
+      add_xp_timestamps: [now],
+    });
+    const lesson = await economic.completeLesson(
+      { lessonId: 'lesson-1' },
+      makeContext(uid)
+    );
+    expect(lesson.success).toBe(true);
+    expect(lesson.duplicate).toBe(false);
+    const xp = await economic.addXp(
+      { reason: 'lesson_reward', lessonId: 'lesson-1', idempotencyKey: 'rl-xp-ok' },
+      makeContext(uid)
+    );
+    expect(xp.success).toBe(true);
+    expect(xp.duplicate).toBe(false);
+  });
+});
+
 describe('addXp', () => {
   test('adds XP using server-authoritative reason reward', async () => {
     setUserDoc(AUTH_UID, { learning_total_xp: 0, learning_level: 1 });

@@ -57,8 +57,12 @@ class AuthSyncManager {
     try {
       await _cloudSync.saveAll(uid, prefs);
       await _cloudSync.clearLocal(prefs);
-    } catch (e) {
-      AppLogger().error('AuthSyncManager: cleanup during sign-out failed', e);
+    } catch (e, stack) {
+      AppLogger().error(
+        'AuthSyncManager: cleanup during sign-out failed',
+        e,
+        stack,
+      );
     }
   }
 
@@ -68,8 +72,12 @@ class AuthSyncManager {
     try {
       await _cloudSync.deleteCloudData(uid);
       await _cloudSync.clearLocal(prefs);
-    } catch (e) {
-      AppLogger().error('AuthSyncManager: cleanup during delete failed', e);
+    } catch (e, stack) {
+      AppLogger().error(
+        'AuthSyncManager: cleanup during delete failed',
+        e,
+        stack,
+      );
     }
   }
 

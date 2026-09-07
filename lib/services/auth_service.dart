@@ -65,12 +65,12 @@ class AuthService implements IAuthService {
           if (!_authController.isClosed) {
             _authController.add(_currentUser);
           }
-        } catch (e) {
-          _logger.error('AuthService: authState handler error', e);
+        } catch (e, stack) {
+          _logger.error('AuthService: authState handler error', e, stack);
         }
       },
-      onError: (Object error) {
-        _logger.error('AuthService: authStateChanges error', error);
+      onError: (Object error, StackTrace st) {
+        _logger.error('AuthService: authStateChanges error', error, st);
       },
       cancelOnError: false,
     );
@@ -109,8 +109,8 @@ class AuthService implements IAuthService {
       _currentUser = user;
       await _sessionManager.saveSession(user);
       return user;
-    } catch (e) {
-      _logger.error('AuthService: signInWithGoogle failed', e);
+    } catch (e, stack) {
+      _logger.error('AuthService: signInWithGoogle failed', e, stack);
       rethrow;
     }
   }
@@ -122,8 +122,8 @@ class AuthService implements IAuthService {
       _currentUser = user;
       await _sessionManager.saveSession(user);
       return user;
-    } catch (e) {
-      _logger.error('AuthService: signInWithFacebook failed', e);
+    } catch (e, stack) {
+      _logger.error('AuthService: signInWithFacebook failed', e, stack);
       rethrow;
     }
   }
@@ -143,8 +143,8 @@ class AuthService implements IAuthService {
       _currentUser = user;
       await _sessionManager.saveSession(user);
       return user;
-    } catch (e) {
-      _logger.error('AuthService: signUpWithEmail failed', e);
+    } catch (e, stack) {
+      _logger.error('AuthService: signUpWithEmail failed', e, stack);
       rethrow;
     }
   }
@@ -162,8 +162,8 @@ class AuthService implements IAuthService {
       _currentUser = user;
       await _sessionManager.saveSession(user);
       return user;
-    } catch (e) {
-      _logger.error('AuthService: signInWithEmail failed', e);
+    } catch (e, stack) {
+      _logger.error('AuthService: signInWithEmail failed', e, stack);
       rethrow;
     }
   }
@@ -172,8 +172,8 @@ class AuthService implements IAuthService {
   Future<void> sendEmailVerification() async {
     try {
       await _client.sendEmailVerification();
-    } catch (e) {
-      _logger.error('AuthService: sendEmailVerification failed', e);
+    } catch (e, stack) {
+      _logger.error('AuthService: sendEmailVerification failed', e, stack);
       rethrow;
     }
   }
@@ -190,8 +190,8 @@ class AuthService implements IAuthService {
         await _sessionManager.saveSession(user);
       }
       return verified;
-    } catch (e) {
-      _logger.error('AuthService: reloadUser failed', e);
+    } catch (e, stack) {
+      _logger.error('AuthService: reloadUser failed', e, stack);
       rethrow;
     }
   }
@@ -200,8 +200,8 @@ class AuthService implements IAuthService {
   Future<void> sendPasswordResetEmail(String email) async {
     try {
       await _client.sendPasswordResetEmail(email);
-    } catch (e) {
-      _logger.error('AuthService: sendPasswordResetEmail failed', e);
+    } catch (e, stack) {
+      _logger.error('AuthService: sendPasswordResetEmail failed', e, stack);
       rethrow;
     }
   }
@@ -212,8 +212,8 @@ class AuthService implements IAuthService {
       await _client.signOutFirebase();
       await _sessionManager.clearSession();
       _currentUser = null;
-    } catch (e) {
-      _logger.error('AuthService: signOut failed', e);
+    } catch (e, stack) {
+      _logger.error('AuthService: signOut failed', e, stack);
       rethrow;
     }
   }
@@ -236,8 +236,8 @@ class AuthService implements IAuthService {
     try {
       await _client.deleteFirebaseUser();
       await signOut();
-    } catch (e) {
-      _logger.error('AuthService: deleteAccount failed', e);
+    } catch (e, stack) {
+      _logger.error('AuthService: deleteAccount failed', e, stack);
       rethrow;
     }
   }
@@ -250,8 +250,8 @@ class AuthService implements IAuthService {
   Future<firebase.User?> reauthenticate(String email, String password) async {
     try {
       return await _client.reauthenticate(email, password);
-    } catch (e) {
-      _logger.error('AuthService: reauthenticate failed', e);
+    } catch (e, stack) {
+      _logger.error('AuthService: reauthenticate failed', e, stack);
       rethrow;
     }
   }
@@ -260,8 +260,8 @@ class AuthService implements IAuthService {
   Future<String?> getIdToken({bool forceRefresh = false}) async {
     try {
       return await _client.getIdToken(forceRefresh: forceRefresh);
-    } catch (e) {
-      _logger.error('AuthService: getIdToken failed', e);
+    } catch (e, stack) {
+      _logger.error('AuthService: getIdToken failed', e, stack);
       return null;
     }
   }

@@ -92,8 +92,8 @@ class PaywallBottomSheet extends ConsumerWidget {
           );
         }
       }
-    } catch (e) {
-      AppLogger().error('Paywall: WhatsApp launch failed', e);
+    } catch (e, stack) {
+      AppLogger().error('Paywall: WhatsApp launch failed', e, stack);
       if (context.mounted) {
         SagenNotification.show(
           context,
@@ -130,8 +130,8 @@ class PaywallBottomSheet extends ConsumerWidget {
         Uri.parse(initPoint),
         mode: LaunchMode.externalApplication,
       );
-    } catch (e) {
-      AppLogger().error('Paywall: MP payment launch failed', e);
+    } catch (e, stack) {
+      AppLogger().error('Paywall: MP payment launch failed', e, stack);
       if (context.mounted) {
         SagenNotification.show(
           context,

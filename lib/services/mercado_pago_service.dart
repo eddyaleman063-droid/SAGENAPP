@@ -54,13 +54,13 @@ class MercadoPagoService {
 
       final decoded = response.jsonMap;
       if (decoded == null) {
-        _logger.error('MP createPreference: invalid JSON', decoded);
+        _logger.error('MP createPreference: invalid JSON response');
         throw const MercadoPagoException('Invalid server response');
       }
 
       final result = decoded['result'] as Map<String, dynamic>?;
       if (result == null) {
-        _logger.error('MP createPreference: no result', decoded);
+        _logger.error('MP createPreference: no result in response');
         throw const MercadoPagoException('Invalid server response');
       }
 
@@ -68,7 +68,7 @@ class MercadoPagoService {
       final initPoint = result['initPoint'] as String?;
       final externalRef = result['externalRef'] as String?;
       if (preferenceId == null || initPoint == null) {
-        _logger.error('MP createPreference: missing fields', result);
+        _logger.error('MP createPreference: missing fields in response');
         throw const MercadoPagoException(
           'Invalid server response: missing fields',
         );
@@ -80,13 +80,13 @@ class MercadoPagoService {
       );
     } on MercadoPagoException {
       rethrow;
-    } on ApiException catch (e) {
-      _logger.error('MP createPreference API error', e);
+    } on ApiException catch (e, stack) {
+      _logger.error('MP createPreference API error', e, stack);
       throw MercadoPagoException(
         'Error connecting to payment service (${e.type.name})',
       );
-    } catch (e) {
-      _logger.error('MP createPreference error', e);
+    } catch (e, stack) {
+      _logger.error('MP createPreference error', e, stack);
       throw const MercadoPagoException(
         'Could not connect to payment service. '
         'Check your internet connection.',
@@ -132,11 +132,11 @@ class MercadoPagoService {
       );
       final decoded = response.jsonMap;
       return decoded?['result'] as Map<String, dynamic>? ?? {};
-    } on ApiException catch (e) {
-      _logger.error('registerPendingPayment API error', e);
+    } on ApiException catch (e, stack) {
+      _logger.error('registerPendingPayment API error', e, stack);
       rethrow;
-    } catch (e) {
-      _logger.error('registerPendingPayment error', e);
+    } catch (e, stack) {
+      _logger.error('registerPendingPayment error', e, stack);
       rethrow;
     }
   }
@@ -160,11 +160,11 @@ class MercadoPagoService {
       );
       final decoded = response.jsonMap;
       return decoded?['result'] as Map<String, dynamic>? ?? {};
-    } on ApiException catch (e) {
-      _logger.error('checkPendingPaymentStatus API error', e);
+    } on ApiException catch (e, stack) {
+      _logger.error('checkPendingPaymentStatus API error', e, stack);
       rethrow;
-    } catch (e) {
-      _logger.error('checkPendingPaymentStatus error', e);
+    } catch (e, stack) {
+      _logger.error('checkPendingPaymentStatus error', e, stack);
       rethrow;
     }
   }

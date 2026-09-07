@@ -103,8 +103,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           type: NotificationType.error,
         );
       }
-    } catch (e) {
-      AppLogger().error('Login: email login failed', e);
+    } catch (e, stack) {
+      AppLogger().error('Login: email login failed', e, stack);
       if (!mounted) return;
       SagenNotification.show(
         context,
@@ -136,8 +136,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           type: NotificationType.error,
         );
       }
-    } catch (e) {
-      AppLogger().error('Login: Google login failed', e);
+    } catch (e, stack) {
+      AppLogger().error('Login: Google login failed', e, stack);
       if (!mounted) return;
       SagenNotification.show(
         context,
@@ -178,8 +178,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           type: NotificationType.error,
         );
       }
-    } catch (e) {
-      AppLogger().error('Login: Facebook login failed', e);
+    } catch (e, stack) {
+      AppLogger().error('Login: Facebook login failed', e, stack);
       if (!mounted) return;
       SagenNotification.show(
         context,

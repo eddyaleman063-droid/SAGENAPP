@@ -117,8 +117,8 @@ class DatabaseHelper implements IDatabaseHelper {
     if (pending != null && !pending.isCompleted) {
       try {
         await pending.future.timeout(const Duration(seconds: 5));
-      } catch (e) {
-        AppLogger().error('Database pending future failed', e);
+      } catch (e, stack) {
+        AppLogger().error('Database pending future failed', e, stack);
       }
     }
     final db = _db;
@@ -127,8 +127,8 @@ class DatabaseHelper implements IDatabaseHelper {
     if (db != null) {
       try {
         await db.close();
-      } catch (e) {
-        AppLogger().error('Database close failed', e);
+      } catch (e, stack) {
+        AppLogger().error('Database close failed', e, stack);
       }
     }
   }

@@ -125,10 +125,11 @@ class _PaymentSuccessScreenState extends ConsumerState<PaymentSuccessScreen>
                                 _navigated = true;
                                 ref.read(paymentProvider.notifier).reset();
                                 context.goNamed('main');
-                              } catch (e) {
+                              } catch (e, stack) {
                                 AppLogger().error(
                                   'PaymentSuccess: continue failed',
                                   e,
+                                  stack,
                                 );
                                 if (mounted) {
                                   SagenNotification.show(

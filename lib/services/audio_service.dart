@@ -65,8 +65,8 @@ class AudioService {
           _logger.warning('AudioService.prewarm: failed to load $a: $e');
         }
       }
-    } catch (e) {
-      _logger.error('AudioService.prewarm', e);
+    } catch (e, stack) {
+      _logger.error('AudioService.prewarm', e, stack);
     }
   }
 
@@ -133,8 +133,8 @@ class AudioService {
         } finally {
           await sub?.cancel();
         }
-      } catch (e) {
-        _logger.error('AudioService._play: ${next.asset}', e);
+      } catch (e, stack) {
+        _logger.error('AudioService._play: ${next.asset}', e, stack);
         try {
           await SystemSound.play(SystemSoundType.click);
         } catch (e) {

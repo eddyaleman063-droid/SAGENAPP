@@ -48,6 +48,42 @@ async function checkDonationRateLimit(uid) {
   }
 }
 
+// ── Progresión rate limiting (Firestore-based, distribuido) ──────
+// Ronda 12: defensa en profundidad sobre completeLesson y addXp. Estas
+// mutaciones ya están acotadas por idempotencia (transaction_logs), caps
+// diarios de XP/gemas y recompensas fijas por razón; el throttling añade una
+// barrera frente al "grinding" que inventa lessonIds/achievementIds nuevos
+// para seguir acreditando. Un alumno legítimo hace 1 completeLesson + 1 addXp
+// por lección (mucho menos de 60/min). Cada función usa su propio bucket
+// (campo separado en rate_limits/{uid}) para no pisar el de donaciones.
+const PROGRESSION_RATE_WINDOW = 60 * 1000;
+const PROGRESSION_RATE_MAX = 60;
+
+async function checkProgressionRateLimit(uid, field) {
+  const now = Date.now();
+  const windowStart = now - PROGRESSION_RATE_WINDOW;
+  const bucketRef = admin.firestore().doc(`rate_limits/${uid}`);
+  try {
+    await admin.firestore().runTransaction(async (transaction) => {
+      const doc = await transaction.get(bucketRef);
+      const data = doc.data() || {};
+      const timestamps = (data[field] || []).filter((t) => t > windowStart);
+      if (timestamps.length >= PROGRESSION_RATE_MAX) {
+        throw new functions.https.HttpsError(
+          'resource-exhausted',
+          'Demasiadas solicitudes. Intenta de nuevo en un momento.'
+        );
+      }
+      timestamps.push(now);
+      transaction.set(bucketRef, { [field]: timestamps }, { merge: true });
+    });
+  } catch (e) {
+    if (e instanceof functions.https.HttpsError) throw e;
+    functions.logger.error('Progression rate limit check failed, rejecting', { uid, error: e.message });
+    throw new functions.https.HttpsError('resource-exhausted', 'Servicio temporalmente no disponible. Intenta de nuevo.');
+  }
+}
+
 // Server-authoritative XP rewards per reason.
 // Client cannot specify amount — server uses these predefined values.
 const REASON_REWARDS = {
@@ -491,6 +527,8 @@ exports.addXp = functions.runWith({ maxInstances: 10 }).https.onCall(async (data
   if (isAchievementClaim) {
     xp = ACHIEVEMENT_REWARDS[achievementId];
   }
+
+  await checkProgressionRateLimit(context.auth.uid, 'add_xp_timestamps');
 
   const userId = context.auth.uid;
   const userRef = admin.firestore().doc(`users/${userId}`);
@@ -940,6 +978,8 @@ exports.completeLesson = functions.runWith({ maxInstances: 10 }).https.onCall(as
   if (xp === 0) {
     throw new functions.https.HttpsError('invalid-argument', 'xp debe ser > 0');
   }
+
+  await checkProgressionRateLimit(context.auth.uid, 'complete_lesson_timestamps');
 
   const userId = context.auth.uid;
   const userRef = admin.firestore().doc(`users/${userId}`);

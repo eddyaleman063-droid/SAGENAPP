@@ -66,8 +66,8 @@ class FirebaseAuthClient implements AuthClient {
     try {
       _auth = firebase.FirebaseAuth.instance;
       _googleSignIn = GoogleSignIn();
-    } catch (e) {
-      _logger.error('FirebaseAuthClient: FirebaseAuth unavailable', e);
+    } catch (e, stack) {
+      _logger.error('FirebaseAuthClient: FirebaseAuth unavailable', e, stack);
     }
   }
 

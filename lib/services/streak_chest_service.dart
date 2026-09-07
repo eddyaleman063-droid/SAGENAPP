@@ -62,8 +62,8 @@ class StreakChestService {
           source: 'streak',
         ),
       );
-    } catch (e) {
-      _logger.error('StreakChestService: failed to check/reward', e);
+    } catch (e, stack) {
+      _logger.error('StreakChestService: failed to check/reward', e, stack);
     } finally {
       _checking = false;
     }

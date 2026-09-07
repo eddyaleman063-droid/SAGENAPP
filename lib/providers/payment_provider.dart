@@ -211,8 +211,8 @@ class PaymentNotifier extends AutoDisposeNotifier<PaymentState> {
         state = state.copyWith(pendingPaymentId: pendingId);
         _startPolling(pendingId);
       }
-    } catch (e) {
-      _logger.error('Failed to register pending payment', e);
+    } catch (e, stack) {
+      _logger.error('Failed to register pending payment', e, stack);
       state = state.copyWith(
         status: PaymentStatus.failed,
         errorMessage: 'Could not register payment. Please try again.',

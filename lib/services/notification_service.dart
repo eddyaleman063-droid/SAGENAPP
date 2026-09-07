@@ -55,8 +55,8 @@ class NotificationService {
       await _plugin.initialize(settings);
       _initialized = true;
       _logger.info('NotificationService initialized');
-    } catch (e) {
-      _logger.error('NotificationService init failed', e);
+    } catch (e, stack) {
+      _logger.error('NotificationService init failed', e, stack);
     }
   }
 
@@ -104,8 +104,8 @@ class NotificationService {
         matchDateTimeComponents: DateTimeComponents.time,
       );
       _logger.info('Daily chest reminder scheduled at 20:00');
-    } catch (e) {
-      _logger.error('scheduleChestReminder failed', e);
+    } catch (e, stack) {
+      _logger.error('scheduleChestReminder failed', e, stack);
     }
   }
 
@@ -162,8 +162,8 @@ class NotificationService {
             UILocalNotificationDateInterpretation.absoluteTime,
       );
       _logger.info('Streak reminder scheduled for 24h from now');
-    } catch (e) {
-      _logger.error('scheduleStreakReminder failed', e);
+    } catch (e, stack) {
+      _logger.error('scheduleStreakReminder failed', e, stack);
     }
   }
 
@@ -171,8 +171,8 @@ class NotificationService {
     if (!_initialized) return;
     try {
       await _plugin.cancel(_streakReminderId);
-    } catch (e) {
-      _logger.error('cancelStreakReminder failed', e);
+    } catch (e, stack) {
+      _logger.error('cancelStreakReminder failed', e, stack);
     }
   }
 
@@ -180,8 +180,8 @@ class NotificationService {
     if (!_initialized) return;
     try {
       await _plugin.cancelAll();
-    } catch (e) {
-      _logger.error('cancelAll failed', e);
+    } catch (e, stack) {
+      _logger.error('cancelAll failed', e, stack);
     }
   }
 
@@ -211,8 +211,8 @@ class NotificationService {
         'A shield protected your streak. $remainingFreezes shield(s) remaining.',
         details,
       );
-    } catch (e) {
-      _logger.error('showFreezeConsumedNotification failed', e);
+    } catch (e, stack) {
+      _logger.error('showFreezeConsumedNotification failed', e, stack);
     }
   }
 }

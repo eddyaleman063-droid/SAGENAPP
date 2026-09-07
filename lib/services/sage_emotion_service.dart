@@ -349,8 +349,8 @@ class SageEmotionService {
         },
       );
       if (!timedOut) _precached.add(emotion);
-    } catch (e) {
-      AppLogger().error('Precache failed for $emotion', e);
+    } catch (e, stack) {
+      AppLogger().error('Precache failed for $emotion', e, stack);
     } finally {
       stream.removeListener(listener);
     }

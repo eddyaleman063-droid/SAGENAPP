@@ -76,10 +76,10 @@ class DeepLinkService {
       _sub = _appLinks.uriLinkStream.listen((uri) {
         _logger.info('DeepLink received: $uri');
         _actionController.add(handleDeepLink(uri));
-      }, onError: (e) => _logger.error('DeepLink stream error', e));
+      }, onError: (e, st) => _logger.error('DeepLink stream error', e, st));
       _logger.info('DeepLinkService initialized');
-    } catch (e) {
-      _logger.error('DeepLinkService init failed', e);
+    } catch (e, stack) {
+      _logger.error('DeepLinkService init failed', e, stack);
     }
   }
 

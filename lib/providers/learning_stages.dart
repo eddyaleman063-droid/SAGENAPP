@@ -84,8 +84,8 @@ Future<List<Stage>> loadStagesFromAssets() async {
       '${_cachedStages.fold(0, (s, st) => s + st.sessions.length)} sessions)',
     );
     return _cachedStages;
-  } catch (e) {
-    AppLogger().error('Failed to load stages from assets', e);
+  } catch (e, stack) {
+    AppLogger().error('Failed to load stages from assets', e, stack);
     return [];
   }
 }

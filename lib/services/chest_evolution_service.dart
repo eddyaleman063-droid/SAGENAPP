@@ -35,8 +35,8 @@ class ChestEvolutionService implements IChestEvolutionService {
       );
 
       return SingleEvolutionResult(newTier: newType, evolved: evolved);
-    } catch (e) {
-      _logger.error('rollSingleEvolution error', e);
+    } catch (e, stack) {
+      _logger.error('rollSingleEvolution error', e, stack);
       return SingleEvolutionResult(newTier: current, evolved: false);
     }
   }
@@ -91,8 +91,8 @@ class ChestEvolutionService implements IChestEvolutionService {
           ),
         );
       }
-    } catch (e) {
-      _logger.error('Gacha Cloud Function error', e);
+    } catch (e, stack) {
+      _logger.error('Gacha Cloud Function error', e, stack);
       // Preserve partial progress on error — add failed attempt for current index
       final failedIndex = attempts.isEmpty ? 0 : attempts.last.index + 1;
       if (failedIndex < 3) {

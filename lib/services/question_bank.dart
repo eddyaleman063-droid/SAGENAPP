@@ -25,10 +25,11 @@ class QuestionBank {
       _logger.warning(
         'QuestionBank: no questions found for $stageId/$lessonId',
       );
-    } catch (e) {
+    } catch (e, stack) {
       _logger.error(
         'QuestionBank: failed to load questions for $stageId/$lessonId',
         e,
+        stack,
       );
     }
     return const [];

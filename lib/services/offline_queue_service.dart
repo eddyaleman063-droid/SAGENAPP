@@ -96,8 +96,8 @@ class OfflineQueueService {
         payload['retries'] = row['retry_count'] ?? 0;
         return payload;
       }).toList();
-    } catch (e) {
-      _logger.error('OfflineQueue: failed to load from SQLite', e);
+    } catch (e, stack) {
+      _logger.error('OfflineQueue: failed to load from SQLite', e, stack);
       _queue = [];
     }
   }
@@ -137,10 +137,11 @@ class OfflineQueueService {
         'retry_count': 0,
       });
       item['_dbId'] = dbId;
-    } catch (e) {
+    } catch (e, stack) {
       _logger.error(
         'OfflineQueue: failed to persist to SQLite — lesson will not be queued',
         e,
+        stack,
       );
       return;
     }
@@ -191,10 +192,11 @@ class OfflineQueueService {
         'retry_count': 0,
       });
       item['_dbId'] = dbId;
-    } catch (e) {
+    } catch (e, stack) {
       _logger.error(
         'OfflineQueue: failed to persist add_xp to SQLite — XP won\'t be queued',
         e,
+        stack,
       );
       return;
     }
@@ -225,8 +227,8 @@ class OfflineQueueService {
         where: 'id = ?',
         whereArgs: [dbId],
       );
-    } catch (e) {
-      _logger.error('OfflineQueue: failed to persist retry count', e);
+    } catch (e, stack) {
+      _logger.error('OfflineQueue: failed to persist retry count', e, stack);
     }
   }
 
@@ -409,8 +411,8 @@ class OfflineQueueService {
     try {
       final db = await DatabaseHelper.instance.database;
       await db.delete('sync_queue');
-    } catch (e) {
-      _logger.error('OfflineQueue: failed to clear SQLite', e);
+    } catch (e, stack) {
+      _logger.error('OfflineQueue: failed to clear SQLite', e, stack);
     }
     _queue.clear();
     _syncing = false;

@@ -304,8 +304,8 @@ class LocalQuestionDB {
         AppLogger().info('Seeded $validCount questions for stage $stageId');
       }
       await _ensurePoolsSeeded(db);
-    } catch (e) {
-      AppLogger().error('Failed to seed stage $stageId', e);
+    } catch (e, stack) {
+      AppLogger().error('Failed to seed stage $stageId', e, stack);
     } finally {
       _seedingInProgress = false;
       _seedingCompleter?.complete();
@@ -465,9 +465,9 @@ class LocalQuestionDB {
 
       await _ensureTypeDiversity(db, pools);
       _poolsSeeded = true;
-    } catch (e) {
+    } catch (e, stack) {
       _poolsSeeded = false;
-      AppLogger().error('Failed to seed pool questions', e);
+      AppLogger().error('Failed to seed pool questions', e, stack);
     }
   }
 
@@ -542,8 +542,8 @@ class LocalQuestionDB {
           'Added $added diversity questions across ${allLessonIds.length} lessons',
         );
       }
-    } catch (e) {
-      AppLogger().error('Failed to ensure type diversity', e);
+    } catch (e, stack) {
+      AppLogger().error('Failed to ensure type diversity', e, stack);
     }
   }
 
@@ -606,8 +606,12 @@ class LocalQuestionDB {
         for (final id in selectedIds)
           if (byId.containsKey(id)) byId[id]!,
       ];
-    } catch (e) {
-      AppLogger().error('LocalQuestionDB.getQuestionsForLesson failed', e);
+    } catch (e, stack) {
+      AppLogger().error(
+        'LocalQuestionDB.getQuestionsForLesson failed',
+        e,
+        stack,
+      );
       return [];
     }
   }
@@ -644,8 +648,8 @@ class LocalQuestionDB {
         whereArgs: selectedIds,
       );
       return maps.map(_rowToChallenge).toList();
-    } catch (e) {
-      AppLogger().error('LocalQuestionDB.getRandomByType failed', e);
+    } catch (e, stack) {
+      AppLogger().error('LocalQuestionDB.getRandomByType failed', e, stack);
       return [];
     }
   }
@@ -662,8 +666,8 @@ class LocalQuestionDB {
       );
       if (maps.isEmpty) return null;
       return _rowToChallenge(maps.first);
-    } catch (e) {
-      AppLogger().error('LocalQuestionDB.getById failed', e);
+    } catch (e, stack) {
+      AppLogger().error('LocalQuestionDB.getById failed', e, stack);
       return null;
     }
   }
@@ -688,8 +692,8 @@ class LocalQuestionDB {
         for (final id in ids)
           if (byId.containsKey(id)) byId[id]!,
       ];
-    } catch (e) {
-      AppLogger().error('LocalQuestionDB.getByIds failed', e);
+    } catch (e, stack) {
+      AppLogger().error('LocalQuestionDB.getByIds failed', e, stack);
       return const [];
     }
   }
@@ -701,8 +705,8 @@ class LocalQuestionDB {
             await db.rawQuery('SELECT COUNT(*) FROM questions'),
           ) ??
           0;
-    } catch (e) {
-      AppLogger().error('LocalQuestionDB.getQuestionCount failed', e);
+    } catch (e, stack) {
+      AppLogger().error('LocalQuestionDB.getQuestionCount failed', e, stack);
       return 0;
     }
   }
@@ -714,8 +718,8 @@ class LocalQuestionDB {
         'SELECT COUNT(DISTINCT lessonId) FROM questions',
       );
       return Sqflite.firstIntValue(result) ?? 0;
-    } catch (e) {
-      AppLogger().error('LocalQuestionDB.getLessonCount failed', e);
+    } catch (e, stack) {
+      AppLogger().error('LocalQuestionDB.getLessonCount failed', e, stack);
       return 0;
     }
   }

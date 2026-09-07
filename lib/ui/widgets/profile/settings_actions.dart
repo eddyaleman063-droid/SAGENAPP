@@ -106,8 +106,8 @@ class SettingsActions extends ConsumerWidget {
                   unawaited(ref.read(notificationServiceProvider).cancelAll());
                   try {
                     await ref.read(authProvider.notifier).signOut();
-                  } catch (e) {
-                    AppLogger().error('Sign out failed', e);
+                  } catch (e, stack) {
+                    AppLogger().error('Sign out failed', e, stack);
                   }
                 },
                 child: Text(

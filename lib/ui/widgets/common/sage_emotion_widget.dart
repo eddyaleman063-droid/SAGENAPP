@@ -78,8 +78,8 @@ class _StaticSageImageState extends State<_StaticSageImage> {
           context,
           listen: false,
         ).read(sageEmotionServiceProvider).ensurePrecached(widget.emotion);
-      } catch (e) {
-        AppLogger().error('SageEmotionWidget: precache failed', e);
+      } catch (e, stack) {
+        AppLogger().error('SageEmotionWidget: precache failed', e, stack);
       }
     });
   }

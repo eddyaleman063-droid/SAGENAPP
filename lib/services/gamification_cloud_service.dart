@@ -78,14 +78,19 @@ class GamificationCloudService {
         'newLevel': _safeInt(data, 'newLevel', 0),
         'alreadyClaimed': false,
       });
-    } on FirebaseFunctionsException catch (e) {
+    } on FirebaseFunctionsException catch (e, stack) {
       _logger.error(
         'GamificationCloudService.claimDailyChest failed: ${e.code}',
         e,
+        stack,
       );
       return AppResult.error(NetworkError(message: e.code, originalError: e));
-    } catch (e) {
-      _logger.error('GamificationCloudService.claimDailyChest failed', e);
+    } catch (e, stack) {
+      _logger.error(
+        'GamificationCloudService.claimDailyChest failed',
+        e,
+        stack,
+      );
       return AppResult.error(
         NetworkError(message: 'unknown', originalError: e),
       );
@@ -108,14 +113,19 @@ class GamificationCloudService {
         'lastClaimedDate': _safeString(data, 'lastClaimedDate', ''),
         'available': _safeBool(data, 'available', false),
       });
-    } on FirebaseFunctionsException catch (e) {
+    } on FirebaseFunctionsException catch (e, stack) {
       _logger.error(
         'GamificationCloudService.getDailyChestStatus failed: ${e.code}',
         e,
+        stack,
       );
       return AppResult.error(NetworkError(message: e.code, originalError: e));
-    } catch (e) {
-      _logger.error('GamificationCloudService.getDailyChestStatus failed', e);
+    } catch (e, stack) {
+      _logger.error(
+        'GamificationCloudService.getDailyChestStatus failed',
+        e,
+        stack,
+      );
       return AppResult.error(
         NetworkError(message: 'unknown', originalError: e),
       );
@@ -135,14 +145,15 @@ class GamificationCloudService {
         'xp': _safeInt(data, 'xp', 50),
         'limitReached': false,
       });
-    } on FirebaseFunctionsException catch (e) {
+    } on FirebaseFunctionsException catch (e, stack) {
       _logger.error(
         'GamificationCloudService.claimAdReward failed: ${e.code}',
         e,
+        stack,
       );
       return AppResult.error(NetworkError(message: e.code, originalError: e));
-    } catch (e) {
-      _logger.error('GamificationCloudService.claimAdReward failed', e);
+    } catch (e, stack) {
+      _logger.error('GamificationCloudService.claimAdReward failed', e, stack);
       return AppResult.error(
         NetworkError(message: 'unknown', originalError: e),
       );
@@ -169,14 +180,19 @@ class GamificationCloudService {
         'claimedLevels': data['claimedLevels'],
         'seasonStart': data['seasonStart'],
       });
-    } on FirebaseFunctionsException catch (e) {
+    } on FirebaseFunctionsException catch (e, stack) {
       _logger.error(
         'GamificationCloudService.claimPassReward failed: ${e.code}',
         e,
+        stack,
       );
       return AppResult.error(NetworkError(message: e.code, originalError: e));
-    } catch (e) {
-      _logger.error('GamificationCloudService.claimPassReward failed', e);
+    } catch (e, stack) {
+      _logger.error(
+        'GamificationCloudService.claimPassReward failed',
+        e,
+        stack,
+      );
       return AppResult.error(
         NetworkError(message: 'unknown', originalError: e),
       );
@@ -199,14 +215,19 @@ class GamificationCloudService {
         'sp': _safeInt(data, 'sp'),
         'claimed': data['claimed'],
       });
-    } on FirebaseFunctionsException catch (e) {
+    } on FirebaseFunctionsException catch (e, stack) {
       _logger.error(
         'GamificationCloudService.getSagenPassSeason failed: ${e.code}',
         e,
+        stack,
       );
       return AppResult.error(NetworkError(message: e.code, originalError: e));
-    } catch (e) {
-      _logger.error('GamificationCloudService.getSagenPassSeason failed', e);
+    } catch (e, stack) {
+      _logger.error(
+        'GamificationCloudService.getSagenPassSeason failed',
+        e,
+        stack,
+      );
       return AppResult.error(
         NetworkError(message: 'unknown', originalError: e),
       );

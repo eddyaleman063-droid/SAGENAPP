@@ -38,8 +38,8 @@ class ShareService {
         _analytics.trackFlexCardShared(source);
       }
       return true;
-    } catch (e) {
-      _logger.error('Share failed', e);
+    } catch (e, stack) {
+      _logger.error('Share failed', e, stack);
       return false;
     } finally {
       try {
@@ -59,8 +59,8 @@ class ShareService {
         _analytics.trackFlexCardShared(source);
       }
       return true;
-    } catch (e) {
-      _logger.error('Share text failed', e);
+    } catch (e, stack) {
+      _logger.error('Share text failed', e, stack);
       return false;
     }
   }

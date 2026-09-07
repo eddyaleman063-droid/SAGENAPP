@@ -74,8 +74,8 @@ class OnboardingWizardNotifier
         final json = jsonDecode(raw) as Map<String, dynamic>;
         return OnboardingWizardState.fromJson(json);
       }
-    } catch (e) {
-      AppLogger().error('Wizard: failed to load state', e);
+    } catch (e, stack) {
+      AppLogger().error('Wizard: failed to load state', e, stack);
     }
     return const OnboardingWizardState();
   }
@@ -89,8 +89,8 @@ class OnboardingWizardNotifier
     try {
       final prefs = ref.read(prefsProvider);
       prefs.setString(_kWizardKey, jsonEncode(state.toJson()));
-    } catch (e) {
-      AppLogger().error('Wizard: failed to persist state', e);
+    } catch (e, stack) {
+      AppLogger().error('Wizard: failed to persist state', e, stack);
     }
   }
 
@@ -124,8 +124,8 @@ class OnboardingWizardNotifier
       final prefs = ref.read(prefsProvider);
       prefs.remove(_kWizardKey);
       prefs.setBool(_kWizardDoneKey, false);
-    } catch (e) {
-      AppLogger().error('Wizard: failed to reset', e);
+    } catch (e, stack) {
+      AppLogger().error('Wizard: failed to reset', e, stack);
     }
   }
 
@@ -136,8 +136,8 @@ class OnboardingWizardNotifier
       final prefs = ref.read(prefsProvider);
       prefs.setBool(_kWizardDoneKey, true);
       prefs.remove(_kWizardKey);
-    } catch (e) {
-      AppLogger().error('Wizard: failed to mark completed', e);
+    } catch (e, stack) {
+      AppLogger().error('Wizard: failed to mark completed', e, stack);
     }
   }
 }

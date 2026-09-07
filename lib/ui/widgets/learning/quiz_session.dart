@@ -234,16 +234,16 @@ class _QuizSessionState extends ConsumerState<QuizSession>
           final topic = stage?.title ?? 'lesson';
           ref.read(reviewProvider.notifier).recordMistake(_current.id, topic);
         }
-      } catch (e) {
-        AppLogger().error('QuizSession: failed to record mistake', e);
+      } catch (e, stack) {
+        AppLogger().error('QuizSession: failed to record mistake', e, stack);
       }
     } else {
       // Alimenta SM-2 de repaso con los aciertos (H-04/H-10): decrementa
       // fallos y programa la siguiente repetición.
       try {
         ref.read(reviewProvider.notifier).recordCorrect(_current.id);
-      } catch (e) {
-        AppLogger().error('QuizSession: failed to record correct', e);
+      } catch (e, stack) {
+        AppLogger().error('QuizSession: failed to record correct', e, stack);
       }
     }
   }

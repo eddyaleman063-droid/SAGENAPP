@@ -70,10 +70,10 @@ class _ReviewSessionScreenState extends ConsumerState<ReviewSessionScreen> {
         _challenges = questions;
         _loading = false;
       });
-    } catch (e) {
+    } catch (e, stack) {
       ref
           .read(loggerProvider)
-          .error('ReviewSessionScreen: failed to load review: $e');
+          .error('ReviewSessionScreen: failed to load review', e, stack);
       if (!mounted) return;
       setState(() {
         _loading = false;

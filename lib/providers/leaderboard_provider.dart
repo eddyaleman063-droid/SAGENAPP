@@ -34,7 +34,7 @@ final leaderboardProvider = StreamProvider.autoDispose<List<LeaderboardEntry>>((
           QuerySnapshot<Map<String, dynamic>>
         >.fromHandlers(
           handleError: (e, st, sink) {
-            AppLogger().error('leaderboardProvider stream error', e);
+            AppLogger().error('leaderboardProvider stream error', e, st);
             sink.addError(e, st);
           },
         ),

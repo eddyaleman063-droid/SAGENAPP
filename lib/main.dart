@@ -75,8 +75,8 @@ void main() async {
           logger: logger,
           authService: authService,
           cloudSyncService: cloudSyncService,
-        ).catchError((Object e) {
-          logger.error('ServiceInitializer failed', e);
+        ).catchError((Object e, StackTrace st) {
+          logger.error('ServiceInitializer failed', e, st);
         }),
       );
     },
@@ -220,8 +220,8 @@ void _setupErrorHandlers(AppLogger logger) {
         logger.error('PlatformDispatcher error', error, stack);
         return true;
       };
-    } catch (e) {
-      logger.error('Failed to set up global error handlers', e);
+    } catch (e, stack) {
+      logger.error('Failed to set up global error handlers', e, stack);
     }
   } else {
     FlutterError.onError = (details) {

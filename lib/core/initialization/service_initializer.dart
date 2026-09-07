@@ -54,8 +54,8 @@ class ServiceInitializer {
   static void _initDeviceTier(AppLogger logger) {
     try {
       LowEndDeviceDetector.instance.init();
-    } catch (e) {
-      logger.error('Tier detection failed', e);
+    } catch (e, stack) {
+      logger.error('Tier detection failed', e, stack);
     }
   }
 
@@ -74,8 +74,8 @@ class ServiceInitializer {
       logger.markFirebaseReady();
       logger.info('Firebase initialized successfully');
       return true;
-    } catch (e) {
-      logger.error('Firebase init failed: $e');
+    } catch (e, stack) {
+      logger.error('Firebase init failed', e, stack);
       return await _recoverFirebase(logger);
     }
   }
@@ -91,8 +91,8 @@ class ServiceInitializer {
       logger.markFirebaseReady();
       logger.info('Firebase recovered and initialized successfully');
       return true;
-    } catch (e2) {
-      logger.error('Firebase initialization failed: $e2');
+    } catch (e2, stack) {
+      logger.error('Firebase initialization failed', e2, stack);
       return false;
     }
   }
@@ -109,8 +109,8 @@ class ServiceInitializer {
         );
       }
       logger.info('App Check activated');
-    } catch (e) {
-      logger.error('App Check activation failed', e);
+    } catch (e, stack) {
+      logger.error('App Check activation failed', e, stack);
       // In release mode, log the failure but do NOT rethrow.
       // App Check is a defense-in-depth measure; blocking init
       // on failure would make the app unusable if Play Integrity
@@ -121,20 +121,20 @@ class ServiceInitializer {
       FirebaseFirestore.instance.settings = const Settings(
         persistenceEnabled: true,
       );
-    } catch (e) {
-      logger.error('Firestore settings failed', e);
+    } catch (e, stack) {
+      logger.error('Firestore settings failed', e, stack);
     }
 
     try {
       FirebaseAnalytics.instance;
-    } catch (e) {
-      logger.error('Analytics init failed', e);
+    } catch (e, stack) {
+      logger.error('Analytics init failed', e, stack);
     }
 
     try {
       await PerformanceService.instance.init();
-    } catch (e) {
-      logger.error('Performance monitoring init failed', e);
+    } catch (e, stack) {
+      logger.error('Performance monitoring init failed', e, stack);
     }
 
     if (kReleaseMode) {
@@ -142,8 +142,8 @@ class ServiceInitializer {
         await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
           true,
         );
-      } catch (e) {
-        logger.error('Crashlytics init failed', e);
+      } catch (e, stack) {
+        logger.error('Crashlytics init failed', e, stack);
       }
     }
   }
@@ -155,8 +155,8 @@ class ServiceInitializer {
     try {
       await authService.init();
       logger.info('AuthService initialized');
-    } catch (e) {
-      logger.error('Auth init failed', e);
+    } catch (e, stack) {
+      logger.error('Auth init failed', e, stack);
     }
 
     try {
@@ -165,8 +165,8 @@ class ServiceInitializer {
         await FirebaseCrashlytics.instance.setUserIdentifier(user.uid);
         await FirebaseAnalytics.instance.setUserId(id: user.uid);
       }
-    } catch (e) {
-      logger.error('Crashlytics user ID failed', e);
+    } catch (e, stack) {
+      logger.error('Crashlytics user ID failed', e, stack);
     }
   }
 
@@ -226,8 +226,8 @@ class ServiceInitializer {
   ) async {
     try {
       await init().timeout(const Duration(seconds: 10));
-    } catch (e) {
-      logger.error('$name init failed', e);
+    } catch (e, stack) {
+      logger.error('$name init failed', e, stack);
     }
   }
 }

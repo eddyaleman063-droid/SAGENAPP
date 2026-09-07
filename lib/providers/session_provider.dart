@@ -248,8 +248,8 @@ class SessionNotifier extends AutoDisposeNotifier<SessionState> {
         wrongCount: wrongCount,
         savedAnswered: savedAnswered,
       );
-    } catch (e) {
-      AppLogger().error('SessionNotifier._loadProgress failed', e);
+    } catch (e, stack) {
+      AppLogger().error('SessionNotifier._loadProgress failed', e, stack);
       return null;
     }
   }
@@ -349,8 +349,12 @@ class SessionNotifier extends AutoDisposeNotifier<SessionState> {
             : topicForReview;
         ref.read(reviewProvider.notifier).recordMistake(challenge.id, topic);
       }
-    } catch (e) {
-      AppLogger().error('SessionNotifier: failed to record review feedback', e);
+    } catch (e, stack) {
+      AppLogger().error(
+        'SessionNotifier: failed to record review feedback',
+        e,
+        stack,
+      );
     }
   }
 

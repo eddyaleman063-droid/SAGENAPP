@@ -78,8 +78,12 @@ class DeviceIntegrityService {
         _compromisedReason = null;
         _logger.info('DeviceIntegrity: device is clean');
       }
-    } catch (e) {
-      _logger.error('DeviceIntegrity: check failed, assuming compromised', e);
+    } catch (e, stack) {
+      _logger.error(
+        'DeviceIntegrity: check failed, assuming compromised',
+        e,
+        stack,
+      );
       _isCompromised = true;
       _compromisedReason = 'Integrity verification error';
       _checked = true;

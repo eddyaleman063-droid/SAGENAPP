@@ -70,8 +70,8 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
         message: e.localizedMessage(AppLocalizations.of(context)!),
         type: NotificationType.error,
       );
-    } catch (e) {
-      AppLogger().error('ForgotPassword: send reset email failed', e);
+    } catch (e, stack) {
+      AppLogger().error('ForgotPassword: send reset email failed', e, stack);
       if (!mounted) return;
       SagenNotification.show(
         context,

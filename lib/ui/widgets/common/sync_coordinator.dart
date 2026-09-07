@@ -61,8 +61,8 @@ class _SyncCoordinatorState extends ConsumerState<SyncCoordinator> {
   void _safeReload(String name, VoidCallback reload) {
     try {
       reload();
-    } catch (e) {
-      AppLogger().error('SyncCoordinator: $name reload failed', e);
+    } catch (e, stack) {
+      AppLogger().error('SyncCoordinator: $name reload failed', e, stack);
       if (context.mounted) {
         SagenNotification.show(
           context,

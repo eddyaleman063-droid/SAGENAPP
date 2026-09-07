@@ -187,8 +187,8 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
           );
         }
       }
-    } catch (e) {
-      AppLogger().error('Registration failed', e);
+    } catch (e, stack) {
+      AppLogger().error('Registration failed', e, stack);
       // Limpia la credencial ante un error inesperado para que no quede
       // residiendo en el estado global; el email/nombre se conservan por si
       // el usuario reintenta.

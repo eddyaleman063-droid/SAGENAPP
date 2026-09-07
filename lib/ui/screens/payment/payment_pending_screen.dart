@@ -203,10 +203,11 @@ class _PaymentPendingScreenState extends ConsumerState<PaymentPendingScreen> {
                                 } else {
                                   context.goNamed('main');
                                 }
-                              } catch (e) {
+                              } catch (e, stack) {
                                 AppLogger().error(
                                   'PaymentPending: go home failed',
                                   e,
+                                  stack,
                                 );
                                 if (context.mounted) {
                                   SagenNotification.show(

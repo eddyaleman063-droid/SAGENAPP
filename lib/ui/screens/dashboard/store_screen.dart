@@ -195,8 +195,8 @@ class _StoreScreenState extends ConsumerState<StoreScreen>
           type: NotificationType.success,
         );
       }
-    } catch (e) {
-      AppLogger().error('StoreScreen: gem purchase failed', e);
+    } catch (e, stack) {
+      AppLogger().error('StoreScreen: gem purchase failed', e, stack);
       if (context.mounted) {
         SagenNotification.show(
           context,

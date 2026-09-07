@@ -46,8 +46,8 @@ class FlexCardWidgetState extends ConsumerState<FlexCardWidget> {
       image = await boundary.toImage(pixelRatio: 3.0);
       final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
       return byteData?.buffer.asUint8List();
-    } catch (e) {
-      AppLogger().error('FlexCardWidget: capture failed', e);
+    } catch (e, stack) {
+      AppLogger().error('FlexCardWidget: capture failed', e, stack);
       return null;
     } finally {
       image?.dispose();

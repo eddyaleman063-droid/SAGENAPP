@@ -107,8 +107,8 @@ class RemoteConfigService {
         },
       );
       _initialized = true;
-    } catch (e) {
-      _logger.error('RemoteConfigService.init', e);
+    } catch (e, stack) {
+      _logger.error('RemoteConfigService.init', e, stack);
     }
   }
 
@@ -176,10 +176,11 @@ class RemoteConfigService {
           jsonDecode(rc.getString(_keyChestDropRates)) as Map<String, dynamic>;
       _lastDropRatesFetch = now;
       return _cachedDropRates!;
-    } catch (e) {
+    } catch (e, stack) {
       AppLogger().error(
         'RemoteConfig: chestDropRates parse failed, using defaults',
         e,
+        stack,
       );
       return _defaultDropRates();
     }

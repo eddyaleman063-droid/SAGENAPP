@@ -44,9 +44,11 @@ class EconomicFunctionsService implements IEconomicFunctionsService {
       final result = await callable(params).timeout(timeout);
       _logger.info('EconomicFunctions: $name succeeded');
       return result.data as T?;
-    } on FirebaseFunctionsException catch (e) {
+    } on FirebaseFunctionsException catch (e, stack) {
       _logger.error(
         'EconomicFunctions: $name failed: ${e.code} - ${e.message}',
+        e,
+        stack,
       );
       rethrow;
     } catch (e, stack) {

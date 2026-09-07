@@ -99,8 +99,8 @@ class AuthNotifier extends Notifier<AuthState> {
     _cancelAuthSubscription();
     _authSub = _authService.authStateChanges.listen(
       _onAuthStateChanged,
-      onError: (e) {
-        AppLogger().error('AuthStream error', e);
+      onError: (e, st) {
+        AppLogger().error('AuthStream error', e, st);
         state = state.copyWith(errorMessage: () => 'Error in auth stream');
       },
     );
@@ -511,8 +511,8 @@ class AuthNotifier extends Notifier<AuthState> {
         await _syncManager.saveBeforeSignOut(uid, prefs);
       }
       _syncManager.stopListening();
-    } catch (e) {
-      AppLogger().error('Cloud sync during sign-out failed', e);
+    } catch (e, stack) {
+      AppLogger().error('Cloud sync during sign-out failed', e, stack);
     }
     // El sign-out real de Firebase NO debe pasarse por alto: si falla, el
     // usuario sigue autenticado a nivel de Firebase. Reseteamos el estado solo
@@ -521,8 +521,8 @@ class AuthNotifier extends Notifier<AuthState> {
     // próxima sesión / re-atenticación en el siguiente arranque).
     try {
       await _authService.signOut();
-    } catch (e) {
-      AppLogger().error('Auth: Firebase sign-out failed', e);
+    } catch (e, stack) {
+      AppLogger().error('Auth: Firebase sign-out failed', e, stack);
       return;
     }
     // Al cerrar sesión, se limpian los datos locales de lección a medias para
@@ -608,8 +608,8 @@ class AuthNotifier extends Notifier<AuthState> {
     try {
       await _authService.deleteAccount();
       state = const AuthState(status: AuthStatus.unauthenticated);
-    } catch (e) {
-      AppLogger().error('deleteAccount failed', e);
+    } catch (e, stack) {
+      AppLogger().error('deleteAccount failed', e, stack);
       // If direct deletion fails for OAuth user, show reauth message
       if (isOAuth) {
         state = state.copyWith(

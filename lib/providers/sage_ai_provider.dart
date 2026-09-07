@@ -249,7 +249,7 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
             state = state.copyWith(streamingText: buffer.toString());
             _finalizeResponse(text);
           },
-          onError: (Object e) {
+          onError: (Object e, StackTrace st) {
             _streamFlushTimer?.cancel();
             _streamFlushTimer = null;
             if (e is AiException && e.type == AiErrorType.dailyLimit) {
@@ -259,7 +259,7 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
               _handleDailyLimit();
               return;
             }
-            AppLogger().error('SageAiProvider stream error', e);
+            AppLogger().error('SageAiProvider stream error', e, st);
             ref.read(emotionEventBusProvider).fire(EmotionEventType.chatError);
             _fallbackResponse(text);
           },
@@ -328,8 +328,8 @@ class SageAiNotifier extends AutoDisposeNotifier<SageAiChatState> {
               _applyAssistantMessage(finalText);
             }
           },
-          onError: (e) {
-            AppLogger().error('SageAiProvider fallback stream error', e);
+          onError: (e, st) {
+            AppLogger().error('SageAiProvider fallback stream error', e, st);
             _streamFlushTimer?.cancel();
             _streamFlushTimer = null;
             _showConnectionWeak();
