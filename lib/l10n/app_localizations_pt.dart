@@ -3856,24 +3856,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get sharing => 'Compartilhando...';
 
   @override
-  String get shieldTierBasic => 'Escudo Básico';
-
-  @override
-  String get shieldTierCrystal => 'Escudo de Cristal';
-
-  @override
-  String get shieldTierGlow => 'Escudo Radiante';
-
-  @override
-  String get shieldTierInactive => 'Sem Escudo';
-
-  @override
-  String get shieldTierLegendary => 'Escudo Lendário';
-
-  @override
-  String get shieldTierParticles => 'Escudo de Partículas';
-
-  @override
   String get shopBgCyber => 'Fundo Cyberpunk';
 
   @override

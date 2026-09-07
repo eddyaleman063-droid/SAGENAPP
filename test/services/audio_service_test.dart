@@ -54,9 +54,7 @@ void main() {
     await audio.playClank();
     await audio.playChestOpen();
     await audio.playMilestone();
-    await audio.playUiTap();
     await audio.playLevelUp();
-    await audio.playStreakMilestone();
     await audio.playChestRare();
     await audio.playPurchaseSuccess();
   });
@@ -94,7 +92,7 @@ void main() {
   test('queues rapid sounds without losing them', () async {
     await AudioService.instance.init();
     await AudioService.instance.playClank();
-    await AudioService.instance.playUiTap();
+    await AudioService.instance.playSuccess();
     await AudioService.instance.playError();
   });
 

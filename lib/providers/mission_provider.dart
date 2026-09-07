@@ -40,7 +40,6 @@ class MissionNotifier extends Notifier<MissionState> {
 
   List<DailyMission> get missions => List.unmodifiable(state.missions);
   int get totalMissionsCompleted => state.totalMissionsCompleted;
-  int get completedToday => state.missions.where((m) => m.completed).length;
 
   static const _keyMissions = 'daily_missions_v2';
   static const _keyReset = 'daily_missions_reset';

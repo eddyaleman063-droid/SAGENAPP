@@ -364,6 +364,12 @@ exports.getSagenPassSeason = functions.runWith({ maxInstances: 5 }).https.onCall
   requireVerifiedUser(context);
 
   const userId = context.auth.uid;
+  // NUEVO-fix (RL read-only): getSagenPassSeason no muta nada; cap 30/min con
+  // campo dedicado para no compartir ventana con endpoint que sí escribe.
+  const rateCheck = await checkDistributedRateLimit(userId, 60 * 1000, 30, 'sagenpass_status_timestamps');
+  if (!rateCheck.allowed) {
+    throw new functions.https.HttpsError('resource-exhausted', 'Demasiadas solicitudes');
+  }
   const userRef = admin.firestore().doc(`users/${userId}`);
 
   try {

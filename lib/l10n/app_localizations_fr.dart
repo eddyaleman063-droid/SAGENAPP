@@ -3881,24 +3881,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get sharing => 'Partage en cours...';
 
   @override
-  String get shieldTierBasic => 'Bouclier Basique';
-
-  @override
-  String get shieldTierCrystal => 'Bouclier de Cristal';
-
-  @override
-  String get shieldTierGlow => 'Bouclier Rayonnant';
-
-  @override
-  String get shieldTierInactive => 'Sans Bouclier';
-
-  @override
-  String get shieldTierLegendary => 'Bouclier Légendaire';
-
-  @override
-  String get shieldTierParticles => 'Bouclier de Particules';
-
-  @override
   String get shopBgCyber => 'Fond Cyberpunk';
 
   @override

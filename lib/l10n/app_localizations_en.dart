@@ -3831,24 +3831,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sharing => 'Sharing...';
 
   @override
-  String get shieldTierBasic => 'Basic Shield';
-
-  @override
-  String get shieldTierCrystal => 'Crystal Shield';
-
-  @override
-  String get shieldTierGlow => 'Radiant Shield';
-
-  @override
-  String get shieldTierInactive => 'No Shield';
-
-  @override
-  String get shieldTierLegendary => 'Legendary Shield';
-
-  @override
-  String get shieldTierParticles => 'Particles Shield';
-
-  @override
   String get shopBgCyber => 'Cyberpunk Background';
 
   @override

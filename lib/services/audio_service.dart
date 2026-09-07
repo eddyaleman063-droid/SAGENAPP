@@ -27,9 +27,7 @@ class AudioService {
   static const _errorAsset = 'assets/audio/error.wav';
   static const _chestOpenAsset = 'assets/audio/chest_open.wav';
   static const _milestoneAsset = 'assets/audio/milestone.wav';
-  static const _uiTapAsset = 'assets/audio/ui_tap.wav';
   static const _levelUpAsset = 'assets/audio/level_up.wav';
-  static const _streakMilestoneAsset = 'assets/audio/streak_milestone.wav';
   static const _chestRareAsset = 'assets/audio/chest_rare.wav';
   static const _purchaseSuccessAsset = 'assets/audio/purchase_success.wav';
 
@@ -52,9 +50,7 @@ class AudioService {
         _errorAsset,
         _chestOpenAsset,
         _milestoneAsset,
-        _uiTapAsset,
         _levelUpAsset,
-        _streakMilestoneAsset,
         _chestRareAsset,
         _purchaseSuccessAsset,
       ];
@@ -155,12 +151,7 @@ class AudioService {
 
   Future<void> playMilestone() async => _play(_milestoneAsset, volume: 0.7);
 
-  Future<void> playUiTap() async => _play(_uiTapAsset, volume: 0.3);
-
   Future<void> playLevelUp() async => _play(_levelUpAsset, volume: 0.7);
-
-  Future<void> playStreakMilestone() async =>
-      _play(_streakMilestoneAsset, volume: 0.7);
 
   Future<void> playChestRare() async => _play(_chestRareAsset, volume: 0.8);
 

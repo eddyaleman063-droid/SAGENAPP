@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../l10n/app_localizations.dart';
 import '../utils/map_utils.dart';
 import '../services/emotion_event_bus.dart';
 
@@ -90,16 +89,6 @@ class StreakNotifier extends Notifier<StreakState> {
   // sin manejar (excepción async huérfana) al cerrar sesión/teardown durante
   // un sync en vuelo.
   bool _disposed = false;
-
-  static const _missions = [
-    'Learn what phishing is',
-    'Enable two-factor authentication',
-    'Review your passwords',
-    'Identify a suspicious link',
-    'Learn about secure WiFi networks',
-    'Create a strong password',
-    'Recognize a fraudulent email',
-  ];
 
   static const _emotionalQuotes = [
     'Your security improves every day.',
@@ -611,7 +600,6 @@ class StreakNotifier extends Notifier<StreakState> {
   bool get isAtRisk => state.status.isAtRisk;
   String get message => state.status.message;
   String get tier => state.status.tier;
-  String get shieldTier => state.status.tier;
   bool get hasStreak => state.status.hasStreak;
   bool get isStreakFrozen => state.status.isStreakFrozen;
 
@@ -624,14 +612,6 @@ class StreakNotifier extends Notifier<StreakState> {
   List<String> get streakHistory => List.unmodifiable(state.streakHistory);
   List<String> get emotionalMessages =>
       List.unmodifiable(state.emotionalMessages);
-
-  String get currentMission {
-    // NUEVO-fix: la misión del día se indexa con el día UTC (como el reset
-    // diario de misiones y el servidor). El día local desfasaba la misión
-    // mostrada varias horas cada día en zonas != UTC.
-    final nowUtc = DateTime.now().toUtc();
-    return _missions[nowUtc.day % _missions.length];
-  }
 
   Map<String, int> get monthlyStreakStats {
     final cached = state.cachedMonthlyStreakStats;
@@ -654,23 +634,6 @@ class StreakNotifier extends Notifier<StreakState> {
   void cacheMonthlyStats() {
     if (state.cachedMonthlyStreakStats != null) return;
     state = state.copyWith(cachedMonthlyStreakStats: monthlyStreakStats);
-  }
-
-  String shieldTierName(AppLocalizations l) {
-    switch (tier) {
-      case 'legendary':
-        return l.shieldTierLegendary;
-      case 'crystal':
-        return l.shieldTierCrystal;
-      case 'particles':
-        return l.shieldTierParticles;
-      case 'glow':
-        return l.shieldTierGlow;
-      case 'basic':
-        return l.shieldTierBasic;
-      default:
-        return l.shieldTierInactive;
-    }
   }
 
   // -- Public API: Mutations --

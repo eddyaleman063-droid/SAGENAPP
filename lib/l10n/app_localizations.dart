@@ -7109,42 +7109,6 @@ abstract class AppLocalizations {
   /// **'Compartiendo...'**
   String get sharing;
 
-  /// No description provided for @shieldTierBasic.
-  ///
-  /// In es, this message translates to:
-  /// **'Escudo Básico'**
-  String get shieldTierBasic;
-
-  /// No description provided for @shieldTierCrystal.
-  ///
-  /// In es, this message translates to:
-  /// **'Escudo de Cristal'**
-  String get shieldTierCrystal;
-
-  /// No description provided for @shieldTierGlow.
-  ///
-  /// In es, this message translates to:
-  /// **'Escudo Radiante'**
-  String get shieldTierGlow;
-
-  /// No description provided for @shieldTierInactive.
-  ///
-  /// In es, this message translates to:
-  /// **'Sin Escudo'**
-  String get shieldTierInactive;
-
-  /// No description provided for @shieldTierLegendary.
-  ///
-  /// In es, this message translates to:
-  /// **'Escudo Legendario'**
-  String get shieldTierLegendary;
-
-  /// No description provided for @shieldTierParticles.
-  ///
-  /// In es, this message translates to:
-  /// **'Escudo de Partículas'**
-  String get shieldTierParticles;
-
   /// No description provided for @shopBgCyber.
   ///
   /// In es, this message translates to:
