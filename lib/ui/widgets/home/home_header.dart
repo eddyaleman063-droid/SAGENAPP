@@ -82,12 +82,10 @@ class HomeHeader extends StatelessWidget {
           const SizedBox(width: AppSpacing.sm),
           Semantics(
             label:
-                '${totalDonated > 0 ? "\$${totalDonated.toStringAsFixed(0)}" : "0"} ${l.profileDonations}',
+                '${_donationValue(totalDonated, l.currencySymbol)} ${l.profileDonations}',
             child: _Pill(
               icon: Icons.favorite_rounded,
-              value: totalDonated > 0
-                  ? '\$${totalDonated.toStringAsFixed(0)}'
-                  : '0',
+              value: _donationValue(totalDonated, l.currencySymbol),
               label: l.profileDonations,
             ),
           ),
@@ -205,4 +203,15 @@ class _GemPill extends StatelessWidget {
       ),
     );
   }
+}
+
+/// NUEVO-fix (ronda 29): formato monetario que conserva centimos. Antes
+/// totalDonated=9.9 se mostraba como "$9"; ahora "$9.90". Sin centimos se
+/// muestra entero ($12) para no alargar el chip del header.
+String _donationValue(double value, String currencySymbol) {
+  if (value <= 0) return '0';
+  final cents = (value * 100).round() % 100;
+  return cents == 0
+      ? '$currencySymbol${value.toStringAsFixed(0)}'
+      : '$currencySymbol${value.toStringAsFixed(2)}';
 }
