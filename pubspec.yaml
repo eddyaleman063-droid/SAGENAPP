@@ -48,13 +48,11 @@ dependencies:
   # Utilities
   path_provider: ^2.1.6
   crypto: ^3.0.6
-  speech_to_text: ^7.3.0
   connectivity_plus: ^6.1.4
   url_launcher: ^6.3.1
   flutter_markdown_plus: ^1.0.12
   lottie: ^3.3.3
   flutter_animate: ^4.5.2
-  flutter_dynamic_icon_plus: ^1.4.1
   flutter_local_notifications: ^18.0.1
   timezone: ^0.10.1
   app_links: ^6.3.2
@@ -64,8 +62,6 @@ dependencies:
   go_router: ^17.3.0
   audioplayers: ^6.7.1
   safe_device: ^1.4.1
-  in_app_review: ^2.0.0
-  sensors_plus: ^5.0.0
   rive: ^0.14.11
   confetti: ^0.8.0
   package_info_plus: ^8.0.0
