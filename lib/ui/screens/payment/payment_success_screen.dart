@@ -20,7 +20,7 @@ class PaymentSuccessScreen extends ConsumerStatefulWidget {
 }
 
 class _PaymentSuccessScreenState extends ConsumerState<PaymentSuccessScreen>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late AnimationController _scaleCtrl;
   late CurvedAnimation _scaleCurve;
   late AnimationController _checkCtrl;
