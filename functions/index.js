@@ -288,7 +288,7 @@ exports.createPaymentPreference = functions.runWith({ maxInstances: 10 }).https.
           {
             id: productId,
             title: pkg.title,
-            description: `$${amount} donation`,
+            description: `S/ ${Number(pkg.price).toFixed(2)} donation`,
             quantity: 1,
             unit_price: pkg.price,
             currency_id: 'PEN',
@@ -465,9 +465,11 @@ exports.handlePaymentWebhook = functions.runWith({ maxInstances: 5 }).https.onRe
     // Extract userId from metadata (preferred) or fallback to externalRef parsing
     const extParts = externalRef.split('|');
     const userId = payment.metadata?.userId || extParts[0] || '';
-    const amount = parseInt(
-      payment.metadata?.amount || extParts[1],
-      10,
+    // NUEVO-fix (ronda 27): parseFloat en lugar de parseInt. El paquete
+    // 'sagen_pass' tiene amount 9.90; parseInt('9.9') truncaba la acreditacion
+    // a 9.00 y desalineaba total_donated con lo realmente pagado.
+    const amount = parseFloat(
+      String(payment.metadata?.amount || extParts[1] || '').replace(',', '.'),
     );
     const productId = payment.metadata?.productId || extParts[2] || null;
 

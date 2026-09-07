@@ -28,7 +28,7 @@ class MercadoPagoService {
       AppConfig.mercadopagoFunctionsUrl.replaceAll(RegExp(r'/+$'), '');
 
   Future<MercadoPagoPreference> createPreference({
-    required int amount,
+    required double amount,
     required String productId,
     required String idToken,
     double? price,
@@ -109,7 +109,7 @@ class MercadoPagoService {
     required String paymentMethod,
     required String operationId,
     required String idToken,
-    int? amount,
+    double? amount,
     String? productId,
   }) async {
     final url = Uri.parse('$_baseUrl/api/registerPendingPayment');

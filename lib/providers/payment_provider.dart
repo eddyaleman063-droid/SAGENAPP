@@ -122,7 +122,7 @@ class PaymentNotifier extends AutoDisposeNotifier<PaymentState> {
       status: PaymentStatus.creatingPreference,
       pendingAmount: price,
       selectedMethod: PaymentMethod.mercadopago,
-      donatedBefore: ref.read(learningProvider).totalDonated.toInt(),
+      donatedBefore: ref.read(learningProvider).totalDonated.round(),
       selectedProduct: product,
       clearError: true,
     );
@@ -147,7 +147,7 @@ class PaymentNotifier extends AutoDisposeNotifier<PaymentState> {
       }
 
       final pref = await _mpService.createPreference(
-        amount: price.toInt(),
+        amount: price,
         productId: productId,
         idToken: idToken,
       );
@@ -180,7 +180,7 @@ class PaymentNotifier extends AutoDisposeNotifier<PaymentState> {
       status: PaymentStatus.waitingPayment,
       pendingAmount: price,
       selectedMethod: PaymentMethod.whatsapp,
-      donatedBefore: ref.read(learningProvider).totalDonated.toInt(),
+      donatedBefore: ref.read(learningProvider).totalDonated.round(),
       selectedProduct: product,
       clearError: true,
     );
@@ -203,7 +203,7 @@ class PaymentNotifier extends AutoDisposeNotifier<PaymentState> {
         paymentMethod: 'whatsapp',
         operationId: opId,
         idToken: idToken,
-        amount: price.toInt(),
+        amount: price,
         productId: product?.id,
       );
       final pendingId = result['pendingPaymentId'] as String?;
@@ -295,7 +295,7 @@ class PaymentNotifier extends AutoDisposeNotifier<PaymentState> {
       // idempotente y server-authoritative (patron ya usado en login/tienda).
       await ref.read(gemProvider.notifier).syncBalanceFromServer();
       final currentDonated = ref.read(learningProvider).totalDonated;
-      state = state.copyWith(donatedAfter: currentDonated.toInt());
+      state = state.copyWith(donatedAfter: currentDonated.round());
     } catch (e, stack) {
       AppLogger().error('PaymentNotifier.refreshGems failed', e, stack);
     }

@@ -611,6 +611,32 @@ describe('handlePaymentWebhook', () => {
     expect(admin._getDoc('payment_logs/pay_ghost_user')).toBeNull();
   });
 
+  test('NUEVO-fix ronda 27: approved SAGEN PASS with decimal amount credits 9.90, not 9', async () => {
+    setUserDoc('pass-decimal-uid', { total_donated: 0, learning_gems: 0 });
+    // MP devuelve metadata.amount como string tal como se guardo al crear la
+    // preferencia. parseInt('9.9') truncaba a 9; parseFloat debe dar 9.9.
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: async () => ({
+        status: 'approved',
+        external_reference: 'hashX|9.9|sagen_pass',
+        metadata: { userId: 'pass-decimal-uid', amount: '9.9', productId: 'sagen_pass' },
+      }),
+    });
+    const r = res();
+    await index.handlePaymentWebhook(
+      signedReq({ type: 'payment', data: { id: 'pay_decimal_1' } }),
+      r,
+    );
+    expect(r._status).toBe(200);
+    const user = admin._getDoc('users/pass-decimal-uid');
+    expect(user.total_donated).toBeCloseTo(9.9, 2);
+    expect(user.sagen_pass_active).toBe(true);
+    expect(user.learning_gems).toBe(500);
+    expect(admin._getDoc('payment_logs/pay_decimal_1').amount).toBeCloseTo(9.9, 2);
+  });
+
   function refundedPayment(status) {
     global.fetch = jest.fn().mockResolvedValue({
       ok: true,
