@@ -248,7 +248,7 @@ class LessonsScreen extends ConsumerWidget {
             const SizedBox(height: AppSpacing.md),
             Semantics(
               label: l.courseProgressLabel(
-                (learning.overallProgress * 100).toInt(),
+                (learning.overallProgress * 100).round(),
               ),
               container: true,
               child: ClipRRect(
@@ -494,7 +494,7 @@ class _StageNode extends StatelessWidget {
                     Semantics(
                       label: AppLocalizations.of(
                         context,
-                      )!.stageProgressLabel((stage.progress * 100).toInt()),
+                      )!.stageProgressLabel((stage.progress * 100).round()),
                       container: true,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(AppRadius.pill),

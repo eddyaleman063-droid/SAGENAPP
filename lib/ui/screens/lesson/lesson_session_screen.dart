@@ -298,7 +298,7 @@ class _HudBar extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.sm),
           Semantics(
-            label: l.lessonProgress((session.progress * 100).toInt()),
+            label: l.lessonProgress((session.progress * 100).round()),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(AppRadius.pill),
               child: LinearProgressIndicator(

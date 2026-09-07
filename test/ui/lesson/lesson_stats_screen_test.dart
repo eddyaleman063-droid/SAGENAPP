@@ -118,6 +118,30 @@ void main() {
     );
 
     testWidgets(
+      'rounds accuracy percentages (62.5% -> 63%) instead of truncating',
+      (tester) async {
+        final learning = _MockLearningNotifier();
+        final state = FirstLessonState(
+          questions: List.generate(8, (i) => _createChallenge(id: i)),
+          currentIndex: 8,
+          correctCount: 5,
+          wrongCount: 3,
+          startTime: DateTime.now(),
+          showFeedback: false,
+        );
+        await tester.pumpWidget(
+          buildApp(state, learning: learning, onRecibirXp: () {}),
+        );
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 100));
+
+        expect(find.text('63%'), findsOneWidget);
+        expect(find.text('62%'), findsNothing);
+        await tester.pump(const Duration(seconds: 5));
+      },
+    );
+
+    testWidgets(
       "tapping 'Recibir XP' awards exactly +15 (reason 'lesson_reward') "
       'and then advances',
       (tester) async {

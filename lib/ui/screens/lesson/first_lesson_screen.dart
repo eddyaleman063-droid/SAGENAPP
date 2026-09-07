@@ -199,7 +199,7 @@ class _FirstLessonScreenState extends ConsumerState<FirstLessonScreen> {
                     ),
                     const Spacer(),
                     Text(
-                      '${lesson.totalQuestions > 0 ? ((lesson.currentIndex + (lesson.showFeedback ? 1 : 0)) / lesson.totalQuestions * 100).clamp(0, 100).toInt() : 0}%',
+                      '${lesson.totalQuestions > 0 ? ((lesson.currentIndex + (lesson.showFeedback ? 1 : 0)) / lesson.totalQuestions * 100).clamp(0, 100).round() : 0}%',
                       style: AppTextStyle.subtitle.copyWith(
                         fontWeight: FontWeight.bold,
                         color: PremiumColors.splashBlue,

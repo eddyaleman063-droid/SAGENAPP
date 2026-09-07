@@ -125,7 +125,7 @@ class _LessonStatsScreenState extends ConsumerState<LessonStatsScreen> {
                   const SizedBox(width: AppSpacing.lg),
                   _StatBadge(
                         icon: Icons.check_circle_rounded,
-                        value: '${(acc * 100).toInt()}%',
+                        value: '${(acc * 100).round()}%',
                         label: l.resultAccuracy,
                         color: PremiumColors.success,
                       )

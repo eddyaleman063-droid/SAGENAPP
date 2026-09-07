@@ -199,11 +199,11 @@ class LessonResultsScreen extends ConsumerWidget {
                       const SizedBox(width: AppSpacing.lg),
                       _ResultBadge(
                             icon: Icons.check_circle_rounded,
-                            value: '${(session.accuracy * 100).toInt()}%',
+                            value: '${(session.accuracy * 100).round()}%',
                             label: l.resultAccuracy,
                             color: PremiumColors.success,
                             semanticsLabel: l.resultAccuracyLabel(
-                              '${(session.accuracy * 100).toInt()}',
+                              '${(session.accuracy * 100).round()}',
                             ),
                           )
                           .animate(delay: 400.ms)
