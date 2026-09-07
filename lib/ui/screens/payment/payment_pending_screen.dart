@@ -23,8 +23,7 @@ class _PaymentPendingScreenState extends ConsumerState<PaymentPendingScreen> {
   bool _navigating = false;
 
   @override
-  void initState() {
-    super.initState();
+  Widget build(BuildContext context) {
     ref.listen<PaymentStatus>(paymentProvider.select((p) => p.status), (
       prev,
       next,
@@ -33,10 +32,6 @@ class _PaymentPendingScreenState extends ConsumerState<PaymentPendingScreen> {
         context.go('/main');
       }
     });
-  }
-
-  @override
-  Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
     final payment = ref.watch(
       paymentProvider.select(
