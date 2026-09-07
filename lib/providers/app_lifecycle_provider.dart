@@ -42,7 +42,15 @@ class AppLifecycleNotifier extends StateNotifier<AppLifecycleState>
     }
   }
 
+  bool _syncingCloud = false;
+
   Future<void> _syncToCloud() async {
+    // Ronda 11: pause→resume→pause puede disparar dos _syncToCloud solapados
+    // (un Timer one-shot ya disparado no se puede cancelar). El segundo se
+    // descarta: saveAll ya está serializado por el lock global de
+    // CloudSyncService y los syncs de gemas/inventario coalescen por su lado.
+    if (_syncingCloud) return;
+    _syncingCloud = true;
     try {
       final auth = _ref.read(authProvider);
       if (!auth.isAuthenticated) return;
@@ -57,8 +65,10 @@ class AppLifecycleNotifier extends StateNotifier<AppLifecycleState>
         // Server-authoritative inventory reconciliation (NUEVO-08).
         await _ref.read(itemProvider.notifier).syncFromServer();
       }
-    } catch (e) {
-      AppLogger().error('Cloud sync on app pause failed', e);
+    } catch (e, stack) {
+      AppLogger().error('Cloud sync on app pause failed', e, stack);
+    } finally {
+      _syncingCloud = false;
     }
   }
 }

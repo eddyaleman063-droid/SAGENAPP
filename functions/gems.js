@@ -561,7 +561,7 @@ exports.spendGems = functions.runWith({ maxInstances: 10 }).https.onCall(async (
         }, { merge: true });
       }
 
-      // NUEVO-08: gem purchases are also credited into the authoritative
+      // NUEVO-fix: gem purchases are also credited into the authoritative
       // inventory state (users/{uid}/inventory/state) so consumables survive
       // reinstalls and the client only reads what the server granted.
       const purchasedState = inventory.applyShopPurchaseToState(inventoryStateDoc.data() || {}, itemId);

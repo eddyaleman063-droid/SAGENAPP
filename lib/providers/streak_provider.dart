@@ -195,6 +195,27 @@ class StreakNotifier extends Notifier<StreakState> {
     storage.setString(_keyMonthlyData, encodeStringMap(s.monthlyData));
   }
 
+  // Ronda 11: coalescing del sync de racha. checkIn()/reload()/el camino del
+  // ítem pueden disparar _syncStreakToFirestore en el mismo frame (lección +
+  // repaso, login + refresh). Sin guard, dos incrementStreak concurrentes
+  // corren ambos y el último en reconciliar pisa state con su respuesta; con
+  // sellos claim-once no duplica gemas, pero sí duplica escrituras de state y
+  // deja el resultado al orden de llegada. La segunda llamada conserva la
+  // petición más reciente y se re-ejecuta al terminar la que está en vuelo.
+  bool _streakSyncInFlight = false;
+  ({
+    bool freezeUsed,
+    int? oldStreak,
+    int? milestone,
+    bool persistDailyBonus,
+    bool checkIn,
+    String? itemUsed,
+    int? fallbackStreak,
+    String? activityDay,
+    int? activityStreak,
+  })?
+  _streakSyncQueued;
+
   void _syncStreakToFirestore({
     bool freezeUsed = false,
     int? oldStreak,
@@ -217,51 +238,118 @@ class StreakNotifier extends Notifier<StreakState> {
         // NUEVO-fix: salir antes de tocar state/ref si el notifier fue
         // descartado mientras la conexión estaba en vuelo.
         if (_disposed) return;
-        for (int attempt = 0; attempt < 3; attempt++) {
-          if (_disposed) return;
-          try {
-            final result = await ref
-                .read(economicFunctionsServiceProvider)
-                .incrementStreak(
-                  freezeUsed: freezeUsed,
-                  checkIn: checkIn,
-                  itemUsed: itemUsed,
-                  activityDay: activityDay,
-                  activityStreak: activityStreak,
-                );
+        // Ronda 11: si ya hay un sync corriendo, conservar los argumentos de
+        // esta petición (la más reciente) y reintentarla al terminar.
+        if (_streakSyncInFlight) {
+          _streakSyncQueued = (
+            freezeUsed: freezeUsed,
+            oldStreak: oldStreak,
+            milestone: milestone,
+            persistDailyBonus: persistDailyBonus,
+            checkIn: checkIn,
+            itemUsed: itemUsed,
+            fallbackStreak: fallbackStreak,
+            activityDay: activityDay,
+            activityStreak: activityStreak,
+          );
+          return;
+        }
+        _streakSyncInFlight = true;
+        try {
+          for (int attempt = 0; attempt < 3; attempt++) {
             if (_disposed) return;
-            if (result != null) {
-              _reconcileServerStreak(result);
-              // NUEVO-fix (H1): only a real check-in may grant deferred
-              // gems / roll the streak chest. A read-only sync (checkIn:false,
-              // e.g. reload/login) reconciles ledgers but must never credit.
-              if (!checkIn) return;
-              final serverStreak = (result['currentStreak'] as num?)?.toInt();
-              final itemConsumed =
-                  itemUsed != null && result['itemConsumed'] == true;
-              // Las gemas de milestone/bono diario dependen de la racha del
-              // servidor: se persisten SOLO tras confirmar el incremento para
-              // que earnGems lea la racha nueva y acredite el valor correcto
-              // (si se enviaran antes, leerían la racha vieja y quedarían
-              // gemas fantasma locales sin acreditación real).
-              if (serverStreak != null && serverStreak > (oldStreak ?? 0)) {
-                final gemNotifier = ref.read(gemProvider.notifier);
-                // NUEVO-fix (ronda 10): persistencia fire-and-forget explícita
-                // (el .catchError ya maneja el fallo).
-                unawaited(
-                  gemNotifier
-                      .persistDeferredStreakEarn(
-                        'streak_milestone',
-                        dayStreak: serverStreak,
-                        milestone: milestone,
-                      )
-                      .catchError((Object e) {
-                        AppLogger().warning(
-                          'StreakNotifier: deferred milestone gem persist failed: $e',
-                        );
-                      }),
-                );
-                if (persistDailyBonus) {
+            try {
+              final result = await ref
+                  .read(economicFunctionsServiceProvider)
+                  .incrementStreak(
+                    freezeUsed: freezeUsed,
+                    checkIn: checkIn,
+                    itemUsed: itemUsed,
+                    activityDay: activityDay,
+                    activityStreak: activityStreak,
+                  );
+              if (_disposed) return;
+              if (result != null) {
+                _reconcileServerStreak(result);
+                // NUEVO-fix (H1): only a real check-in may grant deferred
+                // gems / roll the streak chest. A read-only sync (checkIn:false,
+                // e.g. reload/login) reconciles ledgers but must never credit.
+                if (!checkIn) return;
+                final serverStreak = (result['currentStreak'] as num?)?.toInt();
+                final itemConsumed =
+                    itemUsed != null && result['itemConsumed'] == true;
+                // Las gemas de milestone/bono diario dependen de la racha del
+                // servidor: se persisten SOLO tras confirmar el incremento para
+                // que earnGems lea la racha nueva y acredite el valor correcto
+                // (si se enviaran antes, leerían la racha vieja y quedarían
+                // gemas fantasma locales sin acreditación real).
+                if (serverStreak != null && serverStreak > (oldStreak ?? 0)) {
+                  final gemNotifier = ref.read(gemProvider.notifier);
+                  // NUEVO-fix (ronda 10): persistencia fire-and-forget explícita
+                  // (el .catchError ya maneja el fallo).
+                  unawaited(
+                    gemNotifier
+                        .persistDeferredStreakEarn(
+                          'streak_milestone',
+                          dayStreak: serverStreak,
+                          milestone: milestone,
+                        )
+                        .catchError((Object e) {
+                          AppLogger().warning(
+                            'StreakNotifier: deferred milestone gem persist failed: $e',
+                          );
+                        }),
+                  );
+                  if (persistDailyBonus) {
+                    unawaited(
+                      gemNotifier
+                          .persistDeferredStreakEarn(
+                            'daily_bonus',
+                            dayStreak: serverStreak,
+                          )
+                          .catchError((Object e) {
+                            AppLogger().warning(
+                              'StreakNotifier: deferred daily bonus persist failed: $e',
+                            );
+                          }),
+                    );
+                  }
+                  if (oldStreak != null) {
+                    unawaited(
+                      ref
+                          .read(streakChestServiceProvider)
+                          .checkAndReward(
+                            oldStreak: oldStreak,
+                            newStreak: serverStreak,
+                            learning: ref.read(learningProvider.notifier),
+                          )
+                          .catchError((Object e, StackTrace st) {
+                            AppLogger().error(
+                              'streak chest reward failed',
+                              e,
+                              st,
+                            );
+                          }),
+                    );
+                  }
+                }
+                // NUEVO-fix (H5): el servidor consumió el ítem declarado (lo
+                // validó y lo decrementó en el inventario). El cliente refleja
+                // el consumo local para mantener el inventario sincronizado y
+                // persiste el bono diario del día protegido usando la racha ya
+                // confirmada (única persistencia en este camino:
+                // persistDailyBonus es false aquí).
+                if (itemConsumed && serverStreak != null && serverStreak > 0) {
+                  final itemNotifier = ref.read(itemProvider.notifier);
+                  if (itemUsed == 'titaniumShield') {
+                    itemNotifier.useTitaniumShield();
+                  } else if (itemUsed == 'phoenixFeather') {
+                    itemNotifier.usePhoenixFeather();
+                  }
+                  final gemNotifier = ref.read(gemProvider.notifier);
+                  gemNotifier.awardDailyBonus(serverStreak);
+                  // NUEVO-fix (ronda 10): fire-and-forget explícito (el catchError
+                  // maneja el fallo del .catchError).
                   unawaited(
                     gemNotifier
                         .persistDeferredStreakEarn(
@@ -270,121 +358,96 @@ class StreakNotifier extends Notifier<StreakState> {
                         )
                         .catchError((Object e) {
                           AppLogger().warning(
-                            'StreakNotifier: deferred daily bonus persist failed: $e',
+                            'StreakNotifier: item-protected daily bonus persist failed: $e',
                           );
                         }),
                   );
                 }
-                if (oldStreak != null) {
-                  unawaited(
-                    ref
-                        .read(streakChestServiceProvider)
-                        .checkAndReward(
-                          oldStreak: oldStreak,
-                          newStreak: serverStreak,
-                          learning: ref.read(learningProvider.notifier),
-                        )
-                        .catchError((e) {
-                          AppLogger().error('streak chest reward failed: $e');
-                        }),
-                  );
-                }
-              }
-              // NUEVO-fix (H5): el servidor consumió el ítem declarado (lo
-              // validó y lo decrementó en el inventario). El cliente refleja
-              // el consumo local para mantener el inventario sincronizado y
-              // persiste el bono diario del día protegido usando la racha ya
-              // confirmada (única persistencia en este camino:
-              // persistDailyBonus es false aquí).
-              if (itemConsumed && serverStreak != null && serverStreak > 0) {
-                final itemNotifier = ref.read(itemProvider.notifier);
-                if (itemUsed == 'titaniumShield') {
-                  itemNotifier.useTitaniumShield();
-                } else if (itemUsed == 'phoenixFeather') {
-                  itemNotifier.usePhoenixFeather();
-                }
-                final gemNotifier = ref.read(gemProvider.notifier);
-                gemNotifier.awardDailyBonus(serverStreak);
-                // NUEVO-fix (ronda 10): fire-and-forget explícito (el catchError
-                // maneja el fallo del .catchError).
-                unawaited(
-                  gemNotifier
-                      .persistDeferredStreakEarn(
-                        'daily_bonus',
-                        dayStreak: serverStreak,
-                      )
-                      .catchError((Object e) {
-                        AppLogger().warning(
-                          'StreakNotifier: item-protected daily bonus persist failed: $e',
-                        );
-                      }),
-                );
-              }
-            }
-            return;
-          } catch (e) {
-            if (attempt == 2) {
-              if (_disposed) return;
-              AppLogger().warning(
-                'StreakNotifier: server streak sync failed after retries: $e',
-              );
-              // NUEVO-fix (ronda 9): gemas fantasma de racha. El check-in ya
-              // acreditó LOCALMENTE milestone/bono diario (awardStreakMilestone
-              // / awardDailyBonus) y marcó last_daily_bonus_day, pero el server
-              // nunca confirmó el incremento. Sin esto, esas gemas locales se
-              // borraban en el próximo syncBalance (fantasma). Encolarlas hace
-              // que el retry posterior las reconcilie: el servidor ignora meta
-              // y usa SU racha actual + sellos claim-once, así que nunca se
-              // pierden ni se duplican.
-              if (checkIn && (milestone != null || persistDailyBonus)) {
-                final gemNotifier = ref.read(gemProvider.notifier);
-                final dayStreak = state.status.currentStreak;
-                if (milestone != null) {
-                  gemNotifier.enqueuePendingStreakEarn(
-                    'streak_milestone',
-                    dayStreak: dayStreak,
-                    milestone: milestone,
-                  );
-                }
-                if (persistDailyBonus) {
-                  gemNotifier.enqueuePendingStreakEarn(
-                    'daily_bonus',
-                    dayStreak: dayStreak,
-                  );
-                }
-              }
-              // NUEVO-fix (H5): si el sync del día protegido falla del todo
-              // (offline), se conserva la protección optimista local para que
-              // el ítem mantenga su efecto hasta el próximo reconcile con el
-              // servidor (que lo corregirá si difiere).
-              if (itemUsed != null && fallbackStreak != null) {
-                final current = state.status;
-                if (current.currentStreak < fallbackStreak) {
-                  final fb = StreakStatus(
-                    currentStreak: fallbackStreak,
-                    longestStreak: current.longestStreak > fallbackStreak
-                        ? current.longestStreak
-                        : fallbackStreak,
-                    lastActivityDate: current.lastActivityDate,
-                    streakFreezes: current.streakFreezes,
-                    isAtRisk: current.isAtRisk,
-                    message: current.message,
-                    tier: current.tier,
-                  );
-                  state = state.copyWith(status: fb);
-                  _service.saveStreak(
-                    currentStreak: fb.currentStreak,
-                    longestStreak: fb.longestStreak,
-                    lastActivityDate: fb.lastActivityDate,
-                    streakFreezes: fb.streakFreezes,
-                  );
-                  _saveExtras(ref.read(storageServiceProvider));
-                }
               }
               return;
+            } catch (e) {
+              if (attempt == 2) {
+                if (_disposed) return;
+                AppLogger().warning(
+                  'StreakNotifier: server streak sync failed after retries: $e',
+                );
+                // NUEVO-fix (ronda 9): gemas fantasma de racha. El check-in ya
+                // acreditó LOCALMENTE milestone/bono diario (awardStreakMilestone
+                // / awardDailyBonus) y marcó last_daily_bonus_day, pero el server
+                // nunca confirmó el incremento. Sin esto, esas gemas locales se
+                // borraban en el próximo syncBalance (fantasma). Encolarlas hace
+                // que el retry posterior las reconcilie: el servidor ignora meta
+                // y usa SU racha actual + sellos claim-once, así que nunca se
+                // pierden ni se duplican.
+                if (checkIn && (milestone != null || persistDailyBonus)) {
+                  final gemNotifier = ref.read(gemProvider.notifier);
+                  final dayStreak = state.status.currentStreak;
+                  if (milestone != null) {
+                    gemNotifier.enqueuePendingStreakEarn(
+                      'streak_milestone',
+                      dayStreak: dayStreak,
+                      milestone: milestone,
+                    );
+                  }
+                  if (persistDailyBonus) {
+                    gemNotifier.enqueuePendingStreakEarn(
+                      'daily_bonus',
+                      dayStreak: dayStreak,
+                    );
+                  }
+                }
+                // NUEVO-fix (H5): si el sync del día protegido falla del todo
+                // (offline), se conserva la protección optimista local para que
+                // el ítem mantenga su efecto hasta el próximo reconcile con el
+                // servidor (que lo corregirá si difiere).
+                if (itemUsed != null && fallbackStreak != null) {
+                  final current = state.status;
+                  if (current.currentStreak < fallbackStreak) {
+                    final fb = StreakStatus(
+                      currentStreak: fallbackStreak,
+                      longestStreak: current.longestStreak > fallbackStreak
+                          ? current.longestStreak
+                          : fallbackStreak,
+                      lastActivityDate: current.lastActivityDate,
+                      streakFreezes: current.streakFreezes,
+                      isAtRisk: current.isAtRisk,
+                      message: current.message,
+                      tier: current.tier,
+                    );
+                    state = state.copyWith(status: fb);
+                    _service.saveStreak(
+                      currentStreak: fb.currentStreak,
+                      longestStreak: fb.longestStreak,
+                      lastActivityDate: fb.lastActivityDate,
+                      streakFreezes: fb.streakFreezes,
+                    );
+                    _saveExtras(ref.read(storageServiceProvider));
+                  }
+                }
+                return;
+              }
+              final base = const Duration(seconds: 1) * (attempt + 1);
+              await Future.delayed(base);
             }
-            final base = const Duration(seconds: 1) * (attempt + 1);
-            await Future.delayed(base);
+          }
+        } finally {
+          _streakSyncInFlight = false;
+          final queued = _streakSyncQueued;
+          _streakSyncQueued = null;
+          if (queued != null) {
+            Future<void>.delayed(Duration.zero, () {
+              _syncStreakToFirestore(
+                freezeUsed: queued.freezeUsed,
+                oldStreak: queued.oldStreak,
+                milestone: queued.milestone,
+                persistDailyBonus: queued.persistDailyBonus,
+                checkIn: queued.checkIn,
+                itemUsed: queued.itemUsed,
+                fallbackStreak: queued.fallbackStreak,
+                activityDay: queued.activityDay,
+                activityStreak: queued.activityStreak,
+              );
+            });
           }
         }
       });

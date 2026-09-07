@@ -137,7 +137,7 @@ class FirestoreService implements IFirestoreService {
           })
           .timeout(const Duration(seconds: 10));
     } catch (e, stack) {
-      _logger.error('FirestoreService: createUserProfile failed: $e');
+      _logger.error('FirestoreService: createUserProfile failed', e, stack);
       // NUEVO-fix (ronda 10): el reporte a Crashlytics es fire-and-forget.
       unawaited(
         FirebaseCrashlytics.instance.recordError(
@@ -190,7 +190,7 @@ class FirestoreService implements IFirestoreService {
           .update({field: value})
           .timeout(const Duration(seconds: 10));
     } catch (e, stack) {
-      _logger.error('FirestoreService: updateField($field) failed: $e');
+      _logger.error('FirestoreService: updateField($field) failed', e, stack);
       // NUEVO-fix (ronda 10): reporte a Crashlytics fire-and-forget.
       unawaited(
         FirebaseCrashlytics.instance.recordError(
@@ -235,7 +235,7 @@ class FirestoreService implements IFirestoreService {
           .update(sanitized)
           .timeout(const Duration(seconds: 10));
     } catch (e, stack) {
-      _logger.error('FirestoreService: updateFields failed: $e');
+      _logger.error('FirestoreService: updateFields failed', e, stack);
       // NUEVO-fix (ronda 10): reporte a Crashlytics fire-and-forget.
       unawaited(
         FirebaseCrashlytics.instance.recordError(
@@ -270,8 +270,8 @@ class FirestoreService implements IFirestoreService {
             .snapshots()
             .listen(
               (snap) => controller.add(snap),
-              onError: (e) {
-                _logger.error('FirestoreService: streamUserDoc error: $e');
+              onError: (e, st) {
+                _logger.error('FirestoreService: streamUserDoc error', e, st);
                 _activeListeners.remove(subKey);
                 _listenerCount = (_listenerCount - 1).clamp(
                   0,

@@ -769,7 +769,7 @@ class LearningNotifier extends Notifier<LearningState> {
       // La recompensa no se pierde: se reencola offline con la misma clave
       // idempotente. Al reconectar, el servidor acredita y el reconciler
       // aplica los totales autoritativos al estado local.
-      // FIX-achievementId: se propaga el id del logro para que la cola lo
+      // achievementId: se propaga el id del logro para que la cola lo
       // conserve (históricamente se perdía y el servidor acreditaba solo el
       // fallback de 10 XP en vez de la recompensa real del logro).
       await ref
@@ -834,6 +834,12 @@ class LearningNotifier extends Notifier<LearningState> {
   }
 
   Future<void> reload() async {
+    // Ronda 11: al autenticar, _init() (listen de auth) y reload() (sync
+    // coordinator) corren en paralelo y ambos llaman _load() + escrituras de
+    // state (doble fetch de stages, flicker de isLoading). reload() se
+    // descarta mientras _init esté en vuelo: su finally ya termina cargando
+    // todo el progreso.
+    if (_initInProgress) return;
     try {
       await _load();
       state = state.copyWith(errorMessage: () => null);

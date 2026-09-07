@@ -443,7 +443,7 @@ exports.rollChestDrop = functions.runWith({ maxInstances: 5 }).https.onCall(asyn
     throw new functions.https.HttpsError('resource-exhausted', 'Demasiadas solicitudes');
   }
 
-  // NUEVO-02: the rarity is decided SERVER-SIDE from verifiable user state,
+  // NUEVO-fix: the rarity is decided SERVER-SIDE from verifiable user state,
   // never from the client. The client chestType is ignored entirely.
   const { source, lessonId, contextId, luckBoostActive } = data;
   const validSources = ['lesson', 'streak', 'mission', 'sagen'];
@@ -634,7 +634,7 @@ exports.rollChestDrop = functions.runWith({ maxInstances: 5 }).https.onCall(asyn
         }, { merge: true });
       }
 
-      // NUEVO-08: special items & cosmetics are rolled SERVER-SIDE and
+      // NUEVO-fix: special items & cosmetics are rolled SERVER-SIDE and
       // persisted to users/{uid}/inventory/state. The client never rolls
       // them locally, so a modified client cannot fabricate items.
       //

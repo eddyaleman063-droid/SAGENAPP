@@ -1024,7 +1024,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get dayShortTue => 'M';
 
   @override
-  String get dayShortWed => 'M';
+  String get dayShortWed => 'X';
 
   @override
   String get streakStatusCompleted => 'completado';

@@ -49,8 +49,8 @@ class EconomicFunctionsService implements IEconomicFunctionsService {
         'EconomicFunctions: $name failed: ${e.code} - ${e.message}',
       );
       rethrow;
-    } catch (e) {
-      _logger.error('EconomicFunctions: $name unexpected error: $e');
+    } catch (e, stack) {
+      _logger.error('EconomicFunctions: $name unexpected error', e, stack);
       rethrow;
     }
   }

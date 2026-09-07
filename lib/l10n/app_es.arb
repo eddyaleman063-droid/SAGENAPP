@@ -339,7 +339,7 @@
   "dayShortSun": "D",
   "dayShortThu": "J",
   "dayShortTue": "M",
-  "dayShortWed": "M",
+  "dayShortWed": "X",
   "streakStatusCompleted": "completado",
   "streakStatusToday": "hoy",
   "streakStatusPending": "pendiente",
@@ -1325,7 +1325,6 @@
   "storeDonateSubtitle": "Desde {price}",
   "storeDonationsLabel": "donaciones",
   "storeGemTipAchievement": "Logros: gemas según dificultad",
-
   "storeGemTipChest": "Abre cofres: gemas según el cofre",
   "storeGemTipFirstLesson": "Primera lección del día: +10 gemas",
   "storeGemTipLesson": "Completa lecciones: 5 gemas por respuesta correcta",

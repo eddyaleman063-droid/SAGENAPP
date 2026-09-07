@@ -327,8 +327,8 @@ class FirebaseAuthClient implements AuthClient {
           await user.delete();
         }
       }
-    } catch (e) {
-      _logger.error('FirebaseAuthClient: user deletion failed: $e');
+    } catch (e, stack) {
+      _logger.error('FirebaseAuthClient: user deletion failed', e, stack);
       rethrow;
     }
     final gs = _googleSignIn;

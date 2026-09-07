@@ -144,8 +144,8 @@ class GemNotifier extends Notifier<GemState> {
       return (data['success'] == true || data['duplicate'] == true)
           ? ShopPurchaseResult.success
           : ShopPurchaseResult.failure;
-    } catch (e) {
-      AppLogger().error('GemProvider.spendShopGems failed', e);
+    } catch (e, stack) {
+      AppLogger().error('GemProvider.spendShopGems failed', e, stack);
       return ShopPurchaseResult.failure;
     }
   }
@@ -162,7 +162,27 @@ class GemNotifier extends Notifier<GemState> {
   /// and reconciles the local cache. The local ledger is optimistic-only;
   /// the server is the single source of truth (NUEVO-03).
   /// Also retries any pending offline gem earn persistence before syncing.
-  Future<void> syncBalanceFromServer() async {
+  ///
+  /// Ronda 11: coalescing in-flight. La firma de sesión, el app lifecycle, la
+  /// tienda y los cobros de pago llaman a este sync desde puntos que se pueden
+  /// solapar (login + primer tap de compra). Sin guard, dos getGemsBalance
+  /// concurrentes podían pisar el cache con una respuesta stale justo después
+  /// de un spend/earn intercalado (TOCTOU). La segunda llamada se une a la
+  /// primera y espera su resultado en vez de duplicar el fetch.
+  Future<void>? _inflightSyncBalance;
+
+  Future<void> syncBalanceFromServer() {
+    final existing = _inflightSyncBalance;
+    if (existing != null) return existing;
+    late final Future<void> future;
+    future = _doSyncBalanceFromServer().whenComplete(() {
+      if (identical(_inflightSyncBalance, future)) _inflightSyncBalance = null;
+    });
+    _inflightSyncBalance = future;
+    return future;
+  }
+
+  Future<void> _doSyncBalanceFromServer() async {
     await _retryPendingEarns();
     try {
       final result = await FirebaseFunctions.instance

@@ -1004,7 +1004,7 @@ exports.completeLesson = functions.runWith({ maxInstances: 10 }).https.onCall(as
       const leveledUp = newLevel > currentLevel;
       const lastActivity = userData.streak_last_activity;
 
-      // NUEVO-12 (race fix): a completed lesson is only ONE of the two daily
+      // NUEVO-fix (race fix): a completed lesson is only ONE of the two daily
       // activity events. The dedicated incrementStreak callable is the single
       // owner of the freeze-vs-break decision for a missed day because it
       // honors streak shields. So completeLesson must NOT break the streak on

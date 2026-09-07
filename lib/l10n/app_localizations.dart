@@ -1935,7 +1935,7 @@ abstract class AppLocalizations {
   /// No description provided for @dayShortWed.
   ///
   /// In es, this message translates to:
-  /// **'M'**
+  /// **'X'**
   String get dayShortWed;
 
   /// No description provided for @streakStatusCompleted.

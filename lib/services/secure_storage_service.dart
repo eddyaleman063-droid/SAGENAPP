@@ -16,8 +16,8 @@ class SecureStorageService implements ISecureStorageService {
   Future<void> write(String key, String value) async {
     try {
       await _storage.write(key: '$_keyPrefix$key', value: value);
-    } catch (e) {
-      _logger.error('SecureStorage: write failed for $key — $e');
+    } catch (e, stack) {
+      _logger.error('SecureStorage: write failed for $key', e, stack);
       rethrow;
     }
   }
@@ -26,8 +26,8 @@ class SecureStorageService implements ISecureStorageService {
   Future<String?> read(String key) async {
     try {
       return await _storage.read(key: '$_keyPrefix$key');
-    } catch (e) {
-      _logger.error('SecureStorage: read failed for $key — $e');
+    } catch (e, stack) {
+      _logger.error('SecureStorage: read failed for $key', e, stack);
       return null;
     }
   }
@@ -36,8 +36,8 @@ class SecureStorageService implements ISecureStorageService {
   Future<void> delete(String key) async {
     try {
       await _storage.delete(key: '$_keyPrefix$key');
-    } catch (e) {
-      _logger.error('SecureStorage: delete failed for $key — $e');
+    } catch (e, stack) {
+      _logger.error('SecureStorage: delete failed for $key', e, stack);
     }
   }
 
@@ -49,8 +49,8 @@ class SecureStorageService implements ISecureStorageService {
       for (final key in appKeys) {
         await _storage.delete(key: key);
       }
-    } catch (e) {
-      _logger.error('SecureStorage: deleteAll failed — $e');
+    } catch (e, stack) {
+      _logger.error('SecureStorage: deleteAll failed', e, stack);
     }
   }
 
@@ -58,8 +58,8 @@ class SecureStorageService implements ISecureStorageService {
   Future<bool> containsKey(String key) async {
     try {
       return await _storage.containsKey(key: '$_keyPrefix$key');
-    } catch (e) {
-      _logger.error('SecureStorage: containsKey failed for $key — $e');
+    } catch (e, stack) {
+      _logger.error('SecureStorage: containsKey failed for $key', e, stack);
       return false;
     }
   }

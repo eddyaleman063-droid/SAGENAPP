@@ -188,7 +188,7 @@ class CloudSyncService implements ICloudSyncService {
         .snapshots()
         .listen(
           (snapshot) => _onSnapshot(snapshot, prefs),
-          onError: (e) => _logger.error('CloudSync: snapshot error: $e'),
+          onError: (e, st) => _logger.error('CloudSync: snapshot error', e, st),
         );
     _logger.info('CloudSync: listening to user $uid');
   }
@@ -214,8 +214,8 @@ class CloudSyncService implements ICloudSyncService {
       final data = snapshot.data();
       if (data == null || data is! Map<String, dynamic>) return;
       _applyDocumentData(data, prefs);
-    } catch (e) {
-      _logger.error('CloudSync: _onSnapshot error: $e');
+    } catch (e, stack) {
+      _logger.error('CloudSync: _onSnapshot error', e, stack);
     }
   }
 
@@ -395,8 +395,8 @@ class CloudSyncService implements ICloudSyncService {
           policy: RetryPolicy.exponentialBackoff,
         ),
       );
-    } catch (e) {
-      _logger.error('CloudSync: saveAll failed after retries: $e');
+    } catch (e, stack) {
+      _logger.error('CloudSync: saveAll failed after retries', e, stack);
       return false;
     } finally {
       // H-ARC-01: Release the global sync lock so other services can write.
@@ -438,8 +438,8 @@ class CloudSyncService implements ICloudSyncService {
           policy: RetryPolicy.exponentialBackoff,
         ),
       );
-    } catch (e) {
-      _logger.error('CloudSync: loadAll failed after retries: $e');
+    } catch (e, stack) {
+      _logger.error('CloudSync: loadAll failed after retries', e, stack);
       return false;
     }
   }
@@ -471,8 +471,8 @@ class CloudSyncService implements ICloudSyncService {
           .timeout(const Duration(seconds: 10));
       _logger.info('CloudSync: deleted cloud data for $uid');
       return true;
-    } catch (e) {
-      _logger.error('CloudSync: deleteCloudData failed: $e');
+    } catch (e, stack) {
+      _logger.error('CloudSync: deleteCloudData failed', e, stack);
       return false;
     }
   }

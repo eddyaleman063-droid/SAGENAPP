@@ -109,7 +109,7 @@ class _PremiumLoaderState extends ConsumerState<PremiumLoader>
             FadeTransition(
               opacity: _fadeCtrl,
               child: Semantics(
-                label: widget.message ?? 'Loading',
+                label: widget.message ?? 'Cargando',
                 explicitChildNodes: true,
                 child: Container(
                   color: (dark ? PremiumColors.darkBg : Colors.white)

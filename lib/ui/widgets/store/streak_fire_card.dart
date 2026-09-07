@@ -7,6 +7,7 @@ import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/providers/providers.dart';
 import 'package:sagen/ui/widgets/common/sagen_notification.dart';
 import 'package:sagen/ui/widgets/store/buy_button.dart';
+import 'package:sagen/services/app_logger.dart';
 
 class StreakFireCard extends ConsumerWidget {
   final ({int currentStreak, bool isStreakFrozen}) streak;
@@ -250,12 +251,16 @@ class StreakFireCard extends ConsumerWidget {
           );
         }
       }
-    } catch (_) {
+    } catch (e, st) {
+      // Ronda 11: un error de red/timeout no es "límite alcanzado" (ese caso
+      // ya lo cubre claimed:false arriba). Se informa el fallo genérico y se
+      // reporta la excepción real a Crashlytics.
+      AppLogger().error('StreakFireCard: shield claim failed', e, st);
       exp.errorHaptic();
       if (context.mounted) {
         SagenNotification.show(
           context,
-          message: l.storeShieldLimitReached,
+          message: l.errorGeneric,
           type: NotificationType.error,
         );
       }

@@ -50,8 +50,8 @@ class _ChestListenerState extends ConsumerState<ChestListener> {
     _dialogOpen = true;
     try {
       ref.read(experienceServiceProvider).chestOpenHaptic();
-    } catch (e) {
-      AppLogger().error('ChestListener: haptic failed: $e');
+    } catch (e, st) {
+      AppLogger().error('ChestListener: haptic failed', e, st);
     }
 
     // NUEVO-fix (ronda 9, P7): el whenComplete podía ejecutarse tras el
@@ -130,8 +130,8 @@ class _ChestListenerState extends ConsumerState<ChestListener> {
             .read(emotionEventBusProvider)
             .fire(EmotionEventType.streakMilestone);
       }
-    } catch (e) {
-      AppLogger().error('ChestListener: reward delivery failed: $e');
+    } catch (e, st) {
+      AppLogger().error('ChestListener: reward delivery failed', e, st);
     }
   }
 

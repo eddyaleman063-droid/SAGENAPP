@@ -74,8 +74,8 @@ class StreakService implements IStreakService {
       final lastDate = lastStr.isNotEmpty ? DateTime.tryParse(lastStr) : null;
 
       return _evaluate(current, longest, lastDate, freezes);
-    } catch (e) {
-      _logger.error('StreakService: load failed: $e');
+    } catch (e, stack) {
+      _logger.error('StreakService: load failed', e, stack);
       return _evaluate(0, 0, null, 0);
     }
   }
@@ -202,8 +202,8 @@ class StreakService implements IStreakService {
         newFreezes,
         freezeConsumed: freezeConsumed,
       );
-    } catch (e) {
-      _logger.error('StreakService: checkIn failed: $e');
+    } catch (e, stack) {
+      _logger.error('StreakService: checkIn failed', e, stack);
       return _evaluate(0, 0, null, 0);
     }
   }

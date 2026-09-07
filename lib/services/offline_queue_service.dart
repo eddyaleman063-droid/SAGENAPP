@@ -161,7 +161,7 @@ class OfflineQueueService {
   /// mini-juegos). Reusa la MISMA [idempotencyKey] del intento online para que
   /// el reintento nunca duplique (transaction_logs por clave en el servidor).
   /// Al sincronizarse, onItemSynced notifica al reconciler con el shape addXp.
-  /// FIX-achievementId: se persiste [achievementId] para que el servidor
+  /// achievementId: se persiste [achievementId] para que el servidor
   /// acredite la recompensa REAL del logro (tabla de logros) y no el fallback
   /// plano de 10 XP que aplica addXp cuando reason='achievement' llega sin id.
   Future<void> queueAddXp({

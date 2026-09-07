@@ -70,7 +70,23 @@ class ItemNotifier extends Notifier<ItemState> {
   /// the authoritative value for every item type (a type absent from the
   /// server payload is treated as 0), so consumed or revoked items are also
   /// reflected locally instead of leaving phantom stock behind.
-  Future<void> syncFromServer() async {
+  Future<void> syncFromServer() {
+    // Ronda 11: coalescing in-flight. pause→resume→pause o un fallback de
+    // compra pueden disparar syncFromServer dos veces; sin guard, el segundo
+    // fetch pisaría un cache recién actualizado con un snapshot stale.
+    final existing = _inflightSync;
+    if (existing != null) return existing;
+    late final Future<void> future;
+    future = _doSyncFromServer().whenComplete(() {
+      if (identical(_inflightSync, future)) _inflightSync = null;
+    });
+    _inflightSync = future;
+    return future;
+  }
+
+  Future<void>? _inflightSync;
+
+  Future<void> _doSyncFromServer() async {
     final inventory = ref.read(inventoryServiceProvider);
     final quantities = await inventory.fetchQuantities();
     if (quantities == null) return;

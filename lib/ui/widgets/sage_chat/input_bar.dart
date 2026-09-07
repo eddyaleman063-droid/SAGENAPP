@@ -88,14 +88,14 @@ class InputBar extends StatelessWidget {
                     ),
                     child: Semantics(
                       button: true,
-                      label: l?.stop ?? 'Stop',
+                      label: l?.stop ?? 'Detener',
                       child: IconButton(
                         onPressed: () {
                           ExperienceService.instance.lightHaptic();
                           onStop?.call();
                         },
                         icon: const Icon(Icons.stop_rounded, size: 22),
-                        tooltip: l?.stop ?? 'Stop',
+                        tooltip: l?.stop ?? 'Detener',
                         color: Colors.white,
                         padding: EdgeInsets.zero,
                       ),
