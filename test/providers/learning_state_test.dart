@@ -48,11 +48,7 @@ void main() {
     });
 
     test('levelProgress refleja el progreso dentro del nivel', () {
-      const state = LearningState(
-        totalXpEarned: 150,
-        currentLevel: 2,
-        xp: 50,
-      );
+      const state = LearningState(totalXpEarned: 150, currentLevel: 2, xp: 50);
       expect(state.nextLevelXp, 100);
       expect(state.levelProgress, 0.5);
     });
