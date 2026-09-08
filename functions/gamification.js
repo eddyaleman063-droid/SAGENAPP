@@ -624,6 +624,16 @@ exports.rollChestDrop = functions.runWith({ maxInstances: 5 }).https.onCall(asyn
         updates.streak_shields = currentShields + streakShield;
       }
 
+      // Booster chests grant a usable XP boost (2x on the next lesson), not
+      // just a UI flag: persist it in the authoritative counter so
+      // completeLesson can honor and consume it server-side.
+      if (xpBoost) {
+        updates.shop_purchased_xp_boosts =
+          (userData.shop_purchased_xp_boosts || 0) + 1;
+        updates._ts_shop_purchased_xp_boosts =
+          admin.firestore.FieldValue.serverTimestamp();
+      }
+
       // Consume the Sagen Pass chest from the bank (one roll per bank entry).
       if (sagenBankChest) {
         const bank = Array.isArray(userData.sagen_pass_chests)

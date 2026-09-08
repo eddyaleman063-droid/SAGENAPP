@@ -432,6 +432,35 @@ describe('spendGems', () => {
     expect(state.specialItems.focusElixir).toBe(1);
   });
 
+  test('xp_boost purchase credits the server boost counter (NUEVO-boost)', async () => {
+    setUserDoc(AUTH_UID, { learning_gems: 100 });
+    const result = await gems.spendGems(
+      { itemId: 'xp_boost', idempotencyKey: 'boost-1' },
+      makeContext()
+    );
+    expect(result.success).toBe(true);
+    expect(result.spent).toBe(40);
+    expect(result.balance).toBe(60);
+    const user = admin._getDoc(`users/${AUTH_UID}`);
+    expect(user.shop_purchased_xp_boosts).toBe(1);
+  });
+
+  test('xp_boost purchase is repeatable with a fresh key and stacks', async () => {
+    setUserDoc(AUTH_UID, { learning_gems: 200 });
+    await gems.spendGems(
+      { itemId: 'xp_boost', idempotencyKey: 'boost-2' },
+      makeContext()
+    );
+    const second = await gems.spendGems(
+      { itemId: 'xp_boost', idempotencyKey: 'boost-3' },
+      makeContext()
+    );
+    expect(second.success).toBe(true);
+    expect(second.balance).toBe(120);
+    const user = admin._getDoc(`users/${AUTH_UID}`);
+    expect(user.shop_purchased_xp_boosts).toBe(2);
+  });
+
   test('persists cosmetic purchases into the server inventory (NUEVO-08)', async () => {
     setUserDoc(AUTH_UID, { learning_gems: 500 });
     await gems.spendGems(

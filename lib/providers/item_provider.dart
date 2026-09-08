@@ -88,13 +88,21 @@ class ItemNotifier extends Notifier<ItemState> {
 
   Future<void> _doSyncFromServer() async {
     final inventory = ref.read(inventoryServiceProvider);
-    final quantities = await inventory.fetchQuantities();
-    if (quantities == null) return;
+    final snapshot = await inventory.fetchSnapshot();
+    if (snapshot == null) return;
+    final quantities = snapshot.quantities;
     for (final type in SpecialItemType.values) {
       final serverQty = quantities[type] ?? 0;
       _repo.setQuantity(type, serverQty);
     }
     _save();
+
+    // Reconcile the arming of the XP boost flag with the server counter:
+    // gem-shop purchases, booster chests and real-money bundles all credit it
+    // server-side, and the server consumes one per boosted lesson.
+    ref
+        .read(shopProvider.notifier)
+        .syncXpBoostFromServer(snapshot.purchasedXpBoosts);
   }
 
   /// Consumes a consumable server-authoritatively. When the server call

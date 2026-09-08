@@ -97,10 +97,10 @@ class LearningNotifier extends Notifier<LearningState> {
 
   /// XP real que acredita el servidor al completar una lección: recompensa
   /// base por lección (15, 20 si termina en `_l6` — igual que el servidor)
-  /// escalada por el multiplicador de racha. El boost de XP NO se aplica
-  /// (no tiene efecto server-side, ver NUEVO-10); la reconciliación es
-  /// server-authoritative. Fuente única usada tanto para acreditar como
-  /// para mostrar en la pantalla de resultados.
+  /// escalada por el multiplicador de racha y, si hay un boost de XP armado
+  /// (shop/cofre/bundle), duplicada. El server es la fuente de verdad: consume
+  /// un boost armado y acredita el mismo cálculo, y la reconciliación
+  /// corrige las diferencias si el boost local no tiene contraparte server.
   int xpForLesson(Lesson lesson) {
     return xpForLessonId(lesson.id);
   }
@@ -110,7 +110,9 @@ class LearningNotifier extends Notifier<LearningState> {
   int xpForLessonId(String lessonId) {
     final streakMult = ref.read(streakProvider).streakMultiplier;
     final baseXp = lessonId.endsWith('_l6') ? 20 : 15;
-    return (baseXp * streakMult).round();
+    final xp = baseXp * streakMult;
+    if (ref.read(shopProvider).xpBoostActive) return (xp * 2).round();
+    return xp.round();
   }
 
   static List<String> _localizedEmotionalPhrases(AppLocalizations l) => [
@@ -204,6 +206,18 @@ class LearningNotifier extends Notifier<LearningState> {
           : null;
       if (serverGemBalance != null) {
         ref.read(gemProvider.notifier).syncBalance(serverGemBalance);
+      }
+
+      // The server boost counter is authoritative: re-arm the local flag with
+      // whatever the server still has (completeLesson consumes one boost and
+      // reports the remaining count).
+      final boostData = result['xpBoost'];
+      if (boostData is Map) {
+        final remainingXpBoosts =
+            (boostData['remaining'] as num?)?.toInt() ?? 0;
+        ref
+            .read(shopProvider.notifier)
+            .syncXpBoostFromServer(remainingXpBoosts);
       }
 
       if (serverTotalXp != null ||

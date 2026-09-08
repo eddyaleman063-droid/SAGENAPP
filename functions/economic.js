@@ -1028,12 +1028,20 @@ exports.completeLesson = functions.runWith({ maxInstances: 10 }).https.onCall(as
       const longestStreak = userData.longestStreak || 0;
 
       // Server-authoritative XP: base lesson reward scaled by the streak
-      // multiplier (mirrors the client's xpForLesson). Boost multipliers are
-      // NOT applied here — boosts have no server-side effect (see NUEVO-10).
-      const effectiveXp = Math.min(
+      // multiplier (mirrors the client's xpForLesson). Purchased/earned XP
+      // boosts (gem shop, chest drops, real-money bundles) ARE honored: the
+      // next lesson with an available boost earns 2x and consumes one. The
+      // boost is only consumed when the XP is fully credited (full-payment
+      // pattern), so a daily-cap-truncated grant leaves the boost intact.
+      const xpBoostsAvailable = userData.shop_purchased_xp_boosts || 0;
+      const baseBoostedXp = Math.min(
         Math.round(xp * getStreakMultiplier(currentStreak)),
         MAX_XP_PER_LESSON,
       );
+      const boostApplied = xpBoostsAvailable > 0;
+      const effectiveXp = boostApplied
+        ? Math.min(baseBoostedXp * 2, MAX_XP_PER_LESSON)
+        : baseBoostedXp;
 
       const dailyData = dailyXpDoc.data() || {};
       const xpEarnedToday = dailyData.total || 0;
@@ -1177,6 +1185,18 @@ exports.completeLesson = functions.runWith({ maxInstances: 10 }).https.onCall(as
         updateFields._ts_currentStreak = admin.firestore.FieldValue.serverTimestamp();
         updateFields._ts_longestStreak = admin.firestore.FieldValue.serverTimestamp();
       }
+
+      // El XP boost consumido se sella con el mismo patrón full-payment que el
+      // log: solo cuando el XP completo se acreditó. Si el cap diario recortó,
+      // el boost NO se gasta y se reaplica en el replay de la lección.
+      let boostedXpRemaining = xpBoostsAvailable;
+      if (boostApplied && cappedXp === effectiveXp && boostedXpRemaining > 0) {
+        boostedXpRemaining -= 1;
+        updateFields.shop_purchased_xp_boosts = boostedXpRemaining;
+        updateFields._ts_shop_purchased_xp_boosts =
+          admin.firestore.FieldValue.serverTimestamp();
+      }
+
       transaction.update(userRef, updateFields);
 
       transaction.set(dailyXpRef, {
@@ -1227,6 +1247,11 @@ exports.completeLesson = functions.runWith({ maxInstances: 10 }).https.onCall(as
           dailyCapped: gemCredit.dailyCapped,
           perfect: perfectGems > 0,
           firstOfDay: firstOfDayGems > 0,
+        },
+        xpBoost: {
+          applied: boostApplied,
+          consumed: boostApplied && boostedXpRemaining < xpBoostsAvailable,
+          remaining: boostedXpRemaining,
         },
         sagenPass: spCredit
           ? {

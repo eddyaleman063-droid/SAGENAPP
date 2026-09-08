@@ -481,6 +481,36 @@ describe('rollChestDrop', () => {
     expect(result.xp).toBeLessThanOrEqual(35);
   });
 
+  test('booster chest credits a usable XP boost counter (NUEVO-boost)', async () => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    setUserDoc(AUTH_UID, {
+      learning_total_xp: 0,
+      learning_level: 1,
+      streak_shields: 0,
+      currentStreak: 1,
+      longestStreak: 1,
+      streak_last_activity: { toDate: () => yesterday },
+      lessonsCompleted: 3,
+    });
+    // Categoría booster = número aleatorio en [70, 85). Forzamos el roll y el XP.
+    let call = 0;
+    const realRandom = Math.random;
+    Math.random = () => (call++ === 0 ? 0.75 : 0.5);
+    try {
+      const result = await gamification.rollChestDrop(
+        { source: 'lesson', contextId: 'lesson_boost' },
+        makeContext()
+      );
+      expect(result.success).toBe(true);
+      expect(result.xpBoost).toBe(true);
+      const user = admin._getDoc(`users/${AUTH_UID}`);
+      expect(user.shop_purchased_xp_boosts).toBe(1);
+    } finally {
+      Math.random = realRandom;
+    }
+  });
+
   test('ignores a client-claimed legendary chestType for lesson chests', async () => {
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);

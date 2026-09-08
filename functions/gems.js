@@ -572,6 +572,18 @@ exports.spendGems = functions.runWith({ maxInstances: 10 }).https.onCall(async (
         }, { merge: true });
       }
 
+      // XP boost purchases credit the authoritative boost counter so the
+      // server can honor 2x XP on the next lesson (completeLesson consumes it).
+      // Unlike consumables with a special-item mapping, xp_boost has no
+      // inventory entry — the counter on users/{uid} is the source of truth.
+      if (itemId === 'xp_boost') {
+        const currentBoosts = userData.shop_purchased_xp_boosts || 0;
+        transaction.update(userRef, {
+          shop_purchased_xp_boosts: Math.min(currentBoosts + 1, 999),
+          _ts_shop_purchased_xp_boosts: admin.firestore.FieldValue.serverTimestamp(),
+        });
+      }
+
       transaction.create(logRef, {
         userId,
         type: 'gemSpend',

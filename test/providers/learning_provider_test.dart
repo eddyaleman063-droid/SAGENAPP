@@ -102,4 +102,50 @@ void main() {
       expect(notifier.state.lessonsCompleted, 7);
     });
   });
+
+  group('ShopNotifier - XP boost (NUEVO-boost)', () {
+    late ProviderContainer container;
+
+    setUp(() async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      container = ProviderContainer(
+        overrides: [
+          prefsProvider.overrideWithValue(prefs),
+          cloudSyncServiceProvider.overrideWith(
+            (ref) => MockCloudSyncService(),
+          ),
+          authServiceProvider.overrideWith((ref) => MockAuthService()),
+          learningProvider.overrideWith(() => TestLearningNotifier()),
+        ],
+      );
+    });
+
+    tearDown(() => container.dispose());
+
+    test('honors an armed boost with 2x XP in xpForLessonId', () {
+      final notifier = container.read(learningProvider.notifier);
+      final shop = container.read(shopProvider.notifier);
+      expect(notifier.xpForLessonId('ac_s1_ses1_l1'), 15);
+      shop.activateXpBoost();
+      expect(container.read(shopProvider).xpBoostActive, isTrue);
+      expect(notifier.xpForLessonId('ac_s1_ses1_l1'), 30);
+      expect(notifier.xpForLessonId('ac_s1_ses1_l6'), 40);
+    });
+
+    test('syncXpBoostFromServer re-arms when the server still has boosts', () {
+      final shop = container.read(shopProvider.notifier);
+      shop.syncXpBoostFromServer(2);
+      expect(container.read(shopProvider).xpBoostActive, isTrue);
+      shop.syncXpBoostFromServer(1);
+      expect(container.read(shopProvider).xpBoostActive, isTrue);
+    });
+
+    test('syncXpBoostFromServer disarms when the server counter hits 0', () {
+      final shop = container.read(shopProvider.notifier);
+      shop.activateXpBoost();
+      shop.syncXpBoostFromServer(0);
+      expect(container.read(shopProvider).xpBoostActive, isFalse);
+    });
+  });
 }

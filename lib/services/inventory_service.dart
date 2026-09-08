@@ -21,6 +21,15 @@ class InventoryService {
   /// Fetches the authoritative inventory and returns quantities per type
   /// plus unlocked cosmetics. Returns null on failure.
   Future<Map<SpecialItemType, int>?> fetchQuantities() async {
+    final snapshot = await fetchSnapshot();
+    return snapshot?.quantities;
+  }
+
+  /// Fetches the authoritative inventory snapshot: item quantities/cosmetics
+  /// plus the server-tracked XP boost counter (gem-shop purchases, booster
+  /// chests and real-money bundles all credit it).
+  Future<({Map<SpecialItemType, int> quantities, int purchasedXpBoosts})?>
+  fetchSnapshot() async {
     try {
       final result = await _functions.httpsCallable('getInventory').call();
       final data = result.data;
@@ -50,7 +59,10 @@ class InventoryService {
         }
       }
 
-      return quantities;
+      final purchasedXpBoosts =
+          (data['purchasedXpBoosts'] as num?)?.toInt() ?? 0;
+
+      return (quantities: quantities, purchasedXpBoosts: purchasedXpBoosts);
     } catch (e) {
       _logger.warning('getInventory failed: $e');
       return null;

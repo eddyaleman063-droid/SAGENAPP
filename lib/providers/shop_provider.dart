@@ -400,6 +400,20 @@ class ShopNotifier extends Notifier<ShopState> {
     state = state.copyWith(xpBoostActive: false);
   }
 
+  /// Reconciles the arming of the XP boost with the server-authoritative
+  /// counter (`shop_purchased_xp_boosts`). If the server still has boosts
+  /// available and the local flag is off, re-arm it so the next lesson uses
+  /// one; if the counter is exhausted but the local flag is on (desync), turn
+  /// it off so the client does not promise 2x XP the server will not credit.
+  void syncXpBoostFromServer(int available) {
+    final armed = state.xpBoostActive;
+    if (available > 0 && !armed) {
+      activateXpBoost();
+    } else if (available == 0 && armed) {
+      deactivateXpBoost();
+    }
+  }
+
   void _save() {
     final ownedIds = state.items
         .where((i) => i.isOwned)

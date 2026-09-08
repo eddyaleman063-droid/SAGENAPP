@@ -1134,6 +1134,107 @@ describe('completeLesson', () => {
     expect(result.xp.totalXp).toBe(17);
   });
 
+  test('honors a purchased XP boost: 2x XP and consumes one (NUEVO-boost)', async () => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    setUserDoc(AUTH_UID, {
+      learning_total_xp: 0,
+      learning_level: 1,
+      currentStreak: 0,
+      longestStreak: 0,
+      shop_purchased_xp_boosts: 1,
+      streak_last_activity: { toDate: () => yesterday },
+      lessonsCompleted: 0,
+    });
+    const result = await economic.completeLesson(
+      { lessonId: 'lesson-1' },
+      makeContext()
+    );
+    expect(result.xp.added).toBe(30);
+    expect(result.xp.totalXp).toBe(30);
+    expect(result.xpBoost.applied).toBe(true);
+    expect(result.xpBoost.consumed).toBe(true);
+    expect(result.xpBoost.remaining).toBe(0);
+    const user = admin._getDoc(`users/${AUTH_UID}`);
+    expect(user.shop_purchased_xp_boosts).toBe(0);
+  });
+
+  test('does not consume the boost when no boost is available', async () => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    setUserDoc(AUTH_UID, {
+      learning_total_xp: 0,
+      learning_level: 1,
+      currentStreak: 0,
+      longestStreak: 0,
+      shop_purchased_xp_boosts: 0,
+      streak_last_activity: { toDate: () => yesterday },
+      lessonsCompleted: 0,
+    });
+    const result = await economic.completeLesson(
+      { lessonId: 'lesson-1' },
+      makeContext()
+    );
+    expect(result.xp.added).toBe(15);
+    expect(result.xpBoost.applied).toBe(false);
+    expect(result.xpBoost.consumed).toBe(false);
+    expect(result.xpBoost.remaining).toBe(0);
+  });
+
+  test('does not consume a boost when the daily cap truncates XP', async () => {
+    // Pre-cargar el cap diario de XP a tope: el XP de la lección se recorta a 0
+    // y el boost NO debe gastarse (full-payment pattern).
+    setUserDoc(AUTH_UID, {
+      learning_total_xp: 0,
+      learning_level: 1,
+      currentStreak: 0,
+      longestStreak: 0,
+      shop_purchased_xp_boosts: 2,
+      lessonsCompleted: 0,
+    });
+    // Cap diario agotado (500). Sembramos el doc diario con el total al tope.
+    const today = new Date().toISOString().split('T')[0];
+    admin._setDoc(`daily_xp_sources/${AUTH_UID}_${today}`, { total: 500 });
+    const result = await economic.completeLesson(
+      { lessonId: 'lesson-1' },
+      makeContext()
+    );
+    expect(result.xp.added).toBeLessThanOrEqual(0);
+    expect(result.xpBoost.applied).toBe(true);
+    expect(result.xpBoost.consumed).toBe(false);
+    expect(result.xpBoost.remaining).toBe(2);
+    const user = admin._getDoc(`users/${AUTH_UID}`);
+    expect(user.shop_purchased_xp_boosts).toBe(2);
+  });
+
+  test('consumes exactly one boost and keeps the rest for the next lesson', async () => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    setUserDoc(AUTH_UID, {
+      learning_total_xp: 0,
+      learning_level: 1,
+      currentStreak: 0,
+      longestStreak: 0,
+      shop_purchased_xp_boosts: 3,
+      streak_last_activity: { toDate: () => yesterday },
+      lessonsCompleted: 0,
+    });
+    const result = await economic.completeLesson(
+      { lessonId: 'lesson-1' },
+      makeContext()
+    );
+    expect(result.xp.added).toBe(30);
+    expect(result.xpBoost.consumed).toBe(true);
+    expect(result.xpBoost.remaining).toBe(2);
+    // Una segunda lección (distinta) consume el siguiente boost.
+    const second = await economic.completeLesson(
+      { lessonId: 'lesson-2' },
+      makeContext()
+    );
+    expect(second.xp.added).toBe(30);
+    expect(second.xpBoost.remaining).toBe(1);
+  });
+
   test('caps the streak multiplier at 2.0', async () => {
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
