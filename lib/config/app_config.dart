@@ -13,9 +13,6 @@ class AppConfig {
     'APP_BUILD',
     defaultValue: '9',
   );
-  static const String appTagline = 'Your digital guide';
-  static const String appTaglineAlt = 'Learn cybersecurity the smart way';
-  static const String appSlogan = 'Your cybersecurity guide.';
 
   static const String geminiModel = 'gemini-2.5-flash';
   static const int geminiMaxOutputTokens = 8192;
@@ -30,7 +27,6 @@ class AppConfig {
   static const Duration defaultTimeout = Duration(seconds: 15);
 
   static const int maxContextMessages = 20;
-  static const int maxCachedConversations = 20;
 
   /// Mercado Pago payment link — must be set before release.
   static const String mercadopagoLink = String.fromEnvironment(
