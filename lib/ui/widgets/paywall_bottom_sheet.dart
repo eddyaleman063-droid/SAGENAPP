@@ -33,9 +33,21 @@ class DonationPackage {
 }
 
 const donationPackages = [
-  DonationPackage(1, 3.00, 'paywallBasic'),
-  DonationPackage(2, 5.00, 'paywallPopular'),
-  DonationPackage(3, 10.00, 'paywallPremium'),
+  DonationPackage(
+    AppConfig.supporterLevelBasic,
+    AppConfig.donationBasic,
+    'paywallBasic',
+  ),
+  DonationPackage(
+    AppConfig.supporterLevelPopular,
+    AppConfig.donationPopular,
+    'paywallPopular',
+  ),
+  DonationPackage(
+    AppConfig.supporterLevelPremium,
+    AppConfig.donationPremium,
+    'paywallPremium',
+  ),
 ];
 
 /// Maps a paywall donation package to the canonical [Product] with the same

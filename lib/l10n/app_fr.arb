@@ -1523,9 +1523,27 @@
   "gemRewardEarned": "+{count} gemmes obtenues",
   "messageFromSage": "Sage",
   "messageFromYou": "Toi",
+  "@rankingFirstPlace": {
+    "placeholders": {
+      "name": {},
+      "xp": {}
+    }
+  },
   "rankingFirstPlace": "{name} en première place avec {xp} XP",
   "rankingPodiumLabel": "Podium du classement",
+  "@rankingSecondPlace": {
+    "placeholders": {
+      "name": {},
+      "xp": {}
+    }
+  },
   "rankingSecondPlace": "{name} en deuxième place avec {xp} XP",
+  "@rankingThirdPlace": {
+    "placeholders": {
+      "name": {},
+      "xp": {}
+    }
+  },
   "rankingThirdPlace": "{name} en troisième place avec {xp} XP",
   "resumeContinue": "Continuer",
   "resumeLessonBody": "Vous avez une leçon inachevée de moins de 30 minutes. Reprendre où vous vous êtes arrêté ou recommencer ?",
