@@ -56,7 +56,9 @@ void main() {
 
     test('payment/success con amount devuelve donacion parseada', () {
       final action = service.handleDeepLink(
-        Uri.parse('sagen://payment/success?amount=9.90&external_reference=X|9.9|p'),
+        Uri.parse(
+          'sagen://payment/success?amount=9.90&external_reference=X|9.9|p',
+        ),
       );
       expect(action, isA<PaymentSuccessDeepLink>());
       final p = action as PaymentSuccessDeepLink;
