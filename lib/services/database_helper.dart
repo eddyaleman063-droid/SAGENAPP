@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import '../core/interfaces/i_database_helper.dart';
@@ -13,6 +14,10 @@ class DatabaseHelper implements IDatabaseHelper {
   Completer<Database>? _pending;
   static const _dbName = 'sagen_data.db';
   static const _dbVersion = 2;
+
+  /// Bases de datos con ruta propia en tests (ver LocalQuestionDB).
+  @visibleForTesting
+  static String? overrideDatabasesPath;
 
   @override
   Future<Database> get database async {
@@ -34,7 +39,8 @@ class DatabaseHelper implements IDatabaseHelper {
   }
 
   Future<Database> _openDB() async {
-    final dbPath = await getDatabasesPath();
+    final overridePath = DatabaseHelper.overrideDatabasesPath;
+    final dbPath = overridePath ?? await getDatabasesPath();
     final path = join(dbPath, _dbName);
     return openDatabase(
       path,

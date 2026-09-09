@@ -7,6 +7,7 @@ import 'connectivity_service.dart';
 import 'database_helper.dart';
 import 'economic_functions_service.dart';
 import 'app_logger.dart';
+import '../core/interfaces/i_economic_functions_service.dart';
 
 /// Service that queues lesson completions when offline and syncs them
 /// when connectivity is restored. Uses SQLite for reliable persistence
@@ -22,12 +23,28 @@ class OfflineQueueService {
   static final OfflineQueueService instance = OfflineQueueService._();
   OfflineQueueService._({
     ConnectivityService? connectivity,
-    EconomicFunctionsService? economic,
+    IEconomicFunctionsService? economic,
+    String? Function()? currentUid,
   }) : _connectivity = connectivity ?? ConnectivityService.instance,
-       _economic = economic ?? EconomicFunctionsService.instance;
+       _economic = economic ?? EconomicFunctionsService.instance,
+       _currentUid = currentUid ?? _readAuthUid;
+
+  @visibleForTesting
+  OfflineQueueService.forTesting({
+    ConnectivityService? connectivity,
+    IEconomicFunctionsService? economic,
+    String? Function()? currentUid,
+  }) : this._(
+         connectivity: connectivity,
+         economic: economic,
+         currentUid: currentUid,
+       );
+
+  static String? _readAuthUid() => FirebaseAuth.instance.currentUser?.uid;
 
   final ConnectivityService _connectivity;
-  final EconomicFunctionsService _economic;
+  final IEconomicFunctionsService _economic;
+  final String? Function() _currentUid;
   final AppLogger _logger = AppLogger();
 
   List<Map<String, dynamic>> _queue = [];
@@ -361,7 +378,7 @@ class OfflineQueueService {
   }
 
   Future<Map<String, dynamic>?> _syncItem(Map<String, dynamic> item) async {
-    final uid = FirebaseAuth.instance.currentUser?.uid;
+    final uid = _currentUid();
     if (uid == null) throw Exception('No authenticated user');
 
     final economicService = _economic;

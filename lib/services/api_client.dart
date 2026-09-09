@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 import '../config/app_config.dart';
@@ -171,6 +172,16 @@ class ApiClient implements ApiSender {
       );
     }
     return _instance!;
+  }
+
+  @visibleForTesting
+  static ApiClient createForTest(
+    http.Client client, {
+    RetryConfig? retryConfig,
+  }) {
+    final apiClient = ApiClient._(retryConfig: retryConfig);
+    apiClient._client = client;
+    return apiClient;
   }
 
   @override
