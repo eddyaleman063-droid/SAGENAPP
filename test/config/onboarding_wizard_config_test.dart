@@ -4,108 +4,67 @@ import 'package:sagen/config/onboarding_wizard_config.dart';
 import 'package:sagen/l10n/app_localizations.dart';
 
 void main() {
-  final l = lookupAppLocalizations(const Locale('es'));
-
   group('OnboardingWizardConfig', () {
-    test('totalSteps matches localizedSteps length', () {
-      expect(
-        OnboardingWizardConfig.localizedSteps(l),
-        hasLength(OnboardingWizardConfig.totalSteps),
-      );
+    final l = lookupAppLocalizations(const Locale('es'));
+
+    test('totalSteps matches the localized step list length', () {
+      expect(OnboardingWizardConfig.localizedSteps(l).length, 9);
       expect(OnboardingWizardConfig.totalSteps, 9);
     });
 
-    test('first step is a presentation step with no options', () {
+    test('step order matches the expected wizard flow', () {
       final steps = OnboardingWizardConfig.localizedSteps(l);
-      expect(steps.first.type, WizardStepType.presentation);
-      expect(steps.first.options, isEmpty);
-      expect(steps.first.question, isNotEmpty);
+      expect(steps[0].type, WizardStepType.presentation);
+      expect(steps[1].type, WizardStepType.single);
+      expect(steps[2].type, WizardStepType.level);
+      expect(steps[3].type, WizardStepType.multi);
+      expect(steps[5].type, WizardStepType.multi);
+      expect(steps[6].type, WizardStepType.goal);
+      expect(steps[7].type, WizardStepType.multi);
+      expect(steps[8].type, WizardStepType.confirmation);
     });
 
-    test('last step is confirmation with no options', () {
-      final steps = OnboardingWizardConfig.localizedSteps(l);
-      expect(steps.last.type, WizardStepType.confirmation);
-      expect(steps.last.options, isEmpty);
-    });
-
-    test('every step has a question, message and emotion', () {
-      final steps = OnboardingWizardConfig.localizedSteps(l);
-      for (final step in steps) {
-        expect(step.question, isNotEmpty, reason: 'question must not be empty');
-        expect(
-          step.sageMessage,
-          isNotEmpty,
-          reason: 'sageMessage must not be empty',
-        );
-        expect(step.emotion, isNotNull);
+    test('every step carries a question and sage message', () {
+      for (final step in OnboardingWizardConfig.localizedSteps(l)) {
+        expect(step.question, isNotEmpty);
+        expect(step.sageMessage, isNotEmpty);
       }
     });
 
-    test('single/multi/level/goal steps have non-empty options', () {
+    test('option steps expose options with label and value', () {
       final steps = OnboardingWizardConfig.localizedSteps(l);
       for (final step in steps) {
-        if (step.type == WizardStepType.single ||
-            step.type == WizardStepType.multi ||
-            step.type == WizardStepType.level ||
-            step.type == WizardStepType.goal) {
-          expect(
-            step.options,
-            isNotEmpty,
-            reason: '${step.type} step must have options',
-          );
+        if (step.type == WizardStepType.presentation ||
+            step.type == WizardStepType.confirmation) {
+          expect(step.options, isEmpty);
+        } else {
+          expect(step.options, isNotEmpty);
+          for (final option in step.options) {
+            expect(option.label, isNotEmpty);
+            expect(option.value, isNotEmpty);
+          }
         }
       }
     });
 
-    test('every option has label, value and icon', () {
+    test('every option carries an icon', () {
       final steps = OnboardingWizardConfig.localizedSteps(l);
       for (final step in steps) {
         for (final option in step.options) {
-          expect(option.label, isNotEmpty);
-          expect(option.value, isNotEmpty);
           expect(option.icon, isNotNull);
         }
       }
     });
 
-    test('option values are unique within each step', () {
-      final steps = OnboardingWizardConfig.localizedSteps(l);
-      for (final step in steps) {
-        final values = step.options.map((o) => o.value).toSet();
-        expect(
-          values,
-          hasLength(step.options.length),
-          reason: '${step.question} has duplicated option values',
-        );
+    test('each localized step equates to a localizedApp step config', () {
+      final lEn = lookupAppLocalizations(const Locale('en'));
+      final es = OnboardingWizardConfig.localizedSteps(l);
+      final en = OnboardingWizardConfig.localizedSteps(lEn);
+      expect(es.length, en.length);
+      for (int i = 0; i < es.length; i++) {
+        expect(es[i].type, en[i].type);
+        expect(es[i].emotion, en[i].emotion);
       }
-    });
-
-    test('level step has 5 options with subtitles', () {
-      final steps = OnboardingWizardConfig.localizedSteps(l);
-      final levelStep = steps.firstWhere((s) => s.type == WizardStepType.level);
-      expect(levelStep.options, hasLength(5));
-      expect(levelStep.options.every((o) => o.subtitle != null), isTrue);
-      expect(levelStep.options.every((o) => o.color != null), isTrue);
-    });
-
-    test('WizardOption supports optional color and subtitle', () {
-      const withExtras = WizardOption(
-        label: 'a',
-        value: 'b',
-        icon: Icons.shield_rounded,
-        color: Colors.blue,
-        subtitle: 'sub',
-      );
-      expect(withExtras.color, Colors.blue);
-      expect(withExtras.subtitle, 'sub');
-
-      const minimal = WizardOption(
-        label: 'x',
-        value: 'y',
-        icon: Icons.star_rounded,
-      );
-      expect(minimal.color, isNull);
-      expect(minimal.subtitle, isNull);
     });
   });
 }

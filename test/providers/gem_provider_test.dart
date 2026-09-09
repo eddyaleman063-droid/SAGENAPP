@@ -389,5 +389,108 @@ void main() {
         expect(remaining, isNull);
       },
     );
+
+    test('syncBalance updates the cached balance and persists it', () async {
+      final notifier = container.read(gemProvider.notifier);
+      notifier.syncBalance(42);
+      final state = container.read(gemProvider);
+      expect(state.balance, 42);
+
+      final prefs = await SharedPreferences.getInstance();
+      expect(prefs.getInt('gems_balance'), 42);
+    });
+
+    test('syncBalance ignores negative server balances', () async {
+      final notifier = container.read(gemProvider.notifier);
+      notifier.addGems(10, reason: 'test');
+      notifier.syncBalance(-5);
+      expect(container.read(gemProvider).balance, 10);
+    });
+
+    test('awardDailyBonus escalates with streak tiers', () async {
+      final notifier = container.read(gemProvider.notifier);
+      final prefs = await SharedPreferences.getInstance();
+      final cases = {2: 5, 3: 8, 6: 8, 7: 12, 13: 12, 14: 18, 29: 18, 30: 30};
+      var expectedBalance = 0;
+      for (final entry in cases.entries) {
+        await prefs.remove('last_daily_bonus_day');
+        notifier.awardDailyBonus(entry.key);
+        expectedBalance += entry.value;
+        expect(
+          container.read(gemProvider).balance,
+          expectedBalance,
+          reason: 'streak ${entry.key} should award ${entry.value}',
+        );
+      }
+    });
+
+    test('awardFirstLessonOfDay awards 10 gems once per day', () async {
+      final notifier = container.read(gemProvider.notifier);
+      expect(notifier.canAwardFirstLessonOfDay, isTrue);
+      notifier.awardFirstLessonOfDay();
+      expect(container.read(gemProvider).balance, 10);
+      expect(notifier.canAwardFirstLessonOfDay, isFalse);
+      notifier.awardFirstLessonOfDay();
+      expect(container.read(gemProvider).balance, 10);
+    });
+
+    test('awardStreakMilestone scales with streak days', () async {
+      final notifier = container.read(gemProvider.notifier);
+      final cases = {
+        7: 15,
+        14: 30,
+        30: 60,
+        60: 100,
+        100: 150,
+        180: 250,
+        365: 500,
+      };
+      var expectedBalance = 0;
+      for (final entry in cases.entries) {
+        notifier.awardStreakMilestone(entry.key);
+        expectedBalance += entry.value;
+        expect(
+          container.read(gemProvider).balance,
+          expectedBalance,
+          reason: 'milestone ${entry.key} should award ${entry.value}',
+        );
+        expect(
+          container.read(gemProvider).transactions.last.reason,
+          'streak_milestone',
+        );
+      }
+    });
+
+    test('awardStreakMilestone is a no-op below the 7-day threshold', () async {
+      final notifier = container.read(gemProvider.notifier);
+      notifier.awardStreakMilestone(6);
+      expect(container.read(gemProvider).balance, 0);
+      expect(container.read(gemProvider).transactions, isEmpty);
+    });
+
+    test('awardAchievementGems clamps to the 2-30 range', () async {
+      final notifier = container.read(gemProvider.notifier);
+      // 4 xp -> floor(4/4)=1 -> clamped to 2
+      notifier.awardAchievementGems(4);
+      expect(container.read(gemProvider).balance, 2);
+      // 100 xp -> 25
+      notifier.awardAchievementGems(100);
+      expect(container.read(gemProvider).balance, 27);
+      // 200 xp -> 50 -> clamped to 30
+      notifier.awardAchievementGems(200);
+      expect(container.read(gemProvider).balance, 57);
+    });
+
+    test('awardMissionGems and awardReviewGems award fixed amounts', () {
+      final notifier = container.read(gemProvider.notifier);
+      notifier.awardMissionGems();
+      notifier.awardReviewGems();
+      final state = container.read(gemProvider);
+      expect(state.balance, 18);
+      expect(
+        state.transactions.map((t) => t.reason),
+        containsAll(['mission', 'review']),
+      );
+    });
   });
 }

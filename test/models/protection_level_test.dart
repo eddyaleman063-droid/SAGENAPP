@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sagen/l10n/app_localizations.dart';
 import 'package:sagen/models/protection_level.dart';
 
 void main() {
@@ -90,6 +92,52 @@ void main() {
           greaterThan(kProtectionTiers[i - 1].level),
         );
       }
+    });
+  });
+
+  group('ProtectionTier localization', () {
+    final es = lookupAppLocalizations(const Locale('es'));
+
+    test('localizedName maps every known tier', () {
+      for (final tier in kProtectionTiers) {
+        expect(tier.localizedName(es), isNotEmpty);
+      }
+      expect(kProtectionTiers.first.localizedName(es), es.protectionBasic);
+      expect(kProtectionTiers.last.localizedName(es), es.protectionElite);
+    });
+
+    test('localizedName falls back to the raw name for unknown tiers', () {
+      const tier = ProtectionTier(
+        level: 99,
+        name: 'Custom',
+        description: 'Un tier custom',
+        requiredScore: 9999,
+      );
+      expect(tier.localizedName(es), 'Custom');
+    });
+
+    test('localizedDescription maps every known tier', () {
+      for (final tier in kProtectionTiers) {
+        expect(tier.localizedDescription(es), isNotEmpty);
+      }
+      expect(
+        kProtectionTiers.first.localizedDescription(es),
+        es.protectionBasicDesc,
+      );
+      expect(
+        kProtectionTiers.last.localizedDescription(es),
+        es.protectionEliteDesc,
+      );
+    });
+
+    test('localizedDescription falls back for unknown tiers', () {
+      const tier = ProtectionTier(
+        level: 99,
+        name: 'Custom',
+        description: 'Desc custom',
+        requiredScore: 9999,
+      );
+      expect(tier.localizedDescription(es), 'Desc custom');
     });
   });
 }

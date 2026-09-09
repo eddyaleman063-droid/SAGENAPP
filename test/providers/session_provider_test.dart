@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sagen/models/learning/challenge.dart';
 import 'package:sagen/models/learning/lesson_type.dart';
 import 'package:sagen/providers/providers.dart';
+import 'package:sagen/services/local_question_db.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 class MockSessionNotifier extends SessionNotifier {
   List<Challenge> _fakeChallenges(int count) {
@@ -416,6 +420,346 @@ void main() {
       );
       expect(leftover, isEmpty);
       expect(notifier.state.phase, SessionPhase.intro);
+    });
+  });
+
+  group('SessionState metrics', () {
+    test('progress and segment metrics on a playing session', () {
+      const state = SessionState(
+        challenges: [],
+        currentIndex: 2,
+        totalQuestions: 5,
+        phase: SessionPhase.playing,
+      );
+      expect(state.progress, 2 / 5);
+      expect(state.segmentCount, 5);
+      expect(state.completedSegments, 2);
+      expect(state.accuracy, 0);
+      expect(state.isPerfect, false);
+      expect(state.earnedXp, 0);
+    });
+
+    test('completedSegments counts feedback question as answered', () {
+      const state = SessionState(
+        currentIndex: 2,
+        totalQuestions: 5,
+        phase: SessionPhase.feedback,
+      );
+      expect(state.completedSegments, 3);
+      expect(state.progress, 3 / 5);
+    });
+
+    test('completedSegments clamps and handles empty sessions', () {
+      const empty = SessionState();
+      expect(empty.completedSegments, 0);
+      expect(empty.progress, 0);
+      const finished = SessionState(
+        currentIndex: 5,
+        totalQuestions: 5,
+        phase: SessionPhase.completed,
+      );
+      expect(finished.completedSegments, 5);
+    });
+
+    test('accuracy reflects correct over answered', () {
+      const state = SessionState(correctCount: 3, wrongCount: 1);
+      expect(state.accuracy, 3 / 4);
+    });
+
+    test('isPerfect requires all correct and no wrong', () {
+      const perfect = SessionState(
+        correctCount: 3,
+        wrongCount: 0,
+        totalQuestions: 3,
+      );
+      expect(perfect.isPerfect, true);
+      const imperfect = SessionState(
+        correctCount: 3,
+        wrongCount: 1,
+        totalQuestions: 4,
+      );
+      expect(imperfect.isPerfect, false);
+    });
+
+    test('earnedXp scales and applies the perfect bonus', () {
+      const perfect = SessionState(
+        correctCount: 3,
+        wrongCount: 0,
+        totalQuestions: 3,
+      );
+      expect(perfect.earnedXp, 3 * 15 + 30);
+      const imperfect = SessionState(
+        correctCount: 2,
+        wrongCount: 1,
+        totalQuestions: 3,
+      );
+      expect(imperfect.earnedXp, 2 * 15);
+    });
+
+    test('copyWith updates fields and clears via closures', () {
+      const base = SessionState();
+      final updated = base.copyWith(
+        currentChallenge: () => null,
+        challenges: () => const [],
+        currentIndex: 1,
+        lives: 5,
+        correctCount: 2,
+        wrongCount: 1,
+        totalQuestions: 3,
+        feedbackSelected: 0,
+        feedbackCorrect: true,
+        phase: SessionPhase.feedback,
+      );
+      expect(updated.phase, SessionPhase.feedback);
+      expect(updated.currentIndex, 1);
+      expect(updated.lives, 5);
+      expect(updated.feedbackSelected, 0);
+      expect(updated.feedbackCorrect, true);
+      final untouched = base.copyWith();
+      expect(untouched.phase, SessionPhase.intro);
+      expect(untouched.lives, 3);
+    });
+  });
+
+  group('SessionNotifier state getters', () {
+    test('getters mirror SessionState during an active session', () async {
+      final container = await createContainer();
+      addTearDown(() => container.dispose());
+      final notifier = container.read(sessionProvider.notifier);
+
+      expect(notifier.progress, 0);
+      expect(notifier.segmentCount, 0);
+      expect(notifier.completedSegments, 0);
+      expect(notifier.accuracy, 0);
+      expect(notifier.isPerfect, false);
+      expect(notifier.earnedXp, 0);
+
+      await notifier.startSession('stage_1', 'non_existent', count: 3);
+      expect(notifier.segmentCount, 3);
+      expect(notifier.totalQuestions, 3);
+      expect(notifier.completedSegments, 0);
+
+      for (int i = 0; i < 3; i++) {
+        notifier.submitAnswer(notifier.currentChallenge!.correctIndex);
+        notifier.nextQuestion();
+      }
+
+      expect(notifier.state.phase, SessionPhase.completed);
+      expect(notifier.completedSegments, 3);
+      expect(notifier.progress, 1);
+      expect(notifier.accuracy, 1);
+      expect(notifier.isPerfect, true);
+      expect(notifier.earnedXp, 3 * 15 + 30);
+    });
+  });
+
+  group('SessionNotifier real startSession against the seeded DB', () {
+    late Directory tempDir;
+
+    setUp(() {
+      sqfliteFfiInit();
+      databaseFactory = databaseFactoryFfi;
+      tempDir = Directory.systemTemp.createTempSync('sagen_session_test');
+      LocalQuestionDB.overrideDatabasesPath = tempDir.path;
+    });
+
+    tearDown(() async {
+      await LocalQuestionDB.instance.close();
+      LocalQuestionDB.overrideDatabasesPath = null;
+      try {
+        tempDir.deleteSync(recursive: true);
+      } catch (_) {}
+    });
+
+    List<String> progressPayload({
+      required String stageId,
+      required List<String> ids,
+      int answered = 3,
+      int correct = 2,
+      DateTime? savedAt,
+      String? firstUnansweredId,
+    }) {
+      return [
+        stageId,
+        answered.toString(),
+        correct.toString(),
+        ids.join(','),
+        (savedAt ?? DateTime.now()).toIso8601String(),
+        firstUnansweredId ?? '',
+      ];
+    }
+
+    test('startSession fills 15 real seeded challenges', () async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final container = ProviderContainer(
+        overrides: [prefsProvider.overrideWithValue(prefs)],
+      );
+      addTearDown(() => container.dispose());
+      final notifier = container.read(sessionProvider.notifier);
+
+      await notifier.startSession('ac_st1', 'ac_s1_ses1_l1', count: 15);
+
+      expect(notifier.state.phase, SessionPhase.playing);
+      expect(notifier.totalQuestions, 15);
+      expect(notifier.challenges.length, 15);
+      expect(notifier.currentChallenge, isNotNull);
+      expect(notifier.lives, 3);
+    });
+
+    test('startSession handles an unknown lesson gracefully', () async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final container = ProviderContainer(
+        overrides: [prefsProvider.overrideWithValue(prefs)],
+      );
+      addTearDown(() => container.dispose());
+      final notifier = container.read(sessionProvider.notifier);
+
+      await notifier.startSession('unknown_stage', 'unknown_lesson', count: 15);
+
+      expect(notifier.state.phase, SessionPhase.playing);
+      expect(notifier.totalQuestions, 0);
+      expect(notifier.challenges, isEmpty);
+      expect(notifier.currentChallenge, isNull);
+    });
+
+    test('startSession resume restores cursor and real counters', () async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final container = ProviderContainer(
+        overrides: [prefsProvider.overrideWithValue(prefs)],
+      );
+      addTearDown(() => container.dispose());
+      final notifier = container.read(sessionProvider.notifier);
+
+      await notifier.startSession('ac_st1', 'ac_s1_ses1_l1', count: 15);
+      final ids = notifier.challenges.map((c) => c.id).toList();
+      final firstUnansweredId = ids[2];
+
+      await prefs.setStringList(
+        'lesson_progress_ac_st1/ac_s1_ses1_l1',
+        progressPayload(
+          stageId: 'ac_st1',
+          ids: ids,
+          answered: 3,
+          correct: 2,
+          firstUnansweredId: firstUnansweredId,
+        ),
+      );
+
+      await notifier.startSession(
+        'ac_st1',
+        'ac_s1_ses1_l1',
+        count: 15,
+        resume: true,
+      );
+
+      expect(notifier.state.phase, SessionPhase.playing);
+      final newIds = notifier.challenges.map((c) => c.id).toList();
+      expect(notifier.currentIndex, newIds.indexOf(firstUnansweredId));
+      expect(notifier.currentChallenge!.id, firstUnansweredId);
+      expect(notifier.correctCount, 2);
+      expect(notifier.wrongCount, 1);
+      expect(notifier.lives, 3);
+    });
+
+    test(
+      'startSession resume clears stale progress and starts fresh',
+      () async {
+        SharedPreferences.setMockInitialValues({});
+        final prefs = await SharedPreferences.getInstance();
+        final container = ProviderContainer(
+          overrides: [prefsProvider.overrideWithValue(prefs)],
+        );
+        addTearDown(() => container.dispose());
+        final notifier = container.read(sessionProvider.notifier);
+
+        await notifier.startSession('ac_st1', 'ac_s1_ses1_l1', count: 15);
+        final ids = notifier.challenges.map((c) => c.id).toList();
+
+        await prefs.setStringList(
+          'lesson_progress_ac_st1/ac_s1_ses1_l1',
+          progressPayload(
+            stageId: 'ac_st1',
+            ids: ids,
+            savedAt: DateTime.now().subtract(const Duration(minutes: 45)),
+            firstUnansweredId: ids[2],
+          ),
+        );
+
+        await notifier.startSession(
+          'ac_st1',
+          'ac_s1_ses1_l1',
+          count: 15,
+          resume: true,
+        );
+
+        expect(notifier.currentIndex, 0);
+        expect(notifier.correctCount, 0);
+        expect(notifier.wrongCount, 0);
+        expect(
+          prefs.getStringList('lesson_progress_ac_st1/ac_s1_ses1_l1'),
+          isNull,
+        );
+      },
+    );
+
+    test('startSession resume clears invalid progress payloads', () async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final container = ProviderContainer(
+        overrides: [prefsProvider.overrideWithValue(prefs)],
+      );
+      addTearDown(() => container.dispose());
+      final notifier = container.read(sessionProvider.notifier);
+
+      await notifier.startSession('ac_st1', 'ac_s1_ses1_l1', count: 15);
+      final ids = notifier.challenges.map((c) => c.id).toList();
+
+      // 1) IDs mismatch (subset) -> cleared and starts fresh.
+      await prefs.setStringList(
+        'lesson_progress_ac_st1/ac_s1_ses1_l1',
+        progressPayload(
+          stageId: 'ac_st1',
+          ids: ids.sublist(0, 3),
+          firstUnansweredId: ids[1],
+        ),
+      );
+      await notifier.startSession('ac_st1', 'ac_s1_ses1_l1', resume: true);
+      expect(notifier.currentIndex, 0);
+      expect(
+        prefs.getStringList('lesson_progress_ac_st1/ac_s1_ses1_l1'),
+        isNull,
+      );
+
+      // 2) Empty first-unanswered id -> cleared and starts fresh.
+      await prefs.setStringList(
+        'lesson_progress_ac_st1/ac_s1_ses1_l1',
+        progressPayload(stageId: 'ac_st1', ids: ids),
+      );
+      await notifier.startSession('ac_st1', 'ac_s1_ses1_l1', resume: true);
+      expect(notifier.currentIndex, 0);
+      expect(
+        prefs.getStringList('lesson_progress_ac_st1/ac_s1_ses1_l1'),
+        isNull,
+      );
+
+      // 3) Unknown first-unanswered id -> cleared and starts fresh.
+      await prefs.setStringList(
+        'lesson_progress_ac_st1/ac_s1_ses1_l1',
+        progressPayload(
+          stageId: 'ac_st1',
+          ids: ids,
+          firstUnansweredId: 'ac_s1_ses1_l1_q999',
+        ),
+      );
+      await notifier.startSession('ac_st1', 'ac_s1_ses1_l1', resume: true);
+      expect(notifier.currentIndex, 0);
+      expect(
+        prefs.getStringList('lesson_progress_ac_st1/ac_s1_ses1_l1'),
+        isNull,
+      );
     });
   });
 }

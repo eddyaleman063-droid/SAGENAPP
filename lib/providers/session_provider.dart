@@ -62,16 +62,20 @@ class SessionState {
   double get progress =>
       totalQuestions > 0 ? completedSegments / totalQuestions : 0;
   int get segmentCount => totalQuestions;
-  int get completedSegments => totalQuestions <= 0
-      ? 0
-      : (currentIndex + (phase == SessionPhase.feedback ? 1 : 0)).clamp(
-          0,
-          totalQuestions,
-        );
+  int get completedSegments {
+    if (totalQuestions <= 0) return 0;
+    final lastAnswered =
+        phase == SessionPhase.feedback ||
+        phase == SessionPhase.completed ||
+        phase == SessionPhase.gameOver;
+    return (currentIndex + (lastAnswered ? 1 : 0)).clamp(0, totalQuestions);
+  }
+
   double get accuracy => correctCount + wrongCount > 0
       ? correctCount / (correctCount + wrongCount)
       : 0;
-  bool get isPerfect => wrongCount == 0 && correctCount == totalQuestions;
+  bool get isPerfect =>
+      totalQuestions > 0 && wrongCount == 0 && correctCount == totalQuestions;
   int get earnedXp {
     const xpPerCorrect = 15;
     const perfectBonusXp = 30;
@@ -259,7 +263,12 @@ class SessionNotifier extends AutoDisposeNotifier<SessionState> {
       final prefs = ref.read(prefsProvider);
       final ids = state.challenges.map((c) => c.id).toList();
       final firstUnansweredIndex =
-          state.currentIndex + (state.phase == SessionPhase.feedback ? 1 : 0);
+          state.currentIndex +
+          ((state.phase == SessionPhase.feedback ||
+                  state.phase == SessionPhase.completed ||
+                  state.phase == SessionPhase.gameOver)
+              ? 1
+              : 0);
       final firstUnansweredId = firstUnansweredIndex < ids.length
           ? ids[firstUnansweredIndex]
           : '';
