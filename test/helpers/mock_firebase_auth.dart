@@ -27,6 +27,17 @@ class FakeUser implements User {
   });
 
   @override
+  Future<void> updateDisplayName(String? displayName) async {}
+
+  @override
+  Future<void> sendEmailVerification([
+    ActionCodeSettings? actionCodeSettings,
+  ]) async {}
+
+  @override
+  Future<void> reload() async {}
+
+  @override
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 

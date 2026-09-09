@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart' as firebase;
+import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'app_logger.dart';
@@ -49,7 +50,13 @@ class FirebaseAuthClient implements AuthClient {
   firebase.FirebaseAuth? _auth;
   GoogleSignIn? _googleSignIn;
 
-  FirebaseAuthClient({AppLogger? logger}) : _logger = logger ?? AppLogger();
+  FirebaseAuthClient({
+    AppLogger? logger,
+    @visibleForTesting firebase.FirebaseAuth? auth,
+    @visibleForTesting GoogleSignIn? googleSignIn,
+  }) : _logger = logger ?? AppLogger(),
+       _auth = auth,
+       _googleSignIn = googleSignIn;
 
   @override
   bool get isAvailable => _auth != null;
@@ -184,6 +191,8 @@ class FirebaseAuthClient implements AuthClient {
       return appUserFromFirebase(fbUser);
     } on firebase.FirebaseAuthException catch (e) {
       throw _mapFirebaseException(e);
+    } on AuthException {
+      rethrow;
     } catch (e) {
       _logger.warning('FirebaseAuthClient: signUpWithEmail failed: $e');
       throw const AuthException('unknown');
@@ -213,6 +222,8 @@ class FirebaseAuthClient implements AuthClient {
       return appUserFromFirebase(fbUser);
     } on firebase.FirebaseAuthException catch (e) {
       throw _mapFirebaseException(e);
+    } on AuthException {
+      rethrow;
     } catch (e) {
       _logger.warning('FirebaseAuthClient: signInWithEmail failed: $e');
       throw const AuthException('unknown');
