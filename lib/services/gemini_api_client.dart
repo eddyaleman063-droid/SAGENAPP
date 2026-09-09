@@ -18,14 +18,21 @@ class GeminiApiClient {
   final SagePromptBuilder _promptBuilder = SagePromptBuilder();
   final Random _jitter = Random();
   FirebaseFunctions? _functions;
+  final FirebaseAuth? _auth;
 
   // Client-side rate limiting: max 10 requests per minute
   static const int _maxRequestsPerMinute = 10;
   final List<DateTime> _requestTimestamps = [];
 
-  GeminiApiClient({AppLogger? logger, ApiClient? apiClient})
-    : _logger = logger ?? AppLogger(),
-      _apiClient = apiClient ?? ApiClient.instance;
+  GeminiApiClient({
+    AppLogger? logger,
+    ApiClient? apiClient,
+    @visibleForTesting FirebaseAuth? auth,
+    @visibleForTesting FirebaseFunctions? functions,
+  }) : _logger = logger ?? AppLogger(),
+       _apiClient = apiClient ?? ApiClient.instance,
+       _auth = auth,
+       _functions = functions;
 
   bool get isAvailable => true;
 
@@ -132,15 +139,15 @@ class GeminiApiClient {
           weakTopics: weakTopics,
         );
 
-        final user = FirebaseAuth.instance.currentUser;
+        final user = (_auth ?? FirebaseAuth.instance).currentUser;
         if (user == null) {
           throw const AiException(AiErrorType.auth, 'No authenticated user.');
         }
         final token = await user.getIdToken();
 
-        final projectId = FirebaseFunctions.instanceFor(
-          region: 'us-central1',
-        ).app.options.projectId;
+        final functions =
+            _functions ?? FirebaseFunctions.instanceFor(region: 'us-central1');
+        final projectId = functions.app.options.projectId;
         final url = Uri.parse(
           'https://us-central1-$projectId.cloudfunctions.net/generateContentStream',
         );
