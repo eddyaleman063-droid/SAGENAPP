@@ -45,7 +45,7 @@ class InventoryService {
       specialItems.forEach((key, value) {
         final type = _parseItemName(key.toString());
         if (type != null) {
-          quantities[type] = (value as num?)?.toInt() ?? 0;
+          quantities[type] = value is num ? value.toInt() : 0;
         }
       });
 
@@ -59,8 +59,10 @@ class InventoryService {
         }
       }
 
-      final purchasedXpBoosts =
-          (data['purchasedXpBoosts'] as num?)?.toInt() ?? 0;
+      final purchasedXpBoostsValue = data['purchasedXpBoosts'];
+      final purchasedXpBoosts = purchasedXpBoostsValue is num
+          ? purchasedXpBoostsValue.toInt()
+          : 0;
 
       return (quantities: quantities, purchasedXpBoosts: purchasedXpBoosts);
     } catch (e) {

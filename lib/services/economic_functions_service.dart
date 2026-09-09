@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import '../core/interfaces/i_economic_functions_service.dart';
 import 'app_logger.dart';
 
@@ -17,7 +18,13 @@ class EconomicFunctionsService implements IEconomicFunctionsService {
 
   FirebaseFunctions get _functions => FirebaseFunctions.instance;
 
-  String get _uid => FirebaseAuth.instance.currentUser?.uid ?? '';
+  /// Test-only uid override so the authenticated-user branch can be exercised
+  /// without a real FirebaseAuth session.
+  @visibleForTesting
+  static String? Function()? uidOverride;
+
+  String get _uid =>
+      uidOverride?.call() ?? FirebaseAuth.instance.currentUser?.uid ?? '';
   final _random = Random.secure();
 
   String _idempotencyKey([String? prefix]) {
