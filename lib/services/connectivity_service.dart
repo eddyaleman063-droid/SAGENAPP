@@ -9,7 +9,8 @@ class ConnectivityService {
   final _online = ValueNotifier<bool>(false);
   final _offlineSaveCount = ValueNotifier<int>(0);
   final AppLogger _logger = AppLogger();
-  final Connectivity _connectivity = Connectivity();
+  Connectivity? _connectivityOverride;
+  Connectivity get _connectivity => _connectivityOverride ?? Connectivity();
   ValueNotifier<bool> get online => _online;
   ValueNotifier<int> get offlineSaveCount => _offlineSaveCount;
   int get offlineSavedForLater => _offlineSaveCount.value;
@@ -17,6 +18,12 @@ class ConnectivityService {
   StreamSubscription<List<ConnectivityResult>>? _subscription;
 
   ConnectivityService._();
+
+  /// Test-only override for the connectivity plugin (Pigeon-backed).
+  @visibleForTesting
+  void overrideConnectivityForTesting(Connectivity connectivity) {
+    _connectivityOverride = connectivity;
+  }
 
   void start() {
     if (_running) return;

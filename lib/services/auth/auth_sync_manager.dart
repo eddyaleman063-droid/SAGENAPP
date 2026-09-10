@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../cloud_sync_service.dart';
 import '../app_logger.dart';
@@ -10,6 +11,13 @@ class AuthSyncManager {
   final CloudSyncService _cloudSync;
   int _onboardingLoadId = 0;
   int _sessionEpoch = 0;
+
+  /// Test-only override for the raw Firestore instance (Pigeon-backed).
+  @visibleForTesting
+  FirebaseFirestore? overrideFirestoreInstance;
+
+  FirebaseFirestore get _db =>
+      overrideFirestoreInstance ?? FirebaseFirestore.instance;
 
   AuthSyncManager(this._cloudSync);
 
@@ -85,7 +93,7 @@ class AuthSyncManager {
   Future<bool?> loadOnboardingStatus(String uid) async {
     final loadId = ++_onboardingLoadId;
     try {
-      final doc = await FirebaseFirestore.instance
+      final doc = await _db
           .collection('users')
           .doc(uid)
           .get()

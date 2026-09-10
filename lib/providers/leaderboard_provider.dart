@@ -18,10 +18,15 @@ class LeaderboardEntry {
   });
 }
 
+final leaderboardFirestoreProvider = Provider<FirebaseFirestore>(
+  (ref) => FirebaseFirestore.instance,
+);
+
 final leaderboardProvider = StreamProvider.autoDispose<List<LeaderboardEntry>>((
   ref,
 ) {
-  return FirebaseFirestore.instance
+  return ref
+      .watch(leaderboardFirestoreProvider)
       .collection('leaderboards')
       .orderBy('learning_total_xp', descending: true)
       .limit(50)

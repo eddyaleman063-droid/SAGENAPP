@@ -1,5 +1,5 @@
-import 'dart:typed_data';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'analytics_service.dart';
@@ -9,11 +9,31 @@ import 'app_logger.dart';
 class ShareService {
   static final ShareService _instance = ShareService._();
   static ShareService get instance => _instance;
-  ShareService._({AnalyticsService? analytics})
-    : _analytics = analytics ?? AnalyticsService.instance,
-      _logger = AppLogger();
+  ShareService._({
+    AnalyticsService? analytics,
+    Future<void> Function(ShareParams params)? shareOverride,
+  }) : _analytics = analytics ?? AnalyticsService.instance,
+       _logger = AppLogger(),
+       _shareOverride = shareOverride;
+
+  /// Test-only constructor replacing the platform share call and analytics.
+  @visibleForTesting
+  factory ShareService.test({
+    AnalyticsService? analytics,
+    Future<void> Function(ShareParams params)? shareOverride,
+  }) {
+    return ShareService._(analytics: analytics, shareOverride: shareOverride);
+  }
+
   final AppLogger _logger;
   final AnalyticsService _analytics;
+  final Future<void> Function(ShareParams params)? _shareOverride;
+
+  Future<void> _share(ShareParams params) {
+    final override = _shareOverride;
+    if (override != null) return override(params);
+    return SharePlus.instance.share(params);
+  }
 
   Future<bool> shareImage(
     Uint8List imageBytes, {
@@ -28,9 +48,7 @@ class ShareService {
       file = File('${dir.path}/$fileName');
       await file.writeAsBytes(imageBytes);
 
-      await SharePlus.instance.share(
-        ShareParams(files: [XFile(file.path)], text: text),
-      );
+      await _share(ShareParams(files: [XFile(file.path)], text: text));
       if (source != null) {
         _analytics.trackFlexCardShared(source);
       }
@@ -51,7 +69,7 @@ class ShareService {
 
   Future<bool> shareText(String text, {String? source}) async {
     try {
-      await SharePlus.instance.share(ShareParams(text: text));
+      await _share(ShareParams(text: text));
       if (source != null) {
         _analytics.trackFlexCardShared(source);
       }

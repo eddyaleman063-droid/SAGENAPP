@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'app_logger.dart';
 
@@ -22,6 +23,12 @@ class CertificatePinning {
 
   static final CertificatePinning instance = CertificatePinning._();
   CertificatePinning._() {
+    _initDefaultPins();
+  }
+
+  /// Test-only constructor for an isolated registry.
+  @visibleForTesting
+  CertificatePinning.test() {
     _initDefaultPins();
   }
 
@@ -82,6 +89,18 @@ class CertificatePinning {
   /// Returns true if the certificate is valid (pinned or no pins configured).
   /// In enforce mode, rejects unknown certs. In log-only mode, allows but warns.
   bool _validateCertificate(X509Certificate cert, String host) {
+    final digest = sha256.convert(cert.der);
+    final fingerprint = 'sha256/${digest.toString()}';
+    return _checkFingerprint(host, fingerprint);
+  }
+
+  /// Test-only seam: validates a pre-computed `sha256/<hex>` fingerprint
+  /// against the pinned set without needing a live TLS handshake.
+  @visibleForTesting
+  bool checkFingerprintForTest(String host, String fingerprint) =>
+      _checkFingerprint(host, fingerprint);
+
+  bool _checkFingerprint(String host, String fingerprint) {
     if (!_pins.containsKey(host)) {
       // Unknown host: REJECT in enforce mode (fail-closed), warn in log-only mode
       if (_enforcePinning) {
@@ -95,9 +114,6 @@ class CertificatePinning {
       );
       return true;
     }
-
-    final digest = sha256.convert(cert.der);
-    final fingerprint = 'sha256/${digest.toString()}';
 
     final hostPins = _pins[host];
     if (hostPins == null) return true;
@@ -169,7 +185,6 @@ class CertificatePinning {
 
   static bool _isPlaceholderPin(String pin) {
     final hash = pin.replaceFirst('sha256/', '');
-    if (hash.length != 64) return true;
     if (RegExp(r'^[0-9a-f]{64}$', caseSensitive: false).hasMatch(hash)) {
       return false;
     }
