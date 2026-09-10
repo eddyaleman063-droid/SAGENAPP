@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../config/firestore_field_config.dart';
 import '../core/interfaces/i_cloud_sync_service.dart';
@@ -25,6 +26,10 @@ class CloudSyncService implements ICloudSyncService {
   final AuthService _authService;
   final FirestoreService _firestoreService;
   final AppLogger _logger;
+
+  /// Test-only override for the raw Firestore instance (Pigeon-backed).
+  @visibleForTesting
+  FirebaseFirestore? overrideFirestoreInstance;
 
   SharedPreferences? _prefs;
 
@@ -479,7 +484,8 @@ class CloudSyncService implements ICloudSyncService {
 
   // ── Private helpers ──
 
-  FirebaseFirestore get _firestore => FirebaseFirestore.instance;
+  FirebaseFirestore get _firestore =>
+      overrideFirestoreInstance ?? FirebaseFirestore.instance;
 
   void _persistPendingWrites() {
     try {
