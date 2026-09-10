@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:path/path.dart' as p;
 import 'package:sagen/models/learning/challenge.dart';
+import 'package:sagen/models/learning/lesson_type.dart';
 import 'package:sagen/services/local_question_db.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
@@ -238,6 +240,182 @@ void main() {
         final db = LocalQuestionDB.instance;
         final result = await db.getByIds(const ['pool_legacy_1']);
         expect(result, isEmpty);
+      },
+      timeout: const Timeout(Duration(minutes: 3)),
+    );
+  });
+
+  group('LocalQuestionDB.getRandomByType', () {
+    test(
+      'returns only questions of the requested type',
+      () async {
+        final db = LocalQuestionDB.instance;
+        final result = await db.getRandomByType(
+          LessonType.multipleChoice,
+          count: 5,
+        );
+        expect(result, isNotEmpty);
+        expect(result.length, lessThanOrEqualTo(5));
+        for (final c in result) {
+          expect(c.type, LessonType.multipleChoice);
+        }
+      },
+      timeout: const Timeout(Duration(minutes: 2)),
+    );
+
+    test(
+      'works for every enum type that has questions in the bank',
+      () async {
+        final db = LocalQuestionDB.instance;
+        // seeding en frio: getRandomByType siembra la etapa 1 si hace falta
+        for (final type in LessonType.values) {
+          final result = await db.getRandomByType(type, count: 3);
+          if (result.isEmpty) continue;
+          expect(result.length, lessThanOrEqualTo(3));
+          for (final c in result) {
+            expect(c.type, type);
+          }
+        }
+      },
+      timeout: const Timeout(Duration(minutes: 3)),
+    );
+  });
+
+  group('LocalQuestionDB counters', () {
+    test(
+      'getQuestionCount and getLessonCount reflect the seeded bank',
+      () async {
+        final db = LocalQuestionDB.instance;
+        await db.getQuestionsForLesson('ac_st1', 'ac_s1_ses1_l1', count: 5);
+        expect(await db.getQuestionCount(), greaterThan(0));
+        expect(await db.getLessonCount(), greaterThan(0));
+      },
+      timeout: const Timeout(Duration(minutes: 2)),
+    );
+  });
+
+  group('LocalQuestionDB corrupt-row resilience', () {
+    test(
+      'falls back to a placeholder option when options are not a list',
+      () async {
+        final db = LocalQuestionDB.instance;
+        final database = await db.database;
+        await database.insert('questions', {
+          'id': 'x_badjson',
+          'question': 'q',
+          'type': 'multipleChoice',
+          'options': '5',
+          'correctIndex': 0,
+          'explanation': 'e',
+          'lessonId': 'l_x',
+        });
+        final c = await db.getById('x_badjson');
+        expect(c, isNotNull);
+        expect(c!.options, ['Option not available']);
+      },
+      timeout: const Timeout(Duration(minutes: 2)),
+    );
+
+    test(
+      'defaults to multipleChoice for an unknown stored type',
+      () async {
+        final db = LocalQuestionDB.instance;
+        final database = await db.database;
+        await database.insert('questions', {
+          'id': 'x_unknowntype',
+          'question': 'q',
+          'type': 'weirdType',
+          'options': '["a", "b"]',
+          'correctIndex': 0,
+          'explanation': 'e',
+          'lessonId': 'l_x',
+        });
+        final c = await db.getById('x_unknowntype');
+        expect(c, isNotNull);
+        expect(c!.type, LessonType.multipleChoice);
+      },
+      timeout: const Timeout(Duration(minutes: 2)),
+    );
+  });
+
+  group('LocalQuestionDB resilience to database failures', () {
+    test(
+      'every public read path returns a safe fallback when the DB is corrupt',
+      () async {
+        File(
+          p.join(tempDir.path, 'sagen_questions.db'),
+        ).writeAsStringSync('this is not a sqlite database');
+        final db = LocalQuestionDB.instance;
+
+        expect(
+          await db.getQuestionsForLesson('ac_st1', 'l', count: 5),
+          isEmpty,
+        );
+        expect(await db.getRandomByType(LessonType.multipleChoice), isEmpty);
+        expect(await db.getById('ac_s1_ses1_l1_q001'), isNull);
+        expect(await db.getByIds(['ac_s1_ses1_l1_q001']), isEmpty);
+        expect(await db.getQuestionCount(), 0);
+        expect(await db.getLessonCount(), 0);
+
+        // Concurrent access while opening must all fail (no hang, no partial).
+        final results = await Future.wait([
+          db.database.then((_) => 'ok', onError: (_) => 'err'),
+          db.database.then((_) => 'ok', onError: (_) => 'err'),
+        ]);
+        expect(results, ['err', 'err']);
+      },
+      timeout: const Timeout(Duration(minutes: 2)),
+    );
+  });
+
+  group('LocalQuestionDB schema migration', () {
+    test(
+      'migrates a v1 database adding the _meta table',
+      () async {
+        // Crea un DB v1 sin _meta, como producían las primeras versiones.
+        final path = p.join(tempDir.path, 'sagen_questions.db');
+        final v1 = await databaseFactory.openDatabase(
+          path,
+          options: OpenDatabaseOptions(
+            version: 1,
+            onCreate: (db, version) async {
+              await db.execute('CREATE TABLE questions (id TEXT PRIMARY KEY)');
+            },
+          ),
+        );
+        await v1.close();
+
+        final db = await LocalQuestionDB.instance.database;
+        final rows = await db.rawQuery(
+          "SELECT name FROM sqlite_master WHERE type='table' AND name='_meta'",
+        );
+        expect(rows, isNotEmpty);
+      },
+      timeout: const Timeout(Duration(minutes: 2)),
+    );
+  });
+
+  group('LocalQuestionDB lazy re-seed checksum shortcut', () {
+    test(
+      're-seeding an already seeded stage reuses the stored checksum',
+      () async {
+        final db = LocalQuestionDB.instance;
+        final first = await db.getQuestionsForLesson(
+          'ac_st1',
+          'ac_s1_ses1_l1',
+          count: 5,
+        );
+        expect(first, isNotEmpty);
+
+        // close() borra solo el estado en memoria; el archivo persiste.
+        await db.close();
+
+        final second = await db.getQuestionsForLesson(
+          'ac_st1',
+          'ac_s1_ses1_l1',
+          count: 5,
+        );
+        expect(second, isNotEmpty);
       },
       timeout: const Timeout(Duration(minutes: 3)),
     );

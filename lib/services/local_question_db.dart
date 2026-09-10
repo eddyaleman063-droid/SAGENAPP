@@ -54,12 +54,15 @@ class LocalQuestionDB {
     _dbCompleter = completer;
     try {
       _db = await _openDB();
+      _dbCompleter = null;
       completer.complete(_db);
       return _db!;
     } catch (e) {
-      completer.completeError(e);
+      // Reparos concurrentes escuchan el mismo future; devolverlo en vez de
+      // rethrow evita un "unhandled async error" cuando nadie lo observa.
       _dbCompleter = null;
-      rethrow;
+      completer.completeError(e);
+      return completer.future;
     }
   }
 
