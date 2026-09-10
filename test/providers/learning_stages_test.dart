@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sagen/core/theme/theme_constants.dart';
 import 'package:sagen/models/learning/stage.dart';
 import 'package:sagen/providers/learning_stages.dart';
 
@@ -52,6 +55,47 @@ void main() {
     test('returns cached stages once loaded', () async {
       await loadStagesFromAssets();
       expect(defaultStages, isNotEmpty);
+    });
+  });
+
+  group('LearningStages — diagnostic paths', () {
+    test('returns [] and logs when the asset source fails', () async {
+      resetStagesForTest();
+      loadStagesOverride = () async => throw StateError('boom');
+      expect(await loadStagesFromAssets(), isEmpty);
+      resetStagesForTest();
+    });
+
+    test(
+      'falls back to the gradient color when accent hex is invalid',
+      () async {
+        resetStagesForTest();
+        loadStagesOverride = () async => jsonEncode([
+          {
+            'id': 's_bad',
+            'title': 'Bad accent',
+            'subtitle': 'x',
+            'accent': '#ZZZZZZ',
+          },
+        ]);
+        final stages = await loadStagesFromAssets();
+        expect(stages, hasLength(1));
+        expect(stages.single.accent, PremiumColors.gradientActive[0]);
+        resetStagesForTest();
+
+        // El loader original sigue funcionando tras el reset del cache.
+        expect(await loadStagesFromAssets(), isNotEmpty);
+      },
+    );
+
+    test('defaults the accent when absent', () async {
+      resetStagesForTest();
+      loadStagesOverride = () async => jsonEncode([
+        {'id': 's_noaccent', 'title': 't', 'subtitle': 'x'},
+      ]);
+      final stages = await loadStagesFromAssets();
+      expect(stages.single.accent.toARGB32(), 0xFFFF6F00);
+      resetStagesForTest();
     });
   });
 }

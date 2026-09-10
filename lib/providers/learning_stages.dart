@@ -18,10 +18,23 @@ List<Map<String, dynamic>> _decodeStagesJson(String jsonStr) {
   return decoded.whereType<Map<String, dynamic>>().toList();
 }
 
+/// Test-only hook to inject arbitrary stages JSON (or failures).
+@visibleForTesting
+Future<String> Function()? loadStagesOverride;
+
+/// Test-only reset of the module-level cache.
+@visibleForTesting
+void resetStagesForTest() {
+  _cachedStages = [];
+  loadStagesOverride = null;
+}
+
 Future<List<Stage>> loadStagesFromAssets() async {
   if (_cachedStages.isNotEmpty) return _cachedStages;
   try {
-    final jsonStr = await rootBundle.loadString('assets/content/stages.json');
+    final jsonStr =
+        await (loadStagesOverride?.call() ??
+            rootBundle.loadString('assets/content/stages.json'));
     final decoded = await compute(_decodeStagesJson, jsonStr);
     if (decoded.isEmpty) return [];
     _cachedStages = decoded.map((s) {
