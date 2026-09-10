@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/product.dart';
 import '../services/app_logger.dart';
@@ -58,6 +59,7 @@ class PaymentState {
     String? pendingPaymentId,
     int? pollAttempts,
     bool clearError = false,
+    bool clearPendingPaymentId = false,
     DateTime? preferenceCreatedAt,
   }) {
     return PaymentState(
@@ -70,7 +72,9 @@ class PaymentState {
       donatedBefore: donatedBefore ?? this.donatedBefore,
       donatedAfter: donatedAfter ?? this.donatedAfter,
       selectedProduct: selectedProduct ?? this.selectedProduct,
-      pendingPaymentId: pendingPaymentId ?? this.pendingPaymentId,
+      pendingPaymentId: clearPendingPaymentId
+          ? null
+          : (pendingPaymentId ?? this.pendingPaymentId),
       pollAttempts: pollAttempts ?? this.pollAttempts,
       preferenceCreatedAt: preferenceCreatedAt ?? this.preferenceCreatedAt,
     );
@@ -78,6 +82,10 @@ class PaymentState {
 }
 
 class PaymentNotifier extends AutoDisposeNotifier<PaymentState> {
+  /// Test-only override for the payment backend (injected in build()).
+  @visibleForTesting
+  static MercadoPagoService? overrideMpService;
+
   late final MercadoPagoService _mpService;
   late final AppLogger _logger;
   Timer? _pollTimer;
@@ -85,7 +93,7 @@ class PaymentNotifier extends AutoDisposeNotifier<PaymentState> {
 
   @override
   PaymentState build() {
-    _mpService = MercadoPagoService();
+    _mpService = overrideMpService ?? MercadoPagoService();
     _logger = AppLogger();
     ref.onDispose(() => _pollTimer?.cancel());
     return const PaymentState();
@@ -182,6 +190,7 @@ class PaymentNotifier extends AutoDisposeNotifier<PaymentState> {
       selectedMethod: PaymentMethod.whatsapp,
       donatedBefore: ref.read(learningProvider).totalDonated.round(),
       selectedProduct: product,
+      pollAttempts: 0,
       clearError: true,
     );
     // Register pending payment on server (requires auth)
@@ -236,7 +245,7 @@ class PaymentNotifier extends AutoDisposeNotifier<PaymentState> {
         status: PaymentStatus.failed,
         errorMessage:
             'Payment verification timed out. Check your payment history or try again.',
-        pendingPaymentId: null,
+        clearPendingPaymentId: true,
       );
       return;
     }
@@ -261,14 +270,14 @@ class PaymentNotifier extends AutoDisposeNotifier<PaymentState> {
         await refreshGems();
         state = state.copyWith(
           status: PaymentStatus.completed,
-          pendingPaymentId: null,
+          clearPendingPaymentId: true,
         );
       } else if (status == 'expired' || status == 'not_found') {
         _pollTimer?.cancel();
         state = state.copyWith(
           status: PaymentStatus.failed,
           errorMessage: 'Payment expired. Please try again.',
-          pendingPaymentId: null,
+          clearPendingPaymentId: true,
         );
       }
     } catch (e, stack) {
