@@ -12,15 +12,19 @@ class NotificationService {
     : _logger = AppLogger(),
       _plugin = FlutterLocalNotificationsPlugin();
   @visibleForTesting
-  NotificationService.test()
+  NotificationService.test([FlutterLocalNotificationsPlugin? plugin])
     : _logger = AppLogger(),
-      _plugin = FlutterLocalNotificationsPlugin();
+      _plugin = plugin ?? FlutterLocalNotificationsPlugin();
   final AppLogger _logger;
 
   /// NUEVO-fix (ronda 20): el plugin ya no se instancia inline; se asigna en
   /// cada constructor para que las subclases de test puedan inyectar uno fake.
   final FlutterLocalNotificationsPlugin _plugin;
   bool _initialized = false;
+
+  /// Overrides the reference clock for deterministic scheduling tests.
+  @visibleForTesting
+  DateTime Function()? nowOverride;
 
   static const String _channelId = 'chest_reminder';
   static const String _channelName = 'Daily Reminder';
@@ -89,7 +93,7 @@ class NotificationService {
         android: androidDetails,
         iOS: iosDetails,
       );
-      final now = tz.TZDateTime.now(tz.local);
+      final now = nowOverride?.call() ?? tz.TZDateTime.now(tz.local);
       var scheduledDate = tz.TZDateTime(
         tz.local,
         now.year,

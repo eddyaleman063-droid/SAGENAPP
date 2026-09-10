@@ -1,13 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import '../models/learning/stage.dart';
 
 /// Manages learning stage progression and unlocking logic.
 class LearningStageService {
-  const LearningStageService();
+  LearningStageService();
+
+  @visibleForTesting
+  FirebaseFirestore? overrideDbInstance;
+
+  FirebaseFirestore get _db => overrideDbInstance ?? FirebaseFirestore.instance;
 
   Future<List<Stage>> fetchStages() async {
     try {
-      final snapshot = await FirebaseFirestore.instance
+      final snapshot = await _db
           .collection('learning_stages')
           .orderBy(FieldPath.documentId)
           .get(const GetOptions(source: Source.serverAndCache))

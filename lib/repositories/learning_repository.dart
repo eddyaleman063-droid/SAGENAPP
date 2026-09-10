@@ -60,7 +60,7 @@ class LearningRepositoryImpl implements LearningRepository {
   bool _needsServerReconciliation = false;
 
   LearningRepositoryImpl(this._prefs, [LearningStageService? stageService])
-    : _stageService = stageService ?? const LearningStageService();
+    : _stageService = stageService ?? LearningStageService();
 
   int _computeChecksum() => Object.hashAll([
     _totalDonated,
