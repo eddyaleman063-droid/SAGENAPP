@@ -122,10 +122,17 @@ CustomTransitionPage<void> _page(
   );
 }
 
-final routerProvider = Provider<GoRouter>((ref) {
-  final router = GoRouter(
-    navigatorKey: rootNavigatorKey,
-    initialLocation: '/',
+/// Builds the full [GoRouter] for the app. Exposed as a factory so tests can
+/// mount the real route table from any [initialLocation] (bypassing the
+/// splash → /main redirect that otherwise builds heavy shells).
+@visibleForTesting
+GoRouter buildAppRouter({
+  GlobalKey<NavigatorState>? navigatorKey,
+  String initialLocation = '/',
+}) {
+  return GoRouter(
+    navigatorKey: navigatorKey ?? rootNavigatorKey,
+    initialLocation: initialLocation,
     redirect: _redirect,
     routes: [
       GoRoute(
@@ -436,6 +443,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       );
     },
   );
+}
+
+final routerProvider = Provider<GoRouter>((ref) {
+  final router = buildAppRouter();
 
   ref.listen(authProvider, (_, _) => router.refresh());
   ref.onDispose(() => router.dispose());
@@ -443,11 +454,10 @@ final routerProvider = Provider<GoRouter>((ref) {
   return router;
 });
 
-/// Centralized redirect logic.
-String? _redirect(BuildContext context, GoRouterState state) {
-  final auth = ProviderScope.containerOf(context).read(authProvider);
-  final location = state.matchedLocation;
-
+/// Pure redirect decision, extracted from [_redirect] so it can be tested in
+/// isolation with any [AuthState] + location.
+@visibleForTesting
+String? resolveRedirect(AuthState auth, String location) {
   // Phase 1: Still loading → force splash (except anywhere the user is
   // legitimately mid-registration). BUG-fix: sin esta exención, el redirect a
   // '/' durante AuthStatus.loading desmontaba PostOnboardingFlow mientras
@@ -486,4 +496,12 @@ String? _redirect(BuildContext context, GoRouterState state) {
   }
 
   return null;
+}
+
+/// Centralized redirect logic.
+String? _redirect(BuildContext context, GoRouterState state) {
+  return resolveRedirect(
+    ProviderScope.containerOf(context).read(authProvider),
+    state.matchedLocation,
+  );
 }
