@@ -134,10 +134,12 @@ class LearningNotifier extends Notifier<LearningState> {
 
   @override
   LearningState build() {
+    // La cola se captura aquí: leer providers desde onDispose puede lanzar
+    // "read from a disposed container" según el orden de disposición.
+    final queue = ref.read(offlineQueueServiceProvider);
     ref.onDispose(() {
       _disposed = true;
       _levelUpController.close();
-      final queue = ref.read(offlineQueueServiceProvider);
       queue.onItemSynced = null;
       queue.onItemDropped = null;
     });
@@ -154,7 +156,6 @@ class LearningNotifier extends Notifier<LearningState> {
     });
 
     // Wire up queue reconciliation callbacks and initialize
-    final queue = ref.read(offlineQueueServiceProvider);
     queue.onItemSynced = (result) => _reconcileWithServer(result);
     queue.onItemDropped = (item) => _onQueueItemDropped(item);
     queue.init(); // Initialize queue from SQLite
