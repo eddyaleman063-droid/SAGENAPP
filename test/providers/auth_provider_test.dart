@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart' as firebase;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -8,6 +9,8 @@ import 'package:sagen/services/cloud_sync_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MockAuthService extends Mock implements AuthService {}
+
+class MockFirebaseUser extends Mock implements firebase.User {}
 
 class MockCloudSyncService extends Mock implements CloudSyncService {}
 
@@ -527,6 +530,493 @@ void main() {
         expect(state.status, AuthStatus.unauthenticated);
 
         controller.close();
+      });
+
+      test('onError del stream marca estado de error', () async {
+        final controller = StreamController<AppUser?>();
+        when(
+          () => mockAuth.authStateChanges,
+        ).thenAnswer((_) => controller.stream);
+
+        container.read(authProvider);
+        await Future<void>.delayed(Duration.zero);
+
+        controller.addError('stream boom');
+        await Future<void>.delayed(Duration.zero);
+
+        final state = container.read(authProvider);
+        expect(state.errorMessage, 'Error in auth stream');
+
+        controller.close();
+      });
+
+      test('transición authenticated -> null detiene el sync', () async {
+        final controller = StreamController<AppUser?>();
+        when(
+          () => mockAuth.authStateChanges,
+        ).thenAnswer((_) => controller.stream);
+
+        container.read(authProvider);
+        await Future<void>.delayed(Duration.zero);
+
+        controller.add(FakeAppUser(uid: 'sync-uid', isEmailVerified: true));
+        await Future<void>.delayed(Duration.zero);
+        await Future<void>.delayed(Duration.zero);
+        expect(container.read(authProvider).status, AuthStatus.authenticated);
+
+        controller.add(null);
+        await Future<void>.delayed(Duration.zero);
+        await Future<void>.delayed(Duration.zero);
+
+        expect(container.read(authProvider).status, AuthStatus.unauthenticated);
+        verify(() => mockCloudSync.stopListening()).called(1);
+
+        controller.close();
+      });
+
+      test('usuario sin verificar arranca el auto-check y verifica', () async {
+        when(() => mockAuth.reloadUser()).thenAnswer((_) async => true);
+        final controller = StreamController<AppUser?>();
+        when(
+          () => mockAuth.authStateChanges,
+        ).thenAnswer((_) => controller.stream);
+
+        container.read(authProvider);
+        await Future<void>.delayed(Duration.zero);
+
+        controller.add(FakeAppUser(uid: 'verify-uid', isEmailVerified: false));
+        await Future<void>.delayed(Duration.zero);
+        expect(container.read(authProvider).status, AuthStatus.unauthenticated);
+        expect(container.read(authProvider).pendingVerification, true);
+
+        await Future<void>.delayed(const Duration(seconds: 6));
+        final state = container.read(authProvider);
+        expect(state.status, AuthStatus.authenticated);
+        expect(state.pendingVerification, false);
+
+        controller.close();
+      });
+    });
+
+    group('signInWithFacebook', () {
+      test('sets loading then authenticated on success', () async {
+        final fakeUser = FakeAppUser(uid: 'fb-uid', isEmailVerified: true);
+        when(
+          () => mockAuth.signInWithFacebook(),
+        ).thenAnswer((_) async => fakeUser);
+
+        final notifier = container.read(authProvider.notifier);
+        await notifier.signInWithFacebook();
+
+        final state = container.read(authProvider);
+        expect(state.status, AuthStatus.authenticated);
+        expect(state.uid, 'fb-uid');
+        expect(state.displayName, 'Test User');
+      });
+
+      test('sets unauthenticated on canceled exception', () async {
+        when(
+          () => mockAuth.signInWithFacebook(),
+        ).thenThrow(const AuthException('canceled'));
+
+        await container.read(authProvider.notifier).signInWithFacebook();
+        expect(container.read(authProvider).status, AuthStatus.unauthenticated);
+      });
+
+      test('sets error state on non-canceled AuthException', () async {
+        when(
+          () => mockAuth.signInWithFacebook(),
+        ).thenThrow(const AuthException('fb_network_error'));
+
+        await container.read(authProvider.notifier).signInWithFacebook();
+        final state = container.read(authProvider);
+        expect(state.status, AuthStatus.error);
+        expect(state.errorMessage, 'fb_network_error');
+      });
+
+      test('sets error state on generic exception', () async {
+        when(() => mockAuth.signInWithFacebook()).thenThrow(Exception('boom'));
+
+        await container.read(authProvider.notifier).signInWithFacebook();
+        final state = container.read(authProvider);
+        expect(state.status, AuthStatus.error);
+        expect(state.errorMessage, 'unknown');
+      });
+    });
+
+    group('rate limiting', () {
+      test('bloquea segundo intento dentro del cooldown', () async {
+        final fakeUser = FakeAppUser(uid: 'rl-uid', isEmailVerified: true);
+        when(
+          () => mockAuth.signInWithGoogle(),
+        ).thenAnswer((_) async => fakeUser);
+
+        final notifier = container.read(authProvider.notifier);
+        await notifier.signInWithGoogle();
+        expect(container.read(authProvider).status, AuthStatus.authenticated);
+
+        await notifier.signInWithGoogle();
+        final state = container.read(authProvider);
+        expect(state.status, AuthStatus.error);
+        expect(state.errorMessage, 'rate_limited');
+      });
+
+      test('bloquea reintento tras errores consecutivos', () async {
+        when(
+          () => mockAuth.signInWithGoogle(),
+        ).thenThrow(const AuthException('flaky'));
+
+        final notifier = container.read(authProvider.notifier);
+        for (var i = 0; i < 5; i++) {
+          await notifier.signInWithGoogle();
+          // Deja expirar el cooldown entre errores para poder acumularlos.
+          await Future<void>.delayed(const Duration(seconds: 3));
+        }
+        expect(container.read(authProvider).status, AuthStatus.error);
+
+        await notifier.signInWithGoogle();
+
+        final state = container.read(authProvider);
+        expect(state.status, AuthStatus.error);
+        expect(state.errorMessage, 'rate_limited');
+      });
+    });
+
+    group('resendVerificationEmail', () {
+      test('no cambia el estado en éxito', () async {
+        when(() => mockAuth.sendEmailVerification()).thenAnswer((_) async {});
+
+        final notifier = container.read(authProvider.notifier);
+        await notifier.resendVerificationEmail();
+
+        expect(container.read(authProvider).errorMessage, isNull);
+      });
+
+      test('marca errores ante AuthException y propaga', () async {
+        when(
+          () => mockAuth.sendEmailVerification(),
+        ).thenThrow(const AuthException('too_many_requests'));
+
+        final notifier = container.read(authProvider.notifier);
+        await expectLater(
+          notifier.resendVerificationEmail(),
+          throwsA(isA<AuthException>()),
+        );
+        expect(container.read(authProvider).errorMessage, 'too_many_requests');
+      });
+
+      test('marca resend_error ante error genérico y propaga', () async {
+        when(
+          () => mockAuth.sendEmailVerification(),
+        ).thenThrow(Exception('boom'));
+
+        final notifier = container.read(authProvider.notifier);
+        await expectLater(
+          notifier.resendVerificationEmail(),
+          throwsA(isA<Exception>()),
+        );
+        expect(container.read(authProvider).errorMessage, 'resend_error');
+      });
+    });
+
+    group('reauthenticate', () {
+      test('resultado null -> reauth_error', () async {
+        when(
+          () => mockAuth.reauthenticate(any(), any()),
+        ).thenAnswer((_) async => null);
+
+        final notifier = container.read(authProvider.notifier);
+        await notifier.reauthenticate('a@b.com', 'pw');
+
+        final state = container.read(authProvider);
+        expect(state.status, AuthStatus.error);
+        expect(state.errorMessage, 'reauth_error');
+      });
+
+      test('AuthException propaga su código', () async {
+        when(
+          () => mockAuth.reauthenticate(any(), any()),
+        ).thenThrow(const AuthException('wrong_password'));
+
+        final notifier = container.read(authProvider.notifier);
+        await notifier.reauthenticate('a@b.com', 'pw');
+
+        final state = container.read(authProvider);
+        expect(state.status, AuthStatus.error);
+        expect(state.errorMessage, 'wrong_password');
+      });
+
+      test('error genérico -> reauth_error', () async {
+        when(
+          () => mockAuth.reauthenticate(any(), any()),
+        ).thenThrow(Exception('boom'));
+
+        final notifier = container.read(authProvider.notifier);
+        await notifier.reauthenticate('a@b.com', 'pw');
+
+        final state = container.read(authProvider);
+        expect(state.status, AuthStatus.error);
+        expect(state.errorMessage, 'reauth_error');
+      });
+    });
+
+    group('deleteAccount', () {
+      MockFirebaseUser fbUser = MockFirebaseUser();
+
+      Future<void> signInFirst() async {
+        final fakeUser = FakeAppUser(uid: 'del-uid', isEmailVerified: true);
+        when(
+          () => mockAuth.signInWithEmail(
+            email: any(named: 'email'),
+            password: any(named: 'password'),
+          ),
+        ).thenAnswer((_) async => fakeUser);
+        await container
+            .read(authProvider.notifier)
+            .signInWithEmail(email: 'del@example.com', password: 'password123');
+        expect(container.read(authProvider).uid, 'del-uid');
+      }
+
+      test('OAuth sin password elimina y resetea estado', () async {
+        when(() => mockAuth.deleteAccount()).thenAnswer((_) async {});
+
+        await container
+            .read(authProvider.notifier)
+            .deleteAccount(email: 'del@example.com');
+        expect(container.read(authProvider).status, AuthStatus.unauthenticated);
+      });
+
+      test('con password: reauth null -> reauth_required_for_delete', () async {
+        when(
+          () => mockAuth.reauthenticate(any(), any()),
+        ).thenAnswer((_) async => null);
+
+        await container
+            .read(authProvider.notifier)
+            .deleteAccount(email: 'del@example.com', password: 'pw');
+        final state = container.read(authProvider);
+        expect(state.status, AuthStatus.error);
+        expect(state.errorMessage, 'reauth_required_for_delete');
+      });
+
+      test('con password: reauth AuthException -> código', () async {
+        when(
+          () => mockAuth.reauthenticate(any(), any()),
+        ).thenThrow(const AuthException('wrong_password'));
+
+        await container
+            .read(authProvider.notifier)
+            .deleteAccount(email: 'del@example.com', password: 'pw');
+        final state = container.read(authProvider);
+        expect(state.status, AuthStatus.error);
+        expect(state.errorMessage, 'wrong_password');
+      });
+
+      test('con password: reauth genérico -> reauth_error', () async {
+        when(
+          () => mockAuth.reauthenticate(any(), any()),
+        ).thenThrow(Exception('boom'));
+
+        await container
+            .read(authProvider.notifier)
+            .deleteAccount(email: 'del@example.com', password: 'pw');
+        final state = container.read(authProvider);
+        expect(state.status, AuthStatus.error);
+        expect(state.errorMessage, 'reauth_error');
+      });
+
+      test('con password y reauth ok elimina con sync de datos', () async {
+        await signInFirst();
+        when(
+          () => mockAuth.reauthenticate(any(), any()),
+        ).thenAnswer((_) async => fbUser);
+        when(() => mockAuth.deleteAccount()).thenAnswer((_) async {});
+
+        await container
+            .read(authProvider.notifier)
+            .deleteAccount(email: 'del@example.com', password: 'pw');
+        expect(container.read(authProvider).status, AuthStatus.unauthenticated);
+        verify(() => mockCloudSync.deleteCloudData(any())).called(1);
+      });
+
+      test('delete falla en OAuth -> reauth_required_for_delete', () async {
+        when(() => mockAuth.deleteAccount()).thenThrow(Exception('boom'));
+
+        await container
+            .read(authProvider.notifier)
+            .deleteAccount(email: 'del@example.com');
+        final state = container.read(authProvider);
+        expect(state.status, AuthStatus.error);
+        expect(state.errorMessage, 'reauth_required_for_delete');
+      });
+
+      test('delete falla con password -> delete_account_failed', () async {
+        await signInFirst();
+        when(
+          () => mockAuth.reauthenticate(any(), any()),
+        ).thenAnswer((_) async => fbUser);
+        when(() => mockAuth.deleteAccount()).thenThrow(Exception('boom'));
+
+        await container
+            .read(authProvider.notifier)
+            .deleteAccount(email: 'del@example.com', password: 'pw');
+        final state = container.read(authProvider);
+        expect(state.status, AuthStatus.unauthenticated);
+        expect(state.errorMessage, 'delete_account_failed');
+      });
+    });
+
+    group('signOut con sesión', () {
+      test('guarda sync y limpia estado con uid + prefs', () async {
+        final fakeUser = FakeAppUser(uid: 'so-uid', isEmailVerified: true);
+        when(
+          () => mockAuth.signInWithEmail(
+            email: any(named: 'email'),
+            password: any(named: 'password'),
+          ),
+        ).thenAnswer((_) async => fakeUser);
+        await container
+            .read(authProvider.notifier)
+            .signInWithEmail(email: 'so@example.com', password: 'password123');
+        expect(container.read(authProvider).uid, 'so-uid');
+
+        when(() => mockAuth.signOut()).thenAnswer((_) async {});
+        await container.read(authProvider.notifier).signOut();
+
+        final state = container.read(authProvider);
+        expect(state.status, AuthStatus.unauthenticated);
+        verify(() => mockCloudSync.saveAll(any(), any())).called(1);
+        verify(() => mockCloudSync.stopListening()).called(1);
+      });
+    });
+
+    group('refreshCurrentUser', () {
+      test('aplica el usuario actual al estado', () async {
+        container.read(authProvider);
+        when(
+          () => mockAuth.currentUser,
+        ).thenReturn(FakeAppUser(uid: 'cur-uid', isEmailVerified: true));
+
+        await container.read(authProvider.notifier).refreshCurrentUser();
+
+        final state = container.read(authProvider);
+        expect(state.status, AuthStatus.authenticated);
+        expect(state.uid, 'cur-uid');
+      });
+
+      test('usuario null -> unauthenticated', () async {
+        when(() => mockAuth.currentUser).thenReturn(null);
+
+        await container.read(authProvider.notifier).refreshCurrentUser();
+        expect(container.read(authProvider).status, AuthStatus.unauthenticated);
+      });
+    });
+
+    group('enterDemoMode', () {
+      test('activa modo demo con usuario local', () async {
+        final notifier = container.read(authProvider.notifier);
+        notifier.enterDemoMode(displayName: 'Demo');
+
+        final state = container.read(authProvider);
+        expect(state.status, AuthStatus.demo);
+        expect(state.uid, 'demo_user_001');
+        expect(state.displayName, 'Demo');
+        expect(state.onboardingCompleted, true);
+        expect(state.profileLoaded, true);
+      });
+
+      test('usa nombre por defecto si no se provee', () async {
+        final notifier = container.read(authProvider.notifier);
+        notifier.enterDemoMode();
+
+        expect(container.read(authProvider).displayName, 'Demo Student');
+      });
+    });
+
+    group('markOnboardingCompleted', () {
+      test('sin usuario no hace nada', () async {
+        await container.read(authProvider.notifier).markOnboardingCompleted();
+        expect(container.read(authProvider).status, AuthStatus.unauthenticated);
+      });
+
+      test('con usuario captura fallo de Firestore sin romper', () async {
+        final fakeUser = FakeAppUser(uid: 'moc-uid', isEmailVerified: true);
+        when(
+          () => mockAuth.signInWithEmail(
+            email: any(named: 'email'),
+            password: any(named: 'password'),
+          ),
+        ).thenAnswer((_) async => fakeUser);
+        await container
+            .read(authProvider.notifier)
+            .signInWithEmail(email: 'moc@example.com', password: 'password123');
+
+        await container.read(authProvider.notifier).markOnboardingCompleted();
+
+        final state = container.read(authProvider);
+        expect(state.onboardingCompleted, false);
+        expect(state.status, AuthStatus.authenticated);
+      });
+    });
+
+    group('ramas de error de métodos existentes', () {
+      test('signInWithEmail ante error genérico -> unknown', () async {
+        when(
+          () => mockAuth.signInWithEmail(
+            email: any(named: 'email'),
+            password: any(named: 'password'),
+          ),
+        ).thenThrow(Exception('boom'));
+
+        await container
+            .read(authProvider.notifier)
+            .signInWithEmail(email: 'a@b.com', password: 'pw');
+        final state = container.read(authProvider);
+        expect(state.status, AuthStatus.error);
+        expect(state.errorMessage, 'unknown');
+      });
+
+      test('signUpWithEmail ante error genérico -> unknown', () async {
+        when(
+          () => mockAuth.signUpWithEmail(
+            email: any(named: 'email'),
+            password: any(named: 'password'),
+            displayName: any(named: 'displayName'),
+          ),
+        ).thenThrow(Exception('boom'));
+
+        await container
+            .read(authProvider.notifier)
+            .signUpWithEmail(
+              displayName: 'X',
+              email: 'a@b.com',
+              password: 'pw',
+            );
+        final state = container.read(authProvider);
+        expect(state.status, AuthStatus.error);
+        expect(state.errorMessage, 'unknown');
+      });
+
+      test('sendPasswordResetEmail ante error genérico -> unknown', () async {
+        when(
+          () => mockAuth.sendPasswordResetEmail('a@b.com'),
+        ).thenThrow(Exception('boom'));
+
+        await container
+            .read(authProvider.notifier)
+            .sendPasswordResetEmail('a@b.com');
+        final state = container.read(authProvider);
+        expect(state.status, AuthStatus.error);
+        expect(state.errorMessage, 'unknown');
+      });
+
+      test('checkEmailVerified ante error -> verify_error', () async {
+        when(() => mockAuth.reloadUser()).thenThrow(Exception('boom'));
+
+        await container.read(authProvider.notifier).checkEmailVerified();
+        final state = container.read(authProvider);
+        expect(state.status, AuthStatus.unauthenticated);
+        expect(state.errorMessage, 'verify_error');
       });
     });
   });
