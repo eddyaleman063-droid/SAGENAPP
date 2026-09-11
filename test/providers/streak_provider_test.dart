@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -549,5 +551,295 @@ void main() {
         ).called(1);
       },
     );
+
+    test('emite mensajes emocionales a cada hito (100/50/30/14)', () async {
+      final cases = <(int, String)>[
+        (100, '100 days of constant protection. Legend.'),
+        (50, '50 days of constant digital protection.'),
+        (30, 'One month of learning.'),
+        (14, 'Two weeks of consistency.'),
+      ];
+      for (final c in cases) {
+        SharedPreferences.setMockInitialValues({
+          'streak_current': c.$1,
+          'streak_longest': c.$1,
+        });
+        final prefs = await SharedPreferences.getInstance();
+        final container = createContainer(prefs);
+        final notifier = container.read(streakProvider.notifier);
+        expect(
+          notifier.emotionalMessages.any((m) => m.contains(c.$2)),
+          true,
+          reason: 'hito ${c.$1}',
+        );
+        container.dispose();
+      }
+    });
+
+    test('checkIn cruza hitos y desbloquea logros (14/30/100)', () async {
+      final cases = <(int, int)>[(13, 14), (29, 30), (99, 100)];
+      for (final c in cases) {
+        final yesterday = DateTime.now()
+            .subtract(const Duration(days: 1))
+            .toIso8601String();
+        SharedPreferences.setMockInitialValues({
+          'streak_current': c.$1,
+          'streak_longest': c.$1,
+          'streak_last_activity': yesterday,
+        });
+        final prefs = await SharedPreferences.getInstance();
+        final container = createContainer(prefs);
+        final notifier = container.read(streakProvider.notifier);
+        notifier.checkIn();
+        expect(notifier.currentStreak, c.$2, reason: 'hito ${c.$1}->${c.$2}');
+        container.dispose();
+      }
+    });
+
+    test('lee todos los getters simples', () async {
+      SharedPreferences.setMockInitialValues({
+        'streak_current': 1,
+        'streak_longest': 7,
+        'streak_history': '2026-01-01,2026-01-02',
+      });
+      final prefs = await SharedPreferences.getInstance();
+      final container = createContainer(prefs);
+      addTearDown(() => container.dispose());
+      final notifier = container.read(streakProvider.notifier);
+      expect(notifier.status, isNotNull);
+      expect(notifier.isAtRisk, isA<bool>());
+      expect(notifier.message, isA<String>());
+      expect(notifier.tier, isA<String>());
+      expect(notifier.hasStreak, isA<bool>());
+      expect(notifier.perfectWeeks, isA<int>());
+      expect(notifier.missionCompleted, isA<bool>());
+      expect(notifier.monthlyStats, isNotNull);
+      expect(container.read(streakProvider).freezeConsumed, isA<bool>());
+      expect(notifier.streakHistory, ['2026-01-01', '2026-01-02']);
+    });
+
+    test('cacheMonthlyStats y completeMission marcan estado', () async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final container = createContainer(prefs);
+      addTearDown(() => container.dispose());
+      final notifier = container.read(streakProvider.notifier);
+      expect(notifier.missionCompleted, isFalse);
+      notifier.completeMission();
+      expect(notifier.missionCompleted, isTrue);
+      notifier.completeMission();
+      notifier.cacheMonthlyStats();
+      notifier.cacheMonthlyStats();
+      notifier.clearMilestone();
+    });
+
+    test('setFreezes aplica el valor dado (clamp 0..max)', () async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final container = createContainer(prefs);
+      addTearDown(() => container.dispose());
+      final notifier = container.read(streakProvider.notifier);
+      notifier.setFreezes(3);
+      expect(notifier.streakFreezes, 3);
+    });
+
+    test('heatmap >365 recortado al cargar y al añadir día', () async {
+      final heatmap = <String>[
+        for (var i = 1; i <= 400; i++) 'day-$i:1',
+      ].join(',');
+      final yesterday = DateTime.now()
+          .subtract(const Duration(days: 1))
+          .toIso8601String();
+      SharedPreferences.setMockInitialValues({
+        'streak_heatmap': heatmap,
+        'streak_current': 3,
+        'streak_longest': 3,
+        'streak_last_activity': yesterday,
+      });
+      final prefs = await SharedPreferences.getInstance();
+      final container = createContainer(prefs);
+      addTearDown(() => container.dispose());
+      final notifier = container.read(streakProvider.notifier);
+      expect(notifier.heatmapData.length, lessThanOrEqualTo(365));
+      notifier.checkIn();
+      expect(notifier.heatmapData.length, lessThanOrEqualTo(365));
+    });
+
+    test('reconcile: serverLongest supera al local y gana', () async {
+      final yesterday = DateTime.now()
+          .subtract(const Duration(days: 1))
+          .toIso8601String();
+      SharedPreferences.setMockInitialValues({
+        'streak_current': 10,
+        'streak_longest': 10,
+        'streak_last_activity': yesterday,
+      });
+      final prefs = await SharedPreferences.getInstance();
+      final container = createContainer(prefs);
+      addTearDown(() => container.dispose());
+      final ec = container.read(economicFunctionsServiceProvider);
+      when(
+        () => ec.incrementStreak(
+          freezeUsed: any(named: 'freezeUsed'),
+          checkIn: any(named: 'checkIn'),
+          itemUsed: any(named: 'itemUsed'),
+          activityDay: any(named: 'activityDay'),
+          activityStreak: any(named: 'activityStreak'),
+        ),
+      ).thenAnswer((_) async => {'currentStreak': 10, 'longestStreak': 20});
+      final notifier = container.read(streakProvider.notifier);
+      notifier.checkIn();
+      await Future<void>.delayed(const Duration(milliseconds: 200));
+      expect(notifier.longestStreak, 20);
+    });
+
+    test('reconcile: rotura con freezeDenied repone un escudo local', () async {
+      final yesterday = DateTime.now()
+          .subtract(const Duration(days: 1))
+          .toIso8601String();
+      SharedPreferences.setMockInitialValues({
+        'streak_current': 10,
+        'streak_longest': 10,
+        'streak_last_activity': yesterday,
+      });
+      final prefs = await SharedPreferences.getInstance();
+      final container = createContainer(prefs);
+      addTearDown(() => container.dispose());
+      final ec = container.read(economicFunctionsServiceProvider);
+      when(
+        () => ec.incrementStreak(
+          freezeUsed: any(named: 'freezeUsed'),
+          checkIn: any(named: 'checkIn'),
+          itemUsed: any(named: 'itemUsed'),
+          activityDay: any(named: 'activityDay'),
+          activityStreak: any(named: 'activityStreak'),
+        ),
+      ).thenAnswer(
+        (_) async => {
+          'currentStreak': 1,
+          'longestStreak': 10,
+          'freezeDenied': true,
+        },
+      );
+      final notifier = container.read(streakProvider.notifier);
+      notifier.setFreezes(2);
+      notifier.checkIn();
+      await Future<void>.delayed(const Duration(milliseconds: 200));
+      expect(notifier.currentStreak, 1);
+      expect(notifier.streakFreezes, 3);
+    });
+
+    test('reconcile: rotura sin longestStreak conserva el local', () async {
+      final yesterday = DateTime.now()
+          .subtract(const Duration(days: 1))
+          .toIso8601String();
+      SharedPreferences.setMockInitialValues({
+        'streak_current': 10,
+        'streak_longest': 10,
+        'streak_last_activity': yesterday,
+      });
+      final prefs = await SharedPreferences.getInstance();
+      final container = createContainer(prefs);
+      addTearDown(() => container.dispose());
+      final ec = container.read(economicFunctionsServiceProvider);
+      when(
+        () => ec.incrementStreak(
+          freezeUsed: any(named: 'freezeUsed'),
+          checkIn: any(named: 'checkIn'),
+          itemUsed: any(named: 'itemUsed'),
+          activityDay: any(named: 'activityDay'),
+          activityStreak: any(named: 'activityStreak'),
+        ),
+      ).thenAnswer((_) async => {'currentStreak': 1, 'streakBroken': true});
+      final notifier = container.read(streakProvider.notifier);
+      notifier.setFreezes(2);
+      notifier.checkIn();
+      await Future<void>.delayed(const Duration(milliseconds: 200));
+      expect(notifier.currentStreak, 1);
+      // El server no envía longestStreak: se conserva el local (11 tras el
+      // checkIn local que sumó 1 antes de que el reconcile bajara la racha).
+      expect(notifier.longestStreak, 11);
+    });
+
+    test(
+      'H5 titanium: longestStreak local menor no infla el fallback',
+      () async {
+        final threeDaysAgo = DateTime.now()
+            .subtract(const Duration(days: 3))
+            .toIso8601String();
+        SharedPreferences.setMockInitialValues({
+          'streak_current': 10,
+          'streak_longest': 10,
+          'streak_last_activity': threeDaysAgo,
+          'special_item_quantities': '{"titaniumShield":1}',
+        });
+        final prefs = await SharedPreferences.getInstance();
+        final container = createContainer(prefs);
+        addTearDown(() => container.dispose());
+        final notifier = container.read(streakProvider.notifier);
+        notifier.checkIn();
+        expect(notifier.currentStreak, 11);
+        await Future<void>.delayed(const Duration(milliseconds: 200));
+        expect(notifier.currentStreak, 11);
+      },
+    );
+
+    test(
+      'freeze consumido dispara el just-defrosted y notificación estable',
+      () async {
+        final threeDaysAgo = DateTime.now()
+            .subtract(const Duration(days: 3))
+            .toIso8601String();
+        SharedPreferences.setMockInitialValues({
+          'streak_current': 5,
+          'streak_longest': 5,
+          'streak_freezes': 1,
+          'streak_last_activity': threeDaysAgo,
+        });
+        final prefs = await SharedPreferences.getInstance();
+        final container = createContainer(prefs);
+        addTearDown(() => container.dispose());
+        final notifier = container.read(streakProvider.notifier);
+        expect(notifier.isStreakFrozen, isTrue);
+        notifier.checkIn();
+        expect(notifier.isStreakFrozen, isFalse);
+        expect(notifier.streakFreezes, 0);
+        await Future<void>.delayed(const Duration(milliseconds: 200));
+        expect(prefs.getBool('streak_just_defrosted'), isTrue);
+      },
+    );
+
+    test('dos syncs solapados: el segundo se encola y re-despacha', () async {
+      final completer = Completer<Map<String, dynamic>>();
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final container = createContainer(prefs);
+      addTearDown(() => container.dispose());
+      final ec = container.read(economicFunctionsServiceProvider);
+      when(
+        () => ec.incrementStreak(
+          freezeUsed: any(named: 'freezeUsed'),
+          checkIn: any(named: 'checkIn'),
+          itemUsed: any(named: 'itemUsed'),
+          activityDay: any(named: 'activityDay'),
+          activityStreak: any(named: 'activityStreak'),
+        ),
+      ).thenAnswer((_) => completer.future);
+      final notifier = container.read(streakProvider.notifier);
+      notifier.reload();
+      notifier.checkIn();
+      await Future<void>.delayed(Duration.zero);
+      completer.complete({'currentStreak': 1, 'longestStreak': 1});
+      await Future<void>.delayed(const Duration(milliseconds: 200));
+      verify(
+        () => ec.incrementStreak(
+          freezeUsed: any(named: 'freezeUsed'),
+          checkIn: any(named: 'checkIn'),
+          itemUsed: any(named: 'itemUsed'),
+          activityDay: any(named: 'activityDay'),
+          activityStreak: any(named: 'activityStreak'),
+        ),
+      ).called(2);
+    });
   });
 }
