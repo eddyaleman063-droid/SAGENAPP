@@ -71,128 +71,138 @@ class _GemRewardAnimationState extends State<GemRewardAnimation>
 
   @override
   Widget build(BuildContext context) {
-    return RepaintBoundary(
-      child: AnimatedBuilder(
-        animation: _ctrl,
-        builder: (context, _) {
-          final t = _ctrl.value;
-          final fadeOut = t > 0.6
-              ? 1.0 - ((t - 0.6) / 0.4).clamp(0.0, 1.0)
-              : 1.0;
-          final scale = t < 0.15
-              ? (t / 0.15) * 0.5 + 0.5
-              : (t < 0.3
-                    ? 1.0 + (t - 0.15) / 0.15 * 0.2
-                    : 1.2 - (t - 0.3) * 0.5);
-          final slideY = t < 0.3 ? 0 : -(t - 0.3) * 120;
+    return Stack(
+      children: [
+        Positioned(
+          top: MediaQuery.sizeOf(context).height * 0.35,
+          left: 0,
+          right: 0,
+          child: RepaintBoundary(
+            child: AnimatedBuilder(
+              animation: _ctrl,
+              builder: (context, _) {
+                final t = _ctrl.value;
+                final fadeOut = t > 0.6
+                    ? 1.0 - ((t - 0.6) / 0.4).clamp(0.0, 1.0)
+                    : 1.0;
+                final scale = t < 0.15
+                    ? (t / 0.15) * 0.5 + 0.5
+                    : (t < 0.3
+                          ? 1.0 + (t - 0.15) / 0.15 * 0.2
+                          : 1.2 - (t - 0.3) * 0.5);
+                final slideY = t < 0.3 ? 0.0 : -(t - 0.3) * 120;
+                final zoom = scale.clamp(0.3, 1.5);
 
-          return Positioned(
-            top: MediaQuery.sizeOf(context).height * 0.35 + slideY,
-            left: 0,
-            right: 0,
-            child: Opacity(
-              opacity: fadeOut,
-              child: Transform.scale(
-                scale: scale.clamp(0.3, 1.5),
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    // Particle burst
-                    for (int i = 0; i < _particles.length; i++)
-                      _ParticleWidget(particle: _particles[i], progress: t),
-                    // Main badge
-                    Semantics(
-                      liveRegion: true,
-                      label:
-                          AppLocalizations.of(
-                            context,
-                          )?.gemRewardEarned(widget.amount) ??
-                          '+${widget.amount} gems',
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: AppSpacing.xxl,
-                          vertical: 14,
-                        ),
-                        decoration: BoxDecoration(
-                          gradient: const LinearGradient(
-                            colors: [
-                              PremiumColors.accentCyan,
-                              PremiumColors.deepPurple,
-                            ],
-                          ),
-                          borderRadius: BorderRadius.circular(30),
-                          boxShadow: [
-                            BoxShadow(
-                              color: PremiumColors.accentCyan.withValues(
-                                alpha: 0.5,
-                              ),
-                              blurRadius: 24,
-                              spreadRadius: 4,
+                return Opacity(
+                  opacity: fadeOut,
+                  child: Transform(
+                    alignment: Alignment.bottomCenter,
+                    transform: Matrix4.translationValues(0, slideY, 0)
+                      ..scaleByDouble(zoom, zoom, zoom, 1.0),
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        // Particle burst
+                        for (int i = 0; i < _particles.length; i++)
+                          _ParticleWidget(particle: _particles[i], progress: t),
+                        // Main badge
+                        Semantics(
+                          liveRegion: true,
+                          label:
+                              AppLocalizations.of(
+                                context,
+                              )?.gemRewardEarned(widget.amount) ??
+                              '+${widget.amount} gems',
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: AppSpacing.xxl,
+                              vertical: 14,
                             ),
-                            BoxShadow(
-                              color: PremiumColors.deepPurple.withValues(
-                                alpha: 0.3,
-                              ),
-                              blurRadius: 32,
-                              spreadRadius: 2,
-                            ),
-                          ],
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Transform.rotate(
-                              angle: 0.785 + t * 0.5,
-                              child: Container(
-                                width: 20,
-                                height: 20,
-                                decoration: BoxDecoration(
-                                  gradient: const LinearGradient(
-                                    colors: [
-                                      Colors.white,
-                                      PremiumColors.surfaceTintLight,
-                                    ],
-                                  ),
-                                  borderRadius: BorderRadius.circular(3),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.white.withValues(
-                                        alpha: 0.5,
-                                      ),
-                                      blurRadius: 6,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            Text(
-                              '+${widget.amount}',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 24,
-                                fontWeight: FontWeight.w900,
-                                letterSpacing: 1,
-                                shadows: [
-                                  Shadow(color: Colors.black26, blurRadius: 6),
-                                  Shadow(
-                                    color: PremiumColors.accentCyan,
-                                    blurRadius: 12,
-                                  ),
+                            decoration: BoxDecoration(
+                              gradient: const LinearGradient(
+                                colors: [
+                                  PremiumColors.accentCyan,
+                                  PremiumColors.deepPurple,
                                 ],
                               ),
+                              borderRadius: BorderRadius.circular(30),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: PremiumColors.accentCyan.withValues(
+                                    alpha: 0.5,
+                                  ),
+                                  blurRadius: 24,
+                                  spreadRadius: 4,
+                                ),
+                                BoxShadow(
+                                  color: PremiumColors.deepPurple.withValues(
+                                    alpha: 0.3,
+                                  ),
+                                  blurRadius: 32,
+                                  spreadRadius: 2,
+                                ),
+                              ],
                             ),
-                          ],
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Transform.rotate(
+                                  angle: 0.785 + t * 0.5,
+                                  child: Container(
+                                    width: 20,
+                                    height: 20,
+                                    decoration: BoxDecoration(
+                                      gradient: const LinearGradient(
+                                        colors: [
+                                          Colors.white,
+                                          PremiumColors.surfaceTintLight,
+                                        ],
+                                      ),
+                                      borderRadius: BorderRadius.circular(3),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.white.withValues(
+                                            alpha: 0.5,
+                                          ),
+                                          blurRadius: 6,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                Text(
+                                  '+${widget.amount}',
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w900,
+                                    letterSpacing: 1,
+                                    shadows: [
+                                      Shadow(
+                                        color: Colors.black26,
+                                        blurRadius: 6,
+                                      ),
+                                      Shadow(
+                                        color: PremiumColors.accentCyan,
+                                        blurRadius: 12,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
+                  ),
+                );
+              },
             ),
-          );
-        },
-      ),
+          ),
+        ),
+      ],
     );
   }
 }

@@ -74,6 +74,7 @@ class _BuyButtonState extends State<BuyButton> {
     final canBuy =
         widget.canBuy && !_purchasing && !widget.isLoading && canAfford;
     final isFree = widget.cost == 0;
+    final isOwned = !widget.canBuy && canAfford && !isFree;
     final l = AppLocalizations.of(context)!;
     return Semantics(
       label: canBuy
@@ -155,7 +156,7 @@ class _BuyButtonState extends State<BuyButton> {
                     const SizedBox(width: AppSpacing.xs),
                   ],
                   Text(
-                    _showSuccess
+                    _showSuccess || isOwned
                         ? l.storeAlreadyOwned
                         : (isFree ? l.free : '${widget.cost}'),
                     style: AppTextStyle.subtitle.copyWith(

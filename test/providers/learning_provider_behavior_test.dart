@@ -372,6 +372,18 @@ void main() {
     }
   }
 
+  // La carga desde assets va por `compute` (isolate real): su cierre no tiene
+  // un numero fijo de microtasks y puede tardar mas que settle() bajo carga,
+  // dejando el assertion leyendo un estado a medio completar. El poll espera
+  // de forma determinista a que LearningNotifier salga de isLoading.
+  Future<void> waitUntilReady() async {
+    for (var i = 0; i < 300; i++) {
+      if (!container.read(learningProvider).isLoading) return;
+      await Future<void>.delayed(const Duration(milliseconds: 10));
+    }
+    fail('Timeout esperando que LearningNotifier termine de cargar');
+  }
+
   void buildContainer(SharedPreferences prefs) {
     container = ProviderContainer(
       overrides: [
@@ -511,7 +523,7 @@ void main() {
       loadStagesOverride = () async => _stagesJson;
 
       container.read(learningProvider.notifier);
-      await settle();
+      await waitUntilReady();
 
       final state = container.read(learningProvider);
       expect(state.stages, hasLength(1));
@@ -525,7 +537,7 @@ void main() {
       loadStagesOverride = () async => 'not json at all';
 
       container.read(learningProvider.notifier);
-      await settle();
+      await waitUntilReady();
 
       final state = container.read(learningProvider);
       expect(state.isLoading, isFalse);
