@@ -170,93 +170,95 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
                 ).animate().fadeIn(duration: 400.ms).slideY(begin: 0.1),
               ),
               SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(
-                        AppSpacing.xxl,
-                        AppSpacing.xl,
-                        AppSpacing.xxl,
-                        0,
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: StatCardWidget(
-                              icon: Icons.local_fire_department_rounded,
-                              value: '$currentStreak',
-                              label: l.profileStreak,
-                              iconColor: PremiumColors.streakOrange,
-                            ),
-                          ),
-                          const SizedBox(width: AppSpacing.md),
-                          Expanded(
-                            child: StatCardWidget(
-                              icon: Icons.auto_awesome_rounded,
-                              value: '${learning.totalXpEarned}',
-                              label: l.profileXpLabel,
-                              iconColor: PremiumColors.xpColor,
-                            ),
-                          ),
-                          const SizedBox(width: AppSpacing.md),
-                          Expanded(
-                            child: StatCardWidget(
-                              icon: Icons.volunteer_activism_rounded,
-                              value:
-                                  '${l.currencySymbol}${learning.totalDonated.toStringAsFixed(2)}',
-                              label: l.profileDonations,
-                              iconColor: PremiumColors.achievementEnd,
-                              accentColor: PremiumColors.accentYellow,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
-                  .animate()
-                  .fadeIn(delay: 200.ms, duration: 400.ms)
-                  .slideY(begin: 0.1),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(
+                    AppSpacing.xxl,
+                    AppSpacing.xl,
+                    AppSpacing.xxl,
+                    0,
+                  ),
+                  child:
+                      Row(
+                            children: [
+                              Expanded(
+                                child: StatCardWidget(
+                                  icon: Icons.local_fire_department_rounded,
+                                  value: '$currentStreak',
+                                  label: l.profileStreak,
+                                  iconColor: PremiumColors.streakOrange,
+                                ),
+                              ),
+                              const SizedBox(width: AppSpacing.md),
+                              Expanded(
+                                child: StatCardWidget(
+                                  icon: Icons.auto_awesome_rounded,
+                                  value: '${learning.totalXpEarned}',
+                                  label: l.profileXpLabel,
+                                  iconColor: PremiumColors.xpColor,
+                                ),
+                              ),
+                              const SizedBox(width: AppSpacing.md),
+                              Expanded(
+                                child: StatCardWidget(
+                                  icon: Icons.volunteer_activism_rounded,
+                                  value:
+                                      '${l.currencySymbol}${learning.totalDonated.toStringAsFixed(2)}',
+                                  label: l.profileDonations,
+                                  iconColor: PremiumColors.achievementEnd,
+                                  accentColor: PremiumColors.accentYellow,
+                                ),
+                              ),
+                            ],
+                          )
+                          .animate()
+                          .fadeIn(delay: 200.ms, duration: 400.ms)
+                          .slideY(begin: 0.1),
+                ),
+              ),
               SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(
-                        AppSpacing.xxl,
-                        AppSpacing.xs,
-                        AppSpacing.xxl,
-                        0,
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: StatCardWidget(
-                              icon: Icons.diamond_rounded,
-                              value: '${gemState.balance}',
-                              label: l.gems,
-                              iconColor: PremiumColors.accentCyan,
-                            ),
-                          ),
-                          const SizedBox(width: AppSpacing.md),
-                          Expanded(
-                            child: StatCardWidget(
-                              icon: Icons.trending_up_rounded,
-                              value: '${gemState.totalEarned}',
-                              label: l.profileGemsEarned,
-                              iconColor: PremiumColors.success,
-                            ),
-                          ),
-                          const SizedBox(width: AppSpacing.md),
-                          Expanded(
-                            child: StatCardWidget(
-                              icon: Icons.shopping_cart_rounded,
-                              value: '${gemState.totalSpent}',
-                              label: l.profileGemsSpent,
-                              iconColor: PremiumColors.deepPurple,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
-                  .animate()
-                  .fadeIn(delay: 300.ms, duration: 400.ms)
-                  .slideY(begin: 0.1),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(
+                    AppSpacing.xxl,
+                    AppSpacing.xs,
+                    AppSpacing.xxl,
+                    0,
+                  ),
+                  child:
+                      Row(
+                            children: [
+                              Expanded(
+                                child: StatCardWidget(
+                                  icon: Icons.diamond_rounded,
+                                  value: '${gemState.balance}',
+                                  label: l.gems,
+                                  iconColor: PremiumColors.accentCyan,
+                                ),
+                              ),
+                              const SizedBox(width: AppSpacing.md),
+                              Expanded(
+                                child: StatCardWidget(
+                                  icon: Icons.trending_up_rounded,
+                                  value: '${gemState.totalEarned}',
+                                  label: l.profileGemsEarned,
+                                  iconColor: PremiumColors.success,
+                                ),
+                              ),
+                              const SizedBox(width: AppSpacing.md),
+                              Expanded(
+                                child: StatCardWidget(
+                                  icon: Icons.shopping_cart_rounded,
+                                  value: '${gemState.totalSpent}',
+                                  label: l.profileGemsSpent,
+                                  iconColor: PremiumColors.deepPurple,
+                                ),
+                              ),
+                            ],
+                          )
+                          .animate()
+                          .fadeIn(delay: 300.ms, duration: 400.ms)
+                          .slideY(begin: 0.1),
+                ),
+              ),
               const SliverToBoxAdapter(
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(
