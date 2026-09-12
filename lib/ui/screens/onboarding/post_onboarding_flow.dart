@@ -69,11 +69,14 @@ class _PostOnboardingFlowState extends ConsumerState<PostOnboardingFlow> {
   @override
   void initState() {
     super.initState();
-    // Fresh flow: start with a clean funnel so no stale data from a previous
-    // partial attempt leaks into the profile (e.g. an old age/email).
-    ref.read(registrationFunnelProvider.notifier).reset();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) _bridgeWizardData();
+      if (mounted) {
+        // Fresh flow: start with a clean funnel so no stale data from a
+        // previous partial attempt leaks into the profile (e.g. an old
+        // age/email).
+        ref.read(registrationFunnelProvider.notifier).reset();
+        _bridgeWizardData();
+      }
     });
   }
 
