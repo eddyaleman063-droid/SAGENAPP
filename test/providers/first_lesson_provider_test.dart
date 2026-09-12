@@ -83,6 +83,125 @@ void main() {
       );
       expect(state.isPerfect, true);
     });
+
+    test('isPerfect is false when there are mistakes', () {
+      const state = FirstLessonState(
+        questions: [
+          Challenge(
+            id: '1',
+            question: 'Q1',
+            type: LessonType.multipleChoice,
+            options: ['A', 'B'],
+            correctIndex: 0,
+            explanation: 'E',
+          ),
+          Challenge(
+            id: '2',
+            question: 'Q2',
+            type: LessonType.trueFalse,
+            options: ['T', 'F'],
+            correctIndex: 0,
+            explanation: 'E',
+          ),
+        ],
+        correctCount: 1,
+        wrongCount: 1,
+      );
+      expect(state.isPerfect, false);
+    });
+
+    test('isComplete is false with an empty question list', () {
+      const state = FirstLessonState(currentIndex: 3);
+      expect(state.isComplete, false);
+    });
+
+    test('accuracy is zero without answers and matches ratio otherwise', () {
+      const empty = FirstLessonState();
+      expect(empty.accuracy, 0);
+
+      const state = FirstLessonState(correctCount: 3, wrongCount: 1);
+      expect(state.accuracy, closeTo(0.75, 0.001));
+    });
+
+    test('earnedXp is zero without answers and positive with correct ones', () {
+      const empty = FirstLessonState();
+      expect(empty.earnedXp, 0);
+
+      const state = FirstLessonState(
+        questions: [
+          Challenge(
+            id: '1',
+            question: 'Q1',
+            type: LessonType.multipleChoice,
+            options: ['A', 'B'],
+            correctIndex: 0,
+            explanation: 'E',
+          ),
+          Challenge(
+            id: '2',
+            question: 'Q2',
+            type: LessonType.trueFalse,
+            options: ['T', 'F'],
+            correctIndex: 0,
+            explanation: 'E',
+          ),
+        ],
+        correctCount: 2,
+      );
+      expect(state.earnedXp, greaterThan(0));
+    });
+
+    test('elapsedTime is null without startTime and non-null with it', () {
+      const state = FirstLessonState();
+      expect(state.elapsedTime, isNull);
+
+      final started = FirstLessonState(startTime: DateTime.now());
+      expect(started.elapsedTime, isNotNull);
+    });
+
+    test('currentChallenge is null when index is out of range', () {
+      const state = FirstLessonState(
+        questions: [
+          Challenge(
+            id: '1',
+            question: 'Q',
+            type: LessonType.multipleChoice,
+            options: ['A', 'B'],
+            correctIndex: 0,
+            explanation: 'E',
+          ),
+        ],
+        currentIndex: 5,
+      );
+      expect(state.currentChallenge, isNull);
+    });
+
+    test('recommendedStage is always 1 for beginner path', () {
+      const state = FirstLessonState(
+        path: DiagnosticPath.beginner,
+        correctCount: 0,
+        wrongCount: 3,
+      );
+      expect(state.recommendedStage, 1);
+    });
+
+    test('recommendedStage is 2 for experienced with >= 50% accuracy', () {
+      const state = FirstLessonState(
+        path: DiagnosticPath.experienced,
+        correctCount: 1,
+        wrongCount: 1,
+      );
+      expect(state.recommendedStage, 2);
+    });
+
+    test('recommendedStage is 1 for experienced with < 50% accuracy', () {
+      const state = FirstLessonState(
+        path: DiagnosticPath.experienced,
+        correctCount: 1,
+        wrongCount: 2,
+      );
+      expect(state.recommendedStage, 1);
+    });
   });
 
   group('FirstLessonNotifier', () {
@@ -141,6 +260,84 @@ void main() {
       expect(reviewNotifier.failureCountFor(q.id), before + 1);
       expect(reviewNotifier.getTopicForQuestion(q.id), isNotNull);
       expect(notifier.state.wrongCount, 1);
+    });
+
+    test('correct answer updates state and does not flag a failure', () async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final seeded = ProviderContainer(
+        overrides: [
+          prefsProvider.overrideWithValue(prefs),
+          learningProvider.overrideWith(MockLearningNotifier.new),
+          firstLessonProvider.overrideWith(SeededFirstLessonNotifier.new),
+        ],
+      );
+      addTearDown(seeded.dispose);
+
+      final notifier = seeded.read(firstLessonProvider.notifier);
+      final q = seeded.read(firstLessonProvider).currentChallenge!;
+
+      notifier.submitAnswer(q.effectiveCorrectIndex);
+
+      final state = seeded.read(firstLessonProvider);
+      expect(state.correctCount, 1);
+      expect(state.wrongCount, 0);
+      expect(state.showFeedback, true);
+      expect(state.answeredCorrectly, true);
+
+      // Un acierto de pregunta nueva no agenda SM-2 ni cuenta como fallo:
+      // la rama correcta de submitAnswer eligió recordCorrect (no recordMistake).
+      final review = seeded.read(reviewProvider);
+      final failures = seeded.read(reviewProvider.notifier);
+      expect(review.repetition.containsKey(q.id), false);
+      expect(failures.failureCountFor(q.id), 0);
+    });
+
+    test('nextQuestion advances index and clears feedback', () async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final seeded = ProviderContainer(
+        overrides: [
+          prefsProvider.overrideWithValue(prefs),
+          learningProvider.overrideWith(MockLearningNotifier.new),
+          firstLessonProvider.overrideWith(SeededFirstLessonNotifier.new),
+        ],
+      );
+      addTearDown(seeded.dispose);
+
+      final notifier = seeded.read(firstLessonProvider.notifier);
+      notifier.submitAnswer(0);
+      expect(seeded.read(firstLessonProvider).showFeedback, true);
+
+      notifier.nextQuestion();
+
+      final state = seeded.read(firstLessonProvider);
+      expect(state.currentIndex, 1);
+      expect(state.showFeedback, false);
+    });
+
+    test('submitAnswer is ignored while feedback is already shown', () async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final seeded = ProviderContainer(
+        overrides: [
+          prefsProvider.overrideWithValue(prefs),
+          learningProvider.overrideWith(MockLearningNotifier.new),
+          firstLessonProvider.overrideWith(SeededFirstLessonNotifier.new),
+        ],
+      );
+      addTearDown(seeded.dispose);
+
+      final notifier = seeded.read(firstLessonProvider.notifier);
+      final q = seeded.read(firstLessonProvider).currentChallenge!;
+      notifier.submitAnswer(q.effectiveCorrectIndex);
+      expect(seeded.read(firstLessonProvider).answeredCorrectly, true);
+
+      final wrongIdx = (q.effectiveCorrectIndex + 1) % q.options.length;
+      notifier.submitAnswer(wrongIdx);
+
+      expect(seeded.read(firstLessonProvider).correctCount, 1);
+      expect(seeded.read(firstLessonProvider).answeredCorrectly, true);
     });
   });
 

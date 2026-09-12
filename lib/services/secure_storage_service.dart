@@ -45,7 +45,11 @@ class SecureStorageService implements ISecureStorageService {
   Future<void> deleteAll() async {
     try {
       final allData = await _storage.readAll();
-      final appKeys = allData.keys.where((k) => k.startsWith(_keyPrefix));
+      // Snapshot de claves: borrar sobre un iterable vivo del plugin mientras
+      // muta produce "Concurrent modification during iteration".
+      final appKeys = allData.keys
+          .where((k) => k.startsWith(_keyPrefix))
+          .toList();
       for (final key in appKeys) {
         await _storage.delete(key: key);
       }
