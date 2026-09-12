@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../config/onboarding_wizard_config.dart';
 import '../core/theme/theme_constants.dart';
 import '../services/app_logger.dart';
@@ -55,21 +56,23 @@ class OnboardingWizardNotifier
     extends AutoDisposeNotifier<OnboardingWizardState> {
   Timer? _persistTimer;
   bool _completed = false;
+  late SharedPreferences _prefs;
 
   @override
   OnboardingWizardState build() {
+    _prefs = ref.read(prefsProvider);
     ref.onDispose(() {
       _persistTimer?.cancel();
       if (!_completed) _persist();
     });
-    final completed = ref.read(prefsProvider).getBool(_kWizardDoneKey) ?? false;
+    final completed = _prefs.getBool(_kWizardDoneKey) ?? false;
     if (completed) return const OnboardingWizardState();
     return _load();
   }
 
   OnboardingWizardState _load() {
     try {
-      final raw = ref.read(prefsProvider).getString(_kWizardKey);
+      final raw = _prefs.getString(_kWizardKey);
       if (raw != null && raw.isNotEmpty) {
         final json = jsonDecode(raw) as Map<String, dynamic>;
         return OnboardingWizardState.fromJson(json);
@@ -87,8 +90,7 @@ class OnboardingWizardNotifier
 
   void _persist() {
     try {
-      final prefs = ref.read(prefsProvider);
-      prefs.setString(_kWizardKey, jsonEncode(state.toJson()));
+      _prefs.setString(_kWizardKey, jsonEncode(state.toJson()));
     } catch (e, stack) {
       AppLogger().error('Wizard: failed to persist state', e, stack);
     }
