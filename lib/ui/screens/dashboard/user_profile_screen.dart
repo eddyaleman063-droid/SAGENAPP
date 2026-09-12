@@ -14,7 +14,8 @@ import 'package:sagen/core/theme/app_colors.dart';
 
 class UserProfileScreen extends StatefulWidget {
   final String uid;
-  const UserProfileScreen({super.key, required this.uid});
+  final Stream<DocumentSnapshot>? userStream;
+  const UserProfileScreen({super.key, required this.uid, this.userStream});
 
   @override
   State<UserProfileScreen> createState() => _UserProfileScreenState();
@@ -27,7 +28,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   @override
   void initState() {
     super.initState();
-    _userStream = _createStream();
+    _userStream = widget.userStream ?? _createStream();
   }
 
   Stream<DocumentSnapshot> _createStream() => FirebaseFirestore.instance
@@ -89,7 +90,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           ExperienceService.instance.lightHaptic();
                           setState(() {
                             _retryKey++;
-                            _userStream = _createStream();
+                            _userStream = widget.userStream ?? _createStream();
                           });
                         },
                         child: Text(l.retry),
